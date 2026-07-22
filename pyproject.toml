@@ -1,0 +1,41 @@
+[project]
+name = "gsip"
+version = "0.1.0"
+description = "GSIP data, QA, card, and export pipelines"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "h3>=4.3,<5",
+  "httpx>=0.28,<1",
+  "pillow>=11,<13",
+  "pydantic>=2.12,<3",
+  "reportlab>=4.4,<5",
+]
+
+[dependency-groups]
+dev = [
+  "mypy>=1.19,<2",
+  "pytest>=9,<10",
+  "pytest-cov>=7,<8",
+  "respx>=0.22,<1",
+  "ruff>=0.14,<1",
+  "types-pillow>=10,<13",
+]
+
+[tool.pytest.ini_options]
+addopts = "-q --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["card", "pipeline", "ml"]

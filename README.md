@@ -1,25 +1,29 @@
 # Global Soil Intelligence Project
 
-GSIP is an open-source citizen-science project for building a living global soil map. Contributors use a phone-friendly web app to submit geotagged soil photos captured with a printable reference card. GSIP combines those observations with public soil-map priors and, in later phases, openly released models to produce probabilistic soil estimates with explicit uncertainty.
+GSIP is an open-source citizen-science project for building a living global soil map. A phone-friendly PWA guides contributors through privacy-safe soil photography with a printable reference card. GSIP combines those observations with public soil-map priors and later open models to produce probabilistic soil estimates with explicit uncertainty.
 
-GSIP is not a laboratory-test replacement. Public outputs use H3-resolution locations, never precise contributor coordinates. Photo metadata is sanitized before canonical storage and checked again before public release.
+GSIP is not a laboratory-test replacement. Public outputs use H3-resolution locations, never precise contributor coordinates. Photos are sanitized before canonical storage and checked again before public release.
 
-## Status
+## Start locally
 
-Architecture v2.2 is approved for implementation; application code has not started. The next milestone is **WP-0: repository bootstrap**.
+Requirements: Node 24+, pnpm 11, Python 3.11-3.13, and uv.
+
+```sh
+cp .env.example .env
+pnpm install
+uv sync
+pnpm build
+pnpm test
+uv run pytest
+```
+
+Run `pnpm --filter @gsip/capture-pwa dev` for capture or
+`pnpm --filter @gsip/map-web dev` for the map.
 
 ## Governing documents
 
-- [Architecture specification](docs/SPEC.md) — mission, invariants, system design, data model, privacy, licensing, and roadmap.
-- [Build order](docs/BUILD_ORDER.md) — guardrails, work packages, acceptance criteria, review gates, and sequencing.
-- [Archived v2.0 planning](docs/archive/v2.0/) — retained for provenance only; do not implement.
+- [Architecture specification](docs/SPEC.md)
+- [Build order](docs/BUILD_ORDER.md)
+- [Archived v2.0 planning](docs/archive/v2.0/)
 
-## Project rules
-
-- Code: MIT.
-- Databases and structured data: ODbL 1.0.
-- Contributed photos: CC BY-SA 4.0, subject to recorded contributor terms and pre-launch legal review.
-- TypeScript and Python only.
-- One work package per pull request; protected `main`; DCO sign-off required.
-
-The public-launch gate is an end-to-end test in which a new contributor submits from a phone in under three minutes and sees only the fuzzed H3 cell on the map.
+Code is MIT. Databases and structured data are ODbL 1.0. Contributed photos are CC BY-SA 4.0 with recorded contributor grants and pre-launch legal review.
