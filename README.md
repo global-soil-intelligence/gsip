@@ -6,7 +6,7 @@ GSIP is not a laboratory-test replacement. Public outputs use H3-resolution loca
 
 ## Status
 
-Architecture v2.1 is approved for implementation; application code has not started. The next milestone is **WP-0: repository bootstrap**.
+Architecture v2.2 is approved for implementation; application code has not started. The next milestone is **WP-0: repository bootstrap**.
 
 ## Governing documents
 

@@ -1,8 +1,8 @@
 # GSIP v2 — Citizen-Science Architecture Specification
 
 **Project:** Global Soil Intelligence Project (globalsoilintelligence.com)
-**Version:** 2.1 — 2026-07-22
-**Status:** ACTIVE — supersedes v2.0 (2026-07-22) and all 2024 architecture documents (`GSIP outline 5.0`, `GSIP compressed updated`, `GSIP codeing algorithm`, `Page Outline GSIP`, `GISP page tree of thought`). The `GSIP core algorithms` spectroscopy doc remains relevant as a future Phase 4+ reference for hardware-partner integrations.
+**Version:** 2.2 — 2026-07-22
+**Status:** ACTIVE — supersedes v2.1, v2.0, and all 2024 architecture documents (`GSIP outline 5.0`, `GSIP compressed updated`, `GSIP codeing algorithm`, `Page Outline GSIP`, `GISP page tree of thought`). The `GSIP core algorithms` spectroscopy doc remains relevant as a future Phase 4+ reference for hardware-partner integrations.
 **Owner:** Justin Hart, Viridis LLC
 **Hosting:** GitHub (org-based monorepo + open dataset/model on Hugging Face)
 
@@ -62,7 +62,7 @@ These are the non-negotiable properties of the system. Any implementation decisi
 |---|---|---|
 | Capture client | **PWA** (TypeScript, Vite + React, vite-plugin-pwa) | Zero install friction — critical for citizen science reach. Camera via `<input capture>` + getUserMedia; Geolocation API + EXIF GPS. Deployed free via GitHub Actions → GitHub Pages. If app-store distribution or deeper native camera/GPS access is ever needed, the same codebase is wrapped with **Capacitor** — no second codebase, no second language. |
 | Languages | **TypeScript + Python, exclusively** | TS for all user-facing code (PWA, map site, edge functions) — one language, largest OSS contributor pool. Python for pipeline + ML — the geospatial/ML ecosystem lives there. Flutter/Dart is removed entirely and must never reappear. |
-| Backend | **Supabase** (hosted for the canonical instance) | Postgres + PostGIS + private Storage buckets + Auth + row-level security with no custom server for Phase 1 (PostgREST API). Supabase is itself open source → satisfies I1 self-hostability. |
+| Backend | **Supabase** (hosted for the canonical instance) | Postgres + PostGIS + private Storage buckets + Auth + row-level security with no custom server for Phase 1 (PostgREST API). Anonymous contribution uses Supabase Anonymous Sign-Ins, which create a unique `auth.uid()` and use the `authenticated` database role; it is not unauthenticated use of the public anon key. Supabase is itself open source → satisfies I1 self-hostability. |
 | Geospatial indexing | **H3 hexagons** | Uniform-area aggregation, privacy fuzzing (I7), active-learning cell scoring, and cheap map tiling all use the same index. |
 | Priors | **SoilGrids v2 REST API** (global 250 m), **SSURGO via Soil Data Access** (US, higher res), **WoSIS** point snapshot (gold-adjacent legacy points), **OSSL** (spectra↔wet-chem relations informing the color→property heads) | All public, all free, all citable. |
 | ML stack | **PyTorch + timm** backbone (ConvNeXt-Tiny to start), multi-task heads, ONNX export | Small enough to retrain nightly on a single GPU and eventually run on-device. |
@@ -94,9 +94,10 @@ The protocol is the single biggest determinant of dataset quality. It must stay 
 ## 6. Data schema (Postgres/PostGIS, canonical)
 
 ```
-contributors    id, auth_uid, handle, reputation, terms_version,
-                terms_accepted_at, created_at
-submissions     id, contributor_id, geom_precise (PRIVATE, RLS),
+contributors    id, auth_uid, handle, reputation, created_at
+contribution_grants id, contributor_id, terms_version, accepted_at,
+                data_license, photo_license, attribution_name
+submissions     id, contributor_id, grant_id, geom_precise (PRIVATE, RLS),
                 h3_r8, h3_r6, captured_at, land_cover, surface_condition,
                 disturbed, device_model, precip_flag, elevation, status
                 (pending|qa_pass|qa_fail|flagged)
@@ -105,22 +106,26 @@ photos          id, submission_id, shot_type (A|B|C), storage_path,
                 card_color_correction jsonb, sharpness_score
 priors          submission_id, source (soilgrids|ssurgo|wosis),
                 property (soc|ph|clay|sand|silt|bd|cec|n),
-                value, uncertainty_lo, uncertainty_hi, source_depth,
+                value, unit, uncertainty_lo, uncertainty_hi,
+                depth_top_cm, depth_bottom_cm,
                 retrieved_at
 gold_labels     id, submission_id, lab_name, method, property, value,
-                uncertainty, sampled_depth, verified_by, document_ref
+                unit, uncertainty, depth_top_cm, depth_bottom_cm,
+                verified_by, document_ref
 predictions     id, submission_id, model_version, property, value,
-                ci_lo, ci_hi, basis (image|prior|fused|neighbors)
+                unit, ci_lo, ci_hi, basis (image|prior|fused|neighbors)
 qa_events       submission_id, check_name, passed, score, model_version
 h3_cells        h3_index, n_submissions, n_gold, prior_uncertainty,
                 model_disagreement, acquisition_score, updated_at
 ```
 
-**Property naming:** `priors.property` (and `gold_labels`/`predictions`) uses canonical GSIP names (`soc|ph|clay|sand|silt|bd|cec|n`). Source-specific codes (SoilGrids `phh2o`, `bdod`, `nitrogen`, …) are mapped at ingest via a single mapping table maintained in `packages/schema` — no source codes leak into stored rows.
+**Property naming and units:** `priors.property` (and `gold_labels`/`predictions`) uses canonical GSIP names (`soc|ph|clay|sand|silt|bd|cec|n`). Canonical units are `g/kg` for SOC, clay, sand, silt, and N; `pH` for pH; `kg/dm3` for bulk density; and `cmol(+)/kg` for CEC. Depth is stored as integer `depth_top_cm`/`depth_bottom_cm` with `0 <= top < bottom <= 200`. Source-specific codes and units (SoilGrids `phh2o`, `bdod`, `nitrogen`, …) are converted at ingest via one typed mapping table in `packages/schema`; source codes never leak into canonical rows.
 
 **Public dataset export (nightly → HF Datasets):** the database and structured data are ODbL 1.0; contributed photos are CC BY-SA 4.0. The export includes only photos with a recorded grant, H3-fuzzed location (I7), protocol metadata, priors, gold labels, and QA scores. Precise geometry and private camera metadata never export. Photo binaries are sanitized at ingest, stripped again at export, and scanned for EXIF/XMP before release; the job fails loudly if any metadata remains (I7).
 
-**Contribution terms:** submitting grants GSIP permission to include structured contribution data in the ODbL 1.0 database and to publish the contributed photos under CC BY-SA 4.0; the contributor retains ownership. The terms state the public attribution name or pseudonym used for photos. Terms are shown at first submission in one plain-language screen. Acceptance is recorded (`contributors.terms_version`, `terms_accepted_at`); no photo enters the public export without a recorded grant (I6). This licensing design must receive legal review before the Phase 1 public launch.
+**Contribution terms:** submitting grants GSIP permission to include structured contribution data in the ODbL 1.0 database and to publish the contributed photos under CC BY-SA 4.0; the contributor retains ownership. The terms state the public attribution name or pseudonym used for photos. Acceptance is immutable and snapshotted in `contribution_grants`; every submission references exactly one grant. No photo enters the public export without that grant (I6). A later terms version creates a new grant row and never rewrites historical acceptance. This licensing design must receive legal review before the Phase 1 public launch.
+
+**Private upload lifecycle:** the client signs in (permanently or anonymously), creates a pending submission and immutable grant, then uploads to `incoming-photos/{auth.uid()}/{submission_id}/{shot_type}/{object_id}.jpg`. Storage RLS binds the first path segment to `auth.uid()`. Ingest QA strips all EXIF/XMP, promotes the sanitized binary to the private `submission-photos` bucket, records only the allowlisted fields `make`, `model`, `focal_length_mm`, `exposure_time_s`, `f_number`, and `iso`, and deletes the quarantine object. A scheduled cleanup removes quarantine objects older than 24 hours; failed sanitization never promotes an object.
 
 ## 7. ML architecture
 
@@ -201,6 +206,7 @@ Community: external contributors merged, partner labs onboarded, dataset downloa
 
 ## 13. Changelog
 
+- **v2.2 (2026-07-22):** anonymous contribution pinned to Supabase Anonymous Sign-Ins; mutable contributor-level terms replaced by immutable `contribution_grants` referenced by every submission; canonical units and numeric depth bounds defined; private Storage path, metadata allowlist, fail-closed promotion, and 24-hour quarantine cleanup specified.
 - **v2.1 (2026-07-22):** I7 made fail-closed: precise coordinates are never public, original uploads are quarantined privately, canonical photos are sanitized at ingest, and export scans every image again; database/data licensing (ODbL 1.0) is separated from photo licensing (CC BY-SA 4.0) with a pre-launch legal-review gate; §5 elevation source specified (Open-Meteo Elevation API / Copernicus GLO-90) with attribution, while slope and climate zone are deferred to Phase 2+; §5 QA gate phased — deterministic checks 2–5 active from Phase 1, is-soil classifier joins in Phase 2; §6 `contributors` gains `terms_version` + `terms_accepted_at`; §6 canonical property-name mapping rule added; §9 legacy-repo disposition noted; §10 Phase 1 scope includes ingest QA; §11 privacy row updated.
 - **v2.0 (2026-07-22):** initial citizen-science architecture; supersedes all 2024 documents.
 

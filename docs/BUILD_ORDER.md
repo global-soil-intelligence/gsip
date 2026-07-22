@@ -1,11 +1,11 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project v2 (citizen-science soil mapping flywheel)
-**Version:** 2.1 — 2026-07-22
+**Version:** 2.2 — 2026-07-22
 **Builder:** Claude (Cowork build sessions). *Sol is retired as of v2.1; the Sol kickoff prompt is void.*
 **Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) run against the §5 review gates; findings and their resolutions are posted to the PR. The GitHub approval required by branch protection must come from a non-author maintainer account. Justin Hart provides the final product-owner go/no-go; when his account authors a PR, that go/no-go cannot also satisfy GitHub's non-author approval.
 **Product owner:** Justin Hart
-**Governing document:** `docs/SPEC.md` (GSIP v2 Spec, v2.1). This build order operationalizes that spec. If this document and the spec conflict, the spec wins; flag the conflict instead of guessing.
+**Governing document:** `docs/SPEC.md` (GSIP v2 Spec, v2.2). This build order operationalizes that spec. If this document and the spec conflict, the spec wins; flag the conflict instead of guessing.
 
 ---
 
@@ -58,14 +58,14 @@ Tooling baseline: pnpm workspaces; ESLint + Prettier; Vitest + Playwright; Pytho
 ### Phase 0 — Foundation
 
 **WP-0: Repo bootstrap**
-Scope: monorepo scaffold per §3; CI workflows (lint + typecheck + tests on PR; deploy PWA and map site to GitHub Pages on main, combined-artifact subpath layout); `LICENSE` (MIT), `DATA_LICENSE` (ODbL 1.0), photo-license notice (CC BY-SA 4.0), `README.md` (project pitch + quickstart), `CONTRIBUTING.md` (DCO, WP workflow), `CODE_OF_CONDUCT.md`; PR and issue templates embedding the acceptance-criteria checklist format; preserve `docs/SPEC.md` (v2.1) and `docs/BUILD_ORDER.md` (this file) as the governing documents.
+Scope: monorepo scaffold per §3; CI workflows (lint + typecheck + tests on PR; deploy PWA and map site to GitHub Pages on main, combined-artifact subpath layout); `LICENSE` (MIT), `DATA_LICENSE` (ODbL 1.0), photo-license notice (CC BY-SA 4.0), `README.md` (project pitch + quickstart), `CONTRIBUTING.md` (DCO, WP workflow), `CODE_OF_CONDUCT.md`; PR and issue templates embedding the acceptance-criteria checklist format; preserve `docs/SPEC.md` (v2.2) and `docs/BUILD_ORDER.md` (this file) as the governing documents.
 Acceptance criteria:
 - [ ] Fresh clone + documented setup commands → all linters, typecheckers, and (empty) test suites pass locally and in CI.
 - [ ] CI blocks a PR that fails lint or typecheck (demonstrate with a deliberately failing draft PR, then close it).
 - [ ] README explains the project accurately in ≤ 300 words, consistent with spec §1 and I5 language rules.
 
 **WP-1: Database schema + RLS**
-Scope: Supabase migrations implementing spec §6 (v2.1) exactly — contributors (including `terms_version`, `terms_accepted_at`), submissions, photos, priors, gold_labels, predictions, qa_events, h3_cells; PostGIS + pgcrypto extensions; a short-lived private `incoming-photos` bucket and a canonical private `submission-photos` bucket; Database and Storage RLS policies — contributors read/write own rows and objects; `submissions.geom_precise` and `photos.camera_metadata_private` readable only by owner and service role; anonymous users can read only public aggregate views; a `public_submissions` view exposing H3-fuzzed data only; seed script with 25 synthetic submissions spanning 3 continents; generated TS types into `packages/schema`.
+Scope: Supabase migrations implementing spec §6 (v2.2) exactly — contributors, immutable contribution_grants, submissions, photos, priors, gold_labels, predictions, qa_events, h3_cells; canonical unit/depth constraints; PostGIS + pgcrypto extensions; a short-lived private `incoming-photos` bucket and a canonical private `submission-photos` bucket; Database and Storage RLS policies — contributors read/write own rows and objects; `submissions.geom_precise` and `photos.camera_metadata_private` readable only by owner and service role; public-key users can read only safe H3-fuzzed columns and aggregates; a `public_submissions` view exposing safe columns only; seed script with 25 synthetic submissions spanning 3 continents; generated TS types into `packages/schema`.
 Acceptance criteria:
 - [ ] `supabase db reset` builds the schema from migrations with zero errors.
 - [ ] Automated RLS tests prove: anon cannot read `geom_precise`, private camera metadata, or either photo bucket; contributor A cannot read contributor B's precise geometry or objects; the public view contains no coordinate more precise than H3-r8 centroid. **(spec I7 — this is the most important test in Phase 0)**
@@ -81,7 +81,7 @@ Acceptance criteria:
 ### Phase 1 — Capture + Map (public launch, zero ML)
 
 **WP-3: Capture PWA**
-Scope: `apps/capture-pwa` — Supabase auth (email magic link + anonymous-contribution mode); guided capture flow per spec §5 (Shot A → B → optional C, on-screen card-placement overlay, one-tap metadata prompts); geolocation with accuracy display + manual pin fallback; offline queue in IndexedDB with background retry and local cleanup after confirmed sync; upload to the private `incoming-photos` bucket + submission insert; contribution-terms screen at first submission explaining the ODbL 1.0 structured-data license, CC BY-SA 4.0 photo license, and public attribution choice, recording acceptance to `contributors.terms_version` / `terms_accepted_at`; post-submit confirmation showing the fuzzed H3 cell on a minimap.
+Scope: `apps/capture-pwa` — Supabase auth (email magic link + Supabase Anonymous Sign-Ins); guided capture flow per spec §5 (Shot A → B → optional C, on-screen card-placement overlay, one-tap metadata prompts); geolocation with accuracy display + manual pin fallback; offline queue in IndexedDB with background retry and local cleanup after confirmed sync; immutable `contribution_grants` creation; upload to the private owner-prefixed `incoming-photos` path + pending submission insert; contribution-terms screen explaining the ODbL 1.0 structured-data license, CC BY-SA 4.0 photo license, and public attribution choice; post-submit confirmation showing the fuzzed H3 cell on a minimap.
 Acceptance criteria:
 - [ ] Lighthouse PWA installable score passes; capture flow works on iOS Safari and Android Chrome (Playwright mobile emulation + documented manual test protocol).
 - [ ] Airplane-mode submission queues locally and syncs on reconnect (automated test with network mocking).
@@ -122,7 +122,7 @@ Acceptance criteria:
 - [ ] Dataset loads via `datasets.load_dataset()` round-trip test.
 - [ ] Dataset card renders with separate database/data and photo licenses, photo attribution, schema, and citation blocks.
 - [ ] Job is idempotent per day; re-runs don't duplicate rows.
-- [ ] No photo without a recorded terms grant (`terms_accepted_at`) is exported (spec I6).
+- [ ] No photo whose submission lacks an immutable `contribution_grants` row is exported (spec I6).
 
 ### Phase 2+ (spec §10 — do not start without a new build order)
 WP-7 QA gate model (is-soil, slots into the WP-4b interface) · WP-8 estimator v0 (color/texture/SOM, uncertainty-aware) · WP-9 nightly retrain + model cards · WP-10 on-demand estimate API · WP-11 gold-label bulk ingestion · WP-12 fused correction + Most Wanted layers. These will be specified after Phase 1 review.
@@ -156,6 +156,7 @@ WP-0 → WP-1 → (WP-2 ∥ WP-3 ∥ WP-4) → (WP-4b ∥ WP-5) → WP-6. WP-2/3
 
 ## 8. Changelog
 
+- **v2.2 (2026-07-22):** anonymous contribution pinned to Supabase Anonymous Sign-Ins; WP-1 gains immutable per-submission grants and canonical unit/depth constraints; WP-3 records the grant and uses owner-prefixed quarantine paths; WP-6 checks the referenced immutable grant.
 - **v2.1 (2026-07-22):** builder changed from Sol to Claude; review workflow now requires a non-author GitHub approver plus product-owner go/no-go; one signed empty-repository seed commit is authorized; WP-4b (ingest QA, non-ML) added with private quarantine, ingest-time metadata sanitization, and fail-safe cleanup; WP-4 elevation source pinned to Open-Meteo Elevation API and canonical property-name mapping required; WP-5 native zoom capped at z8; WP-6 repeats EXIF stripping, asserts image safety, separates ODbL data from CC BY-SA photos, and checks recorded grants; guardrails cover Database and Storage privacy; guardrail 6 gains the Supabase-tier upgrade note; WP-0 preserves the v2.1 governing docs.
 - **v2.0 (2026-07-22):** initial build order for Sol, WP-0–WP-6.
 
