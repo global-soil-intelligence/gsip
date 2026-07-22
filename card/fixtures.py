@@ -28,8 +28,9 @@ def canonical_card() -> np.ndarray:
     )
     for patch in PATCHES:
         x1, y1 = round(patch.x_mm * SCALE), round(patch.y_mm * SCALE)
-        x2, y2 = round((patch.x_mm + patch.size_mm) * SCALE), round(
-            (patch.y_mm + patch.size_mm) * SCALE
+        x2, y2 = (
+            round((patch.x_mm + patch.size_mm) * SCALE),
+            round((patch.y_mm + patch.size_mm) * SCALE),
         )
         cv2.rectangle(image, (x1, y1), (x2, y2), patch.rgb[::-1], -1)
         cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 0), 2)
@@ -49,15 +50,18 @@ def generate_fixtures(output_dir: Path) -> list[Path]:
         canvas_width, canvas_height = 1400, 1750
         margin_x, margin_y = 130, 100
         jitter = rng.integers(-70, 71, size=(4, 2)).astype(np.float32)
-        destination = np.asarray(
-            [
-                [margin_x, margin_y],
-                [canvas_width - margin_x, margin_y],
-                [canvas_width - margin_x, canvas_height - margin_y],
-                [margin_x, canvas_height - margin_y],
-            ],
-            dtype=np.float32,
-        ) + jitter
+        destination = (
+            np.asarray(
+                [
+                    [margin_x, margin_y],
+                    [canvas_width - margin_x, margin_y],
+                    [canvas_width - margin_x, canvas_height - margin_y],
+                    [margin_x, canvas_height - margin_y],
+                ],
+                dtype=np.float32,
+            )
+            + jitter
+        )
         transform = cv2.getPerspectiveTransform(source_corners, destination)
         warped = cv2.warpPerspective(
             source,
@@ -65,9 +69,7 @@ def generate_fixtures(output_dir: Path) -> list[Path]:
             (canvas_width, canvas_height),
             borderValue=(225, 225, 225),
         )
-        cast = np.array(
-            [0.86 + index * 0.018, 1.04 - index * 0.006, 0.94 + index * 0.012]
-        )
+        cast = np.array([0.86 + index * 0.018, 1.04 - index * 0.006, 0.94 + index * 0.012])
         brightness = 0.82 + index * 0.04
         adjusted = np.clip(warped.astype(np.float32) * cast * brightness, 0, 255).astype(np.uint8)
         path = output_dir / f"card-angle-light-{index + 1:02d}.jpg"

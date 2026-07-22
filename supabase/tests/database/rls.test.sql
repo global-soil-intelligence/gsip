@@ -2,11 +2,13 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(26);
+select plan(30);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
 select is((select count(*) from public.prior_jobs), 25::bigint, 'seed submissions have durable prior jobs');
+select is((select count(*) from public.qa_jobs), 25::bigint, 'seed photos have durable QA jobs');
+select is((select count(*) from public.qa_events), 125::bigint, 'seed submissions have deterministic QA events');
 select is((select count(*) from storage.buckets where public), 0::bigint, 'all photo buckets are private');
 select hasnt_column('public', 'public_submissions', 'geom_precise', 'public view omits precise geometry');
 select hasnt_column('public', 'public_submissions', 'contributor_id', 'public view omits contributor id');
@@ -28,12 +30,20 @@ select ok(
     'prior job errors are server-only'
 );
 select ok(
+    not has_table_privilege('anon', 'public.qa_jobs', 'select'),
+    'photo QA job errors are server-only'
+);
+select ok(
     not has_function_privilege('anon', 'public.enqueue_prior_job()', 'execute'),
     'anon cannot invoke the security-definer queue trigger directly'
 );
 select ok(
     not has_function_privilege('authenticated', 'public.enqueue_prior_job()', 'execute'),
     'authenticated users cannot invoke the queue trigger directly'
+);
+select ok(
+    not has_function_privilege('anon', 'public.enqueue_qa_job()', 'execute'),
+    'anon cannot invoke the security-definer photo queue trigger directly'
 );
 
 insert into public.contributors (id, auth_uid, handle)

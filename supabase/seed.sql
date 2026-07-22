@@ -71,6 +71,19 @@ where contributor_id in (
 )
 on conflict (submission_id, shot_type) do nothing;
 
+insert into public.qa_events (submission_id, check_name, passed, score)
+select s.id, checks.name, true, checks.score
+from public.submissions s
+cross join (values
+    ('sharpness_B', 0.85::double precision),
+    ('exposure_B', 0.80::double precision),
+    ('card_detection_B', 1.0::double precision),
+    ('gps_plausibility_B', 1.0::double precision),
+    ('duplicate_B', 1.0::double precision)
+) as checks(name, score)
+where s.status = 'qa_pass'
+on conflict (submission_id, check_name) do nothing;
+
 insert into public.h3_cells (h3_index, n_submissions, updated_at)
 select h3_r8, count(*)::integer, now()
 from public.submissions

@@ -171,30 +171,36 @@ export type Database = {
       }
       photos: {
         Row: {
+          calibration_status: string | null
           camera_metadata_private: Json | null
           card_color_correction: Json | null
           card_detected: boolean | null
           id: string
+          perceptual_hash: string | null
           sharpness_score: number | null
           shot_type: string
           storage_path: string
           submission_id: string
         }
         Insert: {
+          calibration_status?: string | null
           camera_metadata_private?: Json | null
           card_color_correction?: Json | null
           card_detected?: boolean | null
           id?: string
+          perceptual_hash?: string | null
           sharpness_score?: number | null
           shot_type: string
           storage_path: string
           submission_id: string
         }
         Update: {
+          calibration_status?: string | null
           camera_metadata_private?: Json | null
           card_color_correction?: Json | null
           card_detected?: boolean | null
           id?: string
+          perceptual_hash?: string | null
           sharpness_score?: number | null
           shot_type?: string
           storage_path?: string
@@ -406,6 +412,41 @@ export type Database = {
           },
         ]
       }
+      qa_jobs: {
+        Row: {
+          attempts: number
+          completed_at: string | null
+          last_error: string | null
+          photo_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          completed_at?: string | null
+          last_error?: string | null
+          photo_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          completed_at?: string | null
+          last_error?: string | null
+          photo_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'qa_jobs_photo_id_fkey'
+            columns: ['photo_id']
+            isOneToOne: true
+            referencedRelation: 'photos'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       submissions: {
         Row: {
           captured_at: string
@@ -414,6 +455,7 @@ export type Database = {
           disturbed: boolean | null
           elevation: number | null
           geom_precise: unknown
+          gps_accuracy_m: number | null
           grant_id: string
           h3_r6: string
           h3_r8: string
@@ -430,6 +472,7 @@ export type Database = {
           disturbed?: boolean | null
           elevation?: number | null
           geom_precise: unknown
+          gps_accuracy_m?: number | null
           grant_id: string
           h3_r6: string
           h3_r8: string
@@ -446,6 +489,7 @@ export type Database = {
           disturbed?: boolean | null
           elevation?: number | null
           geom_precise?: unknown
+          gps_accuracy_m?: number | null
           grant_id?: string
           h3_r6?: string
           h3_r8?: string

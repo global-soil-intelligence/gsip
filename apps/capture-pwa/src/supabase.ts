@@ -109,6 +109,7 @@ export async function submitQueued(
       contributor_id: contributor,
       disturbed: record.disturbed,
       geom_precise: `POINT(${record.longitude} ${record.latitude})`,
+      gps_accuracy_m: record.accuracyM,
       grant_id: record.grantId,
       h3_r6: location.h3R6,
       h3_r8: location.h3R8,
