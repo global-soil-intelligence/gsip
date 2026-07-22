@@ -2,10 +2,11 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(21);
+select plan(26);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
+select is((select count(*) from public.prior_jobs), 25::bigint, 'seed submissions have durable prior jobs');
 select is((select count(*) from storage.buckets where public), 0::bigint, 'all photo buckets are private');
 select hasnt_column('public', 'public_submissions', 'geom_precise', 'public view omits precise geometry');
 select hasnt_column('public', 'public_submissions', 'contributor_id', 'public view omits contributor id');
@@ -21,6 +22,18 @@ select ok(
 select ok(
     not has_table_privilege('anon', 'public.public_submissions', 'insert'),
     'public view is read only for anon'
+);
+select ok(
+    not has_table_privilege('anon', 'public.prior_jobs', 'select'),
+    'prior job errors are server-only'
+);
+select ok(
+    not has_function_privilege('anon', 'public.enqueue_prior_job()', 'execute'),
+    'anon cannot invoke the security-definer queue trigger directly'
+);
+select ok(
+    not has_function_privilege('authenticated', 'public.enqueue_prior_job()', 'execute'),
+    'authenticated users cannot invoke the queue trigger directly'
 );
 
 insert into public.contributors (id, auth_uid, handle)
@@ -41,6 +54,8 @@ insert into public.submissions (
 values
     ('50000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', '40000000-0000-4000-8000-000000000001', extensions.st_setsrid(extensions.st_makepoint(-93.625, 41.9483), 4326), '88262b2a37fffff', '86262b287ffffff', now(), 'pending'),
     ('50000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000002', '40000000-0000-4000-8000-000000000002', extensions.st_setsrid(extensions.st_makepoint(36.08, -0.3031), 4326), '887a6a09ebfffff', '867a6a09fffffff', now(), 'pending');
+
+select is((select count(*) from public.prior_jobs), 27::bigint, 'submission inserts enqueue one prior job each');
 
 insert into public.photos (submission_id, shot_type, storage_path, camera_metadata_private)
 values

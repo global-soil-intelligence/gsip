@@ -268,6 +268,51 @@ export type Database = {
           },
         ]
       }
+      prior_jobs: {
+        Row: {
+          attempts: number
+          completed_at: string | null
+          last_error: string | null
+          started_at: string | null
+          status: string
+          submission_id: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          completed_at?: string | null
+          last_error?: string | null
+          started_at?: string | null
+          status?: string
+          submission_id: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          completed_at?: string | null
+          last_error?: string | null
+          started_at?: string | null
+          status?: string
+          submission_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'prior_jobs_submission_id_fkey'
+            columns: ['submission_id']
+            isOneToOne: true
+            referencedRelation: 'public_submissions'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'prior_jobs_submission_id_fkey'
+            columns: ['submission_id']
+            isOneToOne: true
+            referencedRelation: 'submissions'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       priors: {
         Row: {
           depth_bottom_cm: number
