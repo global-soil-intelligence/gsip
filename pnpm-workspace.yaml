@@ -1,0 +1,6 @@
+packages:
+  - apps/*
+  - packages/*
+minimumReleaseAgeExclude:
+  - '@vitejs/plugin-react@6.0.4'
+  - maplibre-gl@6.0.0
