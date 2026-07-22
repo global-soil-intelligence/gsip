@@ -16,7 +16,7 @@
     "db:stop": "supabase stop",
     "db:test": "supabase test db",
     "format": "prettier --write .",
-    "lint": "eslint . && prettier --check .",
+    "lint": "eslint . && node scripts/check-language.mjs && prettier --check .",
     "test": "pnpm -r test",
     "test:e2e": "playwright test",
     "typecheck": "pnpm -r typecheck"
