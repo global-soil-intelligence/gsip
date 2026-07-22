@@ -460,6 +460,7 @@ export type Database = {
           h3_r6: string
           h3_r8: string
           id: string
+          is_synthetic: boolean
           land_cover: string | null
           precip_flag: boolean | null
           status: string
@@ -477,6 +478,7 @@ export type Database = {
           h3_r6: string
           h3_r8: string
           id?: string
+          is_synthetic?: boolean
           land_cover?: string | null
           precip_flag?: boolean | null
           status?: string
@@ -494,6 +496,7 @@ export type Database = {
           h3_r6?: string
           h3_r8?: string
           id?: string
+          is_synthetic?: boolean
           land_cover?: string | null
           precip_flag?: boolean | null
           status?: string

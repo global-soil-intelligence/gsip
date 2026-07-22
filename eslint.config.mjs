@@ -2,7 +2,15 @@ import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', '**/coverage/**', '_site/**', 'output/**'] },
+  {
+    ignores: [
+      '**/.venv/**',
+      '**/dist/**',
+      '**/coverage/**',
+      '_site/**',
+      'output/**',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

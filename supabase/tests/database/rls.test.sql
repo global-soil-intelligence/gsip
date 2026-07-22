@@ -2,17 +2,19 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(30);
+select plan(32);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
 select is((select count(*) from public.prior_jobs), 25::bigint, 'seed submissions have durable prior jobs');
 select is((select count(*) from public.qa_jobs), 25::bigint, 'seed photos have durable QA jobs');
 select is((select count(*) from public.qa_events), 125::bigint, 'seed submissions have deterministic QA events');
+select is((select count(*) from public.submissions where is_synthetic), 25::bigint, 'all seeded rows are excluded from export');
 select is((select count(*) from storage.buckets where public), 0::bigint, 'all photo buckets are private');
 select hasnt_column('public', 'public_submissions', 'geom_precise', 'public view omits precise geometry');
 select hasnt_column('public', 'public_submissions', 'contributor_id', 'public view omits contributor id');
 select hasnt_column('public', 'public_submissions', 'device_model', 'public view omits device model');
+select hasnt_column('public', 'public_submissions', 'is_synthetic', 'public view omits the server export marker');
 select ok(
     not has_column_privilege('anon', 'public.submissions', 'geom_precise', 'select'),
     'anon lacks precise geometry privilege'
