@@ -33,6 +33,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm check:map-budget
       - run: uv run ruff check .
       - run: uv run mypy
       - run: uv run pytest
