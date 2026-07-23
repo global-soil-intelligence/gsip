@@ -369,9 +369,10 @@ export type Database = {
           disturbed: boolean | null
           elevation: number | null
           geom_precise: unknown
+          gps_accuracy_m: number | null
           grant_id: string
-          h3_r6: string
-          h3_r8: string
+          h3_r6: string | null
+          h3_r8: string | null
           id: string
           land_cover: string | null
           precip_flag: boolean | null
@@ -385,9 +386,10 @@ export type Database = {
           disturbed?: boolean | null
           elevation?: number | null
           geom_precise: unknown
+          gps_accuracy_m?: number | null
           grant_id: string
-          h3_r6: string
-          h3_r8: string
+          h3_r6?: string | null
+          h3_r8?: string | null
           id?: string
           land_cover?: string | null
           precip_flag?: boolean | null
@@ -401,9 +403,10 @@ export type Database = {
           disturbed?: boolean | null
           elevation?: number | null
           geom_precise?: unknown
+          gps_accuracy_m?: number | null
           grant_id?: string
-          h3_r6?: string
-          h3_r8?: string
+          h3_r6?: string | null
+          h3_r8?: string | null
           id?: string
           land_cover?: string | null
           precip_flag?: boolean | null

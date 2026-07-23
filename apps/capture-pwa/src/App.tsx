@@ -36,7 +36,7 @@ function PhotoField({
       <input
         name={name}
         type="file"
-        accept="image/jpeg,image/*"
+        accept="image/jpeg"
         capture="environment"
         required={!optional}
       />
@@ -59,6 +59,9 @@ async function photos(form: FormData): Promise<QueueRecord['photos']> {
   const captured = await Promise.all(
     (['A', 'B', 'C'] as ShotType[]).map(async (shotType) => {
       const file = form.get(`shot-${shotType.toLowerCase()}`)
+      if (file instanceof File && file.size && file.type !== 'image/jpeg') {
+        throw new Error('Only JPEG photos can be queued.')
+      }
       return file instanceof File && file.size
         ? {
             bytes: await readBytes(file),
@@ -72,6 +75,21 @@ async function photos(form: FormData): Promise<QueueRecord['photos']> {
   return captured.filter(
     (photo): photo is NonNullable<typeof photo> => photo !== null,
   )
+}
+
+export function coarseDeviceModel(): string {
+  const navigatorWithHints = navigator as Navigator & {
+    userAgentData?: { brands?: Array<{ brand: string }>; platform?: string }
+  }
+  const hints = navigatorWithHints.userAgentData
+  if (hints?.platform) {
+    const brands = hints.brands?.map(({ brand }) => brand).join(', ')
+    return [hints.platform, brands].filter(Boolean).join('; ').slice(0, 160)
+  }
+  const family = navigator.userAgent.match(
+    /Android|iPhone|iPad|Macintosh|Windows|Linux/i,
+  )?.[0]
+  return family ?? 'unknown device'
 }
 
 export function App() {
@@ -110,10 +128,14 @@ export function App() {
   }, [client, refreshQueueCount])
 
   useEffect(() => {
-    void refreshQueueCount()
+    void refreshQueueCount().then(sync)
     const onOnline = () => void sync()
+    const retry = window.setInterval(() => void sync(), 30_000)
     window.addEventListener('online', onOnline)
-    return () => window.removeEventListener('online', onOnline)
+    return () => {
+      window.clearInterval(retry)
+      window.removeEventListener('online', onOnline)
+    }
   }, [refreshQueueCount, sync])
 
   function locate() {
@@ -152,6 +174,17 @@ export function App() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const unsupportedPhoto = Array.from(
+      event.currentTarget.querySelectorAll<HTMLInputElement>(
+        'input[type="file"]',
+      ),
+    ).some((input) =>
+      Array.from(input.files ?? []).some((file) => file.type !== 'image/jpeg'),
+    )
+    if (unsupportedPhoto) {
+      setStatus('Choose JPEG photos before continuing.')
+      return
+    }
     const form = new FormData(event.currentTarget)
     const numericLatitude = Number(latitude)
     const numericLongitude = Number(longitude)
@@ -162,18 +195,26 @@ export function App() {
       setStatus('Add a valid location before continuing.')
       return
     }
+    let capturedPhotos: QueueRecord['photos']
+    try {
+      capturedPhotos = await photos(form)
+    } catch {
+      setStatus('Choose JPEG photos before continuing.')
+      return
+    }
     const record: QueueRecord = {
       accuracyM: accuracy,
       attributionName: String(
         form.get('attribution') || 'Anonymous soil contributor',
       ),
       capturedAt: new Date().toISOString(),
+      deviceModel: coarseDeviceModel(),
       disturbed: form.get('disturbed') === 'yes',
       grantId: crypto.randomUUID(),
       landCover: String(form.get('land-cover')),
       latitude: numericLatitude,
       longitude: numericLongitude,
-      photos: await photos(form),
+      photos: capturedPhotos,
       queuedAt: new Date().toISOString(),
       submissionId: crypto.randomUUID(),
       surfaceCondition: String(form.get('surface-condition')),
