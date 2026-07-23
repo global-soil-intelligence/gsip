@@ -44,4 +44,4 @@ select = ["E", "F", "I", "B", "UP", "S"]
 [tool.mypy]
 python_version = "3.11"
 strict = true
-packages = ["card", "pipeline", "ml"]
+files = ["card", "pipeline", "ml", "tests"]
