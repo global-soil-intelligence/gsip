@@ -1,6 +1,19 @@
 import { expect, test } from '@playwright/test'
 
 test('map and capture shells are connected', async ({ page }) => {
+  await page.route('https://supabase.test/rest/v1/h3_cells**', (route) =>
+    route.fulfill({
+      body: JSON.stringify([
+        {
+          h3_index: '88262b2a37fffff',
+          latest_submission_date: '2026-07-23',
+          n_submissions: 1,
+        },
+      ]),
+      contentType: 'application/json',
+      status: 200,
+    }),
+  )
   await page.goto('/gsip/map/')
   await expect(page.getByRole('heading')).toContainText('Read the ground')
   await expect(page.getByText(/public H3 cells loaded/i)).toBeVisible()

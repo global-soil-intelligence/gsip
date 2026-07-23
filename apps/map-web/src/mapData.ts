@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { cellToBoundary } from 'h3-js'
 import type { Database } from '@gsip/schema'
 import type { RasterSourceSpecification } from 'maplibre-gl'
@@ -90,35 +91,37 @@ export type ContributionFeatureCollection = {
   type: 'FeatureCollection'
 }
 
-const seedCells: ContributionCell[] = [
-  { count: 1, h3: '88262b2a37fffff', latest: '2026-06-01' },
-  { count: 1, h3: '887a6a09ebfffff', latest: '2026-06-06' },
-  { count: 1, h3: '881f188721fffff', latest: '2026-06-11' },
-  { count: 1, h3: '88a8d1b82dfffff', latest: '2026-06-16' },
-  { count: 1, h3: '88be5d32e3fffff', latest: '2026-06-21' },
-]
+export async function fetchContributionCells(
+  client: SupabaseClient<Database>,
+  pageSize = 1000,
+): Promise<ContributionCell[]> {
+  const cells: ContributionCell[] = []
+  for (let start = 0; ; start += pageSize) {
+    const response = await client
+      .from('h3_cells')
+      .select('h3_index,n_submissions,latest_submission_date')
+      .gt('n_submissions', 0)
+      .order('h3_index')
+      .range(start, start + pageSize - 1)
+    if (response.error) throw response.error
+    if (!response.data) throw new Error('Public aggregate response was empty')
+    cells.push(
+      ...response.data.map((row) => ({
+        count: row.n_submissions,
+        h3: row.h3_index,
+        latest: row.latest_submission_date ?? 'Unknown',
+      })),
+    )
+    if (response.data.length < pageSize) return cells
+  }
+}
 
 export async function loadContributionCells(): Promise<ContributionCell[]> {
   const url = import.meta.env.VITE_SUPABASE_URL
   const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-  if (!url || !key) return seedCells
-  const client = createClient<Database>(url, key)
-  const response = await client
-    .from('public_submissions')
-    .select('h3_r8,captured_at')
-    .order('captured_at', { ascending: false })
-  if (response.error || !response.data) return seedCells
-  const cells = new Map<string, ContributionCell>()
-  for (const row of response.data) {
-    if (!row.h3_r8 || !row.captured_at) continue
-    const existing = cells.get(row.h3_r8)
-    cells.set(row.h3_r8, {
-      count: (existing?.count ?? 0) + 1,
-      h3: row.h3_r8,
-      latest: existing?.latest ?? row.captured_at.slice(0, 10),
-    })
-  }
-  return [...cells.values()]
+  if (!url || !key)
+    throw new Error('The public contribution layer is not configured')
+  return fetchContributionCells(createClient<Database>(url, key))
 }
 
 export function contributionFeatures(

@@ -143,6 +143,7 @@ export type Database = {
         Row: {
           acquisition_score: number | null
           h3_index: string
+          latest_submission_date: string | null
           model_disagreement: number | null
           n_gold: number
           n_submissions: number
@@ -152,6 +153,7 @@ export type Database = {
         Insert: {
           acquisition_score?: number | null
           h3_index: string
+          latest_submission_date?: string | null
           model_disagreement?: number | null
           n_gold?: number
           n_submissions?: number
@@ -161,6 +163,7 @@ export type Database = {
         Update: {
           acquisition_score?: number | null
           h3_index?: string
+          latest_submission_date?: string | null
           model_disagreement?: number | null
           n_gold?: number
           n_submissions?: number
