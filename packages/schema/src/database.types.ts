@@ -171,30 +171,36 @@ export type Database = {
       }
       photos: {
         Row: {
+          calibration_status: string | null
           camera_metadata_private: Json | null
           card_color_correction: Json | null
           card_detected: boolean | null
           id: string
+          perceptual_hash: string | null
           sharpness_score: number | null
           shot_type: string
           storage_path: string
           submission_id: string
         }
         Insert: {
+          calibration_status?: string | null
           camera_metadata_private?: Json | null
           card_color_correction?: Json | null
           card_detected?: boolean | null
           id?: string
+          perceptual_hash?: string | null
           sharpness_score?: number | null
           shot_type: string
           storage_path: string
           submission_id: string
         }
         Update: {
+          calibration_status?: string | null
           camera_metadata_private?: Json | null
           card_color_correction?: Json | null
           card_detected?: boolean | null
           id?: string
+          perceptual_hash?: string | null
           sharpness_score?: number | null
           shot_type?: string
           storage_path?: string
@@ -370,21 +376,21 @@ export type Database = {
       qa_events: {
         Row: {
           check_name: string
-          model_version: string | null
+          model_version: string
           passed: boolean
           score: number | null
           submission_id: string
         }
         Insert: {
           check_name: string
-          model_version?: string | null
+          model_version?: string
           passed: boolean
           score?: number | null
           submission_id: string
         }
         Update: {
           check_name?: string
-          model_version?: string | null
+          model_version?: string
           passed?: boolean
           score?: number | null
           submission_id?: string
@@ -402,6 +408,41 @@ export type Database = {
             columns: ['submission_id']
             isOneToOne: false
             referencedRelation: 'submissions'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      qa_jobs: {
+        Row: {
+          attempts: number
+          completed_at: string | null
+          last_error: string | null
+          photo_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          completed_at?: string | null
+          last_error?: string | null
+          photo_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          completed_at?: string | null
+          last_error?: string | null
+          photo_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'qa_jobs_photo_id_fkey'
+            columns: ['photo_id']
+            isOneToOne: true
+            referencedRelation: 'photos'
             referencedColumns: ['id']
           },
         ]
