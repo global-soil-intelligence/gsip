@@ -2,7 +2,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(27);
+select plan(28);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
@@ -21,6 +21,13 @@ select ok(
 select ok(
     not has_table_privilege('anon', 'public.public_submissions', 'insert'),
     'public view is read only for anon'
+);
+select ok(
+    obj_description(
+        'private.clear_untrusted_submission_h3()'::regprocedure,
+        'pg_proc'
+    ) like '%hosted Supabase production role name authenticated%',
+    'H3 guard documents its hosted authenticated-role dependency'
 );
 
 insert into public.contributors (id, auth_uid, handle)
