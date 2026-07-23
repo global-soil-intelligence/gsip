@@ -25,6 +25,26 @@ def canonical_point(x_mm: float, y_mm: float) -> tuple[float, float]:
     return (x_mm * PIXELS_PER_MM, y_mm * PIXELS_PER_MM)
 
 
+def _estimate_gamma(
+    measured: dict[str, tuple[int, int, int]],
+) -> float:
+    targets = {patch.name: np.asarray(patch.rgb, dtype=np.float64) for patch in PATCHES}
+    reference_names = ("black", "neutral_gray", "white")
+    expected = np.stack([targets[name] for name in reference_names]) / 255.0
+    observed = (
+        np.stack([np.asarray(measured[name], dtype=np.float64) for name in reference_names]) / 255.0
+    )
+    log_expected = np.log(np.maximum(expected, 1.0 / 255.0))
+    log_observed = np.log(np.maximum(observed, 1.0 / 255.0))
+    expected_centered = log_expected - np.mean(log_expected, axis=0)
+    observed_centered = log_observed - np.mean(log_observed, axis=0)
+    denominator = float(np.sum(expected_centered * expected_centered))
+    if denominator <= 1e-12:
+        return 1.0
+    gamma = float(np.sum(expected_centered * observed_centered) / denominator)
+    return gamma if np.isfinite(gamma) and 0.25 <= gamma <= 4.0 else 1.0
+
+
 def extract_patches(image: np.ndarray) -> dict[str, tuple[int, int, int]]:
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
@@ -67,14 +87,23 @@ def extract_patches(image: np.ndarray) -> dict[str, tuple[int, int, int]]:
             tuple[int, int, int], tuple(int(round(value)) for value in bgr[::-1])
         )
 
-    neutral_measured = np.array(measured["neutral_gray"], dtype=np.float64)
-    gains = 128.0 / np.maximum(neutral_measured, 1.0)
+    gamma = _estimate_gamma(measured)
+    linearized = {
+        name: 255.0
+        * np.power(
+            np.clip(np.asarray(rgb, dtype=np.float64) / 255.0, 0.0, 1.0),
+            1.0 / gamma,
+        )
+        for name, rgb in measured.items()
+    }
+    neutral_linearized = linearized["neutral_gray"]
+    gains = 128.0 / np.maximum(neutral_linearized, 1.0)
     return {
         name: cast(
             tuple[int, int, int],
-            tuple(int(value) for value in np.clip(np.array(rgb) * gains, 0, 255).round()),
+            tuple(int(value) for value in np.clip(rgb * gains, 0, 255).round()),
         )
-        for name, rgb in measured.items()
+        for name, rgb in linearized.items()
     }
 
 

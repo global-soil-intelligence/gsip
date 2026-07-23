@@ -1,5 +1,6 @@
 import 'fake-indexeddb/auto'
 import {
+  act,
   cleanup,
   fireEvent,
   render,
@@ -7,10 +8,12 @@ import {
   waitFor,
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { enqueue } from '../src/queue'
+import { enqueue, queued, removeQueued } from '../src/queue'
 import type { QueueRecord } from '../src/types'
 
-const mocks = vi.hoisted(() => ({ submitQueued: vi.fn(async () => undefined) }))
+const mocks = vi.hoisted(() => ({
+  submitQueued: vi.fn(async (): Promise<void> => undefined),
+}))
 
 vi.mock('../src/supabase', () => ({
   createGsipClient: () => ({ hosted: true }),
@@ -38,8 +41,12 @@ const record: QueueRecord = {
 }
 
 describe('capture retry behavior', () => {
-  beforeEach(() => {
-    mocks.submitQueued.mockClear()
+  beforeEach(async () => {
+    mocks.submitQueued.mockReset()
+    mocks.submitQueued.mockResolvedValue(undefined)
+    for (const queuedRecord of await queued()) {
+      await removeQueued(queuedRecord.submissionId)
+    }
     Object.defineProperty(window.navigator, 'onLine', {
       configurable: true,
       value: true,
@@ -56,6 +63,59 @@ describe('capture retry behavior', () => {
       expect(mocks.submitQueued).toHaveBeenCalledWith({ hosted: true }, record),
     )
     expect(await screen.findByText(/1 observation synced/i)).toBeDefined()
+  })
+
+  it('stays idle when the online queue is empty', async () => {
+    render(<App />)
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(/ready for your first observation/i),
+      ).toBeDefined(),
+    )
+    expect(
+      screen.queryByText(/securely syncing queued observations/i),
+    ).toBeNull()
+    expect(mocks.submitQueued).not.toHaveBeenCalled()
+  })
+
+  it('coalesces concurrent sync triggers into one send per record', async () => {
+    let release: (() => void) | undefined
+    mocks.submitQueued.mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          release = resolve
+        }),
+    )
+    await enqueue(record)
+    render(<App />)
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(1))
+
+    act(() => {
+      window.dispatchEvent(new Event('online'))
+      window.dispatchEvent(new Event('online'))
+    })
+    expect(mocks.submitQueued).toHaveBeenCalledTimes(1)
+
+    act(() => release?.())
+    expect(await screen.findByText(/1 observation synced/i)).toBeDefined()
+  })
+
+  it('shows a recovery action for a dead-lettered observation', async () => {
+    await enqueue({
+      ...record,
+      deadLetteredAt: '2026-07-23T01:00:00Z',
+      syncAttempts: 5,
+    })
+    render(<App />)
+
+    expect(
+      await screen.findByRole('button', {
+        name: /retry failed observations/i,
+      }),
+    ).toBeDefined()
+    expect(screen.getByText(/1 needs attention/i)).toBeDefined()
+    expect(mocks.submitQueued).not.toHaveBeenCalled()
   })
 
   it('rejects a non-JPEG gallery file with a visible recovery message', async () => {

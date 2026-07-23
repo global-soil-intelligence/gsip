@@ -68,11 +68,13 @@ def sanitize_jpeg(raw: bytes) -> tuple[bytes, dict[str, float | int | str]]:
         source.verify()
     with Image.open(io.BytesIO(raw)) as source:
         metadata: dict[str, float | int | str] = {}
-        for tag_id, value in source.getexif().items():
-            destination = ALLOWED_EXIF.get(ExifTags.TAGS.get(tag_id, ""))
-            normalized = _number(value)
-            if destination and normalized is not None:
-                metadata[destination] = normalized
+        exif = source.getexif()
+        for fields in (exif.items(), exif.get_ifd(ExifTags.IFD.Exif).items()):
+            for tag_id, value in fields:
+                destination = ALLOWED_EXIF.get(ExifTags.TAGS.get(tag_id, ""))
+                normalized = _number(value)
+                if destination and normalized is not None:
+                    metadata[destination] = normalized
         clean = source.convert("RGB")
         clean.info.pop("comment", None)
         clean.info.clear()

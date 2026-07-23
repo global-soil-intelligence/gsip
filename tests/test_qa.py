@@ -4,7 +4,8 @@ import io
 
 import cv2
 import numpy as np
-from PIL import Image
+import pytest
+from PIL import ExifTags, Image, TiffImagePlugin
 
 from card.fixtures import canonical_card
 from pipeline.qa import (
@@ -18,15 +19,20 @@ from pipeline.qa import (
 def jpeg(image: np.ndarray, *, exif: bool = False) -> bytes:
     rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     output = io.BytesIO()
-    kwargs: dict[str, object] = {"format": "JPEG", "quality": 94}
     if exif:
         metadata = Image.Exif()
         metadata[271] = "GSIP camera"
         metadata[272] = "fixture"
-        metadata[34665] = {36867: "2026:07:23 00:00:00"}
+        exif_subifd = metadata.get_ifd(ExifTags.IFD.Exif)
+        exif_subifd[37386] = TiffImagePlugin.IFDRational(54, 10)
+        exif_subifd[33434] = TiffImagePlugin.IFDRational(1, 125)
+        exif_subifd[33437] = TiffImagePlugin.IFDRational(28, 10)
+        exif_subifd[34855] = 400
+        metadata[ExifTags.IFD.Exif] = exif_subifd
         metadata[34853] = {1: "GPS"}
-        kwargs["exif"] = metadata
-    Image.fromarray(rgb).save(output, **kwargs)
+        Image.fromarray(rgb).save(output, format="JPEG", quality=94, exif=metadata)
+    else:
+        Image.fromarray(rgb).save(output, format="JPEG", quality=94)
     return output.getvalue()
 
 
@@ -54,7 +60,14 @@ def test_sharp_photo_passes_and_strips_location_metadata() -> None:
     result = evaluate_photo(sharp_fixture(), accuracy_m=12, land_cover="cropland")
     assert result.status == "qa_pass"
     assert result.calibration_status == "uncalibrated"
-    assert result.camera_metadata == {"make": "GSIP camera", "model": "fixture"}
+    assert result.camera_metadata == {
+        "make": "GSIP camera",
+        "model": "fixture",
+        "focal_length_mm": 5.4,
+        "exposure_time_s": pytest.approx(0.008),
+        "f_number": 2.8,
+        "iso": 400,
+    }
     assert not has_embedded_metadata(result.sanitized_jpeg)
 
 
@@ -70,7 +83,14 @@ def test_all_jpeg_metadata_channels_are_stripped_and_detected_independently() ->
 
     sanitized, metadata = sanitize_jpeg(combined)
 
-    assert metadata == {"make": "GSIP camera", "model": "fixture"}
+    assert metadata == {
+        "make": "GSIP camera",
+        "model": "fixture",
+        "focal_length_mm": 5.4,
+        "exposure_time_s": pytest.approx(0.008),
+        "f_number": 2.8,
+        "iso": 400,
+    }
     assert b"\xff\xfe" not in sanitized
     assert b"http://ns.adobe.com/xap/1.0/" not in sanitized
     assert b"<x:xmpmeta" not in sanitized
@@ -86,7 +106,9 @@ def test_all_jpeg_metadata_channels_are_stripped_and_detected_independently() ->
 
 
 def test_blurry_photo_fails() -> None:
-    image = cv2.GaussianBlur(cv2.imdecode(np.frombuffer(sharp_fixture(), np.uint8), 1), (71, 71), 0)
+    decoded = cv2.imdecode(np.frombuffer(sharp_fixture(), np.uint8), 1)
+    assert decoded is not None
+    image = cv2.GaussianBlur(decoded, (71, 71), 0)
     assert evaluate_photo(jpeg(image), accuracy_m=12).status == "qa_fail"
 
 

@@ -83,12 +83,15 @@ class SupabaseQaWorker:
                 "GET",
                 f"submissions?id=eq.{submission_id}&select=id,geom_precise,gps_accuracy_m,land_cover",
             ).json()[0]
+            latitude, longitude = _coordinates(submission["geom_precise"])
             prior_rows = self._rest(
                 "GET",
                 f"priors?submission_id=eq.{submission_id}&depth_top_cm=eq.0&depth_bottom_cm=eq.30&select=property,value",
             ).json()
             priors = {
-                str(row["property"]): float(row["value"]) for row in prior_rows if row["value"]
+                str(row["property"]): float(row["value"])
+                for row in prior_rows
+                if row["value"] is not None
             }
             hashes = self._paged_rows(
                 f"photos?submission_id=neq.{submission_id}"
@@ -151,7 +154,6 @@ class SupabaseQaWorker:
             submission_status = aggregate_submission_status(
                 (str(event["check_name"]), bool(event["passed"])) for event in all_events
             )
-            latitude, longitude = _coordinates(submission["geom_precise"])
             self._rest(
                 "PATCH",
                 f"submissions?id=eq.{submission_id}",
@@ -240,15 +242,21 @@ class SupabaseQaWorker:
 
 
 def _coordinates(geometry: Any) -> tuple[float, float]:
+    latitude: float
+    longitude: float
     if isinstance(geometry, dict):
         values = geometry.get("coordinates")
         if isinstance(values, list) and len(values) >= 2:
             longitude, latitude = map(float, values[:2])
-            return latitude, longitude
-    if isinstance(geometry, str) and geometry.startswith("POINT(") and geometry.endswith(")"):
+        else:
+            raise ValueError("submission geometry is unavailable")
+    elif isinstance(geometry, str) and geometry.startswith("POINT(") and geometry.endswith(")"):
         longitude, latitude = map(float, geometry[6:-1].split())
-        return latitude, longitude
-    raise ValueError("submission geometry is unavailable")
+    else:
+        raise ValueError("submission geometry is unavailable")
+    if not -90 <= latitude <= 90 or not -180 <= longitude <= 180:
+        raise ValueError("submission geometry is outside valid latitude/longitude bounds")
+    return latitude, longitude
 
 
 def main() -> None:
