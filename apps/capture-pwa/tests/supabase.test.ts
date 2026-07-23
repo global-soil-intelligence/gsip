@@ -214,22 +214,36 @@ describe('hosted submission paths', () => {
     const record = queuedRecord()
     const client = fakeClient(state)
     const removed: string[] = []
+    let storedRecord = record
+    let now = Date.parse('2026-07-23T00:00:00Z')
     const store = {
-      list: async () => [record],
+      list: async () => [storedRecord],
+      put: async (next: QueueRecord) => {
+        storedRecord = next
+      },
       remove: async (id: string) => {
         removed.push(id)
       },
     }
 
     expect(
-      await drainQueue(store, (item) => submitQueued(client, item)),
+      await drainQueue(
+        store,
+        (item) => submitQueued(client, item),
+        () => now,
+      ),
     ).toEqual({
       failed: 1,
       synced: 0,
     })
     expect(removed).toEqual([])
+    now = Date.parse(storedRecord.nextRetryAt ?? '')
     expect(
-      await drainQueue(store, (item) => submitQueued(client, item)),
+      await drainQueue(
+        store,
+        (item) => submitQueued(client, item),
+        () => now,
+      ),
     ).toEqual({
       failed: 0,
       synced: 1,

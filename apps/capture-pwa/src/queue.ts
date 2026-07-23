@@ -31,7 +31,20 @@ export async function removeQueued(submissionId: string): Promise<void> {
   await (await database()).delete('submissions', submissionId)
 }
 
+export async function retryDeadLettered(): Promise<void> {
+  for (const record of await queued()) {
+    if (!record.deadLetteredAt) continue
+    await enqueue({
+      ...record,
+      deadLetteredAt: undefined,
+      nextRetryAt: undefined,
+      syncAttempts: 0,
+    })
+  }
+}
+
 export const indexedDbQueue = {
   list: queued,
+  put: enqueue,
   remove: removeQueued,
 }
