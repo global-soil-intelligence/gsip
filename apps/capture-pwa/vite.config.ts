@@ -15,7 +15,14 @@ export default defineConfig({
         start_url: '/gsip/capture/',
         theme_color: '#123c2d',
         background_color: '#f4f0e5',
-        icons: [],
+        icons: [
+          {
+            src: 'icon.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
+            purpose: 'any maskable',
+          },
+        ],
       },
       registerType: 'autoUpdate',
     }),

@@ -17,6 +17,11 @@ await cp(
     recursive: true,
   },
 )
+await cp(
+  new URL('../output/pdf/', import.meta.url),
+  new URL('reference-card/', output),
+  { recursive: true },
+)
 await writeFile(
   new URL('index.html', output),
   '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=./map/"><title>GSIP</title><a href="./map/">Open the GSIP map</a>\n',
