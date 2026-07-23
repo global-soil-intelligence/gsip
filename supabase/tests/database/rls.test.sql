@@ -2,7 +2,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(32);
+select plan(33);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
@@ -34,6 +34,13 @@ select ok(
 select ok(
     not has_function_privilege('authenticated', 'public.enqueue_prior_job()', 'execute'),
     'authenticated users cannot invoke the queue trigger directly'
+);
+select ok(
+    obj_description(
+        'private.clear_untrusted_submission_h3()'::regprocedure,
+        'pg_proc'
+    ) like '%hosted Supabase production role name authenticated%',
+    'H3 guard documents its hosted authenticated-role dependency'
 );
 
 insert into public.contributors (id, auth_uid, handle)
