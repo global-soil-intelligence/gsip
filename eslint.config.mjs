@@ -10,6 +10,7 @@ export default tseslint.config(
     languageOptions: {
       globals: {
         URL: 'readonly',
+        console: 'readonly',
       },
     },
   },
