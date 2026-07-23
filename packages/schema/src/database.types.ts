@@ -127,13 +127,6 @@ export type Database = {
             foreignKeyName: 'gold_labels_submission_id_fkey'
             columns: ['submission_id']
             isOneToOne: false
-            referencedRelation: 'public_submissions'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'gold_labels_submission_id_fkey'
-            columns: ['submission_id']
-            isOneToOne: false
             referencedRelation: 'submissions'
             referencedColumns: ['id']
           },
@@ -214,13 +207,6 @@ export type Database = {
             foreignKeyName: 'photos_submission_id_fkey'
             columns: ['submission_id']
             isOneToOne: false
-            referencedRelation: 'public_submissions'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'photos_submission_id_fkey'
-            columns: ['submission_id']
-            isOneToOne: false
             referencedRelation: 'submissions'
             referencedColumns: ['id']
           },
@@ -265,13 +251,6 @@ export type Database = {
             foreignKeyName: 'predictions_submission_id_fkey'
             columns: ['submission_id']
             isOneToOne: false
-            referencedRelation: 'public_submissions'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'predictions_submission_id_fkey'
-            columns: ['submission_id']
-            isOneToOne: false
             referencedRelation: 'submissions'
             referencedColumns: ['id']
           },
@@ -306,13 +285,6 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
-          {
-            foreignKeyName: 'prior_jobs_submission_id_fkey'
-            columns: ['submission_id']
-            isOneToOne: true
-            referencedRelation: 'public_submissions'
-            referencedColumns: ['id']
-          },
           {
             foreignKeyName: 'prior_jobs_submission_id_fkey'
             columns: ['submission_id']
@@ -364,13 +336,6 @@ export type Database = {
             foreignKeyName: 'priors_submission_id_fkey'
             columns: ['submission_id']
             isOneToOne: false
-            referencedRelation: 'public_submissions'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'priors_submission_id_fkey'
-            columns: ['submission_id']
-            isOneToOne: false
             referencedRelation: 'submissions'
             referencedColumns: ['id']
           },
@@ -399,13 +364,6 @@ export type Database = {
           submission_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: 'qa_events_submission_id_fkey'
-            columns: ['submission_id']
-            isOneToOne: false
-            referencedRelation: 'public_submissions'
-            referencedColumns: ['id']
-          },
           {
             foreignKeyName: 'qa_events_submission_id_fkey'
             columns: ['submission_id']
@@ -524,47 +482,13 @@ export type Database = {
       }
     }
     Views: {
-      public_submissions: {
-        Row: {
-          captured_at: string | null
-          disturbed: boolean | null
-          elevation: number | null
-          h3_r6: string | null
-          h3_r8: string | null
-          id: string | null
-          land_cover: string | null
-          precip_flag: boolean | null
-          status: string | null
-          surface_condition: string | null
-        }
-        Insert: {
-          captured_at?: string | null
-          disturbed?: boolean | null
-          elevation?: number | null
-          h3_r6?: string | null
-          h3_r8?: string | null
-          id?: string | null
-          land_cover?: string | null
-          precip_flag?: boolean | null
-          status?: string | null
-          surface_condition?: string | null
-        }
-        Update: {
-          captured_at?: string | null
-          disturbed?: boolean | null
-          elevation?: number | null
-          h3_r6?: string | null
-          h3_r8?: string | null
-          id?: string | null
-          land_cover?: string | null
-          precip_flag?: boolean | null
-          status?: string | null
-          surface_condition?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
+      claim_prior_job_attempt: {
+        Args: { p_submission_id: string }
+        Returns: number
+      }
       current_contributor_id: { Args: never; Returns: string }
       refresh_public_h3_cells: { Args: { payload: Json }; Returns: number }
     }

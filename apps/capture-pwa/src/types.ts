@@ -24,5 +24,8 @@ export type CaptureDraft = {
 }
 
 export type QueueRecord = CaptureDraft & {
+  deadLetteredAt?: string
+  nextRetryAt?: string
   queuedAt: string
+  syncAttempts?: number
 }

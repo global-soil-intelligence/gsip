@@ -2,7 +2,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(44);
+select plan(42);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
@@ -11,10 +11,20 @@ select is((select count(*) from public.qa_jobs), 25::bigint, 'seed photos have d
 select is((select count(*) from public.qa_events), 125::bigint, 'seed submissions have deterministic QA events');
 select is((select count(*) from public.submissions where is_synthetic), 25::bigint, 'all seeded rows are excluded from export');
 select is((select count(*) from storage.buckets where public), 0::bigint, 'all photo buckets are private');
-select hasnt_column('public', 'public_submissions', 'geom_precise', 'public view omits precise geometry');
-select hasnt_column('public', 'public_submissions', 'contributor_id', 'public view omits contributor id');
-select hasnt_column('public', 'public_submissions', 'device_model', 'public view omits device model');
-select hasnt_column('public', 'public_submissions', 'is_synthetic', 'public view omits the server export marker');
+select hasnt_view(
+    'public',
+    'public_submissions',
+    'legacy per-submission public view is removed'
+);
+select ok(
+    not exists (
+        select 1 from pg_policies
+        where schemaname = 'public'
+          and tablename = 'submissions'
+          and policyname = 'submissions_select_public_qa_pass'
+    ),
+    'legacy anon submissions policy is removed'
+);
 select ok(
     not has_column_privilege('anon', 'public.submissions', 'geom_precise', 'select'),
     'anon lacks precise geometry privilege'
@@ -22,10 +32,6 @@ select ok(
 select ok(
     not has_column_privilege('anon', 'public.photos', 'camera_metadata_private', 'select'),
     'anon lacks private camera metadata privilege'
-);
-select ok(
-    not has_table_privilege('anon', 'public.public_submissions', 'select'),
-    'anon cannot read the per-submission public view'
 );
 select ok(
     not has_table_privilege('anon', 'public.prior_jobs', 'select'),
@@ -56,6 +62,13 @@ select ok(
         'authenticated', 'public.refresh_public_h3_cells(jsonb)', 'execute'
     ),
     'authenticated clients cannot replace public H3 aggregates'
+);
+select ok(
+    obj_description(
+        'private.clear_untrusted_submission_h3()'::regprocedure,
+        'pg_proc'
+    ) like '%hosted Supabase production role name authenticated%',
+    'H3 guard documents its hosted authenticated-role dependency'
 );
 
 insert into public.contributors (id, auth_uid, handle)

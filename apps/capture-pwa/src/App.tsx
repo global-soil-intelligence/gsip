@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { fuzzLocation } from './geo'
 import { HexPreview } from './HexPreview'
-import { enqueue, indexedDbQueue, queued } from './queue'
-import { drainQueue } from './sync'
+import { enqueue, indexedDbQueue, queued, retryDeadLettered } from './queue'
+import { drainQueue, isSyncEligible } from './sync'
 import { createGsipClient, isServiceConfigured, submitQueued } from './supabase'
 import type { QueueRecord, ShotType } from './types'
 
@@ -102,33 +102,67 @@ export function App() {
   const [latitude, setLatitude] = useState('')
   const [longitude, setLongitude] = useState('')
   const [queueCount, setQueueCount] = useState(0)
+  const [deadLetterCount, setDeadLetterCount] = useState(0)
   const [status, setStatus] = useState('Ready for your first observation.')
   const [publicCell, setPublicCell] = useState<string | null>(null)
   const [email, setEmail] = useState('')
+  const syncPromise = useRef<Promise<void> | null>(null)
 
-  const refreshQueueCount = useCallback(
-    async () => setQueueCount((await queued()).length),
-    [],
-  )
-  const sync = useCallback(async () => {
-    if (!client || !navigator.onLine) return
-    setStatus('Securely syncing queued observations…')
-    const result = await drainQueue(indexedDbQueue, (record) =>
-      submitQueued(client, record),
+  const refreshQueueState = useCallback(async () => {
+    const records = await queued()
+    setQueueCount(records.length)
+    setDeadLetterCount(
+      records.filter((record) => Boolean(record.deadLetteredAt)).length,
     )
-    await refreshQueueCount()
-    if (result.synced)
-      setStatus(
-        `${result.synced} observation${result.synced > 1 ? 's' : ''} synced.`,
+    return records
+  }, [])
+  const sync = useCallback(() => {
+    if (syncPromise.current) return syncPromise.current
+    const run = (async () => {
+      if (!client || !navigator.onLine) return
+      const records = await indexedDbQueue.list()
+      if (!records.some((record) => isSyncEligible(record))) {
+        await refreshQueueState()
+        return
+      }
+      setStatus('Securely syncing queued observations…')
+      const result = await drainQueue(indexedDbQueue, (record) =>
+        submitQueued(client, record),
       )
-    if (result.failed)
-      setStatus(
-        'Sync paused. Your observation remains safely queued on this device.',
-      )
-  }, [client, refreshQueueCount])
+      const remaining = await refreshQueueState()
+      const deadLetters = remaining.filter((record) =>
+        Boolean(record.deadLetteredAt),
+      ).length
+      if (deadLetters) {
+        setStatus(
+          `${deadLetters} observation${deadLetters > 1 ? 's need' : ' needs'} attention before retrying.`,
+        )
+      } else if (result.failed) {
+        setStatus(
+          'Sync paused. Your observation remains safely queued on this device.',
+        )
+      } else if (result.synced) {
+        setStatus(
+          `${result.synced} observation${result.synced > 1 ? 's' : ''} synced.`,
+        )
+      } else {
+        setStatus('Ready for your next observation.')
+      }
+    })()
+    syncPromise.current = run
+    void run.then(
+      () => {
+        if (syncPromise.current === run) syncPromise.current = null
+      },
+      () => {
+        if (syncPromise.current === run) syncPromise.current = null
+      },
+    )
+    return run
+  }, [client, refreshQueueState])
 
   useEffect(() => {
-    void refreshQueueCount().then(sync)
+    void refreshQueueState().then(() => sync())
     const onOnline = () => void sync()
     const retry = window.setInterval(() => void sync(), 30_000)
     window.addEventListener('online', onOnline)
@@ -136,7 +170,7 @@ export function App() {
       window.clearInterval(retry)
       window.removeEventListener('online', onOnline)
     }
-  }, [refreshQueueCount, sync])
+  }, [refreshQueueState, sync])
 
   function locate() {
     if (!navigator.geolocation) {
@@ -226,7 +260,7 @@ export function App() {
     setLatitude('')
     setLongitude('')
     setAccuracy(null)
-    await refreshQueueCount()
+    await refreshQueueState()
     if (navigator.onLine && client) await sync()
     else
       setStatus(
@@ -243,11 +277,13 @@ export function App() {
         </a>
         <div className="queue-pill" aria-live="polite">
           <span className={navigator.onLine ? 'online' : 'offline'} />
-          {queueCount
-            ? `${queueCount} queued`
-            : navigator.onLine
-              ? 'Online'
-              : 'Offline ready'}
+          {deadLetterCount
+            ? `${deadLetterCount} need${deadLetterCount > 1 ? '' : 's'} attention`
+            : queueCount
+              ? `${queueCount} queued`
+              : navigator.onLine
+                ? 'Online'
+                : 'Offline ready'}
         </div>
       </header>
 
@@ -446,6 +482,19 @@ export function App() {
           <div>
             <p className="step-number">Status</p>
             <h2>{status}</h2>
+            {deadLetterCount > 0 && (
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => {
+                  void retryDeadLettered()
+                    .then(refreshQueueState)
+                    .then(() => sync())
+                }}
+              >
+                Retry failed observations
+              </button>
+            )}
           </div>
           {publicCell && <HexPreview cell={publicCell} />}
         </section>

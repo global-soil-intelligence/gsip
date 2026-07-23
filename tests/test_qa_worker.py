@@ -10,6 +10,7 @@ import numpy as np
 import pytest
 from PIL import Image
 
+from pipeline.qa import evaluate_photo
 from pipeline.qa_worker import SupabaseQaWorker
 
 
@@ -22,10 +23,21 @@ def jpeg(size: int) -> bytes:
 
 
 class WorkerHarness(SupabaseQaWorker):
-    def __init__(self, hostile: bytes) -> None:
+    def __init__(
+        self,
+        hostile: bytes,
+        *,
+        geometry: dict[str, Any] | None = None,
+        prior_rows: list[dict[str, Any]] | None = None,
+    ) -> None:
         super().__init__("https://supabase.test", "service-key")
         self.hostile = hostile
+        self.geometry = geometry or {
+            "coordinates": [-79.982, 40.446],
+            "type": "Point",
+        }
         self.job_states: dict[str, str] = {}
+        self.prior_rows = prior_rows or []
         self.promotions: list[str] = []
         self.submission_updates: list[dict[str, Any]] = []
         self.client = httpx.Client(transport=httpx.MockTransport(self._http))
@@ -67,14 +79,16 @@ class WorkerHarness(SupabaseQaWorker):
             return self._response(
                 [
                     {
-                        "geom_precise": {"coordinates": [-79.982, 40.446], "type": "Point"},
+                        "geom_precise": self.geometry,
                         "gps_accuracy_m": 8,
                         "id": "submission",
                         "land_cover": "urban",
                     }
                 ]
             )
-        if method == "GET" and path.startswith(("priors?", "photos?submission_id=neq.")):
+        if method == "GET" and path.startswith("priors?"):
+            return self._response(self.prior_rows)
+        if method == "GET" and path.startswith("photos?submission_id=neq."):
             return self._response([])
         if method == "GET" and path.startswith("qa_events?"):
             return self._response(
@@ -118,6 +132,37 @@ def test_hostile_images_dead_letter_and_do_not_block_following_jobs(
     assert "good.jpg" in worker.promotions[0]
     assert worker.submission_updates[-1]["status"] == "qa_pass"
     assert worker.submission_updates[-1]["h3_r8"].startswith("88")
+
+
+def test_zero_valued_prior_reaches_gps_plausibility(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured_priors: dict[str, float] = {}
+
+    def capture_priors(*args: Any, **kwargs: Any) -> Any:
+        captured_priors.update(kwargs["priors"])
+        return evaluate_photo(*args, **kwargs)
+
+    monkeypatch.setattr("pipeline.qa_worker.evaluate_photo", capture_priors)
+    worker = WorkerHarness(
+        b"unused",
+        prior_rows=[{"property": "sand", "value": 0}],
+    )
+
+    assert worker.process_one("good", 0)
+    assert captured_priors == {"sand": 0.0}
+
+
+def test_out_of_range_geometry_dead_letters_without_h3_or_promotion() -> None:
+    worker = WorkerHarness(
+        b"unused",
+        geometry={"coordinates": [200, 95], "type": "Point"},
+    )
+
+    assert not worker.process_one("good", 3)
+    assert worker.job_states["good"] == "dead_letter"
+    assert worker.submission_updates == []
+    assert worker.promotions == []
 
 
 def test_cleanup_recurses_to_old_leaf_objects_and_ignores_folder_placeholders() -> None:
