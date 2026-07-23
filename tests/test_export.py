@@ -9,7 +9,7 @@ from typing import Any, cast
 import httpx
 import numpy as np
 import pytest
-from datasets import load_dataset
+from datasets import load_dataset  # type: ignore[import-untyped]
 from PIL import Image
 
 from pipeline.export import (
@@ -168,8 +168,11 @@ def test_hub_replacement_precedes_atomic_public_cell_refresh(tmp_path: Path) -> 
             events.append("hub")
             upload.update(kwargs)
 
-    source = SupabaseExportSource("https://supabase.test", "service-key")
-    source.refresh_h3_cells = lambda _: events.append("cells")  # type: ignore[method-assign]
+    class RecordingSource(SupabaseExportSource):
+        def refresh_h3_cells(self, submissions: list[ExportSubmission]) -> None:
+            events.append("cells")
+
+    source = RecordingSource("https://supabase.test", "service-key")
     try:
         publish_export(
             source,
@@ -184,6 +187,62 @@ def test_hub_replacement_precedes_atomic_public_cell_refresh(tmp_path: Path) -> 
         source.client.close()
     assert events == ["hub", "cells"]
     assert upload["delete_patterns"] == ["photos/**", "data/**"]
+
+
+def test_failed_post_upload_refresh_is_retried_on_the_next_run(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    uploads = 0
+    refreshed: list[list[ExportSubmission]] = []
+
+    class FakeHub:
+        def upload_folder(self, **kwargs: Any) -> None:
+            nonlocal uploads
+            uploads += 1
+
+    class RecoveringSource(SupabaseExportSource):
+        failures_remaining = 3
+
+        def refresh_h3_cells(self, submissions: list[ExportSubmission]) -> None:
+            if self.failures_remaining:
+                self.failures_remaining -= 1
+                request = httpx.Request("POST", f"{self.url}/rest/v1/rpc/refresh_public_h3_cells")
+                response = httpx.Response(500, request=request)
+                raise httpx.HTTPStatusError(
+                    "refresh failed",
+                    request=request,
+                    response=response,
+                )
+            refreshed.append(submissions)
+
+    monkeypatch.setattr("pipeline.export.time.sleep", lambda _: None)
+    source = RecoveringSource("https://supabase.test", "service-key")
+    try:
+        with pytest.raises(httpx.HTTPStatusError):
+            publish_export(
+                source,
+                [submission()],
+                tmp_path,
+                date(2026, 7, 22),
+                "token",
+                "org/dataset",
+                cast(Any, FakeHub()),
+            )
+        publish_export(
+            source,
+            [submission()],
+            tmp_path,
+            date(2026, 7, 23),
+            "token",
+            "org/dataset",
+            cast(Any, FakeHub()),
+        )
+    finally:
+        source.client.close()
+
+    assert uploads == 2
+    assert refreshed == [[submission()]]
 
 
 def test_public_cell_refresh_includes_dates_and_clears_an_empty_release() -> None:

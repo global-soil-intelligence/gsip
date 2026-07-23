@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import shutil
+import time
 from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -360,7 +361,14 @@ def publish_export(
         commit_message=f"GSIP public export {export_date.isoformat()}",
         delete_patterns=["photos/**", "data/**"],
     )
-    source.refresh_h3_cells(submissions)
+    for attempt in range(3):
+        try:
+            source.refresh_h3_cells(submissions)
+            break
+        except httpx.HTTPError:
+            if attempt == 2:
+                raise
+            time.sleep(2**attempt)
 
 
 def main() -> None:
