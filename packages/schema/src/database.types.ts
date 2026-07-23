@@ -376,21 +376,21 @@ export type Database = {
       qa_events: {
         Row: {
           check_name: string
-          model_version: string | null
+          model_version: string
           passed: boolean
           score: number | null
           submission_id: string
         }
         Insert: {
           check_name: string
-          model_version?: string | null
+          model_version?: string
           passed: boolean
           score?: number | null
           submission_id: string
         }
         Update: {
           check_name?: string
-          model_version?: string | null
+          model_version?: string
           passed?: boolean
           score?: number | null
           submission_id?: string

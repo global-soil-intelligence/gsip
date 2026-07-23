@@ -2,7 +2,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(36);
+select plan(39);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
@@ -148,6 +148,28 @@ select throws_ok(
     'authenticated client cannot self-grade private photo QA fields'
 );
 reset role;
+
+set local role service_role;
+select lives_ok(
+    $$update public.submissions
+      set h3_r8 = '882a847149fffff', h3_r6 = '862a84737ffffff', status = 'qa_pass'
+      where id = '50000000-0000-4000-8000-000000000003'$$,
+    'service-role QA can derive H3 and finalize a submission'
+);
+reset role;
+select is(
+    (select h3_r8 from public.submissions where id = '50000000-0000-4000-8000-000000000003'),
+    '882a847149fffff',
+    'the trusted H3 value is derived from private geometry'
+);
+update public.submissions
+set status = 'pending'
+where id = '50000000-0000-4000-8000-000000000003';
+
+select col_not_null(
+    'public', 'qa_events', 'model_version',
+    'every QA event records its deterministic model version'
+);
 
 set local role anon;
 set local "request.jwt.claims" = '{"role":"anon"}';

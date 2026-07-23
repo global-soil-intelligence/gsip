@@ -1,4 +1,4 @@
-alter table public.submissions add column gps_accuracy_m real
+alter table public.submissions add column if not exists gps_accuracy_m real
     check (gps_accuracy_m is null or gps_accuracy_m >= 0);
 grant insert (gps_accuracy_m) on public.submissions to authenticated;
 
