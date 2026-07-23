@@ -518,6 +518,10 @@ export type Database = {
       }
     }
     Functions: {
+      claim_prior_job_attempt: {
+        Args: { p_submission_id: string }
+        Returns: number
+      }
       current_contributor_id: { Args: never; Returns: string }
     }
     Enums: {

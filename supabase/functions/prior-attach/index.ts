@@ -79,25 +79,13 @@ Deno.serve(async (request: Request) => {
   if (owned.error || !owned.data)
     return json({ error: 'Submission not found' }, 404)
 
-  const currentJob = await serviceClient
-    .from('prior_jobs')
-    .select('attempts')
-    .eq('submission_id', body.submissionId)
-    .maybeSingle()
-  if (currentJob.error)
-    return json({ error: 'Prior job state is unavailable' }, 503)
-  if ((currentJob.data?.attempts ?? 0) >= 32)
-    return json({ error: 'Prior job retry budget exhausted' }, 429)
-  const attempts = (currentJob.data?.attempts ?? 0) + 1
-  const started = await serviceClient.from('prior_jobs').upsert({
-    attempts,
-    last_error: null,
-    started_at: new Date().toISOString(),
-    status: 'processing',
-    submission_id: body.submissionId,
-    updated_at: new Date().toISOString(),
+  const claimed = await serviceClient.rpc('claim_prior_job_attempt', {
+    p_submission_id: body.submissionId,
   })
-  if (started.error) return json({ error: 'Prior job could not start' }, 503)
+  if (claimed.error) return json({ error: 'Prior job could not start' }, 503)
+  if (typeof claimed.data !== 'number')
+    return json({ error: 'Prior job retry budget exhausted' }, 429)
+  const attempts = claimed.data
 
   try {
     const { latitude, longitude } = coordinates(owned.data.geom_precise)
