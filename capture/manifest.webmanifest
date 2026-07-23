@@ -1,0 +1,1 @@
+{"name":"GSIP Soil Capture","short_name":"GSIP Capture","description":"Contribute privacy-safe soil observations.","start_url":"./","display":"standalone","background_color":"#f4f0e5","theme_color":"#123c2d","lang":"en","scope":"./","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
