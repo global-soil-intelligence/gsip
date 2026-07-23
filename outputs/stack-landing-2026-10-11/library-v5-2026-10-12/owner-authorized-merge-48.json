@@ -1,0 +1,79 @@
+{
+  "checksBefore": {
+    "baseRefName": "main",
+    "headRefOid": "575630964d721e044c685de130667fd849244848",
+    "mergeable": "MERGEABLE",
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:34:41Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536091/job/115100918917",
+        "name": "dco",
+        "startedAt": "2026-10-13T02:34:41Z",
+        "status": "COMPLETED",
+        "workflowName": "DCO"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:38:31Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536096/job/115100917878",
+        "name": "android",
+        "startedAt": "2026-10-13T02:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "App build"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:39:38Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536095/job/115100917590",
+        "name": "validate",
+        "startedAt": "2026-10-13T02:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:34:52Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536066/job/115100917500",
+        "name": "gitleaks",
+        "startedAt": "2026-10-13T02:34:43Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:33:51Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337458480/job/115100670943",
+        "name": "gitleaks",
+        "startedAt": "2026-10-13T02:33:43Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:38:05Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536096/job/115100917663",
+        "name": "ios",
+        "startedAt": "2026-10-13T02:34:47Z",
+        "status": "COMPLETED",
+        "workflowName": "App build"
+      }
+    ]
+  },
+  "after": {
+    "mergeCommit": {
+      "oid": "28aabaad85de78f04e716315b9a0b8ea36d5e4bd"
+    },
+    "mergedAt": "2026-10-13T02:58:42Z",
+    "state": "MERGED",
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/48"
+  },
+  "mergeMessage": "chore: merge reviewed PR 48\n\nCo-Authored-By: Codex <codex@openai.com>"
+}

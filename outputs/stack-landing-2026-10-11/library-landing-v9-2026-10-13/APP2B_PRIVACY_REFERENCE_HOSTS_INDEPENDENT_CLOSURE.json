@@ -1,0 +1,84 @@
+{
+  "assessment": "Accurately describes passive public declarations, no automatic app/collector requests or contributor payload, and ordinary reviewer IP/browser disclosure on voluntary manual opening. Existing strict host-notice gate remains effective.",
+  "base_commit": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "classification_closure_preserved": {
+    "bytes": 10182,
+    "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/INDEPENDENT_FINAL_V3A_CLASSIFICATION_CLOSURE.json",
+    "sha256": "1e11ec2c4fab261c0e2c94c70dd9695754e40acc5776a364703b75a4dc648316"
+  },
+  "constraints": {
+    "network_or_native_build": false,
+    "new_tests_or_exemptions": false,
+    "own_tmp_only": true,
+    "source_or_shared_Git_GH_CI_production_mutations": false
+  },
+  "created_at_utc": "2026-10-13T23:57:18.770189+00:00",
+  "delivery": {
+    "bytes": 4454,
+    "path": "/private/tmp/gsip-privacy-license-refs-frozen-3gcg4j0g/PRIVACY_REFERENCE_HOSTS_DELIVERY.json",
+    "sha256": "d28df3f0ae61c5d77ad7b34a670f890f35157e2c6e9993b16d5e9d5ab71214d1"
+  },
+  "file": {
+    "base_c1_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+    "bytes": 19461,
+    "path": "docs/legal/PRIVACY.md",
+    "sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a"
+  },
+  "frozen_directory": "/private/tmp/gsip-privacy-license-refs-frozen-3gcg4j0g",
+  "manifest": {
+    "bytes": 240,
+    "path": "/private/tmp/gsip-privacy-license-refs-frozen-3gcg4j0g/manifest.json",
+    "sha256": "b0167fe63d8732131313a5733cc7957abb561f595c2f283e86509e70322d1ad7"
+  },
+  "meaningful_before_after": {
+    "after": {
+      "bytes": 472,
+      "path": "/private/tmp/gsip-license-reference-privacy-independent-2m730_e5/after-privacy-process.json",
+      "sha256": "fe4db7941565687234d19dd4e7b5747662535c3e768a0a4ce88b2f52f8e33575"
+    },
+    "baseline_collected": 6,
+    "baseline_failed_only_exact_four_missing_hosts": 1,
+    "baseline_pass": 5,
+    "before": {
+      "bytes": 569,
+      "path": "/private/tmp/gsip-license-reference-privacy-independent-2m730_e5/before-privacy-process.json",
+      "sha256": "4fa4d53de60a9e4557921fecb0df6624dbef9d1b2a60d55c6d1b1ecda3d019e9"
+    },
+    "final_collected": 6,
+    "final_fail": 0,
+    "final_pass": 6,
+    "final_skip": 0,
+    "raw_streams_persisted": false
+  },
+  "new_row_utf8": "| Public licence/source references       | Passive licence/source URLs retained in dependency metadata and reviewed manually; neither the app nor audit collector requests them automatically       | No contributor data; a reviewer who opens a link shares their own IP/browser details          | `www.apache.org`, `chromium.googlesource.com`, `www.eclipse.org`, `www.opensource.org`                                               |",
+  "not_claimed": [
+    "Counsel approval or notice in force",
+    "Legal licence compatibility or distribution approval",
+    "Native/hosted artifact/device acceptance",
+    "Authorization for new automatic requests to these hosts"
+  ],
+  "patch": {
+    "bytes": 1979,
+    "path": "/private/tmp/gsip-privacy-license-refs-frozen-3gcg4j0g/privacy-reference-hosts.patch",
+    "sha256": "60f23aa6c5963c7f29c405b6ccbc899ec9b24c30dd38aeb0303771fcd230686b"
+  },
+  "provenance": {
+    "bytes": 1069,
+    "path": "/private/tmp/gsip-license-reference-privacy-independent-2m730_e5/PRIVACY_REFERENCE_PROVENANCE.json",
+    "sha256": "9acb4c99f8de6c47ba0afe24bc75eaf5119d3b020753432a0311fb4bc4da6266"
+  },
+  "readback_findings": [],
+  "schema": "gsip-independent-passive-license-reference-privacy-v1",
+  "scope": "One privacy-table disclosure row for four passive public licence/source-reference hosts in reviewed exact-POM contexts. No privacy exemption, code change, automatic request or new processor authorization.",
+  "source_binding": {
+    "all_existing_build_service_row_counsel_draft_policy_and_release_gates_byte_exact": true,
+    "all_other_source_files_exact_prior_reviewed_v3a_snapshot": true,
+    "base_privacy_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+    "generated_python_bytecode_excluded_from_source_comparison": true,
+    "removing_only_new_row_restores_all_original_privacy_bytes": true,
+    "script_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+    "tests_NOT_CONTACTED_exemptions_and_foreign_host_refusal_unchanged": true,
+    "tests_test_processors_sha256": "040fbd4d7eaa0f189ca219a68c5be6a60961418f286bf01d6af2ff3d9c7c01a2"
+  },
+  "status": "CLOSED_NO_BLOCKER"
+}

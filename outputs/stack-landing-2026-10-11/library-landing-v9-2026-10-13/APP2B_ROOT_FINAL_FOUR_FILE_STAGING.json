@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-13T23:56:59.122381+00:00",
+  "files": [
+    {
+      "base_c1_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 125844,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "v2b_sha256": "71425d41f957c8c5bee05acf2f2456b2fae181828f0384914f1e0f7c97864655",
+      "v3_sha256": "32a888e72f22dc160f244179701509baccf8cc04acb66e9ef0df70a8d7708bf4"
+    },
+    {
+      "base_c1_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 185334,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+      "v2b_sha256": "e2fd5781cfc7169216cfb2bf2b3256137861fd0dadbb0e3a5a80fbb148be10ef",
+      "v3_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3"
+    },
+    {
+      "base_c1_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 31897,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164",
+      "v2b_sha256": "ca0736fb18669534ffd7ef661c44f2c28968d483eebee31a5f19aea7a15cef76",
+      "v3_sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164"
+    },
+    {
+      "path": "docs/legal/PRIVACY.md",
+      "bytes": 19461,
+      "sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a",
+      "base_c1_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00"
+    }
+  ],
+  "unchanged_other_tracked_files": 361,
+  "privacy_single_row_only": true,
+  "source_helper_unchanged": true,
+  "test_processors_unchanged": true,
+  "commit_or_push": false,
+  "production_changes": false
+}

@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-13T16:50:51.201792+00:00",
+  "invariants": "recipient retirement sequence and exact identity remain binding after aliases erased; no contradictory chain committed; all fake rights/fences/caps/erasure/privacy boundaries preserved",
+  "base": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "exact_five": [
+    {
+      "path": "pipeline/node_exchange_store.py",
+      "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+      "bytes": 39798
+    },
+    {
+      "path": "pipeline/node_exchange_simulator.py",
+      "sha256": "8d205568d3948417dcb77437c6c047046c942addcb7ceba4122d0584bca32006",
+      "bytes": 86313
+    },
+    {
+      "path": "tests/test_node_exchange_store.py",
+      "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+      "bytes": 46450
+    },
+    {
+      "path": "tests/test_node_exchange_simulator.py",
+      "sha256": "ee1edb274c94441553d015efdfb939014fecfff74f27569f5376b6d90fecbccc",
+      "bytes": 77322
+    },
+    {
+      "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+      "sha256": "c5aac985da4557bdbf80d6da6f7169de558acfb2abb02908a5de3ff382f28cbf",
+      "bytes": 22540
+    }
+  ],
+  "changed": [
+    "pipeline/node_exchange_simulator.py",
+    "tests/test_node_exchange_simulator.py",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md"
+  ],
+  "base347_unchanged": true,
+  "checks_pending": true,
+  "independent_full_review_pending": true,
+  "commit_push_production_changes": false
+}

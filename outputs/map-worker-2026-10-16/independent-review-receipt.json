@@ -1,0 +1,68 @@
+{
+  "status": "REVIEW_COMPLETE_NO_UNRESOLVED_FINDINGS_NOT_OWNER_APPROVAL",
+  "verified_at_utc": "2026-10-16T11:34:53Z",
+  "reviewer": "independent non-author Codex agent",
+  "repository": "global-soil-intelligence/gsip",
+  "pull_request": "https://github.com/global-soil-intelligence/gsip/pull/77",
+  "source_branch": "wp-site-1g-map-worker",
+  "source_commit": "d53eda2e835e57b4ee01dc922fb63d5ebdeceae0",
+  "source_tree": "d49fa2ef6b31a0042db64d74e78b8a12df5b758b",
+  "base_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "source_worktree_clean": true,
+  "all_reviewed_file_hashes_match_commit": true,
+  "unresolved_findings": [],
+  "resolved_findings": [
+    {
+      "priority": "P2",
+      "summary": "Include the full upstream MapLibre BSD redistribution notice with the worker",
+      "resolution": "Existing Vite licence emission packages THIRD_PARTY_LICENSES.md; exact installed MapLibre LICENSE text verified in map output, Pages preview and archive"
+    }
+  ],
+  "reviewed_files_sha256": {
+    "apps/map-web/src/App.tsx": "bab88f58e52a99c7c14d35880cae16ea40dd77d25c8280eb2c35b28116ecb8ae",
+    "apps/map-web/tests/app.test.tsx": "bde18dba6c15d29cda6b08a115c9f7e7a9f1b195d78aa04db3bfe5fafbb640c2",
+    "apps/map-web/vite.config.ts": "be6c16f48526588baa2d4c93e6ce45b8ba1cc300afc2dac6de0d490ca6799406",
+    "docs/BUILD_ORDER.md": "bad2f186a6303e526fb9ef0ed55623c9d86b0563aa409c8eb46cba82f6e048fd",
+    "tests/e2e_server.py": "328db8ed95d11905ab19aec1a59002504e78850b1e650476c24e77dc5eba066a",
+    "tests/test_e2e_server.py": "6bd528460634721696922bbd42c1faac3bf4456aced7f6470db42fa58737b799",
+    "tests/e2e/map-worker.spec.ts": "8decacd28a1f2e5e93f1ac5cc754d95e50d25cd9687545a850fbb940ecde62ee"
+  },
+  "prepared_artifact": {
+    "status": "PREPARED_NOT_DEPLOYED_OWNER_MERGE_AND_PAGES_GO_PENDING",
+    "preparation_receipt": "closed-pages-artifact-receipt.json",
+    "preparation_receipt_sha256": "ba66bc6786e75421e6d9374e305e3aa4c8f8da56b2d5857129d8c5fef437d0c1",
+    "archive": "gsip-site-1g-closed-pages.tar.gz",
+    "archive_sha256": "d748a201546fff7b8e71a555ee5abb492cdcb2bffb62d8265dd42c9a160e3d01",
+    "archive_bytes": 3878058,
+    "all_archive_file_names_sizes_and_hashes_match_receipt": true,
+    "all_preview_files_match_archive": true,
+    "no_links_or_path_escapes": true,
+    "files_count": 40,
+    "files_bytes": 6623128,
+    "map_bytes": 2422310,
+    "map_budget_bytes": 5242880,
+    "activation": {
+      "capture_live": false,
+      "library_intake_live": false
+    },
+    "worker_bytes": 509702,
+    "worker_sha256": "096f3b4deeeaa7ed1372a96978bea3495b78250041df835fada34f12320e11d2",
+    "notice_bytes": 32566,
+    "notice_sha256": "9aa4807394e33c6a38be8c590001a791203e703d9afefa0e7c2f47b1655a1dce",
+    "notice_contains_exact_installed_maplibre_license_trimmed": true
+  },
+  "other_agents_logs_read": {
+    "focused_browser": "2 passed",
+    "full_desktop_browser": "14 passed",
+    "typescript_unit_tests": "603 passed",
+    "python": "2071 passed, 35 skipped",
+    "lint_and_types": "passed"
+  },
+  "limitations": [
+    "GitHub exact-head CI was ongoing at final review binding; terminal status must be verified separately",
+    "GDAL-dependent tests were unavailable locally and remain covered by required CI",
+    "Repository configuration values were not re-fetched by this reviewer",
+    "Local archive verification is not a GitHub Pages run or production deployment",
+    "Justin retains merge and Pages approval; this report is not a GitHub approving review"
+  ]
+}

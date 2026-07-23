@@ -1,0 +1,81 @@
+{
+  "PR_head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "PR_url": "https://github.com/global-soil-intelligence/gsip/pull/63",
+  "acceptance_checkbox_lines_and_states_exact": 122,
+  "actions": {
+    "Git_mutations": false,
+    "external_mutations": false,
+    "native_or_key_or_APK_operations": false,
+    "owned_private_tmp_only": true,
+    "shared_source_writes": false
+  },
+  "all365_source_modes_unchanged": true,
+  "all_nonstatus_bytes_in_three_docs_exact_after_explicit_status_edit_erasure": true,
+  "approved_status_edits": {
+    "bytes": 1664,
+    "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/APPROVED_STATUS_EDITS.json",
+    "sha256": "9518ec48ddd4d250d536469449a0b5df66aa4b0fa2b7ab94b83eb334775b05ef"
+  },
+  "base_commit": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "base_tree": "88baee8e3e9606b386fa011ac71f2d759cf20e50",
+  "baseline_binding": {
+    "bytes": 92689,
+    "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/BASELINE_BINDING.json",
+    "sha256": "151633ea2d743167ee467025ea26f606af140597c5f452c7eb9b26807e6df0a4"
+  },
+  "baseline_expected_failure": {
+    "exit_code": 1,
+    "failed": 3,
+    "passed": 12,
+    "report": {
+      "bytes": 1353,
+      "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/BASELINE_WITNESS.json",
+      "sha256": "3bad900a8ad5674b40058bb4c95c87060ac157e6692e9f8966fe6e9fa905eecb"
+    }
+  },
+  "candidate_witness": {
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 15,
+    "report": {
+      "bytes": 1252,
+      "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/CANDIDATE_WITNESS.json",
+      "sha256": "130d68f25c0e70cc5da17f55497ec8d4ae20d64f01a9f9535752d258be4c023b"
+    }
+  },
+  "changed_paths": [
+    "README.md",
+    "docs/BUILD_ORDER.md",
+    "docs/SPEC.md"
+  ],
+  "formatter": {
+    "bytes": 719,
+    "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/FORMAT_CHECK.json",
+    "sha256": "29021eb3a66f85db6e368bbb20ef6053dd4142205a8466c29767469bbed10f8e"
+  },
+  "harness_recovery": "Initial mode check assumed all365files nonexecutable; corrected to preserve declared100644/100755 modes, with byte hashes still mandatory",
+  "main_tree_equals_faab": true,
+  "merged_PR": 63,
+  "normative_requirements_invariants_and_external_gates_unchanged": true,
+  "other_tracked_source_files_unchanged": 362,
+  "patch": {
+    "bytes": 5690,
+    "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/reminder-source-status.patch",
+    "sha256": "a3c53c4d709bd57e9cb8ed6441f7959733b7810812cf5cbaf53ebdd941cd942e"
+  },
+  "private_witness": {
+    "bytes": 5539,
+    "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/acceptance_witness.py",
+    "sha256": "0638c5cb4f502e02a5a563923d901e327f8bd524156c1013f7e04a99b838ae3e"
+  },
+  "root_owns_integration_review_policy_checks_and_publication": true,
+  "schema": "gsip-doc1-factual-reminder-source-status-delivery-v1",
+  "scope": "Factual APP-2B source-merged status only; no behavior, dependency, architecture or readiness change. Launch, device, iOS backup, privacy, science, store, legal and production gates remain held as specified.",
+  "source_manifest": {
+    "bytes": 83344,
+    "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/MANIFEST.json",
+    "sha256": "24ca03aeb649a1f496e8576c791b60e9a5fc12bf62997bec2cf6cf46cd4b1eff"
+  },
+  "source_root": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/source",
+  "status": "PREPARED_FOR_INDEPENDENT_REVIEW"
+}

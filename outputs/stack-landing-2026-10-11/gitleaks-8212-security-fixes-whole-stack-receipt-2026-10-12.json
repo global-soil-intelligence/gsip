@@ -1,0 +1,33 @@
+{
+  "observed_at": "2026-10-12T14:53:55.995590+00:00",
+  "version": "8.21.2",
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/tools/gitleaks-8.21.2/gitleaks",
+    "git",
+    ".",
+    "--no-banner",
+    "--redact",
+    "--log-opts=--all",
+    "--report-format=json",
+    "--report-path",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gitleaks-8212-security-fixes-whole-stack-report-2026-10-12.json"
+  ],
+  "repository": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+  "working_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "all_refs_sha256": "b73443ee53c435dd26ce5c54eea297132a90a0d84047f2693edcb120a4d85851",
+  "all_refs_unchanged_during_scan": true,
+  "reachable_commits": 141,
+  "exit_code": 0,
+  "finding_count": 0,
+  "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "approved_ignore_entries": 3,
+  "ignore_exact": true,
+  "policy_sha256": {
+    ".gitleaksignore": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+    ".gitleaks.toml": "e846bacbb1ce5c41f571a10cdaf0e1fde7bfa399fc5c876480b57124059cc760",
+    ".github/workflows/secret-scan.yml": "b29dc91eb6becb78672ddf5ca7e96133e4265d69a04610666c87aaa3fdace8f9"
+  },
+  "redacted_summary": "\u001b[90m10:53AM\u001b[0m \u001b[32mINF\u001b[0m 84 commits scanned.\n\u001b[90m10:53AM\u001b[0m \u001b[32mINF\u001b[0m scan completed in 1.67s\n\u001b[90m10:53AM\u001b[0m \u001b[32mINF\u001b[0m no leaks found",
+  "source_changes": false,
+  "production_mutations": []
+}

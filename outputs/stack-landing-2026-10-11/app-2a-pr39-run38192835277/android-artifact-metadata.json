@@ -1,0 +1,15 @@
+{
+  "id": 11722457181,
+  "name": "gsip-capture-android-debug",
+  "size_in_bytes": 7147388,
+  "digest": "sha256:2d4e07c7ea40843ec9cedc62f434a8692046cf291e11aae430dd670f97c69089",
+  "digest_verified": true,
+  "expired": false,
+  "expires_at": "2026-10-26T01:49:30Z",
+  "run_id": 38192835277,
+  "head_sha": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+  "payload_sha256": "8be2464719d214be7862031e81866ded39758e3b7058de20a1b5d9648ac7dd33",
+  "built_versions_verified": true,
+  "compiled_backup_rules_verified": true,
+  "built_permissions_verified": true
+}

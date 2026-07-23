@@ -1,0 +1,21 @@
+{
+  "schema": "gsip-doc1-actual-format-check-v1",
+  "tool": "managed pinned Prettier 3.9.9",
+  "command": [
+    "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/node_modules/prettier/bin/prettier.cjs",
+    "--check",
+    "README.md",
+    "docs/SPEC.md",
+    "docs/BUILD_ORDER.md"
+  ],
+  "cwd": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/source",
+  "actual_result": {
+    "chunk_id": "56df55",
+    "wall_time_seconds": 0.362087,
+    "exit_code": 0,
+    "original_token_count": 17,
+    "output": "Checking formatting...\nAll matched files use Prettier code style!\n"
+  },
+  "source_mutation": false
+}

@@ -1,0 +1,147 @@
+{
+  "CLI_android_template_sha256": "5edb50a67a034556da8bb5fa54eb08211eaa952aac0949c75050ebcf0be97303",
+  "GET_only": true,
+  "actual_job_checkout_log_binding": "pending terminal job log",
+  "current_source_input_count": 9,
+  "expected_generated_android_source_inputs": {
+    "apps/capture-pwa/android/build.gradle": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
+    "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435",
+    "apps/capture-pwa/android/variables.gradle": "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88"
+  },
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "head_tree_sha": "88baee8e3e9606b386fa011ac71f2d759cf20e50",
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "parent": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "parent_committed_input_count": 6,
+  "parent_tree_sha": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64",
+  "raw_sources_or_logs_persisted": false,
+  "schema": "gsip-exact-android-source-binding-v1",
+  "source_blobs": [
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 97,
+      "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "git_blob_sha1": "6ebc171ce1535767da533c21f5adf55eeedf4e62",
+      "path": "scripts/__init__.py",
+      "sha256": "892aecd6894b5c07d02afcb4146d30d7fbab2b17493edc31cdf48d975c30f7c4"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 225620,
+      "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "git_blob_sha1": "f64bacc4f6bdfe149c28f8d4b8776999cd7a3a3e",
+      "path": "pnpm-lock.yaml",
+      "sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 316516,
+      "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "git_blob_sha1": "ab95b0ba7eaf37b65391ee307fe02ccb63ea33a2",
+      "path": "uv.lock",
+      "sha256": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 1081,
+      "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "git_blob_sha1": "7908d39eac6911ce9143d853242f57c39c4040e6",
+      "path": "apps/capture-pwa/package.json",
+      "sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 1112,
+      "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "git_blob_sha1": "c384197c85ba1b073e8f24c68f87a333333c7559",
+      "path": "apps/capture-pwa/capacitor.config.ts",
+      "sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 12571,
+      "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "git_blob_sha1": "c64d839388c0d9e8fba2d1086239c3fa4031e302",
+      "path": "scripts/app_permissions.py",
+      "sha256": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 17725,
+      "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "git_blob_sha1": "5388991b5a9f15b0a148009c2f91ab30340e7457",
+      "path": "scripts/app_build.py",
+      "sha256": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 144888,
+      "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "git_blob_sha1": "e69ae887c45b154bbf731d8ff0efa547281f3217",
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 17919,
+      "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "git_blob_sha1": "be1223fad90891c51486e3845a83ca78f8299f02",
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 225169,
+      "commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "git_blob_sha1": "8335d43f104b6ba4e0763b5651f55859f883f389",
+      "path": "pnpm-lock.yaml",
+      "sha256": "492c699cb8e0d3ca9302dd8cbd04d882bc749b4b33d8047040eec8376dd34644"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 316516,
+      "commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "git_blob_sha1": "ab95b0ba7eaf37b65391ee307fe02ccb63ea33a2",
+      "path": "uv.lock",
+      "sha256": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 1034,
+      "commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "git_blob_sha1": "df573252c39a257d6d437f8535a2bdb043471293",
+      "path": "apps/capture-pwa/package.json",
+      "sha256": "9c0e7a2b670eddeabfb7ab29347f306a85bfccc66c18e6672f0c8f36284b2e15"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 1053,
+      "commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "git_blob_sha1": "d5234528889aa4fe4605e5c9cd5781f9f5c6030a",
+      "path": "apps/capture-pwa/capacitor.config.ts",
+      "sha256": "705916ffd4b7341091bc44e6010632739d54ce924f342ca46fe19ef7e28b2bb7"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 11413,
+      "commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "git_blob_sha1": "f63129a5769575cb4e74f113e00d55b35a362740",
+      "path": "scripts/app_permissions.py",
+      "sha256": "4a0e78dd1b153217fdcad4ddc94d5ce5ea7b6f6b60d220a9199a0302a8374675"
+    },
+    {
+      "API_exact_commit_and_owned_source_equal": true,
+      "bytes": 17725,
+      "commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "git_blob_sha1": "5388991b5a9f15b0a148009c2f91ab30340e7457",
+      "path": "scripts/app_build.py",
+      "sha256": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4"
+    }
+  ],
+  "virtual_merge": "5d974ed24977e44026666ba8d3b2158b4a22dd06",
+  "virtual_merge_parents": [
+    "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+    "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc"
+  ],
+  "virtual_merge_tree_equals_exact_head": true
+}

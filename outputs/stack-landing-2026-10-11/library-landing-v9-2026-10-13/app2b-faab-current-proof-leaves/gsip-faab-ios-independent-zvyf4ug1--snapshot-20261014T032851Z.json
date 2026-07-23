@@ -1,0 +1,56 @@
+{
+  "at_utc": "2026-10-14T03:28:51.122562+00:00",
+  "base": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "draft": true,
+  "get_only": true,
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "ios_artifacts": [
+    {
+      "digest": "sha256:487109ff3236033366878549a8801f8d61659b5c7fc6c13c5b9b2eecd611aa9b",
+      "expired": false,
+      "id": 11868310108,
+      "size_in_bytes": 13914592
+    }
+  ],
+  "ios_job": {
+    "conclusion": "success",
+    "failed_step_numbers": [],
+    "id": 115663053189,
+    "running_step_numbers": [],
+    "status": "completed",
+    "step_details_present": true,
+    "success_step_count": 26
+  },
+  "native_combined_acceptance": false,
+  "native_run_id": 38505847255,
+  "native_run_number": 55,
+  "older_artifacts_reused": false,
+  "pr": 63,
+  "raw_api_responses_persisted": false,
+  "response_hashes": {
+    "actions/runs/38505847255": {
+      "bytes": 14077,
+      "sha256": "fc513525c1513b9a377eb306cfc1316ee43664944d5df7d40ea7e6600a65e4d8"
+    },
+    "actions/runs/38505847255/artifacts?per_page=100": {
+      "bytes": 1511,
+      "sha256": "a6c3babb6f5a3a7a27416738902777ded5d70f54aa0c4fd2fce8ddc36f5c2e93"
+    },
+    "actions/runs/38505847255/jobs?per_page=100": {
+      "bytes": 10963,
+      "sha256": "94fd95aff3bf0e61df0493c8e2d01f0a197e3a060a7fa69cf337abdad72a6560"
+    },
+    "actions/runs?head_sha=faabfeb36eb2f8fbb475a03f5a8994f76dd970bc&per_page=100": {
+      "bytes": 70403,
+      "sha256": "ba0c259a5d0f237224c419facbe73d5f354c9a98b9fc836b45012f520c8f57db"
+    },
+    "pulls/63": {
+      "bytes": 81769,
+      "sha256": "901df1805e4c81f913b883e93fc9b36ba87233c0d922c7c5310982c1d481bd7a"
+    }
+  },
+  "run_attempt": 1,
+  "run_conclusion": "success",
+  "run_status": "completed",
+  "schema": "gsip-exact-faab-ios-watch-v1"
+}

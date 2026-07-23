@@ -1,0 +1,14 @@
+{
+  "id": 11722566280,
+  "name": "gsip-capture-ios-simulator",
+  "size_in_bytes": 3324822,
+  "digest": "sha256:857864be0bfd09faee638726a7dd3c61703b9af870293babc58fe5d0e4a8ba24",
+  "digest_verified": true,
+  "expired": false,
+  "expires_at": "2026-10-26T01:42:48Z",
+  "run_id": 38192835277,
+  "head_sha": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+  "payload_sha256": "e99aef9fe1111c0a19c6e91a98224630dc85a5471f01198b0d41d1d57ae04a7d",
+  "built_versions_verified": true,
+  "built_permissions_verified": true
+}

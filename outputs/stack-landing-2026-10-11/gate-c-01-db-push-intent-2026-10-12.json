@@ -1,0 +1,18 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "gate": "C",
+  "started_at": "2026-10-12T13:39:19.528833+00:00",
+  "argv": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "db",
+    "push",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+    "--skip-vault"
+  ],
+  "source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "authority": "Justin explicit Go: apply only Gate C\u2019s nine migrations",
+  "state": "SINGLE_INVOCATION_IN_PROGRESS"
+}

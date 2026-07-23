@@ -1,0 +1,17 @@
+{
+  "at_utc": "2026-10-13T14:56:32.639798+00:00",
+  "branch": "wp-lib-5b-private-exchange-ledger",
+  "head": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "patch_sha256": "60438798022b84b489f6d80ec3b2e547b8f2f6f0e1f6ef6640435db4201a3f54",
+  "exact_five_hashes_match": true,
+  "existing_files_changed": false,
+  "status": "Applied only to owning local branch, uncommitted; full independent review and CI pending",
+  "paths": [
+    "pipeline/node_exchange_store.py",
+    "pipeline/node_exchange_simulator.py",
+    "tests/test_node_exchange_store.py",
+    "tests/test_node_exchange_simulator.py",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md"
+  ],
+  "production_or_gate_changes": false
+}

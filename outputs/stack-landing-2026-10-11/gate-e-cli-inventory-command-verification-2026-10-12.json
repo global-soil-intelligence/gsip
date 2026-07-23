@@ -1,0 +1,35 @@
+{
+  "state": "PASS_READONLY_CLI_FUNCTION_INVENTORY",
+  "observed_at_utc": "2026-10-12T19:46:22.083596+00:00",
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "functions",
+    "list",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+    "--output",
+    "json"
+  ],
+  "exit_code": 0,
+  "functions": [
+    {
+      "created_at": 1784747428489,
+      "entrypoint_path": "file:///tmp/user_fn_toxldjgwkxtneoqsazym_be4b0424-e6a2-4ddf-9533-b9625f4be235_3/source/supabase/functions/prior-attach/index.ts",
+      "ezbr_sha256": "25d45a61e1032e4f6d47b695b2501bd434511f5a275b8a797907bb5c75c48499",
+      "id": "be4b0424-e6a2-4ddf-9533-b9625f4be235",
+      "import_map": true,
+      "import_map_path": "file:///tmp/user_fn_toxldjgwkxtneoqsazym_be4b0424-e6a2-4ddf-9533-b9625f4be235_3/source/supabase/functions/deno.json",
+      "name": "prior-attach",
+      "slug": "prior-attach",
+      "status": "ACTIVE",
+      "updated_at": 1784783397734,
+      "verify_jwt": true,
+      "version": 3
+    }
+  ],
+  "output_sha256": "db74bb01ce49f6631e4f532f990821022a4634ac4ceb140b320bcd72c88410a4",
+  "deployments_run": [],
+  "production_changes": []
+}

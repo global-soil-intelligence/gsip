@@ -1,0 +1,10 @@
+$ vitest run
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+
+ Test Files  33 passed (33)
+      Tests  416 passed (416)
+   Start at  21:56:10
+   Duration  3.18s (transform 2.53s, setup 2.74s, import 5.31s, tests 9.29s, environment 17.35s)
+

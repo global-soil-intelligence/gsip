@@ -1,0 +1,204 @@
+{
+  "status": "bounded_read_only_doc_consistency_assessment_complete",
+  "at": "2026-10-13T21:26:07.500126+00:00",
+  "head": "710d144db94097be71989c67b5d3b4bb48135ad8",
+  "canonical_main_ref_verified": true,
+  "requested_prs_verified_merged_and_ancestors": [
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    58,
+    60,
+    64
+  ],
+  "exact_pr_titles_and_file_diff_receipt": "merged-pr-evidence.json",
+  "exact_pr_evidence_sha256": "716fcc482f07d46a33708f1e144592dea357045a0a0fe1bc7ff24617935c12d2",
+  "findings": [
+    {
+      "id": "DOC-1",
+      "status": "concrete_stale_source_completion",
+      "subject": "WP-6f source is merged while current status still says implementation pending",
+      "locations": [
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 253,
+          "literal": "**WP-6f: Every-photo publication privacy screen \u2014 specification approved; implementation pending**",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L253"
+        },
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 255,
+          "literal": "Branch: `wp-6f-photo-privacy-screening`. Justin's chosen policy is server-side open-detector screening of every photo, with individual flagged photos withheld for private human CLI review and no automatic blur. Start with face and scene-text screening. Until WP-6f is deployed and Justin approves calibration evidence, releases contain structured data only under the SPEC \u00a711 photo-publication gate; passing existing QA or individual review cannot bypass it. After that gate, eligible observation data and other cleared photos proceed normally. **The specification approval and merge prerequisite was satisfied in #38.** Implementation remains pending; unresolved weight licenses, uncalibrated category coverage and separate production authorization remain gates. See SPEC \u00a715.4 and [the detector comparison](PHOTO_PRIVACY_SCREENING.md).",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L255"
+        },
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 257,
+          "literal": "Acceptance criteria for the later implementation PR:",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L257"
+        },
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 268,
+          "literal": "**WP-6f implementation details (v8 proposal, SPEC \u00a715.5\u201315.9):** `docs/spec-v8` \u2192 `wp-6fa-private-photo-privacy` \u2192 `wp-6fb-photo-privacy-worker` \u2192 `wp-6fc-photo-export-enforcement`, separate independently reviewed PRs with green CI. Preparation may proceed after the prerequisite specification commit; no implementation merge before its specification/predecessor. Owner-authorized code merges supply no production migration, dispatch, model approval, operator credential or photo-publication permission.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L268"
+        },
+        {
+          "path": "docs/SPEC.md",
+          "line": 336,
+          "literal": "### 15.4 WP-6f: every-photo privacy screening, pending implementation approval",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/SPEC.md#L336"
+        },
+        {
+          "path": "docs/SPEC.md",
+          "line": 348,
+          "literal": "**Implementation gate:** the specification merge prerequisite is satisfied by #38. The later implementation PR needs migrations/RLS and export tests, private review authorization tests, reproducible detector-license/digest evidence, and calibration evidence before deployment; production commands still require a separate exact-target \"go\". This proposal neither starts screening nor claims current photos are screened.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/SPEC.md#L348"
+        },
+        {
+          "path": "docs/SPEC.md",
+          "line": 350,
+          "literal": "### 15.5 WP-6f private state, policy and authority (v8 architecture proposal)",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/SPEC.md#L350"
+        }
+      ],
+      "pr_evidence": [
+        53,
+        54,
+        55
+      ],
+      "recommendation": "Mark 6fA/B/C source merged and link the exact PRs; retain detector artifact/license selection, calibration, personal operator provisioning, production deployment and photo-publication/capture gates. Requirements remain requirements; do not check mixed external acceptance boxes."
+    },
+    {
+      "id": "DOC-2",
+      "status": "concrete_stale_source_completion",
+      "subject": "Merged v10 and LIB-5A/5B still described as draft or awaiting prerequisites",
+      "locations": [
+        {
+          "path": "docs/SPEC.md",
+          "line": 4,
+          "literal": "**Version:** 10.0 \u2014 2026-10-13 (draft local simulator clarification)",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/SPEC.md#L4"
+        },
+        {
+          "path": "docs/SPEC.md",
+          "line": 5,
+          "literal": "**v10 amendment status:** proposed clarification of LIB-5B local accounting, reserved fences, daily admission and the single-root simulation boundary in \u00a716.12. This is specification work under Justin's keep-building authority; independent source review, green CI and this amendment's merge precede LIB-5B code. LIB-5A remains governed by the approved v9 pure contract. No real-source grant, credential, cleanup-authentication or retention policy is selected.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/SPEC.md#L5"
+        },
+        {
+          "path": "docs/SPEC.md",
+          "line": 10,
+          "literal": "**Status:** the v5\u2013v9 library/photo foundation, LIB-1 through LIB-4C and WP-6fA/B/C source are merged, including the owner-authorized ordered #51\u2013#56 merges after independent review and green exact-head CI. LIB-5A implementation is separately reviewed; LIB-5B code awaits both merged LIB-5A and this reviewed clarification. Runtime photo code is built and reviewed; model calibration and production deployment remain separate gates. No code or specification merge authorizes production migration, deployment, publication, worker dispatch, peer enrollment or capture opening.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/SPEC.md#L10"
+        },
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 4,
+          "literal": "**Version:** 10.0 \u2014 2026-10-13 (draft local clarification; SPEC \u00a716.12)",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L4"
+        },
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 5,
+          "literal": "**v10 amendment status:** specification-only draft for the four LIB-5B local accounting/fence/admission/root clarifications. Independent source review, green CI and amendment merge precede LIB-5B code; approved v9 LIB-5A contract work remains independent.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L5"
+        },
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 6,
+          "literal": "**Owner approval:** Justin approved ordered #51\u2013#56 source merges after green CI on 2026-10-13; those source/specification merges are complete. LIB-5A pure contracts may proceed under approved v9. LIB-5B synthetic code follows both merged LIB-5A and the reviewed/green/merged v10 clarification. Real-sharing source/retention/peer/credential choices remain unresolved; no federation rollout or production authority is granted.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L6"
+        },
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 12,
+          "literal": "**Governing document:** reviewed `docs/SPEC.md` on `main` (v5 foundation, v6/v7 private intake, v8 photo privacy and v9 bounded local exchange architecture; v10 proposes only local simulator clarification in \u00a716.12). Existing launch gates are preserved; the draft is not an implementation or merge result. If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L12"
+        },
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 370,
+          "literal": "**Approved local LIB-5 sequence (v9, with proposed v10 \u00a716.12 clarification):** merged `docs/spec-v9` \u2192 `wp-lib-5a-exchange-contract`; `wp-lib-5b-private-exchange-ledger` follows both merged LIB-5A and reviewed/green/merged `docs/spec-v10`. Justin approved the local v9 architecture on 2026-10-13. v10 resolves only the four local simulator ambiguities; it changes neither LIB-5A's approved contract nor the unresolved real-sharing policies and transport in LIB-5C. Each package is a separate PR with independent adversarial review and green CI. `wp-lib-5c-scoped-peer-transport` remains blocked until the new source-sharing/privacy, peer-admission, credential/cleanup and same-material policy decisions are resolved. Preparing synthetic local code never permits real exchange, peer enrollment, production migration, deployment, public release or field training. Existing public readers remain anonymous/read-only and no service-role key or contributor session reaches an agent interface.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L370"
+        },
+        {
+          "path": "docs/BUILD_ORDER.md",
+          "line": 385,
+          "literal": "Branch: `wp-lib-5b-private-exchange-ledger`. Depends on merged LIB-5A and independently reviewed/green/merged v10 \u00a716.12. Implement one deterministic synthetic-only draft/outbox/receiver simulator per operator-designated private root with fake authority and transport; do not add a real sender, downloader, peer listener, automatic contributor-directory scan or field-data export. A locally stored record's verified-state declarations and LIB-5A supplied-fact helpers cannot be treated as source authority. No implementation or test result is claimed by this specification draft.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/BUILD_ORDER.md#L385"
+        }
+      ],
+      "pr_evidence": [
+        58,
+        60,
+        64
+      ],
+      "recommendation": "Mark v10 clarification merged (#60), strict 5A source merged (#58) and synthetic-only 5B source merged (#64). Keep real authority/transport LIB-5C, licensed reference data, physical-pair verification, scientific evaluation, spectral privacy, capture and deployment held."
+    },
+    {
+      "id": "DOC-3",
+      "status": "ambiguous_source_vs_deployment_status",
+      "subject": "README calls hosted intake scheduled without distinguishing merged source from hosted activation",
+      "locations": [
+        {
+          "path": "README.md",
+          "line": 26,
+          "literal": "[soil library developer guide](docs/SOIL_LIBRARY.md). Hosted intake, federation and",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/README.md#L26"
+        },
+        {
+          "path": "README.md",
+          "line": 27,
+          "literal": "scientific model validation remain scheduled work; these tools do not open capture.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/README.md#L27"
+        }
+      ],
+      "pr_evidence": [
+        51
+      ],
+      "supporting_spec_location": [
+        {
+          "path": "docs/SPEC.md",
+          "line": 10,
+          "literal": "**Status:** the v5\u2013v9 library/photo foundation, LIB-1 through LIB-4C and WP-6fA/B/C source are merged, including the owner-authorized ordered #51\u2013#56 merges after independent review and green exact-head CI. LIB-5A implementation is separately reviewed; LIB-5B code awaits both merged LIB-5A and this reviewed clarification. Runtime photo code is built and reviewed; model calibration and production deployment remain separate gates. No code or specification merge authorizes production migration, deployment, publication, worker dispatch, peer enrollment or capture opening.",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/SPEC.md#L10"
+        },
+        {
+          "path": "docs/SPEC.md",
+          "line": 469,
+          "literal": "### 16.6 Additive hosted intake and authority (WP-LIB-4B)",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/SPEC.md#L469"
+        },
+        {
+          "path": "docs/SPEC.md",
+          "line": 495,
+          "literal": "### 16.8 Phone integration and independent activation (WP-LIB-4C)",
+          "url": "https://github.com/global-soil-intelligence/gsip/blob/710d144db94097be71989c67b5d3b4bb48135ad8/docs/SPEC.md#L495"
+        }
+      ],
+      "recommendation": "Clarify that private-intake source and compatible phone integration are present, while hosted deployment/activation remains gated; real federation and scientific validation remain future work."
+    }
+  ],
+  "not_inferred": [
+    "production deployment or health",
+    "model licensing/calibration approval",
+    "real peer sharing or distributed erasure",
+    "real scientific reference or phone RGB as measured spectrum",
+    "capture activation",
+    "physical-device behavior or iOS backup protection"
+  ],
+  "scope_limits": "Finite documentation completion consistency review, not reopened implementation correctness or external-readiness review. Historical changelog labels and acceptance requirements must not be blanket marked complete.",
+  "authority": {
+    "get_only": true,
+    "shared_source_git_github_or_production_mutations": false
+  },
+  "manifest": {
+    "path": "assessment-evidence-manifest.json",
+    "sha256": "ea806241fb42fe20ad392dc59e28ec36de8b332a3c5ec3530d595bc3e561f663",
+    "files": 9
+  }
+}

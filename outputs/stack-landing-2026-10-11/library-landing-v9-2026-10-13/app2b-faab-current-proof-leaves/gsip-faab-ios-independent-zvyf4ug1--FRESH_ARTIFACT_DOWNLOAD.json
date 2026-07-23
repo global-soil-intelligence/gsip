@@ -1,0 +1,14 @@
+{
+  "artifact_id": 11868310108,
+  "bytes": 13914592,
+  "download_count": 1,
+  "expired": false,
+  "get_only": true,
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "ios_job_id": 115663053189,
+  "older_artifacts_reused": false,
+  "run_attempt": 1,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "sha256": "487109ff3236033366878549a8801f8d61659b5c7fc6c13c5b9b2eecd611aa9b"
+}

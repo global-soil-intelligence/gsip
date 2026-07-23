@@ -1,0 +1,728 @@
+{
+  "at_utc": "2026-10-13T17:57:19.725669+00:00",
+  "status": "PR64_EXACT_REVIEWED_HEAD_ALL_CHECKS_TERMINAL_SOURCE_CI_PASS_DCO_POLICY_SKIP",
+  "repository": "global-soil-intelligence/gsip",
+  "pull_request": 64,
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/64",
+  "head": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+  "base": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "final_pr_readback": {
+    "state": "open",
+    "draft": true,
+    "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+    "base_sha": "d7ed716ed0921381da04f542e90902ede36cb462",
+    "query": "gh api -X GET repos/global-soil-intelligence/gsip/pulls/64 --jq selected metadata",
+    "readback_after_log_extraction": true
+  },
+  "independent_source_closure": {
+    "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/independent-v5-full33-closure.json",
+    "sha256": "a9b74906a78c873c0ee07ac05ad689aa16a3c4fcd091ef1fef3247eef562757f",
+    "bytes": 33130
+  },
+  "runs": [
+    {
+      "id": 38440866039,
+      "name": "Secret scan",
+      "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440866039",
+      "event": "pull_request",
+      "run_attempt": 1,
+      "created_at": "2026-10-13T17:42:49Z",
+      "updated_at": "2026-10-13T17:42:59Z"
+    },
+    {
+      "id": 38440865636,
+      "name": "DCO",
+      "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440865636",
+      "event": "pull_request",
+      "run_attempt": 1,
+      "created_at": "2026-10-13T17:42:49Z",
+      "updated_at": "2026-10-13T17:42:50Z"
+    },
+    {
+      "id": 38440865646,
+      "name": "CI",
+      "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440865646",
+      "event": "pull_request",
+      "run_attempt": 1,
+      "created_at": "2026-10-13T17:42:49Z",
+      "updated_at": "2026-10-13T17:49:13Z"
+    },
+    {
+      "id": 38440855482,
+      "name": "Secret scan",
+      "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440855482",
+      "event": "push",
+      "run_attempt": 1,
+      "created_at": "2026-10-13T17:42:44Z",
+      "updated_at": "2026-10-13T17:42:57Z"
+    }
+  ],
+  "checks": [
+    {
+      "id": 115446780158,
+      "name": "dco",
+      "status": "completed",
+      "conclusion": "skipped",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440865636/job/115446780158",
+      "started_at": "2026-10-13T17:42:50Z",
+      "completed_at": "2026-10-13T17:42:49Z"
+    },
+    {
+      "id": 115446778648,
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440866039/job/115446778648",
+      "started_at": "2026-10-13T17:42:51Z",
+      "completed_at": "2026-10-13T17:42:58Z"
+    },
+    {
+      "id": 115446776041,
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440865646/job/115446776041",
+      "started_at": "2026-10-13T17:42:51Z",
+      "completed_at": "2026-10-13T17:49:12Z"
+    },
+    {
+      "id": 115446740581,
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440855482/job/115446740581",
+      "started_at": "2026-10-13T17:42:47Z",
+      "completed_at": "2026-10-13T17:42:57Z"
+    }
+  ],
+  "jobs": [
+    {
+      "id": 115446778648,
+      "name": "gitleaks",
+      "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440866039/job/115446778648",
+      "started_at": "2026-10-13T17:42:51Z",
+      "completed_at": "2026-10-13T17:42:58Z",
+      "run_id": 38440866039,
+      "steps": [
+        {
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:52Z",
+          "completed_at": "2026-10-13T17:42:53Z"
+        },
+        {
+          "name": "Check out full history",
+          "number": 2,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:53Z",
+          "completed_at": "2026-10-13T17:42:54Z"
+        },
+        {
+          "name": "Install gitleaks v8.21.2",
+          "number": 3,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:54Z",
+          "completed_at": "2026-10-13T17:42:54Z"
+        },
+        {
+          "name": "Scan Git history",
+          "number": 4,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:54Z",
+          "completed_at": "2026-10-13T17:42:56Z"
+        },
+        {
+          "name": "Post Check out full history",
+          "number": 8,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:56Z",
+          "completed_at": "2026-10-13T17:42:56Z"
+        },
+        {
+          "name": "Complete job",
+          "number": 9,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:56Z",
+          "completed_at": "2026-10-13T17:42:56Z"
+        }
+      ]
+    },
+    {
+      "id": 115446780158,
+      "name": "dco",
+      "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+      "status": "completed",
+      "conclusion": "skipped",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440865636/job/115446780158",
+      "started_at": "2026-10-13T17:42:50Z",
+      "completed_at": "2026-10-13T17:42:49Z",
+      "run_id": 38440865636,
+      "steps": []
+    },
+    {
+      "id": 115446776041,
+      "name": "validate",
+      "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440865646/job/115446776041",
+      "started_at": "2026-10-13T17:42:51Z",
+      "completed_at": "2026-10-13T17:49:12Z",
+      "run_id": 38440865646,
+      "steps": [
+        {
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:52Z",
+          "completed_at": "2026-10-13T17:42:54Z"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:54Z",
+          "completed_at": "2026-10-13T17:42:56Z"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "number": 3,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:56Z",
+          "completed_at": "2026-10-13T17:42:59Z"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "number": 4,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:59Z",
+          "completed_at": "2026-10-13T17:43:03Z"
+        },
+        {
+          "name": "Run astral-sh/setup-uv@v7",
+          "number": 5,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:03Z",
+          "completed_at": "2026-10-13T17:43:04Z"
+        },
+        {
+          "name": "Run actions/setup-python@v7",
+          "number": 6,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:04Z",
+          "completed_at": "2026-10-13T17:43:05Z"
+        },
+        {
+          "name": "Run denoland/setup-deno@v2",
+          "number": 7,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:05Z",
+          "completed_at": "2026-10-13T17:43:07Z"
+        },
+        {
+          "name": "Install GDAL for the golden-tile tests",
+          "number": 8,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:07Z",
+          "completed_at": "2026-10-13T17:43:24Z"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "number": 9,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:24Z",
+          "completed_at": "2026-10-13T17:43:27Z"
+        },
+        {
+          "name": "Run uv sync --frozen --all-groups",
+          "number": 10,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:27Z",
+          "completed_at": "2026-10-13T17:43:30Z"
+        },
+        {
+          "name": "Run pnpm lint",
+          "number": 11,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:30Z",
+          "completed_at": "2026-10-13T17:43:34Z"
+        },
+        {
+          "name": "Run pnpm typecheck",
+          "number": 12,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:34Z",
+          "completed_at": "2026-10-13T17:43:40Z"
+        },
+        {
+          "name": "Run pnpm test",
+          "number": 13,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:40Z",
+          "completed_at": "2026-10-13T17:43:52Z"
+        },
+        {
+          "name": "Run pnpm build",
+          "number": 14,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:52Z",
+          "completed_at": "2026-10-13T17:43:55Z"
+        },
+        {
+          "name": "Run pnpm check:map-budget",
+          "number": 15,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:55Z",
+          "completed_at": "2026-10-13T17:43:55Z"
+        },
+        {
+          "name": "Run pnpm exec playwright install --with-deps chromium",
+          "number": 16,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:43:55Z",
+          "completed_at": "2026-10-13T17:44:07Z"
+        },
+        {
+          "name": "Run pnpm exec playwright test --project=desktop-chrome",
+          "number": 17,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:44:07Z",
+          "completed_at": "2026-10-13T17:44:19Z"
+        },
+        {
+          "name": "Run uv run ruff check .",
+          "number": 18,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:44:19Z",
+          "completed_at": "2026-10-13T17:44:19Z"
+        },
+        {
+          "name": "Run uv run mypy",
+          "number": 19,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:44:19Z",
+          "completed_at": "2026-10-13T17:44:26Z"
+        },
+        {
+          "name": "Run uv run pytest",
+          "number": 20,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:44:26Z",
+          "completed_at": "2026-10-13T17:46:14Z"
+        },
+        {
+          "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+          "number": 21,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:46:14Z",
+          "completed_at": "2026-10-13T17:46:15Z"
+        },
+        {
+          "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+          "number": 22,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:46:15Z",
+          "completed_at": "2026-10-13T17:46:18Z"
+        },
+        {
+          "name": "Apply migrations to data written before them",
+          "number": 23,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:46:18Z",
+          "completed_at": "2026-10-13T17:47:03Z"
+        },
+        {
+          "name": "Run pnpm db:start",
+          "number": 24,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:47:03Z",
+          "completed_at": "2026-10-13T17:48:18Z"
+        },
+        {
+          "name": "Run pnpm db:reset",
+          "number": 25,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:48:18Z",
+          "completed_at": "2026-10-13T17:48:45Z"
+        },
+        {
+          "name": "Run pnpm db:test",
+          "number": 26,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:48:45Z",
+          "completed_at": "2026-10-13T17:48:50Z"
+        },
+        {
+          "name": "Run pnpm db:stop",
+          "number": 27,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:48:50Z",
+          "completed_at": "2026-10-13T17:49:09Z"
+        },
+        {
+          "name": "Post Run denoland/setup-deno@v2",
+          "number": 49,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:49:09Z",
+          "completed_at": "2026-10-13T17:49:09Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v7",
+          "number": 50,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:49:09Z",
+          "completed_at": "2026-10-13T17:49:09Z"
+        },
+        {
+          "name": "Post Run astral-sh/setup-uv@v7",
+          "number": 51,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:49:09Z",
+          "completed_at": "2026-10-13T17:49:09Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "number": 52,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:49:09Z",
+          "completed_at": "2026-10-13T17:49:09Z"
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "number": 53,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:49:09Z",
+          "completed_at": "2026-10-13T17:49:09Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "number": 54,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:49:09Z",
+          "completed_at": "2026-10-13T17:49:09Z"
+        },
+        {
+          "name": "Complete job",
+          "number": 55,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:49:09Z",
+          "completed_at": "2026-10-13T17:49:09Z"
+        }
+      ]
+    },
+    {
+      "id": 115446740581,
+      "name": "gitleaks",
+      "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440855482/job/115446740581",
+      "started_at": "2026-10-13T17:42:47Z",
+      "completed_at": "2026-10-13T17:42:57Z",
+      "run_id": 38440855482,
+      "steps": [
+        {
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:48Z",
+          "completed_at": "2026-10-13T17:42:49Z"
+        },
+        {
+          "name": "Check out full history",
+          "number": 2,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:49Z",
+          "completed_at": "2026-10-13T17:42:52Z"
+        },
+        {
+          "name": "Install gitleaks v8.21.2",
+          "number": 3,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:52Z",
+          "completed_at": "2026-10-13T17:42:53Z"
+        },
+        {
+          "name": "Scan Git history",
+          "number": 4,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:53Z",
+          "completed_at": "2026-10-13T17:42:54Z"
+        },
+        {
+          "name": "Post Check out full history",
+          "number": 8,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:54Z",
+          "completed_at": "2026-10-13T17:42:55Z"
+        },
+        {
+          "name": "Complete job",
+          "number": 9,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-13T17:42:55Z",
+          "completed_at": "2026-10-13T17:42:55Z"
+        }
+      ]
+    }
+  ],
+  "actual_executed": {
+    "javascript": {
+      "passed": 529,
+      "files": 39,
+      "package_summaries": [
+        {
+          "package": null,
+          "kind": "files",
+          "passed": 2,
+          "total": 2
+        },
+        {
+          "package": null,
+          "kind": "tests",
+          "passed": 28,
+          "total": 28
+        },
+        {
+          "package": null,
+          "kind": "files",
+          "passed": 15,
+          "total": 15
+        },
+        {
+          "package": null,
+          "kind": "tests",
+          "passed": 308,
+          "total": 308
+        },
+        {
+          "package": null,
+          "kind": "files",
+          "passed": 3,
+          "total": 3
+        },
+        {
+          "package": null,
+          "kind": "tests",
+          "passed": 15,
+          "total": 15
+        },
+        {
+          "package": null,
+          "kind": "files",
+          "passed": 19,
+          "total": 19
+        },
+        {
+          "package": null,
+          "kind": "tests",
+          "passed": 178,
+          "total": 178
+        }
+      ],
+      "package_count": 4,
+      "package_labels_not_printed_by_parser": true
+    },
+    "browser": {
+      "passed": 12,
+      "seconds": 11.6
+    },
+    "python": {
+      "passed": 1136,
+      "skipped": 0,
+      "warnings": 37,
+      "seconds": 106.54
+    },
+    "GDAL": {
+      "executed_marked_cases": 4,
+      "required_flag_observed_in_log": true,
+      "overall_python_skipped": 0,
+      "basis": "Exact unchanged source test_tiles.py has3 parameterized golden-layer cases+1RGBA/transparent-nodata case. CI sets required flag, entire suite1136passes/0skip; individual node names not printed by-q."
+    },
+    "Deno": {
+      "checked_entrypoints_observed_in_log": 2,
+      "source_entrypoint_count": 2,
+      "step_conclusion": "success"
+    },
+    "migration_compatibility": {
+      "step_conclusion": "success",
+      "case_total_reported": null
+    },
+    "pgTAP": {
+      "files": 11,
+      "tests": 593
+    },
+    "lint_typecheck_build_map_budget": "all associated job steps succeeded",
+    "secret_scans": [
+      {
+        "id": 115446778648,
+        "run_id": 38440866039,
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440866039/job/115446778648",
+        "conclusion": "success",
+        "no_leaks_line_observed": true,
+        "version_8_21_2_observed": false,
+        "log_download_bytes": 21873,
+        "log_sha256": "79f30dcc1dd1c7be4ce974fb02d970a7e817be9e8bf0fa710cd6d75a1ef10281",
+        "raw_persisted": false
+      },
+      {
+        "id": 115446740581,
+        "run_id": 38440855482,
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38440855482/job/115446740581",
+        "conclusion": "success",
+        "no_leaks_line_observed": true,
+        "version_8_21_2_observed": false,
+        "log_download_bytes": 20598,
+        "log_sha256": "cd3f623b31d1673ae38c478c39a0b77cb9ddee39d91a9b7cd911d5d389696f40",
+        "raw_persisted": false
+      }
+    ]
+  },
+  "DCO": {
+    "conclusion": "skipped",
+    "not_a_pass": true,
+    "same_repository": true,
+    "policy": "Existing workflow runs DCO only for fork contributions. Same-repository guard and source unchanged; no bypass/edit by watcher."
+  },
+  "native_workflow": {
+    "runs_observed": 0,
+    "basis": "All exact-head workflow runs4 listed; Python/doc-only5file change, no App build workflow. This supplies no native/device evidence."
+  },
+  "workflow_source_bindings": [
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/.github/workflows/ci.yml",
+      "sha256": "534b60200b3b53e930713dae99ef46fc3dfbc2bf5dadd34952fdb3cb8d667e2c",
+      "bytes": 1847
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/.github/workflows/dco.yml",
+      "sha256": "b5164e452aeb41b0c1570a3fabb8a58eabf1afb453d77097d4b73ce67d6f17c5",
+      "bytes": 1293
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/.github/workflows/secret-scan.yml",
+      "sha256": "b29dc91eb6becb78672ddf5ca7e96133e4265d69a04610666c87aaa3fdace8f9",
+      "bytes": 1276
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/tests/test_tiles.py",
+      "sha256": "7698f2eeebc8069a700866e291448e6d4f27d9e0440ae5d614b56d39df573171",
+      "bytes": 8114
+    }
+  ],
+  "metadata_receipts": [
+    {
+      "path": "/private/tmp/gsip-lib5b-pr64-ci-watch-edmtpryn/snapshot-20261013T175127620300Z.json",
+      "sha256": "99f0e4538ce387e10878e29f8dfa0a2eb53606f6edbf1745cca3c431b80aa98b",
+      "bytes": 17114
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-pr64-ci-watch-edmtpryn/sanitized-executed-totals.json",
+      "sha256": "566950a96aea16e4ee31b1d96a1a074342251a1e23cb1d6718152ad243b4f639",
+      "bytes": 3016
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-pr64-ci-watch-edmtpryn/initial-metadata.json",
+      "sha256": "d80bf54a03f0434f809fbafb3f312dce2cee65d2ef5439b6f4705ede5e908666",
+      "bytes": 1143
+    }
+  ],
+  "watch_code": [
+    {
+      "path": "/private/tmp/gsip-lib5b-pr64-ci-watch-edmtpryn/read_ci_metadata.py",
+      "sha256": "42108e7dadd668adac13913083fe2f23767cda31e6731e87223da75a4a6ef83e",
+      "bytes": 3331
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-pr64-ci-watch-edmtpryn/extract_sanitized_totals.py",
+      "sha256": "9fc0c1e4c72635d67572dd595f38cd551a2014f3bafce18f391be5e81d0fa8f7",
+      "bytes": 5600
+    }
+  ],
+  "privacy": {
+    "raw_logs_read_only_in_memory": true,
+    "raw_logs_persisted": false,
+    "retained_output": "metadata, fixed labels and numeric totals only; raw-log hashes/byte counts are evidence metadata",
+    "arbitrary_log_lines_or_error_contents_printed": false
+  },
+  "observations": [
+    "Both full-history secret scan jobs succeed and no-leaks line observed. Runtime version token was not captured by numeric parser; unchanged workflow pins archivev8.21.2 with SHA verification and install step succeeds.",
+    "Python37warnings retained as a count; no suppressed failure/skip inference.",
+    "Earlier host4GDAL skips are resolved by actual LinuxCI whole suite1136passes/0skips; independent source closure remains immutable.",
+    "Metadata watch used bounded backoff; sandbox network retry used authorized GET-only escalation and no automatic-review rejection."
+  ],
+  "actions": {
+    "GH_GET_only": true,
+    "rerun_dispatch": false,
+    "PR_edit_review_merge_admin": false,
+    "Git_or_source_mutations": false,
+    "production_secrets_real_data": false
+  },
+  "remaining": [
+    "Root retains all mutations, final source disposition and owner gates.",
+    "No real sharing, credentials/retention approval, physical pairing, field/model/science/adoption or production/capture/worker/publication authority.",
+    "No native job/device delivery/logging/iOS backup/signing/store proof; APP scope remains separate."
+  ]
+}

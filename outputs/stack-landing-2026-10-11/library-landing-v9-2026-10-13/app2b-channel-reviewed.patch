@@ -1,0 +1,409 @@
+--- a/scripts/app_notification_audit.py
++++ b/scripts/app_notification_audit.py
+@@ -106,6 +106,10 @@
+ _diagnostic_stage = "start"
+ _diagnostic_counts: dict[str, int] = {}
+ MAX_DIAGNOSTIC_BYTES = 65_536
++MAX_FIXED_FAULT_BYTES = 256
++_fixed_fault_lease: tuple[
++    subprocess.CalledProcessError, tuple[str, ...], int, tuple[str, str] | None
++] | None = None
+ GRADLE_FAILURE_PHASES = {
+     "DEBUG_CONFIGURATION": "android-gradle-debug-configuration",
+     "DEBUG_RESOLUTION": "android-gradle-debug-resolution",
+@@ -169,6 +173,65 @@
+         return False
+     return True
+ 
++
++
++def reset_fixed_fault() -> None:
++    global _fixed_fault_lease
++    _fixed_fault_lease = None
++
++
++def read_fixed_fault(directory: Path, root: Path) -> tuple[str, str] | None:
++    """Only a single fixed, descriptor-checked receipt; never inspect tool streams."""
++    try:
++        contained(directory, (root,))
++        with os.scandir(directory) as entries:
++            first = next(entries, None)
++            if first is None or next(entries, None) is not None or first.name != "fault-0.json":
++                return None
++        payload = decoded(read(directory / "fault-0.json", (root,), MAX_FIXED_FAULT_BYTES))
++        if (
++            set(payload) != {"schema", "phase", "cause"}
++            or payload["schema"] != "gsip-fixed-fault-v1"
++            or type(payload["phase"]) is not str
++            or payload["phase"] not in {*GRADLE_FAILURE_PHASES, "TASK_SETUP"}
++            or type(payload["cause"]) is not str
++            or payload["cause"] not in GRADLE_FAILURE_CAUSES
++        ):
++            return None
++        return payload["phase"], payload["cause"]
++    except (OSError, ValueError, TypeError, KeyError, RecursionError):
++        return None
++
++
++def lease_fixed_fault(
++    error: subprocess.CalledProcessError, command: list[str], directory: Path, root: Path
++) -> None:
++    global _fixed_fault_lease
++    reset_fixed_fault()
++    if (
++        _diagnostic_stage == "android-gradle-inspection"
++        and _gradle_inspection_command(error)
++        and tuple(error.cmd) == tuple(command)
++    ):
++        _fixed_fault_lease = (
++            error, tuple(command), error.returncode, read_fixed_fault(directory, root)
++        )
++
++
++def fixed_fault_diagnostic(error: subprocess.CalledProcessError) -> str | None:
++    if _diagnostic_stage != "android-gradle-inspection" or not _gradle_inspection_command(error):
++        return None
++    lease = _fixed_fault_lease
++    if (
++        lease is None
++        or lease[0] is not error
++        or lease[1] != tuple(error.cmd)
++        or lease[2] != error.returncode
++        or lease[3] is None
++    ):
++        return "GSIP_FIXED_FAULT_V1|UNKNOWN"
++    phase, cause = lease[3]
++    return f"GSIP_FIXED_FAULT_V1|VALID|{phase}|{cause}"
+ 
+ def _gradle_context_stream(raw: Any) -> tuple[str, str | None, int]:
+     """No coercion or partial inspection: match existing type/UTF-8/size/control guards."""
+@@ -778,6 +841,7 @@
+ GRADLE_TASK = """import groovy.json.JsonOutput
+ import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+ import org.gradle.api.artifacts.component.ProjectComponentIdentifier
++def gsipFaultSequence = new java.util.concurrent.atomic.AtomicInteger(0)
+ def gsipEmitFault = { phase, failure ->
+     def safePhase = phase in ['DEBUG_CONFIGURATION','DEBUG_RESOLUTION','DEBUG_COMPONENTS',
+         'DEBUG_ARTIFACTS','RELEASE_CONFIGURATION','RELEASE_RESOLUTION','RELEASE_COMPONENTS',
+@@ -813,8 +877,17 @@
+         if (current == null && labels.size() == 1) { cause = labels.iterator().next() }
+     } catch (Throwable ignored) { cause = 'UNKNOWN' }
+     System.err.println('GSIP_RUNTIME_FAILURE_V1|' + safePhase + '|' + cause)
++    def receiptPhase = phase == 'TASK_SETUP' ? 'TASK_SETUP' : safePhase
++    def directory = new File(gradle.rootProject.findProperty('gsipEvidenceOutput').toString()
++        + '.faults')
++    def receipt = new File(directory, 'fault-' + gsipFaultSequence.getAndIncrement() + '.json')
++    def payload = JsonOutput.toJson([schema:'gsip-fixed-fault-v1',
++        phase:receiptPhase,cause:cause]).getBytes('UTF-8')
++    java.nio.file.Files.write(receipt.toPath(), payload,
++        java.nio.file.StandardOpenOption.CREATE_NEW, java.nio.file.StandardOpenOption.WRITE)
+ }
+ gradle.projectsEvaluated {
++    try {
+     def app = gradle.rootProject.project(':app')
+     app.tasks.register('gsipRuntimeEvidence') {
+         doLast {
+@@ -860,6 +933,10 @@
+                 throw failure
+             }
+         }
++    }
++    } catch (Throwable failure) {
++        try { gsipEmitFault('TASK_SETUP', failure) } catch (Throwable ignored) {}
++        throw failure
+     }
+ }
+ """
+@@ -1014,6 +1091,7 @@
+ 
+ 
+ def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> None:
++    reset_fixed_fault()
+     mark("android-dependency-trees")
+     for configuration in ("debugRuntimeClasspath", "releaseRuntimeClasspath"):
+         text = run(
+@@ -1046,19 +1124,24 @@
+         temporary = Path(directory)
+         task, graph = temporary / "inspection.gradle", temporary / "resolved.json"
+         task.write_text(GRADLE_TASK)
++        faults = graph.with_name(graph.name + ".faults")
++        faults.mkdir(mode=0o700)
++        reset_fixed_fault()
+         mark("android-gradle-inspection")
+-        run(
+-            [
+-                str(repo / "apps/capture-pwa/android/gradlew"),
+-                "--no-daemon",
+-                "--console=plain",
+-                "-I",
+-                str(task),
+-                ":app:gsipRuntimeEvidence",
+-                f"-PgsipEvidenceOutput={graph}",
+-            ],
+-            repo / "apps/capture-pwa/android",
+-        )
++        command = [
++            str(repo / "apps/capture-pwa/android/gradlew"),
++            "--no-daemon",
++            "--console=plain",
++            "-I",
++            str(task),
++            ":app:gsipRuntimeEvidence",
++            f"-PgsipEvidenceOutput={graph}",
++        ]
++        try:
++            run(command, repo / "apps/capture-pwa/android")
++        except subprocess.CalledProcessError as error:
++            lease_fixed_fault(error, command, faults, temporary)
++            raise
+         raw = read(graph, (temporary,))
+         result = runtime_evidence(decoded(raw), repo, cache, True)
+     mark("android-source-bindings")
+@@ -2621,6 +2704,7 @@
+ 
+ 
+ def main(argv: list[str] | None = None) -> int:
++    reset_fixed_fault()
+     mark("start")
+     parser = argparse.ArgumentParser(description=__doc__)
+     commands = parser.add_subparsers(dest="action", required=True)
+@@ -2693,10 +2777,14 @@
+             context = gradle_failure_context(error)
+             if context is not None:
+                 print(context, file=sys.stderr)
++            fault = fixed_fault_diagnostic(error)
++            if fault is not None:
++                print(fault, file=sys.stderr)
+         print(
+             "native-audit: diagnostic " + json.dumps(diagnostic(error), sort_keys=True),
+             file=sys.stderr,
+         )
++        reset_fixed_fault()
+         return 1
+ 
+ 
+--- a/tests/test_app_notification_audit.py
++++ b/tests/test_app_notification_audit.py
+@@ -2836,3 +2836,184 @@
+     if case == "unexpected_error":
+         error = ValueError("synthetic private")
+     assert audit.gradle_failure_context(error) is None
++
++
++@pytest.mark.parametrize(("case", "expected"), [
++    ("valid", "GSIP_FIXED_FAULT_V1|VALID|RELEASE_CONFIGURATION|CONFIGURATION_MISSING"),
++    ("absent", "GSIP_FIXED_FAULT_V1|UNKNOWN"),
++    ("setup", "GSIP_FIXED_FAULT_V1|VALID|TASK_SETUP|UNKNOWN"),
++])
++def test_fixed_fault_channel_survives_oversized_stderr_without_relaxing_it(
++    case: str, expected: str, monkeypatch: pytest.MonkeyPatch,
++    capsys: pytest.CaptureFixture[str], tmp_path: Path,
++) -> None:
++    import subprocess
++
++    errors: list[subprocess.CalledProcessError] = []
++    def fake_run(args: list[str], *unused: Any) -> str:
++        if ":app:gsipRuntimeEvidence" not in args:
++            return "+--- org.synthetic:public:1.0"
++        graph = Path(args[-1].removeprefix("-PgsipEvidenceOutput="))
++        directory = graph.with_name(graph.name + ".faults")
++        directory.mkdir(exist_ok=True)
++        if case != "absent":
++            payload = {"schema": "gsip-fixed-fault-v1", "phase": "RELEASE_CONFIGURATION",
++                       "cause": "CONFIGURATION_MISSING"}
++            if case == "setup":
++                payload.update(phase="TASK_SETUP", cause="UNKNOWN")
++            (directory / "fault-0.json").write_text(json.dumps(payload))
++        error = subprocess.CalledProcessError(
++            1, args, output="synthetic private stdout",
++            stderr="synthetic private oversized stderr " + "x" * audit.MAX_DIAGNOSTIC_BYTES,
++        )
++        errors.append(error)
++        raise error
++    monkeypatch.setattr(audit, "run", fake_run)
++    target = tmp_path / "out.json"
++    assert (
++        audit.main(["android", str(tmp_path), str(tmp_path), str(target), str(tmp_path / "key")])
++        == 1
++    )
++    captured = capsys.readouterr()
++    assert expected in captured.err.splitlines()
++    assert len(errors) == 1 and errors[0].returncode == 1
++    assert not target.exists()
++    assert "synthetic private" not in captured.err
++    assert str(tmp_path) not in captured.err
++    assert "SIZE_REJECTED|UNINSPECTED" in captured.err
++    diagnostic = json.loads(captured.err.split("native-audit: diagnostic ", 1)[1])
++    assert set(diagnostic) == {"stage", "error_class", "source_line", "counts"}
++    assert diagnostic["error_class"] == "BUILD_TOOL"
++    assert diagnostic["stage"] == "android-gradle-inspection"
++    assert diagnostic["counts"] == {}
++    assert captured.out == ""
++
++
++@pytest.mark.parametrize("defect", [
++    "absent", "multiple", "foreign_name", "directory", "fifo", "symlink", "hardlink",
++    "empty", "oversize", "duplicate", "extra", "phase", "cause", "schema", "type", "nan",
++])
++def test_fixed_fault_channel_refuses_untrusted_receipts(defect: str, tmp_path: Path) -> None:
++    directory = tmp_path / "resolved.json.faults"
++    directory.mkdir()
++    receipt = directory / "fault-0.json"
++    payload: dict[str, Any] = {
++        "schema": "gsip-fixed-fault-v1", "phase": "RELEASE_CONFIGURATION",
++        "cause": "CONFIGURATION_MISSING",
++    }
++    if defect == "absent":
++        assert audit.read_fixed_fault(directory, tmp_path) is None
++        return
++    if defect == "extra":
++        payload["private"] = "synthetic private payload"
++    elif defect in {"phase", "cause", "schema"}:
++        payload[defect] = "synthetic private payload"
++    elif defect == "type":
++        payload["phase"] = True
++    elif defect == "nan":
++        payload["cause"] = float("nan")
++    raw = json.dumps(payload)
++    if defect == "duplicate":
++        raw = raw.replace('"schema":', '"schema":"gsip-fixed-fault-v1","schema":', 1)
++    elif defect == "empty":
++        raw = ""
++    elif defect == "oversize":
++        raw += " " * audit.MAX_FIXED_FAULT_BYTES
++    receipt.write_text(raw)
++    if defect == "multiple":
++        (directory / "fault-1.json").write_text(raw)
++    elif defect == "foreign_name":
++        receipt.rename(directory / "private.json")
++    elif defect == "directory":
++        receipt.unlink()
++        receipt.mkdir()
++    elif defect == "fifo":
++        receipt.unlink()
++        os.mkfifo(receipt)
++    elif defect == "symlink":
++        source = tmp_path / "elsewhere.json"
++        receipt.rename(source)
++        receipt.symlink_to(source)
++    elif defect == "hardlink":
++        os.link(receipt, tmp_path / "elsewhere.json")
++    assert audit.read_fixed_fault(directory, tmp_path) is None
++
++
++@pytest.mark.parametrize("defect", ["swapped", "command", "returncode", "stage", "reset"])
++def test_fixed_fault_lease_is_bound_to_original_failure(
++    defect: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
++    capsys: pytest.CaptureFixture[str],
++) -> None:
++    import subprocess
++
++    directory = tmp_path / "resolved.json.faults"
++    directory.mkdir()
++    (directory / "fault-0.json").write_text(json.dumps({
++        "schema": "gsip-fixed-fault-v1", "phase": "RELEASE_CONFIGURATION",
++        "cause": "CONFIGURATION_MISSING",
++    }))
++    command = list(GRADLE_INSPECTION_COMMAND)
++    error = subprocess.CalledProcessError(1, command, stderr="private synthetic payload")
++    audit.mark("android-gradle-inspection")
++    audit.lease_fixed_fault(error, command, directory, tmp_path)
++    assert audit.fixed_fault_diagnostic(error) == (
++        "GSIP_FIXED_FAULT_V1|VALID|RELEASE_CONFIGURATION|CONFIGURATION_MISSING"
++    )
++    if defect == "swapped":
++        error = subprocess.CalledProcessError(1, command, stderr="private synthetic payload")
++    elif defect == "command":
++        error.cmd = [*command[:-1], "-PgsipEvidenceOutput=/synthetic/another.json"]
++    elif defect == "returncode":
++        error.returncode = 2
++    elif defect == "stage":
++        audit.mark("android-build-environment")
++    else:
++        def stale_failure(*unused: Any) -> None:
++            audit.mark("android-gradle-inspection")
++            raise error
++        monkeypatch.setattr(audit, "collect_android", stale_failure)
++        assert audit.main([
++            "android", str(tmp_path), str(tmp_path), str(tmp_path / "out.json"),
++            str(tmp_path / "key"),
++        ]) == 1
++        captured = capsys.readouterr()
++        assert "GSIP_FIXED_FAULT_V1|UNKNOWN" in captured.err.splitlines()
++        assert "GSIP_FIXED_FAULT_V1|VALID|" not in captured.err
++        assert "private synthetic payload" not in captured.err
++    assert audit.fixed_fault_diagnostic(error) == (
++        None if defect == "stage" else "GSIP_FIXED_FAULT_V1|UNKNOWN"
++    )
++    audit.reset_fixed_fault()
++
++
++def test_fixed_fault_run_rethrows_original_error_and_resets_entry(
++    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
++) -> None:
++    import subprocess
++
++    errors = []
++    def fail(args: list[str], *unused: Any) -> str:
++        if ":app:gsipRuntimeEvidence" not in args:
++            return "+--- org.synthetic:public:1.0"
++        graph = Path(args[-1].removeprefix("-PgsipEvidenceOutput="))
++        (graph.with_name(graph.name + ".faults") / "fault-0.json").write_text(json.dumps({
++            "schema": "gsip-fixed-fault-v1", "phase": "RELEASE_CONFIGURATION",
++            "cause": "CONFIGURATION_MISSING",
++        }))
++        error = subprocess.CalledProcessError(1, args, stderr="private synthetic payload")
++        errors.append(error)
++        raise error
++    monkeypatch.setattr(audit, "run", fail)
++    with pytest.raises(subprocess.CalledProcessError) as caught:
++        audit.collect_android(tmp_path, tmp_path, tmp_path / "output.json", tmp_path / "key")
++    assert caught.value is errors[0]
++    fixed = audit.fixed_fault_diagnostic(caught.value)
++    assert fixed is not None and fixed.startswith("GSIP_FIXED_FAULT_V1|VALID|")
++    def early_failure(*unused: Any) -> str:
++        raise caught.value
++    monkeypatch.setattr(audit, "run", early_failure)
++    with pytest.raises(subprocess.CalledProcessError):
++        audit.collect_android(tmp_path, tmp_path, tmp_path / "output.json", tmp_path / "key")
++    audit.mark("android-gradle-inspection")
++    assert audit.fixed_fault_diagnostic(caught.value) == "GSIP_FIXED_FAULT_V1|UNKNOWN"
++    audit.reset_fixed_fault()
+--- a/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
++++ b/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
+@@ -174,7 +174,34 @@
+ outside the exact inspection scope emit no supplemental line. The original
+ four-field diagnostic remains last and unchanged, and the CLI still fails. This
+ context establishes where diagnostic inspection stopped; it does not establish a
+-producer/API repair or native acceptance. The generated Gradle task is unchanged.
++producer/API repair or native acceptance. This context adds no graph acceptance.
++An independently bounded private fault channel now survives oversized captured stderr
++without inspecting it or changing its 65,536-byte refusal. Python creates a fresh
++private directory beside the temporary graph output. The generated task writes only
++three fixed fields (`schema`, `phase`, `cause`) into an exclusively created numbered
++receipt; it never overwrites an existing file. Python accepts exactly one 256-byte-or-
++smaller receipt, with the exact schema and whitelisted phase/cause strings. Duplicate
++keys, unknown fields, foreign names, multiple receipts, unsafe links, nonregular files
++and oversized or malformed contents remain `UNKNOWN`. No raw stream is persisted.
++
++The CLI emits only `GSIP_FIXED_FAULT_V1|VALID|<phase>|<cause>` or
++`GSIP_FIXED_FAULT_V1|UNKNOWN`, tied to the exact original failed inspection command,
++exception identity, nonzero exit status and inspection stage. Its lease resets at CLI
++and inspection entry. A different exception, command, status or stage cannot reuse
++an earlier receipt. Commands outside the exact inspection scope emit no fault line.
++The existing context and four-field diagnostic remain unchanged, and the original
++Gradle exception is rethrown; a receipt supplies no audit acceptance.
++
++The existing `projectsEvaluated` callback also records `TASK_SETUP` before rethrowing
++its original setup exception. Settings or initialization/compilation failures before
++that callback legitimately have no receipt and remain `UNKNOWN`. This uses public
++Gradle lifecycle and Java file APIs only within Python-emitted temporary build
++configuration, with its exact task hash retained by the audit. It adds no shipped
++native source or dependency. Offline Gradle 8.14.3/Java 21 synthetic controls verified
++byte-identical successful graphs, preserved tool/CLI failure statuses for oversized
++task/setup output, and explicitly unknown early settings failures. They do not identify
++the hosted Android failure's underlying cause or establish a native product build.
++
+ Both actual debug and release inputs remain required; there is no debug substitution
+ or check skip. If the next CI run confirms absent release project outputs, their
+ actual variant producers must run before inspection in a separate forward fix.

@@ -1,0 +1,22 @@
+{
+  "/": {
+    "status": 200,
+    "final_url": "https://globalsoilintelligence.com/"
+  },
+  "/map/": {
+    "status": 200,
+    "final_url": "https://globalsoilintelligence.com/map/"
+  },
+  "/llms.txt": {
+    "status": 200,
+    "final_url": "https://globalsoilintelligence.com/llms.txt"
+  },
+  "/capture/gsip-activation.json": {
+    "status": 200,
+    "final_url": "https://globalsoilintelligence.com/capture/gsip-activation.json",
+    "flags": {
+      "capture_live": false,
+      "library_intake_live": false
+    }
+  }
+}

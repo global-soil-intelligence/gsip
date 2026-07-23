@@ -1,0 +1,14 @@
+{
+  "at_utc": "2026-10-15T23:47:33.720208+00:00",
+  "run_id": 38821460183,
+  "head": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "main_ci": "success",
+  "main_secret_scan": "success",
+  "artifact_id": 12013740607,
+  "artifact_digest": "sha256:2bc0829549d98331c7a8dc5e451b6e5457125fd5863f166e63ce1ea90a4cde33",
+  "capture_live": false,
+  "library_intake_live": false,
+  "environment_id": 18657050755,
+  "admins_can_bypass": false,
+  "authority": "Justin: Go for Pages run 38821460183. Keep capture and library uploads closed, then verify the live website."
+}

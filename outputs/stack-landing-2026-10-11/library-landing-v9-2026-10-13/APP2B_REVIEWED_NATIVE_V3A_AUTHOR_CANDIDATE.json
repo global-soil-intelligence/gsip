@@ -1,0 +1,89 @@
+{
+  "LICENSE_NAMES_unchanged": true,
+  "all_v2b_other_function_global_import_comment_separator_TEXT_exact_after_explicit_licence_erasure": true,
+  "all_v3_AST_semantics_exact": true,
+  "candidate_patch_sha256": "395a2a91e36960170ca06d78f5cc0933b0c8c379ea58c580536760cdfb1c9fc2",
+  "changes_only": "restore exact v2b _fixed_fault_lease annotation and two inter-function newline separators",
+  "checks_refreshed": [
+    {
+      "check": "ruff",
+      "command": [
+        "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/.venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "scripts/app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 19,
+      "stdout_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "check": "mypy",
+      "command": [
+        "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/.venv/bin/python",
+        "-m",
+        "mypy",
+        "scripts/app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 42,
+      "stdout_sha256": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e"
+    }
+  ],
+  "created_at": "2026-10-13T23:48:08.448940+00:00",
+  "delta_from_v2b_sha256": "ff3b05a2aa945619b2cdc261e91dcc019a3a649c3303e6bfe403e78a9d7db0cc",
+  "delta_from_v3_sha256": "3f656e638430b9b43449dbbe729b60fbd4f9eb54e2762dffad45e12cbb42bafd",
+  "doc_31897_bytes_exact_v3": true,
+  "files": [
+    {
+      "base_c1_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 125844,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "v2b_sha256": "71425d41f957c8c5bee05acf2f2456b2fae181828f0384914f1e0f7c97864655",
+      "v3_sha256": "32a888e72f22dc160f244179701509baccf8cc04acb66e9ef0df70a8d7708bf4"
+    },
+    {
+      "base_c1_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 185334,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+      "v2b_sha256": "e2fd5781cfc7169216cfb2bf2b3256137861fd0dadbb0e3a5a80fbb148be10ef",
+      "v3_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3"
+    },
+    {
+      "base_c1_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 31897,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164",
+      "v2b_sha256": "ca0736fb18669534ffd7ef661c44f2c28968d483eebee31a5f19aea7a15cef76",
+      "v3_sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164"
+    }
+  ],
+  "independent_review_and_current_head_CI": "pending external/root checks",
+  "manifest_sha256": "7c700bf3a139592748351eb5fbdcd273fdb48455aafc2ecc4a72266b7e9e0942",
+  "native_product_acceptance": false,
+  "no_new_Gradle_or_native_run": true,
+  "prior_v3_behavioral_evidence_carried_by_semantic_identity": {
+    "all75_exact_selected_pom_and_strict_chain_pass": true,
+    "baseline_failures": 20,
+    "mutations_effective": 7,
+    "new_license_cases_pass": 83,
+    "real_tool_skips": 30,
+    "whole_pass": 528
+  },
+  "prior_v3_immutable": true,
+  "prior_v3_receipt_sha256": "6898fea4718aa8ac0d6e9baf073b94d0833fdcbc2ac307e973a83d0f0590ef04",
+  "schema": "gsip-native-exact-pom-license-frozen-v3a",
+  "shared_source_Git_GH_production_changes": false,
+  "source_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "tests_185334_bytes_exact_v3": true,
+  "text_scope_proof_sha256": "d7cc2773c56e4a51c650ec91aea3c8b53aec9b67d3436f09fb565b5ab5fb2230",
+  "v2b_test_prefix_bytes": 161005
+}

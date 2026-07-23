@@ -1,0 +1,67 @@
+{
+  "observed_at_utc": "2026-10-12T12:51:52.519286+00:00",
+  "pr40_mutated": false,
+  "repository": "global-soil-intelligence/gsip",
+  "scope": "Append current-head CI evidence only to PR38 and PR39; preserve exact prior body prefixes",
+  "source_or_production_mutations": false,
+  "updates": [
+    {
+      "after_body_sha256": "2c976519720a0b98688f465d871efdd0aa389a0e218b6f50cd4f30e9e1e71c1a",
+      "appendix_sha256": "f3037f341cec9b5390060330dacc3ea831942dcafc69602243b0f62ee8c88b6c",
+      "base": "wp-app-1-phone-app",
+      "before_body_sha256": "91bba9f54076f9068475226f9c1244c68337227d4c4d15867ae1320f27ebf99e",
+      "existing_prefix_length_characters": 4383,
+      "existing_prefix_length_utf8_bytes": 4396,
+      "existing_prefix_preserved": true,
+      "head": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "patch_body_only": {
+        "http_status": 200,
+        "observed_at_utc": "2026-10-12T12:51:49.443043+00:00",
+        "request_id": "FF8A:153530:66874:15667F:6ACCD7DF"
+      },
+      "payload_body_equals_persisted_readback": true,
+      "persisted_readback_get": {
+        "http_status": 200,
+        "observed_at_utc": "2026-10-12T12:51:50.110727+00:00",
+        "request_id": "FF8B:2BA350:70048:176B65:6ACCD7E5"
+      },
+      "pr": 38,
+      "precondition_get": {
+        "http_status": 200,
+        "observed_at_utc": "2026-10-12T12:51:43.721915+00:00",
+        "request_id": "1389:1C3C85:736C8:17FF4C:6ACCD7DF"
+      },
+      "readback_existing_prefix_sha256": "91bba9f54076f9068475226f9c1244c68337227d4c4d15867ae1320f27ebf99e",
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/38"
+    },
+    {
+      "after_body_sha256": "9c221393d7572ef36fd87889678e160efc59eaa4a074041064d3a8814cd854b9",
+      "appendix_sha256": "ad446d42ecbb594eff5fbedc54a2a88a3c11119a5f6b8aa2852bde9a2508a509",
+      "base": "docs/spec-v4",
+      "before_body_sha256": "7fb4539d5744d47801870abd635a1f4c27848adb1481ca18d576fe779085fad1",
+      "existing_prefix_length_characters": 4924,
+      "existing_prefix_length_utf8_bytes": 4932,
+      "existing_prefix_preserved": true,
+      "head": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "patch_body_only": {
+        "http_status": 200,
+        "observed_at_utc": "2026-10-12T12:51:51.838449+00:00",
+        "request_id": "FF8D:263284:74DA8:18552C:6ACCD7E6"
+      },
+      "payload_body_equals_persisted_readback": true,
+      "persisted_readback_get": {
+        "http_status": 200,
+        "observed_at_utc": "2026-10-12T12:51:52.517417+00:00",
+        "request_id": "FF8E:227556:761BF:1898EC:6ACCD7E7"
+      },
+      "pr": 39,
+      "precondition_get": {
+        "http_status": 200,
+        "observed_at_utc": "2026-10-12T12:51:50.751635+00:00",
+        "request_id": "FF8C:9C5DF:7816E:191561:6ACCD7E6"
+      },
+      "readback_existing_prefix_sha256": "7fb4539d5744d47801870abd635a1f4c27848adb1481ca18d576fe779085fad1",
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/39"
+    }
+  ]
+}

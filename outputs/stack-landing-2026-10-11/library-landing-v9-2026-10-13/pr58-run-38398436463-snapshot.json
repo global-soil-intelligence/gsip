@@ -1,0 +1,414 @@
+{
+  "conclusion": "success",
+  "headSha": "f07a876defbc3ee208996747f3f4b596b7606614",
+  "jobs": [
+    {
+      "completedAt": "2026-10-13T12:40:17Z",
+      "conclusion": "success",
+      "databaseId": 115299512564,
+      "name": "ios",
+      "startedAt": "2026-10-13T12:35:48Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:35:52Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:35:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:35:54Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-13T12:35:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:02Z",
+          "conclusion": "success",
+          "name": "Run pnpm/action-setup@v6",
+          "number": 3,
+          "startedAt": "2026-10-13T12:35:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:14Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v7",
+          "number": 4,
+          "startedAt": "2026-10-13T12:36:02Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:14Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v7",
+          "number": 5,
+          "startedAt": "2026-10-13T12:36:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:17Z",
+          "conclusion": "success",
+          "name": "Use the newest Xcode on the runner",
+          "number": 6,
+          "startedAt": "2026-10-13T12:36:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:27Z",
+          "conclusion": "success",
+          "name": "Run pnpm install --frozen-lockfile",
+          "number": 7,
+          "startedAt": "2026-10-13T12:36:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:29Z",
+          "conclusion": "success",
+          "name": "Run pnpm --filter @gsip/capture-pwa build:app",
+          "number": 8,
+          "startedAt": "2026-10-13T12:36:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:31Z",
+          "conclusion": "success",
+          "name": "Generate the iOS project",
+          "number": 9,
+          "startedAt": "2026-10-13T12:36:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:32Z",
+          "conclusion": "success",
+          "name": "Apply the app's permissions",
+          "number": 10,
+          "startedAt": "2026-10-13T12:36:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:32Z",
+          "conclusion": "success",
+          "name": "Apply CI versions to iOS",
+          "number": 11,
+          "startedAt": "2026-10-13T12:36:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:38:58Z",
+          "conclusion": "success",
+          "name": "Build for the iOS simulator",
+          "number": 12,
+          "startedAt": "2026-10-13T12:36:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:38:59Z",
+          "conclusion": "success",
+          "name": "Check the built app's permissions",
+          "number": 13,
+          "startedAt": "2026-10-13T12:38:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:00Z",
+          "conclusion": "success",
+          "name": "Verify the first iOS build and preserve the comparison input",
+          "number": 14,
+          "startedAt": "2026-10-13T12:38:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:54Z",
+          "conclusion": "success",
+          "name": "Repeat the iOS build with the same inputs",
+          "number": 15,
+          "startedAt": "2026-10-13T12:39:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:55Z",
+          "conclusion": "success",
+          "name": "Check the repeated iOS build",
+          "number": 16,
+          "startedAt": "2026-10-13T12:39:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:56Z",
+          "conclusion": "success",
+          "name": "Package the simulator build",
+          "number": 17,
+          "startedAt": "2026-10-13T12:39:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:40:05Z",
+          "conclusion": "success",
+          "name": "Record iOS build evidence",
+          "number": 18,
+          "startedAt": "2026-10-13T12:39:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:40:11Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 19,
+          "startedAt": "2026-10-13T12:40:05Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:40:11Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v7",
+          "number": 35,
+          "startedAt": "2026-10-13T12:40:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:40:12Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v7",
+          "number": 36,
+          "startedAt": "2026-10-13T12:40:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:40:12Z",
+          "conclusion": "success",
+          "name": "Post Run pnpm/action-setup@v6",
+          "number": 37,
+          "startedAt": "2026-10-13T12:40:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:40:13Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 38,
+          "startedAt": "2026-10-13T12:40:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:40:14Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 39,
+          "startedAt": "2026-10-13T12:40:13Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38398436463/job/115299512564"
+    },
+    {
+      "completedAt": "2026-10-13T12:39:31Z",
+      "conclusion": "success",
+      "databaseId": 115299512931,
+      "name": "android",
+      "startedAt": "2026-10-13T12:35:41Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:35:46Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:35:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:35:47Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-13T12:35:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:35:52Z",
+          "conclusion": "success",
+          "name": "Run pnpm/action-setup@v6",
+          "number": 3,
+          "startedAt": "2026-10-13T12:35:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:35:56Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v7",
+          "number": 4,
+          "startedAt": "2026-10-13T12:35:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:35:57Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-java@v6",
+          "number": 5,
+          "startedAt": "2026-10-13T12:35:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:35:57Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v7",
+          "number": 6,
+          "startedAt": "2026-10-13T12:35:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:02Z",
+          "conclusion": "success",
+          "name": "Run pnpm install --frozen-lockfile",
+          "number": 7,
+          "startedAt": "2026-10-13T12:35:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:03Z",
+          "conclusion": "success",
+          "name": "Run pnpm --filter @gsip/capture-pwa build:app",
+          "number": 8,
+          "startedAt": "2026-10-13T12:36:02Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:04Z",
+          "conclusion": "success",
+          "name": "Generate the Android project",
+          "number": 9,
+          "startedAt": "2026-10-13T12:36:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:04Z",
+          "conclusion": "success",
+          "name": "Apply the app's permissions",
+          "number": 10,
+          "startedAt": "2026-10-13T12:36:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:36:04Z",
+          "conclusion": "success",
+          "name": "Apply CI versions and Android backup rules",
+          "number": 11,
+          "startedAt": "2026-10-13T12:36:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:37:11Z",
+          "conclusion": "success",
+          "name": "Check the app ships no closed SDK",
+          "number": 12,
+          "startedAt": "2026-10-13T12:36:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:38:46Z",
+          "conclusion": "success",
+          "name": "Build the debug APK",
+          "number": 13,
+          "startedAt": "2026-10-13T12:37:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:38:46Z",
+          "conclusion": "success",
+          "name": "Check the APK's permissions",
+          "number": 14,
+          "startedAt": "2026-10-13T12:38:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:38:47Z",
+          "conclusion": "success",
+          "name": "Verify the first APK and preserve the comparison input",
+          "number": 15,
+          "startedAt": "2026-10-13T12:38:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:24Z",
+          "conclusion": "success",
+          "name": "Repeat the Android build with the same inputs",
+          "number": 16,
+          "startedAt": "2026-10-13T12:38:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:25Z",
+          "conclusion": "success",
+          "name": "Check repeated APK policy and record build evidence",
+          "number": 17,
+          "startedAt": "2026-10-13T12:39:24Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:27Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 18,
+          "startedAt": "2026-10-13T12:39:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:28Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v7",
+          "number": 32,
+          "startedAt": "2026-10-13T12:39:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:28Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-java@v6",
+          "number": 33,
+          "startedAt": "2026-10-13T12:39:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:28Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v7",
+          "number": 34,
+          "startedAt": "2026-10-13T12:39:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:28Z",
+          "conclusion": "success",
+          "name": "Post Run pnpm/action-setup@v6",
+          "number": 35,
+          "startedAt": "2026-10-13T12:39:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:28Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 36,
+          "startedAt": "2026-10-13T12:39:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:39:28Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 37,
+          "startedAt": "2026-10-13T12:39:28Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38398436463/job/115299512931"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38398436463"
+}

@@ -1,0 +1,65 @@
+{
+  "status": "PROPOSAL_ONLY_NO_DNS_OR_GITHUB_SETTINGS_CHANGED",
+  "files": [
+    {
+      "name": "DNS-CUTOVER-PROPOSAL.md",
+      "bytes": 11872,
+      "sha256": "c1474426e02d462be79572df140d4b2dfa3b83a0147f5ec31d37129969d3f726"
+    },
+    {
+      "name": "authoritative-dns-preflight.json",
+      "bytes": 47391,
+      "sha256": "07e502505f069a26dc5cf47f39efa5b7f5e6a9949b7a782414fc538e51b88a19"
+    },
+    {
+      "name": "github-pages-preflight.json",
+      "bytes": 414,
+      "sha256": "ec7add6bdbdfa87ad5f23007e0bcac314fafdcee542281935201e0af2c1d9f87"
+    },
+    {
+      "name": "http-preflight.json",
+      "bytes": 797,
+      "sha256": "d1f5799d23e2cd7886891b2009fafa51355719cf66a664b88419a287e52b2af6"
+    },
+    {
+      "name": "independent-review.md",
+      "bytes": 771,
+      "sha256": "c36a4e0c7ded0ee3a42e7772945aea2e0018c152683ad86fe831615519402282"
+    },
+    {
+      "name": "pages-custom-domain.PROPOSED.json",
+      "bytes": 44,
+      "sha256": "70b7dde6a1a80fe081f019d92ff4ec1942197e3d87cf04066dd03501947bc3e1"
+    },
+    {
+      "name": "pages-environment-preflight.json",
+      "bytes": 2110,
+      "sha256": "cd3c5a92df22459774f1e22dfbef4b495c025fe2a688524f8c5219fb8ee454e7"
+    },
+    {
+      "name": "pages-https.PROPOSED.json",
+      "bytes": 29,
+      "sha256": "d76c3f25e518323b8f5cb10a5aeee4532b9c18bfb7aae3cc302af50ec7d2d07e"
+    },
+    {
+      "name": "pages-remove-custom-domain.ROLLBACK-ONLY.json",
+      "bytes": 20,
+      "sha256": "33110191264d1f6856a9f09f003111d34276e38c336d98ae52001b625b3abdbe"
+    },
+    {
+      "name": "pages-run-preflight.json",
+      "bytes": 15412,
+      "sha256": "eae6541617c939620cff06e3d08f2f4c0f5e8d176f0efc3b98a9b1181e351794"
+    },
+    {
+      "name": "proposed-changes.json",
+      "bytes": 4141,
+      "sha256": "41ed052dc6d976bbb670728706fd33cbf933f0f6a4cd6e14be9e1c5cd05eb291"
+    },
+    {
+      "name": "registrar-preflight.json",
+      "bytes": 407,
+      "sha256": "42a56b244592afb68340f050d8ecd3b9160d93d0b7dbff6125db34291097d16f"
+    }
+  ]
+}

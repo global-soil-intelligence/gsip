@@ -1,0 +1,84 @@
+{
+  "at_utc": "2026-10-13T14:18:12.427311+00:00",
+  "reviewer": "Root independent of store/simulator authors",
+  "source_hashes": {
+    "pipeline/node_exchange_store.py": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+    "tests/test_node_exchange_store.py": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17"
+  },
+  "probe_sha256": "6f19c908edb7d9eaba83bd7bdc7686e1a62046b66044da112b63b71adb04bda4",
+  "source_unchanged": true,
+  "results": {
+    "independent-probes": {
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "store-baseline": {
+      "tests": 111,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "exit_codes": {
+    "independent-probes": 0,
+    "store-baseline": 0
+  },
+  "closed_findings": [
+    "LIB5B-STORE-R1 late final directory/root guard",
+    "LIB5B-STORE-R2 active session thread/PID affinity",
+    "LIB5B-STORE-R2-TEARDOWN foreign-thread context exit"
+  ],
+  "witness_basis": "Nine original late-directory cases; creator-affinity adaptation for live put recovery; fork inherited-session mutation; callback and separately acquired root lock controls; inherited fork context exit; same-process foreign context exit preserves owner continuing and normal cleanup",
+  "evidence_sha256": {
+    "input-manifest.json": "6f390ff0b3708772136c427b53d11fc5d6abb7ca215be36d413af3e7d04d18e9",
+    "tests/test_store_independent.py": "6f19c908edb7d9eaba83bd7bdc7686e1a62046b66044da112b63b71adb04bda4",
+    "independent-probes.log": "ff73c3b52ec6f9e718effa95c0d20b197d8448ce77ac3ccff7acce737a494962",
+    "independent-probes.xml": "eee991f048a08568346f50af70f8852a53f618fe14497660236f0842ea9faf5d",
+    "store-baseline.log": "baedeae96f65206a8303641a4df0c0b8c9c09840524ec814f643bf86212baf11",
+    "store-baseline.xml": "0d1198d318b0f021cdbf9e0daa3bb0341870457f0f87f8c5d69612efac4c9b6c"
+  },
+  "commands": [
+    {
+      "cwd": "/private/tmp/gsip-lib5b-root-independent-v3-9uk5ieri",
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_store_independent.py",
+        "--tb=short",
+        "--junitxml=independent-probes.xml",
+        "--basetemp=/private/tmp/gsip-lib5b-root-independent-v3-9uk5ieri/probe-roots"
+      ]
+    },
+    {
+      "cwd": "/private/tmp/gsip-lib5b-root-independent-v3-9uk5ieri",
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_node_exchange_store.py",
+        "--tb=short",
+        "--junitxml=store-baseline.xml",
+        "--basetemp=/private/tmp/gsip-lib5b-root-independent-v3-9uk5ieri/baseline-roots"
+      ]
+    }
+  ],
+  "verdict": "The three reproduced store boundary findings close at these exact frozen bytes; full five-file simulator acceptance, static/integration/CI still pending",
+  "limitations": [
+    "Local Darwin only; Linux/no-replace CI pending",
+    "Store supplies no synthetic authority, quotas, alias/claim/cleanup coverage policy; full simulator review separate",
+    "No malicious-owner rollback or remote erasure, physical pairing, real sharing, field science or production readiness claim"
+  ],
+  "actions": {
+    "shared_source_edits": false,
+    "Git_mutations": false,
+    "network_or_production": false,
+    "secret_or_real_data": false
+  }
+}

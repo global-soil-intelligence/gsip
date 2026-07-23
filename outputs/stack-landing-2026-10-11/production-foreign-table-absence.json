@@ -1,0 +1,9 @@
+{
+  "project": "toxldjgwkxtneoqsazym",
+  "scope": "All non-system schemas; relation names only; no row contents",
+  "result": [
+    {
+      "foreign_table_count": 0
+    }
+  ]
+}

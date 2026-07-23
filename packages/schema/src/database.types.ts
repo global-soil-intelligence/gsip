@@ -14,6 +14,13 @@ export type Database = {
   }
   public: {
     Tables: {
+      intake_settings: {
+        Row: { id: boolean; enabled: boolean }
+        Insert: { id?: boolean; enabled?: boolean }
+        Update: { id?: boolean; enabled?: boolean }
+        Relationships: []
+      }
+
       contribution_grants: {
         Row: {
           accepted_at: string
@@ -410,6 +417,8 @@ export type Database = {
       }
       submissions: {
         Row: {
+          expected_shots: string[]
+          upload_completed_at: string | null
           captured_at: string
           contributor_id: string
           device_model: string | null
@@ -428,6 +437,8 @@ export type Database = {
           surface_condition: string | null
         }
         Insert: {
+          expected_shots?: string[]
+          upload_completed_at?: string | null
           captured_at: string
           contributor_id: string
           device_model?: string | null
@@ -446,6 +457,8 @@ export type Database = {
           surface_condition?: string | null
         }
         Update: {
+          expected_shots?: string[]
+          upload_completed_at?: string | null
           captured_at?: string
           contributor_id?: string
           device_model?: string | null
@@ -485,6 +498,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      is_intake_open: { Args: Record<string, never>; Returns: boolean }
+      complete_submission_upload: {
+        Args: { p_submission_id: string }
+        Returns: undefined
+      }
+      reconcile_submission_qa: {
+        Args: { p_submission_id: string; p_h3_r6: string; p_h3_r8: string }
+        Returns: string
+      }
+      requeue_stale_prior_jobs: {
+        Args: Record<string, never>
+        Returns: undefined
+      }
+
       claim_prior_job_attempt: {
         Args: { p_submission_id: string }
         Returns: number

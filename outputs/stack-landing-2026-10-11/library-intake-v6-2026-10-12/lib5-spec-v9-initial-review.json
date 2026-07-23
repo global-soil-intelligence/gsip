@@ -1,0 +1,196 @@
+{
+  "schema_version": "gsip-independent-spec-review-v1",
+  "reviewed_at_utc": "2026-10-13T05:42:13.861377+00:00",
+  "reviewer": "/root/lib5_spec_review",
+  "review_kind": "Independent read-only documentation and static consistency review; reviewer did not author the draft.",
+  "status": "changes_requested_before_spec_approval_or_LIB5_implementation",
+  "authority": "No approving GitHub review, implementation, commit, merge, peer enrollment, network/production operation or data transfer authorized by this receipt.",
+  "input_identity": {
+    "read_only_repository": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+    "isolated_draft": "/private/tmp/gsip-lib5-spec9-draft-j2npfohn",
+    "base_commit_supplied": "e03e20457a11456d1cd3842caa224d049b44265f",
+    "main_commit_supplied": "66b78ef",
+    "commit_verification": "Supplied by the parent; not independently queried because this review prohibits Git.",
+    "draft_file_sha256": {
+      "docs/SPEC.md": "fe6d7d2f4577e586e0eb551f777b6de0a491e9454a99a66102403b2c83a0fbbc",
+      "docs/BUILD_ORDER.md": "35d672bed576fc71fcdd3c8ed4c25df9d320093c90f5d83217f6d86484663e6d"
+    },
+    "patch_path": "/private/tmp/gsip-lib5-spec-v9-draft.patch",
+    "patch_sha256": "7e7af93e32ccf47d6fadcdbaf86d4582f46728ad5c3fc64b188c7b40b9dce602"
+  },
+  "findings": [
+    {
+      "id": "LIB5-V9-R1",
+      "severity": "P2",
+      "title": "Define sequence-slot and digest-head behavior for out-of-order retirement",
+      "references": [
+        {
+          "file": "docs/SPEC.md",
+          "start": 528,
+          "end": 532
+        },
+        {
+          "file": "docs/SPEC.md",
+          "start": 550,
+          "end": 550
+        },
+        {
+          "file": "docs/BUILD_ORDER.md",
+          "start": 378,
+          "end": 378
+        },
+        {
+          "file": "docs/BUILD_ORDER.md",
+          "start": 387,
+          "end": 387
+        }
+      ],
+      "finding": "The envelope does not define its stream key, immutable ownership of each sequence slot, the contiguous head transition, or the previous-digest rule for a noninitial retirement. Later declarations must reference the prior accepted event, declarations with gaps are held, and a valid retirement must apply even with missing earlier declarations. Those rules leave incompatible receiver choices: advancing the head to an out-of-order retirement can skip predecessor integrity/conflict checks; not advancing it leaves later events blocked unless erased/refused predecessor events can be consumed without recreating payload. A new event UUID at an already used sequence slot also lacks an explicit conflict rule.",
+      "concrete_case": "Receiver has committed declaration 0. It receives authenticated retirement 2 before declaration 1 and must tombstone promptly. Delayed declaration 1 must never recreate covered payload. The draft does not say how the chain commits 1 and 2, or whether unrelated declaration 3 referencing digest(2) can resume. It also does not state whether two different event UUIDs at the same sequence are always a stream conflict.",
+      "requested_change": "Specify the stream identity and next-contiguous sequence relation; bind each sequence slot and event UUID immutably to exact-byte SHA-256; state all previous-digest rules for both variants. Separate immediate authenticated refusal/tombstoning from ordered chain commitment, and define either safe metadata-only consumption of erased predecessors or an explicit stream-close/recovery policy. Add synthetic conformance for retirement-before-gap, conflicting slot/event, delayed erased predecessor and permitted subsequent stream behavior. Cleanup still uses separately approved authority and cannot revive an old contributor credential.",
+      "why_before_implementation": "LIB-5A/5B promise an exact contract and deterministic simulator. Their sequence/digest/idempotency behavior cannot be implemented consistently without inventing this protocol rule."
+    },
+    {
+      "id": "LIB5-V9-R2",
+      "severity": "P2",
+      "title": "Make recipient and cleanup queue bounds concrete before implementing the bounded simulator",
+      "references": [
+        {
+          "file": "docs/SPEC.md",
+          "start": 532,
+          "end": 534
+        },
+        {
+          "file": "docs/SPEC.md",
+          "start": 550,
+          "end": 554
+        },
+        {
+          "file": "docs/BUILD_ORDER.md",
+          "start": 387,
+          "end": 389
+        }
+      ],
+      "finding": "The 2,000,000-byte event, 100 admissions/day/human, 20-event batch and five-attempt limits bound individual input and processing, but no aggregate recipient pending-byte/event/stream capacity or cleanup claim limit is specified. Gap-held declarations, disconnected/terminal work and cleanup events that bypass contribution allowance can therefore accumulate indefinitely under the literal acceptance criteria. \"Separately enforced aggregate capacity\" and \"own bounded claims\" leave the actual bound and saturation behavior to an unapproved implementation assumption.",
+      "concrete_case": "A synthetic sender submits sequentially missing declaration events on successive UTC days, or retire events for fresh valid aliases. Batch/retry bounds stay satisfied while the held queue/refusal storage grows. Filling that storage can also prevent the promised tombstone-before-erasure transition unless cleanup reserve and admission behavior are specified.",
+      "requested_change": "Define bounded, validated configuration/defaults for aggregate retained pending bytes/events and stream count, plus cleanup claims per batch and durable-refusal storage/admission policy. Specify the behavior at capacity, including reservation or safe preflight that prevents declaration admission from blocking durable cleanup, operator attention for exhausted storage, and no eviction of required tombstones. Explicitly label any proposed values/policy unapproved; they need not be claimed measured capacity. Add synthetic saturation tests alongside the existing batch/retry tests.",
+      "why_before_implementation": "LIB-5B promises queue bounds, priority bounded cleanup and honest acknowledgments. These require an explicit resource/saturation contract rather than only per-event/day/run limits."
+    }
+  ],
+  "preserved_boundaries": [
+    {
+      "claim": "I1-I15 and L1-L7 are byte-identical to the read-only base documents; B1-B8 remain binding and GOVERNANCE is outside the patch.",
+      "references": [
+        "docs/SPEC.md:511",
+        "docs/SPEC.md:413",
+        "docs/BUILD_ORDER.md:24-35"
+      ]
+    },
+    {
+      "claim": "Smartphones remain the accessible capture/sample-linking entry point. Three uncalibrated RGB channels remain distinct from measured, wavelength-resolved reflectance; receipts cannot verify physical pairing, lab or biological evidence.",
+      "references": [
+        "docs/SPEC.md:17-23",
+        "docs/SPEC.md:517",
+        "docs/SPEC.md:540"
+      ]
+    },
+    {
+      "claim": "Private sharing is a new unapproved purpose. Original grants and withdrawals cannot be replaced by later identities/grants; minimal tombstones precede payload erasure and unknown acknowledgments remain pending.",
+      "references": [
+        "docs/SPEC.md:518",
+        "docs/SPEC.md:532",
+        "docs/SPEC.md:548-554",
+        "docs/BUILD_ORDER.md:396-400"
+      ]
+    },
+    {
+      "claim": "No public cross-contributor, global hash, similarity or lineage linkage is added; recipient handles carry no anonymity or unlinkability guarantee.",
+      "references": [
+        "docs/SPEC.md:542",
+        "docs/SPEC.md:565"
+      ]
+    },
+    {
+      "claim": "Public agents remain anonymous/read-only, and no peer or agent receives a global service-role key or contributor session. Local private tools are human-operated.",
+      "references": [
+        "docs/SPEC.md:519",
+        "docs/BUILD_ORDER.md:369"
+      ]
+    },
+    {
+      "claim": "Local LIB-5A/5B work remains synthetic-only after specification approval. Real LIB-5C requires owner/counsel peer, consent, credential and cleanup policy decisions and a subsequent amendment.",
+      "references": [
+        "docs/SPEC.md:534",
+        "docs/SPEC.md:558-568",
+        "docs/BUILD_ORDER.md:369-394"
+      ]
+    },
+    {
+      "claim": "No dependencies, licenses, capture/auth gates, production configuration, automatic field training or public releases change in this two-document patch. Proposed limits are explicitly not measured capacity, SLA or anonymity evidence.",
+      "references": [
+        "docs/SPEC.md:511",
+        "docs/SPEC.md:552",
+        "docs/SPEC.md:568-570",
+        "docs/BUILD_ORDER.md:379",
+        "docs/BUILD_ORDER.md:403"
+      ]
+    }
+  ],
+  "unapproved_assumptions_and_choices": [
+    "Recipient-specific private-sharing purpose/consent/retention and notices remain unapproved; no current legal draft is treated as active authorization.",
+    "Owner-enrolled peers and named private human of record are recommended policies, not current enrollment authority.",
+    "Expiring/revocable peer credentials and separately authenticated steward cleanup are required concepts; their exact mechanism, approved secret locations and lifecycle remain unselected.",
+    "Same-contributor lineage aliasing is weaker than physical pairing. Cross-contributor same-material linkage remains refused by the proposed default and still requires its owner/privacy/scientific decision.",
+    "Size, depth, quota, batch and retry bounds are engineering proposals requiring review and later measurement; the two queue/sequence clarifications in the findings are also unapproved until incorporated and reviewed.",
+    "No measured-spectrum privacy clearance, reference-data license, lab/biological adapter, field-use eligibility or scientific performance is established.",
+    "Recipient erasure duties, acknowledgment and operational response to loss of contact remain owner-policy work; no immediate distributed-erasure guarantee is inferred.",
+    "Real event-digest/private lineage metadata retention is an unresolved LIB-5C policy choice; digest retention does not imply anonymity or complete distributed erasure."
+  ],
+  "verification": {
+    "static_checks_run": {
+      "provided_file_hashes_match": true,
+      "provided_patch_hash_matches": true,
+      "patch_touches_exactly_two_documents": true,
+      "patch_matches_read_only_base_documents": true,
+      "I1_I15_bytes_unchanged": true,
+      "L1_L7_bytes_unchanged": true,
+      "existing_v8_photo_and_library_sections_bytes_unchanged": true
+    },
+    "behavior_tests_run": false,
+    "CI_runs_queried": false,
+    "runtime_implementation_verified": false,
+    "prose_review_is_not_behavior_test_evidence": true,
+    "review_scope": "Full draft SPEC and BUILD_ORDER; root AGENTS, CONTRIBUTING, GOVERNANCE, public-agent guide, deployment/app-store/legal status and .env.example; existing LIB-1 payload and locking definitions for feasibility. No Git or network calls.",
+    "mutations": "Only this private review receipt was written. No draft/source/repository files were edited."
+  },
+  "memory_routing": {
+    "used_for": "Lightweight historical routing only; current repository instructions supersede historical owner/merge notes. No current state claimed from memory.",
+    "citations": [
+      "MEMORY.md:129-132",
+      "rollout_summaries/2026-10-11T23-45-06-aucV-gsip_stack_landing_ci_and_production_preflight.md:15-18"
+    ],
+    "rollout_id": "01a12d5b-1792-7312-9a93-99c50d5c2c39"
+  },
+  "private_digest_retention_observation": {
+    "classification": "Held LIB-5C policy choice; no additional blocker for a synthetic-only simulator that obeys payload erasure.",
+    "references": [
+      {
+        "file": "docs/SPEC.md",
+        "start": 528,
+        "end": 532
+      },
+      {
+        "file": "docs/SPEC.md",
+        "start": 538,
+        "end": 538
+      },
+      {
+        "file": "docs/SPEC.md",
+        "start": 554,
+        "end": 568
+      }
+    ],
+    "assessment": "Exact transmitted declaration bytes are private scientific payload and must be erased from drafts/outboxes/receiver stores when covered retirement is acknowledged. The immutable event SHA-256 can support exact-retry conflict refusal without retaining those bytes, but is still derived private integrity metadata with possible linkage/fingerprinting value. It is not a source-file hash or anonymity proof and should not be silently inserted into the minimal tombstone, whose allowed fields exclude such digests.",
+    "requested_clarity": "State that full declaration event bytes do not survive covered erasure, keep event integrity metadata separate from minimal tombstones, and leave any real retained digest/lineage mapping, purpose, retention duration and cleanup authority to an explicit LIB-5C owner/counsel policy. A synthetic LIB-5B acknowledgment proves absence of covered simulator payload only; it cannot certify deletion of remote/unmanaged copies or all derived metadata under a yet-unapproved real policy."
+  }
+}

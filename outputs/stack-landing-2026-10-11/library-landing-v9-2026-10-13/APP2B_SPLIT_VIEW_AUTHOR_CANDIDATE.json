@@ -1,0 +1,43 @@
+{
+  "actual_final_agp_execution_receipt": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/inspection-final-candidate.json",
+  "actual_final_agp_execution_sha256": "81bd439945473c17d4da725f0118de5fe8d09fb09e97178aec372eaa6e892285",
+  "actual_final_agp_status": 0,
+  "actual_final_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "actual_graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+  "all_existing_python_function_ASTs_exact_after_only_scope_label_normalization": true,
+  "candidate_source_files": [
+    {
+      "base_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 114131,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071"
+    },
+    {
+      "base_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 151583,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "de89652a0f0bb814ee68c7cc25f5bcf44db35e3440e7805e39c8a427b3c10450"
+    },
+    {
+      "base_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 24194,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "fdd8ddf980f2a1f565ff8c658809bf31c6620deebbd90272fb6605690435fb79"
+    }
+  ],
+  "hosted_same_cause_proven": false,
+  "maintained_other_files_edited": false,
+  "manifest_sha256": "62dcf8b5cc05f62369bd9977b2dcd99f42f41fb673da3e3dc578d16312b1636e",
+  "native_product_acceptance": false,
+  "old_test_prefix_bytes": 136378,
+  "old_test_prefix_exact": true,
+  "old_test_prefix_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+  "parent_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "patch_sha256": "361d1ddb0558c2051a09914a5342f2d53986f0bea5ce7bd6279499fce1f4aa21",
+  "prior_full_failure_reason": "WRONG_VARIANT_CORRECTLY_REFUSED_TEST_EXPECTED_GRAPH",
+  "prior_full_run_actual_pass": 432,
+  "prior_full_run_failure": 1,
+  "production_changes": false,
+  "schema": "gsip-native-split-view-frozen-v1",
+  "verification_status": "STATIC_PASS_ACTUAL_AGP_PASS_FULL_TEST_RERUN_PENDING_AFTER_TEST_EXPECTATION_CORRECTION"
+}

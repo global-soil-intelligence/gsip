@@ -1,0 +1,12 @@
+{
+  "sourceCommit": "d53eda2e835e57b4ee01dc922fb63d5ebdeceae0",
+  "previewOnly": true,
+  "publicMapUrl": "http://127.0.0.1:4174/map/",
+  "firstPartyWarningsOrErrors": [],
+  "capture": {
+    "fileInputs": 0,
+    "forms": 0,
+    "heading": "Contributions open after our launch review."
+  },
+  "displayedStatus": "No QA-passed public contributions yet."
+}

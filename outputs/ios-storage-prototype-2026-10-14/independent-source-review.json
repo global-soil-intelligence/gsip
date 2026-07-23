@@ -1,0 +1,91 @@
+{
+  "all_approved_source_hashes": {
+    ".github/workflows/ios-storage-prototype.yml": "0991bd4e09ddeb3b7bcb15ea3131f0113b624f98d8e6fac2a1cbb0ea6bf596b4",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Package.swift": "3618553aecbfca250b4ff6d3e94064a7bae8e2d98d984e945bb67a024ac51ec9",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/ExcludedSQLiteStore.swift": "14b7c4036295152e2081971ea9877956624c9d69eb5bd580205ffd9f65a41ba2",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/KeychainAnchor.swift": "edcfc5dc8285bf4f3bbf50c8090c39697811044467eda462c27bec4e33c4ce86",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageContract.swift": "d58dfc213de60afc6ee2451fbce52fef2c7c79e0430eb2a5405f5fd62646f3a9",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageCoordinator.swift": "5cb120f486becf3d5c054f63575c5f56d624e18cb19f7974ee2791b462af42f2",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/AssetRequestGate.swift": "c1a0f63ce6d33479e5bd3dff8008b2a33286a9e2559c52ecdf3aead49cba0858",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/BridgeMessageGate.swift": "69d26f6bf497556b530d9a5407bd9b25ece470d4766fe9c1a5e7c39d34eb8749",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/OwnedTemporaryPhotoBroker.swift": "865450b850229fd96a63bb8c5fa70cbc000f2e18f37b2189536ca3342ca39a84",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeDelegationHandler.swift": "6b2a9cdfa6448754ffc4b7b19ce06cf9207de1b27429947c0ff5a73357ec97c2",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeHostController.swift": "cb0dd5d6950ce44a8401a630e313ef14078dbbc603b38abf26b05bc391cf73eb",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeStorePlugin.swift": "aa3fc0e333b70c6db496c43480de8da97c46214f3afc88c878317b7e110d9b19",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/ExcludedSQLiteStoreTests.swift": "d9b3932b310f756cb54bc0cc2211483a36be53b3ca0ab18b9ea44840c0d8161a",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/KeychainAnchorTests.swift": "767098493f18dd360e1088c440cb40f15f9bb457b02a9b344791944827b65ced",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/NativeTestDoubles.swift": "8d07200ee46e946839ab31d0af64634e0cfc827597447faf4adb385ec915d4a1",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/StorageCoordinatorTests.swift": "1a0642d3d688134fc0251317ca61cb8b1b5282460e69d936e84156b59733116a",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/AssetRequestGateTests.swift": "1ae514e07bc500639d26a9ffcd43ee32daddef931802224109083174a5f41b76",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/BridgeMessageGateTests.swift": "727ed491c36a922891e7c44fa8a7adee877a9e830dcf7e1355523ad8b2b372d8",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/OwnedTemporaryPhotoBrokerTests.swift": "b84c62e28afb53242bdbc1e3c263ab3d7e90822c97db2233f0789ee68a36244a",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeDelegationHandlerTests.swift": "897471db693bdcedf964f06f6d81aded76ff70b46d3f3394255b3f77e37327e5",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeHostControllerTests.swift": "4be91876e880c4c8dfe93ef4a3c6ff5e1f4af44f83d1a7b8b96441ed22318b6d",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeStorePluginTests.swift": "bce844cc09e0711e6dc343287374ee7988563263586c3b79d4b4fb6fa076b8fc",
+    "scripts/ios_storage_prototype.py": "d01d7566a1b37d759727246377a3b81e2d9609a2738a2f4d393324d01ebe9698",
+    "tests/test_ios_storage_prototype.py": "232f67bf2605c4dca347a256e185910c0846cd9dd148d97a0a0429e93df71a51"
+  },
+  "base_head_at_review": "a9ef1c7d9c74ee2061a3baee8a59137ab7defce0",
+  "corrected_review_note": "The earlier under2048 RecursionError concern was not reproduced on pinned Python3.12.7 and is not a demonstrated bug. Optional catch is tested with explicitly injected decoder failure; no recursion-limit change.",
+  "evidence_limits": [
+    "Source and Python policy review does not establish native compile/runtime success.",
+    "Metadata are diagnostic snapshots, not physical backup/passcode/volume certification.",
+    "No weaker policy, acceptance bypass, production/capture action or implementation merge authority inferred."
+  ],
+  "head_at_receipt": "ac70c8d17d0568e555c9422635ff1791f1c70ded",
+  "independently_verified": {
+    "all_native_assertion_failure_skip_lines_unchanged": true,
+    "changed_since_a9_only_reviewed_three_files": true,
+    "core_test_identities": 42,
+    "exact_added_paths_including_working_tree": 24,
+    "existing_tracked_files_unchanged": 377,
+    "generated_copy_targets": 21,
+    "generated_edit_targets": 9,
+    "host_test_identities": 33,
+    "native_files": 21,
+    "policy_and_processor_tests_passed": 83,
+    "reviewed_hashes_stable_before_after_tests": true,
+    "runtime_native_sources_manifest_and_workflow_unchanged": true,
+    "scope_sha256": "810bca4dcaa09a796e3622f72c0c5f48f56d0ce70b0688eb24de4cf6fab7ac9d",
+    "source_bindings": 9
+  },
+  "native_execution_by_this_reviewer": false,
+  "native_observer": {
+    "existing_approved_test_file_only": true,
+    "existing_imports_only": true,
+    "fixed_part_plus_boolean_output_only": true,
+    "fresh_uncached_policy_queries": true,
+    "intentional_negative_control_uses_distinct_ignored_marker": true,
+    "no_diagnostic_setter_open_reset_or_fallback": true,
+    "original_error_rethrown": true,
+    "parent_node_type_owner_link_checks_before_metadata": true,
+    "presence_and_query_success_flags_distinct_from_false": true,
+    "read_only_fixed_base_root_database": true,
+    "separate_protection_exclusion_volume_queries": true
+  },
+  "python_boundary": {
+    "complete_structured_test_tree_still_required": true,
+    "deadlines_unchanged": true,
+    "decoder_errors_discarded_without_echo": true,
+    "exact_boolean_fields": 17,
+    "max_line_characters": 2048,
+    "max_log_bytes": 16777216,
+    "max_records": 9,
+    "metadata_emitted_only_for_failed_or_timedout_tool": true,
+    "parts": [
+      "base",
+      "root",
+      "database"
+    ],
+    "unknown_extra_nonbool_fields_rejected": true,
+    "valid_failure_marker_refuses_even_after_passing_tree": true
+  },
+  "review_binding": "frozen three-file hashes",
+  "review_role": "independent read-only adversarial reviewer",
+  "reviewed_sha256": {
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/ExcludedSQLiteStoreTests.swift": "d9b3932b310f756cb54bc0cc2211483a36be53b3ca0ab18b9ea44840c0d8161a",
+    "scripts/ios_storage_prototype.py": "d01d7566a1b37d759727246377a3b81e2d9609a2738a2f4d393324d01ebe9698",
+    "tests/test_ios_storage_prototype.py": "232f67bf2605c4dca347a256e185910c0846cd9dd148d97a0a0429e93df71a51"
+  },
+  "source_status": "no remaining actionable scope/privacy findings"
+}

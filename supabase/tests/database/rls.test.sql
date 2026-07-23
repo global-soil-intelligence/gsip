@@ -3,6 +3,7 @@ create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
 select plan(42);
+update public.intake_settings set enabled = true;
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
@@ -156,7 +157,7 @@ select lives_ok(
     $$insert into public.photos (submission_id, shot_type, storage_path)
       values (
         '50000000-0000-4000-8000-000000000003', 'A',
-        '30000000-0000-4000-8000-000000000001/submission/A/client.jpg'
+        '30000000-0000-4000-8000-000000000001/50000000-0000-4000-8000-000000000003/A/60000000-0000-4000-8000-000000000001.jpg'
       )$$,
     'authenticated client can insert only the public photo linkage fields'
 );

@@ -1,0 +1,238 @@
+{
+  "state": "PREPARED_ONLY_WAITING_JUSTIN_GO",
+  "gate": "E",
+  "scope": "Only prior-attach then gsip-public; no deployment performed",
+  "prepared_at_utc": "2026-10-12T19:50:37.391673+00:00",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1"
+  },
+  "source_commit": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "source_directory": "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+  "cli_version": "2.118.0",
+  "source_manifest": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-reviewed-source-manifest-2026-10-12.json",
+    "sha256": "75aca5a667f59ac75767f19480ac4257f4d2407a39e4b6e10f34a7e0846a39e6"
+  },
+  "baseline": {
+    "ledger": 28,
+    "complete_hosted_security_findings": 0,
+    "capture_open": false,
+    "edge_functions": [
+      {
+        "slug": "prior-attach",
+        "version": 3,
+        "status": "ACTIVE",
+        "verify_jwt": true
+      }
+    ],
+    "gsip_public_present": false,
+    "public_cells": 0,
+    "dataset_releases": 0
+  },
+  "preflight_before_execution": [
+    "Exact clean source and every manifest hash; config prior verify_jwt true/public false; CLI 2.118.0 unchanged",
+    "Current-head green validate/gitleaks and successful Deno CI step for reviewed source",
+    "Fresh exact full28ledger hashes, strict target28catalog/ACLs, all61counts compared to verified GateD state, hosted advisor0, captureonefalse",
+    "Fresh Auth signup/anonymousoff, private unexposed; do not push local Auth config",
+    "Fresh disabled worker schedules/no nonterminal workers or overlapping writer",
+    "Function inventory exactly prior-attachv3ACTIVEJWTon; gsip-public absent"
+  ],
+  "stages": [
+    {
+      "function": "prior-attach",
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+        "functions",
+        "deploy",
+        "prior-attach",
+        "--project-ref",
+        "toxldjgwkxtneoqsazym",
+        "--workdir",
+        "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+        "--import-map",
+        "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0/supabase/functions/deno.json",
+        "--use-api"
+      ],
+      "expected_verify_jwt": true,
+      "verification": [
+        "Inventory only prior-attach; same id, ACTIVE, new version>3 and bundle digest recorded; import map on and JWT true",
+        "Anonymous POST empty JSON with no credentials returns401 before any submission lookup/job",
+        "Recheck ledger/counts/capture/security unchanged; stop before public on mismatch"
+      ],
+      "smoke_command": [
+        "python3",
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-edge-smoke-2026-10-12.py",
+        "--phase",
+        "prior"
+      ]
+    },
+    {
+      "function": "gsip-public",
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+        "functions",
+        "deploy",
+        "gsip-public",
+        "--project-ref",
+        "toxldjgwkxtneoqsazym",
+        "--workdir",
+        "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+        "--import-map",
+        "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0/supabase/functions/deno.json",
+        "--use-api",
+        "--no-verify-jwt"
+      ],
+      "expected_verify_jwt": false,
+      "verification": [
+        "Exactly2ACTIVEfunctionslugs prior-attach/gsip-public; prior complete metadata unchanged from stage1; publicJWTfalse/import map on/positive version and bundle digest recorded",
+        "Eight fixed-target anonymous HTTP checks below",
+        "Full28ledger hashes/counts/catalog permissions unchanged; completeadvisor0; capture/signup/anonymousoff; privateunexposed; workersidle"
+      ],
+      "smoke_command": [
+        "python3",
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-edge-smoke-2026-10-12.py",
+        "--phase",
+        "all"
+      ]
+    }
+  ],
+  "inventory_readback_command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "functions",
+    "list",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+    "--output",
+    "json"
+  ],
+  "smoke_expectations": [
+    {
+      "check": "prior unauthenticated empty POST",
+      "status": 401
+    },
+    {
+      "check": "GET public /v1/protocol",
+      "status": 200,
+      "contract": "nonempty protocol object, MIT/ODbL-1.0/CC-BY-SA-4.0 and citation text/bibtex"
+    },
+    {
+      "check": "GET synthetic resolution9 cell",
+      "status": 400,
+      "contract": "refusal states resolution8 limit"
+    },
+    {
+      "check": "MCP tools/list modern2026-07-28 body/header parity",
+      "status": 200,
+      "contract": "exactly get_protocol/get_cell/list_cells/get_release, readOnlyHint true/destructiveHint false"
+    },
+    {
+      "check": "GET synthetic resolution8 cell",
+      "status": 200,
+      "contract": "no_published_observations, published null, containing[]"
+    },
+    {
+      "check": "GET cell list within fixture limit1",
+      "status": 200,
+      "contract": "cells[]/nextnull"
+    },
+    {
+      "check": "GET /v1/releases/latest",
+      "status": 200,
+      "contract": "release null"
+    },
+    {
+      "check": "POST public protocol empty JSON",
+      "status": 405
+    }
+  ],
+  "stop_policy": [
+    "Any source/preflight/JWT/import-map/inventory/HTTP/count/security mismatch",
+    "Any CLI failure or partial deployment; stop before the next stage",
+    "No automatic retries, rollback, secret changes, dependency/source fixes, JWT disabling for prior, schema/cache commands, or further deployment"
+  ],
+  "assumptions_and_limits": [
+    "Deploying an exact reviewed unmerged commit; this go would not authorize merges.",
+    "Hosted platform provides standard existing URL/anonymous/service environment for prior and an acceptable publishable/legacy-anonymous key for public; no key values inspected or new secrets set. Public fails closed503 if unavailable.",
+    "gsip-public code uses only a publishable/anon key and no user session/service-role access; prior server worker retains its existing guarded service role.",
+    "Public-reader smoke expectations require zero published cells and zero dataset releases; mismatch stops rather than dispatching an export.",
+    "Prior successful owner/service jobs and upstream fetches are intentionally not exercised on production; CI covers their logic.",
+    "Server-side bundling/runtime success is not yet verified; deploy has no dry-run flag. --use-api avoids a local Docker build and performs no action until go.",
+    "The environment contains an existing local-development anonymous-sign-in setting; this gate runs only functions deploy, never config push.",
+    "Auth/private-exposure and worker evidence currently bound to GateD15:22\u201315:26EDT and must be refreshed after futurego.",
+    "Agent documentation URLs point to main; owner merges and Pages/API discovery updates remain separate gates.",
+    "Preparation observations are not a persistent lock against an external operator."
+  ],
+  "scope_excluded": [
+    "Database migrations/repair/reset",
+    "Auth/config/secret/key changes",
+    "repository variable changes",
+    "worker/QA/export dispatch",
+    "upstream prior job execution",
+    "HuggingFace publication",
+    "tiles/Pages deployment",
+    "PR merge/approval",
+    "capture opening",
+    "licence/dependency changes"
+  ],
+  "production_mutations": [],
+  "deployment_commands_run": [],
+  "new_dependencies": [],
+  "bound_inputs": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-completion-receipt-2026-10-12.json",
+      "sha256": "258c5c8f47fcb439af08acf9c07e788036d3816e649b91d4d6ff965ec4d021db"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-preparation-production-readback-2026-10-12.json",
+      "sha256": "de0a537bb7fd4ff15beac4e8f12b7d87e16edcc48308e6d93e5e86f2851531de"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-cli-inventory-command-verification-2026-10-12.json",
+      "sha256": "dc49c150a6666c948f1546963203711e7c06c61caf1d20643ac28870efae2ce3"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-reviewed-source-manifest-2026-10-12.json",
+      "sha256": "75aca5a667f59ac75767f19480ac4257f4d2407a39e4b6e10f34a7e0846a39e6"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-fix-all-pr-ci-20261012T193832Z.json",
+      "sha256": "1c52e7e73534c2300bbca248df0d0fd5213514214c9a12fb73d5bec73e5f7f60"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-ci-deno-step-verification-2026-10-12.json",
+      "sha256": "78babaa4303df0c60e22d1e9ae884a8acd41b7ace3b056fbd2dec2a9e0013d97"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-smoke-verifier-self-tests-2026-10-12.json",
+      "sha256": "45629af041e8f2f8f45a4b2802dbf03a5428ffbe457e9a1365d52de39b43d2aa"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-http-prior-20261012T194213385506Z.json",
+      "sha256": "7c3a3790caba7c704d8e2ea9c9e0d16a395ee8fad17dffa7ac3f5a0336a7cdec"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-auth-api-pages-postcheck-verified-20261012T1926Z.json",
+      "sha256": "596dea745bf567269a4184138fca09e201bec52167cdba1d05bed68c59720bcb"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-worker-native-readiness-20261012T192235Z.json",
+      "sha256": "af09b233e063133fdf677a24096dd2ba86a4f828ca2381c7b4c5ac8b8fef6d4b"
+    }
+  ],
+  "smoke_verifier": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-edge-smoke-2026-10-12.py",
+    "sha256": "2b74853beea8d08ec1a43a1f4f1a5ed2f7fc1ecd0b0b4404b61edf801ed982f0",
+    "self_tests_passed": 13,
+    "live_post_deployment_smokes_run": false
+  },
+  "official_sources": [
+    "https://supabase.com/docs/guides/functions/deploy",
+    "https://supabase.com/docs/reference/cli/supabase-functions-deploy",
+    "https://supabase.com/docs/guides/functions/auth",
+    "https://supabase.com/changelog/cbc-tls-ciphers-deprecated"
+  ]
+}

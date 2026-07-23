@@ -1,0 +1,183 @@
+{
+  "checked_at_utc": "2026-10-16 22:31:49 UTC",
+  "targets": [
+    {
+      "pr": 79,
+      "expected_head": "57c5a1033a807855da19507588c259012fcdbd9c",
+      "current_head": "57c5a1033a807855da19507588c259012fcdbd9c",
+      "head_matches": true,
+      "base": "main",
+      "state": "open",
+      "checks_total": 4,
+      "checks": [
+        {
+          "id": 117222760949,
+          "name": "dco",
+          "status": "completed",
+          "conclusion": "skipped",
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975170727/job/117222760949"
+        },
+        {
+          "id": 117222758876,
+          "name": "gitleaks",
+          "status": "completed",
+          "conclusion": "success",
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975170805/job/117222758876"
+        },
+        {
+          "id": 117222758632,
+          "name": "validate",
+          "status": "completed",
+          "conclusion": "success",
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975170779/job/117222758632"
+        },
+        {
+          "id": 117222665291,
+          "name": "gitleaks",
+          "status": "completed",
+          "conclusion": "success",
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975143536/job/117222665291"
+        }
+      ],
+      "runs": [
+        {
+          "id": 38975170779,
+          "head_sha": "57c5a1033a807855da19507588c259012fcdbd9c",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975170779",
+          "jobs": [
+            {
+              "id": 117222758632,
+              "name": "validate",
+              "status": "completed",
+              "conclusion": "success",
+              "active_steps": [],
+              "last_completed_step": "Complete job"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "pr": 81,
+      "expected_head": "3d27077277374fcf2f7bc2411401dd16b6186462",
+      "current_head": "3d27077277374fcf2f7bc2411401dd16b6186462",
+      "head_matches": true,
+      "base": "docs/spec-v14",
+      "state": "open",
+      "checks_total": 6,
+      "checks": [
+        {
+          "id": 117224077612,
+          "name": "gitleaks",
+          "status": "completed",
+          "conclusion": "success",
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975573067/job/117224077612"
+        },
+        {
+          "id": 117224077579,
+          "name": "dco",
+          "status": "completed",
+          "conclusion": "skipped",
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975572774/job/117224077579"
+        },
+        {
+          "id": 117224077080,
+          "name": "validate",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975572947/job/117224077080"
+        },
+        {
+          "id": 117224076556,
+          "name": "android",
+          "status": "in_progress",
+          "conclusion": null,
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975572671/job/117224076556"
+        },
+        {
+          "id": 117224076244,
+          "name": "ios",
+          "status": "completed",
+          "conclusion": "success",
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975572671/job/117224076244"
+        },
+        {
+          "id": 117223893754,
+          "name": "gitleaks",
+          "status": "completed",
+          "conclusion": "success",
+          "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975517910/job/117223893754"
+        }
+      ],
+      "runs": [
+        {
+          "id": 38975572947,
+          "head_sha": "3d27077277374fcf2f7bc2411401dd16b6186462",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975572947",
+          "jobs": [
+            {
+              "id": 117224077080,
+              "name": "validate",
+              "status": "in_progress",
+              "conclusion": null,
+              "active_steps": [
+                "Run pnpm db:reset"
+              ],
+              "last_completed_step": "Run pnpm db:start"
+            }
+          ]
+        },
+        {
+          "id": 38975572671,
+          "head_sha": "3d27077277374fcf2f7bc2411401dd16b6186462",
+          "status": "in_progress",
+          "conclusion": null,
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975572671",
+          "jobs": [
+            {
+              "id": 117224076244,
+              "name": "ios",
+              "status": "completed",
+              "conclusion": "success",
+              "active_steps": [],
+              "last_completed_step": "Complete job"
+            },
+            {
+              "id": 117224076556,
+              "name": "android",
+              "status": "in_progress",
+              "conclusion": null,
+              "active_steps": [
+                "Build the exact APP-2B parent in an isolated checkout"
+              ],
+              "last_completed_step": "Audit exact Android runtime and license inputs"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "app_artifacts": [
+    {
+      "id": 12079041683,
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 13914580,
+      "digest": "sha256:5cff10ecdd2d7502d889b3b4d1e7378543442012ce732a33efabc8bff3541a0a",
+      "expired": false,
+      "created_at": "2026-10-16T22:27:49Z",
+      "expires_at": "2026-10-30T22:27:47Z",
+      "workflow_run": {
+        "id": 38975572671,
+        "repository_id": 1308971325,
+        "head_repository_id": 1308971325,
+        "head_branch": "wp-site-1h-closed-capture-status",
+        "head_sha": "3d27077277374fcf2f7bc2411401dd16b6186462"
+      }
+    }
+  ],
+  "mutations": "Local receipts only; no remote mutation"
+}

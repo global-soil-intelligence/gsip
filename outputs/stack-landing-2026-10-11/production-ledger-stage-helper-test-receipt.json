@@ -1,0 +1,49 @@
+{
+  "driver_sha256": "4287da177f225c99b7d5ed2c966ce68f3c3b85d055c6e0c89cb323efb268c116",
+  "negative_controls_rejected": [
+    "missing original record",
+    "changed original full metadata",
+    "duplicate metadata version",
+    "October identity prematurely present",
+    "wrong canonical name",
+    "new metadata changed after add",
+    "foreign identity removed too early",
+    "missing independently validated added snapshot"
+  ],
+  "negative_count": 8,
+  "plan_sha256": "aa8a3656306946353624578ca328485e0e09471cf596f3ab52f68bbf86ec8606",
+  "positive_count": 4,
+  "positive_stages": [
+    {
+      "added_full_row_hashes_checked": 0,
+      "count": 18,
+      "ok": true,
+      "original_full_row_hashes_checked": 18,
+      "stage": "before"
+    },
+    {
+      "added_full_row_hashes_checked": 0,
+      "count": 31,
+      "ok": true,
+      "original_full_row_hashes_checked": 18,
+      "stage": "added"
+    },
+    {
+      "added_full_row_hashes_checked": 13,
+      "count": 18,
+      "ok": true,
+      "original_full_row_hashes_checked": 5,
+      "stage": "retired"
+    },
+    {
+      "added_full_row_hashes_checked": 13,
+      "count": 17,
+      "ok": true,
+      "original_full_row_hashes_checked": 4,
+      "stage": "stray_retired"
+    }
+  ],
+  "production_mutations_performed": false,
+  "scope": "Local metadata assertion helper controls only; no SQL execution or database connection",
+  "status": "PASS"
+}

@@ -1,0 +1,93 @@
+{
+  "assumptions_and_limits": [
+    "inserted_at is timestamp without time zone; comparisons use naive UTC clock values because the current database timezone is UTC, but the historical insertion session timezone was not independently established.",
+    "No prior full Realtime migration identity snapshot exists in the bound receipts; the latest eight are not assumed to equal the exact eight added identities.",
+    "Insertion metadata is not independent proof that underlying DDL executed successfully or of who/what initiated it.",
+    "No migration statement bodies, source files, contributor contents or application rows were queried."
+  ],
+  "bound_preflight_receipt_sha256": "220f01b588ce73f5998eda66cf6d9cab1c6a48c7fb347b9602f07693238e7775",
+  "column_metadata": [
+    {
+      "column_default": null,
+      "column_name": "version",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "udt_name": "int8"
+    },
+    {
+      "column_default": "now()",
+      "column_name": "inserted_at",
+      "data_type": "timestamp without time zone",
+      "is_nullable": "YES",
+      "udt_name": "timestamp"
+    }
+  ],
+  "conclusions": {
+    "actual_migration_sql_execution_independently_proven": false,
+    "cause": "UNKNOWN",
+    "current_rows_with_recorded_timestamps_after_cutoff": 8,
+    "current_rows_with_timestamps_not_after_cutoff": 81,
+    "exact_new_identity_set_independently_proven": false,
+    "recorded_later_timestamp_window": "2026-10-12 02:45:02\u201302:45:03",
+    "recorded_timestamp_evidence_supports_later_ledger_update": true
+  },
+  "fresh_platform_ledger_count": 89,
+  "metadata": {
+    "count": 89,
+    "database_timezone": "UTC",
+    "distinct_version_count": 89,
+    "earliest_inserted_at": "2026-07-22 14:08:00",
+    "latest_eight_by_recorded_timestamp": [
+      {
+        "inserted_at": "2026-10-12 02:45:03",
+        "version": "20261002120000"
+      },
+      {
+        "inserted_at": "2026-10-12 02:45:02",
+        "version": "20260928120000"
+      },
+      {
+        "inserted_at": "2026-10-12 02:45:02",
+        "version": "20260925120000"
+      },
+      {
+        "inserted_at": "2026-10-12 02:45:02",
+        "version": "20260922120000"
+      },
+      {
+        "inserted_at": "2026-10-12 02:45:02",
+        "version": "20260916120000"
+      },
+      {
+        "inserted_at": "2026-10-12 02:45:02",
+        "version": "20260914120000"
+      },
+      {
+        "inserted_at": "2026-10-12 02:45:02",
+        "version": "20260827120000"
+      },
+      {
+        "inserted_at": "2026-10-12 02:45:02",
+        "version": "20260714120000"
+      }
+    ],
+    "latest_inserted_at": "2026-10-12 02:45:03",
+    "max_version": 20261002120000,
+    "min_version": 20211116024918,
+    "naive_timestamp_cutoff": "2026-10-12 02:37:04",
+    "naive_timestamps_after_cutoff": 8,
+    "naive_timestamps_at_cutoff": 0,
+    "null_timestamp_count": 0,
+    "observed_server_utc": "2026-10-12 12:20:47.807498"
+  },
+  "prior_platform_ledger_count": 81,
+  "prior_readback_utc": "2026-10-12 02:37:04",
+  "production_mutations_performed": false,
+  "query_sha256": {
+    "column_metadata": "797ecbf3f3f87372c8f8fa9aa2e3de9ab64a7590e5990b559f6deaf5b5698105",
+    "identity_timestamp_aggregate": "056e4f33e77fb4a730354ab6a5ae8bd2bd782cb4f5d415e45d29780d81da6e8b"
+  },
+  "scope": "Platform migration identities and timestamp metadata only; no statement bodies, foreign source or application rows",
+  "state": "STOP_PRESERVED_CAUSE_UNKNOWN",
+  "target": "toxldjgwkxtneoqsazym"
+}

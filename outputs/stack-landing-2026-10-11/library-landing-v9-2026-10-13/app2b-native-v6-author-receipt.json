@@ -1,0 +1,439 @@
+{
+  "android_scope": "Fixed stage/error class/source-line/count diagnostics only; actual cause remains unconfirmed and no variant artifact is substituted",
+  "assumptions": [
+    "Temporary Python-emitted Gradle task is non-shipped generated build configuration, per root approval; exact task digest retained.",
+    "Tool-output adapters are bounded selected-CI-format validation; actual hosted native output/checkout tag availability still unverified.",
+    "Both full repeat-reference artifacts are mandatory on compare CLI and uploaded, outside source tree.",
+    "Fixed exact d7 parent is full APP-2B feature baseline; no dependency-only impact or universal reproducibility claim.",
+    "Synthetic complete controls use real app_build receipt/hash/comparison producer; only native/tool/environment inputs are fixed fixtures.",
+    "Authored-only gitleaks is additional evidence; it does not replace required full-history scan.",
+    "Actual CI compiled/repeated Android+iOS but failed audits; no accepted artifacts. Android correction is diagnostic-only, with no hypothesized producer change.",
+    "ION exact source archives and Capacitor exact source/binary archives, README/MIT/header and metadata were independently retrieved from primary public release refs. Complete source-replay uses retained real bytes, real installed frozen npm inputs and mocked read-only Git command results; app ZIP is synthetic, not native compilation.",
+    "The root-owned PRIVACY addition of codeload.github.com is an external required prerequisite; its exact independent reviewed formatting is not part of this four-file native patch."
+  ],
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "bash_pipe_first_failure_exit": 1,
+  "checks": [
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_app_notification_audit.py",
+        "tests/test_app_build.py",
+        "tests/test_app_permissions.py",
+        "tests/test_processors.py",
+        "-q",
+        "--disable-warnings"
+      ],
+      "exit_code": 0,
+      "log": "check-00.log",
+      "log_sha256": "1b8858ee97e605e8f3365955fca221d829da290477b37e1d19f50b5ffc90c242"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "--collect-only",
+        "-q",
+        "tests/test_app_notification_audit.py",
+        "tests/test_app_build.py",
+        "tests/test_app_permissions.py",
+        "tests/test_processors.py"
+      ],
+      "exit_code": 0,
+      "log": "check-01.log",
+      "log_sha256": "416fcfef8214f6eff4db4f28bf83e49cb1a2f69820cbb21d145ae6f9a1f8418a"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "scripts/app_notification_audit.py",
+        "tests/test_app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "log": "check-02.log",
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "scripts/app_notification_audit.py",
+        "tests/test_app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "log": "check-03.log",
+      "log_sha256": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "mypy",
+        "scripts/app_notification_audit.py",
+        "tests/test_app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "log": "check-04.log",
+      "log_sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    {
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "node_modules/.pnpm/prettier@3.9.9/node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        ".github/workflows/app-build.yml",
+        "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+      ],
+      "exit_code": 0,
+      "log": "check-05.log",
+      "log_sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    },
+    {
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/check-language.mjs"
+      ],
+      "exit_code": 0,
+      "log": "check-06.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/tools/gitleaks-8.21.2/gitleaks",
+        "dir",
+        "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v6-frozen-a1f80kbl/authored",
+        "--config",
+        "/private/tmp/gsip-app2b-author-lhe_vi2z/source/.gitleaks.toml",
+        "--ignore-gitleaks-allow",
+        "--redact",
+        "--no-banner",
+        "--report-format",
+        "json",
+        "--report-path",
+        "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v6-frozen-a1f80kbl/gitleaks-authored.json"
+      ],
+      "exit_code": 0,
+      "findings": 0,
+      "log": "gitleaks.log",
+      "log_sha256": "2ae97cfdbb55ffc88cff92c83f1b89046157d2d582200bc5fff41bb3ceb1e039",
+      "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "scanner_version": "8.21.2",
+      "scope": "only these four authored files; existing full-history CI scan untouched and still required",
+      "suppression_added": false
+    }
+  ],
+  "counts": {
+    "app_build_current_core": 53,
+    "app_permissions": 28,
+    "audit_focused": 236,
+    "baseline_build_permission_total": 71,
+    "current_combined": 323,
+    "current_core_extra_cases": 10,
+    "meaningful_guard_mutations": 38,
+    "original_probes": 7,
+    "processors": 6,
+    "total_reviewer_probes": 20,
+    "v3_probes": 6,
+    "v5_exact_refusal_fail_before": 6,
+    "v5_existing_refusal_control": 1,
+    "v5_fully_coordinated_revision_fail_before": 1,
+    "v5_probes": 7
+  },
+  "external_evidence": [
+    {
+      "name": "actual_ci_failure_closeout",
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/ci-pr63-readonly/pr63-native-audit-failure-closeout.json",
+      "sha256": "7920921f43a696615e2aa256bf640ca40a6b2eec975f9b16dae9b69cd5efabd5"
+    },
+    {
+      "name": "primary_exact_capacitor_release_and_header",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-capacitor-primary-v6-vt56g13t/receipt-with-header.json",
+      "sha256": "79e7cdd9f599b7bec42eb0e9340fb4c387dcd854dc34ff38afa346666aa3b17a"
+    },
+    {
+      "name": "primary_exact_ION_tag_audit",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-ion-primary-evidence-1yyggrxz/receipt-with-tree.json",
+      "sha256": "23b838a898bc2077b595bcf1a9772bcf2a8e369c651bbfc360af41881552d449"
+    },
+    {
+      "name": "v5_exact_independent_banks_6_fail_one_existing_refusal",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v6-fail-before-peenky39/receipt.json",
+      "sha256": "4903302ed418db47da48a21eb35a42396a79eec3a3a7b311b36907170bfa4206"
+    },
+    {
+      "name": "v5_fully_coordinated_revision_additional_fail_before",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v6-coordinated-fail-before-kxiz7e3a/receipt.json",
+      "sha256": "9753cbb81a7497074737e6de7996b3c30df195266c11029757fc66d4bf14bc82"
+    },
+    {
+      "name": "original7_v3six_v5seven_reviewer_replays",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v6-review-replay-_wbwrhk6/receipt.json",
+      "sha256": "efafbee48e01229a12824c7bf3e45b47a581fb2e332fbeb3fa8ad8e3c1ca544f"
+    },
+    {
+      "name": "prior18_renewed_guard_mutations",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v6-prior18-mutations-ropn354_/receipt.json",
+      "sha256": "c230b7b1fe0b4aeccd944d626cb84df699451cb23cab1acd8efe0d4e1a0d50e7"
+    },
+    {
+      "name": "prior10_renewed_graph_source_inventory_diagnostic_mutations",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v6-prior10-mutations-76d8c90w/receipt.json",
+      "sha256": "146be740e8c5d8b4cfa1fbfe5da8ff212835b4fd92ad18fdda0e6a96b9889459"
+    },
+    {
+      "name": "new10_capacitor_guard_mutations",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v6-cap-mutations-awhdfiyg/receipt.json",
+      "sha256": "19288b51ad3ae74056e6098e02d2f152a1b6dbd92aeb53cc5f06a7659c2f8ca8"
+    },
+    {
+      "name": "actual_complete_four_primary_package_collector_validator_replay",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v6-primary-replay-_uuqexhk/receipt.json",
+      "sha256": "585ebadb7a598839b7e5cd2bbc5595b75042f163bdae3db8ce398a9b2a8eaa8f"
+    },
+    {
+      "name": "root_owned_privacy_disclosure_closure",
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/independent-formatted-disclosure-closure.json",
+      "sha256": "448a35e932141c12e1711c8323d4543f8c13fb5a845a78bce8ee7c24d09fedc4"
+    },
+    {
+      "name": "v5_preserved_freeze",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v5-frozen-mii_1mdf/receipt.json",
+      "sha256": "394ac613d2da1e6031f8b7f2945287003153f7dae8929b2594995d913f1abd8e"
+    }
+  ],
+  "external_root_owned_privacy_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+  "files": [
+    {
+      "base_sha256": null,
+      "bytes": 90648,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "b9af11f753ab9630ecca1fdd9262796f7996c7fad4709d69f61f3ddc3a78d762",
+      "v5_sha256": "f588112af2eb2f51a354a7856a9c0bb916722e3422807b2af223acc9c24b5ab0"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 78316,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "2868d1721ce606a5d210143c242ebe59084e37f379424490acf0aa8b3d5dcd58",
+      "v5_sha256": "fef70073abf42ec433dc5193be7df7f4a7c6d74d3795c88502d022a329726c8e"
+    },
+    {
+      "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "bytes": 17825,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "v5_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 13303,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "75747b73ceda9e507bdfc7d40d57aa7daa55379625dc12a61af0fc67e45e31bc",
+      "v5_sha256": "3278d03081afec2bc5c408eb87afde23268b264acc3c5cfd8ac810aa284907da"
+    }
+  ],
+  "local_xcode_version": "Xcode 27.0 / Build version 27A266a, verified by xcodebuild -version; no local native resolve/compile performed",
+  "native_tools": {
+    "adb": null,
+    "sdkmanager": null,
+    "xcodebuild": "/usr/bin/xcodebuild"
+  },
+  "no_changes": [
+    "Git/history/scanner policy/suppressions/production/deployments/capture/signing/accounts/core-owned files"
+  ],
+  "patches": [
+    {
+      "path": "base-to-v6.patch",
+      "sha256": "f291a1306bf6b578c8deeec31de5f5af59341b2164f0eddc81367b24402c1940"
+    },
+    {
+      "path": "v5-to-v6.patch",
+      "sha256": "42fb1e098b9579f29a029c49fd8ab8f49192b10a0d29ec7d281690670de5e7b6"
+    }
+  ],
+  "source_freeze_unchanged": true,
+  "unverified": [
+    "Next native CI audit/parent feature comparison/APK and simulator acceptance artifacts; Android audit cause and any required variant producer correction; SPM tag checkout availability",
+    "Real-device Android/iOS notification prompt/delivery/cancellation/reboot/logging and iOS WebKit backup",
+    "Signing/accounts/store gates"
+  ],
+  "workflow_bash_syntax": [
+    {
+      "body_sha256": "c5ee50af8e68d505bd2f1cf3b5806fa5bd8a4ae2f99b5bd0a2aad1a7571db957",
+      "exit_code": 0,
+      "job": "android",
+      "step": 5
+    },
+    {
+      "body_sha256": "242854b87dfdee86ed4bbbfaabde950c1108f613772e7a2f993ccdb7d7949ae9",
+      "exit_code": 0,
+      "job": "android",
+      "step": 6
+    },
+    {
+      "body_sha256": "91b750449d924d8af6ce312a6d47660b52121357081e07c252c15c8889aa6e31",
+      "exit_code": 0,
+      "job": "android",
+      "step": 7
+    },
+    {
+      "body_sha256": "b8b41e3347bef29daab10d8cbb15a6365d1afecd47f648ec58088a0ad794ca76",
+      "exit_code": 0,
+      "job": "android",
+      "step": 8
+    },
+    {
+      "body_sha256": "27fe8b3cca518cdff1149d7dfbc8f845eaa860ae44d8062723e7327868f712bc",
+      "exit_code": 0,
+      "job": "android",
+      "step": 9
+    },
+    {
+      "body_sha256": "2974447bc3ae66584f7c5f30062abdab03672afc07ac76a1f41924a479330ebd",
+      "exit_code": 0,
+      "job": "android",
+      "step": 10
+    },
+    {
+      "body_sha256": "02129081244148d8af3920072811db81a6e0b7751bfb0f605134e4122686d6aa",
+      "exit_code": 0,
+      "job": "android",
+      "step": 11
+    },
+    {
+      "body_sha256": "d84de4924d0ecce51f465446b9f7b62cd3f8696b99112ddefeab7bf39be90306",
+      "exit_code": 0,
+      "job": "android",
+      "step": 12
+    },
+    {
+      "body_sha256": "0604c7db7426ff806ec959e4505b6dd9338bf52ff0f61187185a9d7c2572895c",
+      "exit_code": 0,
+      "job": "android",
+      "step": 13
+    },
+    {
+      "body_sha256": "237a8b67007536cb56e4c3ed5a6759d91395fb086ca0cd525fc671856f90373b",
+      "exit_code": 0,
+      "job": "android",
+      "step": 14
+    },
+    {
+      "body_sha256": "9f504f4f06f87e0c7d07a13141ef7e8c8aded5d633260cd1a26f19c1aaf92304",
+      "exit_code": 0,
+      "job": "android",
+      "step": 15
+    },
+    {
+      "body_sha256": "8a1cb7f76142cee1091b12ba711a5cb480383db8d25f314ebb8ee7c014aa7df5",
+      "exit_code": 0,
+      "job": "android",
+      "step": 16
+    },
+    {
+      "body_sha256": "3a90a16a86faf4aba48e2e627a55c2de7f0c43f78c176604fd9330a6922336fa",
+      "exit_code": 0,
+      "job": "android",
+      "step": 17
+    },
+    {
+      "body_sha256": "fe4d7de88d22e0acf553d18c142af65bc51c04b09c5a93c1bc786570bfc40b5e",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 4
+    },
+    {
+      "body_sha256": "c5ee50af8e68d505bd2f1cf3b5806fa5bd8a4ae2f99b5bd0a2aad1a7571db957",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 5
+    },
+    {
+      "body_sha256": "242854b87dfdee86ed4bbbfaabde950c1108f613772e7a2f993ccdb7d7949ae9",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 6
+    },
+    {
+      "body_sha256": "1a1cbd8c8125b9d186520b38059bdf67f89337da129533bcab4667fbcce159fd",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 7
+    },
+    {
+      "body_sha256": "884de64c4accf1e8fc7dd0c7b466dce6d84c1ebdf164a9a55f0c11dfb261311c",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 8
+    },
+    {
+      "body_sha256": "251033f77a2b62af2f2d9806f0e633adc2a414aee8e61f87078194af6842f54f",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 9
+    },
+    {
+      "body_sha256": "202934c5f7c236db80a5691074562f6ad90b107592ac0a7008177f245accba77",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 10
+    },
+    {
+      "body_sha256": "9481f63e1a5801f149b0aac264741f069aeb88b39d56d3faa2a80b6a95f91331",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 11
+    },
+    {
+      "body_sha256": "4fb6de4716b479a67b7cb4520b8db4fa100232426932095db65775255a1eca67",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 12
+    },
+    {
+      "body_sha256": "e56fbd587077b69518b5cd7c13a7b290afe26ecef668334bcb06c5aa7ae6dbd4",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 13
+    },
+    {
+      "body_sha256": "270cc57cb5f40eb383e2bb67d1a360350d6c23c4ac4680639a87c3d6c514ac0c",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 14
+    },
+    {
+      "body_sha256": "d79fa6f3d05d833f76a6529ddca6a1c608e343345bb3c5dce5cd85ef931b8625",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 15
+    },
+    {
+      "body_sha256": "6ad7d459bf7394712763117eaa481e5b9e4ed82ad588a2dce51aa92d27001345",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 16
+    },
+    {
+      "body_sha256": "e0c352747e4798c7f447d1da560ffa8e40b6f42198ccd719409c75ec3762df7f",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 17
+    },
+    {
+      "body_sha256": "507bce694877e1e9af41f4315acacd07221c4edee9112384e108281879a7b6a9",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 18
+    }
+  ]
+}

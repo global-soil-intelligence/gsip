@@ -1,0 +1,26 @@
+[
+  {
+    "level": "error",
+    "message": "Error: Worker failed to load. Check that the worker URL is correct.\n    at Worker.<anonymous> (https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js:9:564059)",
+    "timestamp": "2026-10-16T01:33:00.225Z",
+    "url": "https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js"
+  },
+  {
+    "level": "error",
+    "message": "Error: Worker failed to load. Check that the worker URL is correct.\n    at Worker.<anonymous> (https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js:9:564059)",
+    "timestamp": "2026-10-16T01:33:00.225Z",
+    "url": "https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js"
+  },
+  {
+    "level": "error",
+    "message": "Error: Worker failed to load. Check that the worker URL is correct.\n    at Worker.<anonymous> (https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js:9:564059)",
+    "timestamp": "2026-10-16T01:34:12.706Z",
+    "url": "https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js"
+  },
+  {
+    "level": "error",
+    "message": "Error: Worker failed to load. Check that the worker URL is correct.\n    at Worker.<anonymous> (https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js:9:564059)",
+    "timestamp": "2026-10-16T01:34:12.706Z",
+    "url": "https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js"
+  }
+]

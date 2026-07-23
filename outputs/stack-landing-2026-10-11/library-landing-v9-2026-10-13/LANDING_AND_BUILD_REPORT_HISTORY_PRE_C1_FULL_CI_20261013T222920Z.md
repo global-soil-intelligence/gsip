@@ -1,0 +1,115 @@
+# GSIP landing and build report — 2026-10-13, 22:23 UTC
+
+The requested #51–#56 stack is merged in order after exact-head green CI and only the exact approved fixture exception. Follow-up source packages LIB-5A(#58), specv10(#60), synthetic local ledger LIB-5B(#64) and source-status documentation WP-DOC-1(#65) are merged. Main is **`7d6777fc219c48792b8e1e2f4912d5c276b477c1`**. APP-2B(#63) remains unmerged at`c1cb7e36087d7e20c2acd790106535d036d63d1d` after a reviewed diagnostic-only build observer and main7d forward merge. Fresh Android failed with valid BUILD_FAILURE/UNKNOWN; fresh iOS job succeeded with strict artifact replay still pending, and general CI is running. Preceding748 had green general/scans/iOS and Android failure/causeUNKNOWN. **No production change, deployment or capture opening occurred.** No approving GitHub review, protection bypass, history rewrite or human DCO certification occurred.
+
+## Merged PRs and check evidence
+
+| PR | Check status before merge | Merge commit |
+| --- | --- | --- |
+| [#51](https://github.com/global-soil-intelligence/gsip/pull/51) | Green; native artifacts verified | `5a26ca2f1cb47233b8d82228d96d4df0aea9a4b3` |
+| [#52](https://github.com/global-soil-intelligence/gsip/pull/52) | Green | `ffd056dc506911a1a60541ceb2eedc668b7d1576` |
+| [#53](https://github.com/global-soil-intelligence/gsip/pull/53) | Green; same-head native rerun/artifacts verified | `1dc380a16f8d6494f20ac59901a5347e2f31b64a` |
+| [#54](https://github.com/global-soil-intelligence/gsip/pull/54) | Green | `9a51ec4564358068d1ba245455f6f5d3ea68f286` |
+| [#55](https://github.com/global-soil-intelligence/gsip/pull/55) | Green | `c804e1516ccb29c3f2535bc0a685ab1a907a32fe` |
+| [#56](https://github.com/global-soil-intelligence/gsip/pull/56) | Green | `1d105bde4d009403d114c844c52d5bf6aaf4565e` |
+| [#58](https://github.com/global-soil-intelligence/gsip/pull/58) | Green; native artifacts verified | `333f1492713d41c0ade42d6b16c4453cdfb1b783` |
+| [#60](https://github.com/global-soil-intelligence/gsip/pull/60) | Green | `d7ed716ed0921381da04f542e90902ede36cb462` |
+| [#64](https://github.com/global-soil-intelligence/gsip/pull/64) | Green; full independent 33-card review | `710d144db94097be71989c67b5d3b4bb48135ad8` |
+| [#65](https://github.com/global-soil-intelligence/gsip/pull/65) | Green; independent factual source-status review | `7d6777fc219c48792b8e1e2f4912d5c276b477c1` |
+
+DCO skipped under the unchanged same-repository policy; it is not reported as a human certification. [Six-PR check register](ALL_GREEN_BEFORE_ORDERED_MERGES.json), [ordered merge register](ORDERED_MERGE_REGISTER.json). #58 [validate](https://github.com/global-soil-intelligence/gsip/actions/runs/38398436566) actually passed 881 Python tests with GDAL, 12 browser tests, 593 database assertions and configured migration/Deno/static/build checks. Its [native run](https://github.com/global-soil-intelligence/gsip/actions/runs/38398436463) produced APK 7,221,644 bytes and simulator 3,385,561 bytes at exact head f07a876; artifact/configuration evidence does not prove physical-device protection. #60 [validate](https://github.com/global-soil-intelligence/gsip/actions/runs/38399279214) passed at exact source 59044d3.
+
+Historical main710 [CI](https://github.com/global-soil-intelligence/gsip/actions/runs/38443032588) and [secret scan](https://github.com/global-soil-intelligence/gsip/actions/runs/38443032236) passed at 710d144. [Pages](https://github.com/global-soil-intelligence/gsip/actions/runs/38443032217) remains waiting for Justin’s approval. Waiting is not deployed or green; no approval was given.
+
+#64 [CI](https://github.com/global-soil-intelligence/gsip/actions/runs/38440865646) passed at exact reviewed source `7934aaa8b729e42ce373977cabfd9f18e5784c18`: 1,136 Python with required GDAL/zero skips, 529 JavaScript, 12 browser, 593 pgTAP assertions/11 files, Deno and existing-data migration compatibility. Both push/PR gitleaks passed; DCO skipped under unchanged policy. [Independent terminal CI receipt](LIB5B_PR64_TERMINAL_CI_RECEIPT.json), SHA-256 `d163a4fbfe97df9e2e0f8a3515f8f4ad568c778ec85b59d0a5cc7be2d2240a4e`; [source merge receipt](owner-authorized-merge-64.json). No native workflow was expected or claimed for its five Python/doc files. The operational clone is clean and fast-forwarded to main 710d144.
+
+#65 [validate](https://github.com/global-soil-intelligence/gsip/actions/runs/38473072529) passed at exacta2ad2d8:1,136 Python with requiredGDAL/zero skips,529 JavaScript/39files,12browser,593pgTAP/11files,Deno2,static/build/map-budget and existing-data migration compatibility. No separate site-budget or native run is claimed. Both hosted8.21.2 scans passed148commits/zero; DCO skipped. [Terminal receipt](DOC1_PR65_TERMINAL_CI_RECEIPT.json), SHA-256`416b0b00d3b1bdf6328d6b5715b3d2c51af3f33d1a1f637ca92ab9dadf63b723`; [merge receipt](owner-authorized-merge-65.json). [Clean main fast-forward/tree/parents/metadata](DOC1_MAIN_FAST_FORWARD.json), SHA-256`c68f5bca854c4067baae5586f21d52181b9991c3329d229bc7eec3815685b754`. Main7d CI/Pages are separate new runs; no result/deployment is inferred from pre-merge CI.
+
+## Exact approved exception
+
+The original four `.gitleaksignore` lines were preserved byte for byte. Only this owner-approved historical noncredential fixture fingerprint was appended:
+
+```
+bb9bd8a583231ff63ec14a7622532ddb869d7cde:scripts/e2e_server.py:generic-api-key:32
+```
+
+Commit 173e193 owns that change and its AGENTS authority record; it was merged forward without rewriting history. Scanner configuration, rules, redaction, workflow and full-history coverage are unchanged. Any further suppression requires explicit approval. Pinned gitleaks 8.21.2 reproduced one finding before and zero after the exact exception, propagation and merges. An isolated new-commit fixture correctly fails with a new fingerprint. [Scan proof](PRE_MERGE_SCAN_PROOF.json), [negative witness](future-fingerprint-negative-receipt.json), [current main full-history report](gitleaks-current-main-spec10-all-history.json). Latest app-branch full-history scan covered149 scanner-reported commits with zero leaks after the reviewed observer and main forward merge: [pinned8.21.2 report](app2b-observer-forward-full-history-gitleaks.json).
+
+## Changes after review
+
+- APP observer covers original build failures before the inspection task starts, only through fixed private metadata when no task/setup fault was attempted. The raw65,536-byte and private256-byte caps, original failure status, old cause-walk/cycle/depth/conflict logic and all native proof remain. Exact public Java error labels add no message/value channel and are not a cause hypothesis. Private validator alone gains file-only BUILD_FAILURE; legacy phase map stays unchanged. Independent closure228cases/19actual realGradle controls/four effective guards, SHA-256`afa31bddceaa3771cdd402f206e7dc686c1e39cb48e5db5bbca606c3991d71f6`, [receipt](APP2B_OBSERVER_INDEPENDENT_CLOSURE.json). Old403prefix127882bytes/43bank and362other baseline sourcefiles preserved; separate reviewed main integration changes only three documentation files.
+
+- WP-DOC-1 corrects stale source/specification completion status and two README anchors; no architecture/runtime/dependency/lock/workflow change. Every122 acceptance box and12 bound normative gate sections remains unchanged. Independent closure SHA-256`30d93f0a6a47b06b8f31cb8981f445d78f624392f05deeae0e4f41c679062124`, [receipt](DOC1_INDEPENDENT_CLOSURE.json). Root18 existing documentation checks/lint passed; all349 other sourcefiles unchanged. APP63 and every external readiness gate remain held.
+
+- Added only the approved historical fixture fingerprint and its explicit authority record; merged it forward and preserved PR descriptions. Scanner rules/redaction/history/workflow remain unchanged.
+- LIB-5A closes input-bearing TypeScript exceptions and spoofed byte-size bounds, with original-byte/unsigned-token/immutable-tuple contract clarification first. Independent fail-before closure receipt `148c492f58bbe633fc8df8835d349399376c7ec5d61f10183f6ec8175af63f25`.
+- Spec v10 defines local retained-byte/metadata/staging limits, permanent pre-reserved fences, separate first-durable daily admission views and one-root fake aggregate authority. It does not select a real peer-sharing policy. Independent receipt `1a647db2e57b3d16dd8eebd23bf0cb80fd9592926cce72e282fbbc55741164a3`.
+- LIB-5B closes final-directory/path guards, PID/thread session affinity and foreign-thread teardown; current-source authority, sibling restrictions, exact retirement identity/head, changed-byte retries, full binding-map coverage and referenced stream consistency remain enforced before admission/use. These synthetic/local and corrupt-metadata controls do not prove real peer consent or distributed erasure. Final full 33-card independent review: 348 cases and 21 meaningful guard-removal experiments, no unresolved material finding; [receipt](lib5b-final-v5-independent-full33-closure.json), SHA-256 `a9b74906a78c873c0ee07ac05ad689aa16a3c4fcd091ef1fef3247eef562757f`. Five files, no new dependency.
+- APP-2B core fixes lazy SDK promise assimilation, late/overlapping listener cleanup, stale ownership/lifecycle actions and callbacks, final durable scheduling holds and tap-focus lifetime. Independent 57 preserved adversarial probes, 303 capture and 87 Python/static cases close all 12 core cards; [receipt](app2b-core-v4-independent-closure.json), SHA-256 `f78f2fb3fa8547e4ae4d1f8bb873c84893520c58339aab03d09e1e7896eece60`.
+- APP native audit fixes canonical project/artifact/POM identity and complete strict build/repeat proof. Actual first CI exposed the incorrect single-pin iOS assumption; final fixes bind four selected packages, three actual resolution files, exact source trees/revisions/licenses and complete Capacitor manifest/source/published binary content. Unknown inputs, both Android variants and closed-SDK/permission/license refusal remain mandatory.
+- APP audit refuses nonregular files promptly using nonblocking open plus retained descriptor-bound nofollow/regular/single-link/size checks. Both unchanged independent FIFO witnesses pass and fail again after removal of only the new flag. Fixed stage/error-class/source-line/count diagnostics expose the next actual Android error safely; no guessed release-artifact producer fix is claimed.
+- APP privacy notice adds only `codeload.github.com` to its existing CI-only public-build host row, plus required formatting. Independent processor/semantic closure `448a35e932141c12e1711c8323d4543f8c13fb5a845a78bce8ee7c24d09fedc4` proves no other notice semantics or runtime/contributor disclosure changed. Notices remain counsel drafts.
+
+Earlier findings, initial failed cache invocations, corrected reviewer counts/manifest labels and superseded candidate states remain in immutable chronological snapshots and original receipts. No failure or old review was relabeled as a pass.
+
+## Current APP-2B build
+
+[Draft#63](https://github.com/global-soil-intelligence/gsip/pull/63) remains open/unmerged at **`c1cb7e36087d7e20c2acd790106535d036d63d1d`**. Observer commit`7586e4b655551f05629bcf68a793bf3627916c42` and independently reviewed source-status main`7d6777fc219c48792b8e1e2f4912d5c276b477c1` are normally pushed with original description prefix preserved. [Push/main integration receipt](APP2B_OBSERVER_FORWARD_PUSH.json), SHA-256`675055524959d686e17aadbedc5fe4c1af3fb0faf665424949babe14bb2e7879`. Observer/script/test/doc hashes stay exact after main merge; relevant18 documentation checks and lint/language/format passed again. No native acceptance box is checked.
+
+Fresh exact-head [general CI](https://github.com/global-soil-intelligence/gsip/actions/runs/38476447264) is running. In [native run49](https://github.com/global-soil-intelligence/gsip/actions/runs/38476447070), Android failed and the iOS job succeeded; strict replay of its fresh artifact remains pending. Both secret scans passed and DCO skipped under unchanged policy. The bounded private Android receipt is valid `BUILD_FAILURE/UNKNOWN`: it proves a failure before the inspection task could run but identifies no specific cause. No APK or combined native acceptance. [Safe Android receipt](APP2B_PR63_C1_ANDROID_CLOSEOUT.json), SHA-256 `49dad74f139a45fa6a0ab81de9ca5f1a985782e9a24b7177373961ced8f2e6fc`. Raw log115,427bytes was hashed and discarded; neither STACK_OVERFLOW nor OUT_OF_MEMORY was observed. The original 65,536-byte stream refusal and all acceptance guards remain. Further work must establish concrete diagnostic evidence before any behavioral repair. Both parent/candidate proof must bind actual fresh run49 and exact parentd7; current virtual merge must authenticate updatedmain7d+this head. A prior artifact/pass is not acceptance. AndroidSDK remains unavailable locally, so hosted APK/variant/runtime/source/license/native/repeat/comparison proof is required.
+
+Root actual local verification: **1,568 Python passed/four existing GDAL skips**, including all **19 real Gradle controls** without tool skips, plus Ruff/mypy/lint/language/format. [Checks](APP2B_ROOT_OBSERVER_CHECKS.json). Authored and full-history pinned **gitleaks8.21.2 zero**,149 scanner-reported commits, [report](app2b-observer-forward-full-history-gitleaks.json). Default general CI explicitly skips19 tool-dependent controls when verified Gradle opt-in is unavailable; all19 ran locally and independently. No further suppression or new runtime dependency.
+
+Diagnostic-only observer uses public but deprecated Gradle8.14.3 build-failure observation, unsupported with configuration cache; no cache or command flags change. It writes only fixed BUILD_FAILURE/cause metadata through the same exclusive256-byte channel when original failure exists and no earlier task/setup fault was attempted. Original Throwable/CPE/nonzero/fourfielddiagnostic/65Krawcap/7command/lease/all native proof remains. Earlier task/setup faults stay single, malformed/multiple/unregistered/conflicting/cyclic/depth-limited inputs remain conservative; successful graph bytes/status remain identical. Exact Java21 StackOverflowError/OutOfMemoryError types are verified, with synthetic thrown objects rather than actual resource exhaustion. They are diagnostic labels, not a hypothesis about hosted failure.
+
+[Independent finite closure](APP2B_OBSERVER_INDEPENDENT_CLOSURE.json), SHA-256`afa31bddceaa3771cdd402f206e7dc686c1e39cb48e5db5bbca606c3991d71f6`:228unique cases=213retained+15new,19actualreal controls, four effective guard mutations. Whole-source reverse projection restores baseline; only old private-phase validator AST changes; legacy phase map unchanged. Full22,432-file official Gradle distribution/Java binary/two public type sources/API documents are independently verified. Native/source four-card and core12-card closures remain in [prior detailed report](LANDING_AND_BUILD_REPORT_HISTORY_PRE_OBSERVER_CI_20261013T221749Z.md); they are source review, separate from hosted acceptance.
+
+Preceding exact748 [generalCI](https://github.com/global-soil-intelligence/gsip/actions/runs/38471987275) passed1,550Python/**seven tool-unavailable skips**,597JS/44files,12browser,593pgTAP/11files,Deno2/existing-data migration compatibility. Both scans passed; DCO skipped, not certification. Fresh historical iOS artifact11852231660/13,914,793B/SHA`033a629b46c3348936b46f8a97c1daa9b0e89a693d095a2c2` passed exact-helper/source/main710+748/parentd7/run48/native-license/repeat/reference/four-ZIP comparison replay; delta169,800B, entries equal/fullbytes differ. [Receipt](APP2B_PR63_748_CI_IOS_CLOSURE.json), SHA-256`ae7884a8ee35954766abbc3447e4ae5626018dc1b0214476af72baa5f0d6ebee`. Android failed/no APK; fixedfaultUNKNOWN and unchanged oversized stderr refusal. [Failure](APP2B_PR63_748_ANDROID_CLOSEOUT.json), SHA-256`3b8f6d4dc316c07a18662b58d38fac438e40b70e6a3d33e326f2564029e5b3cb`; [GET-only diagnosis](APP2B_PR63_748_READONLY_CAUSE.json), SHA-256`4943566d825acc4b2377c5716c99c5e45090c40e3afa556e22a34cffa0cbe5a7`, found no attributable failure text because inspection streams are captured internally. Raw logs were not printed/persisted. No specific original/current hosted cause is inferred.
+
+Dependency remains `@capacitor/local-notifications`8.3.1,MIT,published2026-08-19,82,938compressed/506,577unpackedbytes,zeroJSruntime dependencies/existingCapacitor>=8peer. ArchiveSHA`f5772636102fdcbdba564a9bcb32db5d799bb6e27fdeaebc39b2abffe727c287`; exact source/binary/license receipts retained. No new Python dependency, paid/closed service or signing input. Main7d adds only factual three-doc status/anchor changes; all122 acceptance boxes/12 normative gates remain unchanged. Python emits ephemeral build configuration, adding no shipped native source. Physical-device prompt/denial/delivery/cancellation/reboot, reliable iOS backup exclusion, owner signing/accounts/store acceptance remain open; simulator/source tests do not discharge them. Phone RGB remains an uncalibrated optical observation; no real-data exchange/training/publication is authorized.
+
+## Deployment checklist and evidence boundary
+
+No Supabase, secret-value or production query was performed during this continuation. Earlier Gate A–D production receipts are historical; this source work does not assert current database or hosted API health.
+
+| Step | Current action/status |
+| --- | --- |
+| Database / migrations | No new changes; any further step needs exact target/commands and separate owner go |
+| Edge Functions / smoke tests | No deploy or hosted smoke in this continuation |
+| Repository variables / secrets | No changes or secret-value reads |
+| Rights / QA / export / cleanup workers | No dispatch; all five schedule guards remain missing/held; no nonterminal worker runs |
+| Prior tiles / Hugging Face | No upload/publication; separately gated |
+| Pages | Source build passed; deploy waiting; sole owner reviewer and admin bypass disabled |
+| Capture / anonymous sign-in / library / photo publication | No opening; all release prerequisites remain independent |
+
+Fresh [GET-only source/hold audit](READ_ONLY_SOURCE_HOLD_AUDIT_20261013T202553Z.json), SHA-256 `c52ed05e4c62caef5d9c18aa2e411728b02f5c9435e2a08bea1b262c8a042292`, confirms main 710d144 and all nine merge readbacks, reviewer `jdhart81`, bypass false, all five guards 404/missing-held and complete nonterminal inventory with zero worker runs. It reads no secret values and does not approve a waiting deploy.
+
+## Open owner/external decisions and recommendations
+
+| Gate | Options / recommendation |
+| --- | --- |
+| Production / tier | Existing approved gsip target; defer paid upgrade while closed; separate go for every production step |
+| Hugging Face | Owner creates `global-soil-intelligence/gsip` and stored token; fallback `viridis-research/gsip`; keep export held |
+| Tiles | Conditionally approved same-origin Pages release assets; prove size, range 206, SoilGrids-only content/privacy notice before publishing; WMS fallback |
+| CAPTCHA / capture / anonymous sign-in | Defer; keep closed until launch gates; any closed provider needs owner approval |
+| App signing / stores / device proof | Owner-controlled Viridis accounts; no credentials/certificates/keystores created; defer release pending physical-device checks and reliable iOS backup exclusion |
+| Photo publication | Keep held until server screening, exact licensed runtime/model audit and calibration approval; structured-data releases only meanwhile |
+| Real peer exchange (LIB-5C) | Owner consent, purpose, retention, peer credentials and cleanup/digest policy needed; continue synthetic-only preparation |
+| Scientific validation / training | Real consented instrument/lab pairs and evaluation/release prerequisites remain LIB-6/7; no measured spectrum or biome label inferred from ordinary phone RGB |
+| Legal / DNS / paid services / licenses | Owner/counsel gates remain; no new closed service, paid spend or license change |
+
+Assumptions: standing keep-building/merge authority covers separately reviewed and green source packages only. Fake authority/transport and private test roots model local ordering, not real consent, useful scientific adoption, distributed erasure or physical verification. Local missing GDAL/Deno/Android SDK results rely on actual CI; local Xcode version is verified but no local native build ran; simulator artifacts never substitute for device evidence. Temporary CI-generated Gradle inspection is tooling emitted from maintained Python, not shipped app code; that assumption will be flagged in APP-2B's PR. Code remains MIT, data ODbL 1.0 and photos CC BY-SA 4.0.
+
+Earlier diagnostic attempts, failed source states and corrected receipt arithmetic remain in [the immutable detailed history](LANDING_AND_BUILD_REPORT_HISTORY_PRE_PRODUCER_FIX_20261013T212110Z.md); none is relabeled as current acceptance. The [next-work assessment](NEXT_SOURCE_WORK_ASSESSMENT.json), SHA-256 `0878b861c8e8f8a29a4fa4f94d53c8ee2f5bcac9ff8eff4a264d458d52eda3a8`, confirms the remaining specified work beyond APP-2B requires owner sharing decisions, scientific/privacy evidence, devices or a separately reviewed specification. No new package or real sharing/training authority is invented.
+
+[Preserved pre-producer CI report](LANDING_AND_BUILD_REPORT_HISTORY_PRE_PRODUCER_CI_20261013T213911Z.md).
+
+## Latest source/deployment hold evidence
+
+[GET-only readback at22:01UTC](READ_ONLY_SOURCE_HOLD_AUDIT_20261013T220107Z.json), SHA-256`b7cd9984e1cc692861f5dbfb42a568bc037708bfd5770d42bbf89afb0018e2d7`, confirms main7d/all10 source merges, Pages sole reviewerjdhart81/admin bypassfalse, all five schedule guards404missing-held, complete nonterminal inventory/zero worker runs. No Supabase or secret-value query, deployment approval or dispatch. [Combined current app/docs/all-ref scan](COMBINED_APP_DOC_HISTORY_SCAN.json), SHA-256`891a4dc5dedd2a1a257212d5a89ed46fda8d8410d9c08d6bc9eff28f65ff5cf0`, pinned8.21.2/148commits/zero leaks; new suppressionnone.
+
+[Preserved pre-DOC65 status](LANDING_AND_BUILD_REPORT_HISTORY_PRE_DOC65_MERGE_20261013T220414Z.md).
+
+[Preserved pre-observer CI report](LANDING_AND_BUILD_REPORT_HISTORY_PRE_OBSERVER_CI_20261013T221749Z.md).
+
+[Preserved report before current Android closeout](LANDING_AND_BUILD_REPORT_HISTORY_PRE_C1_ANDROID_20261013T222314Z.md).

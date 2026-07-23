@@ -1,0 +1,541 @@
+$ vitest run tests/queue.test.ts tests/library-drafts.test.ts
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+ ❯ tests/library-drafts.test.ts (21 tests | 7 failed) 27ms
+   × refuses missing or invalid original draft revision undefined without rebinding 3ms
+   × refuses missing or invalid original draft revision -1 without rebinding 1ms
+   × refuses missing or invalid original draft revision 0.5 without rebinding 0ms
+   × refuses missing or invalid original draft revision NaN without rebinding 1ms
+   × refuses missing or invalid original draft revision Infinity without rebinding 1ms
+   × refuses missing or invalid original draft revision 9007199254740991 without rebinding 1ms
+   × requires original explicit draft revision to match the argument and current fence 0ms
+ ❯ tests/queue.test.ts (20 tests | 17 failed) 18ms
+     × inserts only one snapshot, advances the fence, and preserves other queued observations 2ms
+     × holds if any persisted picker slot A wins the transaction order 1ms
+     × holds if any persisted picker slot B wins the transaction order 0ms
+     × holds if any persisted picker slot C wins the transaction order 0ms
+     × refuses old late photo writes observably, while a fresh successor-revision draft survives reconciliation 0ms
+     × consumes only exact owned library context, then reconciles before checking consumed or newer drafts 2ms
+     × holds changed library context before commit and refuses old context writes after commit 1ms
+     × requires no hidden library draft when the snapshot has no opt-in 1ms
+     × never overwrites an immutable owner conflict 1ms
+     × never overwrites an immutable submission conflict 1ms
+     × never overwrites an immutable acceptance conflict 0ms
+     × never overwrites an immutable photo conflict 0ms
+     × never overwrites an immutable context conflict 1ms
+     × holds a stale original session for new insertion, even at the same revision 0ms
+     × rechecks admission after awaits and refuses cancelled photo/library writer intents 0ms
+     × rights clear serializes in both orders without restoring the observation or drafts 0ms
+     × rolls back insertion, exact context consume and revision advance if the transaction aborts 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 24 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision undefined without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision -1 without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision 0.5 without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision NaN without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision Infinity without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision 9007199254740991 without rebinding
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/library-drafts.test.ts:153:94
+    151|   async (deviceRevision) => {
+    152|     const q = await queue(), revision = await q.queueRevision()
+    153|     expect(await q.saveLibraryDraft({ ...newLibraryDraft(uuid), device…
+       |                                                                                              ^
+    154|     expect(await q.savedLibraryDraft()).toBeUndefined()
+    155|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/24]⎯
+
+ FAIL  tests/library-drafts.test.ts > requires original explicit draft revision to match the argument and current fence
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/library-drafts.test.ts:160:106
+    158| it('requires original explicit draft revision to match the argument an…
+    159|   const q = await queue(), revision = await q.queueRevision()
+    160|   expect(await q.saveLibraryDraft({ ...newLibraryDraft(uuid), deviceRe…
+       |                                                                                                          ^
+    161|   expect(await q.savedLibraryDraft()).toBeUndefined()
+    162| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > inserts only one snapshot, advances the fence, and preserves other queued observations
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:184:20
+    182|     await q.enqueue({ ...guideRecord(), submissionId: 'unrelated' })
+    183|     const pending = guideRecord()
+    184|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    185|       status: 'committed', revision: revision + 1,
+    186|     })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds if any persisted picker slot A wins the transaction order
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds if any persisted picker slot B wins the transaction order
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds if any persisted picker slot C wins the transaction order
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:201:9
+    199|     const writes = await Promise.all([
+    200|       q.saveDraftPhoto(shot, photo, revision),
+    201|       q.enqueueGuideObservation(guideRecord(), context(revision)),
+       |         ^
+    202|     ])
+    203|     expect(writes).toEqual([true, { status: 'held', revision }])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > refuses old late photo writes observably, while a fresh successor-revision draft survives reconciliation
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:212:9
+    210|     const q = await queue(), revision = await q.queueRevision(), pendi…
+    211|     const [commit, stale] = await Promise.all([
+    212|       q.enqueueGuideObservation(pending, context(revision)),
+       |         ^
+    213|       q.saveDraftPhoto('C', photo, revision),
+    214|     ])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > consumes only exact owned library context, then reconciles before checking consumed or newer drafts
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:226:20
+    224|     expect(await q.saveLibraryDraft(saved, revision)).toBe(true)
+    225|     const pending = { ...guideRecord(), submissionId: saved.submission…
+    226|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    227|     expect(await q.savedLibraryDraft()).toBeUndefined()
+    228|     const progressed: QueueRecord = {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds changed library context before commit and refuses old context writes after commit
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:251:9
+    249|     const [savedNewer, held] = await Promise.all([
+    250|       q.saveLibraryDraft(newer, revision),
+    251|       q.enqueueGuideObservation(pending, context(revision)),
+       |         ^
+    252|     ])
+    253|     expect(savedNewer).toBe(true)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > requires no hidden library draft when the snapshot has no opt-in
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:269:20
+    267|     const q = await queue(), revision = await q.queueRevision(), saved…
+    268|     await q.saveLibraryDraft(saved, revision)
+    269|     expect(await q.enqueueGuideObservation(guideRecord(), context(revi…
+       |                    ^
+    270|     expect(await q.savedLibraryDraft()).toEqual(saved)
+    271|     expect(await q.queued()).toEqual([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable owner conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable submission conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable acceptance conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable photo conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable context conflict
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:283:20
+    281|     if (field === 'context') existing.landCover = 'grassland'
+    282|     await q.enqueue(existing)
+    283|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    284|     expect(await q.queued()).toEqual([existing])
+    285|     expect(await q.queueRevision()).toBe(revision)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds a stale original session for new insertion, even at the same revision
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:290:21
+    288|   it('holds a stale original session for new insertion, even at the sa…
+    289|     const q = await queue(), revision = await q.queueRevision()
+    290|     expect((await q.enqueueGuideObservation(guideRecord(), {
+       |                     ^
+    291|       ...context(revision), originalContextCurrent: () => false,
+    292|     })).status).toBe('held')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > rechecks admission after awaits and refuses cancelled photo/library writer intents
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:301:23
+    299|     const q = await queue(), revision = await q.queueRevision()
+    300|     let allowed = true
+    301|     const pending = q.enqueueGuideObservation(guideRecord(), { ...cont…
+       |                       ^
+    302|     allowed = false
+    303|     expect((await pending).status).toBe('held')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > rights clear serializes in both orders without restoring the observation or drafts
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:319:25
+    317|     const q = await queue(), revision = await q.queueRevision()
+    318|     const [clearedFirst, held] = await Promise.all([
+    319|       q.clearQueue(), q.enqueueGuideObservation(guideRecord(), context…
+       |                         ^
+    320|     ])
+    321|     expect(clearedFirst).toBe(0)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/24]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > rolls back insertion, exact context consume and revision advance if the transaction aborts
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:343:20
+    341|       return request
+    342|     })
+    343|     await expect(q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    344|     vi.restoreAllMocks()
+    345|     expect(await q.queued()).toEqual([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/24]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  24 failed | 17 passed (41)
+   Start at  21:52:46
+   Duration  458ms (transform 100ms, setup 91ms, import 172ms, tests 45ms, environment 482ms)
+
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @gsip/capture-pwa@0.1.0 test: `vitest run tests/queue.test.ts tests/library-drafts.test.ts`
+Exit status 1
+$ vitest run tests/queue.test.ts tests/library-drafts.test.ts
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+ ❯ tests/library-drafts.test.ts (21 tests | 7 failed) 31ms
+   × refuses missing or invalid original draft revision undefined without rebinding 3ms
+   × refuses missing or invalid original draft revision -1 without rebinding 1ms
+   × refuses missing or invalid original draft revision 0.5 without rebinding 1ms
+   × refuses missing or invalid original draft revision NaN without rebinding 1ms
+   × refuses missing or invalid original draft revision Infinity without rebinding 1ms
+   × refuses missing or invalid original draft revision 9007199254740991 without rebinding 0ms
+   × requires original explicit draft revision to match the argument and current fence 0ms
+ ❯ tests/queue.test.ts (40 tests | 37 failed) 26ms
+     × inserts only one snapshot, advances the fence, and preserves other queued observations 3ms
+     × holds if any persisted picker slot A wins the transaction order 1ms
+     × holds if any persisted picker slot B wins the transaction order 0ms
+     × holds if any persisted picker slot C wins the transaction order 0ms
+     × refuses old late photo writes observably, while a fresh successor-revision draft survives reconciliation 0ms
+     × consumes only exact owned library context, then reconciles before checking consumed or newer drafts 2ms
+     × holds changed library context before commit and refuses old context writes after commit 1ms
+     × requires no hidden library draft when the snapshot has no opt-in 0ms
+     × holds missing-owner saved library context without deleting it 1ms
+     × holds foreign-owner saved library context without deleting it 0ms
+     × holds missing-revision saved library context without deleting it 0ms
+     × holds foreign-revision saved library context without deleting it 0ms
+     × holds blank-depth saved library context without deleting it 1ms
+     × holds changed-id saved library context without deleting it 1ms
+     × validates strict declaration and exact original bytes: exact 1ms
+     × validates strict declaration and exact original bytes: different-bytes 1ms
+     × validates strict declaration and exact original bytes: duplicate-key 0ms
+     × validates strict declaration and exact original bytes: malformed-utf8 0ms
+     × validates strict declaration and exact original bytes: object-mismatch 1ms
+     × refuses invalid guide snapshot ownerless 0ms
+     × refuses invalid guide snapshot legacy 0ms
+     × refuses invalid guide snapshot missing-A 0ms
+     × refuses invalid guide snapshot duplicate-shot 0ms
+     × refuses invalid guide snapshot empty-photo 0ms
+     × refuses invalid guide snapshot not-jpeg 0ms
+     × never reconciles a ownerless record as an admitted guide 0ms
+     × never reconciles a legacy record as an admitted guide 0ms
+     × owns a defensive snapshot of original values and revision across its first await 0ms
+     × never overwrites an immutable owner conflict 0ms
+     × never overwrites an immutable submission conflict 0ms
+     × never overwrites an immutable acceptance conflict 0ms
+     × never overwrites an immutable photo conflict 0ms
+     × never overwrites an immutable context conflict 0ms
+     × holds a stale original session for new insertion, even at the same revision 0ms
+     × rechecks admission after awaits and refuses cancelled photo/library writer intents 0ms
+     × rights clear serializes in both orders without restoring the observation or drafts 0ms
+     × rolls back insertion, exact context consume and revision advance if the transaction aborts 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 44 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision undefined without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision -1 without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision 0.5 without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision NaN without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision Infinity without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision 9007199254740991 without rebinding
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/library-drafts.test.ts:153:94
+    151|   async (deviceRevision) => {
+    152|     const q = await queue(), revision = await q.queueRevision()
+    153|     expect(await q.saveLibraryDraft({ ...newLibraryDraft(uuid), device…
+       |                                                                                              ^
+    154|     expect(await q.savedLibraryDraft()).toBeUndefined()
+    155|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/44]⎯
+
+ FAIL  tests/library-drafts.test.ts > requires original explicit draft revision to match the argument and current fence
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/library-drafts.test.ts:160:106
+    158| it('requires original explicit draft revision to match the argument an…
+    159|   const q = await queue(), revision = await q.queueRevision()
+    160|   expect(await q.saveLibraryDraft({ ...newLibraryDraft(uuid), deviceRe…
+       |                                                                                                          ^
+    161|   expect(await q.savedLibraryDraft()).toBeUndefined()
+    162| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > inserts only one snapshot, advances the fence, and preserves other queued observations
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:187:20
+    185|     await q.enqueue({ ...guideRecord(), submissionId: 'unrelated' })
+    186|     const pending = guideRecord()
+    187|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    188|       status: 'committed', revision: revision + 1,
+    189|     })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds if any persisted picker slot A wins the transaction order
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds if any persisted picker slot B wins the transaction order
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds if any persisted picker slot C wins the transaction order
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:204:9
+    202|     const writes = await Promise.all([
+    203|       q.saveDraftPhoto(shot, photo, revision),
+    204|       q.enqueueGuideObservation(guideRecord(), context(revision)),
+       |         ^
+    205|     ])
+    206|     expect(writes).toEqual([true, { status: 'held', revision }])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > refuses old late photo writes observably, while a fresh successor-revision draft survives reconciliation
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:215:9
+    213|     const q = await queue(), revision = await q.queueRevision(), pendi…
+    214|     const [commit, stale] = await Promise.all([
+    215|       q.enqueueGuideObservation(pending, context(revision)),
+       |         ^
+    216|       q.saveDraftPhoto('C', photo, revision),
+    217|     ])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > consumes only exact owned library context, then reconciles before checking consumed or newer drafts
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:229:20
+    227|     expect(await q.saveLibraryDraft(saved, revision)).toBe(true)
+    228|     const pending = { ...guideRecord(), submissionId: saved.submission…
+    229|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    230|     expect(await q.savedLibraryDraft()).toBeUndefined()
+    231|     const progressed: QueueRecord = {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds changed library context before commit and refuses old context writes after commit
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:254:9
+    252|     const [savedNewer, held] = await Promise.all([
+    253|       q.saveLibraryDraft(newer, revision),
+    254|       q.enqueueGuideObservation(pending, context(revision)),
+       |         ^
+    255|     ])
+    256|     expect(savedNewer).toBe(true)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > requires no hidden library draft when the snapshot has no opt-in
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:272:20
+    270|     const q = await queue(), revision = await q.queueRevision(), saved…
+    271|     await q.saveLibraryDraft(saved, revision)
+    272|     expect(await q.enqueueGuideObservation(guideRecord(), context(revi…
+       |                    ^
+    273|     expect(await q.savedLibraryDraft()).toEqual(saved)
+    274|     expect(await q.queued()).toEqual([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds missing-owner saved library context without deleting it
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds foreign-owner saved library context without deleting it
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds missing-revision saved library context without deleting it
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds foreign-revision saved library context without deleting it
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds blank-depth saved library context without deleting it
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds changed-id saved library context without deleting it
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:291:20
+    289|     await db.put('libraryDraft', saved, 'current')
+    290|     db.close()
+    291|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    292|     expect(await q.savedLibraryDraft()).toEqual(saved)
+    293|     expect(await q.queued()).toEqual([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > validates strict declaration and exact original bytes: exact
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > validates strict declaration and exact original bytes: different-bytes
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > validates strict declaration and exact original bytes: duplicate-key
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > validates strict declaration and exact original bytes: malformed-utf8
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > validates strict declaration and exact original bytes: object-mismatch
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:324:29
+    322|     }
+    323|     await q.saveLibraryDraft(saved, revision)
+    324|     const outcome = await q.enqueueGuideObservation(pending, context(r…
+       |                             ^
+    325|     expect(outcome.status).toBe(problem === 'exact' ? 'committed' : 'h…
+    326|     expect(await q.savedLibraryDraft()).toEqual(problem === 'exact' ? …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > refuses invalid guide snapshot ownerless
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > refuses invalid guide snapshot legacy
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > refuses invalid guide snapshot missing-A
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > refuses invalid guide snapshot duplicate-shot
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > refuses invalid guide snapshot empty-photo
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > refuses invalid guide snapshot not-jpeg
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:339:21
+    337|     if (problem === 'empty-photo') pending.photos[0]!.bytes = new Uint…
+    338|     if (problem === 'not-jpeg') pending.photos[0]!.bytes = new Uint8Ar…
+    339|     expect((await q.enqueueGuideObservation(pending, { ...context(revi…
+       |                     ^
+    340|     expect(await q.queued()).toEqual([])
+    341|     expect(await q.queueRevision()).toBe(revision)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never reconciles a ownerless record as an admitted guide
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never reconciles a legacy record as an admitted guide
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:349:21
+    347|     if (problem === 'legacy') delete pending.collectionMode
+    348|     await q.enqueue(pending)
+    349|     expect((await q.enqueueGuideObservation(pending, { ...context(revi…
+       |                     ^
+    350|     expect(await q.queued()).toEqual(structuredClone([pending]))
+    351|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > owns a defensive snapshot of original values and revision across its first await
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:356:23
+    354|     const q = await queue(), revision = await q.queueRevision(), pendi…
+    355|     const attemptContext = context(revision)
+    356|     const outcome = q.enqueueGuideObservation(pending, attemptContext)
+       |                       ^
+    357|     pending.photos[0]!.bytes[0] = 0
+    358|     pending.grantId = 'changed-after-call'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable owner conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable submission conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable acceptance conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable photo conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable context conflict
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:374:20
+    372|     if (field === 'context') existing.landCover = 'grassland'
+    373|     await q.enqueue(existing)
+    374|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    375|     expect(await q.queued()).toEqual([existing])
+    376|     expect(await q.queueRevision()).toBe(revision)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds a stale original session for new insertion, even at the same revision
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:381:21
+    379|   it('holds a stale original session for new insertion, even at the sa…
+    380|     const q = await queue(), revision = await q.queueRevision()
+    381|     expect((await q.enqueueGuideObservation(guideRecord(), {
+       |                     ^
+    382|       ...context(revision), originalContextCurrent: () => false,
+    383|     })).status).toBe('held')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > rechecks admission after awaits and refuses cancelled photo/library writer intents
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:392:23
+    390|     const q = await queue(), revision = await q.queueRevision()
+    391|     let allowed = true
+    392|     const pending = q.enqueueGuideObservation(guideRecord(), { ...cont…
+       |                       ^
+    393|     allowed = false
+    394|     expect((await pending).status).toBe('held')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > rights clear serializes in both orders without restoring the observation or drafts
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:410:25
+    408|     const q = await queue(), revision = await q.queueRevision()
+    409|     const [clearedFirst, held] = await Promise.all([
+    410|       q.clearQueue(), q.enqueueGuideObservation(guideRecord(), context…
+       |                         ^
+    411|     ])
+    412|     expect(clearedFirst).toBe(0)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/44]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > rolls back insertion, exact context consume and revision advance if the transaction aborts
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:434:20
+    432|       return request
+    433|     })
+    434|     await expect(q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    435|     vi.restoreAllMocks()
+    436|     expect(await q.queued()).toEqual([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/44]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  44 failed | 17 passed (61)
+   Start at  21:55:25
+   Duration  706ms (transform 126ms, setup 147ms, import 222ms, tests 57ms, environment 808ms)
+
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @gsip/capture-pwa@0.1.0 test: `vitest run tests/queue.test.ts tests/library-drafts.test.ts`
+Exit status 1

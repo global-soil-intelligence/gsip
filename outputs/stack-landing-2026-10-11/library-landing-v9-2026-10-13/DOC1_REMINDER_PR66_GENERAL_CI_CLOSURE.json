@@ -1,0 +1,38 @@
+{
+  "DCO": {
+    "certification": false,
+    "conclusion": "skipped",
+    "run_id": 38508472579,
+    "status": "completed"
+  },
+  "GET_only": true,
+  "actual_checkout": "60c040e11b9004de6441b145e56274ca8f4512f9",
+  "attempt": 1,
+  "conclusion": "success",
+  "head": "8b8cc24841d58c231743ff69472d3354f612dcf3",
+  "job_id": 115671288803,
+  "main": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "metrics": {
+    "bytes": 7372,
+    "path": "/private/tmp/gsip-pr66-8b8c-general-watch/GENERAL_TERMINAL_METRICS.json",
+    "sha256": "8a048629d5fc91e093da01a4536c8bdbe542e1ddeeef7c30983456a5b8999780"
+  },
+  "mutations": false,
+  "native_artifacts_or_actions_touched": false,
+  "rawlogs_saved": false,
+  "run_conclusion": "success",
+  "run_id": 38508472566,
+  "run_number": 258,
+  "run_status": "completed",
+  "scans": {
+    "bytes": 1401,
+    "path": "/private/tmp/gsip-pr66-8b8c-general-watch/SCAN_CLOSURE.json",
+    "sha256": "e3215374e8899d88998fc0248185be82689ea5d1b5e4ae826b1fb3dbe45ea308"
+  },
+  "source_binding": {
+    "bytes": 5009,
+    "path": "/private/tmp/gsip-pr66-8b8c-general-watch/SOURCE_BINDING.json",
+    "sha256": "43cf491c55bfc50a71dbf53187bbf93279328c6ad69a6f8cb82cb5715c184ea0"
+  },
+  "status": "completed"
+}

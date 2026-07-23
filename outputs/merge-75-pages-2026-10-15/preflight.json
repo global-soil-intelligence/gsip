@@ -1,0 +1,63 @@
+{
+  "pull_request": {
+    "baseRefName": "main",
+    "headRefOid": "d13abfb1bace8ba84e6091ce0033f104b53edf78",
+    "mergeStateStatus": "CLEAN",
+    "mergeable": "MERGEABLE",
+    "number": 75,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-15T22:49:10Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819661121/job/116712863413",
+        "name": "dco",
+        "startedAt": "2026-10-15T22:49:11Z",
+        "status": "COMPLETED",
+        "workflowName": "DCO"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-15T22:56:21Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819661058/job/116712860816",
+        "name": "validate",
+        "startedAt": "2026-10-15T22:49:12Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-15T22:49:19Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819661096/job/116712861064",
+        "name": "gitleaks",
+        "startedAt": "2026-10-15T22:49:12Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-15T22:49:18Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819655881/job/116712843495",
+        "name": "gitleaks",
+        "startedAt": "2026-10-15T22:49:09Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      }
+    ],
+    "title": "feat(site-1f): introduce the open soil spectral library",
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/75"
+  },
+  "pages_environment": {
+    "id": 18657050755,
+    "name": "github-pages",
+    "can_admins_bypass": false,
+    "reviewers": [
+      "jdhart81"
+    ]
+  },
+  "authority": "Justin: Approved. Merge #75 and prepare the new Pages run for my approval. Keep capture and library uploads closed."
+}

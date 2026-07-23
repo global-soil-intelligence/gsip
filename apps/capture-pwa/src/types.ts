@@ -24,8 +24,17 @@ export type CaptureDraft = {
 }
 
 export type QueueRecord = CaptureDraft & {
+  draft?: boolean
+  ownerId?: string
   deadLetteredAt?: string
   nextRetryAt?: string
   queuedAt: string
   syncAttempts?: number
+}
+
+export type ObservationReceipt = {
+  submissionId: string
+  capturedAt: string
+  h3R8: string
+  status: string
 }

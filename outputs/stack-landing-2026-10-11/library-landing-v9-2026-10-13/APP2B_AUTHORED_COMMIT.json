@@ -1,0 +1,11 @@
+{
+  "head": "bb3910164cc47eae72958ad521b2186684584978",
+  "base": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "branch": "wp-app-2b-local-notifications",
+  "source_files": 23,
+  "commit_message": "feat(wp-app-2b): add opt-in local sync reminders\n\nKeep reminder intent owner-bound, inexact and conservative through rights,\nqueue and lifecycle changes. Verify native dependencies and repeat-build\nreferences without opening capture or adding a push/location service.\n\nCo-Authored-By: Codex <codex@openai.com>",
+  "force_or_amend": false,
+  "source_reviews": "both closed",
+  "root_local_validation": "passed; four existing GDAL skips; native CI/device pending",
+  "no_production": true
+}

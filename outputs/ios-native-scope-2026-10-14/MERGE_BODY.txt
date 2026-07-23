@@ -1,0 +1,3 @@
+Merge the exact independently reviewed design after green CI under Justin Hart’s explicit 2026-10-14 approval. Record owner acceptance of the recommended passcode-required and preserve/quarantine/no-automatic-reset safeguards. Prepare exact native-code scope for a separate review; no native-language exception, implementation, production or capture authority is granted.
+
+Co-Authored-By: Codex <codex@openai.com>

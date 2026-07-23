@@ -1,0 +1,37 @@
+{
+  "private_functions": {
+    "only_reference": [],
+    "only_production": []
+  },
+  "schema_grants": {
+    "only_reference": [],
+    "only_production": [
+      {
+        "grantable": false,
+        "privilege": "CREATE",
+        "role": "dashboard_user",
+        "schema": "extensions"
+      },
+      {
+        "grantable": false,
+        "privilege": "USAGE",
+        "role": "dashboard_user",
+        "schema": "extensions"
+      },
+      {
+        "grantable": false,
+        "privilege": "USAGE",
+        "role": "postgres",
+        "schema": "public"
+      }
+    ]
+  },
+  "storage_policies": {
+    "only_reference": [],
+    "only_production": []
+  },
+  "views": {
+    "only_reference": [],
+    "only_production": []
+  }
+}

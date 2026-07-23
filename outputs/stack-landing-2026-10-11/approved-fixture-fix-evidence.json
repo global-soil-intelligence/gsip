@@ -1,0 +1,121 @@
+{
+  "observed_at_utc": "2026-10-12T00:48:45.090578+00:00",
+  "version": "8.21.2",
+  "ignore_lines": 4,
+  "approved_fingerprints": 3,
+  "ignore_sha256": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+  "scanner_binary_sha256": "90e39dd8b483e30698fc6fbdbe6794b36a6cc49ccde31e2ce9e2d3048838fd74",
+  "branches": [
+    {
+      "branch": "docs/spec-v3",
+      "original": "e258b4154797c416ceca1376505ed15325a3d2e4",
+      "head": "afadda988cb8619d4f3a98515629909ca761763f",
+      "exact_ignore": true,
+      "original_ancestor": true,
+      "scanner_config_and_workflow_unchanged": true
+    },
+    {
+      "branch": "wp-6b-launch-hardening",
+      "original": "1c4aa51a13606dae469b22682490d050f8c2cf65",
+      "head": "273e76889dccc7ff2e17ba3a689f8b2d4d6a396a",
+      "exact_ignore": true,
+      "original_ancestor": true,
+      "scanner_config_and_workflow_unchanged": true
+    },
+    {
+      "branch": "wp-6c-priors-and-tiles",
+      "original": "f3ffa4ffaecdcb87fd6fb46853bc892fd6fcc307",
+      "head": "a66c4f201008b59d802f1ceef1d24205258f944d",
+      "exact_ignore": true,
+      "original_ancestor": true,
+      "scanner_config_and_workflow_unchanged": true
+    },
+    {
+      "branch": "wp-6d-contributor-rights",
+      "original": "18c4abaa2ea437a596356e79b86d9b1a433b03f2",
+      "head": "f3c7043d4bb91f0d2a8d49da3b3971be42f58429",
+      "exact_ignore": true,
+      "original_ancestor": true,
+      "scanner_config_and_workflow_unchanged": true
+    },
+    {
+      "branch": "wp-6e-provenance",
+      "original": "af336aed2b4201b1c32f2f1a145adc82b735a8ca",
+      "head": "4f76145149c0350c5d07b305ac78c6d561aab933",
+      "exact_ignore": true,
+      "original_ancestor": true,
+      "scanner_config_and_workflow_unchanged": true
+    },
+    {
+      "branch": "wp-agent-1-read-api",
+      "original": "f20d793869b971ff1802418fbfe407166f70ebf0",
+      "head": "5e500287b2caa8990d2d658c8c8e100cccae0e21",
+      "exact_ignore": true,
+      "original_ancestor": true,
+      "scanner_config_and_workflow_unchanged": true
+    },
+    {
+      "branch": "wp-app-1-phone-app",
+      "original": "a8818aafa2a07194aa14c655769f529924481adb",
+      "head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+      "exact_ignore": true,
+      "original_ancestor": true,
+      "scanner_config_and_workflow_unchanged": true
+    }
+  ],
+  "scans": [
+    {
+      "command": [
+        "/private/tmp/gsip-gitleaks-8212-gj2csfbo/gitleaks",
+        "git",
+        ".",
+        "--no-banner",
+        "--redact",
+        "--report-format=json",
+        "--report-path",
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gitleaks-8212-ci-command-after-approved-fix.json"
+      ],
+      "exit_code": 0,
+      "findings": 0,
+      "redacted_output": "8:48PM INF 69 commits scanned.\n8:48PM INF scan completed in 750ms\n8:48PM INF no leaks found\n"
+    },
+    {
+      "command": [
+        "/private/tmp/gsip-gitleaks-8212-gj2csfbo/gitleaks",
+        "git",
+        ".",
+        "--no-banner",
+        "--redact",
+        "--log-opts=--all",
+        "--report-format=json",
+        "--report-path",
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gitleaks-8212-whole-stack-after-approved-fix.json"
+      ],
+      "exit_code": 0,
+      "findings": 0,
+      "redacted_output": "8:48PM INF 69 commits scanned.\n8:48PM INF scan completed in 811ms\n8:48PM INF no leaks found\n"
+    }
+  ],
+  "fixture_test_results": {
+    "vitest": 16,
+    "typecheck": "passed",
+    "eslint": "passed",
+    "prettier": "passed"
+  },
+  "new_commit_audit": {
+    "commits": [
+      "f9e1ac2f8a88671f99b959e476499392297bd30f",
+      "5e500287b2caa8990d2d658c8c8e100cccae0e21",
+      "a66c4f201008b59d802f1ceef1d24205258f944d",
+      "f3c7043d4bb91f0d2a8d49da3b3971be42f58429",
+      "4f76145149c0350c5d07b305ac78c6d561aab933",
+      "a2812c9e9d40f3f3f6f845091d4630836a40ad6b",
+      "c5602021faf84e9589b3e2d7ff3b2581db89399a",
+      "273e76889dccc7ff2e17ba3a689f8b2d4d6a396a",
+      "afadda988cb8619d4f3a98515629909ca761763f",
+      "94e19ff7fa06a8b284165d57e612c1bda86ce4c8"
+    ],
+    "all_agent_coauthors": true,
+    "signed_off_by_trailers": 0
+  }
+}

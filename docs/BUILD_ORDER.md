@@ -1,13 +1,17 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project v2 (citizen-science soil mapping flywheel)
-**Version:** 2.2 — 2026-07-22
+**Version:** 2.4 — 2026-09-14
 **Builder:** Claude (Cowork build sessions). _Sol is retired as of v2.1; the Sol kickoff prompt is void._
 **Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) run against the §5 review gates; findings and their resolutions are posted to the PR. The GitHub approval required by branch protection must come from a non-author maintainer account. Justin Hart provides the final product-owner go/no-go; when his account authors a PR, that go/no-go cannot also satisfy GitHub's non-author approval.
 **Product owner:** Justin Hart
-**Governing document:** `docs/SPEC.md` (GSIP v2 Spec, v2.2). This build order operationalizes that spec. If this document and the spec conflict, the spec wins; flag the conflict instead of guessing.
+**Governing document:** `docs/SPEC.md` (GSIP v2 Spec, v2.4). This build order operationalizes that spec. If this document and the spec conflict, the spec wins; flag the conflict instead of guessing.
 
 ---
+
+## September 2026 mobile implementation
+
+The owner requested the app be built and tested for iPhone and Android. The current local implementation combines Explore, Capture, My observations, Learn, and Account; adds native camera/location and durable drafts; and fixes upload-completion, QA aggregation, and stale prior recovery. This advances the Capacitor work formerly deferred to Phase 4. It does not authorize publication or imply the existing public-release gates have passed. Build and test receipts and remaining launch work are in `MOBILE_BUILD_AND_TEST.md`.
 
 ## 1. Roles and workflow
 
@@ -19,7 +23,7 @@
 
 ## 2. Hard guardrails (violations = automatic PR rejection)
 
-1. **Languages: TypeScript and Python only.** No Dart/Flutter, no Go, no Rust. TS strict mode on. Python 3.11+, fully type-hinted.
+1. **Application languages: TypeScript and Python.** Minimal Capacitor-generated Swift/Java platform shells are allowed for the owner-requested iOS and Android builds. No Dart/Flutter, no Go, no Rust. TS strict mode on. Python 3.11+, fully type-hinted.
 2. **No license changes.** Code is MIT; databases and structured data are ODbL 1.0; contributed photos are CC BY-SA 4.0. No dependency with a license incompatible with MIT distribution (GPL-linked libs need reviewer sign-off). The contribution terms and attribution flow require legal review before public launch.
 3. **No schema changes outside a migration file**, and no migration that contradicts `docs/SPEC.md` §6 without a spec-update PR first.
 4. **Never store or export precise contributor coordinates in any public path** (spec I7) — including image EXIF/XMP metadata. Original uploads may exist only in a short-lived private ingest bucket; canonical photos are metadata-sanitized and remain private. Public artifacts get H3-r8 fuzzing and metadata-free images only. Database and Storage RLS enforce this, and export assertions fail closed.
@@ -132,7 +136,11 @@ Acceptance criteria:
 - [ ] Job is idempotent per day; re-runs don't duplicate rows.
 - [ ] No photo whose submission lacks an immutable `contribution_grants` row is exported (spec I6).
 
-### Phase 2+ (spec §10 — do not start without a new build order)
+### Authorized prediction-pilot work — September 2026
+
+The owner approved continuing with the laboratory-linked prediction system. The current bounded package is the local SOC pilot in `docs/PREDICTION_PILOT.md`: pairing records, interpretable image/map baselines, spatial evaluation, uncertainty, and a research hold. Data collection, external lab verification, trained neural models and hosted prediction deployment remain subsequent milestones. Automated retraining or public prediction release is not authorized by the local experiment package.
+
+### Remaining Phase 2+ (spec §10 — requires subsequent build scope)
 
 WP-7 QA gate model (is-soil, slots into the WP-4b interface) · WP-8 estimator v0 (color/texture/SOM, uncertainty-aware) · WP-9 nightly retrain + model cards · WP-10 on-demand estimate API · WP-11 gold-label bulk ingestion · WP-12 fused correction + Most Wanted layers. These will be specified after Phase 1 review.
 

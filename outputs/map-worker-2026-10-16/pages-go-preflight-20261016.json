@@ -1,0 +1,23 @@
+{
+  "checked_at_utc": "2026-10-16T18:45:23.260488+00:00",
+  "status": "PASS_APPROVED_PAGES_RUN_PREFLIGHT",
+  "source": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+  "artifact_id": 12043617713,
+  "artifact_digest": "sha256:d818ff8663588d7eb12bdf691b92127ee6ca61495c4e6ab9c08eae1c596fbc0b",
+  "run": {
+    "id": 38895620835,
+    "attempt": 1,
+    "status": "waiting"
+  },
+  "environment": {
+    "id": 18657050755,
+    "admin_bypass": false,
+    "pending_reviewer": "jdhart81"
+  },
+  "main_ci": "success",
+  "verified_files": 40,
+  "capture_live": false,
+  "library_intake_live": false,
+  "authorization": "Justin explicit go for this run in current user turn",
+  "mutations": "NONE"
+}

@@ -1,0 +1,8 @@
+validate	Run pnpm exec playwright test --project=desktop-chrome	2026-10-14T23:38:25.0349056Z   12 passed (17.6s)
+validate	Run uv run mypy	2026-10-14T23:38:38.5998765Z Success: no issues found in 80 source files
+validate	Run uv run pytest	2026-10-14T23:42:03.4809489Z 2069 passed, 31 skipped, 37 warnings in 203.01s (0:03:23)
+validate	Apply migrations to data written before them	2026-10-14T23:42:12.6247434Z wp6e_provenance.test.sql: 13/13 ok
+validate	Apply migrations to data written before them	2026-10-14T23:42:12.7190143Z wp6fa_photo_privacy.test.sql: 19/19 ok
+validate	Apply migrations to data written before them	2026-10-14T23:42:12.8113475Z wp_lib4_private_intake.test.sql: 13/13 ok
+validate	Run pnpm db:test	2026-10-14T23:45:02.9848457Z All tests successful.
+validate	Run pnpm db:test	2026-10-14T23:45:02.9850156Z Files=11, Tests=593,  2 wallclock secs ( 0.08 usr  0.03 sys +  0.11 cusr  0.07 csys =  0.29 CPU)

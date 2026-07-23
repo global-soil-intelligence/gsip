@@ -1,0 +1,79 @@
+{
+  "pr": 39,
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/39",
+  "head": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+  "app_build_run": 38192835277,
+  "validation_run": 38192835300,
+  "checks": "validate, gitleaks, Android and iOS SUCCESS; DCO SKIPPED under existing workflow rule",
+  "verification": "downloaded both workflow artifact archives; independently computed nested payload hashes; source parentage read back via GitHub; wrapper digests are GitHub advertised metadata",
+  "artifacts": [
+    {
+      "platform": "android",
+      "github_artifact": {
+        "id": 11722457181,
+        "name": "gsip-capture-android-debug",
+        "size_in_bytes": 7147388,
+        "digest": "sha256:2d4e07c7ea40843ec9cedc62f434a8692046cf291e11aae430dd670f97c69089",
+        "expired": false,
+        "created_at": "2026-10-12T01:49:32Z",
+        "expires_at": "2026-10-26T01:49:30Z"
+      },
+      "local_payload_sha256": "8be2464719d214be7862031e81866ded39758e3b7058de20a1b5d9648ac7dd33",
+      "payload_matches_receipt": true,
+      "receipt_sha256": "bac0bae8e60084e6005f05ba016f52563fdc71ab55789643c22c2fb0c1f55db9",
+      "source_commit": "2aab581c7b06960613436402f8115e7ab6b13b4d",
+      "source_is_pr_merge_with_head_parent": true,
+      "source_tree_clean": true,
+      "marketing_version": "0.1.0",
+      "run_number": 6,
+      "android_version_code": 6,
+      "ios_build_version": "1.0.5",
+      "comparison_scope": "same run/generated project; actual repeated native build; Android shared disposable debug key",
+      "comparison": {
+        "byte_equal": true,
+        "entry_content_equal": true,
+        "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+        "changed_entries": [],
+        "first_only": [],
+        "second_only": []
+      }
+    },
+    {
+      "platform": "ios",
+      "github_artifact": {
+        "id": 11722566280,
+        "name": "gsip-capture-ios-simulator",
+        "size_in_bytes": 3324822,
+        "digest": "sha256:857864be0bfd09faee638726a7dd3c61703b9af870293babc58fe5d0e4a8ba24",
+        "expired": false,
+        "created_at": "2026-10-12T01:42:50Z",
+        "expires_at": "2026-10-26T01:42:48Z"
+      },
+      "local_payload_sha256": "e99aef9fe1111c0a19c6e91a98224630dc85a5471f01198b0d41d1d57ae04a7d",
+      "payload_matches_receipt": true,
+      "receipt_sha256": "b90788428e422e94150da2ef8fc5daa82c8bfa9fa6eab643a7e878aea1b5ab30",
+      "source_commit": "2aab581c7b06960613436402f8115e7ab6b13b4d",
+      "source_is_pr_merge_with_head_parent": true,
+      "source_tree_clean": true,
+      "marketing_version": "0.1.0",
+      "run_number": 6,
+      "android_version_code": 6,
+      "ios_build_version": "1.0.5",
+      "comparison_scope": "same run/generated project; actual repeated native build; iOS unsigned simulator; signing disabled",
+      "comparison": {
+        "byte_equal": false,
+        "entry_content_equal": true,
+        "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+        "changed_entries": [],
+        "first_only": [],
+        "second_only": []
+      }
+    }
+  ],
+  "limits": [
+    "same-job repeated builds only, no cross-runner reproducibility proof",
+    "iOS byte equality false; entry content equal only",
+    "physical Android/iOS backup restore remains unverified",
+    "no signing/store/capture/deployment authority"
+  ]
+}

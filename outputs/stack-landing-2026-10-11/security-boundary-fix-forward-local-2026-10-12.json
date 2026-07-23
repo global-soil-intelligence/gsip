@@ -1,0 +1,75 @@
+{
+  "observed_at": "2026-10-12T14:29:37.220024+00:00",
+  "state": "LOCAL_ONLY_NOT_PUSHED_NOT_DEPLOYED",
+  "source_worktree": "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+  "steps": [
+    {
+      "branch": "wp-6e-provenance",
+      "upstream": "wp-6d-contributor-rights",
+      "previous_remote_head": "4f76145149c0350c5d07b305ac78c6d561aab933",
+      "new_head": "5bea5b75d82a31dc8bd9bc485cfd133acdbd4940"
+    },
+    {
+      "branch": "wp-agent-1-read-api",
+      "upstream": "wp-6e-provenance",
+      "previous_remote_head": "5e500287b2caa8990d2d658c8c8e100cccae0e21",
+      "new_head": "f156ad9d886975f879beb525f384fed5fc490894"
+    },
+    {
+      "branch": "wp-app-1-phone-app",
+      "upstream": "wp-agent-1-read-api",
+      "previous_remote_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+      "new_head": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f"
+    },
+    {
+      "branch": "wp-3b-sync-lock",
+      "upstream": "wp-app-1-phone-app",
+      "previous_remote_head": "afbd74400abf35151127ab85897084dab60a4fcb",
+      "new_head": "79baf1edb976909428642d8548876ac6b7243f59"
+    },
+    {
+      "branch": "wp-agent-0-coding-guidance",
+      "upstream": "wp-app-1-phone-app",
+      "previous_remote_head": "ca275c4da4cb6641fbe5418ed7135916cc514e16",
+      "new_head": "505a0e89db3470e493af73b52b43d8fe15f3d20e"
+    },
+    {
+      "branch": "wp-site-1e-tile-host-policy",
+      "upstream": "wp-app-1-phone-app",
+      "previous_remote_head": "1bf4323e5528cc30f5a8c2119287cd1abf032f41",
+      "new_head": "a325c617d3e06cbb4fe5eb6cbbb7c913f493e87f"
+    },
+    {
+      "branch": "docs/spec-v4",
+      "upstream": "wp-app-1-phone-app",
+      "previous_remote_head": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "new_head": "322ecd44fa20688b9c24229f719c5e8c6733aba8"
+    },
+    {
+      "branch": "wp-app-2a-build-readiness",
+      "upstream": "docs/spec-v4",
+      "previous_remote_head": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "new_head": "d522c770c3a7fa490c6906817a7d3121842c365b"
+    },
+    {
+      "branch": "wp-ops-2-production-reconciliation",
+      "upstream": "wp-app-1-phone-app",
+      "previous_remote_head": "cf063aa5865a86eb86250e3a1f8287545e51f037",
+      "new_head": "0d0a814feb4aa70159412b9a413e90a6cf8f2b2d"
+    }
+  ],
+  "all_previous_remote_heads_preserved": true,
+  "all_26_executed_migration_blobs_unchanged": true,
+  "final_app_tip": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "final_app_diff_paths": [
+    "docs/BUILD_ORDER.md",
+    "docs/SPEC.md",
+    "supabase/migrations/20261012141828_wp6b_invoker_boundary.sql",
+    "supabase/migrations/20261012142348_wp6d_private_rights_boundary.sql",
+    "supabase/tests/database/wp6b_invoker_boundary.test.sql",
+    "supabase/tests/database/wp6d_private_rights_boundary.test.sql"
+  ],
+  "no_force_or_rewrite": true,
+  "production_mutations": [],
+  "worktree_recovery_note": "Sequential run stopped before branch39 because already attached; completed39/40 in their existing clean worktrees. No merge conflict or partial merge."
+}

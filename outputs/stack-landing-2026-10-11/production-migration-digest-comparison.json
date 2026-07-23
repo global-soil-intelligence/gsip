@@ -1,0 +1,147 @@
+{
+  "digest_algorithm": "MD5 only as an existing-metadata text comparison, not an authenticity proof",
+  "comparisons": [
+    {
+      "name": "wp1_extensions",
+      "remote_version": "20260722164727",
+      "local_version": "20260722164727",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": false,
+      "status": "UNVERIFIED_DIFFERENCE"
+    },
+    {
+      "name": "wp1_schema",
+      "remote_version": "20260722164749",
+      "local_version": "20260722164749",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": false,
+      "status": "UNVERIFIED_DIFFERENCE"
+    },
+    {
+      "name": "wp1_rls",
+      "remote_version": "20260722164806",
+      "local_version": "20260722164806",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": false,
+      "status": "UNVERIFIED_DIFFERENCE"
+    },
+    {
+      "name": "wp1_review_hardening",
+      "remote_version": "20260722170020",
+      "local_version": "20260722170020",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": false,
+      "status": "UNVERIFIED_DIFFERENCE"
+    },
+    {
+      "name": "wp1_v22_privacy_and_grants",
+      "remote_version": "20260722182403",
+      "local_version": "20260722181500",
+      "exact_raw_match": true,
+      "outer_whitespace_only_match": false,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "wp1_performance_indexes",
+      "remote_version": "20260722182446",
+      "local_version": "20260722183000",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": false,
+      "status": "UNVERIFIED_DIFFERENCE"
+    },
+    {
+      "name": "wp4_prior_jobs",
+      "remote_version": "20260722190912",
+      "local_version": "20260722190000",
+      "exact_raw_match": true,
+      "outer_whitespace_only_match": false,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "wp4_prior_jobs_hardening",
+      "remote_version": "20260722191140",
+      "local_version": "20260722190500",
+      "exact_raw_match": true,
+      "outer_whitespace_only_match": false,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "wp4b_photo_qa",
+      "remote_version": "20260722191802",
+      "local_version": "20260722193000",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": false,
+      "status": "UNVERIFIED_DIFFERENCE"
+    },
+    {
+      "name": "wp6_export_guardrails",
+      "remote_version": "20260722194033",
+      "local_version": "20260722200000",
+      "exact_raw_match": true,
+      "outer_whitespace_only_match": false,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "phase1_actor_hardening",
+      "remote_version": "20260723011122",
+      "local_version": "20260723002255",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": true,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "qa_event_provenance",
+      "remote_version": "20260723011144",
+      "local_version": "20260723004439",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": true,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "public_h3_aggregates",
+      "remote_version": "20260723011159",
+      "local_version": "20260723005752",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": true,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "atomic_public_h3_refresh",
+      "remote_version": "20260723011219",
+      "local_version": "20260723010313",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": true,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "atomic_prior_attempt_claim",
+      "remote_version": "20260723050851",
+      "local_version": "20260723044745",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": true,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "document_authenticated_h3_role",
+      "remote_version": "20260723050903",
+      "local_version": "20260723045317",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": true,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "remove_public_submission_residue",
+      "remote_version": "20260723050918",
+      "local_version": "20260723045606",
+      "exact_raw_match": false,
+      "outer_whitespace_only_match": true,
+      "status": "TEXT_EQUIVALENT"
+    },
+    {
+      "name": "wavefunction_beta_schema",
+      "remote_version": "20260730174047",
+      "local_version": null,
+      "status": "NO_LOCAL_SOURCE"
+    }
+  ]
+}

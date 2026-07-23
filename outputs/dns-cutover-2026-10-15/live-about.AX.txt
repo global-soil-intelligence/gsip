@@ -1,0 +1,63 @@
+Browser tab: 1234838727, Title: "About — Global Soil Intelligence", URL: "https://globalsoilintelligence.com/about/".
+1 AXWebArea About — Global Soil Intelligence, URL: globalsoilintelligence.com/about/
+	2 container root
+		3 link Description: Skip to content, Value: globalsoilintelligence.com/about/#main-content
+		4 container
+			5 link Description: GLOBAL SOIL INTELLIGENCE, Value: globalsoilintelligence.com/
+			6 container Primary navigation
+				7 link Description: Map, Value: globalsoilintelligence.com/map/
+				8 link Description: Library, Value: globalsoilintelligence.com/data/
+				9 link Description: Methods, Value: globalsoilintelligence.com/methods/
+				10 link Description: Public capture closed, Value: globalsoilintelligence.com/about/#launch-status
+		11 container main-content
+			12 container
+				13 text THE PROJECT
+				14 heading A shared library for the ground we depend on., Value: 1
+					15 text A shared library for the ground we depend on.
+				16 text Building an open soil spectral reference library with smartphone observations, instrument spectra and laboratory evidence.
+			17 container
+				18 text THE THESIS
+				19 heading Make soil evidence easier to collect, connect and build on., Value: 2
+					20 text Make soil evidence easier to collect, connect and build on.
+				21 text Smartphones are the accessible capture tool: images, field context and physical sample links. Instrument spectra and verified laboratory measurements supply reference evidence. GSIP aims to connect them in an open library for researchers, communities and AI builders, with soil maps as a downstream use. Understanding the soil biome also requires biological measurements; a phone photo cannot provide them.
+			22 container launch-status
+				23 text IN DEVELOPMENT
+				24 heading Open source now. Public capture remains closed., Value: 2
+					25 text Open source now. Public capture remains closed.
+				26 text Library uploads remain closed too. Opening them requires reviewed legal terms, privacy screening, scientific checks and a separate operator decision after the launch gates pass. No opening date is promised.
+			27 container
+				28 text ROADMAP
+				29 heading Build the evidence plane before the prediction layer., Value: 2
+					30 text Build the evidence plane before the prediction layer.
+				31 text Now
+				32 heading Local library tools, Value: 3
+					33 text Local library tools
+				34 text Typed measurement records, a private local store, staged optical extraction and a synthetic paired-model demo. Public source and build instructions are available now.
+				35 text Next
+				36 heading Verified paired evidence, Value: 3
+					37 text Verified paired evidence
+				38 text Field samples paired with calibrated instruments and laboratory evidence, rights verification, privacy review and independent evaluation before scientific or publication claims.
+				39 text Future
+				40 heading Open models and soil maps, Value: 3
+					41 text Open models and soil maps
+				42 text Train and evaluate models on eligible evidence, publish their limits and uncertainty, and use validated outputs to inform maps and further research.
+			43 container
+				44 text OPEN-SOURCE STEWARDSHIP
+				45 heading Built by Viridis LLC with the work visible in public., Value: 2
+					46 text Built by Viridis LLC with the work visible in public.
+				47 text Justin Hart is the GSIP product owner. Architecture, implementation work packages, acceptance criteria, review findings, and source code are maintained in the public repository.
+				48 link Description: Open the repository, Value: github.com/global-soil-intelligence/gsip
+				49 link Description: View open issues, Value: github.com/global-soil-intelligence/gsip/issues
+		50 container
+			51 link Description: GLOBAL SOIL INTELLIGENCE, Value: globalsoilintelligence.com/
+			52 text Building an open soil spectral library for future models and maps. EXPLORE
+			53 link Description: Public map, Value: globalsoilintelligence.com/map/
+			54 link Description: Reference card, Value: globalsoilintelligence.com/card/
+			55 link Description: Open data, Value: globalsoilintelligence.com/data/
+			56 text PROJECT
+			57 link Description: Methods, Value: globalsoilintelligence.com/methods/
+			58 link Description: About, Value: globalsoilintelligence.com/about/
+			59 link Description: Source code, Value: github.com/global-soil-intelligence/gsip
+			60 text Code MIT · structured data ODbL 1.0 · contributed photos CC BY-SA 4.0 GSIP is not a replacement for laboratory analysis. Estimates must carry uncertainty.
+
+The focused UI element is 1 AXWebArea About — Global Soil Intelligence, URL: globalsoilintelligence.com/about/

@@ -1,0 +1,22 @@
+[
+ {
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 143,
+  "EndLine": 143,
+  "StartColumn": 9,
+  "EndColumn": 76,
+  "Match": "ublishableKey: 'REDACTED'",
+  "Secret": "REDACTED",
+  "File": "",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 4.689308,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [],
+  "RuleID": "generic-api-key",
+  "Fingerprint": ""
+ }
+]

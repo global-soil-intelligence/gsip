@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+
+ Test Files  4 passed (4)
+      Tests  43 passed (43)
+   Start at  22:04:28
+   Duration  1.83s (transform 351ms, setup 288ms, import 544ms, tests 2.60s, environment 1.64s)
+

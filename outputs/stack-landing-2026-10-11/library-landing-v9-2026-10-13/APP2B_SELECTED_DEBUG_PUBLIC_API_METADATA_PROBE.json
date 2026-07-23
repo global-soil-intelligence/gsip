@@ -1,0 +1,40 @@
+{
+  "complete_bounded_locator_bytes": 266,
+  "dry_run": {
+    "dry_run_task_count": 1,
+    "exit": 0,
+    "fixed_unsupported_metadata_message": false,
+    "no_key_APK_files_under_private_preferences": true,
+    "only_locator_task_in_dry_run": true,
+    "seconds": 14.366,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 608,
+    "stdout_sha256": "02faf8afef92877b50616552d370e92311e497105000821fb1ea77da19c40fcf"
+  },
+  "home_inherited_unchanged": true,
+  "metadata_only": {
+    "dry_run_task_count": 0,
+    "exit": 0,
+    "fixed_unsupported_metadata_message": false,
+    "no_key_APK_files_under_private_preferences": true,
+    "only_locator_task_in_dry_run": null,
+    "seconds": 4.917,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 637,
+    "stdout_sha256": "29cabd5f738b895bb528b06c6b1fa0d55cc60a0fc35b5c0eef685401984c1c38"
+  },
+  "metadata_reader_validated": true,
+  "offline": true,
+  "original_runtime_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "private_android_preferences": true,
+  "real_key_APK_reads": false,
+  "real_key_creation_or_copy": false,
+  "schema": "gsip-public-debug-signing-metadata-probe-v1",
+  "selected_store_is_not_HOME_assumption": true,
+  "selected_store_is_under_private_preferences": true,
+  "signing_build_or_validation_tasks_requested": false,
+  "store_path_or_raw_metadata_persisted": false,
+  "task_sha256": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf"
+}

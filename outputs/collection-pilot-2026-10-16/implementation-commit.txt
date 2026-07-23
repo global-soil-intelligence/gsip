@@ -1,0 +1,7 @@
+feat(collect-2): prepare invited private phone-browser pilot
+
+Add source-bound browser preparation, existing-account admission, private pilot
+classification, publication holds and rollback rights with regression proof.
+No production deployment, account creation or intake activation.
+
+Co-Authored-By: Codex <codex@openai.com>

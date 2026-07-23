@@ -1,0 +1,28 @@
+{
+  "utc": "2026-10-13T18:45:57.236752+00:00",
+  "base_head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "files": [
+    {
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+      "baseline_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "bytes": 17963
+    },
+    {
+      "path": "tests/test_app_parent_checkout.py",
+      "sha256": "fe3e95e1163a77c1bbb408f073ffeb51037ec73cfe2380830e746c987339891d",
+      "baseline_sha256": null,
+      "bytes": 7872
+    },
+    {
+      "path": "docs/APP_PARENT_CHECKOUT.md",
+      "sha256": "a8b4747574b199fe01608517780528cd70521db728ff80c14cf653aba9394e21",
+      "baseline_sha256": null,
+      "bytes": 1793
+    }
+  ],
+  "unchanged_tracked_other_files": 362,
+  "independent_closure_sha256": "c50cdae9a0d21593062ee1c633cfa73db5bc54cc47726af5daea89e7c93bbfb1",
+  "invariants": "exact isolated baseline and readback; candidate unaffected; all later audit/build/permission/repeat commands unchanged; no production action",
+  "commit_push": false
+}

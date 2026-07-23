@@ -1,0 +1,9 @@
+{
+  "exact_head": "476bbdab190c99a3bb6d5d8143f21bebde6baf9f",
+  "run": 38557797439,
+  "summaries": [
+    "2026-10-14T11:41:11.4551878Z wp6e_provenance.test.sql: 13/13 ok",
+    "2026-10-14T11:41:11.5175491Z wp6fa_photo_privacy.test.sql: 19/19 ok",
+    "2026-10-14T11:41:11.5783758Z wp_lib4_private_intake.test.sql: 13/13 ok"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "gate": "D",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1"
+  },
+  "started_at_utc": "2026-10-12T19:25:02.936357+00:00",
+  "completed_at_utc": "2026-10-12T19:25:05.721745+00:00",
+  "argv": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "db",
+    "push",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+    "--skip-vault"
+  ],
+  "source_head": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "source_clean_before": true,
+  "cli_version": "2.118.0",
+  "authorized_files": [
+    {
+      "name": "20261012141828_wp6b_invoker_boundary.sql",
+      "sha256": "afe4f698989729bd456fe763582f93042f58bf66a271704cdaa1c556eeb124d6"
+    },
+    {
+      "name": "20261012142348_wp6d_private_rights_boundary.sql",
+      "sha256": "27c0b1ae001351358b6a56490bc1389d1075dd62cbd6ffc4e6250943fa507260"
+    }
+  ],
+  "preflight_receipt": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-authorized-preflight-20261012T1925Z.json",
+  "preflight_sha256": "5bb6b4f126f895192a04786fd3f065f95fdf90fceeb187d1ce41b22801c58472",
+  "exit_code": 0,
+  "applied_files": [
+    "20261012141828_wp6b_invoker_boundary.sql",
+    "20261012142348_wp6d_private_rights_boundary.sql"
+  ],
+  "all_filename_occurrences": [
+    "20261012141828_wp6b_invoker_boundary.sql",
+    "20261012142348_wp6d_private_rights_boundary.sql",
+    "20261012141828_wp6b_invoker_boundary.sql",
+    "20261012142348_wp6d_private_rights_boundary.sql"
+  ],
+  "safe_output_lines": [
+    "Initialising login role...",
+    "Connecting to remote database...",
+    "Applying migration 20261012141828_wp6b_invoker_boundary.sql...",
+    "Applying migration 20261012142348_wp6d_private_rights_boundary.sql..."
+  ],
+  "raw_output_sha256": "f686584b0cb843eba5da5641200f5959804498637e28bf1c020626c68aeaa30b",
+  "state": "COMMAND_COMPLETED_EXACT_TWO_ALL_POSTCHECKS_REQUIRED",
+  "automatic_retry": false,
+  "other_deployments_or_merges": false
+}

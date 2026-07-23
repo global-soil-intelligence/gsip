@@ -1,0 +1,46 @@
+{
+  "status": "PREFLIGHT_PAGES_AND_CLOSED_FLAGS_PASS",
+  "checked_at_utc": "2026-10-16T00:39:43.588124+00:00",
+  "authority": "Justin: Go. Complete the DNS cutover for globalsoilintelligence.com using the reviewed plan, verify HTTPS and the live website, and keep capture and library uploads closed.",
+  "latest_pages_run": 38821460183,
+  "source_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "pages": {
+    "url": "https://api.github.com/repos/global-soil-intelligence/gsip/pages",
+    "status": "built",
+    "cname": null,
+    "custom_404": false,
+    "html_url": "https://global-soil-intelligence.github.io/gsip/",
+    "build_type": "workflow",
+    "source": {
+      "branch": "gh-pages",
+      "path": "/"
+    },
+    "public": true,
+    "protected_domain_state": null,
+    "pending_domain_unverified_at": null,
+    "https_enforced": true
+  },
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "matches_approved_artifact": true
+    },
+    {
+      "path": "capture/gsip-activation.json",
+      "sha256": "e79c9ca28c243929e0252ffd0b42c868560e17d293c225532d09410b92d04bdc",
+      "matches_approved_artifact": true
+    }
+  ],
+  "next_authorized_request": {
+    "method": "PUT",
+    "path": "repos/global-soil-intelligence/gsip/pages",
+    "body": {
+      "cname": "globalsoilintelligence.com"
+    }
+  }
+}

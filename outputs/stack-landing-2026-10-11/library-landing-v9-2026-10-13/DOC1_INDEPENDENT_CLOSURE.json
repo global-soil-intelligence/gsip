@@ -1,0 +1,98 @@
+{
+  "status": "INDEPENDENT_SOURCE_STATUS_DELTA_CLOSED",
+  "at": "2026-10-13T21:41:12.431554+00:00",
+  "base_commit": "710d144db94097be71989c67b5d3b4bb48135ad8",
+  "input_delivery_sha256": "0de0de2b8614a7db74966345e45ca6ac12631e9461f51ed6551a064e99251c63",
+  "candidate_hashes": {
+    "README.md": "e730b652306926233acaf0ae68a2c5c03e342d4a09259c28fff357554a73b10a",
+    "docs/BUILD_ORDER.md": "7f243f4ce91cd2be9ba972fd1086ef02dee6a55bfd03436feca8058a71a4bd0a",
+    "docs/SPEC.md": "90642673b06d9d7acbef0736e301a227efb0fa6a0210118a0e2228fec3da7975"
+  },
+  "changed_files": [
+    "README.md",
+    "docs/BUILD_ORDER.md",
+    "docs/SPEC.md"
+  ],
+  "unchanged_files": 349,
+  "findings": [],
+  "scope_assessment": "Factual merged-source/specification updates only; WP-DOC-1 records its narrow documentation acceptance. No architecture/runtime/license/service change. No APP63 source-merged claim.",
+  "factual_checks": {
+    "git_archive_matches_exact_main710": true,
+    "merged_source_prs_ancestor_of_main710": [
+      51,
+      52,
+      53,
+      54,
+      55,
+      58,
+      60,
+      64
+    ],
+    "all_eight_exact_merged_heads_validate_success": true,
+    "source_and_specification_prerequisite_merge_order_verified": true,
+    "app63_open_draft_unmerged": true,
+    "app63_readback_head": "748146da663e692f6637a5a11a43ad063c49cd4f"
+  },
+  "gates": {
+    "all122_acceptance_boxes_unchanged": true,
+    "twelve_normative_sections_byte_identical": true,
+    "architecture_sections_16_9_to_16_13_unchanged": true,
+    "held": [
+      "production/deployment/worker dispatch",
+      "detector artifact licensing/model selection",
+      "calibration/operator provisioning",
+      "photo publication/capture/anonymous activation",
+      "real peer sharing/retention/grants/credential decisions",
+      "physical-pair/scientific evaluation/model/biome inference",
+      "device/iOS backup/signing/store acceptance"
+    ],
+    "RGB_photos_remain_non_spectral_observations": true
+  },
+  "actual_verification": {
+    "existing_doc_tests": {
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0
+    },
+    "language": {
+      "exit_code": 0
+    },
+    "format_three_files": {
+      "exit_code": 0
+    },
+    "local_links": {
+      "occurrences": 21,
+      "unique": 18
+    },
+    "local_anchors": {
+      "occurrences": 4,
+      "unique": 3
+    }
+  },
+  "review_boundaries": {
+    "new_text_mirroring_tests": false,
+    "source_edits": false,
+    "Git_GitHub_mutations": false,
+    "production_or_native_device_calls": false,
+    "new_dependency_or_tool_install": false
+  },
+  "assumptions": [
+    "Review is bound to exact main710 and these three candidate hashes. Later source/status rebinding requires fresh merge evidence.",
+    "Merged source and green CI are not operational/device/scientific evidence. APP63 must not be marked merged until actual merge readback."
+  ],
+  "limits": [
+    "No production, calibration, physical-device, real-sharing or biological/scientific validation was performed.",
+    "Historical checks were read back, not rerun.",
+    "Full-history secret scanning belongs to root integration and was not run in this finite doc review."
+  ],
+  "evidence_hashes": {
+    "format.log": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "input-binding.json": "dd05293c1a32f679b4eea0f30d48d60e7cbf5371dc6a053703ac27d3f1df1c03",
+    "merged-pr-readback.json": "d092992d552027501411e66e4c9c91b16ce43e5365b81de6ad1b9e49d8fe8a23",
+    "doc-contracts.log": "341d5dca33250b815baddbafb6001e174c20bf1716bb74f3d612e77777db8938",
+    "merged-head-checks.json": "69b7ddeb5106ca3145202c6b3708be82204e3e151f2b11921e916874efdb403c",
+    "language.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "doc-contracts.xml": "f47719da739dac6875e5b2df3ffbd9b0e7986918534aa65a96aac6a2d336365c",
+    "scope-gates-links.json": "307aa5137ae15502949d12a77bc1748199093ca9fe89368a434c66a7b1f77db8"
+  }
+}

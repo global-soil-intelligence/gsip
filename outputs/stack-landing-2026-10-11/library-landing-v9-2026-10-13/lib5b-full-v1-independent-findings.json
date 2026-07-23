@@ -1,0 +1,201 @@
+{
+  "work_package": "WP-LIB-5B",
+  "review_state": "changes_required; review paused after two reproduced P2 findings for author correction",
+  "frozen_at": "2026-10-13T15:03:48.897360+00:00",
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "base_tree": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64",
+  "input": {
+    "patch": {
+      "path": "/private/tmp/gsip-lib5b-private-exchange-ledger.patch",
+      "sha256": "60438798022b84b489f6d80ec3b2e547b8f2f6f0e1f6ef6640435db4201a3f54",
+      "bytes": 232602
+    },
+    "manifest": {
+      "path": "/private/tmp/gsip-lib5b-final-file-manifest.json",
+      "sha256": "d6384e0210d78c75f87c2ce8d4d78d1ffed43278e06a31230d454706fa73616f",
+      "bytes": 1610
+    },
+    "author_receipt": {
+      "path": "/private/tmp/gsip-lib5b-final-delivery-receipt.json",
+      "sha256": "d27e7a8a7e6ebb296b6f48d85f0d66c769ca3c7c3845e45b9a88347eee34c363",
+      "bytes": 11255
+    },
+    "authored_files": [
+      {
+        "path": "pipeline/node_exchange_store.py",
+        "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+        "bytes": 39798
+      },
+      {
+        "path": "pipeline/node_exchange_simulator.py",
+        "sha256": "4e3f1eb4183205cb1705672f01547ab4d8aa8c78569a42a5cfc4af7579e4fa87",
+        "bytes": 81538
+      },
+      {
+        "path": "tests/test_node_exchange_store.py",
+        "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+        "bytes": 46450
+      },
+      {
+        "path": "tests/test_node_exchange_simulator.py",
+        "sha256": "20e8ac506071e994dccd7d93c8423c8cf573ca8087085b8ecd143390f7a4b830",
+        "bytes": 41469
+      },
+      {
+        "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+        "sha256": "81e6bd675e15dc8ded29e4e3d1891274b7cd27fa39915c49cbe3e09bdc7565c4",
+        "bytes": 17189
+      }
+    ],
+    "all_five_copy_author_frozen_hashes_still_match": true
+  },
+  "review_isolation": {
+    "owned_copy": "/private/tmp/gsip-lib5b-full-review-do47y5fu/source",
+    "author_or_shared_source_writes": false,
+    "git_or_pr_writes": false,
+    "network_or_listener": false,
+    "credentials_or_real_data_or_model": false,
+    "production_or_capture_or_publication": false
+  },
+  "read_before_review": [
+    "AGENTS.md",
+    "docs/AGENTS.md",
+    "docs/SPEC.md full",
+    "docs/BUILD_ORDER.md full",
+    "CONTRIBUTING.md",
+    "GOVERNANCE.md",
+    "docs/PHASE1_DEPLOYMENT.md",
+    "docs/APP_STORE.md",
+    "docs/legal/README.md",
+    ".env.example",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+    "implementation handoff",
+    "33 independent cards"
+  ],
+  "checks": {
+    "independent_probes": {
+      "result": "3 meaningful assertion failures reproduce two P2 defects",
+      "summary": {
+        "tests": 3,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      },
+      "test_source": {
+        "path": "/private/tmp/gsip-lib5b-full-review-do47y5fu/test_independent_findings.py",
+        "sha256": "cdb50809f72855144c399eb22f424ef4824dcb14b898f91ab47199f3dfe4582f",
+        "bytes": 3352
+      },
+      "log": {
+        "path": "/private/tmp/gsip-lib5b-full-review-do47y5fu/independent-findings.log",
+        "sha256": "9d20bb029b138a2c73adb4041a1b48f268d43543314b6db8bb44b1dcdad322c7",
+        "bytes": 3679
+      },
+      "junit": {
+        "path": "/private/tmp/gsip-lib5b-full-review-do47y5fu/independent-findings.xml",
+        "sha256": "e22203765e83795495a7d646187459684815a997fb602a72680f5366640d7473",
+        "bytes": 4045
+      },
+      "command": "PYTHONPATH=<owned source> <approved Python> -m pytest -q <owned test_independent_findings.py> --junitxml=<owned independent-findings.xml>",
+      "actual_exit_code": 1
+    },
+    "direct_behavioral_probe": {
+      "test_source": {
+        "path": "/private/tmp/gsip-lib5b-full-review-do47y5fu/probe_candidate.py",
+        "sha256": "ccf021892d776376f234db546a47e3ab7ec67128038f43606a7ff94145cc1d5d",
+        "bytes": 2943
+      },
+      "observed": [
+        {
+          "case": "metadata_saturation_sample_withdrawal",
+          "image_bytes": 5928,
+          "injected_serializer_bound": 5933,
+          "withdrawal": "generic_error",
+          "withdrawn": false,
+          "scope_fenced": false,
+          "pending_erasure": false,
+          "refusals": 0,
+          "cleanup": 0,
+          "payload_status": "available_for_synthetic_simulation",
+          "preparation_capacity_refused": true
+        },
+        {
+          "case": "missing_specific_measurement_authority",
+          "recipient_admission": "stored",
+          "payload_status": "available_for_synthetic_simulation",
+          "preparation_created": true
+        }
+      ]
+    },
+    "scoped_author_tests": {
+      "result": "all 176 pass; no skips/errors/failures",
+      "summary": {
+        "tests": 176,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log": {
+        "path": "/private/tmp/gsip-lib5b-full-review-do47y5fu/scoped-author-tests.log",
+        "sha256": "d9f688a1ed0ce8344caae9733ed4748ac4f087175adca06e9b85f2fd1e5417a4",
+        "bytes": 240
+      },
+      "junit": {
+        "path": "/private/tmp/gsip-lib5b-full-review-do47y5fu/scoped-author-tests.xml",
+        "sha256": "17b6c2050a3a1343da68fa5ba469052df2ea28fded2e8b1f02d2852fa7af6675",
+        "bytes": 2027014
+      },
+      "actual_exit_code": 0,
+      "command": "<approved Python> -m pytest -q tests/test_node_exchange_store.py tests/test_node_exchange_simulator.py --junitxml=<owned scoped-author-tests.xml>"
+    }
+  },
+  "findings": [
+    {
+      "id": "P2-1",
+      "title": "Activate reserved fences when withdrawal metadata cannot fit",
+      "path": "pipeline/node_exchange_simulator.py",
+      "lines": [
+        1399,
+        1406
+      ],
+      "cause": "withdraw_original catches only logical-capacity refusal. The commit_metadata(candidate) that adds refusals, retirement event/slot and cleanup can reject the complete-image byte bound outside that catch. No withdrawal or scope fence has yet been committed.",
+      "trigger": "Admit source and recipient event, then set exact metadata serializer allowance to existing image +5 bytes; request sample withdrawal. Active reserved fields fit because true is shorter than false, but new normal cleanup metadata does not.",
+      "observed": "generic error; persistent origin withdrawn false; fence false and pending marker false; existing recipient status remains available.",
+      "requirement": "SPEC 16.12 reserved scope fence plus C03/C04/T03: metadata saturation must not consume reserved fence; fence/pending state precedes further use and survive without new alias/slot/cleanup allocation.",
+      "suggested_repair": "Handle complete-image refusal as well as logical-capacity refusal and commit existing original withdrawal plus reserved scope fence/pending marker before returning. Audit analogous direct retirement and load/materialization commits for the same serializer-bound ordering.",
+      "test": "test_metadata_saturation_withdrawal_uses_reserved_scope_fence",
+      "limit": "The independent reproduction uses a reduced serializer-bound projection, not an actual 32 MB saturated state."
+    },
+    {
+      "id": "P2-2",
+      "title": "Recheck exact original measurement authority rather than a sibling origin",
+      "path": "pipeline/node_exchange_simulator.py",
+      "lines": [
+        752,
+        762
+      ],
+      "related_lines": [
+        1207,
+        1210,
+        1794,
+        1806,
+        1814,
+        1836
+      ],
+      "cause": "_group_allowed matches only human/sample/grant and accepts any matching SyntheticOrigin. A sibling measurement therefore satisfies current authority after the exact original measurement has disappeared.",
+      "trigger": "Fixture has two measurements M/N for one human/sample/grant. Stage M, reopen same fixture identity with M absent and N retained. Repeat before and after recipient admission.",
+      "observed": "first receive stores M and charges recipient; retry of previously received M returns already_stored; payload_status stays available; independent direct probe creates new synthetic preparation.",
+      "requirement": "SPEC 16.11/16.12 and A01/R01/R03: current source relationship and known generated origin must be available for each declaration/use; absent/unknown source authority holds and cached admitted receipt supplies no permission.",
+      "suggested_repair": "Resolve event measurement alias to its immutable original measurement and require the current exact fake human/sample/grant/measurement origin at admission, claim/checkpoint and use. Keep sample-wide monotonic restrictions independently durable.",
+      "test": "test_missing_exact_measurement_authority_holds_admission_and_use [before and after recipient admission]"
+    }
+  ],
+  "limits": {
+    "full_package_independent_closure": false,
+    "why_stopped": "Coordinator requested ending this turn with frozen findings so author can repair, then review resumes on refrozen exact source.",
+    "independent_cards_completed": "Targeted serializer saturation withdrawal and absent-specific-origin authority/restart/admission/use witnesses. Exact input binding and source/document review.",
+    "independent_cards_uncompleted": "All remaining F01-F06, T01-T05, C01-C05, Q01-Q03, R01-R05, A01-A06, I01-I03 combinations have not been independently closed in this turn; passing 176 author cases and root prior store-only closure do not replace full independent closure.",
+    "no_gdal_claim": "The scoped 176 cases require no GDAL. Earlier author four GDAL skips and required whole-suite CI remain external evidence, not independently rerun here.",
+    "no_approval_or_science_claim": true
+  }
+}

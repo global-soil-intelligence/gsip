@@ -1,0 +1,102 @@
+{
+  "api_mutations": false,
+  "api_readbacks": [
+    {
+      "endpoint": "repos/global-soil-intelligence/gsip/environments/github-pages",
+      "http_status": 200,
+      "method": "GET",
+      "request_id": "1394:1587E:2C82B9:9212CE:6ACCE2D0"
+    },
+    {
+      "endpoint": "repos/global-soil-intelligence/gsip/environments/github-pages/deployment-branch-policies",
+      "http_status": 200,
+      "method": "GET",
+      "request_id": "1393:217C76:2D0BB4:933E8A:6ACCE2D0"
+    }
+  ],
+  "before_readback_sha256": "3d7b8c640424cd2a4e6dc5f0c8d5cbd3c32fb768d2d07af91afca23fa07320ad",
+  "can_admins_bypass": false,
+  "deployment_branch_policies": {
+    "branch_policies": [
+      {
+        "id": 55456772,
+        "name": "gh-pages",
+        "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTQ1Njc3Mg==",
+        "type": "branch"
+      },
+      {
+        "id": 55456704,
+        "name": "main",
+        "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTQ1NjcwNA==",
+        "type": "branch"
+      }
+    ],
+    "total_count": 2
+  },
+  "deployment_branch_policy": {
+    "custom_branch_policies": true,
+    "protected_branches": false
+  },
+  "environment": "github-pages",
+  "environment_id": 18657050755,
+  "merge_approve_deploy_comment_actions": false,
+  "observed_at_utc": "2026-10-12T13:38:24.760455+00:00",
+  "preservation": {
+    "all_protection_rules_identical": true,
+    "deployment_branch_policies_identical": true,
+    "deployment_branch_policy_identical": true
+  },
+  "protection_rules": [
+    {
+      "id": 60751762,
+      "node_id": "GA_kwDOTgVRPc4Dnv-S",
+      "type": "branch_policy"
+    },
+    {
+      "id": 68521163,
+      "node_id": "GA_kwDOTgVRPc4EFYzL",
+      "prevent_self_review": false,
+      "reviewers": [
+        {
+          "reviewer": {
+            "avatar_url": "https://avatars.githubusercontent.com/u/179389866?v=4",
+            "events_url": "https://api.github.com/users/jdhart81/events{/privacy}",
+            "followers_url": "https://api.github.com/users/jdhart81/followers",
+            "following_url": "https://api.github.com/users/jdhart81/following{/other_user}",
+            "gists_url": "https://api.github.com/users/jdhart81/gists{/gist_id}",
+            "gravatar_id": "",
+            "html_url": "https://github.com/jdhart81",
+            "id": 179389866,
+            "login": "jdhart81",
+            "node_id": "U_kgDOCrFFqg",
+            "organizations_url": "https://api.github.com/users/jdhart81/orgs",
+            "received_events_url": "https://api.github.com/users/jdhart81/received_events",
+            "repos_url": "https://api.github.com/users/jdhart81/repos",
+            "site_admin": false,
+            "starred_url": "https://api.github.com/users/jdhart81/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/jdhart81/subscriptions",
+            "type": "User",
+            "url": "https://api.github.com/users/jdhart81",
+            "user_view_type": "public"
+          },
+          "type": "User"
+        }
+      ],
+      "type": "required_reviewers"
+    }
+  ],
+  "repository": "global-soil-intelligence/gsip",
+  "save_count": 1,
+  "screenshot": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/pages-admin-bypass-disabled-2026-10-12.jpg",
+    "sha256": "f86cdc32ac4ff59d032e0edc223664376fffb61ff2e3d9ef8eb67b5ccb9e6e18"
+  },
+  "sole_required_reviewer": {
+    "id": 179389866,
+    "login": "jdhart81"
+  },
+  "status": "ADMIN_BYPASS_DISABLED_REQUIRED_JUSTIN_REVIEWER_PRESERVED",
+  "supabase_mutations": false,
+  "ui_action_receipt": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/pages-admin-bypass-ui-action-2026-10-12.json",
+  "ui_action_sha256": "7535d6ae872cdc3943df4c51f76e73cb6c114ea4a5a215741c82e14bddfe4b72"
+}

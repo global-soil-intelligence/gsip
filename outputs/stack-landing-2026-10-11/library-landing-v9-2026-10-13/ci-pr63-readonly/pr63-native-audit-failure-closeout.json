@@ -1,0 +1,83 @@
+{
+  "observed_at_utc": "2026-10-13T16:29:40.945159+00:00",
+  "status": "FAILURE_RETURNED_TO_AUTHOR",
+  "pr": 63,
+  "head": "bb3910164cc47eae72958ad521b2186684584978",
+  "native_run_id": 38429415336,
+  "native_run_number": 42,
+  "native_run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38429415336",
+  "checks": {
+    "validate": "SUCCESS",
+    "gitleaks_push": "SUCCESS",
+    "gitleaks_pull_request": "SUCCESS",
+    "dco": "SKIPPED",
+    "android": "FAILURE",
+    "ios": "FAILURE"
+  },
+  "failures": {
+    "ios": {
+      "job_id": 115407346754,
+      "step": "Audit actual iOS native selection and licenses",
+      "full_log_sha256": "b9d0cf3abff77e1956daa9ae12225057d842a3ad986cb03a3085ae6f512b671b",
+      "confirmed_defect": "Single-pin SPM audit schema cannot describe the actual four selected remote packages.",
+      "unverified_detail": "Exact first refusal (multiple Package.resolved files versus multiple pins) is hidden by the generic safe handler.",
+      "source": "scripts/app_notification_audit.py:collect_ios",
+      "fix_plan": [
+        "Extend scripts/app_notification_audit.py and its tests to bind the actual application Package.resolved while inventorying nested resolved files, not silently ignoring them.",
+        "Audit each allowlisted selected ION checkout version/revision, manifest and licence plus Capacitor binary checks. Reject unknown identities/revisions, missing licences, extra unresolved binary targets and inconsistent nested resolution.",
+        "Add meaningful specimens for the exact four-pin graph, genuine nested Package.resolved files and unknown/changed dependency negative cases; preserve privacy-safe errors and all permission/closed-SDK checks."
+      ]
+    },
+    "android": {
+      "job_id": 115407346686,
+      "step": "Audit exact Android runtime and license inputs",
+      "full_log_sha256": "5573a5347a3a21e30fa3baa10dfa8a90debac80cdd1512071259b98a0f87bc2a",
+      "confirmed_failure": "Fail-closed generic audit refusal after roughly46 seconds; exact audit stage is not exposed.",
+      "unverified_hypothesis": "Workflow builds debug artifacts only, but runtime_evidence reads selected release project JAR/AAR paths too; unbuilt release inputs may be the refusal.",
+      "fix_plan": [
+        "First add fixed stage/error-class diagnostics without parser, filesystem, network or contributor payloads, or reproduce using actual resolved graph in an isolated local build.",
+        "If missing release project artifacts is confirmed, make inspection depend on those actual selected build outputs or build the unsigned release configuration; never substitute debug artifacts or weaken the release audit.",
+        "Keep every existing permission, dependency, licence, provenance and file-containment guard effective."
+      ],
+      "source": "scripts/app_notification_audit.py:collect_android/runtime_evidence/GRADLE_TASK; .github/workflows/app-build.yml"
+    }
+  },
+  "native_job_states": [
+    {
+      "id": 115407346686,
+      "name": "android",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 115407346754,
+      "name": "ios",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "artifact_inventory": {
+    "total_count": 0,
+    "returned_count": 0,
+    "artifacts": []
+  },
+  "artifact_acceptance": "NOT_MET",
+  "mutations": [],
+  "receipt_hashes": {
+    "failure-readback-pr63-metadata.json": "7d69734a89247b96ad75466917f7cf3b1ff694c53a661e713f4e80f1ea675463",
+    "android-failed-step-sanitized.json": "b36d5732f49fdb97503674484141a21acf3b43f77080ae30687ed96e56ce7295",
+    "ios-failed-job-metadata.json": "55253081346d76b2bdcb9b321b6b742f569eff7f380fa03e416f01113a9f78de",
+    "ios-failed-step-sanitized.json": "2ce11ae8bfdb80f3070924521beafd00c458137dde2769e3ff0edded3e506f23",
+    "initial-pr63-runs.json": "ee357f6fae247027d05676ab710eb3c66ddc7a74ea210150c38c956bfa0a3869",
+    "failure-native-artifact-metadata.json": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+    "failure-native-jobs.json": "cc9255026be7c267638a3e706d8bc99dfde6dc44d096b150feb4d529e033dd20",
+    "pr63-first-native-failure-triage-receipt.json": "58cf6c84f042b99bbec3d34eb68e64021f68ea5713f12053a3b8adfcb0889c9d",
+    "ios-resolved-graph-log-evidence.json": "25b28141d4e5fafa5675069a4a96bcd4acc446e9a0993b1debbcb4566f666667",
+    "initial-pr63-metadata.json": "1fdef639169d99e6ace3d6549b3b23f437a30a0291804ae0e96ffa0c8b6079f7",
+    "ios-failed-log-diagnostics.json": "cc0bc08e0ac5e71174d3fcdf3a427cdae2e0556408186309311d2bba41fd5bce"
+  },
+  "limits": [
+    "Failed audit jobs skipped parent-feature comparison and strict artifact upload; no successful APP2B native acceptance is claimed.",
+    "No changes, reviews, approvals, merges, workflow reruns/dispatches, configuration changes, secret reads or production actions performed."
+  ]
+}

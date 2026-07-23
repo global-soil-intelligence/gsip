@@ -1,0 +1,127 @@
+{
+  "recorded_at": "2026-10-12T01:37:53.695696+00:00",
+  "authority": "Justin Hart direct reply; destinations and policies only; no production go",
+  "production": {
+    "project": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1",
+    "restore_by": "Justin only after deployment authorization",
+    "tier_upgrade": "deferred",
+    "pre_migration": [
+      "exact counts per table, no row contents",
+      "scripts/db-migration-test.sh",
+      "exact target and commands posted",
+      "explicit go"
+    ],
+    "last_verified_status": "ACTIVE_HEALTHY",
+    "readiness": "Read-only CLI authenticated; restore/login not performed by agent",
+    "deployment_blocker": "Remote migration-history mismatch and unverified baseline SQL; no migration go given",
+    "counts_receipt": "production-complete-counts-and-comparison.json",
+    "security_advisor_preflight": "zero findings",
+    "capture_gate_live_readback": "table absent before WP-6b migration",
+    "anonymous_auth_live_readback": "unverified",
+    "foreign_deployment_reconciliation": {
+      "owner_context": "Accidental separate Wavefunction beta deployment under owner login; private source stays outside GSIP",
+      "history_version": "20260730174047",
+      "function": "wavefunction-api",
+      "function_version": 2,
+      "function_deletion": "Separately gated; not executed",
+      "tables": "wf_cards/wf_witnesses confirmed absent",
+      "canonical_authority": "Reviewed cumulative seventeen-migration baseline; strict owner/delegation comparison passes with twelve exact allowed metadata differences",
+      "reconciliation_pr": "https://github.com/global-soil-intelligence/gsip/pull/40",
+      "approval": "PENDING_GO",
+      "independent_counts": {
+        "contributors": 5,
+        "submissions": 25,
+        "photos": 25,
+        "auth_users": 0,
+        "public_cells": 0
+      }
+    }
+  },
+  "capture": {
+    "capture_open": false,
+    "VITE_CAPTURE_LIVE": false,
+    "anonymous_sign_in": false,
+    "opening_by": "Justin after all SPEC section11 gates"
+  },
+  "hugging_face": {
+    "destination": "global-soil-intelligence/gsip",
+    "fallback": "viridis-research/gsip",
+    "owner_actions": [
+      "create organization and dataset",
+      "add HF_TOKEN secret",
+      "set HF_DATASET_REPO"
+    ],
+    "dispatch_before_ready": false
+  },
+  "prior_tiles": {
+    "host": "repository GitHub Pages, same origin as map",
+    "publication_requires_go": true,
+    "storage": "palette-versioned release assets; never git history",
+    "target_max_tile_bytes": 700000000,
+    "site_limit_bytes": 1000000000,
+    "required_checks": [
+      "HTTP Range response206",
+      "SoilGrids-derived values only",
+      "privacy map-tile host docs PR",
+      "palette stamps",
+      "total combined site size"
+    ],
+    "oversize_options": [
+      "max zoom7",
+      "fewer properties"
+    ],
+    "fallback": "ISRIC WMS until all checks pass"
+  },
+  "captcha": {
+    "state": "deferred",
+    "closed_provider_requires_approval": [
+      "Turnstile",
+      "hCaptcha"
+    ],
+    "open_alternative_requires": "spec change"
+  },
+  "app": {
+    "accounts": "owner-controlled Viridis LLC organization accounts; deferred",
+    "create_accounts_certificates_keystores": false,
+    "unblocked_later": [
+      "CI version numbers",
+      "reproducible builds",
+      "signing placeholders"
+    ],
+    "cloud_backup_private_storage": "exclude queue/draft photos/session",
+    "android_device_transfer": "allow only if cleanly configurable; otherwise exclude both",
+    "ios": "exclude WebKit storage reliably and verify device build; report options if unproven",
+    "backup_docs": [
+      "APP_STORE.md",
+      "PRIVACY.md"
+    ],
+    "tradeoff": "new phone starts new anonymous account; withdraw old contributions through privacy contact until WP-APP-2 email linking"
+  },
+  "photo_screening": {
+    "policy": "withhold flagged photo for private human review",
+    "scope": "every photo, server QA before any publication",
+    "detectors": "open source only",
+    "priority": "recall",
+    "observation_and_other_photos": "publish normally when eligible",
+    "review_interface": "private CLI like attribution_review",
+    "automatic_blur": false,
+    "implementation_gate": "SPEC amendment first; stop for Justin approval"
+  },
+  "new_paid_or_closed_services": "none",
+  "licenses": [
+    "MIT code",
+    "ODbL1.0 data",
+    "CC BY-SA4.0 photos"
+  ],
+  "merges_and_approvals": "Justin; agent never merges/approves",
+  "new_secret_fixture_exception": {
+    "state": "APPROVED_AND_APPLIED",
+    "scope": "exact four-line file, three immutable historical fixture fingerprints only",
+    "ignore_sha256": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+    "propagation": "docs/spec-v3 through all seven reviewed branches",
+    "additional_suppression": "requires Justin explicit approval",
+    "scanner_rules_redaction_full_history_workflow": "unchanged"
+  }
+}

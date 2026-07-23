@@ -1,0 +1,156 @@
+{
+  "actual_readonly_graph_replay": {
+    "bytes": 4504,
+    "path": "/private/tmp/gsip-623-duplicate-source-diagnosis-4ouitia4/review-normalizer/ACTUAL_READONLY_GRAPH_REPLAY.json",
+    "sha256": "6ae4ec0fb39e149746bc8450d3c5750b98f994a015c53fc37bf5f4971a9c60bc"
+  },
+  "actual_replay_driver": {
+    "bytes": 10643,
+    "path": "/private/tmp/gsip-623-duplicate-source-diagnosis-4ouitia4/review-normalizer/replay_actual_graphs_readonly.py",
+    "sha256": "bf4bc6fe311e433cc65e0292530969374a9afe3552c1d7a9ef2da86170d94540"
+  },
+  "actual_replay_facts": {
+    "all_nonduplicate_binary_POM_project_and_NPM_evidence_exact_to_retained_actual": true,
+    "allow_fetch": false,
+    "both_actual_graphs_current_strict_runtime_validation": "AUDIT_REFUSAL_EXISTING_BINARY_COMPLETENESS_SOURCE_LINE_2526",
+    "candidate_binary_records_each_configuration": [
+      79,
+      74
+    ],
+    "candidate_npm_sources": 7,
+    "duplicate_same_canonical_file_records_removed_each_configuration": 5,
+    "native_subprocesses_or_network_permitted": false,
+    "parent_all347_committed_source_bytes_exact": true,
+    "parent_binary_records_each_configuration": [
+      78,
+      73
+    ],
+    "parent_npm_sources": 6,
+    "runtime_validator_body_extracted_exact_and_no_missing_full_receipt_fields_fabricated": true,
+    "selected_modules_each_configuration": 75
+  },
+  "at": "2026-10-14T02:45:18.296548+00:00",
+  "author_results_not_substituted": {
+    "bytes": 5783,
+    "path": "/private/tmp/gsip-runtime-normalize-frozen-71xk4_n0/AUTHOR_VERIFICATION.json",
+    "sha256": "81d0a7a49982c0eafcd0a4a8f9236e307e9e38e70e45d10a006c6fa9a15e80af"
+  },
+  "base_commit": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "baseline_new40": {
+    "errors": 0,
+    "failed": 22,
+    "passed": 18,
+    "skipped": 0
+  },
+  "current_focused_tests": {
+    "failed": 0,
+    "new_authored": 40,
+    "old_diagnostic_bank": 43,
+    "own_independent": 6,
+    "passed": 89,
+    "skipped": 0
+  },
+  "exact_source_scope": {
+    "bytes": 1349,
+    "path": "/private/tmp/gsip-623-duplicate-source-diagnosis-4ouitia4/review-normalizer/EXACT_INDEPENDENT_SOURCE_SCOPE.json",
+    "sha256": "cc2d8f6a7995df327058a75e4cf8a286e5686d18d1ab27d9556ff29b46148abb"
+  },
+  "focused_commands_xml_and_hashes": {
+    "bytes": 6518,
+    "path": "/private/tmp/gsip-623-duplicate-source-diagnosis-4ouitia4/review-normalizer/FOCUSED_INDEPENDENT_RESULTS.json",
+    "sha256": "df0d2010211e2d22674039467697d536424130e75c7b311e3fc0151a4793fc49"
+  },
+  "frozen_manifest": {
+    "bytes": 864,
+    "path": "/private/tmp/gsip-runtime-normalize-frozen-71xk4_n0/MANIFEST.json",
+    "sha256": "5788468df3c0f44fe9d16703ed226778a172b68d7fe06239c5afd61c0c937580"
+  },
+  "frozen_patch": {
+    "bytes": 11568,
+    "path": "/private/tmp/gsip-runtime-normalize-frozen-71xk4_n0/candidate.patch",
+    "sha256": "136f6877c3bd3b7ec10f14b8c62fbd16ec7e4bcbcb9704e3e7c628a472927874"
+  },
+  "frozen_source_receipt": {
+    "bytes": 1512,
+    "path": "/private/tmp/gsip-runtime-normalize-frozen-71xk4_n0/FROZEN_SOURCE_RECEIPT.json",
+    "sha256": "465f31605012187b1c9212506fed573a4e9c75e22939e24a378c772b04561a35"
+  },
+  "independent_driver": {
+    "bytes": 6815,
+    "path": "/private/tmp/gsip-623-duplicate-source-diagnosis-4ouitia4/review-normalizer/verify_scoped_normalizer.py",
+    "sha256": "e6dcc7a89586ea5a10e37a7643e4309019dabb21ed268076761bb575624b8df7"
+  },
+  "independent_mutation_failures": {
+    "early_skip_before_zip_audit": 24,
+    "ignore_canonical_file_conflict": 2,
+    "ignore_complete_proof_conflict": 8
+  },
+  "invariants": [
+    "Every artifact occurrence passes original identity containment descriptor ZIP and licence checks before canonicalization.",
+    "Canonicalization is per configuration and typed identity plus canonical basename.",
+    "Same canonical file plus same complete proof only; conflicting path even equal bytes or changed proof refuses.",
+    "Original artifact input cap applies before canonicalization.",
+    "No new receipt field or file path exported.",
+    "Entire helper restores base bytes after removing only approved runtime normalizer block.",
+    "All other function text including strict validate_android is exact; original224140B tests exact;362other tracked files exact.",
+    "Original runtime Gradle task and metadata signing task/workflow unchanged."
+  ],
+  "own_probe_source": {
+    "bytes": 2384,
+    "path": "/private/tmp/gsip-623-duplicate-source-diagnosis-4ouitia4/review-normalizer/test_independent_runtime_normalizer.py",
+    "sha256": "d482e9a070cc980db65f028df869eac81965629e363dbf6236b88ca0fbd8aabf"
+  },
+  "raw_same_canonical_file_provenance": {
+    "bytes": 2475,
+    "path": "/private/tmp/gsip-623-duplicate-source-diagnosis-4ouitia4/ACTUAL_RAW_PATH_PROVENANCE_SAFE.json",
+    "sha256": "16e10795a5fb555f54697a9ec332c88246ed92b5b64298c794364df76de12971"
+  },
+  "recoveries_and_limits": [
+    "The first extracted runtime-validator execution reported diagnosticline0 because the isolated function used its own filename; exact unchanged source-line mapping then identified genuine completeness guard2526. Both preserved receipts remain.",
+    "Final replay catches per-root existing completeness refusal to complete both roots; it does not bypass the refusal.",
+    "Earlier actual replay scripts and refusal receipts are preserved; no native receipt fields, key hashes, build or tree metadata invented.",
+    "Actual hosted623 offending identities and filenames remain unknown; historical local5duplicate groups are not attributed to that runner.",
+    "This closure covers only lossless repeated-record normalization; no fresh APK artifact, full native comparison, Android acceptance, device/store/deploy/legal approval is claimed.",
+    "No shared source Git GH CI production cache SDK key APK signing build or dependency mutations performed."
+  ],
+  "schema": "gsip-independent-runtime-normalizer-source-slice-closure-v1",
+  "separate_blocker": {
+    "all_variant_available_at_target_presence_alone_is_not_selected_route_proof": true,
+    "author_parallel_metadata_only_probe_is_separate_and_not_carried_as_this_reviews_proof": true,
+    "cached_public_GMM_analysis": {
+      "bytes": 9089,
+      "path": "/private/tmp/gsip-623-duplicate-source-diagnosis-4ouitia4/review-normalizer/MISSING_MODULE_GMM_RELEVANT_SUMMARY.json",
+      "sha256": "a59af7c0ecfe436352e989a26e7261fdb0e80d1742e4f0d0f59238cf8d592fab"
+    },
+    "existing_task_lacks_selected_variant_external_relationship": true,
+    "no_generic_packaging_KMP_or_POM_waiver_recommended": true,
+    "public_selected_modules_without_direct_binary": [
+      "androidx.annotation:annotation:1.8.1",
+      "androidx.collection:collection:1.4.2",
+      "androidx.graphics:graphics-shapes:1.0.1"
+    ],
+    "status": "OPEN_SELECTED_VARIANT_ROUTE_EVIDENCE_REQUIRED"
+  },
+  "source_files": [
+    {
+      "bytes": 133966,
+      "path": "/private/tmp/gsip-runtime-normalize-frozen-71xk4_n0/source/scripts/app_notification_audit.py",
+      "sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4"
+    },
+    {
+      "bytes": 232804,
+      "path": "/private/tmp/gsip-runtime-normalize-frozen-71xk4_n0/source/tests/test_app_notification_audit.py",
+      "sha256": "d8e05f5fee70c9b90b41227b62094f2f8713f0850fc254fd7368a4c8744a7b25"
+    },
+    {
+      "bytes": 41478,
+      "path": "/private/tmp/gsip-runtime-normalize-frozen-71xk4_n0/source/docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "1c9378c3ef3b79a1ca592e0c701827ea4fd02bb2c4a6346af5264dbdec0f5922"
+    }
+  ],
+  "status": "CLOSED_NO_BLOCKER_SOURCE_ONLY_WITH_SEPARATE_RUNTIME_COVERAGE_BLOCKER",
+  "verified_task_hashes": {
+    "DEBUG_SIGNING_TASK": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf",
+    "GRADLE_TASK": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0"
+  }
+}

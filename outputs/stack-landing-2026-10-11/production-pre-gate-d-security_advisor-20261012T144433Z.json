@@ -1,0 +1,107 @@
+[
+  {
+    "categories": [
+      "SECURITY"
+    ],
+    "count": 2,
+    "facing": "EXTERNAL",
+    "findings": [
+      {
+        "metadata": {
+          "name": "attribution_reviews",
+          "schema": "public",
+          "type": "table"
+        },
+        "observed_at": "2026-10-12T14:45:05.866Z"
+      },
+      {
+        "metadata": {
+          "name": "grant_withdrawals",
+          "schema": "public",
+          "type": "table"
+        },
+        "observed_at": "2026-10-12T14:45:05.866Z"
+      }
+    ],
+    "level": "INFO",
+    "name": "rls_enabled_no_policy",
+    "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+    "title": "RLS Enabled No Policy"
+  },
+  {
+    "categories": [
+      "SECURITY"
+    ],
+    "count": 1,
+    "facing": "EXTERNAL",
+    "findings": [
+      {
+        "metadata": {
+          "arguments": "",
+          "language": "sql",
+          "name": "capture_is_open",
+          "schema": "public",
+          "security_definer": true
+        },
+        "observed_at": "2026-10-12T14:45:05.866Z"
+      }
+    ],
+    "level": "WARN",
+    "name": "anon_security_definer_function_executable",
+    "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable",
+    "title": "Public Can Execute SECURITY DEFINER Function"
+  },
+  {
+    "categories": [
+      "SECURITY"
+    ],
+    "count": 4,
+    "facing": "EXTERNAL",
+    "findings": [
+      {
+        "metadata": {
+          "arguments": "",
+          "language": "sql",
+          "name": "capture_is_open",
+          "schema": "public",
+          "security_definer": true
+        },
+        "observed_at": "2026-10-12T14:45:05.866Z"
+      },
+      {
+        "metadata": {
+          "arguments": "",
+          "language": "sql",
+          "name": "current_auth_user_exists",
+          "schema": "public",
+          "security_definer": true
+        },
+        "observed_at": "2026-10-12T14:45:05.866Z"
+      },
+      {
+        "metadata": {
+          "arguments": "p_submission_id uuid",
+          "language": "plpgsql",
+          "name": "finalize_submission",
+          "schema": "public",
+          "security_definer": true
+        },
+        "observed_at": "2026-10-12T14:45:05.866Z"
+      },
+      {
+        "metadata": {
+          "arguments": "p_submission text",
+          "language": "sql",
+          "name": "my_submission_accepts_uploads",
+          "schema": "public",
+          "security_definer": true
+        },
+        "observed_at": "2026-10-12T14:45:05.866Z"
+      }
+    ],
+    "level": "WARN",
+    "name": "authenticated_security_definer_function_executable",
+    "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+    "title": "Signed-In Users Can Execute SECURITY DEFINER Function"
+  }
+]

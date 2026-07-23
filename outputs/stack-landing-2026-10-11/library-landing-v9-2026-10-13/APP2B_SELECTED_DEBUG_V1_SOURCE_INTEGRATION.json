@@ -1,0 +1,38 @@
+{
+  "utc": "2026-10-14T01:31:31.626601+00:00",
+  "head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "source_manifest_sha256": "d35de19616a5677d9deb2743dd57cc2957f5dce7d83d117311d2a4d1926b7652",
+  "files": {
+    ".github/workflows/app-build.yml": {
+      "base_bytes": 17983,
+      "base_sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa",
+      "bytes": 17919,
+      "sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+    },
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_bytes": 33577,
+      "base_sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9",
+      "bytes": 37989,
+      "sha256": "5b0019aa3f0f7ff22fd16309721abd9f51aabf67a2328e4a1c6059797a74bdf6"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_bytes": 126232,
+      "base_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+      "bytes": 133225,
+      "sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_bytes": 195244,
+      "base_sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373",
+      "bytes": 215787,
+      "sha256": "fa9a702513b7adf5a56701d26a0fe042e6ffe49383bedfebf83df4a5fde4b6d8"
+    }
+  },
+  "unchanged_other_tracked_files": 361,
+  "test_prefix_only_one_authorized_contract_byte_changed": true,
+  "workflow_only_two_guessed_path_arguments_removed": true,
+  "original_runtime_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "ignorefile_unchanged": true,
+  "committed": false,
+  "production_changes": false
+}

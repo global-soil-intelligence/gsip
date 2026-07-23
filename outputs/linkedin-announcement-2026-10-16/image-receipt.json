@@ -1,0 +1,20 @@
+{
+  "asset": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/linkedin-announcement-2026-10-16/gsip-open-soil-library-linkedin-v1.png",
+  "source": "/Users/justinhart/.codex/generated_images/01a12d5b-1792-7312-9a93-99c50d5c2c39/exec-1baa09ee-7d79-4270-9291-a03536a3d9cd.png",
+  "created_at_utc": "2026-10-16T19:02:41.238035+00:00",
+  "generation_mode": "built-in image_gen",
+  "prompt_file": "image-prompt.txt",
+  "width": 1672,
+  "height": 941,
+  "bytes": 2250521,
+  "sha256": "00f86e78da0a460a6ddaac65ceb39edd086104ba836f94191a3a68f100d3f01a",
+  "review": {
+    "title_text": "An open soil spectral library",
+    "smartphone_role": "ordinary optical soil/reference-card capture",
+    "measured_spectra": "shown with separate instrument",
+    "same_sample_link": true,
+    "project_vision_label": true,
+    "public_uploads_not_yet_open_notice": true
+  },
+  "publication": "NOT_PUBLISHED; local announcement asset only"
+}

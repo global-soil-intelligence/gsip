@@ -1,0 +1,34 @@
+Command/check: unit
+Observed final exit_code: 0
+$ pnpm -r test
+Scope: 4 of 5 workspace projects
+apps/site-web test$ vitest run
+packages/schema test$ vitest run
+packages/schema test:  RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/packages/schema
+apps/site-web test:  RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/site-web
+
+packages/schema test:  Test Files  15 passed (15)
+packages/schema test:       Tests  310 passed (310)
+packages/schema test:    Start at  20:23:11
+packages/schema test:    Duration  714ms (transform 2.26s, setup 0ms, import 3.71s, tests 361ms, environment 1ms)
+packages/schema test: Done
+apps/site-web test:  Test Files  3 passed (3)
+apps/site-web test:       Tests  41 passed (41)
+apps/site-web test:    Start at  20:23:11
+apps/site-web test:    Duration  1.11s (transform 164ms, setup 0ms, import 465ms, tests 489ms, environment 1.76s)
+apps/site-web test: Done
+apps/capture-pwa test$ vitest run
+apps/map-web test$ vitest run
+apps/map-web test:  RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/map-web
+apps/capture-pwa test:  RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+apps/map-web test:  Test Files  3 passed (3)
+apps/map-web test:       Tests  16 passed (16)
+apps/map-web test:    Start at  20:23:13
+apps/map-web test:    Duration  1.65s (transform 354ms, setup 0ms, import 708ms, tests 602ms, environment 1.98s)
+apps/map-web test: Done
+apps/capture-pwa test:  Test Files  31 passed (31)
+apps/capture-pwa test:       Tests  338 passed (338)
+apps/capture-pwa test:    Start at  20:23:13
+apps/capture-pwa test:    Duration  3.36s (transform 2.38s, setup 2.75s, import 4.98s, tests 9.37s, environment 19.57s)
+apps/capture-pwa test: Done
+

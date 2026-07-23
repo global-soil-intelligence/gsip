@@ -30,7 +30,9 @@ import { App } from '../src/App'
 describe('public map', () => {
   it('offers all Phase 1 layers, units, and a contribution path', () => {
     render(<App />)
-    expect(screen.getByRole('link', { name: /contribute/i })).toBeDefined()
+    expect(
+      screen.getByRole('link', { name: /capture opening soon/i }),
+    ).toBeDefined()
     for (const layer of PRIOR_LAYERS) {
       expect(
         screen.getByRole('button', { name: new RegExp(layer.label, 'i') }),

@@ -1,0 +1,192 @@
+{
+  "actual_independent_checks": {
+    "current_v2_effective_scope_entry_removals": {
+      "Cordova_descriptor_entry": {
+        "failed": 12,
+        "passed": 16,
+        "skipped": 0
+      },
+      "settings_entry": {
+        "failed": 12,
+        "passed": 16,
+        "skipped": 0
+      }
+    },
+    "current_v2_positive_cases": 157,
+    "failed": 0,
+    "full_project_mypy_source_files": 75,
+    "new28_against_v1_helper": {
+      "failed": 24,
+      "passed": 4,
+      "skipped": 0
+    },
+    "new_locator_and_scope_cases": 106,
+    "own_privacy_and_literal_scope_cases": 8,
+    "pinned_prettier_3_9_9": 0,
+    "ruff": 0,
+    "skipped": 0,
+    "unchanged_diagnostic_bank_cases": 43
+  },
+  "base_commit": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "carried_evidence_qualified": {
+    "author_actual_metadata_only_AGP_probe": "Immutable recovered probeedd6655 reviewed; taskcad326 and old runtime74ad unchanged. Author PROBE_GUARD_REBIND is a separate source guard rebind. Reviewer performed no Gradle execution, key/APK/SDK/cache operations, or actual path discovery.",
+    "author_whole_combined": "746 passed/30 explicit unchanged tool skips,0 failures, total776; not claimed as reviewer execution.",
+    "v1_four_effective_privacy_proof_mutations": "Four operative guard removals each produced1 failed selected control in v1; the affected function bodies/assertions are byte/AST unchanged in v2. These mutations were not rerun on v2 and are not counted as fresh current mutations."
+  },
+  "closure_of_two_findings": {
+    "capacitor-cordova-android-plugins/build.gradle": "Exact actual generated1668B/28e3fa28 pin added. Both actual roots match; primary1634B/b05a25c5 template is reconstructed to it by precisely the two empty-Cordova-plugin CLI replacements. Removing this entry restores12 failing negative cases.",
+    "capacitor.settings.gradle": "Exact parentb0de5228 and candidate38174855 pins added. Changed, missing, unknown, symlink, hardlink and FIFO variants now refuse. Removing this one entry restores12 failing negative cases.",
+    "direct_include_completeness": "All eight directly evaluated GSIP-generated Gradle scripts in both source snapshots are covered: seven exact script inputs plus one exactly normalized app script; gradle.properties is separately exact pinned data. Own read-only actual-root inventory matches frozen author snapshot. No further direct generated apply target found.",
+    "explicit_trust_boundary": "Existing locked npm build logic, pinned Gradle/SDK implementation and controlled CI/global initialization remain trusted; no arbitrary Gradle initialization sandbox is claimed."
+  },
+  "evidence": {
+    "DIRECT_GENERATED_INVENTORY_COMPLETION.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/DIRECT_GENERATED_INVENTORY_COMPLETION.json",
+      "sha256": "a44c28eb109f937465195ed664430e3ff3fb13c885f48c702b5b5fe992ddf190"
+    },
+    "DIRECT_GENERATED_SCRIPT_INPUT_INVENTORY.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/DIRECT_GENERATED_SCRIPT_INPUT_INVENTORY.json",
+      "sha256": "ba16fa6405758aab4b4964e0bab2aa2ea3aa54626d58003554bfad8c0d9e15a2"
+    },
+    "FINITE_WITNESSES_SUMMARY.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/FINITE_WITNESSES_SUMMARY.json",
+      "sha256": "705ed519e487b3f92286a59beb3002b2f2676160d133e77b97d65025277a973d"
+    },
+    "INDEPENDENT_SELECTED_DEBUG_V1_BLOCKED_SUPERSESSION.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/INDEPENDENT_SELECTED_DEBUG_V1_BLOCKED_SUPERSESSION.json",
+      "sha256": "5380426f354bd959b89951742749e63488171d1c081e61ea5abfd8b1f9b02e01"
+    },
+    "V1_INCLUDED_SOURCE_GAP_WITNESSES.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/V1_INCLUDED_SOURCE_GAP_WITNESSES.json",
+      "sha256": "1299dd235201773e43e894742fed3c75413ff23917b18eadf806d05ed9b77045"
+    },
+    "V2_ALL_FINITE_CHECKS.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/V2_ALL_FINITE_CHECKS.json",
+      "sha256": "9ca13f3087d8d4dec8ac87f8a5b2dc35057ebca2cf1ab3e26995871132491dcc"
+    },
+    "V2_EXACT_DATA_DELTA_BINDING.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/V2_EXACT_DATA_DELTA_BINDING.json",
+      "sha256": "7abe09fb2208d59c89ca9a8241de408c8856b3bfb5f32fbe937f401038f01f52"
+    },
+    "V2_FINITE_REPLAY_SUMMARY.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/V2_FINITE_REPLAY_SUMMARY.json",
+      "sha256": "6ddb41a171d4f2fb79811244dc8574bde1f84515dc9bdd052ed47c0b0d9cc812"
+    },
+    "V2_MUTATION_cordova_descriptor_pin.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/V2_MUTATION_cordova_descriptor_pin.json",
+      "sha256": "a1c6bb0f4883c46a9cf22471a5fa5df53741ef0e38f2f162957c9a741201edf9"
+    },
+    "V2_MUTATION_settings_pin.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/V2_MUTATION_settings_pin.json",
+      "sha256": "7cba606871ad91bf27ab609fc6187241408f5f90d46167a2aaa8aba20b1cc628"
+    },
+    "V2_NEW28_FAIL_BEFORE.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/V2_NEW28_FAIL_BEFORE.json",
+      "sha256": "2c9dbf69fc9f270132b5b544d543a03e076595dae82c6b272174a46320914815"
+    },
+    "V2_STATIC_VERIFICATION.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/V2_STATIC_VERIFICATION.json",
+      "sha256": "2fd5d4ffd2061f5ee1d9af6130518fc1c37f1d521cd123fe6c5f8a20f98280b9"
+    },
+    "WHOLE_SOURCE_ERASURE_AND_TASK_REVIEW.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/WHOLE_SOURCE_ERASURE_AND_TASK_REVIEW.json",
+      "sha256": "6e4db5937d31a7db4562b33802d09deb350e9dae8c51d8f333b7412788ed9b15"
+    }
+  },
+  "files": {
+    ".github/workflows/app-build.yml": {
+      "base_e195_sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa",
+      "bytes": 17919,
+      "sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5",
+      "v1_sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+    },
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_e195_sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9",
+      "bytes": 39765,
+      "sha256": "b9cf2cc25a934ad5c072bc27d26252025b5759f8db7bb92e02d3fb557d2e515a",
+      "v1_sha256": "5b0019aa3f0f7ff22fd16309721abd9f51aabf67a2328e4a1c6059797a74bdf6"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_e195_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+      "bytes": 133557,
+      "sha256": "c4df1700e0efce6ca014f9a8bca0e0e7bdcdde11496a50900e88b47024474da6",
+      "v1_sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_e195_sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373",
+      "bytes": 219529,
+      "sha256": "a804fb87a6bf162f3ce513e2894047345dde7e8d97c75a10a9629c932d467c71",
+      "v1_sha256": "fa9a702513b7adf5a56701d26a0fe042e6ffe49383bedfebf83df4a5fde4b6d8"
+    }
+  },
+  "frozen_directory": "/private/tmp/gsip-selected-debug-v2-frozen-tyo1wgnx",
+  "harness_recovery": "Initial v2 binding compared complete directory sets and correctly stopped on untracked tool cache files. Corrected binding uses the independently preserved365-file tracked inventory and explicitly lists/excludes15 author tool-cache files plus4 own prior Ruff-cache files. No product-test result was discarded or counted before this correction.",
+  "metadata_sha256": {
+    "AUTHOR_VERIFICATION.json": "044864eb4896e5124563bcaeb14a8e6ca8f370be1c33876138eabed570e3f394",
+    "FROZEN_CANDIDATE_RECEIPT.json": "df7aeb4658eee28382de388a5fcb2920c1f11ab44f680b029e4bce39a6aab7ba",
+    "FROZEN_SOURCE_RECEIPT.json": "bd10038e657e704c2b722c560eebfc30d7b7a940e37206f378ac3f4c8cfc0acc",
+    "INCLUDED_SETTINGS_PRIMARY_BINDING.json": "f2237e15126b62f56b066f7f3ce48da058617c3bd4a8e17c1a2591815eca4c3c",
+    "MANIFEST.json": "6137d9fdef02f2a317514f15f0570b3623639ea09b4d8bcd8b03338d83ab0060",
+    "delta-from-v1.patch": "c07745e773bad9ddfb5a30a8876eb2e7db2ffa9fdd55f3d45c69a4dca2ce6b73"
+  },
+  "previous_v1_state": {
+    "blocked_supersession": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/INDEPENDENT_SELECTED_DEBUG_V1_BLOCKED_SUPERSESSION.json",
+      "sha256": "5380426f354bd959b89951742749e63488171d1c081e61ea5abfd8b1f9b02e01"
+    },
+    "invalidated_no_blocker_receipt": {
+      "may_be_used_for_approval": false,
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/INDEPENDENT_SELECTED_DEBUG_SIGNING_CLOSURE.json",
+      "sha256": "6630c995435ebc002dd79906ab81dc47ec8ec55f8c9e4546d572886e6a1b5c70"
+    },
+    "reason": "Direct generated Capacitor settings and Cordova descriptor omissions were concrete P2 gaps; earlier broad trust interpretation was incorrect. Both are now corrected, with old receipts preserved."
+  },
+  "prohibited_actions_performed": {
+    "Gradle_native_SDK_cache_execution": false,
+    "production_capture_signing_deployment": false,
+    "real_key_APK_reads_creation_copy": false,
+    "shared_source_or_Git_GH_remote_mutation": false,
+    "source_hook_execution": false
+  },
+  "remaining": [
+    "Fresh exact-head CI must establish actual selected debug file availability and both platform artifacts with all current-helper source/native/licence/reference/repeat/comparison proofs.",
+    "Actual hosted selected signing-file location remains unestablished by this source review; no assumed HOME/XDG path is approved.",
+    "Previous e195 iOS artifact proof remains historical for the next source head.",
+    "No device/legal/distribution/capture/production/owner-signing or merge approval is conferred."
+  ],
+  "schema": "gsip-independent-final-selected-debug-v2-closure-v1",
+  "scope": "Exact frozen four-file selected-debug signing locator source/privacy/native-proof preservation only; no native artifact acceptance or established hosted selected location",
+  "source_inventory": {
+    "declared_tracked_files": 365,
+    "excluded_explicitly_from_tracked_source_and_replay": [
+      ".mypy_cache/.gitignore",
+      ".mypy_cache/3.11/cache.db",
+      ".mypy_cache/CACHEDIR.TAG",
+      ".mypy_cache/missing_stubs",
+      ".pytest_cache/.gitignore",
+      ".pytest_cache/CACHEDIR.TAG",
+      ".pytest_cache/README.md",
+      ".pytest_cache/v/cache/nodeids",
+      "scripts/__pycache__/__init__.cpython-312.pyc",
+      "scripts/__pycache__/app_build.cpython-312.pyc",
+      "scripts/__pycache__/app_notification_audit.cpython-312.pyc",
+      "scripts/__pycache__/app_permissions.cpython-312.pyc",
+      "tests/__pycache__/test_app_build.cpython-312-pytest-9.1.1.pyc",
+      "tests/__pycache__/test_app_notification_audit.cpython-312-pytest-9.1.1.pyc",
+      "tests/__pycache__/test_app_permissions.cpython-312-pytest-9.1.1.pyc"
+    ],
+    "four_modified": true,
+    "frozen_untracked_tool_cache_files": 15,
+    "own_replay_copy": "Only365 declared source files; author caches were not copied/read as evidence",
+    "unchanged_from_e195": 361
+  },
+  "status": "CLOSED_NO_BLOCKER",
+  "unchanged_privacy_and_native_proof_facts": [
+    "V2 helper differs from v1 only by two DEBUG_SIGNING_SCOPE entries/three fixed hashes; removing those exact332 bytes restores v1 helper in full. All function ASTs and runtime74ad/metadata cad326 task bytes are unchanged.",
+    "V1 whole-helper erasure still restores original164161 helper: only locator helpers/data, optional debug-key signature/branch/parser wiring are added. No proof validator,13-field build receipt, four-field diagnostics, source/archive/licence/permission/fault/context/cap/repeat/reference/equality guard changes.",
+    "The public selected debug build-type signingConfig.storeFile getter remains metadata-only, with no signing/build/validation dependencies, password/key read, key creation/copy or path logging. Private temp directory, exclusive bounded exact-schema JSON, lexical path checks and unchanged strict selected-file hash remain.",
+    "Explicit CLI path mode remains covered; omitted mode has no fallback. Shared disposable key equality refusal remains operative. No selected path is added to persisted native receipts.",
+    "Workflow is byte-exact v1 and differs from e195 only by removal of two guessed-key arguments. Original195244B test prefix still differs solely by authorized Android argv8-to7 digit; explicit8-argv compatibility is covered.",
+    "All78 v1 test assertions are unchanged; the v1 fixture gains exactly the two newly required input files. Current v2 runs the78 old locator controls plus28 added scope controls successfully."
+  ]
+}

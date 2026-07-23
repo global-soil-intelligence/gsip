@@ -1,0 +1,379 @@
+{
+  "schema_version": "gsip-app2c1-source-capability-audit-v1",
+  "observed_utc": "2026-10-14T21:50:09.332358+00:00",
+  "status": "blocked",
+  "backend_selected": false,
+  "valid_source_evidence_is_feasibility": false,
+  "base_reviewed_pr68_head": "476bbdab190c99a3bb6d5d8143f21bebde6baf9f",
+  "base_tree": "1afc934f3913bfb19b01e6bf4fb58556a4ffca13",
+  "source_binding": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 8525,
+      "sha256": "cc5a4ea13e2a389006a0a69c6986f5acc767f9c065131b70f078b8ca1580e180"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "bytes": 2653,
+      "sha256": "7c8cdba11a34dfe71f5ec1376c408f1bb513ee225d855e9c4637ad87cc750fbb"
+    },
+    {
+      "path": "GOVERNANCE.md",
+      "bytes": 5903,
+      "sha256": "6c710240437d8fc9f01184d99862a888abacd70c51ac9c0b3a14adcfc5ee18d8"
+    },
+    {
+      "path": "docs/SPEC.md",
+      "bytes": 159168,
+      "sha256": "00d1c36f91c8cb0b4fb056a173b9243efb0270063a067d50d4a4580ef8c82fdb"
+    },
+    {
+      "path": "docs/BUILD_ORDER.md",
+      "bytes": 89347,
+      "sha256": "bcd494f48a9e80987aeb5af4dca37c86599aa9a03df2d5583d6e91c0f4bbe6cb"
+    },
+    {
+      "path": "docs/IOS_PRIVATE_STORAGE.md",
+      "bytes": 15598,
+      "sha256": "dd9947196df59cdd52ddd6c1d8138120093b0439343c8258a9f21b75e71a0611"
+    },
+    {
+      "path": "docs/APP_STORE.md",
+      "bytes": 22534,
+      "sha256": "bc5be716c7cb6365defafa70db9546741ec0b5e27e6d46b38ff7e33da2e1d411"
+    },
+    {
+      "path": "docs/legal/PRIVACY.md",
+      "bytes": 19461,
+      "sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a"
+    },
+    {
+      "path": "docs/PHASE1_DEPLOYMENT.md",
+      "bytes": 13715,
+      "sha256": "cef59e25e1bea9534335d1b3de486f041577085f96ac763f40da6443447d9172"
+    },
+    {
+      "path": "docs/legal/README.md",
+      "bytes": 3258,
+      "sha256": "556293ba6092c522633fe7f586e8e9d1478f6f1f24d75b9338949f9cff6e69ec"
+    },
+    {
+      "path": ".env.example",
+      "bytes": 714,
+      "sha256": "c60d4db146fb0275d3a62e69de18a6f36aef4c7423967c4cf6befe57d3fa63ef"
+    },
+    {
+      "path": "apps/capture-pwa/package.json",
+      "bytes": 1081,
+      "sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "bytes": 225620,
+      "sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19"
+    },
+    {
+      "path": "apps/capture-pwa/capacitor.config.ts",
+      "bytes": 1112,
+      "sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69"
+    },
+    {
+      "path": "apps/capture-pwa/src/queue.ts",
+      "bytes": 15180,
+      "sha256": "ce389c528acdfce3cb75acab1bfd55d615f3cf5ba8104130a8813ec6cd889f31"
+    },
+    {
+      "path": "apps/capture-pwa/src/sync.ts",
+      "bytes": 5847,
+      "sha256": "8e7bb7a073060c882cda08a04214e1ed69be4b85d0623d00c74d81bf67018c9c"
+    },
+    {
+      "path": "apps/capture-pwa/src/syncReminder.ts",
+      "bytes": 15754,
+      "sha256": "f118a3ff7cfdcb2489b4cda1df0e33a029d63bab778b45a68926c883972259d3"
+    },
+    {
+      "path": "apps/capture-pwa/src/supabase.ts",
+      "bytes": 17613,
+      "sha256": "ab953f710703d675d9d3138227dcf840f3c6c51eec0c65d360932630340d3197"
+    },
+    {
+      "path": "apps/capture-pwa/src/types.ts",
+      "bytes": 1915,
+      "sha256": "15ab78d37d2d7edb8703553b825344cc2a2f6cbf193bbbd1af671a0fd2db7ebb"
+    },
+    {
+      "path": "apps/capture-pwa/src/library.ts",
+      "bytes": 2938,
+      "sha256": "d9ab1c2c46656e1325ee44b645fb9160d95b9b10773870cf73180fe19f184f16"
+    },
+    {
+      "path": "apps/capture-pwa/src/platform/camera.ts",
+      "bytes": 4859,
+      "sha256": "33b5e2a6bbf61c2bd537a4ff7b0973adb959a37a50ed5e51d4cc51234836f4df"
+    },
+    {
+      "path": "apps/capture-pwa/src/platform/notifications.ts",
+      "bytes": 5850,
+      "sha256": "696c89be417cc8dfac6466f6f163b7aaff7eb84143c43200c1a793e8ed05787f"
+    },
+    {
+      "path": "apps/capture-pwa/src/YourData.tsx",
+      "bytes": 7363,
+      "sha256": "f3085983a3ebcb28796adf6c738f5b1ebfb468708aaa0966476bb53e538f76c8"
+    },
+    {
+      "path": "scripts/app_notification_audit.py",
+      "bytes": 144888,
+      "sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d"
+    }
+  ],
+  "observed_generated_resolution": {
+    "path": "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+    "bytes": 1260,
+    "sha256": "5734e9e6485f2aaa1fb6419d3be44157c89810a48ccca5e92e25f1c899ef4503",
+    "tracked_by_repository": false,
+    "pins": [
+      {
+        "identity": "capacitor-swift-pm",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/ionic-team/capacitor-swift-pm.git",
+        "state": {
+          "revision": "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+          "version": "8.5.2"
+        }
+      },
+      {
+        "identity": "ion-ios-camera",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/ionic-team/ion-ios-camera.git",
+        "state": {
+          "revision": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
+          "version": "2.0.0"
+        }
+      },
+      {
+        "identity": "ion-ios-filesystem",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/ionic-team/ion-ios-filesystem.git",
+        "state": {
+          "revision": "56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c",
+          "version": "1.1.4"
+        }
+      },
+      {
+        "identity": "ion-ios-geolocation",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/ionic-team/ion-ios-geolocation.git",
+        "state": {
+          "revision": "db363927d3a954e3ea24d2e72b6e9814769a84be",
+          "version": "2.1.1"
+        }
+      }
+    ],
+    "limit": "Observed ignored/generated resolution only; not a repository-native lock or claim about all CI runs."
+  },
+  "capabilities": [
+    {
+      "id": "declared_no_cloud_mapping",
+      "source_fact": "source_observed",
+      "acceptance": "unproven",
+      "evidence": [
+        "filesystem_mapping:15-23",
+        "ion_filesystem_manager:337-368"
+      ],
+      "reason": "Enum maps to Library/NoCloud; name is not protection proof."
+    },
+    {
+      "id": "exclude_before_first_private_write",
+      "source_fact": "missing_guarantee",
+      "acceptance": "blocked",
+      "evidence": [
+        "ion_filesystem_manager:361-367",
+        "ion_filesystem_manager:114-133"
+      ],
+      "reason": "Exclusion attempt precedes creation and ignores failures; root creation occurs later during write."
+    },
+    {
+      "id": "propagate_exclusion_errors",
+      "source_fact": "absent",
+      "acceptance": "blocked",
+      "evidence": [
+        "ion_filesystem_manager:365"
+      ],
+      "reason": "try? discards marker-setting error."
+    },
+    {
+      "id": "read_exclusion_marker",
+      "source_fact": "absent",
+      "acceptance": "blocked",
+      "evidence": [
+        "filesystem_api_types:390-438",
+        "filesystem_mapping:38-49"
+      ],
+      "reason": "API/stat result has no exclusion marker; private ION code has no readback."
+    },
+    {
+      "id": "verify_post_save_replace_restart",
+      "source_fact": "absent",
+      "acceptance": "blocked",
+      "evidence": [
+        "ion_filesystem_manager:114-157",
+        "ion_filesystem_manager:170-195",
+        "ion_filesystem_manager:361-367"
+      ],
+      "reason": "Path resolution reattempts root marker; no post-operation readback or restart gate."
+    },
+    {
+      "id": "atomic_file_overwrite",
+      "source_fact": "contradicted",
+      "acceptance": "blocked",
+      "evidence": [
+        "ion_filesystem_manager:114-133"
+      ],
+      "reason": "Data.write default/no atomic option; String.write atomically:false."
+    },
+    {
+      "id": "atomic_replace_via_rename",
+      "source_fact": "contradicted",
+      "acceptance": "blocked",
+      "evidence": [
+        "ion_filesystem_manager:170-180",
+        "ion_filesystem_manager:297-309"
+      ],
+      "reason": "Existing destination file is deleted before moveItem, exposing loss window."
+    },
+    {
+      "id": "durable_crash_commit",
+      "source_fact": "unproved",
+      "acceptance": "blocked",
+      "evidence": [
+        "filesystem_api_types",
+        "ion_filesystem_manager:114-157"
+      ],
+      "reason": "No exposed fsync, durable commit, exclusive-create, compare-and-swap or multi-record transaction primitive."
+    },
+    {
+      "id": "six_store_atomicity_and_fences",
+      "source_fact": "absent_in_filesystem_api",
+      "acceptance": "blocked",
+      "evidence": [
+        "filesystem_api_types",
+        "source:apps/capture-pwa/src/queue.ts:79-117,254-270"
+      ],
+      "reason": "Per-file methods do not preserve combined clear/generation/reminder transaction or conditional update."
+    },
+    {
+      "id": "cross_context_writer_ownership",
+      "source_fact": "unproved",
+      "acceptance": "blocked",
+      "evidence": [
+        "filesystem_api_types",
+        "source:apps/capture-pwa/src/sync.ts:59-106"
+      ],
+      "reason": "No provided transaction/ownership contract for JS read-modify-write across contexts; JS mutex alone insufficient."
+    },
+    {
+      "id": "reject_implicit_web_fallback",
+      "source_fact": "fallback_observed",
+      "acceptance": "blocked",
+      "evidence": [
+        "filesystem_plugin_registration:1-5",
+        "filesystem_web_fallback:88-109"
+      ],
+      "reason": "Plugin registers IndexedDB web backend; a future iOS adapter must reject unsupported native mode explicitly."
+    },
+    {
+      "id": "relative_path_containment",
+      "source_fact": "source_observed_with_scope",
+      "acceptance": "unproven",
+      "evidence": [
+        "ion_filesystem_manager:252-295"
+      ],
+      "reason": "Directory mode resolves canonical containment; raw URL mode lacks that directory boundary; still needs bounded app-owned path contract."
+    },
+    {
+      "id": "legacy_webkit_native_residual_coverage",
+      "source_fact": "not_implemented",
+      "acceptance": "blocked",
+      "evidence": [
+        "source:docs/IOS_PRIVATE_STORAGE.md:46-76,86-110"
+      ],
+      "reason": "Filesystem directory does not relocate or erase current WebKit/session/cookie/cache/journal state."
+    },
+    {
+      "id": "physical_backup_restore",
+      "source_fact": "not_run",
+      "acceptance": "blocked",
+      "evidence": [
+        "source:docs/IOS_PRIVATE_STORAGE.md:129-159"
+      ],
+      "reason": "No physical device, backup, store/account/signing, production or live app-data action."
+    }
+  ],
+  "scope_limits": [
+    "No dependency installed/adopted/selected.",
+    "No code imported/executed from downloaded packages.",
+    "No source/Git/GitHub mutation, native build, device/signing/account/real-app-data/production action.",
+    "Compressed/unpacked sizes measure named source packages, not installed dependency closure or app binary delta.",
+    "Npm exact release dates and native public repo activity are maintenance signals, not security or future support guarantees."
+  ],
+  "upstream_negative_candidates": [
+    {
+      "name": "@capacitor-community/sqlite",
+      "version": "8.1.1",
+      "status": "not_selected_blocked",
+      "actual_positive_source_facts": [
+        "BEGIN/COMMIT/ROLLBACK map to sqlite3_exec and connections use SQLITE_OPEN_FULLMUTEX.",
+        "New directory creation propagates marker-setting errors.",
+        "Private native readback helper exists."
+      ],
+      "missing_or_unproved": [
+        "Marker is set only when directory does not already exist; no initial/restart/post-write verification in exposed API.",
+        "Readback helper has no call sites or JS export.",
+        "No selected journal/synchronous/fullfsync/multi-context transaction or legacy residual strategy proven for GSIP.",
+        "Candidate brings jeep-sqlite range, SQLCipher.swift >=4.14.0 and ZIPFoundation >=0.9.0; binary/transitive licence/source/size closure is not audited by candidate npm MIT metadata.",
+        "Diagnostic print/error/path handling requires its own privacy review before any use."
+      ]
+    },
+    {
+      "name": "@capacitor/preferences",
+      "version": "8.0.1",
+      "status": "not_selected_blocked",
+      "actual_positive_source_facts": [
+        "Simple strings persist in UserDefaults.standard with namespace prefix."
+      ],
+      "missing_or_unproved": [
+        "No exclusion marker API/readback, transaction or binary queue mechanism.",
+        "Web fallback is localStorage; cannot preserve current iOS six-store transaction/privacy contract."
+      ]
+    }
+  ],
+  "evidence_manifests": [
+    {
+      "path": "/private/tmp/gsip-app2c1-native-audit-2dnq0vmo/PUBLIC_EVIDENCE_INPUTS.json",
+      "bytes": 15528,
+      "sha256": "59ff41f1debc168f42c46bd21edcedaebafe87c7dba7caae6f1e764a0c773049"
+    },
+    {
+      "path": "/private/tmp/gsip-app2c1-native-audit-2dnq0vmo/PUBLIC_RAW_SOURCE_ORIGINS.json",
+      "bytes": 1882,
+      "sha256": "34402915f8b790a3d7861a29f359eb49208d8b00026b607a8c49154188fc0f34"
+    },
+    {
+      "path": "/private/tmp/gsip-app2c1-native-audit-2dnq0vmo/NPM_SOURCE_ARCHIVE_AUDIT.json",
+      "bytes": 110522,
+      "sha256": "8ff3a02f211ea1769522bc7501c867afa0262a597e04be91164a205b787ee042"
+    },
+    {
+      "path": "/private/tmp/gsip-app2c1-native-audit-2dnq0vmo/OBSERVED_NATIVE_SOURCE_AUDIT.json",
+      "bytes": 39375,
+      "sha256": "3d8d8b698819d943dff25fbc432cee666a5bae537ab5aca9721d41fc138263b1"
+    },
+    {
+      "path": "/private/tmp/gsip-app2c1-native-audit-2dnq0vmo/UNADOPTED_CANDIDATE_SOURCE_AUDIT.json",
+      "bytes": 25109,
+      "sha256": "624eb3a6b4cc123e6c21fc49a7af3a4aa038bf3536eee7eb12faf2dc8c83fc68"
+    }
+  ]
+}

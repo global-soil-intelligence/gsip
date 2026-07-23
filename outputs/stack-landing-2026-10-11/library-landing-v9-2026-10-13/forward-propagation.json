@@ -1,0 +1,52 @@
+[
+  {
+    "branch": "docs/spec-v8",
+    "prior_head": "f1a644af2a78b1b9865385d603cb77ad156843eb",
+    "source": "wp-lib-4c-phone-intake",
+    "new_head": "2d13fe73730688eaaa07dee6d7506c6ccd2ad486",
+    "changed_paths": [
+      ".gitleaksignore",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "branch": "wp-6fa-private-photo-privacy",
+    "prior_head": "af810bf1caa4a38408843897d2c281adc32145d7",
+    "source": "docs/spec-v8",
+    "new_head": "0e1e267df1a8cab84cf65dacab30259fa48af27e",
+    "changed_paths": [
+      ".gitleaksignore",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "branch": "wp-6fb-photo-privacy-worker",
+    "prior_head": "b0f8e0f808629754bc6f4213f9c94e3149adfe55",
+    "source": "wp-6fa-private-photo-privacy",
+    "new_head": "63560d32fbfff843901d222c42e6e5d33be55782",
+    "changed_paths": [
+      ".gitleaksignore",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "branch": "wp-6fc-photo-export-enforcement",
+    "prior_head": "fd5c44bd9e33ca741fc4ed59b4a362e960f3e30a",
+    "source": "wp-6fb-photo-privacy-worker",
+    "new_head": "254b9576977b6b3cc439d66770864fe574b7df24",
+    "changed_paths": [
+      ".gitleaksignore",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "branch": "docs/spec-v9",
+    "prior_head": "db3a37062008c291b6e8aa491b99eab3e752fe16",
+    "source": "wp-6fc-photo-export-enforcement",
+    "new_head": "f560079acdf7dc83722edad6c12922a7951a274a",
+    "changed_paths": [
+      ".gitleaksignore",
+      "AGENTS.md"
+    ]
+  }
+]

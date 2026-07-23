@@ -1,0 +1,302 @@
+{
+  "actual_existing_guard_result": {
+    "all_refusing_primary_poms_single_cached_match": true,
+    "cache_only_license_passes": 70,
+    "cache_only_license_refusals": 5,
+    "closed_dependency_guard_flagged": false,
+    "exact_public_primary_pom_readbacks_matched_cache": 6,
+    "selected_module_count": 75
+  },
+  "authority_and_limits": {
+    "all_evidence_outputs_in_own_temporary_directory": true,
+    "apk_build_or_signing_read": false,
+    "author_cache_mutated": false,
+    "combined_native_acceptance_claimed": false,
+    "dependency_or_version_changes": false,
+    "git_reads_or_writes": false,
+    "home_overridden": false,
+    "maintained_source_edits": false,
+    "network": "bounded GET-only exact existing selected public POM/source/licence evidence and declared parent metadata",
+    "production_or_account_changes": false,
+    "raw_private_tool_logs_persisted": false,
+    "source_to_binary_reproducibility_claimed": false
+  },
+  "classification_facts": [
+    {
+      "classification": "Apache-2.0 plus declared libyuv BSD-3-Clause",
+      "coordinate": [
+        "androidx.camera",
+        "camera-core",
+        "1.4.2"
+      ],
+      "proof": "Exact POM link README.chromium reports BSD-3-Clause; immutable upstream libyuv commit58d817ed81e8fe8b06a58576d639cd56b19526d3 LICENSE sha2b2cc1180c7e6988328ad2033b04b80117419db9c4c584918bbb3cfec7e9364f. Camera AAR/source-JAR embedded license records Apache only; eight native files remain visible. POM does not identify bundled libyuv source revision, so no compiler/source-to-binary attestation."
+    },
+    {
+      "classification": "MIT source declaration verified through exact matching published sources",
+      "coordinate": [
+        "io.ionic.libs",
+        "ioncamera-android",
+        "1.0.2"
+      ],
+      "proof": "POM docs/LICENSE link404. Upstream root LICENSE at immutable commitf802e3ed0cb948131e6f962fccea96a9a5c4fb23 sha5eee4ddf7b28c22447e4440ab08c9344e68252ee1effc56621764268f7687c14; all29 published source-JAR source files byte-identical to this source tree. Public tag list empty and1.0.2/v1.0.2 refs404, so commit is matched source snapshot rather than asserted release tag."
+    },
+    {
+      "classification": "MIT",
+      "coordinate": [
+        "io.ionic.libs",
+        "ionfilesystem-android",
+        "1.1.0"
+      ],
+      "proof": "Exact1.1.0 tag commit11ef15db0c355faa917750a31758b3edd33a9cf7; source LICENSE shade884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d; all20 published source-JAR source files byte-identical. Current linked main LICENSE same bytes."
+    },
+    {
+      "classification": "EPL-1.0 explicit existing dependency classification, currently absent from parser support",
+      "coordinate": [
+        "junit",
+        "junit",
+        "4.13.2"
+      ],
+      "proof": "Exact POM, resolved binary and published source JAR consistently declare EPL1.0; binary/source license entries byte-identical sha9648bb2891b9813970bddb68d4be8a5e6ec8280d0180a53dfb29236b579c55bb. No GSIP project-license change or automatic distribution/compatibility approval follows."
+    },
+    {
+      "classification": "BSD-3-Clause through exact hamcrest-parent1.3 inheritance",
+      "coordinate": [
+        "org.hamcrest",
+        "hamcrest-core",
+        "1.3"
+      ],
+      "proof": "Exact child POM has no license and exact parent. Parent declares New BSD License; resolved Hamcrest binary embeds three-clause license sha1cde867cab5c8e842929da5391cef98b4017314822270e934e8e2eef3767c666. Preserve full child-parent chain identity and declarations."
+    }
+  ],
+  "created_at": "2026-10-13T23:31:46.053772+00:00",
+  "exact_contexts": [
+    {
+      "coordinate": [
+        "androidx.camera",
+        "camera-core",
+        "1.4.2"
+      ],
+      "declared_licenses": [
+        {
+          "declared_name": "The Apache Software License, Version 2.0",
+          "declared_url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+          "declared_name": "BSD License",
+          "declared_url": "https://chromium.googlesource.com/libyuv/libyuv/+/refs/heads/main/README.chromium"
+        }
+      ],
+      "declared_parent": null,
+      "packaging": "aar",
+      "pom_bytes": 5768,
+      "pom_sha256": "ea820b7874afa1047d288c29d6dbb4c9795b70bf12d3e229235af4e7bd08c072"
+    },
+    {
+      "coordinate": [
+        "io.ionic.libs",
+        "ioncamera-android",
+        "1.0.2"
+      ],
+      "declared_licenses": [
+        {
+          "declared_name": "License",
+          "declared_url": "https://github.com/ionic-team/ion-android-camera/blob/main/docs/LICENSE"
+        }
+      ],
+      "declared_parent": null,
+      "packaging": "aar",
+      "pom_bytes": 3758,
+      "pom_sha256": "5c1bc27a7c7442ba6ebdb731f88f2a74ed620d7c9847a357c26389800e63a958"
+    },
+    {
+      "coordinate": [
+        "io.ionic.libs",
+        "ionfilesystem-android",
+        "1.1.0"
+      ],
+      "declared_licenses": [
+        {
+          "declared_name": "License",
+          "declared_url": "https://github.com/ionic-team/ion-android-filesystem/blob/main/LICENSE"
+        }
+      ],
+      "declared_parent": null,
+      "packaging": "aar",
+      "pom_bytes": 2510,
+      "pom_sha256": "5fc8a9c96e200e19673596aba8c66e7e1bdaa217146a3c04eae75e154b844ecb"
+    },
+    {
+      "coordinate": [
+        "junit",
+        "junit",
+        "4.13.2"
+      ],
+      "declared_licenses": [
+        {
+          "declared_name": "Eclipse Public License 1.0",
+          "declared_url": "http://www.eclipse.org/legal/epl-v10.html"
+        }
+      ],
+      "declared_parent": null,
+      "packaging": "jar",
+      "pom_bytes": 27018,
+      "pom_sha256": "569b6977ee4603c965c1c46c3058fa6e969291b0160eb6964dd092cd89eadd94"
+    },
+    {
+      "coordinate": [
+        "org.hamcrest",
+        "hamcrest-core",
+        "1.3"
+      ],
+      "declared_licenses": [],
+      "declared_parent": [
+        "org.hamcrest",
+        "hamcrest-parent",
+        "1.3"
+      ],
+      "packaging": "jar",
+      "pom_bytes": 766,
+      "pom_sha256": "fde386a7905173a1b103de6ab820727584b50d0e32282e2797787c20a64ffa93"
+    },
+    {
+      "coordinate": [
+        "org.hamcrest",
+        "hamcrest-parent",
+        "1.3"
+      ],
+      "declared_licenses": [
+        {
+          "declared_name": "New BSD License",
+          "declared_url": "http://www.opensource.org/licenses/bsd-license.php"
+        }
+      ],
+      "declared_parent": null,
+      "packaging": "pom",
+      "pom_bytes": 1972,
+      "pom_sha256": "6d535f94efb663bdb682c9f27a50335394688009642ba7a9677504bc1be4129b"
+    }
+  ],
+  "first_actual_cause": {
+    "coordinate": [
+      "androidx.camera",
+      "camera-core",
+      "1.4.2"
+    ],
+    "declared_name": "BSD License",
+    "reason": "ambiguous label absent from exact current LICENSE_NAMES; POM is present and byte-identical to official public selected-coordinate POM; allow_fetch cannot change classification",
+    "source_lines": [
+      741,
+      662,
+      74
+    ],
+    "source_operation": "pom_evidence -> license_id -> refuse"
+  },
+  "graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+  "input_receipts": {
+    "ACTUAL_RUNTIME_COLLECTOR_FAIL.json": {
+      "bytes": 701,
+      "sha256": "28e838d2615d7f72ec1e74bd2990f9155a8a862bf6ec591f51b1074ffdd2f025"
+    },
+    "CACHED_POM_DIAGNOSIS.json": {
+      "bytes": 28129,
+      "sha256": "4f8ac71d003f177806fbdfa13f554405b0129dd3b33ee6e294e15b11c663ed01"
+    },
+    "COPIED_POM_CACHE_MANIFEST.json": {
+      "bytes": 99627,
+      "sha256": "de02f3662c69b70c66e54d5ea39b82c1a2485352e8557bed8cb011ce4497a686"
+    },
+    "EMBEDDED_AND_PUBLISHED_LICENSE_EVIDENCE.json": {
+      "bytes": 2284,
+      "sha256": "e2685dc6ff9f278fac2290eb7b8c996a3b452c22b260d060740878ba3707395a"
+    },
+    "EXACT_CLASSIFICATION_CONTEXTS.json": {
+      "bytes": 2697,
+      "sha256": "74e6ae7c09816d9dc55f6bca7b6bdf67e804bb65bc12b27793f65764816820c0"
+    },
+    "EXACT_LICENSE_SOURCE_INPUT_READBACK.json": {
+      "bytes": 2312,
+      "sha256": "64a1c28087ba11cb321f62839ee5d6c95453cd0d6f3d6b3d5751e465dd8f01c2"
+    },
+    "EXISTING_LICENSE_GUARD_POLICY.json": {
+      "bytes": 954,
+      "sha256": "44515f3d62ff7c3490c4f16f41b1d2bdc2533cd4c7a114dd6b71141bc224bfdb"
+    },
+    "GOVERNING_LICENSE_POLICY.json": {
+      "bytes": 17845,
+      "sha256": "bbbfc86dd109d558202d828c36e1bfc672f07efbd469e9bede3778b9d81e92cc"
+    },
+    "ION_PUBLIC_SOURCE_METADATA.json": {
+      "bytes": 2948,
+      "sha256": "85d1f05d1a8ea6c3a01608fb852d6cc211f4888b20f588ef29af36a4b91bb542"
+    },
+    "ION_RELEASE_SOURCE_READBACK.json": {
+      "bytes": 1986,
+      "sha256": "f0dd90d6d024693111bef7fae5553b030746f9d47e4fd37abba4d00629f4db42"
+    },
+    "LIBYUV_PINNED_LICENSE_READBACK.json": {
+      "bytes": 1491,
+      "sha256": "263f730038abcd33f233c8613df054c9b0f7b12f3edcf7317dd94650350013f4"
+    },
+    "PINNED_UPSTREAM_SOURCE_PROOF.json": {
+      "bytes": 19498,
+      "sha256": "c9f24574d8173f22af6328dacf2a73ef54270b12b25a929038ff210188de9c00"
+    },
+    "PUBLIC_PRIMARY_POM_READBACK.json": {
+      "bytes": 2532,
+      "sha256": "7a696aa8f4f22440bc20b57c7885d2ccc0870d05f3075266cab870c4c7468289"
+    },
+    "PUBLISHED_SOURCE_JUNIT_REFERENCES.json": {
+      "bytes": 377,
+      "sha256": "22b44b40ec92ca62cc80643e9ee5ac7b87e2d140adf1e5a530240a622215cca4"
+    },
+    "REFUSING_PRIMARY_POM_DECLARATIONS.json": {
+      "bytes": 2104,
+      "sha256": "7d4696ca807e4715db700997211b83c44b8c2cc23172ab3c9790d2db88bb69c9"
+    },
+    "SELECTED_AAR_STATIC_REFERENCE_INSPECTION.json": {
+      "bytes": 1751,
+      "sha256": "720d0927b54637b8d061988015120fca512d432fbb07f0b3f6bc095104d38921"
+    },
+    "SELECTED_JUNIT_HAMCREST_RUNTIME_BINARIES.json": {
+      "bytes": 1203,
+      "sha256": "272a69eeeb6e0383d2748d5c3822dd840341cfff941b1fe334a7dc4feb668ba5"
+    },
+    "SELECTED_POM_DEPENDENCY_DECLARATIONS.json": {
+      "bytes": 1839,
+      "sha256": "eb3066b633e7f1c5a8091ca40799ec83a03da64bc541d96dbc5d1ab172a17617"
+    }
+  },
+  "local_recovery": "Initial public POM GETs were sandbox-unavailable; preserved unverified receipt and then completed explicitly authorized bounded escalation6/6. No failure/skip was converted to success.",
+  "primary_eclipse_sources": {
+    "faq": "https://www.eclipse.org/legal/epl/faq/",
+    "license": "https://www.eclipse.org/legal/epl/epl-v10.html",
+    "reviewed_sections": [
+      "FAQ16",
+      "FAQ17",
+      "EPL1 section3"
+    ],
+    "scope": "distribution-obligation considerations, not legal advice or approval",
+    "verified_by": "GET-only primary web read during this diagnosis"
+  },
+  "runtime_inclusion": {
+    "actual_binary_views": "both exact runtime configurations contain JUnit384581B sha8e495b634469d64fb8acfa3495a065cbacc8a0fff55ce1e31007be4c16dc57d3 and Hamcrest45024B sha66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9, so they are not metadata-only/platform exemptions",
+    "bounded_static_result": "no JUnit/Hamcrest textual references in both published ION source JARs; no such constant-pool UTF8 references in77 selected ION camera classes,103 filesystem classes or652 camera-core classes",
+    "direct_installed_plugin": "@capacitor/camera8.2.4 android/build.gradle:80 implementation ioncamera-android1.0.2; local JUnit declaration:92 is testImplementation",
+    "hamcrest_route": "JUnit4.13.2 exact POM default compile dependency hamcrest-core version property1.3",
+    "intent_limit": "Upstream source explicitly declares runtime implementation; whether this is a mistake is not established. Static absence does not prove reflective/runtime exclusion safety or actual final APK inclusion/removal.",
+    "ion_published_metadata": "exact POM runtime dependency and Gradle module release runtime variant both declare JUnit4.13.2",
+    "upstream_source": "matching source tree build.gradle:100 implementation JUnit4.13.2 and:107 testImplementation JUnit; source publishing script gets release version from THE_VERSION"
+  },
+  "schema": "gsip-independent-actual-runtime-license-diagnosis-v1",
+  "script_sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071",
+  "smallest_correct_remedy": [
+    "Retain existing dependency versions and scopes. Treat this as exact existing-runtime licensing/provenance classification rather than a new dependency or GSIP relicensing.",
+    "Add only reviewed internal context mappings keyed by exact coordinate, POM sha/size, complete declared name+URL tuple set, packaging and relevant parent/inheritance, bound to the immutable reviewed source/license proof. Keep unchanged closed receipt schema and generic LICENSE_NAMES behavior.",
+    "Strict collection and offline validation must both require the entire exact mapped context. Changed coordinate/version/POM/digest/name/URL, partial or duplicated declarations, changed packaging or chain must refuse; no generic License/BSD alias or global EPL allowlist expansion.",
+    "Classify the exact existing JUnit context EPL-1.0 without converting GSIP MIT code to EPL or treating a parser pass as legal/distribution approval. Existing unknown/ambiguous licence and closed-SDK guards remain mandatory.",
+    "Keep JUnit/Hamcrest until a separate reviewed removal case proves safety; do not guess an exclusion from static absence. A future minimal transitive exclusion would change the selected runtime and needs its own source review and native regression evidence.",
+    "Preserve licence/notices and source-availability distribution obligations separately from audit identity facts. Eclipse FAQ16/17 describe source-availability notice and compliance for the EPL portion; neither grants an automatic compatibility/legal conclusion. Project source/license and data/photo policies remain unchanged."
+  ],
+  "source_head_context": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "status": "EXACT_CAUSES_CONFIRMED_NARROW_AUDIT_CLASSIFICATION_RECOMMENDED_NO_IMPLEMENTATION_YET"
+}

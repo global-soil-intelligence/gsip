@@ -1,0 +1,173 @@
+{
+  "checked_at_utc": "2026-10-16T01:30:43.352181+00:00",
+  "status": "WAITING_FOR_GITHUB_CERTIFICATE",
+  "pages": {
+    "cname": "globalsoilintelligence.com",
+    "status": "built",
+    "build_type": "workflow",
+    "protected_domain_state": "verified",
+    "https_certificate": {
+      "state": "authorization_created",
+      "description": "Authorization created",
+      "domains": [
+        "globalsoilintelligence.com",
+        "www.globalsoilintelligence.com"
+      ]
+    },
+    "https_enforced": false,
+    "html_url": "http://globalsoilintelligence.com/"
+  },
+  "dns": [
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "type": "A",
+      "answers": [
+        "185.199.108.153",
+        "185.199.109.153",
+        "185.199.110.153",
+        "185.199.111.153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "type": "AAAA",
+      "answers": [
+        "2606:50c0:8000::153",
+        "2606:50c0:8001::153",
+        "2606:50c0:8002::153",
+        "2606:50c0:8003::153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "type": "A",
+      "answers": [
+        "185.199.108.153",
+        "185.199.109.153",
+        "185.199.110.153",
+        "185.199.111.153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "type": "AAAA",
+      "answers": [
+        "2606:50c0:8000::153",
+        "2606:50c0:8001::153",
+        "2606:50c0:8002::153",
+        "2606:50c0:8003::153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "type": "A",
+      "answers": [
+        "185.199.108.153",
+        "185.199.109.153",
+        "185.199.110.153",
+        "185.199.111.153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "type": "AAAA",
+      "answers": [
+        "2606:50c0:8000::153",
+        "2606:50c0:8001::153",
+        "2606:50c0:8002::153",
+        "2606:50c0:8003::153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "type": "A",
+      "answers": [
+        "185.199.108.153",
+        "185.199.109.153",
+        "185.199.110.153",
+        "185.199.111.153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "type": "AAAA",
+      "answers": [
+        "2606:50c0:8000::153",
+        "2606:50c0:8001::153",
+        "2606:50c0:8002::153",
+        "2606:50c0:8003::153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "1.1.1.1",
+      "type": "A",
+      "answers": [
+        "185.199.108.153",
+        "185.199.109.153",
+        "185.199.110.153",
+        "185.199.111.153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "1.1.1.1",
+      "type": "AAAA",
+      "answers": [
+        "2606:50c0:8000::153",
+        "2606:50c0:8001::153",
+        "2606:50c0:8002::153",
+        "2606:50c0:8003::153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "8.8.8.8",
+      "type": "A",
+      "answers": [
+        "185.199.108.153",
+        "185.199.109.153",
+        "185.199.110.153",
+        "185.199.111.153"
+      ],
+      "pass": true
+    },
+    {
+      "server": "8.8.8.8",
+      "type": "AAAA",
+      "answers": [
+        "2606:50c0:8000::153",
+        "2606:50c0:8001::153",
+        "2606:50c0:8002::153",
+        "2606:50c0:8003::153"
+      ],
+      "pass": true
+    }
+  ],
+  "certificates": [
+    {
+      "hostname": "globalsoilintelligence.com",
+      "trusted_and_hostname_valid": false,
+      "error_type": "SSLCertVerificationError"
+    },
+    {
+      "hostname": "www.globalsoilintelligence.com",
+      "trusted_and_hostname_valid": false,
+      "error_type": "SSLCertVerificationError"
+    }
+  ],
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "all_dns_pass": true,
+  "both_gates_closed": true,
+  "mutations": "NONE; DNS queries, GitHub GET, HTTP GET and trusted TLS handshakes only"
+}

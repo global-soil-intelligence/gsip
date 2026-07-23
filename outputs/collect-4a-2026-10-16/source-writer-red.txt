@@ -1,0 +1,353 @@
+$ vitest run -- tests/library-section.test.tsx tests/library-app.test.tsx
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+ ❯ tests/library-drafts.test.ts (21 tests | 7 failed) 144ms
+   × refuses missing or invalid original draft revision undefined without rebinding 9ms
+   × refuses missing or invalid original draft revision -1 without rebinding 10ms
+   × refuses missing or invalid original draft revision 0.5 without rebinding 4ms
+   × refuses missing or invalid original draft revision NaN without rebinding 9ms
+   × refuses missing or invalid original draft revision Infinity without rebinding 7ms
+   × refuses missing or invalid original draft revision 9007199254740991 without rebinding 2ms
+   × requires original explicit draft revision to match the argument and current fence 4ms
+ ❯ tests/queue.test.ts (20 tests | 17 failed) 77ms
+     × inserts only one snapshot, advances the fence, and preserves other queued observations 15ms
+     × holds if any persisted picker slot A wins the transaction order 1ms
+     × holds if any persisted picker slot B wins the transaction order 3ms
+     × holds if any persisted picker slot C wins the transaction order 2ms
+     × refuses old late photo writes observably, while a fresh successor-revision draft survives reconciliation 2ms
+     × consumes only exact owned library context, then reconciles before checking consumed or newer drafts 4ms
+     × holds changed library context before commit and refuses old context writes after commit 5ms
+     × requires no hidden library draft when the snapshot has no opt-in 2ms
+     × never overwrites an immutable owner conflict 2ms
+     × never overwrites an immutable submission conflict 2ms
+     × never overwrites an immutable acceptance conflict 4ms
+     × never overwrites an immutable photo conflict 1ms
+     × never overwrites an immutable context conflict 3ms
+     × holds a stale original session for new insertion, even at the same revision 3ms
+     × rechecks admission after awaits and refuses cancelled photo/library writer intents 1ms
+     × rights clear serializes in both orders without restoring the observation or drafts 2ms
+     × rolls back insertion, exact context consume and revision advance if the transaction aborts 11ms
+ ❯ tests/library-section.test.tsx (2 tests | 1 failed) 5028ms
+   × does not claim a declaration was saved when the parent refused persistence 5013ms
+stderr | tests/library-app.test.tsx > holds a restored library context with no original revision until explicit restart
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | tests/library-app.test.tsx > holds a restored library context with no original revision until explicit restart
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | tests/library-app.test.tsx > holds a restored library context with no original revision until explicit restart
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ❯ tests/library-app.test.tsx (12 tests | 2 failed) 11188ms
+   × does not present a refused picker save as ready and allows a fresh choice 5007ms
+   × holds a restored library context with no original revision until explicit restart 5008ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 27 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/library-app.test.tsx > does not present a refused picker save as ready and allows a fresh choice
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/library-app.test.tsx:227:1
+    225| })
+    226|
+    227| it('does not present a refused picker save as ready and allows a fresh…
+       | ^
+    228|   const q = await start()
+    229|   const refused = vi.spyOn(q, 'saveDraftPhoto').mockResolvedValueOnce(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/27]⎯
+
+ FAIL  tests/library-app.test.tsx > holds a restored library context with no original revision until explicit restart
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/library-app.test.tsx:244:1
+    242| })
+    243|
+    244| it('holds a restored library context with no original revision until e…
+       | ^
+    245|   const q = await import('../src/queue')
+    246|   await q.queueRevision()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/27]⎯
+
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision undefined without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision -1 without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision 0.5 without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision NaN without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision Infinity without rebinding
+ FAIL  tests/library-drafts.test.ts > refuses missing or invalid original draft revision 9007199254740991 without rebinding
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/library-drafts.test.ts:153:94
+    151|   async (deviceRevision) => {
+    152|     const q = await queue(), revision = await q.queueRevision()
+    153|     expect(await q.saveLibraryDraft({ ...newLibraryDraft(uuid), device…
+       |                                                                                              ^
+    154|     expect(await q.savedLibraryDraft()).toBeUndefined()
+    155|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/27]⎯
+
+ FAIL  tests/library-drafts.test.ts > requires original explicit draft revision to match the argument and current fence
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/library-drafts.test.ts:160:106
+    158| it('requires original explicit draft revision to match the argument an…
+    159|   const q = await queue(), revision = await q.queueRevision()
+    160|   expect(await q.saveLibraryDraft({ ...newLibraryDraft(uuid), deviceRe…
+       |                                                                                                          ^
+    161|   expect(await q.savedLibraryDraft()).toBeUndefined()
+    162| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/27]⎯
+
+ FAIL  tests/library-section.test.tsx > does not claim a declaration was saved when the parent refused persistence
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/library-section.test.tsx:14:1
+     12| })
+     13|
+     14| it('does not claim a declaration was saved when the parent refused per…
+       | ^
+     15|   const onChange = vi.fn(async () => false)
+     16|   render(<LibrarySection client={null} value={{ ...newLibraryDraft('no…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > inserts only one snapshot, advances the fence, and preserves other queued observations
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:184:20
+    182|     await q.enqueue({ ...guideRecord(), submissionId: 'unrelated' })
+    183|     const pending = guideRecord()
+    184|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    185|       status: 'committed', revision: revision + 1,
+    186|     })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds if any persisted picker slot A wins the transaction order
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds if any persisted picker slot B wins the transaction order
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds if any persisted picker slot C wins the transaction order
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:201:9
+    199|     const writes = await Promise.all([
+    200|       q.saveDraftPhoto(shot, photo, revision),
+    201|       q.enqueueGuideObservation(guideRecord(), context(revision)),
+       |         ^
+    202|     ])
+    203|     expect(writes).toEqual([true, { status: 'held', revision }])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > refuses old late photo writes observably, while a fresh successor-revision draft survives reconciliation
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:212:9
+    210|     const q = await queue(), revision = await q.queueRevision(), pendi…
+    211|     const [commit, stale] = await Promise.all([
+    212|       q.enqueueGuideObservation(pending, context(revision)),
+       |         ^
+    213|       q.saveDraftPhoto('C', photo, revision),
+    214|     ])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > consumes only exact owned library context, then reconciles before checking consumed or newer drafts
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:226:20
+    224|     expect(await q.saveLibraryDraft(saved, revision)).toBe(true)
+    225|     const pending = { ...guideRecord(), submissionId: saved.submission…
+    226|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    227|     expect(await q.savedLibraryDraft()).toBeUndefined()
+    228|     const progressed: QueueRecord = {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds changed library context before commit and refuses old context writes after commit
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:251:9
+    249|     const [savedNewer, held] = await Promise.all([
+    250|       q.saveLibraryDraft(newer, revision),
+    251|       q.enqueueGuideObservation(pending, context(revision)),
+       |         ^
+    252|     ])
+    253|     expect(savedNewer).toBe(true)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > requires no hidden library draft when the snapshot has no opt-in
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:269:20
+    267|     const q = await queue(), revision = await q.queueRevision(), saved…
+    268|     await q.saveLibraryDraft(saved, revision)
+    269|     expect(await q.enqueueGuideObservation(guideRecord(), context(revi…
+       |                    ^
+    270|     expect(await q.savedLibraryDraft()).toEqual(saved)
+    271|     expect(await q.queued()).toEqual([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable owner conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable submission conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable acceptance conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable photo conflict
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > never overwrites an immutable context conflict
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:283:20
+    281|     if (field === 'context') existing.landCover = 'grassland'
+    282|     await q.enqueue(existing)
+    283|     expect(await q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    284|     expect(await q.queued()).toEqual([existing])
+    285|     expect(await q.queueRevision()).toBe(revision)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > holds a stale original session for new insertion, even at the same revision
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:290:21
+    288|   it('holds a stale original session for new insertion, even at the sa…
+    289|     const q = await queue(), revision = await q.queueRevision()
+    290|     expect((await q.enqueueGuideObservation(guideRecord(), {
+       |                     ^
+    291|       ...context(revision), originalContextCurrent: () => false,
+    292|     })).status).toBe('held')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > rechecks admission after awaits and refuses cancelled photo/library writer intents
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:301:23
+    299|     const q = await queue(), revision = await q.queueRevision()
+    300|     let allowed = true
+    301|     const pending = q.enqueueGuideObservation(guideRecord(), { ...cont…
+       |                       ^
+    302|     allowed = false
+    303|     expect((await pending).status).toBe('held')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > rights clear serializes in both orders without restoring the observation or drafts
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:319:25
+    317|     const q = await queue(), revision = await q.queueRevision()
+    318|     const [clearedFirst, held] = await Promise.all([
+    319|       q.clearQueue(), q.enqueueGuideObservation(guideRecord(), context…
+       |                         ^
+    320|     ])
+    321|     expect(clearedFirst).toBe(0)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/27]⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > rolls back insertion, exact context consume and revision advance if the transaction aborts
+TypeError: q.enqueueGuideObservation is not a function
+ ❯ tests/queue.test.ts:343:20
+    341|       return request
+    342|     })
+    343|     await expect(q.enqueueGuideObservation(pending, context(revision))…
+       |                    ^
+    344|     vi.restoreAllMocks()
+    345|     expect(await q.queued()).toEqual([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/27]⎯
+
+
+ Test Files  4 failed | 28 passed (32)
+      Tests  27 failed | 339 passed (366)
+   Start at  21:52:42
+   Duration  12.89s (transform 2.56s, setup 3.84s, import 5.23s, tests 22.87s, environment 20.97s)
+
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @gsip/capture-pwa@0.1.0 test: `vitest run -- tests/library-section.test.tsx tests/library-app.test.tsx`
+Exit status 1

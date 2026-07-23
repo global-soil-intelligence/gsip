@@ -1,0 +1,21 @@
+{
+  "base": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "scope": "five uncommitted new files; only simulator/test/doc changed",
+  "before": {
+    "pipeline/node_exchange_store.py": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+    "pipeline/node_exchange_simulator.py": "2601595ed7f862d2c0bc504e685daa83885ce830117e3e028ca93f7da9667d27",
+    "tests/test_node_exchange_store.py": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+    "tests/test_node_exchange_simulator.py": "47ae080056afd2e44e9100d1993aa04c9d461a90a8d6fc6ff5a8387fd7000067",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md": "da32982ad9c8c39f08b23e0bcf84e236b39ccddd1200fc1ca78d5c43db15a3c8"
+  },
+  "after": {
+    "pipeline/node_exchange_store.py": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+    "pipeline/node_exchange_simulator.py": "ef181863e3216c2467fd6ba814043d7cc7be16086361ac95171dd79448837d6d",
+    "tests/test_node_exchange_store.py": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+    "tests/test_node_exchange_simulator.py": "b44ca67d949780c6c5e559d7822d4dd1814dfb79b83a6b83c2ca4b9171e15707",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md": "60233a337912ed94b674392c10313ffb2c102a74d625acfa2e8ea20621c92b7a"
+  },
+  "independent_review": "pending",
+  "root_validation": "pending",
+  "no_production": true
+}

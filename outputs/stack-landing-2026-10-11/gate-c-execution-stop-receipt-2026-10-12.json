@@ -1,0 +1,31 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "created_at": "2026-10-12T13:55:38.257109+00:00",
+  "gate_c_authority": "Explicit owner Go for exactly nine migrations",
+  "migration_execution": "EXACT_NINE_APPLIED_EXIT_0",
+  "overall_gate_state": "STOP_SECURITY_ADVISOR_NOT_ZERO",
+  "passed_postcheck_count": 16,
+  "total_postcheck_count": 17,
+  "security_finding_instances": 7,
+  "security_categories": 3,
+  "distinct_flagged_objects": 6,
+  "capture_open": false,
+  "signup_enabled": false,
+  "anonymous_signin_enabled": false,
+  "pages_required_reviewer": "jdhart81",
+  "pages_admin_bypass": false,
+  "further_production_actions": "NOT_AUTHORIZED_NOT_EXECUTED",
+  "source_changes_this_turn": false,
+  "receipt_sha256": {
+    "gate-c-01-db-push-command-2026-10-12.json": "12293a4b450019778c86186d62d2c27701e71f40671ae6d3a01a85c3ca10691b",
+    "production-pre-gate-c-preflight-2026-10-12.json": "fd5c262966febfa56e4e4d60ca66e53a253eaec3f07d52b558c7a0af978d96c3",
+    "gate-c-fresh-dry-run-2026-10-12.json": "a5f4c0669de137829b6829719a3b6d5d7f0fc4130dc2940f544c814fc8442de6",
+    "gate-c-root-ledger-capture-readback-2026-10-12.json": "1d55444df57084153cc54159b41eafa7c81686570e4187a1dd67daec8b2a1d5e",
+    "production-post-gate-c-verification-2026-10-12.json": "85b1f1b89960582446550883ea3556a34d2a3efba9b7a414d9023d7cc246c73e",
+    "production-post-gate-c-backfill-verification-2026-10-12.json": "7d119247aedcf74a71ca5f799fdebe10390e18b37810ef0fd5ab386800b4d3f1",
+    "production-auth-closed-readonly-2026-10-12.json": "9109e7ded4350751409f4ba07f9574f86723a917e3eac0dcc707a693b50ddadc",
+    "pages-admin-bypass-ui-verified-2026-10-12.json": "3b5df1ba9ce8918d53fe35f09df147a4d046c8efbe0b2619b5821018303aca9e",
+    "production-worker-quiescence-2026-10-12.json": "6f6c5c8f1e8d2aff8a32e1f9c9780123c25bdccb27cbe0e377949c73f35659ee",
+    "gate-c-all-pr-readback-2026-10-12.json": "5c91ac6578099af56c67f173264124b438bb0053106d43a6148af6a501864314"
+  }
+}

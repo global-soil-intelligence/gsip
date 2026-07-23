@@ -1,0 +1,219 @@
+{
+  "assessment": "The documented authority supports preparing and independently reviewing a tightly coordinate/POMdigest/fulltuple-bound classification repair for an unchanged existing dependency graph. Recording an upstream declared licence fact does not itself change GSIP source licence, dependency versions or distribution policy, and the cited text does not automatically require another owner licence decision solely to record that fact. Actual GSIP licence changes remain Justin\u2019s decision; an incompatible dependency for MIT distribution still needs the stated reviewer sign-off. This assessment does not decide that compatibility or supply distribution approval.",
+  "created_at_utc": "2026-10-13T23:40:20.766418+00:00",
+  "evidence": [
+    {
+      "exact_lines": [
+        {
+          "line": 69,
+          "text": "- TypeScript and Python only. No paid or closed service or proprietary SDK in the default"
+        },
+        {
+          "line": 70,
+          "text": "  deployment path without Justin's sign-off (BUILD_ORDER guardrail 6). Android's permission"
+        },
+        {
+          "line": 71,
+          "text": "  and closed-SDK checks must stay effective. For every new dependency, document its licence,"
+        },
+        {
+          "line": 72,
+          "text": "  maintenance signal and size."
+        },
+        {
+          "line": 73,
+          "text": "- Licences stay MIT for code, ODbL 1.0 for data and CC BY-SA 4.0 for photos. Any licence"
+        },
+        {
+          "line": 74,
+          "text": "  change is Justin's decision. Business guardrails B1\u2013B8 remain binding."
+        }
+      ],
+      "line_end": 74,
+      "line_start": 69,
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/AGENTS.md",
+      "sha256": "cc5a4ea13e2a389006a0a69c6986f5acc767f9c065131b70f078b8ca1580e180"
+    },
+    {
+      "exact_lines": [
+        {
+          "line": 26,
+          "text": ""
+        },
+        {
+          "line": 27,
+          "text": "1. **Languages: TypeScript and Python only.** TS strict mode; Python 3.11+, fully type-hinted."
+        },
+        {
+          "line": 28,
+          "text": "2. **No license changes.** Code MIT; databases and structured data ODbL 1.0; photos CC BY-SA 4.0. No dependency with a license incompatible with MIT distribution without reviewer sign-off."
+        },
+        {
+          "line": 29,
+          "text": "3. **No schema change outside a migration**, and no migration that contradicts `docs/SPEC.md` \u00a76 without a spec update first."
+        },
+        {
+          "line": 30,
+          "text": "4. **Never store or export precise contributor coordinates in any public path** (I7), including image metadata, logs, URLs, analytics and calls to external services. Public artifacts use k-anonymous H3 cells only."
+        },
+        {
+          "line": 31,
+          "text": "5. **UI and API copy never says \"soil test.\"** Always \"estimate\" with uncertainty (I5)."
+        },
+        {
+          "line": 32,
+          "text": "6. **No paid or closed services in the default deployment path.** Anything with a bill or a proprietary SDK needs product-owner sign-off. Known decisions: Supabase Pro before public launch; Apple ($99 a year) and Google Play ($25 once) developer accounts for WP-APP-1; CAPTCHA provider for anonymous sign-in (Turnstile and hCaptcha are both closed services)."
+        }
+      ],
+      "line_end": 32,
+      "line_start": 26,
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/docs/BUILD_ORDER.md",
+      "sha256": "7f243f4ce91cd2be9ba972fd1086ef02dee6a55bfd03436feca8058a71a4bd0a"
+    },
+    {
+      "exact_lines": [
+        {
+          "line": 428,
+          "text": "4. Tests test behavior (reviewers may run mutation spot-checks)."
+        },
+        {
+          "line": 429,
+          "text": "5. No scope creep: work outside the WP goes to a separate PR."
+        },
+        {
+          "line": 430,
+          "text": "6. Each new dependency justified in the PR (license, maintenance, size)."
+        },
+        {
+          "line": 431,
+          "text": "7. Licensing boundaries explicit: ODbL 1.0 data, CC BY-SA 4.0 photos, MIT code. Public launch stays blocked until counsel approves the legal pack."
+        },
+        {
+          "line": 432,
+          "text": ""
+        }
+      ],
+      "line_end": 432,
+      "line_start": 428,
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/docs/BUILD_ORDER.md",
+      "sha256": "7f243f4ce91cd2be9ba972fd1086ef02dee6a55bfd03436feca8058a71a4bd0a"
+    },
+    {
+      "exact_lines": [
+        {
+          "line": 61,
+          "text": "Each resolved public module records its coordinate, actual binary digest/size and"
+        },
+        {
+          "line": 62,
+          "text": "coordinate-matched POM digest/size, declared license and license URL. A missing child"
+        },
+        {
+          "line": 63,
+          "text": "license requires explicit bounded parent-POM inheritance; duplicate identity, parent,"
+        },
+        {
+          "line": 64,
+          "text": "license-container, name or URL fields are refused rather than taking the first match; unknown/absent/ambiguous"
+        },
+        {
+          "line": 65,
+          "text": "licenses refuse the audit. POM metadata comes from the exact resolved Gradle cache or"
+        },
+        {
+          "line": 66,
+          "text": "only the public Google Maven/Maven Central paths for that coordinate. A repository"
+        },
+        {
+          "line": 67,
+          "text": "host does not approve a closed Google SDK. Embedded license/notice files are recorded"
+        },
+        {
+          "line": 68,
+          "text": "when present; their absence is reported by an empty list, never invented content."
+        },
+        {
+          "line": 69,
+          "text": "These are declared licensing/provenance facts about exact resolved inputs, not an"
+        },
+        {
+          "line": 70,
+          "text": "attestation that a checksum proves the upstream compiler's source-to-binary build."
+        },
+        {
+          "line": 71,
+          "text": ""
+        },
+        {
+          "line": 72,
+          "text": "Local Capacitor/plugin projects are tied to their installed npm source manifests and"
+        },
+        {
+          "line": 73,
+          "text": "MIT license hashes. Generated build/cache files are excluded from those source"
+        },
+        {
+          "line": 74,
+          "text": "manifests. Unexpected prebundled JAR/AAR/native-framework inputs are refused instead"
+        },
+        {
+          "line": 75,
+          "text": "of inheriting a wrapper's MIT label. The empty generated Cordova compatibility project"
+        },
+        {
+          "line": 76,
+          "text": "must contain no third-party plugin source or binary. The installed geolocation package"
+        },
+        {
+          "line": 77,
+          "text": "can appear in npm inspection; its Android project remains excluded from the runtime."
+        }
+      ],
+      "line_end": 77,
+      "line_start": 61,
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "fdd8ddf980f2a1f565ff8c658809bf31c6620deebbd90272fb6605690435fb79"
+    },
+    {
+      "exact_lines": [
+        {
+          "line": 48,
+          "text": "## License of contributions"
+        },
+        {
+          "line": 49,
+          "text": ""
+        },
+        {
+          "line": 50,
+          "text": "Contributions are licensed under the same license as the files they change (see `LICENSE`), with no"
+        },
+        {
+          "line": 51,
+          "text": "additional terms. Don't submit work you can't license that way."
+        }
+      ],
+      "line_end": 51,
+      "line_start": 48,
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/CONTRIBUTING.md",
+      "sha256": "7c8cdba11a34dfe71f5ec1376c408f1bb513ee225d855e9c4637ad87cc750fbb"
+    }
+  ],
+  "kind": "read-only-local-repository-authority-assessment",
+  "network_legal_research_performed": false,
+  "not_decided": [
+    "EPL legal compatibility",
+    "Acceptance of EPL for an app-store release",
+    "Any obligation or legal conclusion",
+    "Correctness of the not-yet-frozen core classifier implementation"
+  ],
+  "question": "Whether exact factual licence classification of already selected baseline coordinates is a routine audit fix or automatically requires a new owner licence decision.",
+  "required_boundaries": [
+    "Exact unchanged baseline coordinate/source selection is established separately by the core primary evidence",
+    "Classifier review is limited to truthful declared metadata and exact reviewed proof; do not add generic unknown acceptance or global licence-catalog expansion",
+    "Repository code remains MIT, lockfiles/dependency graph and project licences unchanged",
+    "A passing classification record does not state EPL compatibility, legal approval, app-store/distribution approval or release readiness; existing counsel/legal-pack/public-launch and native/device gates remain held"
+  ],
+  "schema": 1,
+  "source_or_policy_mutation": false
+}

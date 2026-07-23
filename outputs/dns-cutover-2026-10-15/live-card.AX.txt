@@ -1,0 +1,76 @@
+Browser tab: 1234838727, Title: "Print the reference card — Global Soil Intelligence", URL: "https://globalsoilintelligence.com/card/".
+1 AXWebArea Print the reference card — Global Soil Intelligence, URL: globalsoilintelligence.com/card/
+	2 container root
+		3 link Description: Skip to content, Value: globalsoilintelligence.com/card/#main-content
+		4 container
+			5 link Description: GLOBAL SOIL INTELLIGENCE, Value: globalsoilintelligence.com/
+			6 container Primary navigation
+				7 link Description: Map, Value: globalsoilintelligence.com/map/
+				8 link Description: Library, Value: globalsoilintelligence.com/data/
+				9 link Description: Methods, Value: globalsoilintelligence.com/methods/
+				10 link Description: Public capture closed, Value: globalsoilintelligence.com/about/#launch-status
+		11 container main-content
+			12 container
+				13 text A COMMON VISUAL STANDARD
+				14 heading Give every phone camera a reference point., Value: 1
+					15 text Give every phone camera a reference point.
+				16 text Print the GSIP reference card and follow the standard soil photography protocol.
+			17 container
+				18 image GSIP color reference card preview
+				19 text RECOMMENDED
+				20 heading Color reference card, Value: 2
+					21 text Color reference card
+				22 text Nine documented patches, a neutral reference, and an ArUco marker support geometry and image checks. Soil RGB remains uncalibrated, even with the reference card.
+				23 link Description: Download color PDF, Value: globalsoilintelligence.com/reference-card/gsip-reference-card-v1-color.pdf
+				24 image GSIP black-and-white reference card preview
+				25 text GEOMETRY SUPPORT
+				26 heading Black-and-white card, Value: 2
+					27 text Black-and-white card
+				28 text Use this edition when color printing is unavailable. It supports framing, scale, geometry, and exposure—not calibrated color recovery.
+				29 link Description: Download B&W PDF, Value: globalsoilintelligence.com/reference-card/gsip-reference-card-v1-bw.pdf
+			30 container
+				31 text PRINT ONCE, USE OUTSIDE
+				32 heading Keep the dimensions honest., Value: 2
+					33 text Keep the dimensions honest.
+				34 text 01
+				35 heading Choose A6 paper, Value: 3
+					36 text Choose A6 paper
+				37 text Use the document’s native A6 size or trim after printing.
+				38 text 02
+				39 heading Print at 100%, Value: 3
+					40 text Print at 100%
+				41 text Disable “fit to page” so the scale marker stays accurate.
+				42 text 03
+				43 heading Keep it matte, Value: 3
+					44 text Keep it matte
+				45 text Avoid glossy lamination that introduces glare outdoors.
+			46 container
+				47 text CAPTURE PROTOCOL
+				48 heading Two required photographs. One optional boost., Value: 2
+					49 text Two required photographs. One optional boost.
+				50 text A
+				51 heading Context, Value: 3
+					52 text Context
+				53 text Undisturbed ground surface from roughly 30 cm, card visible.
+				54 text B
+				55 heading Fresh face, Value: 3
+					56 text Fresh face
+				57 text Scrape 2–3 cm, then photograph the exposed soil from roughly 15 cm.
+				58 text C
+				59 heading Texture · optional, Value: 3
+					60 text Texture · optional
+				61 text A moistened soil ball or ribbon can improve future texture-confidence work.
+				62 link Description: Public capture closed, Value: globalsoilintelligence.com/about/#launch-status
+		63 container
+			64 link Description: GLOBAL SOIL INTELLIGENCE, Value: globalsoilintelligence.com/
+			65 text Building an open soil spectral library for future models and maps. EXPLORE
+			66 link Description: Public map, Value: globalsoilintelligence.com/map/
+			67 link Description: Reference card, Value: globalsoilintelligence.com/card/
+			68 link Description: Open data, Value: globalsoilintelligence.com/data/
+			69 text PROJECT
+			70 link Description: Methods, Value: globalsoilintelligence.com/methods/
+			71 link Description: About, Value: globalsoilintelligence.com/about/
+			72 link Description: Source code, Value: github.com/global-soil-intelligence/gsip
+			73 text Code MIT · structured data ODbL 1.0 · contributed photos CC BY-SA 4.0 GSIP is not a replacement for laboratory analysis. Estimates must carry uncertainty.
+
+The focused UI element is 1 AXWebArea Print the reference card — Global Soil Intelligence, URL: globalsoilintelligence.com/card/

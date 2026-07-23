@@ -1,0 +1,3302 @@
+--- a/apps/capture-pwa/package.json
++++ b/apps/capture-pwa/package.json
+@@ -16,6 +16,7 @@
+     "@capacitor/core": "8.5.2",
+     "@capacitor/filesystem": "8.1.3",
+     "@capacitor/geolocation": "8.2.2",
++    "@capacitor/local-notifications": "8.3.1",
+     "@gsip/schema": "workspace:*",
+     "@supabase/supabase-js": "2.117.2",
+     "h3-js": "4.5.0",
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -54,6 +54,9 @@
+       '@capacitor/geolocation':
+         specifier: 8.2.2
+         version: 8.2.2(@capacitor/core@8.5.2)
++      '@capacitor/local-notifications':
++        specifier: 8.3.1
++        version: 8.3.1(@capacitor/core@8.5.2)
+       '@gsip/schema':
+         specifier: workspace:*
+         version: link:../../packages/schema
+@@ -758,6 +761,11 @@
+     resolution: {integrity: sha512-eOT2S67AfTFG7KN0T3oxwAajrJz4rSye+ODfvChiwrk0F/+kWufFM1qU6cDjGJUOfwdAoeuEpZyWHSwZlu4GFg==}
+     peerDependencies:
+       '@capacitor/core': ^8.5.0
++
++  '@capacitor/local-notifications@8.3.1':
++    resolution: {integrity: sha512-F7zu/+p/mIR958YP4axOkeI5hBKRaXDyYjbNPrAil2wWfd7OxScPSTvP9t85NpQ0eULVRu0/sntoxOg6ck477A==}
++    peerDependencies:
++      '@capacitor/core': '>=8.0.0'
+ 
+   '@capacitor/synapse@1.0.4':
+     resolution: {integrity: sha512-/C1FUo8/OkKuAT4nCIu/34ny9siNHr9qtFezu4kxm6GY1wNFxrCFWjfYx5C1tUhVGz3fxBABegupkpjXvjCHrw==}
+@@ -4032,6 +4040,10 @@
+     dependencies:
+       '@capacitor/core': 8.5.2
+ 
++  '@capacitor/local-notifications@8.3.1(@capacitor/core@8.5.2)':
++    dependencies:
++      '@capacitor/core': 8.5.2
++
+   '@capacitor/synapse@1.0.4': {}
+ 
+   '@csstools/color-helpers@6.1.2': {}
+--- a/apps/capture-pwa/capacitor.config.ts
++++ b/apps/capture-pwa/capacitor.config.ts
+@@ -17,7 +17,11 @@
+     // No geolocation plugin on Android: it would compile Google's closed Play services location
+     // SDK into the app (BUILD_ORDER guardrail 6). The web view's own location API asks for the
+     // same foreground permissions instead.
+-    includePlugins: ['@capacitor/camera', '@capacitor/filesystem'],
++    includePlugins: [
++      '@capacitor/camera',
++      '@capacitor/filesystem',
++      '@capacitor/local-notifications',
++    ],
+   },
+ }
+ 
+--- a/apps/capture-pwa/src/App.tsx
++++ b/apps/capture-pwa/src/App.tsx
+@@ -51,6 +51,8 @@
+   releaseHeld,
+   retryDeadLettered,
+   saveDraftPhoto,
++  indexedDbReminderStore,
++  queueReminderContext,
+ } from './queue'
+ import { drainQueue, isSyncEligible } from './sync'
+ import {
+@@ -65,6 +67,8 @@
+ import { TERMS_VERSION } from './terms'
+ import type { QueueRecord, ShotType } from './types'
+ import { YourData } from './YourData'
++import { selectReminderNotifications } from './platform/notifications'
++import { createSyncReminder, type ReminderView } from './syncReminder'
+ 
+ // Files created after this moment were taken with the camera during this visit (WP-6e claim).
+ const PAGE_LOADED_AT =
+@@ -338,6 +342,45 @@
+   // True while this screen is open. A closed screen starts no drain and sends nothing more, so
+   // it never races the next screen (or a reopened app) for the same queued record.
+   const open = useRef(false)
++  const queueSection = useRef<HTMLElement>(null)
++  const reminderAccess = useRef<{ owner: string | null; gate: ServiceState }>({
++    owner: null,
++    gate: 'unknown',
++  })
++  const [reminderView, setReminderView] = useState<ReminderView>({
++    enabled: false,
++    outcome: native ? 'off' : 'unsupported',
++  })
++  const [reminderBusy, setReminderBusy] = useState(false)
++  const reminder = useMemo(
++    () =>
++      createSyncReminder({
++        notifications: selectReminderNotifications(native),
++        store: indexedDbReminderStore,
++        context: () =>
++          queueReminderContext(
++            reminderAccess.current.owner,
++            live,
++            reminderAccess.current.gate,
++            libraryLive,
++          ),
++        focusQueue: () => queueSection.current?.focus(),
++        changed: (view) => {
++          if (open.current) setReminderView(view)
++        },
++      }),
++    [native, live, libraryLive],
++  )
++  const observeServiceState = useCallback(
++    (state: ServiceState) => {
++      if (reminderAccess.current.gate !== state) {
++        reminderAccess.current.gate = state
++        if (native) void reminder.gatesChanged().then(() => reminder.refresh())
++      }
++      setServiceState(state)
++    },
++    [native, reminder],
++  )
+   const links = legalLinks()
+   const loadMySoil = useCallback(
+     () => (client ? mySoil(client) : Promise.resolve(null)),
+@@ -410,6 +453,7 @@
+ 
+   const refreshQueueState = useCallback(async () => {
+     const records = await queued()
++    if (!open.current) return records
+     setQueueCount(records.length)
+     setDeadLetterCount(
+       records.filter((record) => Boolean(record.deadLetteredAt)).length,
+@@ -424,8 +468,9 @@
+     setReconfirmCount(
+       records.filter((record) => Boolean(record.termsExpiredAt)).length,
+     )
++    if (native) void reminder.refresh()
+     return records
+-  }, [])
++  }, [native, reminder])
+   const drainOnce = useCallback(async () => {
+     const closed = () => !open.current
+     if (!client || !navigator.onLine || closed()) return
+@@ -439,7 +484,7 @@
+     // open, and a closed gate must not burn the queued records' retry budget.
+     const state = await fetchServiceState(client)
+     if (closed()) return
+-    setServiceState(state)
++    observeServiceState(state)
+     if (state === 'closed') {
+       await refreshQueueState()
+       setStatus(PAUSED_MESSAGE)
+@@ -455,7 +500,10 @@
+       () => Date.now(),
+       closed,
+     )
+-    if (result.synced) setSoilRefresh((count) => count + 1)
++    if (result.synced) {
++      setSoilRefresh((count) => count + 1)
++      if (native) void reminder.synced()
++    }
+     const remaining = await refreshQueueState()
+     const deadLetters = remaining.filter((record) =>
+       Boolean(record.deadLetteredAt),
+@@ -496,7 +544,7 @@
+     } else {
+       setStatus('Ready for your next observation.')
+     }
+-  }, [client, refreshQueueState])
++  }, [client, native, observeServiceState, refreshQueueState, reminder])
+ 
+   // One drain at a time. A trigger that arrives mid-drain (coming online, the gate reopening, the
+   // retry timer) is never dropped: it schedules exactly one follow-up drain, however many arrive.
+@@ -536,7 +584,7 @@
+       if (client) {
+         const state = await fetchServiceState(client)
+         if (cancelled) return
+-        setServiceState(state)
++        observeServiceState(state)
+       }
+       await refreshQueueState()
+       if (!cancelled) await sync()
+@@ -549,7 +597,64 @@
+       window.clearInterval(retry)
+       window.removeEventListener('online', onOnline)
+     }
+-  }, [client, refreshQueueState, sync])
++  }, [client, observeServiceState, refreshQueueState, sync])
++
++  useEffect(() => {
++    if (!native) return
++    let observing = true
++    void reminder.start()
++    // Reuse the existing client. The callback is synchronous and keeps only the user ID,
++    // never a session/token or a new client/auth/network path.
++    let unsubscribe = () => undefined as void
++    try {
++      const subscription = client?.auth?.onAuthStateChange?.(
++        (event, session) => {
++          if (!observing) return
++          try {
++            const owner = session?.user.id ?? null
++            const previous = reminderAccess.current.owner
++            reminderAccess.current.owner = owner
++            if (
++              event === 'SIGNED_OUT' ||
++              (event !== 'INITIAL_SESSION' && previous !== owner)
++            )
++              void reminder.hold().then(() => {
++                if (observing) void reminder.refresh()
++              })
++            else void reminder.refresh()
++          } catch {
++            reminderAccess.current.owner = null
++            void reminder.hold()
++          }
++        },
++      ).data.subscription
++      unsubscribe = () => {
++        try {
++          subscription?.unsubscribe()
++        } catch {
++          /* Auth callback errors stay private. */
++        }
++      }
++    } catch {
++      reminderAccess.current.owner = null
++      void reminder.hold()
++    }
++    const refresh = () => {
++      if (observing) void reminder.refresh()
++    }
++    const onVisible = () => {
++      if (document.visibilityState === 'visible') refresh()
++    }
++    window.addEventListener('focus', refresh)
++    document.addEventListener('visibilitychange', onVisible)
++    return () => {
++      observing = false
++      unsubscribe()
++      window.removeEventListener('focus', refresh)
++      document.removeEventListener('visibilitychange', onVisible)
++      void reminder.stop()
++    }
++  }, [client, native, reminder])
+ 
+   async function locate() {
+     if (!platform) return
+@@ -1166,10 +1271,64 @@
+           </form>
+         )}
+ 
+-        <section className="status-card" aria-live="polite">
++        <section
++          ref={queueSection}
++          tabIndex={-1}
++          className="status-card"
++          aria-live="polite"
++        >
+           <div>
+             <p className="step-number">Status</p>
+             <h2>{status}</h2>
++            {native && (
++              <div role="group" aria-label="Device sync reminders">
++                <h3>Sync reminders</h3>
++                <p>
++                  One optional reminder to review unsynced work after about a
++                  day. Delivery can be delayed by your phone.
++                </p>
++                <button
++                  type="button"
++                  disabled={
++                    reminderBusy ||
++                    reminderView.enabled ||
++                    reminderView.outcome === 'unsupported' ||
++                    !live ||
++                    serviceState !== 'open' ||
++                    !client
++                  }
++                  onClick={() => {
++                    setReminderBusy(true)
++                    void reminder.enable().finally(() => setReminderBusy(false))
++                  }}
++                >
++                  Enable sync reminders
++                </button>
++                <button
++                  type="button"
++                  className="secondary"
++                  disabled={!reminderView.enabled && !reminderBusy}
++                  onClick={() => {
++                    void reminder.disable()
++                  }}
++                >
++                  Turn off sync reminders
++                </button>
++                <p role="status">
++                  {reminderView.outcome === 'cleanup_pending'
++                    ? 'Device reminder cleanup is pending. Open GSIP again to retry.'
++                    : reminderView.outcome === 'unsupported'
++                      ? 'Reminders are unavailable on this device. Capture still works.'
++                      : reminderView.outcome === 'permission_denied'
++                        ? 'Reminders are off. You can keep using GSIP.'
++                        : reminderView.outcome === 'held'
++                          ? 'Reminders are paused until this device and queued work are ready.'
++                          : reminderView.enabled
++                            ? 'Sync reminders are on.'
++                            : 'Sync reminders are off.'}
++                </p>
++              </div>
++            )}
+             {heldCount > 0 && (
+               <div
+                 className="held-actions"
+@@ -1287,6 +1446,9 @@
+         {live && client && (
+           <YourData
+             client={client}
++            onBeforeRightsRequest={() =>
++              native ? reminder.hold() : Promise.resolve()
++            }
+             onQueueCleared={async () => {
+               // The queue and any photos taken here are gone; My Soil changes too.
+               for (const shot of SHOTS) photoRequests.current[shot] += 1
+--- a/apps/capture-pwa/src/YourData.tsx
++++ b/apps/capture-pwa/src/YourData.tsx
+@@ -49,9 +49,11 @@
+ export function YourData({
+   client,
+   onQueueCleared,
++  onBeforeRightsRequest,
+ }: {
+   client: GsipClient
+   onQueueCleared: () => Promise<unknown>
++  onBeforeRightsRequest?: () => Promise<unknown>
+ }) {
+   const [request, setRequest] = useState<DeletionStatus | null>(null)
+   const [choice, setChoice] = useState<DeletionKind | null>(null)
+@@ -97,6 +99,13 @@
+     if (!choice || !confirmed) return
+     setBusy(true)
+     try {
++      // Fence device reminders before the rights request. A device cleanup failure must never
++      // change a confirmed server request into an apparent failure or discard private content.
++      try {
++        await onBeforeRightsRequest?.()
++      } catch {
++        /* Report reminder cleanup separately. */
++      }
+       const outcome = await requestDeletion(client, choice)
+       // Every confirmed server outcome also fulfills the person's local clear intent.
+       // A failed/uncertain request throws before this point and preserves local bytes.
+--- a/apps/capture-pwa/src/queue.ts
++++ b/apps/capture-pwa/src/queue.ts
+@@ -2,6 +2,12 @@
+ import type { LibraryDraft } from './library'
+ import type { CapturedPhoto } from './platform/types'
+ import type { QueueRecord, ShotType } from './types'
++import { acceptanceExpired, TERMS_VERSION } from './terms'
++import {
++  initialReminderState,
++  type SyncReminderState,
++  type ReminderContext,
++} from './syncReminder'
+ 
+ /** A photo the phone app has taken for an observation not yet queued (WP-APP-1). */
+ export type DraftPhoto = { photo: CapturedPhoto; shotType: ShotType }
+@@ -17,6 +23,7 @@
+     value: { nodeId: string; ownerUid?: string }
+   }
+   queueState: { key: 'generation'; value: number }
++  syncReminder: { key: 'current'; value: SyncReminderState }
+   draftPhotos: {
+     key: ShotType
+     value: DraftPhoto
+@@ -29,7 +36,7 @@
+ let generation = 0
+ 
+ function database() {
+-  databasePromise ??= openDB<CaptureQueueDatabase>('gsip-capture-v1', 3, {
++  databasePromise ??= openDB<CaptureQueueDatabase>('gsip-capture-v1', 4, {
+     upgrade(db, oldVersion) {
+       if (oldVersion < 1)
+         db.createObjectStore('submissions', { keyPath: 'submissionId' })
+@@ -41,6 +48,8 @@
+         db.createObjectStore('libraryNamespace')
+         db.createObjectStore('queueState')
+       }
++      // APP-2B: additive private reminder intent; queue/draft/library stores are unchanged.
++      if (oldVersion < 4) db.createObjectStore('syncReminder')
+     },
+     blocking() {
+       // A newer version of the app wants to upgrade the database: step aside.
+@@ -77,12 +86,27 @@
+       'libraryDraft',
+       'libraryNamespace',
+       'queueState',
++      'syncReminder',
+     ],
+     'readwrite',
+   )
+   const records = await tx.objectStore('submissions').getAll()
+   const revision = (await tx.objectStore('queueState').get('generation')) ?? 0
+   await tx.objectStore('queueState').put(revision + 1, 'generation')
++  const reminder = checkedReminderState(
++    await tx.objectStore('syncReminder').get('current'),
++  )
++  await tx.objectStore('syncReminder').put(
++    {
++      ...reminder,
++      enabled: false,
++      epoch: reminder.epoch + 1,
++      cleanupPending: true,
++      cycleOpen: false,
++      consumed: false,
++    },
++    'current',
++  )
+   await Promise.all([
+     tx.objectStore('submissions').clear(),
+     tx.objectStore('draftPhotos').clear(),
+@@ -350,3 +374,107 @@
+   }
+   await tx.done
+ }
++
++/** No credentials/session object or queue bytes are accepted into reminder intent. */
++function checkedReminderState(saved: unknown): SyncReminderState {
++  if (!saved || typeof saved !== 'object') return initialReminderState()
++  const value = saved as SyncReminderState
++  if (
++    !(
++      value.owner === null ||
++      (typeof value.owner === 'string' &&
++        value.owner.length > 0 &&
++        value.owner.length <= 128)
++    ) ||
++    !Number.isSafeInteger(value.epoch) ||
++    value.epoch < 0 ||
++    value.epoch >= Number.MAX_SAFE_INTEGER ||
++    !Number.isSafeInteger(value.revision) ||
++    value.revision < 0 ||
++    [
++      'enabled',
++      'cycleOpen',
++      'consumed',
++      'allowed',
++      'blocked',
++      'cleanupPending',
++    ].some((key) => typeof value[key as keyof SyncReminderState] !== 'boolean')
++  )
++    return initialReminderState()
++  return {
++    owner: value.owner,
++    enabled: value.enabled,
++    epoch: value.epoch,
++    revision: value.revision,
++    cycleOpen: value.cycleOpen,
++    consumed: value.consumed,
++    allowed: value.allowed,
++    blocked: value.blocked,
++    cleanupPending: value.cleanupPending,
++  }
++}
++export const indexedDbReminderStore = {
++  async read(): Promise<SyncReminderState> {
++    return checkedReminderState(
++      await (await database()).get('syncReminder', 'current'),
++    )
++  },
++  async update(
++    change: (state: SyncReminderState) => SyncReminderState,
++  ): Promise<SyncReminderState> {
++    const tx = (await database()).transaction('syncReminder', 'readwrite')
++    const before = checkedReminderState(await tx.store.get('current'))
++    const changed = change(before)
++    // A lifetime fence can turn an already admitted read into a no-op. Do not submit a stale write.
++    const next = changed === before ? before : checkedReminderState(changed)
++    if (changed !== before) await tx.store.put(next, 'current')
++    await tx.done
++    return next
++  },
++}
++
++/** Atomic local queue/revision snapshot. Raw records never cross the notification seam. */
++export async function queueReminderContext(
++  owner: string | null,
++  captureLive: boolean,
++  gate: ReminderContext['gate'],
++  libraryLive: boolean,
++): Promise<ReminderContext> {
++  const tx = (await database()).transaction(['submissions', 'queueState'])
++  const [records, revision] = await Promise.all([
++    tx.objectStore('submissions').getAll(),
++    tx.objectStore('queueState').get('generation'),
++  ])
++  await tx.done
++  return {
++    owner,
++    captureLive,
++    gate,
++    revision: revision ?? 0,
++    hasWork: records.length > 0,
++    blocked: records.some(
++      (record) =>
++        !owner ||
++        record.ownerUid !== owner ||
++        Boolean(
++          record.heldAt ||
++          record.deadLetteredAt ||
++          record.termsExpiredAt ||
++          record.libraryConflictAt,
++        ) ||
++        Boolean(record.library && !libraryLive) ||
++        (!(
++          record.reconfirmedTermsVersion === TERMS_VERSION &&
++          record.reconfirmedAt
++        ) &&
++          record.termsVersion !== TERMS_VERSION) ||
++        acceptanceExpired(
++          record.reconfirmedTermsVersion === TERMS_VERSION &&
++            record.reconfirmedAt
++            ? record.reconfirmedAt
++            : (record.acceptedAt ?? record.queuedAt),
++          Date.now(),
++        ),
++    ),
++  }
++}
+--- /dev/null
++++ b/apps/capture-pwa/src/platform/notifications.ts
+@@ -0,0 +1,173 @@
++import type { LocalNotificationsPlugin } from '@capacitor/local-notifications'
++import { isNativeApp } from './index'
++
++/** One reserved, opaque ID. Neither the provider nor the OS receives queue/account data. */
++export const SYNC_REMINDER_ID = 471031
++export type ReminderPermission =
++  'granted' | 'denied' | 'unknown' | 'unsupported'
++/** Internal dispatch checks; no decision context is passed to the native SDK. */
++export type ReminderIntent = {
++  fresh(): Promise<boolean>
++  local(): boolean
++}
++export type ReminderNotifications = {
++  readonly supported: boolean
++  checkPermission(currentIntent?: ReminderIntent): Promise<ReminderPermission>
++  requestPermission(currentIntent: ReminderIntent): Promise<ReminderPermission>
++  schedule(at: number, currentIntent: ReminderIntent): Promise<boolean>
++  clear(currentIntent?: ReminderIntent): Promise<boolean>
++  onTap(callback: () => void): Promise<() => Promise<void>>
++}
++type Plugin = Pick<
++  LocalNotificationsPlugin,
++  | 'checkPermissions'
++  | 'requestPermissions'
++  | 'schedule'
++  | 'cancel'
++  | 'removeDeliveredNotificationsById'
++  | 'getPending'
++  | 'getDeliveredNotifications'
++  | 'addListener'
++>
++const unsupported: ReminderNotifications = {
++  supported: false,
++  checkPermission: async () => 'unsupported',
++  requestPermission: async () => 'unsupported',
++  schedule: async () => false,
++  clear: async () => true,
++  onTap: async () => async () => undefined,
++}
++
++/** Native-only lazy import: the web implementation and browser Notification API never run. */
++export function selectReminderNotifications(
++  native?: boolean,
++  load: () => Promise<{ api: Plugin }> = () =>
++    import('@capacitor/local-notifications').then((module) => ({
++      api: module.LocalNotifications,
++    })),
++): ReminderNotifications {
++  try {
++    if (native === undefined ? !isNativeApp() : native !== true)
++      return unsupported
++  } catch {
++    return unsupported
++  }
++  // Capacitor returns a Proxy whose synthetic `then` method must never be promise-assimilated.
++  let loaded: Promise<{ api: Plugin }> | undefined
++  const plugin = () =>
++    (loaded ??= Promise.resolve()
++      .then(load)
++      .catch(() => {
++        loaded = undefined
++        throw new Error('Device reminders are unavailable.')
++      }))
++  const permission = async (
++    request: boolean,
++    currentIntent?: ReminderIntent,
++  ): Promise<ReminderPermission> => {
++    try {
++      const api = (await plugin()).api
++      if (
++        (request && !currentIntent) ||
++        (currentIntent &&
++          (!(await currentIntent.fresh()) || !currentIntent.local()))
++      )
++        return 'unknown'
++      const result = request
++        ? await api.requestPermissions()
++        : await api.checkPermissions()
++      return result.display === 'granted'
++        ? 'granted'
++        : result.display === 'denied'
++          ? 'denied'
++          : 'unknown'
++    } catch {
++      return 'unknown'
++    }
++  }
++  return {
++    supported: true,
++    checkPermission: (currentIntent) => permission(false, currentIntent),
++    requestPermission: (currentIntent) => permission(true, currentIntent),
++    async schedule(at, currentIntent) {
++      if (!Number.isSafeInteger(at) || at <= Date.now()) return false
++      try {
++        const api = (await plugin()).api
++        // A lazy-import await must not turn a stale click into a native prompt/alarm.
++        if (!(await currentIntent.fresh()) || !currentIntent.local())
++          return false
++        const result = await api.schedule({
++          notifications: [
++            {
++              id: SYNC_REMINDER_ID,
++              title: 'GSIP sync reminder',
++              body: 'Open GSIP to review unsynced work.',
++              isExactNotification: false,
++              isExactMandatory: false,
++              schedule: {
++                at: new Date(at),
++                repeats: false,
++                allowWhileIdle: false,
++              },
++            },
++          ],
++        })
++        return (
++          result.notifications.length === 1 &&
++          result.notifications[0]?.id === SYNC_REMINDER_ID
++        )
++      } catch {
++        return false
++      }
++    },
++    async clear(currentIntent) {
++      try {
++        const api = (await plugin()).api
++        const permitted = async () =>
++          !currentIntent ||
++          ((await currentIntent.fresh()) && currentIntent.local())
++        if (!(await permitted()) || (currentIntent && !currentIntent.local()))
++          return false
++        await api.cancel({ notifications: [{ id: SYNC_REMINDER_ID }] })
++        if (!(await permitted()) || (currentIntent && !currentIntent.local()))
++          return false
++        await api.removeDeliveredNotificationsById({ ids: [SYNC_REMINDER_ID] })
++        if (!(await permitted()) || (currentIntent && !currentIntent.local()))
++          return false
++        const [pending, delivered] = await Promise.all([
++          api.getPending(),
++          api.getDeliveredNotifications(),
++        ])
++        return (
++          !pending.notifications.some((item) => item.id === SYNC_REMINDER_ID) &&
++          !delivered.notifications.some((item) => item.id === SYNC_REMINDER_ID)
++        )
++      } catch {
++        return false
++      }
++    },
++    async onTap(callback) {
++      try {
++        const handle = await (
++          await plugin()
++        ).api.addListener('localNotificationActionPerformed', (event) => {
++          try {
++            // Read only the owned ID. Never inspect/copy callback extras, URLs or action inputs.
++            if (event.notification.id === SYNC_REMINDER_ID) callback()
++          } catch {
++            /* Native callback objects and errors stay private. */
++          }
++        })
++        return async () => {
++          try {
++            await handle.remove()
++          } catch {
++            /* No plugin errors in UI/logs. */
++          }
++        }
++      } catch {
++        return async () => undefined
++      }
++    },
++  }
++}
+--- /dev/null
++++ b/apps/capture-pwa/src/syncReminder.ts
+@@ -0,0 +1,500 @@
++import type {
++  ReminderIntent,
++  ReminderNotifications,
++} from './platform/notifications'
++
++export const REMINDER_DELAY = 24 * 60 * 60 * 1000
++export type ReminderContext = {
++  owner: string | null
++  captureLive: boolean
++  gate: 'open' | 'closed' | 'unknown'
++  revision: number
++  hasWork: boolean
++  blocked: boolean
++}
++/** Private intent only; never store a session/token, queue record, photo or point here. */
++export type SyncReminderState = {
++  owner: string | null
++  enabled: boolean
++  epoch: number
++  revision: number
++  cycleOpen: boolean
++  consumed: boolean
++  allowed: boolean
++  blocked: boolean
++  cleanupPending: boolean
++}
++export const initialReminderState = (): SyncReminderState => ({
++  owner: null,
++  enabled: false,
++  epoch: 0,
++  revision: 0,
++  cycleOpen: false,
++  consumed: false,
++  allowed: false,
++  blocked: true,
++  cleanupPending: true,
++})
++export type ReminderStore = {
++  read(): Promise<SyncReminderState>
++  update(
++    change: (state: SyncReminderState) => SyncReminderState,
++  ): Promise<SyncReminderState>
++}
++export type ReminderOutcome =
++  | 'off'
++  | 'on'
++  | 'held'
++  | 'unsupported'
++  | 'permission_denied'
++  | 'cleanup_pending'
++export type ReminderView = { enabled: boolean; outcome: ReminderOutcome }
++export type ReminderLock = <T>(run: () => Promise<T>) => Promise<T | undefined>
++
++/** A native scheduling operation requires a cross-context lock. Unsupported devices hold. */
++export const reminderLock: ReminderLock = async (run) => {
++  if (typeof navigator === 'undefined' || !navigator.locks?.request)
++    return undefined
++  return navigator.locks.request('gsip-sync-reminder', run)
++}
++function allowed(context: ReminderContext): boolean {
++  return (
++    context.captureLive && context.gate === 'open' && Boolean(context.owner)
++  )
++}
++
++/**
++ * One inexact reminder per backlog cycle. Durable fences precede plugin calls; late schedule
++ * completion is cleared before the next native operation. No timer, retry loop or remote I/O.
++ */
++export function createSyncReminder({
++  notifications,
++  store,
++  context,
++  focusQueue,
++  changed = () => undefined,
++  lock = reminderLock,
++  now = () => Date.now(),
++}: {
++  notifications: ReminderNotifications
++  store: ReminderStore
++  context: () => Promise<ReminderContext>
++  focusQueue: () => void
++  changed?: (view: ReminderView) => void
++  lock?: ReminderLock
++  now?: () => number
++}) {
++  let version = 0
++  let stopped = false
++  let lifetime = 0
++  let operations: Promise<unknown> = Promise.resolve()
++  let removeListener: (() => Promise<void>) | undefined
++  const active = (expected: number) => !stopped && lifetime === expected
++  const report = (state: SyncReminderState, outcome: ReminderOutcome) => {
++    if (stopped) return
++    try {
++      changed({ enabled: state.enabled, outcome })
++    } catch {
++      /* No callback details escape. */
++    }
++  }
++  const read = async (expected: number) => {
++    if (!active(expected)) return undefined
++    const state = await store.read()
++    return active(expected) ? state : undefined
++  }
++  const update = async (
++    expected: number,
++    change: (state: SyncReminderState) => SyncReminderState,
++  ) => {
++    if (!active(expected)) return undefined
++    const state = await store.update((previous) =>
++      active(expected) ? change(previous) : previous,
++    )
++    return active(expected) ? state : undefined
++  }
++  const observe = async (expected: number) => {
++    if (!active(expected)) return undefined
++    const decision = await context()
++    if (!active(expected)) return undefined
++    return update(expected, (previous) => {
++      const ownerChanged = previous.owner !== decision.owner
++      const changed =
++        ownerChanged ||
++        previous.revision !== decision.revision ||
++        previous.cycleOpen !== decision.hasWork ||
++        previous.allowed !== allowed(decision) ||
++        previous.blocked !== decision.blocked
++      if (!changed) return previous
++      return {
++        ...previous,
++        owner: decision.owner,
++        enabled: ownerChanged ? false : previous.enabled,
++        revision: decision.revision,
++        cycleOpen: decision.hasWork,
++        consumed:
++          decision.hasWork && previous.cycleOpen ? previous.consumed : false,
++        allowed: allowed(decision),
++        blocked: decision.blocked,
++        epoch: previous.epoch + 1,
++        cleanupPending: true,
++      }
++    })
++  }
++  const current = async (
++    epoch: number,
++    expectedVersion: number,
++    expected: number,
++  ) => {
++    if (!active(expected) || version !== expectedVersion) return false
++    const state = await observe(expected)
++    return Boolean(
++      state &&
++      active(expected) &&
++      version === expectedVersion &&
++      state.epoch === epoch,
++    )
++  }
++  const intent = (
++    epoch: number,
++    expectedVersion: number,
++    owner: string | null,
++    expected: number,
++    permissionRequest = false,
++  ): ReminderIntent => ({
++    local: () => active(expected) && version === expectedVersion,
++    async fresh() {
++      if (!(await current(epoch, expectedVersion, expected))) return false
++      const state = await read(expected)
++      return Boolean(
++        state &&
++        active(expected) &&
++        version === expectedVersion &&
++        state.epoch === epoch &&
++        state.owner === owner &&
++        state.allowed &&
++        !state.blocked &&
++        (permissionRequest
++          ? !state.cleanupPending
++          : state.enabled && state.cycleOpen && state.consumed),
++      )
++    },
++  })
++  type Scope = Pick<SyncReminderState, 'epoch' | 'owner'>
++  const matches = (state: SyncReminderState, scope: Scope) =>
++    state.epoch === scope.epoch && state.owner === scope.owner
++  const activityIntent = (expected: number, scope: Scope): ReminderIntent => ({
++    local: () => active(expected),
++    async fresh() {
++      const state = await read(expected)
++      return Boolean(state && matches(state, scope))
++    },
++  })
++  /** Cleanup owns the persisted generation it fenced, never whatever a replacement owns now. */
++  const clear = async (expected: number, owned?: Scope): Promise<boolean> => {
++    const permitted = () => (owned ? lifetime === expected : active(expected))
++    if (!permitted()) return false
++    const before = await store.read()
++    if (!permitted() || (owned && !matches(before, owned))) return false
++    if (!before.cleanupPending) {
++      const marked = await store.update((state) =>
++        permitted() && matches(state, before)
++          ? { ...state, cleanupPending: true }
++          : state,
++      )
++      if (!permitted() || !matches(marked, before)) return false
++    }
++    const cleanupIntent: ReminderIntent = {
++      local: permitted,
++      async fresh() {
++        if (!permitted()) return false
++        const state = await store.read()
++        return permitted() && matches(state, before)
++      },
++    }
++    const absent = await notifications.clear(cleanupIntent)
++    if (!permitted()) return false
++    let committed = false
++    const state = await store.update((latest) => {
++      if (!permitted() || !matches(latest, before)) return latest
++      committed = true
++      return absent ? { ...latest, cleanupPending: false } : latest
++    })
++    if (!permitted() || !committed) return false
++    if (state.cleanupPending) report(state, 'cleanup_pending')
++    return absent && !state.cleanupPending
++  }
++  const serial = (
++    run: () => Promise<void>,
++    expected = lifetime,
++    detached = false,
++  ): Promise<void> => {
++    if (!detached && !active(expected)) return Promise.resolve()
++    const next = operations.then(async () => {
++      if (!detached && !active(expected)) return
++      try {
++        const result = await lock(async () => {
++          if (!detached && !active(expected)) return false
++          await run()
++          return true
++        })
++        if (result === undefined && !detached && active(expected)) {
++          const absent = await clear(expected),
++            state = await read(expected)
++          if (state) report(state, absent ? 'unsupported' : 'cleanup_pending')
++        }
++      } catch {
++        if (detached || !active(expected)) return
++        try {
++          const state = await update(expected, (previous) => ({
++            ...previous,
++            cleanupPending: true,
++          }))
++          if (state) report(state, 'cleanup_pending')
++        } catch {
++          /* Persistence uncertainty stays held; private errors never reach UI/logs. */
++        }
++      }
++    })
++    operations = next
++    return next
++  }
++  const reconcile = async (expected: number) => {
++    if (!active(expected)) return
++    const expectedVersion = version
++    let state = await observe(expected)
++    if (!state) return
++    if (state.cleanupPending && !(await clear(expected))) return
++    state = await read(expected)
++    if (!state) return
++    if (!state.enabled || !state.allowed || !state.cycleOpen || state.blocked) {
++      report(state, state.enabled ? 'held' : 'off')
++      return
++    }
++    const permission = await notifications.checkPermission(
++      activityIntent(expected, state),
++    )
++    if (!active(expected)) return
++    if (!(await current(state.epoch, expectedVersion, expected))) {
++      await clear(expected)
++      return
++    }
++    if (permission !== 'granted') {
++      const marked = await update(expected, (latest) => ({
++        ...latest,
++        cleanupPending: true,
++      }))
++      if (!marked) return
++      await clear(expected)
++      const latest = await read(expected)
++      if (latest) report(latest, 'held')
++      return
++    }
++    if (state.consumed) {
++      report(state, 'on')
++      return
++    }
++    const reserved = await update(expected, (latest) =>
++      latest.epoch === state.epoch && !latest.consumed
++        ? { ...latest, consumed: true, cleanupPending: true }
++        : latest,
++    )
++    if (!reserved) return
++    if (
++      !(await current(state.epoch, expectedVersion, expected)) ||
++      !reserved.consumed
++    ) {
++      await clear(expected)
++      return
++    }
++    const scheduled = await notifications.schedule(
++      now() + REMINDER_DELAY,
++      intent(state.epoch, expectedVersion, state.owner, expected),
++    )
++    // Stop already persisted a scoped cleanup behind this operation. A stale continuation
++    // must not clear a replacement's generation; late completion is handled by that owned fence.
++    if (!active(expected)) return
++    if (
++      !scheduled ||
++      !(await current(state.epoch, expectedVersion, expected))
++    ) {
++      await clear(expected)
++      return
++    }
++    const committed = await update(expected, (latest) =>
++      latest.epoch === state.epoch
++        ? { ...latest, cleanupPending: false }
++        : latest,
++    )
++    if (!committed) return
++    if (committed.cleanupPending) await clear(expected)
++    else report(committed, 'on')
++  }
++  /** Durable intent precedes plugin cleanup, so rights never await a lost native reply. */
++  const invalidate = async (
++    disable = false,
++    expected = lifetime,
++    stopping = false,
++  ) => {
++    const permitted = () => lifetime === expected && (stopping || !stopped)
++    if (!permitted()) return
++    version += 1
++    let committed = false
++    try {
++      const state = await store.update((previous) => {
++        if (!permitted()) return previous
++        committed = true
++        return {
++          ...previous,
++          epoch: previous.epoch + 1,
++          cleanupPending: true,
++          enabled: disable ? false : previous.enabled,
++        }
++      })
++      if (!committed || !permitted()) return
++      report(state, disable ? 'off' : 'cleanup_pending')
++      void serial(
++        async () => {
++          await clear(expected, state)
++        },
++        expected,
++        true,
++      )
++    } catch {
++      if (permitted()) report(initialReminderState(), 'cleanup_pending')
++    }
++  }
++  return {
++    async start() {
++      if (!notifications.supported) {
++        report(initialReminderState(), 'unsupported')
++        return
++      }
++      stopped = false
++      const expected = ++lifetime,
++        previousListener = removeListener
++      removeListener = undefined
++      if (previousListener)
++        void serial(
++          async () => {
++            await previousListener()
++          },
++          expected,
++          true,
++        )
++      await invalidate(false, expected)
++      await serial(async () => {
++        if (!active(expected)) return
++        const registered = await notifications.onTap(() => {
++          if (!active(expected)) return
++          void serial(async () => {
++            const state = await observe(expected)
++            if (
++              !state ||
++              !state.enabled ||
++              !state.allowed ||
++              state.blocked ||
++              !state.cycleOpen
++            )
++              return
++            const permission = await notifications.checkPermission(
++              activityIntent(expected, state),
++            )
++            if (!active(expected) || permission !== 'granted') return
++            const fresh = await observe(expected)
++            if (fresh && fresh.epoch === state.epoch) focusQueue()
++          }, expected)
++        })
++        if (!active(expected)) {
++          await registered()
++          return
++        }
++        removeListener = registered
++        await reconcile(expected)
++      }, expected)
++    },
++    refresh() {
++      const expected = lifetime
++      return notifications.supported && active(expected)
++        ? serial(() => reconcile(expected), expected)
++        : Promise.resolve()
++    },
++    async enable() {
++      const expected = lifetime
++      if (!active(expected)) return
++      if (!notifications.supported) {
++        report(initialReminderState(), 'unsupported')
++        return
++      }
++      const expectedVersion = version + 1
++      await invalidate(true, expected)
++      await serial(async () => {
++        let state = await observe(expected)
++        if (!state) return
++        if (version !== expectedVersion || !state.allowed || state.blocked) {
++          report(state, 'held')
++          return
++        }
++        if (state.cleanupPending && !(await clear(expected))) return
++        state = await read(expected)
++        if (!state) return
++        if (!(await current(state.epoch, expectedVersion, expected))) {
++          await clear(expected)
++          return
++        }
++        const permission = await notifications.requestPermission(
++          intent(state.epoch, expectedVersion, state.owner, expected, true),
++        )
++        if (!active(expected)) return
++        if (!(await current(state.epoch, expectedVersion, expected))) {
++          await clear(expected)
++          return
++        }
++        if (permission !== 'granted') {
++          report(state, 'permission_denied')
++          return
++        }
++        const enabled = await update(expected, (latest) =>
++          latest.epoch === state.epoch && version === expectedVersion
++            ? { ...latest, enabled: true }
++            : latest,
++        )
++        if (enabled) await reconcile(expected)
++      }, expected)
++    },
++    disable() {
++      return invalidate(true)
++    },
++    hold() {
++      return invalidate(true)
++    },
++    gatesChanged() {
++      return invalidate()
++    },
++    async synced() {
++      const expected = lifetime
++      if (!active(expected)) return
++      await invalidate(false, expected)
++      await serial(() => reconcile(expected), expected)
++    },
++    async stop() {
++      if (stopped) return
++      stopped = true
++      const expected = ++lifetime,
++        previousListener = removeListener
++      removeListener = undefined
++      await invalidate(false, expected, true)
++      // This handle belongs only to the old registration, so removal cannot affect a new one.
++      void serial(
++        async () => {
++          await previousListener?.()
++        },
++        expected,
++        true,
++      )
++    },
++    settled() {
++      return operations.then(() => undefined)
++    },
++  }
++}
+--- /dev/null
++++ b/apps/capture-pwa/tests/notifications.test.ts
+@@ -0,0 +1,275 @@
++import type { LocalNotificationsPlugin } from '@capacitor/local-notifications'
++import { expect, it, vi } from 'vitest'
++import {
++  selectReminderNotifications,
++  SYNC_REMINDER_ID,
++  type ReminderIntent,
++} from '../src/platform/notifications'
++
++const permittedIntent: ReminderIntent = {
++  fresh: async () => true,
++  local: () => true,
++}
++function fixture() {
++  const plugin = {
++    checkPermissions: vi.fn(async () => ({ display: 'granted' })),
++    requestPermissions: vi.fn(async () => ({ display: 'granted' })),
++    schedule: vi.fn(async () => ({
++      notifications: [{ id: SYNC_REMINDER_ID }],
++    })),
++    cancel: vi.fn(async () => undefined),
++    removeDeliveredNotificationsById: vi.fn(async () => undefined),
++    getPending: vi.fn(async () => ({ notifications: [] as { id: number }[] })),
++    getDeliveredNotifications: vi.fn(async () => ({
++      notifications: [] as { id: number }[],
++    })),
++    addListener: vi.fn(async () => ({ remove: vi.fn(async () => undefined) })),
++  }
++  const load = vi.fn(async () => ({
++    api: plugin as unknown as LocalNotificationsPlugin,
++  }))
++  return {
++    plugin,
++    load,
++    notifications: selectReminderNotifications(true, load),
++  }
++}
++it('web never imports a plugin or touches browser permissions even if every method is called', async () => {
++  const load = vi.fn(async (): Promise<{ api: LocalNotificationsPlugin }> => {
++    throw new Error('must not load')
++  })
++  const notifications = selectReminderNotifications(false, load)
++  expect(notifications.supported).toBe(false)
++  expect(await notifications.checkPermission()).toBe('unsupported')
++  expect(await notifications.requestPermission(permittedIntent)).toBe(
++    'unsupported',
++  )
++  expect(
++    await notifications.schedule(Date.now() + 86400000, permittedIntent),
++  ).toBe(false)
++  expect(await notifications.clear()).toBe(true)
++  await (
++    await notifications.onTap(() => {
++      throw new Error('must not call')
++    })
++  )()
++  expect(load).not.toHaveBeenCalled()
++})
++it('native provider constructs only one fixed generic inexact nonwaking one-shot payload', async () => {
++  const f = fixture(),
++    at = Date.now() + 86400000
++  expect(f.load).not.toHaveBeenCalled()
++  expect(await f.notifications.schedule(at, permittedIntent)).toBe(true)
++  expect(f.plugin.schedule).toHaveBeenCalledExactlyOnceWith({
++    notifications: [
++      {
++        id: SYNC_REMINDER_ID,
++        title: 'GSIP sync reminder',
++        body: 'Open GSIP to review unsynced work.',
++        isExactNotification: false,
++        isExactMandatory: false,
++        schedule: { at: new Date(at), repeats: false, allowWhileIdle: false },
++      },
++    ],
++  })
++  expect(
++    await f.notifications.schedule(
++      {
++        extra: 'fictional-private-canary',
++      } as unknown as number,
++      permittedIntent,
++    ),
++  ).toBe(false)
++  expect(await f.notifications.schedule(0, permittedIntent)).toBe(false)
++  expect(f.plugin.schedule).toHaveBeenCalledTimes(1)
++})
++it('cleanup cancels/removes only the owned ID then verifies pending AND delivered absence', async () => {
++  const f = fixture()
++  expect(await f.notifications.clear()).toBe(true)
++  expect(f.plugin.cancel).toHaveBeenCalledExactlyOnceWith({
++    notifications: [{ id: SYNC_REMINDER_ID }],
++  })
++  expect(
++    f.plugin.removeDeliveredNotificationsById,
++  ).toHaveBeenCalledExactlyOnceWith({ ids: [SYNC_REMINDER_ID] })
++  f.plugin.getPending.mockResolvedValue({
++    notifications: [{ id: SYNC_REMINDER_ID }],
++  })
++  expect(await f.notifications.clear()).toBe(false)
++  f.plugin.getPending.mockResolvedValue({ notifications: [{ id: 2 }] })
++  f.plugin.getDeliveredNotifications.mockResolvedValue({
++    notifications: [{ id: SYNC_REMINDER_ID }],
++  })
++  expect(await f.notifications.clear()).toBe(false)
++  f.plugin.getDeliveredNotifications.mockResolvedValue({
++    notifications: [{ id: 2 }],
++  })
++  expect(await f.notifications.clear()).toBe(true)
++})
++it('native getter/SDK errors return only generic outcomes and never log canaries', async () => {
++  const f = fixture(),
++    log = vi.spyOn(console, 'error')
++  f.plugin.checkPermissions.mockRejectedValue(
++    new Error('fictional-private-canary', { cause: 'fictional-private-cause' }),
++  )
++  expect(await f.notifications.checkPermission()).toBe('unknown')
++  f.plugin.schedule.mockRejectedValue(new Error('fictional-private-canary'))
++  expect(
++    await f.notifications.schedule(Date.now() + 86400000, permittedIntent),
++  ).toBe(false)
++  f.plugin.getPending.mockResolvedValue(
++    Object.defineProperty({}, 'notifications', {
++      get() {
++        throw new Error('fictional-private-canary')
++      },
++    }) as { notifications: { id: number }[] },
++  )
++  expect(await f.notifications.clear()).toBe(false)
++  expect(log).not.toHaveBeenCalled()
++  log.mockRestore()
++})
++it('only the owned tap ID invokes a zero-argument callback; injected extras are never read', async () => {
++  const f = fixture(),
++    callback = vi.fn()
++  const remove = await f.notifications.onTap(callback)
++  const listener = f.plugin.addListener.mock.calls[0] as unknown as [
++    string,
++    (event: unknown) => void,
++  ]
++  expect(listener[0]).toBe('localNotificationActionPerformed')
++  listener[1]({ notification: { id: 2 }, extra: 'https://fictional.invalid' })
++  listener[1]({
++    notification: {
++      id: SYNC_REMINDER_ID,
++      get extra() {
++        throw new Error('private canary')
++      },
++    },
++    get actionId() {
++      throw new Error('private canary')
++    },
++  })
++  listener[1]({
++    get notification() {
++      throw new Error('private canary')
++    },
++  })
++  expect(callback).toHaveBeenCalledExactlyOnceWith()
++  await remove()
++  expect(
++    (await f.plugin.addListener.mock.results[0].value).remove,
++  ).toHaveBeenCalledTimes(1)
++})
++
++it('a changed intent during lazy import prevents a native permission request or schedule', async () => {
++  for (const action of ['permission', 'schedule']) {
++    const f = fixture()
++    let resolve!: (plugin: { api: LocalNotificationsPlugin }) => void
++    const loaded = new Promise<{ api: LocalNotificationsPlugin }>((done) => {
++      resolve = done
++    })
++    const notifications = selectReminderNotifications(true, () => loaded)
++    let current = true
++    const pending =
++      action === 'permission'
++        ? notifications.requestPermission({
++            fresh: async () => current,
++            local: () => current,
++          })
++        : notifications.schedule(Date.now() + 86400000, {
++            fresh: async () => current,
++            local: () => current,
++          })
++    current = false
++    resolve({ api: f.plugin as unknown as LocalNotificationsPlugin })
++    await pending
++    expect(f.plugin.requestPermissions).not.toHaveBeenCalled()
++    expect(f.plugin.schedule).not.toHaveBeenCalled()
++  }
++})
++it('invalid native-selection values are unsupported without loading a plugin', async () => {
++  const f = fixture()
++  const notifications = selectReminderNotifications(
++    { synthetic: true } as unknown as boolean,
++    f.load,
++  )
++  expect(notifications.supported).toBe(false)
++  await notifications.checkPermission()
++  expect(f.load).not.toHaveBeenCalled()
++})
++
++it('the lazy boundary boxes Capacitor plugin Proxies instead of promise-assimilating their synthetic then', async () => {
++  const f = fixture()
++  const api = new Proxy(f.plugin, {
++    get(target, key, receiver) {
++      if (key === 'then')
++        throw new Error('must not inspect a plugin then method')
++      return Reflect.get(target, key, receiver)
++    },
++  }) as unknown as LocalNotificationsPlugin
++  const notifications = selectReminderNotifications(true, async () => ({ api }))
++  expect(await notifications.checkPermission()).toBe('granted')
++  expect(await notifications.clear()).toBe(true)
++  expect(
++    await notifications.schedule(Date.now() + 86400000, permittedIntent),
++  ).toBe(true)
++})
++it('after a fresh durable check yields, the final local epoch fence still prevents native dispatch', async () => {
++  for (const action of ['permission', 'schedule']) {
++    const f = fixture()
++    let resolve!: (allowed: boolean) => void, entered!: () => void
++    const began = new Promise<void>((done) => {
++      entered = done
++    })
++    const checked = new Promise<boolean>((done) => {
++      resolve = done
++    })
++    let current = true
++    const intent: ReminderIntent = {
++      fresh: () => {
++        entered()
++        return checked
++      },
++      local: () => current,
++    }
++    const pending =
++      action === 'permission'
++        ? f.notifications.requestPermission(intent)
++        : f.notifications.schedule(Date.now() + 86400000, intent)
++    await began
++    current = false
++    resolve(true)
++    await pending
++    expect(f.plugin.requestPermissions).not.toHaveBeenCalled()
++    expect(f.plugin.schedule).not.toHaveBeenCalled()
++  }
++})
++it('scoped cleanup whose authority changes during plugin await never cancels a replacement reminder', async () => {
++  const f = fixture()
++  await f.notifications.checkPermission()
++  let current = true
++  const pending = f.notifications.clear({
++    fresh: async () => current,
++    local: () => current,
++  })
++  current = false
++  expect(await pending).toBe(false)
++  expect(f.plugin.cancel).not.toHaveBeenCalled()
++  expect(f.plugin.removeDeliveredNotificationsById).not.toHaveBeenCalled()
++})
++it('scoped cleanup stops after a lost generation instead of removing replacement delivered notifications', async () => {
++  const f = fixture()
++  let current = true
++  f.plugin.cancel.mockImplementation(async () => {
++    current = false
++  })
++  expect(
++    await f.notifications.clear({
++      fresh: async () => current,
++      local: () => current,
++    }),
++  ).toBe(false)
++  expect(f.plugin.cancel).toHaveBeenCalledTimes(1)
++  expect(f.plugin.removeDeliveredNotificationsById).not.toHaveBeenCalled()
++  expect(f.plugin.getPending).not.toHaveBeenCalled()
++})
+--- /dev/null
++++ b/apps/capture-pwa/tests/sync-reminder.test.ts
+@@ -0,0 +1,764 @@
++import { expect, it, vi } from 'vitest'
++import {
++  createSyncReminder,
++  initialReminderState,
++  REMINDER_DELAY,
++  type ReminderContext,
++  type ReminderStore,
++} from '../src/syncReminder'
++import {
++  selectReminderNotifications,
++  SYNC_REMINDER_ID,
++  type ReminderNotifications,
++  type ReminderPermission,
++} from '../src/platform/notifications'
++import type { LocalNotificationsPlugin } from '@capacitor/local-notifications'
++
++const deferred = <T>() => {
++  let resolve!: (value: T) => void
++  const promise = new Promise<T>((done) => {
++    resolve = done
++  })
++  return { promise, resolve }
++}
++function fixture() {
++  let state = initialReminderState()
++  let tail: Promise<unknown> = Promise.resolve()
++  const store: ReminderStore = {
++    read: async () => structuredClone(state),
++    update(change) {
++      const next = tail.then(() => {
++        state = structuredClone(change(structuredClone(state)))
++        return structuredClone(state)
++      })
++      tail = next
++      return next
++    },
++  }
++  let current: ReminderContext = {
++    owner: 'fictional-owner',
++    captureLive: true,
++    gate: 'open',
++    revision: 0,
++    hasWork: true,
++    blocked: false,
++  }
++  const notifications: ReminderNotifications = {
++    supported: true,
++    checkPermission: vi.fn(async (): Promise<ReminderPermission> => 'granted'),
++    requestPermission: vi.fn(
++      async (): Promise<ReminderPermission> => 'granted',
++    ),
++    schedule: vi.fn(async () => true),
++    clear: vi.fn(async () => true),
++    onTap: vi.fn(async () => async () => undefined),
++  }
++  const focusQueue = vi.fn()
++  const changed = vi.fn()
++  let lockTail: Promise<unknown> = Promise.resolve()
++  const lock = <T>(run: () => Promise<T>): Promise<T> => {
++    const next = lockTail.then(run)
++    lockTail = next
++    return next
++  }
++  const make = (provider = notifications) =>
++    createSyncReminder({
++      notifications: provider,
++      store,
++      context: async () => ({ ...current }),
++      focusQueue,
++      changed,
++      lock,
++      now: () => 1_800_000_000_000,
++    })
++  return {
++    make,
++    store,
++    notifications,
++    focusQueue,
++    changed,
++    get state() {
++      return state
++    },
++    updateContext(change: Partial<ReminderContext>) {
++      current = { ...current, ...change }
++    },
++  }
++}
++
++it('startup clears owned state but never asks permission or schedules without opt-in', async () => {
++  const f = fixture(),
++    reminder = f.make()
++  await reminder.start()
++  expect(f.notifications.clear).toHaveBeenCalled()
++  expect(f.notifications.requestPermission).not.toHaveBeenCalled()
++  expect(f.notifications.schedule).not.toHaveBeenCalled()
++  expect(f.state.enabled).toBe(false)
++})
++it('explicit opt-in schedules once after one day and refresh/partial sync never re-arms', async () => {
++  const f = fixture(),
++    reminder = f.make()
++  await reminder.start()
++  await reminder.enable()
++  expect(f.notifications.requestPermission).toHaveBeenCalledTimes(1)
++  expect(f.notifications.schedule).toHaveBeenCalledExactlyOnceWith(
++    1_800_000_000_000 + REMINDER_DELAY,
++    expect.objectContaining({
++      fresh: expect.any(Function),
++      local: expect.any(Function),
++    }),
++  )
++  await Promise.all([
++    reminder.refresh(),
++    reminder.refresh(),
++    reminder.refresh(),
++  ])
++  await reminder.synced()
++  expect(f.notifications.schedule).toHaveBeenCalledTimes(1)
++  expect(f.state.consumed).toBe(true)
++  f.updateContext({ hasWork: false })
++  await reminder.refresh()
++  f.updateContext({ hasWork: true })
++  await reminder.refresh()
++  expect(f.notifications.schedule).toHaveBeenCalledTimes(2)
++})
++it('restart cleans native state and preserves consumed-cycle intent without another reminder', async () => {
++  const f = fixture(),
++    first = f.make()
++  await first.start()
++  await first.enable()
++  await first.stop()
++  await first.settled()
++  const second = f.make()
++  await second.start()
++  await second.refresh()
++  expect(f.state.enabled).toBe(true)
++  expect(f.notifications.schedule).toHaveBeenCalledTimes(1)
++})
++for (const permission of ['denied', 'unknown'] as const) {
++  it(`explicit ${permission} permission response leaves capture usable and never schedules`, async () => {
++    const f = fixture(),
++      reminder = f.make()
++    vi.mocked(f.notifications.requestPermission).mockResolvedValue(permission)
++    await reminder.start()
++    await reminder.enable()
++    await reminder.refresh()
++    expect(f.state.enabled).toBe(false)
++    expect(f.notifications.schedule).not.toHaveBeenCalled()
++    expect(f.notifications.requestPermission).toHaveBeenCalledTimes(1)
++  })
++}
++for (const change of [
++  { owner: null },
++  { owner: 'different-fictional-owner' },
++  { gate: 'closed' },
++  { gate: 'unknown' },
++  { captureLive: false },
++  { hasWork: false },
++  { blocked: true },
++  { revision: 1 },
++] satisfies Partial<ReminderContext>[]) {
++  it(`invalidates and clears after the context transition ${JSON.stringify(change)}`, async () => {
++    const f = fixture(),
++      reminder = f.make()
++    await reminder.start()
++    await reminder.enable()
++    const clears = vi.mocked(f.notifications.clear).mock.calls.length
++    f.updateContext(change)
++    await reminder.refresh()
++    expect(vi.mocked(f.notifications.clear).mock.calls.length).toBeGreaterThan(
++      clears,
++    )
++    expect(f.notifications.schedule).toHaveBeenCalledTimes(1)
++  })
++}
++it('known closed/unknown/foreign/held queues cannot ask permission even on an opt-in click', async () => {
++  for (const change of [
++    { gate: 'closed' },
++    { gate: 'unknown' },
++    { owner: null },
++    { blocked: true },
++  ] satisfies Partial<ReminderContext>[]) {
++    const f = fixture()
++    f.updateContext(change)
++    const reminder = f.make()
++    await reminder.start()
++    await reminder.enable()
++    expect(f.notifications.requestPermission).not.toHaveBeenCalled()
++    expect(f.notifications.schedule).not.toHaveBeenCalled()
++  }
++})
++it('settings permission revocation cancels the one-shot without requesting permission again', async () => {
++  const f = fixture(),
++    reminder = f.make()
++  await reminder.start()
++  await reminder.enable()
++  const clears = vi.mocked(f.notifications.clear).mock.calls.length
++  vi.mocked(f.notifications.checkPermission).mockResolvedValue('denied')
++  await reminder.refresh()
++  expect(vi.mocked(f.notifications.clear).mock.calls.length).toBeGreaterThan(
++    clears,
++  )
++  expect(f.notifications.requestPermission).toHaveBeenCalledTimes(1)
++  expect(f.notifications.schedule).toHaveBeenCalledTimes(1)
++})
++for (const invalidate of ['disable', 'hold', 'stop'] as const) {
++  it(`a late permission grant after ${invalidate} cannot re-enable intent`, async () => {
++    const f = fixture(),
++      reminder = f.make(),
++      pending = deferred<ReminderPermission>()
++    const entered = deferred<void>()
++    vi.mocked(f.notifications.requestPermission).mockImplementation(() => {
++      entered.resolve()
++      return pending.promise
++    })
++    await reminder.start()
++    const enabling = reminder.enable()
++    await entered.promise
++    await reminder[invalidate]()
++    pending.resolve('granted')
++    await enabling
++    await reminder.settled()
++    expect(f.state.enabled).toBe(false)
++    expect(f.notifications.schedule).not.toHaveBeenCalled()
++  })
++}
++it('a late schedule completes before cleanup, so an earlier cancellation cannot be the sole proof', async () => {
++  const f = fixture(),
++    reminder = f.make(),
++    pending = deferred<boolean>(),
++    entered = deferred<void>()
++  const order: string[] = []
++  vi.mocked(f.notifications.schedule).mockImplementation(async () => {
++    entered.resolve()
++    await pending.promise
++    order.push('schedule-finished')
++    return true
++  })
++  vi.mocked(f.notifications.clear).mockImplementation(async () => {
++    order.push('clear')
++    return true
++  })
++  await reminder.start()
++  const enabling = reminder.enable()
++  await entered.promise
++  await reminder.disable()
++  expect(f.state.cleanupPending).toBe(true)
++  pending.resolve(true)
++  await enabling
++  await reminder.settled()
++  expect(order.slice(order.indexOf('schedule-finished') + 1)).toContain('clear')
++  expect(f.state.enabled).toBe(false)
++  expect(f.state.cleanupPending).toBe(false)
++})
++it('a schedule reply that never settles does not block the durable rights fence', async () => {
++  const f = fixture(),
++    reminder = f.make(),
++    entered = deferred<void>()
++  vi.mocked(f.notifications.schedule).mockImplementation(() => {
++    entered.resolve()
++    return new Promise(() => undefined)
++  })
++  await reminder.start()
++  void reminder.enable()
++  await entered.promise
++  await reminder.hold()
++  const request = vi.fn(async () => 'requested')
++  expect(await request()).toBe('requested')
++  expect(f.state.enabled).toBe(false)
++  expect(f.state.cleanupPending).toBe(true)
++})
++it('unknown cleanup/readback prevents scheduling until actual absence is verified', async () => {
++  const f = fixture(),
++    reminder = f.make()
++  vi.mocked(f.notifications.clear).mockResolvedValue(false)
++  await reminder.start()
++  await reminder.enable()
++  await reminder.refresh()
++  expect(f.state.cleanupPending).toBe(true)
++  expect(f.notifications.schedule).not.toHaveBeenCalled()
++  vi.mocked(f.notifications.clear).mockResolvedValue(true)
++  await reminder.refresh()
++  await reminder.enable()
++  expect(f.notifications.schedule).toHaveBeenCalledTimes(1)
++})
++it('a lost schedule outcome consumes the cycle and remains conservative on restart', async () => {
++  const f = fixture(),
++    first = f.make()
++  vi.mocked(f.notifications.schedule).mockResolvedValue(false)
++  await first.start()
++  await first.enable()
++  await first.stop()
++  await first.settled()
++  const second = f.make()
++  await second.start()
++  await second.refresh()
++  expect(f.state.consumed).toBe(true)
++  expect(f.notifications.schedule).toHaveBeenCalledTimes(1)
++})
++it('overlapping coordinators atomically share one cycle and native operations', async () => {
++  const f = fixture(),
++    first = f.make(),
++    second = f.make()
++  await Promise.all([first.start(), second.start()])
++  await first.enable()
++  await Promise.all([
++    first.refresh(),
++    second.refresh(),
++    first.refresh(),
++    second.refresh(),
++  ])
++  expect(f.notifications.schedule).toHaveBeenCalledTimes(1)
++})
++it('tap checks fresh local ownership/gate/permission and disposal prevents stale callbacks', async () => {
++  const f = fixture(),
++    reminder = f.make()
++  let tap: () => void = () => undefined
++  const remove = vi.fn(async () => undefined)
++  vi.mocked(f.notifications.onTap).mockImplementation(async (callback) => {
++    tap = callback
++    return remove
++  })
++  await reminder.start()
++  await reminder.enable()
++  tap()
++  await reminder.settled()
++  expect(f.focusQueue).toHaveBeenCalledTimes(1)
++  f.updateContext({ gate: 'closed' })
++  tap()
++  await reminder.settled()
++  expect(f.focusQueue).toHaveBeenCalledTimes(1)
++  await reminder.stop()
++  await reminder.settled()
++  tap()
++  await reminder.settled()
++  expect(remove).toHaveBeenCalledTimes(1)
++  expect(f.focusQueue).toHaveBeenCalledTimes(1)
++})
++it('unknown thrown context/native details remain generic and never logged', async () => {
++  const f = fixture(),
++    changed = vi.fn(),
++    log = vi.spyOn(console, 'error')
++  const reminder = createSyncReminder({
++    notifications: f.notifications,
++    store: f.store,
++    context: async () => {
++      throw new Error('fictional-private-canary')
++    },
++    focusQueue: f.focusQueue,
++    changed,
++    lock: async (run) => run(),
++  })
++  await reminder.start()
++  await reminder.enable()
++  expect(JSON.stringify(changed.mock.calls)).not.toContain(
++    'fictional-private-canary',
++  )
++  expect(log).not.toHaveBeenCalled()
++  log.mockRestore()
++})
++it('unsupported cross-context locks hold scheduling and still attempt owned cleanup', async () => {
++  const f = fixture(),
++    reminder = createSyncReminder({
++      notifications: f.notifications,
++      store: f.store,
++      context: async () => ({
++        owner: 'fictional-owner',
++        captureLive: true,
++        gate: 'open',
++        revision: 0,
++        hasWork: true,
++        blocked: false,
++      }),
++      focusQueue: f.focusQueue,
++      lock: async () => undefined,
++    })
++  await reminder.start()
++  await reminder.enable()
++  expect(f.notifications.clear).toHaveBeenCalled()
++  expect(f.notifications.requestPermission).not.toHaveBeenCalled()
++  expect(f.notifications.schedule).not.toHaveBeenCalled()
++})
++
++it('a listener registration arriving after stop removes its handle and ignores stale callbacks without storage writes', async () => {
++  const f = fixture(),
++    entered = deferred<void>(),
++    registration = deferred<() => Promise<void>>()
++  const remove = vi.fn(async () => undefined),
++    writes = vi.spyOn(f.store, 'update')
++  let tap: () => void = () => undefined
++  vi.mocked(f.notifications.onTap).mockImplementation((callback) => {
++    tap = callback
++    entered.resolve()
++    return registration.promise
++  })
++  const reminder = f.make(),
++    starting = reminder.start()
++  await entered.promise
++  await reminder.stop()
++  registration.resolve(remove)
++  await starting
++  await reminder.settled()
++  expect(remove).toHaveBeenCalledTimes(1)
++  const before = writes.mock.calls.length
++  tap()
++  await reminder.settled()
++  expect(writes).toHaveBeenCalledTimes(before)
++  expect(f.focusQueue).not.toHaveBeenCalled()
++})
++it('a durable hold in another coordinator during actual adapter await prevents SDK schedule dispatch', async () => {
++  const f = fixture()
++  const plugin = {
++    checkPermissions: vi.fn(async () => ({ display: 'granted' })),
++    requestPermissions: vi.fn(async () => ({ display: 'granted' })),
++    schedule: vi.fn(async () => ({
++      notifications: [{ id: SYNC_REMINDER_ID }],
++    })),
++    cancel: vi.fn(async () => undefined),
++    removeDeliveredNotificationsById: vi.fn(async () => undefined),
++    getPending: vi.fn(async () => ({ notifications: [] })),
++    getDeliveredNotifications: vi.fn(async () => ({ notifications: [] })),
++    addListener: vi.fn(async () => ({ remove: async () => undefined })),
++  }
++  const actual = selectReminderNotifications(true, async () => ({
++    api: plugin as unknown as LocalNotificationsPlugin,
++  }))
++  const peer = f.make(actual)
++  let held: Promise<void> | undefined
++  const provider: ReminderNotifications = {
++    ...actual,
++    schedule(at, intent) {
++      const pending = actual.schedule(at, intent)
++      // The cached plugin Promise yields, so the peer's durable hold precedes actual SDK dispatch.
++      held = peer.hold()
++      return pending
++    },
++  }
++  const original = f.make(provider)
++  await original.start()
++  await original.enable()
++  await held
++  await original.settled()
++  await peer.settled()
++  expect(f.state.enabled).toBe(false)
++  expect(plugin.schedule).not.toHaveBeenCalled()
++})
++it('a durable peer hold during actual adapter permission await cannot dispatch a native prompt', async () => {
++  const f = fixture()
++  const plugin = {
++    checkPermissions: vi.fn(async () => ({ display: 'granted' })),
++    requestPermissions: vi.fn(async () => ({ display: 'granted' })),
++    schedule: vi.fn(async () => ({
++      notifications: [{ id: SYNC_REMINDER_ID }],
++    })),
++    cancel: vi.fn(async () => undefined),
++    removeDeliveredNotificationsById: vi.fn(async () => undefined),
++    getPending: vi.fn(async () => ({ notifications: [] })),
++    getDeliveredNotifications: vi.fn(async () => ({ notifications: [] })),
++    addListener: vi.fn(async () => ({ remove: async () => undefined })),
++  }
++  const actual = selectReminderNotifications(true, async () => ({
++    api: plugin as unknown as LocalNotificationsPlugin,
++  }))
++  const peer = f.make(actual)
++  let held: Promise<void> | undefined
++  const provider: ReminderNotifications = {
++    ...actual,
++    requestPermission(intent) {
++      const pending = actual.requestPermission(intent)
++      held = peer.hold()
++      return pending
++    },
++  }
++  const original = f.make(provider)
++  await original.start()
++  await original.enable()
++  await held
++  await original.settled()
++  await peer.settled()
++  expect(f.state.enabled).toBe(false)
++  expect(plugin.requestPermissions).not.toHaveBeenCalled()
++  expect(plugin.schedule).not.toHaveBeenCalled()
++})
++for (const transition of [
++  { gate: 'closed' },
++  { owner: 'different-fictional-owner' },
++  { revision: 1 },
++  { blocked: true },
++] satisfies Partial<ReminderContext>[]) {
++  it(`fresh context after the actual adapter await fences ${JSON.stringify(transition)} before SDK scheduling`, async () => {
++    const f = fixture()
++    const plugin = {
++      checkPermissions: vi.fn(async () => ({ display: 'granted' })),
++      requestPermissions: vi.fn(async () => ({ display: 'granted' })),
++      schedule: vi.fn(async () => ({
++        notifications: [{ id: SYNC_REMINDER_ID }],
++      })),
++      cancel: vi.fn(async () => undefined),
++      removeDeliveredNotificationsById: vi.fn(async () => undefined),
++      getPending: vi.fn(async () => ({ notifications: [] })),
++      getDeliveredNotifications: vi.fn(async () => ({ notifications: [] })),
++      addListener: vi.fn(async () => ({ remove: async () => undefined })),
++    }
++    const actual = selectReminderNotifications(true, async () => ({
++      api: plugin as unknown as LocalNotificationsPlugin,
++    }))
++    const provider: ReminderNotifications = {
++      ...actual,
++      schedule(at, intent) {
++        const pending = actual.schedule(at, intent)
++        f.updateContext(transition)
++        return pending
++      },
++    }
++    const reminder = f.make(provider)
++    await reminder.start()
++    await reminder.enable()
++    await reminder.settled()
++    expect(plugin.schedule).not.toHaveBeenCalled()
++  })
++}
++it('repeated start removes an old lifecycle listener and keeps only the current callback usable', async () => {
++  const f = fixture(),
++    taps: (() => void)[] = [],
++    removals: ReturnType<typeof vi.fn>[] = []
++  vi.mocked(f.notifications.onTap).mockImplementation(async (callback) => {
++    taps.push(callback)
++    const remove = vi.fn(async () => undefined)
++    removals.push(remove)
++    return remove
++  })
++  const reminder = f.make()
++  await reminder.start()
++  await reminder.enable()
++  await reminder.start()
++  expect(removals[0]).toHaveBeenCalledTimes(1)
++  const writes = vi.spyOn(f.store, 'update')
++  taps[0]()
++  await reminder.settled()
++  expect(writes).not.toHaveBeenCalled()
++  taps[1]()
++  await reminder.settled()
++  expect(f.focusQueue).toHaveBeenCalledTimes(1)
++  await reminder.stop()
++  await reminder.settled()
++  expect(removals[1]).toHaveBeenCalledTimes(1)
++})
++it('disposed coordinator actions cannot overwrite or clear a replacement owner', async () => {
++  const f = fixture()
++  const oldContext: ReminderContext = {
++    owner: 'old-fictional-owner',
++    captureLive: true,
++    gate: 'open',
++    revision: 0,
++    hasWork: true,
++    blocked: false,
++  }
++  const nextContext = {
++    ...oldContext,
++    owner: 'new-fictional-owner',
++    revision: 1,
++  }
++  const make = (context: ReminderContext) =>
++    createSyncReminder({
++      notifications: f.notifications,
++      store: f.store,
++      context: async () => ({ ...context }),
++      focusQueue: f.focusQueue,
++      lock: async (run) => run(),
++    })
++  const old = make(oldContext)
++  await old.start()
++  await old.enable()
++  await old.stop()
++  await old.settled()
++  const replacement = make(nextContext)
++  await replacement.start()
++  await replacement.enable()
++  await replacement.settled()
++  const before = structuredClone(f.state),
++    clears = vi.mocked(f.notifications.clear).mock.calls.length
++  const reads = vi.spyOn(f.store, 'read'),
++    writes = vi.spyOn(f.store, 'update')
++  for (const action of [
++    'refresh',
++    'enable',
++    'disable',
++    'hold',
++    'gatesChanged',
++    'synced',
++    'stop',
++  ] as const)
++    await old[action]()
++  await old.settled()
++  expect(f.state).toEqual(before)
++  expect(f.notifications.clear).toHaveBeenCalledTimes(clears)
++  expect(reads).not.toHaveBeenCalled()
++  expect(writes).not.toHaveBeenCalled()
++})
++it('a context await begun before stop cannot observe or commit the old owner after replacement', async () => {
++  const f = fixture(),
++    entered = deferred<void>(),
++    result = deferred<ReminderContext>()
++  const oldContext: ReminderContext = {
++    owner: 'old-fictional-owner',
++    captureLive: true,
++    gate: 'open',
++    revision: 0,
++    hasWork: true,
++    blocked: false,
++  }
++  let delayed = false
++  const old = createSyncReminder({
++    notifications: f.notifications,
++    store: f.store,
++    context: async () => {
++      if (delayed) {
++        entered.resolve()
++        return result.promise
++      }
++      return { ...oldContext }
++    },
++    focusQueue: f.focusQueue,
++    lock: async (run) => run(),
++  })
++  await old.start()
++  await old.enable()
++  delayed = true
++  const refreshing = old.refresh()
++  await entered.promise
++  await old.stop()
++  const replacement = createSyncReminder({
++    notifications: f.notifications,
++    store: f.store,
++    context: async () => ({
++      ...oldContext,
++      owner: 'new-fictional-owner',
++      revision: 1,
++    }),
++    focusQueue: f.focusQueue,
++    lock: async (run) => run(),
++  })
++  await replacement.start()
++  await replacement.enable()
++  await replacement.settled()
++  const before = structuredClone(f.state),
++    clears = vi.mocked(f.notifications.clear).mock.calls.length
++  result.resolve(oldContext)
++  await refreshing
++  await old.settled()
++  expect(f.state).toEqual(before)
++  expect(f.notifications.clear).toHaveBeenCalledTimes(clears)
++})
++it('an old refresh queued at the lock boundary cannot execute after disposal and replacement', async () => {
++  const f = fixture(),
++    entered = deferred<void>(),
++    released = deferred<void>()
++  const oldContext: ReminderContext = {
++    owner: 'old-fictional-owner',
++    captureLive: true,
++    gate: 'open',
++    revision: 0,
++    hasWork: true,
++    blocked: false,
++  }
++  let delayNext = false
++  const old = createSyncReminder({
++    notifications: f.notifications,
++    store: f.store,
++    context: async () => ({ ...oldContext }),
++    focusQueue: f.focusQueue,
++    lock: async (run) => {
++      if (delayNext) {
++        delayNext = false
++        entered.resolve()
++        await released.promise
++      }
++      return run()
++    },
++  })
++  await old.start()
++  await old.enable()
++  delayNext = true
++  const refreshing = old.refresh()
++  await entered.promise
++  await old.stop()
++  const replacement = createSyncReminder({
++    notifications: f.notifications,
++    store: f.store,
++    context: async () => ({
++      ...oldContext,
++      owner: 'new-fictional-owner',
++      revision: 1,
++    }),
++    focusQueue: f.focusQueue,
++    lock: async (run) => run(),
++  })
++  await replacement.start()
++  await replacement.enable()
++  await replacement.settled()
++  const before = structuredClone(f.state),
++    clears = vi.mocked(f.notifications.clear).mock.calls.length
++  released.resolve()
++  await refreshing
++  await old.settled()
++  expect(f.state).toEqual(before)
++  expect(f.notifications.clear).toHaveBeenCalledTimes(clears)
++})
++it('an admitted update that resumes before committing cannot overwrite a replacement lifetime', async () => {
++  const f = fixture(),
++    entered = deferred<void>(),
++    released = deferred<void>()
++  const originalUpdate = f.store.update
++  let delayNext = false
++  f.store.update = async (change) => {
++    if (delayNext) {
++      delayNext = false
++      entered.resolve()
++      await released.promise
++    }
++    return originalUpdate(change)
++  }
++  const oldContext: ReminderContext = {
++    owner: 'old-fictional-owner',
++    captureLive: true,
++    gate: 'open',
++    revision: 0,
++    hasWork: true,
++    blocked: false,
++  }
++  const old = createSyncReminder({
++    notifications: f.notifications,
++    store: f.store,
++    context: async () => ({ ...oldContext }),
++    focusQueue: f.focusQueue,
++    lock: async (run) => run(),
++  })
++  await old.start()
++  await old.enable()
++  delayNext = true
++  const refreshing = old.refresh()
++  await entered.promise
++  await old.stop()
++  const replacement = createSyncReminder({
++    notifications: f.notifications,
++    store: f.store,
++    context: async () => ({
++      ...oldContext,
++      owner: 'new-fictional-owner',
++      revision: 1,
++    }),
++    focusQueue: f.focusQueue,
++    lock: async (run) => run(),
++  })
++  await replacement.start()
++  await replacement.enable()
++  await replacement.settled()
++  const before = structuredClone(f.state),
++    clears = vi.mocked(f.notifications.clear).mock.calls.length
++  released.resolve()
++  await refreshing
++  await old.settled()
++  expect(f.state).toEqual(before)
++  expect(f.notifications.clear).toHaveBeenCalledTimes(clears)
++})
+--- /dev/null
++++ b/apps/capture-pwa/tests/reminder-queue.test.ts
+@@ -0,0 +1,208 @@
++import 'fake-indexeddb/auto'
++import { IDBFactory } from 'fake-indexeddb'
++import { openDB } from 'idb'
++import { afterEach, beforeEach, expect, it, vi } from 'vitest'
++import { TERMS_VERSION } from '../src/terms'
++import type { QueueRecord } from '../src/types'
++
++const record = (): QueueRecord => ({
++  accuracyM: null,
++  attributionName: 'Synthetic contributor',
++  capturedAt: new Date().toISOString(),
++  deviceModel: 'fictional device',
++  disturbed: false,
++  grantId: 'fictional-grant',
++  landCover: 'bare',
++  latitude: 0,
++  longitude: 0,
++  photos: [],
++  ownerUid: 'fictional-owner',
++  queuedAt: new Date().toISOString(),
++  submissionId: 'fictional-submission',
++  surfaceCondition: 'dry',
++  termsVersion: TERMS_VERSION,
++})
++beforeEach(() => {
++  vi.resetModules()
++  vi.stubGlobal('indexedDB', new IDBFactory())
++})
++afterEach(() => {
++  vi.unstubAllGlobals()
++})
++for (const version of [1, 2, 3]) {
++  it(`additive reminder upgrade preserves version ${version} submission/draft/library bytes`, async () => {
++    const legacy = await openDB('gsip-capture-v1', version, {
++      upgrade(db) {
++        db.createObjectStore('submissions', { keyPath: 'submissionId' })
++        if (version >= 2)
++          db.createObjectStore('draftPhotos', { keyPath: 'shotType' })
++        if (version >= 3) {
++          db.createObjectStore('libraryDraft')
++          db.createObjectStore('libraryNamespace')
++          db.createObjectStore('queueState')
++        }
++      },
++    })
++    const original = record()
++    await legacy.put('submissions', original)
++    if (version >= 2)
++      await legacy.put('draftPhotos', {
++        shotType: 'A',
++        photo: {
++          bytes: new Uint8Array([1, 2]),
++          mimeType: 'image/jpeg',
++          method: 'file',
++        },
++      })
++    if (version >= 3) {
++      await legacy.put(
++        'libraryDraft',
++        { syntheticMarker: 'legacy-library-draft' },
++        'current',
++      )
++      await legacy.put(
++        'libraryNamespace',
++        { nodeId: 'fictional-node', ownerUid: 'fictional-owner' },
++        'current',
++      )
++      await legacy.put('queueState', 12, 'generation')
++    }
++    legacy.close()
++    const queue = await import('../src/queue')
++    expect(await queue.queued()).toEqual([original])
++    if (version >= 2)
++      expect(Array.from((await queue.draftPhotos()).A?.bytes ?? [])).toEqual([
++        1, 2,
++      ])
++    if (version >= 3) {
++      expect(await queue.queueRevision()).toBe(12)
++      expect(await queue.savedLibraryDraft()).toEqual({
++        syntheticMarker: 'legacy-library-draft',
++      })
++      expect(await queue.libraryNodeForOwner('fictional-owner')).toBe(
++        'fictional-node',
++      )
++    }
++    expect((await queue.indexedDbReminderStore.read()).enabled).toBe(false)
++    // Mutating reminder intent never deletes user content.
++    await queue.indexedDbReminderStore.update((state) => ({
++      ...state,
++      owner: 'fictional-owner',
++      enabled: true,
++    }))
++    await queue.indexedDbReminderStore.update((state) => ({
++      ...state,
++      enabled: false,
++      cleanupPending: true,
++    }))
++    expect(await queue.queued()).toEqual([original])
++    if (version >= 2)
++      expect(Array.from((await queue.draftPhotos()).A?.bytes ?? [])).toEqual([
++        1, 2,
++      ])
++  })
++}
++it('clearQueue atomically disables intent and fences stale OS completion without storing sessions', async () => {
++  const queue = await import('../src/queue')
++  await queue.enqueue(record())
++  const before = await queue.indexedDbReminderStore.update((state) => ({
++    ...state,
++    owner: 'fictional-owner',
++    enabled: true,
++    consumed: true,
++    cycleOpen: true,
++  }))
++  expect(await queue.clearQueue()).toBe(1)
++  const state = await queue.indexedDbReminderStore.read()
++  expect(state.enabled).toBe(false)
++  expect(state.cleanupPending).toBe(true)
++  expect(state.epoch).toBeGreaterThan(before.epoch)
++  expect(state.cycleOpen).toBe(false)
++  expect(await queue.queued()).toEqual([])
++  expect(Object.keys(state).sort()).toEqual(
++    [
++      'allowed',
++      'blocked',
++      'cleanupPending',
++      'consumed',
++      'cycleOpen',
++      'enabled',
++      'epoch',
++      'owner',
++      'revision',
++    ].sort(),
++  )
++})
++it('fresh owner/revision/hold snapshot exposes booleans only and refuses foreign or unresolved work', async () => {
++  const queue = await import('../src/queue')
++  await queue.enqueue(record())
++  expect(
++    await queue.queueReminderContext('fictional-owner', true, 'open', false),
++  ).toMatchObject({ hasWork: true, blocked: false })
++  expect(
++    await queue.queueReminderContext(null, true, 'open', false),
++  ).toMatchObject({ blocked: true })
++  expect(
++    await queue.queueReminderContext(
++      'foreign-fictional-owner',
++      true,
++      'open',
++      false,
++    ),
++  ).toMatchObject({ blocked: true })
++  for (const field of [
++    'heldAt',
++    'deadLetteredAt',
++    'termsExpiredAt',
++    'libraryConflictAt',
++  ] as const) {
++    await queue.enqueue({ ...record(), [field]: 'fictional-hold' })
++    expect(
++      (await queue.queueReminderContext('fictional-owner', true, 'open', false))
++        .blocked,
++    ).toBe(true)
++  }
++  await queue.enqueue({ ...record(), termsVersion: 'old-terms' })
++  expect(
++    (await queue.queueReminderContext('fictional-owner', true, 'open', false))
++      .blocked,
++  ).toBe(true)
++  await queue.enqueue({ ...record(), acceptedAt: '2000-01-01T00:00:00Z' })
++  expect(
++    (await queue.queueReminderContext('fictional-owner', true, 'open', false))
++      .blocked,
++  ).toBe(true)
++  await queue.enqueue({
++    ...record(),
++    termsVersion: 'old-terms',
++    reconfirmedAt: new Date().toISOString(),
++    reconfirmedTermsVersion: TERMS_VERSION,
++  })
++  expect(
++    (await queue.queueReminderContext('fictional-owner', true, 'open', false))
++      .blocked,
++  ).toBe(false)
++  const value = await queue.queueReminderContext(
++    'fictional-owner',
++    true,
++    'open',
++    false,
++  )
++  expect(Object.keys(value).sort()).toEqual(
++    ['owner', 'captureLive', 'gate', 'revision', 'hasWork', 'blocked'].sort(),
++  )
++  expect(JSON.stringify(value)).not.toContain('fictional-submission')
++})
++it('an unchanged reminder mutation submits no IndexedDB write after a lifecycle fence', async () => {
++  const queue = await import('../src/queue')
++  await queue.indexedDbReminderStore.update((state) => ({
++    ...state,
++    owner: 'fictional-owner',
++  }))
++  const before = await queue.indexedDbReminderStore.read()
++  const writes = vi.spyOn(IDBObjectStore.prototype, 'put')
++  const after = await queue.indexedDbReminderStore.update((state) => state)
++  expect(writes).not.toHaveBeenCalled()
++  expect(after).toEqual(before)
++  writes.mockRestore()
++})
+--- /dev/null
++++ b/apps/capture-pwa/tests/reminder-rights.test.tsx
+@@ -0,0 +1,240 @@
++import 'fake-indexeddb/auto'
++import {
++  cleanup,
++  fireEvent,
++  render,
++  screen,
++  waitFor,
++} from '@testing-library/react'
++import { afterEach, beforeEach, expect, it, vi } from 'vitest'
++import { YourData } from '../src/YourData'
++import { clearQueue, enqueue, queued } from '../src/queue'
++import {
++  createSyncReminder,
++  initialReminderState,
++  type ReminderStore,
++  type SyncReminderState,
++} from '../src/syncReminder'
++import type { ReminderNotifications } from '../src/platform/notifications'
++import type { GsipClient } from '../src/supabase'
++import { TERMS_VERSION } from '../src/terms'
++import type { QueueRecord } from '../src/types'
++
++const mocks = vi.hoisted(() => ({
++  request: vi.fn(async (): Promise<string> => 'requested'),
++}))
++vi.mock('../src/supabase', () => ({
++  latestDeletionRequest: async () => null,
++  requestDeletion: mocks.request,
++}))
++beforeEach(async () => {
++  await clearQueue()
++  mocks.request.mockReset()
++  mocks.request.mockResolvedValue('requested')
++})
++afterEach(() => {
++  cleanup()
++})
++const record: QueueRecord = {
++  accuracyM: null,
++  attributionName: 'Synthetic contributor',
++  capturedAt: '2026-10-13T00:00:00Z',
++  deviceModel: 'fictional device',
++  disturbed: false,
++  grantId: 'fictional-grant',
++  landCover: 'bare',
++  latitude: 0,
++  longitude: 0,
++  photos: [],
++  ownerUid: 'fictional-owner',
++  queuedAt: '2026-10-13T00:00:00Z',
++  submissionId: 'fictional-submission',
++  surfaceCondition: 'dry',
++  termsVersion: TERMS_VERSION,
++}
++function confirm(kind: 'withdrawal' | 'account deletion') {
++  fireEvent.click(
++    screen.getByRole('button', {
++      name:
++        kind === 'withdrawal'
++          ? /withdraw my contributions/i
++          : /delete my account/i,
++    }),
++  )
++  fireEvent.change(screen.getByLabelText(/to confirm/i), {
++    target: { value: kind === 'withdrawal' ? 'WITHDRAW' : 'DELETE' },
++  })
++  fireEvent.click(
++    screen.getByRole('button', { name: new RegExp(`confirm ${kind}`, 'i') }),
++  )
++}
++for (const kind of ['withdrawal', 'account deletion'] as const) {
++  it(`a never-settling OS schedule cannot block confirmed ${kind} or falsify its successful outcome`, async () => {
++    let state = initialReminderState(),
++      entered!: () => void
++    const began = new Promise<void>((resolve) => {
++      entered = resolve
++    })
++    const store: ReminderStore = {
++      read: async () => ({ ...state }),
++      update: async (change) => {
++        state = change({ ...state })
++        return { ...state }
++      },
++    }
++    const notifications: ReminderNotifications = {
++      supported: true,
++      clear: async () => true,
++      checkPermission: async () => 'granted',
++      requestPermission: async () => 'granted',
++      schedule: () => {
++        entered()
++        return new Promise(() => undefined)
++      },
++      onTap: async () => async () => undefined,
++    }
++    const reminder = createSyncReminder({
++      notifications,
++      store,
++      context: async () => ({
++        owner: 'fictional-owner',
++        captureLive: true,
++        gate: 'open',
++        revision: 0,
++        hasWork: true,
++        blocked: false,
++      }),
++      focusQueue: () => undefined,
++      lock: async (run) => run(),
++    })
++    await reminder.start()
++    void reminder.enable()
++    await began
++    await enqueue(record)
++    mocks.request.mockImplementation(async () => {
++      // The rights call begins after the durable local fence, but never waits for the OS.
++      expect(state.enabled).toBe(false)
++      expect(state.cleanupPending).toBe(true)
++      return 'requested'
++    })
++    const cleared = vi.fn(async () => undefined)
++    render(
++      <YourData
++        client={{} as GsipClient}
++        onBeforeRightsRequest={() => reminder.hold()}
++        onQueueCleared={cleared}
++      />,
++    )
++    confirm(kind)
++    await waitFor(() => expect(mocks.request).toHaveBeenCalledTimes(1))
++    expect(
++      await screen.findAllByText(new RegExp(`${kind} requested on`, 'i')),
++    ).toBeDefined()
++    expect(screen.queryByText(/request could not be sent/i)).toBeNull()
++    expect(await queued()).toEqual([])
++    expect(cleared).toHaveBeenCalledTimes(1)
++    expect(state.cleanupPending).toBe(true)
++  })
++}
++it('failed server rights requests preserve queue bytes after reminder intent is fenced', async () => {
++  await enqueue(record)
++  mocks.request.mockRejectedValue(new Error('fictional-server-failure'))
++  const fence = vi.fn(async () => undefined),
++    cleared = vi.fn(async () => undefined)
++  render(
++    <YourData
++      client={{} as GsipClient}
++      onBeforeRightsRequest={fence}
++      onQueueCleared={cleared}
++    />,
++  )
++  confirm('withdrawal')
++  expect(await screen.findByText(/request could not be sent/i)).toBeDefined()
++  expect(fence).toHaveBeenCalledTimes(1)
++  expect(await queued()).toEqual([record])
++  expect(cleared).not.toHaveBeenCalled()
++})
++it('device reminder storage/cleanup exceptions cannot falsify a successful existing rights request', async () => {
++  await enqueue(record)
++  render(
++    <YourData
++      client={{} as GsipClient}
++      onBeforeRightsRequest={async () => {
++        throw new Error('fictional-private-canary')
++      }}
++      onQueueCleared={async () => undefined}
++    />,
++  )
++  confirm('withdrawal')
++  expect(await screen.findAllByText(/withdrawal requested on/i)).toBeDefined()
++  expect(await queued()).toEqual([])
++  expect(document.body.textContent).not.toContain('fictional-private-canary')
++  expect(screen.queryByText(/request could not be sent/i)).toBeNull()
++})
++
++for (const kind of ['withdrawal', 'account deletion'] as const) {
++  it(`a lost OS cleanup reply does not block the existing ${kind} request`, async () => {
++    let state: SyncReminderState = {
++        ...initialReminderState(),
++        owner: 'fictional-owner',
++        enabled: true,
++      },
++      entered!: () => void
++    const began = new Promise<void>((resolve) => {
++      entered = resolve
++    })
++    const store: ReminderStore = {
++      read: async () => ({ ...state }),
++      update: async (change) => {
++        state = change({ ...state })
++        return { ...state }
++      },
++    }
++    const notifications: ReminderNotifications = {
++      supported: true,
++      clear: () => {
++        entered()
++        return new Promise(() => undefined)
++      },
++      checkPermission: async () => 'granted',
++      requestPermission: async () => 'granted',
++      schedule: async () => true,
++      onTap: async () => async () => undefined,
++    }
++    const reminder = createSyncReminder({
++      notifications,
++      store,
++      context: async () => ({
++        owner: 'fictional-owner',
++        captureLive: true,
++        gate: 'open',
++        revision: 0,
++        hasWork: true,
++        blocked: false,
++      }),
++      focusQueue: () => undefined,
++      lock: async (run) => run(),
++    })
++    void reminder.start()
++    await began
++    await enqueue(record)
++    mocks.request.mockImplementation(async () => {
++      expect(state.enabled).toBe(false)
++      expect(state.cleanupPending).toBe(true)
++      return 'requested'
++    })
++    render(
++      <YourData
++        client={{} as GsipClient}
++        onBeforeRightsRequest={() => reminder.hold()}
++        onQueueCleared={async () => undefined}
++      />,
++    )
++    confirm(kind)
++    expect(
++      await screen.findAllByText(new RegExp(`${kind} requested on`, 'i')),
++    ).not.toHaveLength(0)
++    expect(await queued()).toEqual([])
++    expect(state.cleanupPending).toBe(true)
++  })
++}
+--- /dev/null
++++ b/apps/capture-pwa/tests/reminder-app.test.tsx
+@@ -0,0 +1,156 @@
++import 'fake-indexeddb/auto'
++import {
++  cleanup,
++  fireEvent,
++  render,
++  screen,
++  waitFor,
++} from '@testing-library/react'
++import { afterEach, beforeEach, expect, it, vi } from 'vitest'
++import { clearQueue, enqueue } from '../src/queue'
++import { TERMS_VERSION } from '../src/terms'
++
++const mocks = vi.hoisted(() => ({
++  schedule: vi.fn(async () => true),
++  clear: vi.fn(async () => true),
++  permission: vi.fn(async (): Promise<'granted' | 'denied'> => 'granted'),
++  auth: vi.fn(),
++  unsubscribe: vi.fn(),
++  client: { hosted: true, auth: { onAuthStateChange: vi.fn() } },
++}))
++vi.mock('../src/platform', async (original) => ({
++  ...(await original<typeof import('../src/platform')>()),
++  isNativeApp: () => true,
++  selectPlatform: async () => ({
++    ingestPath: 'app',
++    camera: { kind: 'native', takePhoto: vi.fn() },
++    location: { locate: vi.fn() },
++    attestation: { name: 'none', attest: vi.fn() },
++  }),
++}))
++vi.mock('../src/platform/notifications', () => ({
++  selectReminderNotifications: () => ({
++    supported: true,
++    schedule: mocks.schedule,
++    clear: mocks.clear,
++    checkPermission: async () => 'granted',
++    requestPermission: mocks.permission,
++    onTap: async () => async () => undefined,
++  }),
++}))
++vi.mock('../src/supabase', () => ({
++  createGsipClient: () => mocks.client,
++  isServiceConfigured: () => true,
++  fetchServiceState: async () => 'open',
++  existingContributor: async () => null,
++  latestDeletionRequest: async () => null,
++  recordOwner: async () => 'fictional-owner',
++  submitQueued: vi.fn(),
++  requestDeletion: vi.fn(),
++  sendSignInLink: vi.fn(),
++}))
++import { App } from '../src/App'
++beforeEach(async () => {
++  await clearQueue()
++  vi.stubEnv('VITE_CAPTURE_LIVE', 'true')
++  Object.defineProperty(navigator, 'onLine', {
++    configurable: true,
++    value: false,
++  })
++  vi.stubGlobal('navigator', navigator)
++  Object.defineProperty(navigator, 'locks', {
++    configurable: true,
++    value: {
++      request: async (_name: string, run: () => Promise<unknown>) => run(),
++    },
++  })
++  mocks.schedule.mockClear()
++  mocks.clear.mockClear()
++  mocks.permission.mockReset()
++  mocks.permission.mockResolvedValue('granted')
++  mocks.unsubscribe.mockClear()
++  mocks.client.auth.onAuthStateChange.mockImplementation((callback) => {
++    mocks.auth.mockImplementation(callback)
++    callback('INITIAL_SESSION', { user: { id: 'fictional-owner' } })
++    return { data: { subscription: { unsubscribe: mocks.unsubscribe } } }
++  })
++  await enqueue({
++    accuracyM: null,
++    attributionName: 'Synthetic contributor',
++    capturedAt: new Date().toISOString(),
++    deviceModel: 'fictional device',
++    disturbed: false,
++    grantId: 'fictional-grant',
++    landCover: 'bare',
++    latitude: 0,
++    longitude: 0,
++    photos: [],
++    ownerUid: 'fictional-owner',
++    queuedAt: new Date().toISOString(),
++    submissionId: 'fictional-submission',
++    surfaceCondition: 'dry',
++    termsVersion: TERMS_VERSION,
++  })
++})
++afterEach(() => {
++  cleanup()
++  vi.unstubAllEnvs()
++  vi.unstubAllGlobals()
++  Reflect.deleteProperty(navigator, 'locks')
++})
++it('existing sign-out callback fences a pending permission dialog without creating an auth/session path', async () => {
++  let resolve!: (permission: 'granted') => void, entered!: () => void
++  const began = new Promise<void>((done) => {
++    entered = done
++  })
++  mocks.permission.mockImplementation(() => {
++    entered()
++    return new Promise((done) => {
++      resolve = done
++    })
++  })
++  render(<App />)
++  const enable = await screen.findByRole('button', {
++    name: 'Enable sync reminders',
++  })
++  await waitFor(() =>
++    expect((enable as HTMLButtonElement).disabled).toBe(false),
++  )
++  fireEvent.click(enable)
++  await began
++  mocks.auth('SIGNED_OUT', null)
++  resolve('granted')
++  await waitFor(() => expect(mocks.clear).toHaveBeenCalled())
++  expect(mocks.schedule).not.toHaveBeenCalled()
++  expect(await screen.findByText('Sync reminders are off.')).toBeDefined()
++})
++it('existing account changes clear the reminder and never transfer explicit intent', async () => {
++  render(<App />)
++  const enable = await screen.findByRole('button', {
++    name: 'Enable sync reminders',
++  })
++  await waitFor(() =>
++    expect((enable as HTMLButtonElement).disabled).toBe(false),
++  )
++  fireEvent.click(enable)
++  await waitFor(() => expect(mocks.schedule).toHaveBeenCalledTimes(1))
++  const cleared = mocks.clear.mock.calls.length
++  mocks.auth('SIGNED_IN', { user: { id: 'different-fictional-owner' } })
++  await waitFor(() =>
++    expect(mocks.clear.mock.calls.length).toBeGreaterThan(cleared),
++  )
++  expect(mocks.schedule).toHaveBeenCalledTimes(1)
++  cleanup()
++  expect(mocks.unsubscribe).toHaveBeenCalledTimes(1)
++})
++it('an unsubscribed auth callback does not read a stale session or restart device reminders', async () => {
++  render(<App />)
++  const stale = mocks.auth.getMockImplementation()!
++  cleanup()
++  const readSession = vi.fn(() => {
++    throw new Error('fictional-private-canary')
++  })
++  const session = Object.defineProperty({}, 'user', { get: readSession })
++  stale('SIGNED_IN', session)
++  expect(readSession).not.toHaveBeenCalled()
++})
+--- a/scripts/app_permissions.py
++++ b/scripts/app_permissions.py
+@@ -9,6 +9,8 @@
+   photo-library purpose strings; the app never triggers either prompt. No other usage
+   description and no background location exist.
+ * Android asks for location while the app is in use (coarse and fine), through the web view.
++  APP-2B adds opt-in notifications and boot restoration for one inexact pending reminder.
++  Exact alarms and wake locks are removed and rejected, including SDK-qualified forms.
+   The camera opens the system camera app, which needs no permission because the app declares
+   none. Camera, storage, media, microphone, background location and advertising-ID permissions
+   that a library might declare are removed from the merged manifest.
+@@ -60,6 +62,9 @@
+ ANDROID_REQUESTED = (
+     "android.permission.ACCESS_COARSE_LOCATION",
+     "android.permission.ACCESS_FINE_LOCATION",
++    # APP-2B: explicit opt-in only; boot restores the bounded inexact one-shot after unlock.
++    "android.permission.POST_NOTIFICATIONS",
++    "android.permission.RECEIVE_BOOT_COMPLETED",
+ )
+ # Declared by no part of GSIP; removed in case a library's manifest brings them in. Without a
+ # declared camera permission, the camera plugin opens the system camera app without asking.
+@@ -74,10 +79,17 @@
+     "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+     "android.permission.RECORD_AUDIO",
+     "android.permission.WRITE_EXTERNAL_STORAGE",
++    "android.permission.SCHEDULE_EXACT_ALARM",
++    "android.permission.USE_EXACT_ALARM",
++    "android.permission.WAKE_LOCK",
+ )
+ # Runtime ("dangerous") and other sensitive Android permissions. Of these the app may hold only
+-# the two location permissions.
++# foreground location and explicit opt-in notifications; boot is a normal permission.
+ ANDROID_ALLOWED_SENSITIVE = frozenset(ANDROID_REQUESTED)
++ANDROID_FORBIDDEN = frozenset(
++    f"android.permission.{name}"
++    for name in ("SCHEDULE_EXACT_ALARM", "USE_EXACT_ALARM", "WAKE_LOCK")
++)
+ ANDROID_SENSITIVE = frozenset(
+     f"android.permission.{name}"
+     for name in (
+@@ -154,23 +166,35 @@
+     return ET.fromstring(text, parser=parser)  # noqa: S314
+ 
+ 
++def _permission_elements(root: ET.Element) -> list[ET.Element]:
++    return [
++        element
++        for element in root
++        if isinstance(element.tag, str)
++        and re.fullmatch(r"uses-permission(?:-sdk-\d+)?", element.tag)
++    ]
++
++
+ def apply_android(text: str) -> str:
+-    """The manifest with location while in use, and every unwanted permission removed."""
++    """Approved foreground/opt-in permissions; exact alarms and wake locks stay removed."""
+ 
+     ET.register_namespace("android", ANDROID_NS)
+     ET.register_namespace("tools", TOOLS_NS)
+     root = parse_manifest(text)
+-    for element in root.findall("uses-permission"):
++    removed_tags = {"uses-permission", "uses-permission-sdk-23"}
++    for element in _permission_elements(root):
+         if _name(element) in ANDROID_REQUESTED or _name(element) in ANDROID_REMOVED:
++            removed_tags.add(str(element.tag))
+             root.remove(element)
+     for name in ANDROID_REQUESTED:
+         ET.SubElement(root, "uses-permission", {f"{{{ANDROID_NS}}}name": name})
+-    for name in ANDROID_REMOVED:
+-        ET.SubElement(
+-            root,
+-            "uses-permission",
+-            {f"{{{ANDROID_NS}}}name": name, f"{{{TOOLS_NS}}}node": "remove"},
+-        )
++    for tag in sorted(removed_tags):
++        for name in ANDROID_REMOVED:
++            ET.SubElement(
++                root,
++                tag,
++                {f"{{{ANDROID_NS}}}name": name, f"{{{TOOLS_NS}}}node": "remove"},
++            )
+     ET.indent(root, space="    ")
+     return '<?xml version="1.0" encoding="utf-8"?>\n' + ET.tostring(root, encoding="unicode") + "\n"
+ 
+@@ -179,11 +203,15 @@
+     problems = [
+         f"{name} is a sensitive permission GSIP does not request"
+         for name in sorted(permissions)
+-        if (name in ANDROID_SENSITIVE or name.startswith("android.permission.health."))
++        if (
++            name in ANDROID_SENSITIVE
++            or name in ANDROID_FORBIDDEN
++            or name.startswith("android.permission.health.")
++        )
+         and name not in ANDROID_ALLOWED_SENSITIVE
+     ]
+     problems += [
+-        f"{name} is missing, so location cannot be requested"
++        f"{name} is missing, so the approved capability cannot be used"
+         for name in ANDROID_REQUESTED
+         if name not in permissions
+     ]
+@@ -193,7 +221,7 @@
+ def manifest_permissions(text: str) -> set[str]:
+     return {
+         _name(element)
+-        for element in parse_manifest(text).findall("uses-permission")
++        for element in _permission_elements(parse_manifest(text))
+         if not _removed(element)
+     }
+ 
+--- a/tests/test_app_permissions.py
++++ b/tests/test_app_permissions.py
+@@ -90,6 +90,8 @@
+         "android.permission.INTERNET",
+         "android.permission.ACCESS_COARSE_LOCATION",
+         "android.permission.ACCESS_FINE_LOCATION",
++        "android.permission.POST_NOTIFICATIONS",
++        "android.permission.RECEIVE_BOOT_COMPLETED",
+     }
+     assert permissions.android_permission_problems(granted) == []
+     # Any library that declares these loses them in the merged manifest, the camera included:
+@@ -122,6 +124,8 @@
+ uses-permission: name='android.permission.INTERNET'
+ uses-permission: name='android.permission.ACCESS_COARSE_LOCATION'
+ uses-permission: name='android.permission.ACCESS_FINE_LOCATION'
++uses-permission: name='android.permission.POST_NOTIFICATIONS'
++uses-permission: name='android.permission.RECEIVE_BOOT_COMPLETED'
+ uses-permission: name='android.permission.ACCESS_NETWORK_STATE'
+ uses-permission: name='com.globalsoilintelligence.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
+ """
+@@ -197,3 +201,51 @@
+     # An empty or failed Gradle run is not a pass.
+     tree.write_text("", encoding="utf-8")
+     assert permissions.main(["app_permissions.py", "check-dependencies", str(tree)]) == 2
++
++
++@pytest.mark.parametrize(
++    "tag", ["uses-permission", "uses-permission-sdk-23", "uses-permission-sdk-31"]
++)
++@pytest.mark.parametrize("permission", ["SCHEDULE_EXACT_ALARM", "USE_EXACT_ALARM", "WAKE_LOCK"])
++def test_app2b_removes_and_rejects_exact_alarm_and_wake_permissions(
++    tag: str, permission: str
++) -> None:
++    name = f"android.permission.{permission}"
++    manifest = template_manifest().replace(
++        "</manifest>", f'<{tag} android:name="{name}" /></manifest>'
++    )
++    # Manifest checks catch SDK-qualified declarations too, before applying removals.
++    assert name in permissions.manifest_permissions(manifest)
++    assert any(
++        name in problem
++        for problem in permissions.android_permission_problems(
++            permissions.manifest_permissions(manifest)
++        )
++    )
++    applied = permissions.apply_android(manifest)
++    assert name not in permissions.manifest_permissions(applied)
++    assert f'<{tag} android:name="{name}" tools:node="remove"' in applied
++    assert permissions.android_permission_problems(permissions.manifest_permissions(applied)) == []
++    assert permissions.apply_android(applied) == applied
++    # The compiled APK check independently rejects it even if manifest merging changes.
++    dump = APK_DUMP + f"{tag}: name='{name}'\n"
++    assert any(
++        name in problem
++        for problem in permissions.android_permission_problems(permissions.apk_permissions(dump))
++    )
++
++
++def test_app2b_permission_additions_are_exact_and_old_rejections_remain() -> None:
++    approved = set(permissions.ANDROID_REQUESTED)
++    assert approved == {
++        "android.permission.ACCESS_COARSE_LOCATION",
++        "android.permission.ACCESS_FINE_LOCATION",
++        "android.permission.POST_NOTIFICATIONS",
++        "android.permission.RECEIVE_BOOT_COMPLETED",
++    }
++    assert permissions.android_permission_problems(approved) == []
++    for name in permissions.ANDROID_SENSITIVE - approved:
++        assert permissions.android_permission_problems(approved | {name})
++    assert permissions.closed_dependencies(
++        "+--- com.google.android.gms:play-services-location:21.3.0"
++    )
+--- a/tests/test_app_build.py
++++ b/tests/test_app_build.py
+@@ -431,7 +431,8 @@
+ 
+ def test_library_indexeddb_stores_share_the_compiled_cloud_backup_exclusions() -> None:
+     source = Path("apps/capture-pwa/src/queue.ts").read_text()
+-    assert "'gsip-capture-v1', 3" in source
++    assert "'gsip-capture-v1', 4" in source
++    assert "db.createObjectStore('syncReminder')" in source
+     for store in ("libraryDraft", "libraryNamespace", "queueState"):
+         assert f"db.createObjectStore('{store}')" in source
+     for modern in (False, True):
+--- /dev/null
++++ b/docs/APP_SYNC_REMINDERS.md
+@@ -0,0 +1,126 @@
++# APP-2B: private local sync reminders
++
++This package implements approved SPEC §15.3: optional sync reminders inside the native app.
++Nearby suggestions, push notifications, location calculations, signing and store submission
++remain outside this package. All deployable artifacts retain closed capture and library flags.
++A source merge or an unsigned artifact does not authorize production changes or store readiness.
++
++## Behavior and privacy
++
++Only **Enable sync reminders** requests OS notification permission. A denied or unknown response
++leaves capture usable and does not create a background prompt loop. The website returns
++unsupported before importing the plugin and never uses the browser Notification API.
++
++A known signed-in account, known-open existing capture gate and a queue belonging entirely to
++that account are required. Foreign-owner, held, dead-letter, terms-expired, library-conflict or
++paused-library work holds reminders until resolved. Unknown access or capture state cancels.
++The feature reuses existing auth and service-state outcomes; it adds no Supabase client, account,
++RPC, credential store, location request or external service.
++
++One backlog cycle receives at most one scheduling attempt, for about 24 hours later. The fixed
++local ID is `471031`; title is `GSIP sync reminder`; body is `Open GSIP to review unsynced work.`
++No notification contains counts, queue records, photo/sample identities, contributor names,
++coordinates, addresses, account IDs, session tokens, extras, attachments or navigation URLs.
++The plugin receives inexact flags on the notification object and a nonrepeating `schedule.at`
++with `allowWhileIdle:false`. GSIP never opens exact-alarm settings. Selecting an owned reminder
++focuses the existing queue view only after fresh local ownership/gate/permission checks; it
++never syncs, signs in, requests location or follows callback-supplied data.
++
++Consumed-cycle state survives refresh, partial sync and restart. Restart first clears owned
++pending and delivered notifications, and does not recreate an already consumed cycle. A new
++empty-to-nonempty transition permits another attempt. This deliberately favors avoiding repeated
++alerts over guaranteeing an alert after an app restart. Opt-out never discards unsynced content.
++
++## Durable cancellation
++
++IndexedDB version 4 adds only a private reminder-intent store, preserving earlier queue,
++photo-draft, library and generation stores. Intent contains the existing account binding,
++opt-in boolean, epoch/revision, backlog/consumed booleans and cleanup marker, never a credential
++or session object. Queue clearing disables intent and increments its epoch in the same transaction.
++
++Native operations are serialized under a cross-context Web Lock. Devices without that lock hold
++scheduling and can still attempt owned-ID cleanup; capture remains available. Opt-out, sign-out,
++account changes, rights requests, disposal and observed gate changes immediately invalidate the
++local epoch and persist cleanup intent. A schedule already submitted may finish later: cleanup
++runs **after** that completion, cancelling pending and removing delivered notifications by ID,
++then reading both inventories. A void cancel response alone is never proof of absence.
++
++An uncertain native reply/readback leaves cleanup pending and prevents another scheduling
++attempt. A request whose native reply never settles can hold that native-operation chain until
++restart; the durable rights fence does not wait for it. Confirmed withdrawal/deletion proceeds
++through the existing server request and queue clearing. Device cleanup uncertainty cannot change
++its successful result into an apparent server failure; failed server requests preserve queued
++content. Reopening clears owned OS state before considering any new reminder.
++
++**Limits:** an already displayed alert or OS dialog cannot be retracted retroactively. An offline
++or background app cannot instantly observe a remote capture closure; cancellation follows the
++next observed transition. OS permission can change between checking it and invoking the pinned
++plugin, whose scheduling API may request permission. A fresh durable epoch, opt-in, owner and gate check after lazy import, followed by a synchronous
++local lifecycle/epoch fence immediately before dispatch, prevents already invalidated intent from
++reaching the SDK. Late listener registrations remove their own handles after disposal; stale
++callbacks do not read or mutate shared storage. Disposed refresh, auth/queue callbacks and queued
++operations cannot observe or rewrite a replacement lifetime. Cleanup owns only the persisted
++epoch/account it originally fenced; a changed generation stops its pending/delivered cleanup.
++An already admitted transaction that becomes stale returns its original state without another write. These checks do not promise OS/database atomicity or
++instant cross-process cancellation. Device tests must measure those races. No exact delivery
++time, iOS storage-backup protection or App Store guideline 4.2 acceptance is inferred from mocks
++or a native build.
++
++## Dependency and permissions
++
++| Dependency                                            | Licence                                     | Maintenance signal                                                      | Size                                                 |
++| ----------------------------------------------------- | ------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------- |
++| `@capacitor/local-notifications` **8.3.1**, exact pin | MIT; published archive includes its licence | Official Ionic repository; npm release 2026-08-19, inspected 2026-10-13 | 82,938 compressed bytes; 506,577 unpacked file bytes |
++
++Primary evidence: [exact npm metadata](https://registry.npmjs.org/@capacitor/local-notifications/8.3.1),
++[published archive](https://registry.npmjs.org/@capacitor/local-notifications/-/local-notifications-8.3.1.tgz),
++[official source](https://github.com/ionic-team/capacitor-local-notifications),
++[official API documentation](https://capacitorjs.com/docs/apis/local-notifications).
++Archive SHA-256: `f5772636102fdcbdba564a9bcb32db5d799bb6e27fdeaebc39b2abffe727c287`.
++The archive declares no JS runtime dependency, a Capacitor core >=8 peer, and no JAR/AAR files.
++That does not license its resolved native dependencies or measure its APK impact.
++
++Android registration adds only this plugin alongside camera/filesystem; geolocation remains
++excluded on Android. `POST_NOTIFICATIONS` is the new opt-in sensitive allowance.
++`RECEIVE_BOOT_COMPLETED` supports the plugin's pending-reminder restore receiver after unlock.
++`WAKE_LOCK` is removed: no acquisition was found in the inspected exact plugin/core code and
++this schedule uses nonwaking RTC. `SCHEDULE_EXACT_ALARM` and `USE_EXACT_ALARM` are removed and
++explicitly rejected in ordinary and SDK-qualified generated manifests and compiled APK dumps.
++Every earlier sensitive-permission and closed-SDK rejection remains effective. iOS adds no usage
++string, background mode or remote-notification permission. Existing all-domain Android cloud
++exclusions include native SharedPreferences and the new private IndexedDB state; physical-device
++backup/transfer checks remain separate. iOS WebKit backup exclusion remains blocked/unverified.
++
++Direct Android declarations include Capacitor Android and AndroidX AppCompat (default 1.7.1),
++with Kotlin 2.0.21 and AGP 8.13.0 build defaults. Actual selected runtime coordinates, binary
++hash/size, POM and licence/notice evidence must come from the exact-head native CI audit, not
++from these defaults. iOS requires actual SwiftPM resolution and separate Capacitor/Cordova
++provenance; an MIT npm wrapper does not imply an MIT binary. [The native CI audit](APP_NOTIFICATION_NATIVE_AUDIT.md) records runtime evidence. Native artifact comparison must
++use the exact parent, same runner/toolchain/run number/closed flags/signing inputs, and report
++an overall feature delta including UI/resources/Kotlin. It is not plugin-only attribution and
++npm archive bytes are not native build impact.
++
++## Verification and remaining gates
++
++Behavior tests cover the generic native/web seam, explicit permission/denial/error, one-cycle
++bounds, fresh account/queue/gate checks, stale permission/schedule replies, persistent cleanup,
++restart/overlap, taps that ignore injected data, and existing rights outcomes with never-settling
++OS replies. Additive database-upgrade tests retain legacy submission/draft/library bytes. Permission
++tests independently exercise generated removals and compiled rejection, including SDK-qualified
++exact-alarm names and all previous sensitive/closed SDK cases. Exact commands/outcomes and
++independent-review closure belong in the PR evidence, not an assumed pass here.
++
++Native CI supplies unsigned Android/iOS artifacts and runtime/build comparison evidence. Local
++Android SDK/Xcode and physical devices were unavailable during authoring. Before enabling this
++feature for real contributors, stage Android 12/13+ and iPhone checks with synthetic data:
++opt-in/denial/revocation, foreground/background/killed/offline, delivery/cancellation, reboot/unlock,
++opt-out reboot, stale-dialog/schedule races, fresh access on tap, no exact-alarm settings,
++pending/delivered absence and generic native logs. Record Doze/OEM/iOS delays and unsupported
++behavior honestly. Signing/accounts, backup/device proofs, counsel, capture and production gates
++remain owner actions.
++
++**Implementation assumptions:** one 24-hour attempt per nonempty cycle; conservative refusal of
++mixed/unknown-owner or unresolved work; persistent opt-in is account-bound; a restart cancels the
++old attempt and consumes that cycle; unsupported Web Locks hold reminders; DOM focus/visibility
++refresh is the initial lifecycle signal and needs device proof. These are bounded local UX choices,
++not a new data-sharing, retention or scientific-authority policy.
+--- a/docs/APP_STORE.md
++++ b/docs/APP_STORE.md
+@@ -29,7 +29,7 @@
+   `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_CAPTURE_LIVE` and the legal links). Like the website,
+   the app accepts observations only in builds made with `VITE_CAPTURE_LIVE=true`, and the
+   database's capture switch decides the rest.
+-- Plugins: the camera and file plugins on both platforms; the geolocation plugin on iOS only. On
++- Plugins: camera, file and optional local-notification plugins on both platforms; the geolocation plugin on iOS only. On
+   Android it would compile Google's closed Play services location SDK into the app, which
+   BUILD_ORDER guardrail 6 does not allow without sign-off, so the Android app uses its web view's
+   own location API, which asks for the same permissions.
+@@ -38,13 +38,14 @@
+ 
+ ## Permissions
+ 
+-The app asks for two things, each only when the person uses the feature:
+-
+-| Platform | Permission                                                               | When it is asked                | Purpose string                                                                                                                  |
+-| -------- | ------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+-| iOS      | Camera (`NSCameraUsageDescription`)                                      | First "Take photo"              | GSIP uses the camera to photograph soil beside the printed reference card.                                                      |
+-| iOS      | Location when in use (`NSLocationWhenInUseUsageDescription`)             | First "Use my current location" | GSIP records where each soil photo was taken, privately. Only a broad area shared by at least 3 contributors is ever published. |
+-| Android  | Location while in use (`ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`) | First "Use my current location" | Android shows its own prompt; the form explains the use beside the button.                                                      |
++The app asks for camera/location when those features are used, and notifications only after explicit reminder opt-in:
++
++| Platform    | Permission                                                               | When it is asked                 | Purpose string                                                                                                                  |
++| ----------- | ------------------------------------------------------------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
++| iOS         | Camera (`NSCameraUsageDescription`)                                      | First "Take photo"               | GSIP uses the camera to photograph soil beside the printed reference card.                                                      |
++| iOS         | Location when in use (`NSLocationWhenInUseUsageDescription`)             | First "Use my current location"  | GSIP records where each soil photo was taken, privately. Only a broad area shared by at least 3 contributors is ever published. |
++| Android     | Location while in use (`ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`) | First "Use my current location"  | Android shows its own prompt; the form explains the use beside the button.                                                      |
++| iOS/Android | Local notifications (`POST_NOTIFICATIONS` on Android 13+)                | Explicit "Enable sync reminders" | One generic reminder to review unsynced work; denial leaves capture usable.                                                     |
+ 
+ - **Android camera.** The app declares no camera permission, and removes one if a library brings
+   it in. "Take photo" opens the system camera app, which then needs none, so Android never asks.
+@@ -55,6 +56,7 @@
+   ("GSIP lets you choose a saved soil photo with the system picker, which shares only the photo
+   you pick.") and `NSPhotoLibraryAddUsageDescription` ("GSIP keeps your soil photos inside the
+   app and does not save them to your library.").
++- **Reminders.** [APP-2B](APP_SYNC_REMINDERS.md) adds one inexact 24-hour scheduling attempt per backlog cycle, with no private notification payload, push service or location calculation. Android adds normal `RECEIVE_BOOT_COMPLETED` for bounded restoration after unlock; exact-alarm permissions and `WAKE_LOCK` are removed/rejected, including SDK-qualified forms. Opt-out/sign-out/rights/sync/empty or observed closed gates clear the owned pending/delivered reminder; uncertain cleanup stays held. Device behavior is not proven by the native build.
+ - **Never requested.** Background location, the microphone, contacts, storage and media
+   permissions, and the advertising ID. `scripts/app_permissions.py` removes any of these that a
+   library brings into the Android manifest, and CI fails if the built APK or the built iOS app
+@@ -217,6 +219,11 @@
+    checks described above; no private bytes in cloud backup.
+ 10. The separately implemented iOS exclusion method passes synthetic real-device backup/restore
+     checks. This remains **blocked/unverified** and prevents an iOS store-readiness claim.
++11. Local sync reminders: Android 12/13+ and iPhone permission/denial/revocation, foreground/
++    background/killed/offline, reboot/unlock, opt-out, empty/closed/foreign queue cancellation,
++    late replies, fresh tap access and pending/delivered absence. Exact-alarm settings stay
++    closed; synthetic private sentinels never enter native logs. This device evidence remains
++    pending; unit tests and unsigned native artifacts do not prove it.
+ 
+ Each CI build is signed with a fresh debug key, so a newer APK will not install over an older
+ one: uninstall first. Uninstalling deletes the device's anonymous account and queue, so withdraw
+@@ -249,7 +256,7 @@
+ 
+ Library draft context, strict declaration JSON bytes, namespace/account bindings
+ and the queue generation fence use the existing `gsip-capture-v1` WebKit/browser
+-IndexedDB database (version 3). They share the compiled Android all-domain cloud
++IndexedDB database (version 4 after APP-2B's additive reminder-intent store). They share the compiled Android all-domain cloud
+ backup exclusions and approved direct-device-transfer policy above. The existing
+ iOS cloud backup gate remains blocked/unverified; a local test does not establish
+ iOS backup exclusion or store readiness. Imported JSON files elsewhere on the
+--- a/docs/legal/PRIVACY.md
++++ b/docs/legal/PRIVACY.md
+@@ -32,6 +32,15 @@
+ many phones include Google Play services, as your phone's settings decide), and GSIP receives
+ only the result. Photos you take for an observation, and observations waiting to sync, stay in
+ the app's storage on your phone until they sync or you discard them.
++
++Optional native sync reminders ask for notification permission only after you choose to enable
++them. They are scheduled on your device without a push service or new location lookup. The OS
++receives one opaque local ID and fixed generic text, never your queue contents, photos, names,
++coordinates or account/session identifiers. Private opt-in/account binding and bounded
++cycle/cleanup state remain in the app's local storage. Turning reminders off does not delete
++unsynced work. Sign-out, rights requests, successful sync, an empty queue and observed capture
++closure cancel the owned reminder; uncertain device cleanup stays pending for retry on reopening.
++An offline app cannot observe remote closure instantly or retract an already displayed OS alert.
+ 
+ Our policy excludes the app's private queue, photo drafts and account session from cloud
+ backups. Android builds exclude these stores from cloud backup; on Android 12 or newer,
+@@ -77,17 +86,18 @@
+ Open-Meteo) never receive it: soil-map, elevation and rainfall lookups send only the centre of your
+ observation's resolution-9 cell (about 0.1 km²).
+ 
+-| Service                                | Role                                                                                                                                                     | What it receives                                                                             | Hosts                                                             |
+-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+-| Supabase                               | Database, sign-in, private photo storage, server functions                                                                                               | Everything in "What we collect", including precise positions and e-mail addresses            | `*.supabase.co`                                                   |
+-| Sign-in e-mail delivery **[DECISION]** | Sends sign-in links, configured in Supabase Auth                                                                                                         | Your e-mail address                                                                          | (the provider configured in Supabase Auth)                        |
+-| GitHub                                 | Hosts the website (GitHub Pages) and runs GSIP's scheduled workers (Actions)                                                                             | Visitors' IP addresses and browser details; workers process private data inside their runs   | `github.com`, `*.github.io`                                       |
+-| Hugging Face                           | Hosts the open dataset                                                                                                                                   | The public release only                                                                      | `huggingface.co`                                                  |
+-| ISRIC – World Soil Information         | SoilGrids soil maps for estimates and map layers                                                                                                         | Cell centres (server); map visitors' browsers load map images directly (IP address)          | `rest.isric.org`, `maps.isric.org`, `files.isric.org`             |
+-| USDA NRCS Soil Data Access             | US soil survey values                                                                                                                                    | Cell centres within the United States (server)                                               | `sdmdataaccess.sc.egov.usda.gov`                                  |
+-| Open-Meteo                             | Elevation, and rainfall in the three days before capture                                                                                                 | Cell centres and the capture date window (server)                                            | `api.open-meteo.com`, `archive-api.open-meteo.com`                |
+-| Map tile host: GitHub Pages            | Serves GSIP's SoilGrids-derived prior map tiles from the same origin as the website, once the publication checks pass and `VITE_PRIOR_TILES_BASE` is set | Visitors' IP addresses and browser details; no contributor observations or precise positions | `*.github.io`, `globalsoilintelligence.com` after the DNS cutover |
+-| Squarespace                            | Serves the `globalsoilintelligence.com` holding page until the domain moves to GitHub Pages **[DECISION: date]**                                         | Visitors' IP addresses and browser details                                                   | `globalsoilintelligence.com`                                      |
++| Service                                | Role                                                                                                                                                     | What it receives                                                                              | Hosts                                                                                                         |
++| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
++| Supabase                               | Database, sign-in, private photo storage, server functions                                                                                               | Everything in "What we collect", including precise positions and e-mail addresses             | `*.supabase.co`                                                                                               |
++| Sign-in e-mail delivery **[DECISION]** | Sends sign-in links, configured in Supabase Auth                                                                                                         | Your e-mail address                                                                           | (the provider configured in Supabase Auth)                                                                    |
++| GitHub                                 | Hosts the website (GitHub Pages) and runs GSIP's scheduled workers (Actions)                                                                             | Visitors' IP addresses and browser details; workers process private data inside their runs    | `github.com`, `*.github.io`                                                                                   |
++| Hugging Face                           | Hosts the open dataset                                                                                                                                   | The public release only                                                                       | `huggingface.co`                                                                                              |
++| ISRIC – World Soil Information         | SoilGrids soil maps for estimates and map layers                                                                                                         | Cell centres (server); map visitors' browsers load map images directly (IP address)           | `rest.isric.org`, `maps.isric.org`, `files.isric.org`                                                         |
++| USDA NRCS Soil Data Access             | US soil survey values                                                                                                                                    | Cell centres within the United States (server)                                                | `sdmdataaccess.sc.egov.usda.gov`                                                                              |
++| Open-Meteo                             | Elevation, and rainfall in the three days before capture                                                                                                 | Cell centres and the capture date window (server)                                             | `api.open-meteo.com`, `archive-api.open-meteo.com`                                                            |
++| Map tile host: GitHub Pages            | Serves GSIP's SoilGrids-derived prior map tiles from the same origin as the website, once the publication checks pass and `VITE_PRIOR_TILES_BASE` is set | Visitors' IP addresses and browser details; no contributor observations or precise positions  | `*.github.io`, `globalsoilintelligence.com` after the DNS cutover                                             |
++| Squarespace                            | Serves the `globalsoilintelligence.com` holding page until the domain moves to GitHub Pages **[DECISION: date]**                                         | Visitors' IP addresses and browser details                                                    | `globalsoilintelligence.com`                                                                                  |
++| Build dependency/licence repositories  | CI-only retrieval of public open build artifacts and licence/notice evidence; no app runtime request                                                     | CI runner IP and public artifact coordinates; no contributor data, session, photo or location | `dl.google.com`, `repo.maven.apache.org`, `release-assets.githubusercontent.com`, `raw.githubusercontent.com` |
+ 
+ The product owner approved GitHub Pages as the prior-tile host on 2026-10-11, conditional
+ on the [tile-host publication checks](../PRIOR_TILE_HOSTING.md). The archives contain only

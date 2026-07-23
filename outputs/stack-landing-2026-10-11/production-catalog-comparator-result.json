@@ -1,0 +1,131 @@
+{
+  "allowed_differences": [
+    {
+      "identifier": "pg_stat_statements",
+      "kind": "exact_platform_addition",
+      "section": "extensions"
+    },
+    {
+      "identifier": "supabase_vault",
+      "kind": "exact_platform_addition",
+      "section": "extensions"
+    },
+    {
+      "identifier": "uuid-ossp",
+      "kind": "exact_platform_addition",
+      "section": "extensions"
+    },
+    {
+      "identifier": "gold_labels_select_own",
+      "kind": "exact_submission_alias",
+      "section": "policies"
+    },
+    {
+      "identifier": "photos_insert_own",
+      "kind": "exact_submission_alias",
+      "section": "policies"
+    },
+    {
+      "identifier": "photos_select_own",
+      "kind": "exact_submission_alias",
+      "section": "policies"
+    },
+    {
+      "identifier": "predictions_select_own",
+      "kind": "exact_submission_alias",
+      "section": "policies"
+    },
+    {
+      "identifier": "priors_select_own",
+      "kind": "exact_submission_alias",
+      "section": "policies"
+    },
+    {
+      "identifier": "qa_events_select_own",
+      "kind": "exact_submission_alias",
+      "section": "policies"
+    },
+    {
+      "identifier": "extensions.dashboard_user.CREATE",
+      "kind": "exact_platform_addition",
+      "section": "schema_grants"
+    },
+    {
+      "identifier": "extensions.dashboard_user.USAGE",
+      "kind": "exact_platform_addition",
+      "section": "schema_grants"
+    },
+    {
+      "identifier": "public.postgres.USAGE",
+      "kind": "exact_platform_addition",
+      "section": "schema_grants"
+    }
+  ],
+  "counts": {
+    "column_grants": {
+      "observed": 20,
+      "reference": 20
+    },
+    "columns": {
+      "observed": 96,
+      "reference": 96
+    },
+    "constraints": {
+      "observed": 62,
+      "reference": 62
+    },
+    "extensions": {
+      "observed": 6,
+      "reference": 3
+    },
+    "functions": {
+      "observed": 5,
+      "reference": 5
+    },
+    "indexes": {
+      "observed": 23,
+      "reference": 23
+    },
+    "policies": {
+      "observed": 16,
+      "reference": 16
+    },
+    "private_functions": {
+      "observed": 2,
+      "reference": 2
+    },
+    "schema_grants": {
+      "observed": 16,
+      "reference": 13
+    },
+    "storage_policies": {
+      "observed": 5,
+      "reference": 5
+    },
+    "table_grants": {
+      "observed": 187,
+      "reference": 187
+    },
+    "tables": {
+      "observed": 11,
+      "reference": 11
+    },
+    "triggers": {
+      "observed": 4,
+      "reference": 4
+    },
+    "views": {
+      "observed": 0,
+      "reference": 0
+    }
+  },
+  "input_sha256": {
+    "observed-catalog": "21336e768a3ff4cd36d215cac7fe6d28eb96227514a9ed886cb426b8d844f8ef",
+    "observed-supplement": "07b6f9e99f1c154ac8b5f9e0ed9b71fe3dc01e6947aa00ade73aa8c426b04f9b",
+    "reference-catalog": "83b9702c433bbcd0b37382bc85a61767c262f64d0caefeec4902322929b0ffca",
+    "reference-supplement": "dd8bdda47d262ef2e86e1679d55c45de8cdf706e4b3f394272c88997e9a7fb7d"
+  },
+  "ok": true,
+  "scope": "provided catalog metadata only; no data or deployment proof",
+  "unexpected_differences": []
+}

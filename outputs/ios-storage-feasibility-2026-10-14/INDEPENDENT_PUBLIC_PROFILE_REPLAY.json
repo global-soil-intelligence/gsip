@@ -1,0 +1,114 @@
+{
+  "public_profile_exit_code": 3,
+  "report": {
+    "backend_selected": false,
+    "device_verified": false,
+    "migration_implemented": false,
+    "next_gate": "app2c2-held",
+    "profile_id": "gsip-app2c1-2026-10-14",
+    "repo_count": 13,
+    "resolution_scope": "observed-generated-not-a-lock",
+    "source_count": 19,
+    "source_review_valid": true,
+    "status": "blocked",
+    "storage_feasible": false
+  },
+  "stderr_empty": true,
+  "evidence": [
+    {
+      "file": "filesystem-mapping.source",
+      "bytes": 2112,
+      "sha256": "b4dd96f40a57dff5b43f9b93e208b5f64ae716bcda57378ca4f44a83b713c7c0"
+    },
+    {
+      "file": "filesystem-location-resolver.source",
+      "bytes": 1625,
+      "sha256": "4c46c0a5cf88e8257ea7fd61b33ba098ec26227918c48b53e89ceff8d10fb20e"
+    },
+    {
+      "file": "filesystem-operation-executor.source",
+      "bytes": 6329,
+      "sha256": "ea8252a6d1195ffb3442c8a8ad9149acde5332d3644fcd43739b45227bc13bed"
+    },
+    {
+      "file": "filesystem-api-types.source",
+      "bytes": 17469,
+      "sha256": "2a573b6cbd506aca157950d852470114e4171da2ffc53adb52399be1fa002f7c"
+    },
+    {
+      "file": "filesystem-plugin-registration.source",
+      "bytes": 327,
+      "sha256": "5389deeff8a5762e28285d5051fac2c01c3275f4f2719a9ae22280143bb5095d"
+    },
+    {
+      "file": "filesystem-web-fallback.source",
+      "bytes": 23426,
+      "sha256": "038cfd655a54eafcc7efd6566c4ade942558d69135b4e5f01a58e5da87446685"
+    },
+    {
+      "file": "filesystem-swift-dependency-range.source",
+      "bytes": 1048,
+      "sha256": "1e2799f6a21acc5707709e81de7682eff9fd3df294a80b0f1cb115f7093505f4"
+    },
+    {
+      "file": "ion-filesystem-manager.source",
+      "bytes": 15865,
+      "sha256": "0d59a711c547b26f9d16b9743142c32087b94b40ee4f530665b1b76434c1a084"
+    },
+    {
+      "file": "capacitor-ios-webview.source",
+      "bytes": 16487,
+      "sha256": "0485aee1f25b0ed028ce944fb98306e6a92330038ce7fd923aa87b4ada4bbfec"
+    },
+    {
+      "file": "capacitor-ios-cookie-manager.source",
+      "bytes": 4758,
+      "sha256": "57f0163dcf2e446a5d17fb96919b369479b1202f41bd77fa0f5f357e261f3def"
+    },
+    {
+      "file": "capacitor-ios-keyvalue-store.source",
+      "bytes": 11015,
+      "sha256": "b500084f5bb35df5a74ead375c57cf48186d8adf91091760c4d07276d4fdbbd4"
+    },
+    {
+      "file": "supabase-client-storage.source",
+      "bytes": 26052,
+      "sha256": "eb923579957052a1160cda34a65ff67496d46abf37ae022cdd331f8d6d8bd800"
+    },
+    {
+      "file": "auth-client-storage.source",
+      "bytes": 257301,
+      "sha256": "7552500e375665e28acf23fb552ccbf1ef11379afab15859b2f670f1ae9aee9f"
+    },
+    {
+      "file": "auth-pkce-helpers.source",
+      "bytes": 23030,
+      "sha256": "82025113a07125f319380ec5a510e58544a04f6e3bcf82c6eb8ce3a2cc6b07c5"
+    },
+    {
+      "file": "camera-plugin.source",
+      "bytes": 30250,
+      "sha256": "995102b7abf1138e5ca9e13d3ffb93a85d244994d734c1d5443f0fb428faeba8"
+    },
+    {
+      "file": "ion-camera-temporary-paths.source",
+      "bytes": 2770,
+      "sha256": "4026b77b0196e9843c22648f5d0f12defc07c43826a2ad5b8e7725bff7f84dee"
+    },
+    {
+      "file": "ion-camera-flow.source",
+      "bytes": 18686,
+      "sha256": "5444e8519b40b9798f643ad5043322ec77ec6ce05a9f9f2c6ad9edfcee95d729"
+    },
+    {
+      "file": "notifications-native.source",
+      "bytes": 36659,
+      "sha256": "d923157a6e8522dab046c43b773b4a2b149d19ff98902e9caf40778e83a7d2d4"
+    },
+    {
+      "file": "observed-native-resolution.source",
+      "bytes": 1233,
+      "sha256": "03c73f532a75e0228889472ed648d4ed36a68f05566922ecfb05abef16b18b3f"
+    }
+  ]
+}

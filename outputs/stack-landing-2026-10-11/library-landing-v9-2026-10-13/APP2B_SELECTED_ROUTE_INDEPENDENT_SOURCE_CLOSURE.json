@@ -1,0 +1,175 @@
+{
+  "actual_nested_schema_change": {
+    "product_APIs_unchanged": true,
+    "public13field_build_receipt_unchanged": true,
+    "raw_runtime_graph": "optional redirects field for known3roots",
+    "selected_module_evidence": "mandatory selected_variant_redirect for each of3knownselectedroots, including2exactrawmetadata documents",
+    "unqualified_schema_unchanged_claim": false
+  },
+  "actual_retained_inputs_and_final_emission": {
+    "POM_chains_each_configuration": 75,
+    "all_original_binary_POM_projectsource_NPM_evidence_exact_except_added_redirect_proofs_and_taskdigest": true,
+    "author_metadata_execution_hashes_and_outputs_independently_bound_not_executed_by_reviewer": true,
+    "candidate_NPM_sources": 7,
+    "candidate_binary_records_each_config": 74,
+    "final_production_closure_exact_bytes_matched_both_metadata_only_probe_scripts": true,
+    "full_actual_combined_native_build_or_feature_comparison_claimed": false,
+    "missing_key_build_tree_metadata_fabricated": false,
+    "own_offline_collector_and_exact_runtime_only_validator": "PASS_BOTH_ROOTS",
+    "own_runtime_replay": {
+      "bytes": 3021,
+      "path": "/private/tmp/gsip-selected-route-independent-93zade87/replay-final/ACTUAL_BOTH_ROOTS_PURE_REPLAY.json",
+      "sha256": "0612b019cd93541f617ca4cf8d39f2d8cab3ff0dc64bf71d8a26b8783b66a3db"
+    },
+    "parent347_original_source_bytes_and_both_fixed5_inputs_reverified": true,
+    "parent_NPM_sources": 6,
+    "parent_and_candidate_configs_each_selected_modules": 75,
+    "parent_binary_records_each_config": 73,
+    "retained_raw_artifact_graph_joined_with_separately_executed_exact_final_metadata_closure": true,
+    "route_proofs_each_configuration": 3
+  },
+  "at": "2026-10-14T03:18:58.899704+00:00",
+  "author_evidence_separate_not_substituted": {
+    "author_full_default_module_reported": "799passed31toolskips",
+    "broad_schema_unchanged_flag_in_author_receipt_is_qualified_by_actual_nested_evidence_extension_above": true,
+    "final_verification": {
+      "bytes": 8588,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/AUTHOR_FINAL_VERIFICATION.json",
+      "sha256": "0e9bca3cc82a433ebcf21f685a70ec2d0e8fce95afc6adc9ad4eac420def0ed9"
+    },
+    "fresh31_XML": {
+      "bytes": 5172,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/final31.xml",
+      "sha256": "0b6e61db531b82cc3e45e1f0873c6608f1d6d5273c5d8195ba9695e5e9c5e47c"
+    },
+    "reviewer_executed_those31": false,
+    "reviewer_parsed_fresh31_cases_passed": 31
+  },
+  "baseline_and_own_mutations": {
+    "exact_pre_adapter_actual_positive_cases_failed": 2,
+    "final_helper_used_for_mutations": true,
+    "older_runtime_fixture_evidence_exact_to_final_except_expected_task_digest_proved": true,
+    "receipt": {
+      "bytes": 5376,
+      "path": "/private/tmp/gsip-selected-route-independent-93zade87/controls-final/INDEPENDENT_CONTROL_RESULTS.json",
+      "sha256": "ecc9d963ca579995432ef71af3402638111249144e84f4432e622c9c9e7cc3cb"
+    },
+    "three_independent_weakened_variants_failure_counts": [
+      3,
+      3,
+      1
+    ],
+    "variants": [
+      "make_known_root_proof_optional_if_direct_binary_supplied",
+      "remove_exact_rawmetadata_digest_size_pin_comparison",
+      "accept_fetch_URL_as_alternate_cache_filename"
+    ]
+  },
+  "delta_from_normalizer": {
+    "bytes": 55076,
+    "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/delta-from-normalizer.patch",
+    "sha256": "26d80de7847308df1949b994448c4750b37bd7cb446b596913138a762439fd24"
+  },
+  "evidence_manifest": {
+    "bytes": 7799,
+    "path": "/private/tmp/gsip-selected-route-independent-93zade87/FINAL_EVIDENCE_MANIFEST.json",
+    "sha256": "f1551bac1fbe8fec0efbcf5076759080492f23772620747689b033000afcca93"
+  },
+  "final_manifest": {
+    "bytes": 98862,
+    "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/SOURCE_MANIFEST.json",
+    "sha256": "bf75009c671b84cc5b0366ecf25aabc78d9dca2c298888fcaee910047bc48deb"
+  },
+  "final_source_files": [
+    {
+      "bytes": 144888,
+      "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/source/scripts/app_notification_audit.py",
+      "sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d"
+    },
+    {
+      "bytes": 269106,
+      "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/source/tests/test_app_notification_audit.py",
+      "sha256": "67d7f761d046c620b08b1982bbc38e1f3574f98355bd825ce9cfb15bf44a84d6"
+    },
+    {
+      "bytes": 44023,
+      "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/source/docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "feb569c51cd958260ae372bbe5f00edbb49003245c7cf55e771892ae9f0ec784"
+    }
+  ],
+  "format_check": {
+    "bytes": 919,
+    "path": "/private/tmp/gsip-selected-route-independent-93zade87/FINAL_CARRY_AND_FORMAT_EVIDENCE.json",
+    "sha256": "7f402e46af56ce3fd744c1a8289f5a6507cb94964ae48cf521fcf3af9d2d4def"
+  },
+  "independent_current_tests": {
+    "authored_new_pure_cases": 50,
+    "errors": 0,
+    "explicit_real_tool_case_skipped": 1,
+    "failed": 0,
+    "own_adversarial_cases": 27,
+    "passed": 120,
+    "receipt": {
+      "bytes": 2479,
+      "path": "/private/tmp/gsip-selected-route-independent-93zade87/FINAL_FOCUSED_RESULTS.json",
+      "sha256": "4507f20d2be96182ff6112f78478f36159225b5923d04659b9ce3bd651ed20d9"
+    },
+    "tool_skip_is_not_pass": true,
+    "unchanged_diagnostic_bank": 43
+  },
+  "limitations_and_remaining": [
+    "RootintegrationandfreshcorrectedheadCI/nativeartifactproofstillrequired; old623Androidfailureisnotclosedbylocalproof.",
+    "No fresh actualAPK/simulator/nativefeaturecomparison acceptance claimed here.",
+    "Physicaldevices/iOSbackup/store/distribution/counsel/deploy/capture/productiongates remainunchanged and unverified bythis review."
+  ],
+  "normalizer_base_helper_sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4",
+  "preserved_discoveries_and_recoveries": [
+    "Initialprobe deliberatelyfiltered3knownroots; latergenericproductionclosureemitted4bridges. Old3countassumptionfailed whileactualmetadatataskexited0. Bothgenericreceiptandrawoutputpreserved.",
+    "Extra coroutines-core1.10.2 has exactprimaryPOM519da540\u2026/2030B explicitpackagingpom; existinglicence/POMpolicy and selectedtargetbinary remain unchanged. Finalemissionlimitsadditionalproof to3controllednonPOMroots.",
+    "Own initial final-emission hash included one trailingLF after marker whereas author declaredhash omitted it. Fullmarkersinclusivecodeblocks were alreadybyteidentical. Initialdriver/partialoutput and recoveryreceipt preserved; no guard/sourcechange."
+  ],
+  "primary_proof": {
+    "filename_rule": "files.name determines cache identity; exact files.url remains separately pinned repository-relative location. No alternative-name fallback.",
+    "official_primary_GET_receipt": {
+      "bytes": 2825,
+      "path": "/private/tmp/gsip-selected-route-independent-93zade87/primary-gmm/INDEPENDENT_PRIMARY_GMM_PINS.json",
+      "sha256": "50b6ef461fc51470379fe6247cd8e6f5c12dad1af0cf9fc1794bcc4962de0afb"
+    },
+    "pins_match_final_constants": true,
+    "six_raw_GMM_docs_independently_GET_verified_from_official_Google_Maven": true,
+    "versioned_Gradle_spec_url": "https://raw.githubusercontent.com/gradle/gradle/v8.14.3/platforms/documentation/docs/src/docs/design/gradle-module-metadata-latest-specification.md"
+  },
+  "reviewer_mutations": {
+    "owned_sourcecopies_syntheticprobes_and_evidence_only": true,
+    "shared_source_Git_GH_CI_dispatch_production_cache_SDK_native_build_APK_signing_key_actions": false
+  },
+  "schema": "gsip-independent-final-selected-route-source-closure-v1",
+  "selected_route_guards": [
+    "Only3exactexistingnonPOMrootcontexts and6exactrawmetadata documents are recognized.",
+    "Actual Gradle-selected singleton source owner+variant and onehop selected target owner+variant are required, not all-variant GMM presence.",
+    "Everyknownselectedroot requires proof even if a direct binary row is supplied.",
+    "Producer and offlinevalidator recompute rawbase64 bytes/digest/size and exact ordered source-target proof; partial/extra/unknown/malformedproof refuses.",
+    "Source available-at GAV and exact relativeURL bind target; terminal cache NAME, exact URL, SHA256 and size bind actual selected binary.",
+    "Every POM/licence proof, module, binary, projectsource, NPMproof and bothconfiguration remain; no generic missing-binary waiver.",
+    "Unknown suppliedproof and unknown nonPOM missingbinary still refuse; existing validated packaging=pom rule remains unchanged."
+  ],
+  "source_base_commit": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "source_projection": {
+    "bytes": 2410,
+    "path": "/private/tmp/gsip-selected-route-independent-93zade87/FINAL_SOURCE_AND_EMISSION_BINDING.json",
+    "sha256": "11f03b976eb9aaff3d4af06030cafd31510f006d634b6f46a1bf3e956806fac0"
+  },
+  "source_scope": {
+    "all_old_function_and_global_text_exact_outside_explicit_GMM_blocks": true,
+    "documentation_append_only": true,
+    "entire_GMM_task_route_erasure_restores_original74ad": true,
+    "entire_helper_erasure_restores_exact_normalizer_base": true,
+    "only_authorized64byte_old_task_digest_expectation_changed": true,
+    "original_test_prefix_bytes": 232804,
+    "runtime_task_sha256": "f90e5f896bddf83530e304b315e79694c7992c87e79f3b53288b27067b66c856",
+    "tracked_files_verified": 365,
+    "unchanged_other_files": 362,
+    "workflow_build_receipt_permissions_backup_locator_POM_licence_closed_SDK_source_guards_and_locks_unchanged": true
+  },
+  "status": "CLOSED_NO_BLOCKER_SOURCE_ONLY"
+}

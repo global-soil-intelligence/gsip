@@ -1,0 +1,2 @@
+tests/test_app_notification_audit.py:4530: error: Call to untyped function (unknown) in typed context  [no-untyped-call]
+Found 1 error in 1 file (checked 75 source files)

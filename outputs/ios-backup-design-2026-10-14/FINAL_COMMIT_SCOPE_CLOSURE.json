@@ -1,0 +1,33 @@
+{
+  "commit": "476bbdab190c99a3bb6d5d8143f21bebde6baf9f",
+  "parent": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "manifest_sha256": "67de0de8f45f45894958275b6683917e15888052274fedfed6f4bb79cc3f7be4",
+  "source_files_verified": 367,
+  "only_four_changed_paths": true,
+  "files": [
+    {
+      "path": "docs/BUILD_ORDER.md",
+      "sha256": "bcd494f48a9e80987aeb5af4dca37c86599aa9a03df2d5583d6e91c0f4bbe6cb",
+      "bytes": 89347
+    },
+    {
+      "path": "docs/IOS_PRIVATE_STORAGE.md",
+      "sha256": "dd9947196df59cdd52ddd6c1d8138120093b0439343c8258a9f21b75e71a0611",
+      "bytes": 15598
+    },
+    {
+      "path": "docs/SPEC.md",
+      "sha256": "00d1c36f91c8cb0b4fb056a173b9243efb0270063a067d50d4a4580ef8c82fdb",
+      "bytes": 159168
+    },
+    {
+      "path": "tests/test_ios_backup_plan.py",
+      "sha256": "2f85257939ad42b8a055cdbb9425dc64a5c3629462f83a830f6d734a450d4072",
+      "bytes": 3605
+    }
+  ],
+  "conventional_commit_and_codex_trailer": true,
+  "signed_off_by_present": false,
+  "read_only_git_operations_only": true,
+  "no_tests_repeated": true
+}

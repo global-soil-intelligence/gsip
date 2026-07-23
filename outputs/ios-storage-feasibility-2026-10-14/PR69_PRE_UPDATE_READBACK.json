@@ -1,0 +1,52 @@
+{
+  "baseRefOid": "883c7ee51dcb6c58cb7f309b78a590ea684ba8c7",
+  "body": "WP-APP-2C1 completes source-only feasibility after the approved specification in #68. The existing filesystem bridge cannot establish exclusion readback/error handling, crash-safe replacement or the six-store transaction contract. Four unadopted open components were compared; none satisfies the complete v11 lifecycle/privacy contract. **The result is blocked, with no backend selected.**\n\nAdds an offline Python evidence checker, portable public-source catalog, observed-resolution snapshot and tests. The checker verifies 19 exact public snapshots and 13 application files, emits bounded fixed diagnostics, and deliberately exits 3 for valid source evidence with feasibility still blocked. It accepts no caller capability manifest and performs no network/native/process operation or filesystem mutation in its logic. This implements no app storage adapter, migration or device experiment.\n\nRefs #67; keep that issue open for the unresolved mechanism.\n\n### Explicit invariants and acceptance\n\n- [x] Preserve I1\u2013I15, B1\u2013B8, SPEC section11 and all library/photo/device/production gates. SPEC body from line9 onward is byte-identical; 364 existing files are unchanged. Of all132 existing acceptance lines, only the three APP-2C1 boxes change to checked.\n- [x] Bind exact existing npm/native source versions, declared integrity, source hashes, licences, maintenance dates and source archive sizes. Observed native resolution remains untracked/observational rather than a universal native lock. No dependency was added.\n- [x] Cover all six queue/draft/library/generation/reminder stores, account/session/legacy SDK slots, WebKit/native cookie/cache/preferences, camera temporary files, staging/recovery and generic OS notifications. Preserve original-account and anti-resurrection/rights fences.\n- [x] Tests refuse missing/changed/unknown inputs, false readiness claims, incomplete inventory, symlinks/special files, bounds violations and read-time mutation; generic diagnostics never echo incoming paths/content. Any valid review still has feasibility/backend/migration/device flags false.\n- [x] Source and factual independent reviews closed without blocking findings.\n- [ ] Required hosted CI green (pending at PR creation).\n\n### Verification actually run\n\n- Full local lint (ESLint, language, Prettier), Ruff, strict mypy over78 source files and diff whitespace checks passed.\n- Focused local suite:77 passed, no errors/failures/skips. All38 new tests on the unchanged baseline:38 expected failures, zero errors/skips. Two review regressions additionally failed on the specific pre-fix documents and passed after correction.\n- Independent review repeated77 cases and38 baseline failures, verified all372 source hashes/modes and caught five guard-removal mutations: hash bypass, missing inventory, false-ready output, link following and diagnostic echo. A separate source fact review verified package facts and all19 catalog bindings.\n- Actual public-profile replay by root and independent reviewers: exit3, source_review_valid=true, status=blocked, 19 public/13 repository files; no backend, migration or device acceptance. This is source-evidence verification, not storage/backup proof.\n- Gitleaks8.21.2, non-shallow full Git history/all local refs with redaction:158 reported commits, zero findings. Ignorefile and scanner configuration hashes unchanged; only the four previously approved historical fixture fingerprints remain.\n- No local GDAL/PostGIS/pgTAP/Deno/native/device/backup result is claimed for this package. Hosted source CI supplies its required environment. These source/docs paths do not trigger native artifacts; prior native artifacts do not close device gates.\n\n### Changes after review\n\n- Corrected the displayed observed-resolution hash/length to its actual formatted1233-byte input. Original1260-byte provenance remains explicit, with parsed JSON equality; a new regression compares every displayed row against the fixed profile.\n- Corrected a local evidence range ending beyond the157-line source document and added a failing-before line-range regression.\n- Qualified InAppBrowser's iOS17+ persistent isolation versus older/shared default stores, and explicitly separated manual archive licence/date/size review from what the offline checker validates. These corrections preserve the blocked outcome.\n\n### Assumptions and remaining gates\n\n- Justin approved merging #68 and continuing source-only feasibility on2026-10-14. That does not select a backend, grant a native-language exception or authorize any deployment/device operation.\n- TypeScript/Python-only and the approved no-cloud policy remain binding. No paid/closed service, proprietary SDK or licence change is selected. Candidate package licences and archive sizes do not establish transitive native/binary or installed-app closure.\n- The fixed13-file set and reviewed persistence inventory describe the current source. This tool cannot automatically discover every future new persistence feature in unbound files. Source/version/lock changes or new surfaces require a fresh review, not a blind hash update.\n- The source reader is POSIX-only and bounded/race-aware, not a universal filesystem snapshot. It provides no guarantee after return. Public-source integrity checks are not upstream signature/provenance or device behavior certification.\n- APP-2C2 remains held until a concrete supported mechanism is approved; custom native code additionally needs Justin's explicit language exception. APP-2C3 needs separate synthetic physical-device/account/signing inputs. Old provider backups cannot be retroactively retracted.\n- No production read/change, worker dispatch, Pages approval, capture/sign-in opening, account/signing change or real contributor-data access occurred. Pages for the approved #68 merge is waiting behind the unchanged Justin-only protection, with admin bypass disabled.\n- Codex authored the checker/tests/document integration; independent agents reviewed code/source facts without authoring the reviewed implementation. Justin Hart remains human of record. No agent approval or DCO certification is asserted.\n",
+  "headRefOid": "258b57732a94968e576eb15e848566a487cb4878",
+  "isDraft": false,
+  "mergeStateStatus": "CLEAN",
+  "number": 69,
+  "state": "OPEN",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-14T22:02:07Z",
+      "conclusion": "SKIPPED",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38644748539/job/116128725730",
+      "name": "dco",
+      "startedAt": "2026-10-14T22:02:08Z",
+      "status": "COMPLETED",
+      "workflowName": "DCO"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-14T22:10:04Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38644748460/job/116128723318",
+      "name": "validate",
+      "startedAt": "2026-10-14T22:02:09Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-14T22:02:17Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38644747964/job/116128721002",
+      "name": "gitleaks",
+      "startedAt": "2026-10-14T22:02:09Z",
+      "status": "COMPLETED",
+      "workflowName": "Secret scan"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-14T22:01:58Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38644711362/job/116128597653",
+      "name": "gitleaks",
+      "startedAt": "2026-10-14T22:01:51Z",
+      "status": "COMPLETED",
+      "workflowName": "Secret scan"
+    }
+  ],
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/69"
+}

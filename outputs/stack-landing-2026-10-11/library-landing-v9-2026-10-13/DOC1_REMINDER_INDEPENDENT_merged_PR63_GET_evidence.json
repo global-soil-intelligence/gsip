@@ -1,0 +1,12 @@
+{
+  "GET_only": true,
+  "PR": 63,
+  "URL": "https://github.com/global-soil-intelligence/gsip/pull/63",
+  "base": "main",
+  "merge_commit_sha": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "merged": true,
+  "merged_at": "2026-10-14T03:35:08Z",
+  "raw_API_response_persisted": false,
+  "raw_API_response_sha256": "872d9fa6ee3debcf906bc449326628b585d723cf13354d81a4b52022388cc9f9",
+  "reviewed_head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc"
+}

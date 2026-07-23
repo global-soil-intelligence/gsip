@@ -1,0 +1,27 @@
+{
+  "utc": "2026-10-14T00:53:45.989539+00:00",
+  "source_helper_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+  "checks": [
+    {
+      "check": "ruff",
+      "exit_code": 0,
+      "seconds": 0.101,
+      "output_file": "app2b-root-caller-diagnostic-ruff.txt",
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "output_bytes": 19
+    },
+    {
+      "check": "mypy",
+      "exit_code": 1,
+      "seconds": 0.719,
+      "output_file": "app2b-root-caller-diagnostic-mypy.txt",
+      "output_sha256": "28bdc1240c11092d88414f497360d8f7ce1deaa2a0b7563b799860551f72b79f",
+      "output_bytes": 171
+    }
+  ],
+  "all_pass": false,
+  "unchanged_real_gradle_cases_deselected": false,
+  "real_gradle_task_changed": false,
+  "previous_real_30_execution": "APP2B_ROOT_REVIEWED_NATIVE_V3_PYTHON_CHECKS.json",
+  "production_changes": false
+}

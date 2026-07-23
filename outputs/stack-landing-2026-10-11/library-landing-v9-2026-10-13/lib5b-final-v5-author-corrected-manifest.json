@@ -1,0 +1,57 @@
+{
+  "authored_files": [
+    {
+      "bytes": 39798,
+      "path": "pipeline/node_exchange_store.py",
+      "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9"
+    },
+    {
+      "bytes": 87015,
+      "path": "pipeline/node_exchange_simulator.py",
+      "sha256": "d5027fc698863d71dcf90973e556fd875e638ada2cde7b0b9eebe210025df8d1"
+    },
+    {
+      "bytes": 46450,
+      "path": "tests/test_node_exchange_store.py",
+      "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17"
+    },
+    {
+      "bytes": 84746,
+      "path": "tests/test_node_exchange_simulator.py",
+      "sha256": "53954d469dd47b6feb95c010fcf511a65eac28f60a3717b2daad3f33dc41871d"
+    },
+    {
+      "bytes": 23389,
+      "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+      "sha256": "a133b625ff6ab3e3f51a5985e6e3a79161e536b325b9f8baad73aea037b9ab86"
+    }
+  ],
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "base_files_changed": [],
+  "base_files_checked": 347,
+  "base_tree": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64",
+  "delta_from_v4": {
+    "bytes": 12592,
+    "path": "/private/tmp/gsip-lib5b-v4-to-v5.patch",
+    "sha256": "976f5c88feaa554cfe316d3dd332c9fe47b18e107b20e879d2fa7b7fa55d25c1"
+  },
+  "frozen_review_snapshot": "/private/tmp/gsip-lib5b-final-v5-frozen-nu59zsbx",
+  "immutable_source": true,
+  "note": "Five source hashes unchanged. Old top-level patch/delta-from-v3 labels were inherited incorrectly; this manifest binds v5 full and v4-to-v5 delta only. Actual delivery checks and independent review remain separate receipts.",
+  "patch": {
+    "bytes": 288186,
+    "path": "/private/tmp/gsip-lib5b-private-exchange-ledger-v5.patch",
+    "sha256": "de62d7c782594cfa4e14db781e8fd11935eb9a173608ba576467b128eea56309"
+  },
+  "source_prerequisites": {
+    "lib5a_merge": "333f1492713d41c0ade42d6b16c4453cdfb1b783",
+    "spec10_merge": "d7ed716ed0921381da04f542e90902ede36cb462"
+  },
+  "source_root": "/private/tmp/gsip-lib5b-author-ovnn60yz/source",
+  "supersedes_manifest": {
+    "bytes": 2296,
+    "path": "/private/tmp/gsip-lib5b-final-v5-file-manifest.json",
+    "sha256": "cbc4fc525ef70349e1f57f331eaef4cb6368382e756ff1379d3ce9db21e9908a"
+  },
+  "version": "v5"
+}

@@ -1,0 +1,71 @@
+{
+  "status": "NINE_REVIEWED_TRAFFIC_RECORDS_SAVED_UI_READBACK_PASS",
+  "records": [
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.108.153",
+      "ttl": 3600,
+      "index": 1
+    },
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.109.153",
+      "ttl": 3600,
+      "index": 2
+    },
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.110.153",
+      "ttl": 3600,
+      "index": 3
+    },
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.111.153",
+      "ttl": 3600,
+      "index": 4
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8000::153",
+      "ttl": 3600,
+      "index": 5
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8001::153",
+      "ttl": 3600,
+      "index": 6
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8002::153",
+      "ttl": 3600,
+      "index": 7
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8003::153",
+      "ttl": 3600,
+      "index": 8
+    },
+    {
+      "index": 9,
+      "type": "CNAME",
+      "name": "www",
+      "value": "global-soil-intelligence.github.io.",
+      "ttl": 3600
+    }
+  ],
+  "ownership_txt": "PRESERVED",
+  "domain_connect": "PRESERVED",
+  "no_other_changes": true
+}

@@ -1,0 +1,78 @@
+{
+  "status": "Actual d74-head iOS artifact verified within read-only scope",
+  "scope": "Actual iOS job/artifact and pure exact-helper replay only; not Android or combined PR acceptance.",
+  "run_id": 38450975177,
+  "ios_job_id": 115481486334,
+  "artifact_id": 11841256545,
+  "ios_job_conclusion": "success",
+  "ios_steps_successful": 26,
+  "overall_run_conclusion": "failure",
+  "run_head": "d74ba2add9ce9bb5494be60c5f11883d3f5137ef",
+  "checkout_commit": "bbe9e9812acc555e33e075a737769475aaacb674",
+  "checkout_commit_is_verified_merge_of": [
+    "710d144db94097be71989c67b5d3b4bb48135ad8",
+    "d74ba2add9ce9bb5494be60c5f11883d3f5137ef"
+  ],
+  "checkout_tree_sha": "1640592502e37293e9e3447a2c16c9dffeb4a1db",
+  "fixed_source_files_bound_to_merge_tree": 8,
+  "parent_source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "workflow_run_number": 44,
+  "artifact_archive_bytes": 13914776,
+  "artifact_archive_sha256": "f3c1a9a30f02e5c158f6aaf648a7e2718ac7969d227ee5327ac079f6f20ff27a",
+  "required_files": 9,
+  "outer_uncompressed_bytes": 14218078,
+  "pure_helper_sha256": "0a24bd44e461c8ac72504bb73e0be7de1f03cc7df22951e093c283bd6d2e8715",
+  "exact_serialized_retained_comparison_replay": true,
+  "comparison_json_sha256": "37124d0f92f98ad57dc9d1b74b1ea3635f25613d1b3e8883d27f2b435230d9f2",
+  "checks": {
+    "both_build_receipts_exact_13_field_schema": "pass",
+    "same_actual_toolchain_run_versions": "pass",
+    "all_nested_zip_bounds_paths_duplicates_symlinks": "pass",
+    "both_actual_reference_hashes_and_repeat_comparisons": "pass",
+    "strict_ios_native_sidecar_pins_source_archive_binary_and_license_proof_fields": "pass",
+    "source_input_and_frozen_lock_hashes": "pass",
+    "closed_capture_and_library_activation_receipts": "pass"
+  },
+  "actual_repeat_results": {
+    "parent": {
+      "byte_equal": false,
+      "entry_content_equal": true
+    },
+    "candidate": {
+      "byte_equal": false,
+      "entry_content_equal": true
+    }
+  },
+  "actual_native_inventory_counts": {
+    "parent": {
+      "application_spm_pins": 4,
+      "resolved_inventory": 3,
+      "reviewed_remote_source_packages": 3,
+      "capacitor_binary_inputs": 2,
+      "npm_source_packages": 6
+    },
+    "candidate": {
+      "application_spm_pins": 4,
+      "resolved_inventory": 3,
+      "reviewed_remote_source_packages": 3,
+      "capacitor_binary_inputs": 2,
+      "npm_source_packages": 7
+    }
+  },
+  "actual_feature_size": {
+    "parent_zip_bytes": 3424160,
+    "candidate_zip_bytes": 3593968,
+    "overall_APP2B_zip_delta_bytes": 169808,
+    "isolated_plugin_overhead_claimed": false
+  },
+  "manifest": "/private/tmp/gsip-ios-d74-artifact-iet22h7f/ios-artifact-verification-manifest.json",
+  "manifest_sha256": "2de52f755b43b4e247127fed70d553203f2a0f9a310a160a816fedeffcb3c95f",
+  "limitations": [
+    "PR CI compiled the authenticated merge checkout, not the branch-head object itself; both identities and eight source-file bindings are explicit.",
+    "Full repeat archives differ even though all nondirectory ZIP entry bytes match; this is not universal or cross-runner reproducibility.",
+    "Replayed strict retained source/license proof fields and actual artifact hashes; no fresh upstream binary recompilation or native tool/device run performed.",
+    "Android artifact/acceptance remains absent because Android failed. Combined PR acceptance is unchecked and PR remains draft.",
+    "No native-device notifications, iOS backup exclusion, signing/store/field readiness, production or activation evidence supplied."
+  ],
+  "privacy_and_authority": "GET-only GitHub metadata/commit/tree/artifact reads and owned temp helper/files. No raw signed URLs, bearer/publishable keys, compiled strings, private payloads or logs printed. No source/Git/GH/CI/production/device/account/signing mutations."
+}

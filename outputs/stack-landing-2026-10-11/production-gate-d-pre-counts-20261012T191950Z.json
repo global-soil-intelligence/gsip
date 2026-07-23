@@ -1,0 +1,246 @@
+[
+  {
+    "table_name": "auth.audit_log_entries",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.custom_oauth_providers",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.flow_state",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.identities",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.instances",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.mfa_amr_claims",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.mfa_challenges",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.mfa_factors",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.mfa_recovery_code_sets",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.mfa_recovery_codes",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.oauth_authorizations",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.oauth_client_states",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.oauth_clients",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.oauth_consents",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.one_time_tokens",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.refresh_tokens",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.saml_providers",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.saml_relay_states",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.schema_migrations",
+    "row_count": 82
+  },
+  {
+    "table_name": "auth.scim_tokens",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.scim_users",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.sessions",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.sso_domains",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.sso_providers",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.users",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.webauthn_challenges",
+    "row_count": 0
+  },
+  {
+    "table_name": "auth.webauthn_credentials",
+    "row_count": 0
+  },
+  {
+    "table_name": "extensions.spatial_ref_sys",
+    "row_count": 8500
+  },
+  {
+    "table_name": "public.actors",
+    "row_count": 5
+  },
+  {
+    "table_name": "public.attribution_reviews",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.contribution_grants",
+    "row_count": 5
+  },
+  {
+    "table_name": "public.contributors",
+    "row_count": 5
+  },
+  {
+    "table_name": "public.dataset_releases",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.deletion_requests",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.gold_labels",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.grant_withdrawals",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.h3_cells",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.photos",
+    "row_count": 25
+  },
+  {
+    "table_name": "public.predictions",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.prior_cell_cache",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.prior_jobs",
+    "row_count": 25
+  },
+  {
+    "table_name": "public.priors",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.qa_events",
+    "row_count": 0
+  },
+  {
+    "table_name": "public.qa_jobs",
+    "row_count": 25
+  },
+  {
+    "table_name": "public.service_state",
+    "row_count": 1
+  },
+  {
+    "table_name": "public.submissions",
+    "row_count": 25
+  },
+  {
+    "table_name": "public.terms_versions",
+    "row_count": 2
+  },
+  {
+    "table_name": "public.upstream_buckets",
+    "row_count": 3
+  },
+  {
+    "table_name": "realtime.messages",
+    "row_count": 0
+  },
+  {
+    "table_name": "realtime.schema_migrations",
+    "row_count": 89
+  },
+  {
+    "table_name": "realtime.subscription",
+    "row_count": 0
+  },
+  {
+    "table_name": "storage.buckets",
+    "row_count": 2
+  },
+  {
+    "table_name": "storage.buckets_analytics",
+    "row_count": 0
+  },
+  {
+    "table_name": "storage.buckets_vectors",
+    "row_count": 0
+  },
+  {
+    "table_name": "storage.migrations",
+    "row_count": 73
+  },
+  {
+    "table_name": "storage.objects",
+    "row_count": 0
+  },
+  {
+    "table_name": "storage.s3_multipart_uploads",
+    "row_count": 0
+  },
+  {
+    "table_name": "storage.s3_multipart_uploads_parts",
+    "row_count": 0
+  },
+  {
+    "table_name": "storage.vector_indexes",
+    "row_count": 0
+  },
+  {
+    "table_name": "supabase_migrations.schema_migrations",
+    "row_count": 26
+  },
+  {
+    "table_name": "vault.secrets",
+    "row_count": 0
+  }
+]

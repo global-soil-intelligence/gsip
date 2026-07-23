@@ -1,0 +1,47 @@
+{
+  "at": "2026-10-13T21:45:41.889510+00:00",
+  "scope": "Finite GET-only exact-head in-memory fixed-token diagnosis, no safety relaxation or source mutation",
+  "head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+  "run_id": 38471987452,
+  "job_id": 115553123313,
+  "status": "completed",
+  "conclusion": "failure",
+  "raw_job_log_bytes": 114889,
+  "raw_job_log_sha256": "f1ef04ee42fcd2bc77613df8d4af968b112da4eb28395f5454940315de80dd36",
+  "raw_job_log_persisted": false,
+  "whole_job_fixed_counts": {
+    "BUILD_SUCCESS": 2
+  },
+  "audit_region_fixed_counts": {},
+  "public_exception_whitelist": [
+    "org.gradle.api.artifacts.UnknownConfigurationException",
+    "groovy.lang.MissingPropertyException",
+    "groovy.lang.MissingMethodException",
+    "java.io.FileNotFoundException",
+    "java.nio.file.NoSuchFileException",
+    "java.lang.IllegalArgumentException",
+    "java.lang.IllegalStateException",
+    "java.lang.NullPointerException",
+    "java.lang.ClassCastException",
+    "org.gradle.api.GradleException",
+    "org.gradle.api.CircularReferenceException",
+    "org.gradle.api.artifacts.ResolveException",
+    "org.gradle.api.tasks.TaskExecutionException"
+  ],
+  "audit_group_command_count": 0,
+  "generic_audit_failure_count": 1,
+  "fixed_fault": "GSIP_FIXED_FAULT_V1|UNKNOWN",
+  "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|TEXT_VALID|SIZE_REJECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED",
+  "diagnostic": {
+    "counts": {},
+    "error_class": "BUILD_TOOL",
+    "source_line": 606,
+    "stage": "android-gradle-inspection"
+  },
+  "actual_underlying_cause": "UNKNOWN",
+  "attributable_public_gradle_cause_token_count": 0,
+  "interpretation": "No underlying inspection stdout/stderr is copied to the job log by the existing capturing run helper. Known whole-job tokens cannot establish an inspection cause. The internal 65536-byte refusal and failed audit remain unchanged.",
+  "source_edits": false,
+  "production_or_GitHub_mutations": false,
+  "reproduction_started": false
+}

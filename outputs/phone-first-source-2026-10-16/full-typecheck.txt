@@ -1,0 +1,14 @@
+Command/check: typecheck
+Observed final exit_code: 0
+$ pnpm -r typecheck
+Scope: 4 of 5 workspace projects
+packages/schema typecheck$ tsc --noEmit
+apps/site-web typecheck$ tsc --noEmit
+
+apps/site-web typecheck: Done
+packages/schema typecheck: Done
+apps/capture-pwa typecheck$ tsc --noEmit
+apps/map-web typecheck$ tsc --noEmit
+apps/map-web typecheck: Done
+apps/capture-pwa typecheck: Done
+

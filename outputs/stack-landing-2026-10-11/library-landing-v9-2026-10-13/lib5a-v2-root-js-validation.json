@@ -1,0 +1,67 @@
+[
+  {
+    "command": [
+      "pnpm",
+      "lint"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 3.22,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-js-0.log"
+  },
+  {
+    "command": [
+      "pnpm",
+      "typecheck"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 2.56,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-js-1.log"
+  },
+  {
+    "command": [
+      "pnpm",
+      "test"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 4.02,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-js-2.log"
+  },
+  {
+    "command": [
+      "pnpm",
+      "build"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 2.17,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-js-3.log"
+  },
+  {
+    "command": [
+      "pnpm",
+      "check:map-budget"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.3,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-js-4.log"
+  },
+  {
+    "command": [
+      "pnpm",
+      "check:site-budget"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.31,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-js-5.log"
+  },
+  {
+    "command": [
+      "pnpm",
+      "--filter",
+      "@gsip/capture-pwa",
+      "build:app"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.47,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-js-6.log"
+  }
+]

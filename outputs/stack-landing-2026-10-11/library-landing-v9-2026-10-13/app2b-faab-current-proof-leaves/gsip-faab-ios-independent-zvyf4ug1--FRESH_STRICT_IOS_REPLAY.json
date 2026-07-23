@@ -1,0 +1,47 @@
+{
+  "actual_repeats": {
+    "candidate": {
+      "byte_equal": false,
+      "entry_content_equal": true
+    },
+    "parent": {
+      "byte_equal": false,
+      "entry_content_equal": true
+    }
+  },
+  "application_Swift_pins_per_side": [
+    4,
+    4
+  ],
+  "archive_byte_delta": 169795,
+  "candidate_checkout": "5d974ed24977e44026666ba8d3b2158b4a22dd06",
+  "closed_capture_library_flags": "pass",
+  "comparison_dictionary_equal": true,
+  "comparison_regenerated_bytes_equal": true,
+  "comparison_sha256": "07bd7156888f5f8748a55dbd752571712d8868a87f0e6f5ccc2a70dc7fdc8c53",
+  "compiled_contents_printed": false,
+  "feature_difference_counts": {
+    "changed_entries": 5,
+    "first_only": 4,
+    "second_only": 6
+  },
+  "four_zip_reference_bindings_and_comparisons": "pass",
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "helper_sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
+  "ios_job_id": 115663053189,
+  "native_source_inputs_per_side": [
+    5,
+    5
+  ],
+  "network_or_build_for_strict_replay": false,
+  "parent_candidate_build_receipt_fields": [
+    13,
+    13
+  ],
+  "parent_checkout": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "run_attempt": 1,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "source_lock_bindings": "pass",
+  "strict_native_source_license_graph_proof": "pass"
+}

@@ -1,0 +1,66 @@
+{
+  "DCO": {
+    "certification": false,
+    "conclusion": "skipped",
+    "head": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+    "job_id": 115637372793,
+    "run_id": 38497768167,
+    "status": "completed"
+  },
+  "GET_only": true,
+  "attempt": 1,
+  "conclusion": "success",
+  "dispatch_source_Git_production_approvals_changes": false,
+  "general_metrics_sha256": "7bc00b83b45a44477ac53d78a5e80af0b0300cecab61ea4ea9c31ff948cc5637",
+  "head": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+  "job_id": 115637371083,
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "merge": "be9a123f26a4143127d31315e35f861037b25cd2",
+  "native_runs_or_artifacts_touched": false,
+  "observations": [
+    {
+      "completed_steps": 22,
+      "conclusion": null,
+      "current_steps": [
+        23
+      ],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T01:54:12Z",
+      "status": "in_progress"
+    },
+    {
+      "completed_steps": 23,
+      "conclusion": null,
+      "current_steps": [
+        24
+      ],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T01:55:14Z",
+      "status": "in_progress"
+    },
+    {
+      "completed_steps": 24,
+      "conclusion": null,
+      "current_steps": [
+        25
+      ],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T01:57:17Z",
+      "status": "in_progress"
+    },
+    {
+      "completed_steps": 34,
+      "conclusion": "success",
+      "current_steps": [],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T01:57:48Z",
+      "status": "completed"
+    }
+  ],
+  "run_id": 38497768156,
+  "run_number": 254,
+  "scan_closure_sha256": "d20b01bfa02e0adade051b12e5297709c75e84f68092be04fd570ce8f297eb27",
+  "schema": "gsip-exact800-finite-general-scan-closeout-v1",
+  "source_binding_sha256": "593abf24335d3f690dbe68e0b002b6b7ae049ff231e7d5780909a6d6e0e96585",
+  "terminal": true
+}

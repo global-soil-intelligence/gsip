@@ -1,0 +1,38 @@
+{
+  "observed_utc": "2026-10-14T21:49:04.935171+00:00",
+  "status": "blocked",
+  "sources": [
+    {
+      "id": "ion_filesystem_manager",
+      "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-filesystem/56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c/IONFilesystemLib/IONFILEManager.swift",
+      "path": "/private/tmp/gsip-app2c1-native-audit-2dnq0vmo/raw/ion_filesystem_manager.swift",
+      "bytes": 15865,
+      "sha256": "0d59a711c547b26f9d16b9743142c32087b94b40ee4f530665b1b76434c1a084",
+      "matches_verified_archive": true
+    },
+    {
+      "id": "filesystem_mapping",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor-filesystem/adc1899450904c2a3022c8bb7ac2d994ef2519ad/ios/Sources/FilesystemPlugin/IONFileStructures%2BConverters.swift",
+      "path": "/private/tmp/gsip-app2c1-native-audit-2dnq0vmo/raw/filesystem_mapping.swift",
+      "bytes": 2112,
+      "sha256": "b4dd96f40a57dff5b43f9b93e208b5f64ae716bcda57378ca4f44a83b713c7c0",
+      "matches_verified_archive": true
+    },
+    {
+      "id": "candidate_sqlite_files",
+      "url": "https://raw.githubusercontent.com/capacitor-community/sqlite/3f3f71606c8f292a3d6d841937bcfc5b5c45aeb5/ios/Plugin/Utils/UtilsFile.swift",
+      "path": "/private/tmp/gsip-app2c1-native-audit-2dnq0vmo/raw/candidate_sqlite_files.swift",
+      "bytes": 23908,
+      "sha256": "db166433869c798a6afbc17333978c511a54892be802bfaa1003876e41613821",
+      "matches_verified_archive": true
+    },
+    {
+      "id": "candidate_sqlite_sqlcipher_manifest",
+      "url": "https://raw.githubusercontent.com/sqlcipher/SQLCipher.swift/4.14.0/Package.swift",
+      "path": "/private/tmp/gsip-app2c1-native-audit-2dnq0vmo/raw/candidate_sqlite_sqlcipher_manifest.swift",
+      "bytes": 985,
+      "sha256": "4de2e04cf45557311a0fc68229dec985b19e7b585ca1048c315c74711d0456ec",
+      "matches_verified_archive": null
+    }
+  ]
+}

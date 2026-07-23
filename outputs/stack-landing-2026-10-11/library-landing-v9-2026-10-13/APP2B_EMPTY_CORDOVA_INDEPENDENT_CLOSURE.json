@@ -1,0 +1,205 @@
+{
+  "authored_files": [
+    {
+      "base_c1_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 118884,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "71425d41f957c8c5bee05acf2f2456b2fae181828f0384914f1e0f7c97864655",
+      "v1_sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071",
+      "v2a_sha256": "327bdee08648e06409fdf64b8002cab29e072924eb8907b7b02b06bfbdc6e74a"
+    },
+    {
+      "base_c1_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 161005,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "e2fd5781cfc7169216cfb2bf2b3256137861fd0dadbb0e3a5a80fbb148be10ef",
+      "v1_sha256": "de89652a0f0bb814ee68c7cc25f5bcf44db35e3440e7805e39c8a427b3c10450",
+      "v2a_sha256": "122be6455c090a867a462e2cbab167b381a2b659111d32073531b4faec00e186"
+    },
+    {
+      "base_c1_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 26096,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "ca0736fb18669534ffd7ef661c44f2c28968d483eebee31a5f19aea7a15cef76",
+      "v1_sha256": "fdd8ddf980f2a1f565ff8c658809bf31c6620deebbd90272fb6605690435fb79",
+      "v2a_sha256": "e1b7c073d28befd29237b6a9a3efa09ef7f9687f60347520762f8b8539a7d041"
+    }
+  ],
+  "base_commit": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "carried_actual_tool_evidence": {
+    "cases": 30,
+    "first_sandbox30_entirely_excluded": true,
+    "fresh_v2b_execution_claimed": false,
+    "prior_actual_process": {
+      "bytes": 307,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/real-process.json",
+      "sha256": "489e52fefad0fc0a94565453d2ff05541d3ed12dbbcd77daacc113871357e672"
+    },
+    "prior_actual_report": {
+      "bytes": 20683,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/real.json",
+      "sha256": "b87c9493d99c99e913ddc17dd53f4ba60e1d62c1ebc4194ec875a6f808b0c5ac"
+    },
+    "prior_four_meaningful_adapter_guard_mutations_retained": true,
+    "prior_own_six_command_witness": {
+      "bytes": 8981,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/independent-split-witness.json",
+      "sha256": "633d5acae9b818ddcb048ee29f0fdda950a7c4a1a509d8b473e7386a7027db2f"
+    },
+    "reason": "Generated task74ad and all launch/lease/context/diagnostic functions used by these cases are exact unchanged by full AST projection; no repeated real tool run needed for source-only Cordova guard.",
+    "retained_original_real": 19,
+    "v1_new_real": 11
+  },
+  "combined_unique_source_review_cases": {
+    "255_current_plus_30_hashbound_prior_actual": 285,
+    "not_an_atomic_285_fresh_run": true
+  },
+  "constraints": {
+    "no_network_build_or_class_execution_for_current_guard": true,
+    "no_source_shared_author_git_github_or_production_actions": true,
+    "own_tmp_only": true,
+    "raw_runtime_streams_or_private_values_not_printed_or_persisted": true,
+    "v1blocked_receipt_and_all_banks_preserved": true
+  },
+  "created_at_utc": "2026-10-13T23:43:59.619483+00:00",
+  "current_tests": {
+    "actual_passed": 255,
+    "errors": 0,
+    "failures": 0,
+    "new_Cordova_guard_cases": 42,
+    "process_report": {
+      "bytes": 321,
+      "path": "/private/tmp/gsip-cordova-v2b-independent-amt07pob/retained-and-pure-process.json",
+      "sha256": "bdb7a85904e1f98ba02c2b70c025d5336c844d99930a52c523742348bd3327d7"
+    },
+    "retained_prior_pure": 213,
+    "safe_report": {
+      "bytes": 179923,
+      "path": "/private/tmp/gsip-cordova-v2b-independent-amt07pob/retained-and-pure.json",
+      "sha256": "3aa496bec27955f48744678eab72cae9d6f0ec79d9d8e426c047c7426d1f2024"
+    },
+    "selected_cases": 255,
+    "skips": 0,
+    "unchanged43_bank_sha256": "4017b63fe4614833f8ded1b38ac545e1c286367e0422d4857ec07f05d5b6c7a5",
+    "unchanged43_diagnostics_included_once": 43
+  },
+  "findings": [],
+  "frozen_directory": "/private/tmp/gsip-native-cordova-v2b-frozen-sb6nf7f4",
+  "frozen_receipt_sha256": "b58898f6c7cc2632ff6bc9ab4a6a84255bb914dad793de6a16a682ad7289677b",
+  "independent_guard_witnesses": {
+    "R150_independent_literal_matches_primary_generator_semantics": true,
+    "actual_four_generated_archive_acceptance": true,
+    "baseline_details": [
+      "v2 root os.scandir PermissionError silently accepted",
+      "v2 child os.scandir PermissionError silently accepted",
+      "v2a source JNI.so accepted",
+      "v2a source JNI.SO accepted"
+    ],
+    "baseline_tests_expected_failures": 4,
+    "effective_mutation_groups": 5,
+    "first_own_witness_setup_failure": "Case-insensitive filesystem collided lower/upper fixture path labels; no source result claimed, restarted in distinct owned paths with distinct labels.",
+    "mutation_control_calls": 9,
+    "mutation_details": [
+      "remove walk onerror:2negative controls fail",
+      "make suffix case-sensitive:4uppercase native controls fail",
+      "remove runtime canonical emptyZIP check:nonempty runtime control fails",
+      "remove both Rpayload comparisons:wrong-class control fails",
+      "raise entry cap:30001-entry control fails"
+    ],
+    "real_permission_witness": {
+      "actual_PermissionError_observed": true,
+      "v2_refused": false,
+      "v2b_refused": true
+    },
+    "receipt": {
+      "bytes": 3106,
+      "path": "/private/tmp/gsip-cordova-v2b-independent-amt07pob/INDEPENDENT_GUARD_WITNESSES.json",
+      "sha256": "4e1d8e5b5b808c5f0e298334ba3c0d16bb43e964e5f314da70a87412a1bafec6"
+    }
+  },
+  "local_policy_assessment": {
+    "bytes": 9227,
+    "path": "/private/tmp/gsip-cordova-v2b-independent-amt07pob/LOCAL_LICENSE_CLASSIFICATION_AUTHORITY_ASSESSMENT.json",
+    "sha256": "d3c3a8d0ac5d65ee4dcb5ca83fe67e19bea728be4db52b53ac9a5bcdd75ef774"
+  },
+  "manifest_sha256": "16e01ad088d332c1ca39060e688a06f52d4983fc9536ce7958f258325df2a305",
+  "not_claimed": [
+    "Pending v3 exact-POM licence classification review",
+    "Complete real runtime collector success with all75POM proofs",
+    "MIT compatibility or EPL distribution approval",
+    "Fresh hosted Android cause identity/CI success/artifact or native/device acceptance",
+    "Atomic all475authored-case independent run"
+  ],
+  "patch_c1_sha256": "fba8c4ba7c0164dcb0ec3584ac0191b12596522ec67809319c181eee45462af9",
+  "patch_v1_sha256": "99231fc3f3e499883a38d68fbfd4e2f9045816013542497b749ce6adf9b51d65",
+  "patch_v2a_sha256": "244f87187279d6f076916ab0dec0dbeca9c7757b7419fdb1bfe5d4965cccb02a",
+  "primary_generated_R_support": {
+    "not_filename_or_hash_only_allowance": true,
+    "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/INDEPENDENT_GENERATED_R_STUB_PROVENANCE.json",
+    "sha256": "0c2792fca281b018abcf86631dc92c787569e44e95d4041d9b7edc3c390b3afe"
+  },
+  "resolved_review_findings": [
+    {
+      "finding": "Generated compatibility-project JARs mistaken for prebundled third-party archives",
+      "prior_receipt": {
+        "bytes": 9379,
+        "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/INDEPENDENT_SPLIT_VIEW_BLOCKED_RECEIPT.json",
+        "sha256": "a01f751975ab22eedbca15cfb5cfed9ac2b9e6c30ed1ee384aa6d894bbd18766"
+      },
+      "resolution": "Only exact debug/release producer roles accepted; runtime JAR must be canonical22B empty ZIP; resource JAR must be strict330B singleton archive of deterministic150B fixed-namespace resource-empty R with trivial Object constructor. Entire tree still scanned, no blanket build ignore."
+    },
+    {
+      "finding": "Standalone source.so/.SO bypass",
+      "prior_scoped_receipt": {
+        "path": "/private/tmp/gsip-cordova-v2a-independent-b41raxjo/SCOPED_SO_FINDING.json",
+        "sha256": "b1cd20dd937c168a5aa5dc5d0552c122d16abd563c3b6d2447029b2e52a7648b"
+      },
+      "resolution": "Case-insensitive standalone.so refusal throughout tree,8currentlocation/suffix controls."
+    },
+    {
+      "finding": "Unreadable os.walk subtree silently omitted",
+      "resolution": "Explicit onerror refuses root/child scanning failure; actual PermissionError and injected real os.scandir controls preserve refusal."
+    }
+  ],
+  "schema": 1,
+  "scope": "Finite independent v2b generated Cordova source/output guard repair only, carrying exact unchanged reviewed v1 split adapter semantics; excludes pending v3 licence classifier and native product acceptance",
+  "selected_output_presence_boundary": "Guard proves source emptiness and every present archive, not mandatory manufacture of four files. Actual graph-selected runtime JAR presence and safe read remain required by unchanged runtime_evidence binary collection; missing selected outputs cannot become accepted sidecar evidence.",
+  "source_binding": {
+    "AST_projection": {
+      "bytes": 530,
+      "path": "/private/tmp/gsip-cordova-v2b-independent-amt07pob/SOURCE_AST_PROJECTION.json",
+      "sha256": "681bba3029a0a90942bb47f7ba89e536e4d1b1cc0933a6a6c5b76fe493551889"
+    },
+    "meaning": "Removing only struct import/two new helpers and restoring original Cordova branch yields complete reviewed-v1 Python module AST. All remaining existing guards/globals/scope/diagnostics/task/licence code exact.",
+    "other362_c1_files_unchanged": true,
+    "snapshot": {
+      "bytes": 2335,
+      "path": "/private/tmp/gsip-cordova-v2b-independent-amt07pob/snapshot.json",
+      "sha256": "f4d761bef195658b0252558aaf2f48788d038b2d8b148e466bcc5c361882c590"
+    },
+    "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "test_prefix_chain": [
+      {
+        "bytes": 136378,
+        "prefix": "c1",
+        "sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6"
+      },
+      {
+        "bytes": 151583,
+        "prefix": "v1",
+        "sha256": "de89652a0f0bb814ee68c7cc25f5bcf44db35e3440e7805e39c8a427b3c10450"
+      },
+      {
+        "bytes": 159345,
+        "prefix": "v2",
+        "sha256": "e2ca6b707848393f29af24d6bc0f6c7a8997342632dea4def66f5ee9f7359817"
+      },
+      {
+        "bytes": 160373,
+        "prefix": "v2a",
+        "sha256": "122be6455c090a867a462e2cbab167b381a2b659111d32073531b4faec00e186"
+      }
+    ]
+  },
+  "status": "CLOSED_NO_BLOCKER"
+}

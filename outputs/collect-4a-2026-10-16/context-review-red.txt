@@ -1,0 +1,94 @@
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+ ❯ tests/guide-session.test.ts (44 tests | 6 failed) 45ms
+     × freezes only exact opted-in library context with real declared depth 4ms
+     × accepts photos before later opt-in and freezes the current canonical library identity 0ms
+     × binds completed edited context after entry without changing photo intents or exposing caller aliases 1ms
+     × permits explicit pre-freeze opt-out while keeping accepted photos and the ordinary identity 0ms
+     × rejects incomplete, foreign, stale or malformed explicit context updates 0ms
+     × holds context changes during every active controller or unresolved resource reservation 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guide-session.test.ts > guide bounds and immutable pending queue identity > freezes only exact opted-in library context with real declared depth
+TypeError: blank.setLibraryDraft is not a function
+ ❯ tests/guide-session.test.ts:407:18
+    405|       ),
+    406|     ).toBeNull()
+    407|     expect(blank.setLibraryDraft(draft, access, now)).toBe(true)
+       |                  ^
+    408|     expect(
+    409|       blank.freeze(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/guide-session.test.ts > guide bounds and immutable pending queue identity > accepts photos before later opt-in and freezes the current canonical library identity
+TypeError: guide.setLibraryDraft is not a function
+ ❯ tests/guide-session.test.ts:432:18
+    430|     const b = select(guide, 'B', 8)
+    431|     const draft = libraryDraft()
+    432|     expect(guide.setLibraryDraft(draft, access, now)).toBe(true)
+       |                  ^
+    433|     expect(a.observationId).toBe(observationId)
+    434|     expect(b.observationId).toBe(observationId)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/guide-session.test.ts > guide bounds and immutable pending queue identity > binds completed edited context after entry without changing photo intents or exposing caller aliases
+AssertionError: expected null not to be null
+ ❯ tests/guide-session.test.ts:456:23
+    454|     const initial = libraryDraft({ depthTop: '', depthBottom: '' })
+    455|     const guide = session({ libraryDraft: initial })
+    456|     expect(guide).not.toBeNull()
+       |                       ^
+    457|     const a = select(guide, 'A', 7)
+    458|     select(guide, 'B', 8)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/guide-session.test.ts > guide bounds and immutable pending queue identity > permits explicit pre-freeze opt-out while keeping accepted photos and the ordinary identity
+AssertionError: expected null not to be null
+ ❯ tests/guide-session.test.ts:482:23
+    480|   it('permits explicit pre-freeze opt-out while keeping accepted photo…
+    481|     const guide = session({ libraryDraft: libraryDraft() })
+    482|     expect(guide).not.toBeNull()
+       |                       ^
+    483|     select(guide, 'A')
+    484|     select(guide, 'B')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/guide-session.test.ts > guide bounds and immutable pending queue identity > rejects incomplete, foreign, stale or malformed explicit context updates
+TypeError: guide.setLibraryDraft is not a function
+ ❯ tests/guide-session.test.ts:499:20
+    497|       { declarationBytes: new Uint8Array([1]) },
+    498|     ])
+    499|       expect(guide.setLibraryDraft(libraryDraft(change), access, now))…
+       |                    ^
+    500|     expect(guide.photos(access, now)?.A).toBeDefined()
+    501|     expect(guide.freeze(record(guide), access, now)?.record.library).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/guide-session.test.ts > guide bounds and immutable pending queue identity > holds context changes during every active controller or unresolved resource reservation
+TypeError: guide.setLibraryDraft is not a function
+ ❯ tests/guide-session.test.ts:507:18
+    505|     const guide = session()
+    506|     const token = guide.start('A', access, now)!
+    507|     expect(guide.setLibraryDraft(libraryDraft(), access, now)).toBe(fa…
+       |                  ^
+    508|     guide.cancelRetake(token)
+    509|     expect(guide.setLibraryDraft(libraryDraft(), access, now)).toBe(fa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 38 passed (44)
+   Start at  22:04:01
+   Duration  681ms (transform 71ms, setup 69ms, import 105ms, tests 45ms, environment 383ms)
+
+undefined
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run tests/guide-session.test.ts

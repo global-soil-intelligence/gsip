@@ -1,0 +1,346 @@
+{
+  "checked_at_utc": "2026-10-16T11:48:20.587289+00:00",
+  "expected_main_head": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+  "pages": {
+    "id": 38895620835,
+    "name": "Deploy GitHub Pages",
+    "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "head_branch": "main",
+    "event": "push",
+    "status": "waiting",
+    "conclusion": null,
+    "run_attempt": 1,
+    "updated_at": "2026-10-16T11:43:41Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835"
+  },
+  "ci": {
+    "id": 38895620789,
+    "name": "CI",
+    "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "head_branch": "main",
+    "event": "push",
+    "status": "in_progress",
+    "conclusion": null,
+    "run_attempt": 1,
+    "updated_at": "2026-10-16T11:43:10Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620789"
+  },
+  "ci_jobs": [
+    {
+      "id": 116955267483,
+      "name": "validate",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-16T11:43:09Z",
+      "completed_at": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:10Z",
+          "completed_at": "2026-10-16T11:43:12Z"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:12Z",
+          "completed_at": "2026-10-16T11:43:13Z"
+        },
+        {
+          "name": "Run pnpm/action-setup@v6",
+          "number": 3,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:13Z",
+          "completed_at": "2026-10-16T11:43:18Z"
+        },
+        {
+          "name": "Run actions/setup-node@v7",
+          "number": 4,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:18Z",
+          "completed_at": "2026-10-16T11:43:26Z"
+        },
+        {
+          "name": "Run astral-sh/setup-uv@v7",
+          "number": 5,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:26Z",
+          "completed_at": "2026-10-16T11:43:28Z"
+        },
+        {
+          "name": "Run actions/setup-python@v7",
+          "number": 6,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:28Z",
+          "completed_at": "2026-10-16T11:43:28Z"
+        },
+        {
+          "name": "Run denoland/setup-deno@v2",
+          "number": 7,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:28Z",
+          "completed_at": "2026-10-16T11:43:30Z"
+        },
+        {
+          "name": "Install GDAL for the golden-tile tests",
+          "number": 8,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:30Z",
+          "completed_at": "2026-10-16T11:43:46Z"
+        },
+        {
+          "name": "Run pnpm install --frozen-lockfile",
+          "number": 9,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:46Z",
+          "completed_at": "2026-10-16T11:43:51Z"
+        },
+        {
+          "name": "Run uv sync --frozen --all-groups",
+          "number": 10,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:51Z",
+          "completed_at": "2026-10-16T11:43:55Z"
+        },
+        {
+          "name": "Run pnpm lint",
+          "number": 11,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:43:55Z",
+          "completed_at": "2026-10-16T11:44:03Z"
+        },
+        {
+          "name": "Run pnpm typecheck",
+          "number": 12,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:44:03Z",
+          "completed_at": "2026-10-16T11:44:12Z"
+        },
+        {
+          "name": "Run pnpm test",
+          "number": 13,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:44:12Z",
+          "completed_at": "2026-10-16T11:44:34Z"
+        },
+        {
+          "name": "Run pnpm build",
+          "number": 14,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:44:34Z",
+          "completed_at": "2026-10-16T11:44:40Z"
+        },
+        {
+          "name": "Run pnpm check:map-budget",
+          "number": 15,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:44:40Z",
+          "completed_at": "2026-10-16T11:44:41Z"
+        },
+        {
+          "name": "Run pnpm exec playwright install --with-deps chromium",
+          "number": 16,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:44:41Z",
+          "completed_at": "2026-10-16T11:44:57Z"
+        },
+        {
+          "name": "Run pnpm exec playwright test --project=desktop-chrome",
+          "number": 17,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:44:57Z",
+          "completed_at": "2026-10-16T11:45:17Z"
+        },
+        {
+          "name": "Run uv run ruff check .",
+          "number": 18,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:45:17Z",
+          "completed_at": "2026-10-16T11:45:17Z"
+        },
+        {
+          "name": "Run uv run mypy",
+          "number": 19,
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-16T11:45:17Z",
+          "completed_at": "2026-10-16T11:45:31Z"
+        },
+        {
+          "name": "Run uv run pytest",
+          "number": 20,
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-16T11:45:31Z",
+          "completed_at": null
+        },
+        {
+          "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+          "number": 21,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+          "number": 22,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Apply migrations to data written before them",
+          "number": 23,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Run pnpm db:start",
+          "number": 24,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Run pnpm db:reset",
+          "number": 25,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Run pnpm db:test",
+          "number": 26,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Run pnpm db:stop",
+          "number": 27,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Post Run denoland/setup-deno@v2",
+          "number": 49,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Post Run actions/setup-python@v7",
+          "number": 50,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Post Run astral-sh/setup-uv@v7",
+          "number": 51,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Post Run actions/setup-node@v7",
+          "number": 52,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Post Run pnpm/action-setup@v6",
+          "number": 53,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "number": 54,
+          "status": "pending",
+          "conclusion": null,
+          "started_at": null,
+          "completed_at": null
+        }
+      ]
+    }
+  ],
+  "pending_pages_approval": [
+    {
+      "environment": {
+        "id": 18657050755,
+        "node_id": "EN_kwDOTgVRPc8AAAAEWAwAgw",
+        "name": "github-pages",
+        "url": "https://api.github.com/repos/global-soil-intelligence/gsip/environments/github-pages",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/deployments/activity_log?environments_filter=github-pages"
+      },
+      "wait_timer": 0,
+      "wait_timer_started_at": null,
+      "current_user_can_approve": true,
+      "reviewers": [
+        {
+          "type": "User",
+          "reviewer": {
+            "login": "jdhart81",
+            "id": 179389866,
+            "node_id": "U_kgDOCrFFqg",
+            "avatar_url": "https://avatars.githubusercontent.com/u/179389866?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/jdhart81",
+            "html_url": "https://github.com/jdhart81",
+            "followers_url": "https://api.github.com/users/jdhart81/followers",
+            "following_url": "https://api.github.com/users/jdhart81/following{/other_user}",
+            "gists_url": "https://api.github.com/users/jdhart81/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/jdhart81/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/jdhart81/subscriptions",
+            "organizations_url": "https://api.github.com/users/jdhart81/orgs",
+            "repos_url": "https://api.github.com/users/jdhart81/repos",
+            "events_url": "https://api.github.com/users/jdhart81/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/jdhart81/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          }
+        }
+      ]
+    }
+  ],
+  "api_errors": {},
+  "mutations": "NONE"
+}

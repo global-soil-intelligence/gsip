@@ -1,0 +1,16 @@
+{
+  "type": "TXT",
+  "host": "_github-pages-challenge-global-soil-intelligence",
+  "fqdn": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com",
+  "value": "ec9866a89c5b447bc5d09ef7ceb232",
+  "proposed_ttl": 3600,
+  "status": "GENERATED_PENDING_OWNER_APPROVAL_TO_ADD_DNS",
+  "organization": "global-soil-intelligence",
+  "domain": "globalsoilintelligence.com",
+  "ui_url": "https://github.com/organizations/global-soil-intelligence/settings/pages_verified_domains/globalsoilintelligence.com",
+  "checked_at_utc": "2026-10-16T00:29:46.602226+00:00",
+  "authority": "Justin: Go. Generate the GitHub ownership-verification code for globalsoilintelligence.com and show me the exact TXT record. No DNS cutover yet; keep capture and library uploads closed.",
+  "dns_added": false,
+  "github_verify_clicked": false,
+  "pages_custom_domain_changed": false
+}

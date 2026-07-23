@@ -1,0 +1,20 @@
+{
+  "created_at": "2026-10-12T12:54:15.596115+00:00",
+  "gate_a": "DONE_VERIFIED",
+  "gate_b": "DONE_VERIFIED",
+  "gate_c": "PENDING_SEPARATE_GO_NOT_EXECUTED",
+  "signup": "DISABLED_PERSISTED",
+  "pages_bypass": "OWNER_ACTION_REQUIRED",
+  "prs": "ALL_13_OPEN_EFFECTIVE_CHECKS_GREEN",
+  "sha256": {
+    "REPORT-current.md": "13724e78930831ae611fcaffc85d8ff05fd46aeabce9c94567ad7cdaaf7ef669",
+    "production-gates-a-b-execution-receipt-2026-10-12.json": "c4934bed71dc8427648e89668f2899eedfc033ab9a0d9371d760a5440333f0a4",
+    "gate-c-migration-plan-2026-10-12.json": "3cd28d14a2ef09b853999158675d2b275acfc9d7a9b807df2dd59db02ee91e35",
+    "gate-c-migration-plan-2026-10-12.md": "7f561293f53ba6359aa4ecf1ddf8ff0228d899d8665079f0f0d006f462f1a479",
+    "current-all-pr-readback-2026-10-12.json": "dc625e897f0c964530061cceb1ef172a158b47ef0f77fd447a256690fb9e13df",
+    "gitleaks-8212-restored-full-stack-receipt.json": "cb60ca1ca2f35cfde252b6a7f21731fe8829cb19826edbb19633e5fbf0d8da65",
+    "pr38-pr39-ci-closeout-body-update-2026-10-12.json": "db0aa7f31930e5fb150fbf4d84b1ad12b901da09b2fee9fbe38282641d862af0",
+    "pr40-gates-ab-execution-description-receipt.json": "00fd7a9e819e25d454bc4647314330cc97392995c044382a0d35087e150bb64b",
+    "gateab-current-state-2026-10-12.json": "0cece02dc7f12853c4c92f834e1c3a17034c0a6e8e966088750f21ac7dcacf57"
+  }
+}

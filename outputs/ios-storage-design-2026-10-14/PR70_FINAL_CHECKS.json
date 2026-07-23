@@ -1,0 +1,52 @@
+{
+  "autoMergeRequest": null,
+  "baseRefName": "main",
+  "headRefOid": "06902edf36810c55e51b169dcb813e81b22206b0",
+  "isDraft": false,
+  "mergeStateStatus": "CLEAN",
+  "number": 70,
+  "state": "OPEN",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-14T22:57:38Z",
+      "conclusion": "SKIPPED",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38651079336/job/116149738529",
+      "name": "dco",
+      "startedAt": "2026-10-14T22:57:38Z",
+      "status": "COMPLETED",
+      "workflowName": "DCO"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-14T23:06:12Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38651079315/job/116149736027",
+      "name": "validate",
+      "startedAt": "2026-10-14T22:57:40Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-14T22:57:45Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38651079464/job/116149736195",
+      "name": "gitleaks",
+      "startedAt": "2026-10-14T22:57:40Z",
+      "status": "COMPLETED",
+      "workflowName": "Secret scan"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-14T22:57:25Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38651043670/job/116149614489",
+      "name": "gitleaks",
+      "startedAt": "2026-10-14T22:57:19Z",
+      "status": "COMPLETED",
+      "workflowName": "Secret scan"
+    }
+  ],
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/70"
+}

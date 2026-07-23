@@ -1,0 +1,93 @@
+{
+  "recorded_at": "2026-10-17 02:11:22 UTC",
+  "authority": "Owner go after #89: merge reviewed design and build reviewed source sequence. No production, Pages, device/camera, capture or library opening.",
+  "design_merge": {
+    "pr": 89,
+    "head": "a45924b141740c58f8d3a3e3f023a0cf5cc6e8d4",
+    "merge": "d866093e4e108fea2a360f37fda430efa3aef85c",
+    "reviewed_tree_matches_merge": true,
+    "postmerge_validate": 38992492389,
+    "postmerge_validate_result": "success",
+    "pages_run": 38992492384,
+    "pages_result": "cancelled"
+  },
+  "implementation": {
+    "package": "WP-COLLECT-4A",
+    "issue": 90,
+    "pr": 91,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/91",
+    "head": "d379490209a61b4dc3caac7c5b17d84bcaa96322",
+    "files": 15,
+    "independent_exact_head_review": "No outstanding findings",
+    "ci": "pending",
+    "merged": false
+  },
+  "local_verification": {
+    "frozen_installs": "passed; no dependency or lockfile changes",
+    "lint": "passed",
+    "typecheck": "passed",
+    "unit_tests": {
+      "capture": 444,
+      "schema": 310,
+      "site": 41,
+      "map": 16,
+      "total": 811
+    },
+    "browser_tests": {
+      "command": "pnpm exec playwright test --project=desktop-chrome",
+      "passed": 16,
+      "target": "temporary local synthetic fixture; no actual camera"
+    },
+    "python": {
+      "ruff": "passed",
+      "mypy": "passed; 84 source files",
+      "focused_tests": 129
+    },
+    "build": {
+      "default": "passed with explicit false/false; also unforced initial build read false/false",
+      "native_web_assets": "passed with explicit false/false sequentially after browser testing",
+      "capture_manifest": {
+        "capture_live": false,
+        "library_intake_live": false
+      },
+      "default_pages_manifest": {
+        "capture_live": false,
+        "library_intake_live": false
+      }
+    },
+    "budgets": {
+      "map_bytes": 2196657,
+      "map_limit": 5242880,
+      "site_bytes": 320867,
+      "site_limit": 716800
+    },
+    "not_run_locally": [
+      "full GDAL suite",
+      "PostGIS/pgTAP/migration regression",
+      "Deno check",
+      "APK build",
+      "Xcode simulator build",
+      "physical-device or actual camera qualification"
+    ]
+  },
+  "review_corrections": [
+    "Separate stable frozen identity and fresh queue-attempt generation after hold/resume.",
+    "Release obsolete library context; expired pending access holds until explicit fresh resume.",
+    "Bind validated completed optional context after photos; choose canonical library submission identity once at freeze.",
+    "Atomic same-identity reconciliation, exact context consume, successor fence and observable stale-writer refusal.",
+    "Guard all submit sources and cancelled namespace creation through every await.",
+    "Retire obsolete file reads by draft identity; late completion cannot lock or affect a fresh draft.",
+    "Explicit opt-out requires fresh RAM photo selection while preserving persisted photo bytes.",
+    "Document browser-only new export in complete native operation catalog; no native authority added.",
+    "Reproduce and fix synthetic restart test clicking disabled controls; no timeout increase."
+  ],
+  "limits": [
+    "No live preview implemented in 4A; 4B needs reviewed/green/merged 4A.",
+    "Pure object bounds owned references only; future coordinator budgets caller copies and page-wide resource ownership.",
+    "No hosted receipt, calibration, measured spectrum, device protection or production readiness inferred."
+  ],
+  "production_changes": [],
+  "activation_changes": [],
+  "new_dependencies": [],
+  "licence_changes": []
+}

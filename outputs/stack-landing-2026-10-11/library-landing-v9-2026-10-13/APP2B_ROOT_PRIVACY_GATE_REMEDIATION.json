@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-13T23:57:25.417668+00:00",
+  "checks": [
+    {
+      "check": "processors",
+      "exit_code": 0,
+      "seconds": 0.661,
+      "output_sha256": "0ce88768a9473be1e7b8becbb63962f3be004760e3e27bda4664d1d0167f549a",
+      "output_bytes": 98
+    },
+    {
+      "check": "lint",
+      "exit_code": 0,
+      "seconds": 3.586,
+      "output_sha256": "8185ff7bbf60b066e20260e56c4a3fd10de339d2124fc13559b612a19578a977",
+      "output_bytes": 134
+    },
+    {
+      "check": "language",
+      "exit_code": 0,
+      "seconds": 0.029,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0
+    },
+    {
+      "check": "diff",
+      "exit_code": 0,
+      "seconds": 0.018,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0
+    }
+  ],
+  "all_pass": true,
+  "processor_cases_passed": 6,
+  "initial_full_run_preserved": "APP2B_ROOT_REVIEWED_NATIVE_V3_XML_INITIAL_FAILURE.json",
+  "source_helper_unchanged": true,
+  "full_suite_rerun_claimed": false,
+  "privacy_sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a",
+  "tests_unmodified": true,
+  "production_changes": false
+}

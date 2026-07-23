@@ -1,0 +1,31 @@
+{
+  "actual_runtime_override_execution_proven": false,
+  "assessment": "Directly reachable generated configuration input is omitted from the canonical-source guard; appended signing mutation passes source guard on both approved baseline templates. This is distinct from the documented trusted locked plugin-code assumption.",
+  "controls": [
+    {
+      "Gradle_or_hook_executed": false,
+      "baseline_control_accepted": true,
+      "hook_bytes": 451,
+      "hook_sha256": "9f339676db658fe80489f0442dfeb54014d939fdff3efcfb419e138b15f02df8",
+      "in_repo_generated_settings_override_accepted": true,
+      "original_capacitor_settings_sha256": "b0de5228964cc9f91948cb0277688d377ad8ce9a9ed921c1e2009f03c7c292ea",
+      "source": "parent"
+    },
+    {
+      "Gradle_or_hook_executed": false,
+      "baseline_control_accepted": true,
+      "hook_bytes": 451,
+      "hook_sha256": "9f339676db658fe80489f0442dfeb54014d939fdff3efcfb419e138b15f02df8",
+      "in_repo_generated_settings_override_accepted": true,
+      "original_capacitor_settings_sha256": "38174855e3d1b05152c745e730081f34d17e18520f3f51c7aaa20f9abc1c7acf",
+      "source": "candidate"
+    }
+  ],
+  "exact_settings_gradle_applies_capacitor_settings_gradle": true,
+  "frozen_manifest_sha256": "d35de19616a5677d9deb2743dd57cc2957f5dce7d83d117311d2a4d1926b7652",
+  "helper_sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad",
+  "real_key_APK_or_Gradle_build_action": false,
+  "schema": "gsip-independent-selected-debug-included-settings-witness-v1",
+  "scope_does_not_read_that_included_generated_file": true,
+  "source_or_Git_writes_outside_owned_tmp": false
+}

@@ -1,0 +1,152 @@
+{
+  "assumptions": [
+    "official documented two-component aapt2 format plus local actual version-only metadata establish parser input legitimacy; no runner value inference",
+    "existing toolchain exact equality remains mandatory",
+    "no new dependency or source/runtime architecture changes"
+  ],
+  "authored_scan": {
+    "config_unchanged_from_exact800": true,
+    "exit": 0,
+    "findings": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "scope": "exact three changed files only; not a full-history scan",
+    "version": "8.21.2"
+  },
+  "base_commit": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+  "baseline_fail_before": {
+    "errors": 0,
+    "failures": 5,
+    "sha256": "bdfdb6715fe910e70025d8f415c4e2b4f2e6b85ba5ee3da5a6ef6d823fdea9fc",
+    "skipped": 0,
+    "tests": 44
+  },
+  "combined_module": {
+    "errors": 0,
+    "failures": 0,
+    "sha256": "a7abc7e139802caedce536dad9f43131655f272510d085e38f01ce5a51b9dcc2",
+    "skipped": 30,
+    "tests": 739
+  },
+  "eslint": {
+    "all_project_files": true,
+    "exit": 0,
+    "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "version": "10.11.0"
+  },
+  "frozen_source_receipt_sha256": "797935d4d05f5c157f793efa7329712bcce3c44919f47e371fe5fa0f9f885e4b",
+  "full_mypy75": {
+    "exit": 0,
+    "output_sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c"
+  },
+  "language": {
+    "exit": 0,
+    "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mutation_results": [
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 5,
+      "name": "restore_three_component_only",
+      "source_sha256": "c4df1700e0efce6ca014f9a8bca0e0e7bdcdde11496a50900e88b47024474da6",
+      "tests": 44,
+      "xml_sha256": "2e854bf11dd0648c62af501c5abc95cd5eefd7677de785f709f9ad7004332211"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 1,
+      "name": "allow_unbounded_component_count",
+      "source_sha256": "82af6d7180f60e37bec40e021ca9c4a97e2f8aa252532de2021b777c71913438",
+      "tests": 44,
+      "xml_sha256": "91acee289012ae230e0ec7290b8de0be357b61fbd0e0644dcd116d77334f55a1"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 3,
+      "name": "allow_unbounded_component_digits",
+      "source_sha256": "f93d8e56b0989717b92bc1ce57b772a29f2eecc4245304118efb35ff22904974",
+      "tests": 44,
+      "xml_sha256": "15ee47a870aacdb1b46302fe007d05df19c312f1e64518db496b2203e6a925a2"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 1,
+      "name": "allow_unbounded_build_digits",
+      "source_sha256": "9e919c4457b3f2abc41a80bfd4fe8fa5c2ca96bf23e3c4294abcd72657179409",
+      "tests": 44,
+      "xml_sha256": "b7b79fd9f39249f40311225460293a6c6858d66b0ffe1ec963baf82a942ca3e9"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 2,
+      "name": "remove_exact_toolchain_equality",
+      "source_sha256": "9815faa039fb0d20075d0766992acadb72c6218e2a933e7373f14364fa103729",
+      "tests": 44,
+      "xml_sha256": "43e38fab8cf95a1aa9e274ab7533e9eea6830b33297ec05e3563165329ec8412"
+    }
+  ],
+  "new_controls": {
+    "errors": 0,
+    "failures": 0,
+    "sha256": "7808028db2a6b613cdc1774b766800db97e972400ed8a5bcc765f6d30690f5a3",
+    "skipped": 0,
+    "tests": 44
+  },
+  "pinned_prettier": {
+    "all_project_files": true,
+    "exit": 0,
+    "output_sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "version": "3.9.9"
+  },
+  "preserved_diagnostic_bank": {
+    "errors": 0,
+    "failures": 0,
+    "sha256": "bacda0ee5891e03e6be62cdc1d4cdc96beb575222fa3f6d138cc191a31bfef3b",
+    "skipped": 0,
+    "tests": 43
+  },
+  "preserved_recoveries": [
+    {
+      "facts": "status0/stdout0/stderr50, then fixed whitelist validated actual combined version-only stream; no build/key/APK operation",
+      "kind": "initial version metadata probe assumed stdout"
+    },
+    {
+      "count": 3,
+      "kind": "initial Ruff line-length failures",
+      "recovery": "only touched new code/append formatting; final source hashes fixed"
+    },
+    {
+      "exit": 2,
+      "kind": "private-copy ESLint module resolution",
+      "recovery": "temporary read-only installed node_modules lookup symlink, removed after successful lint"
+    },
+    {
+      "exit": 1,
+      "kind": "initial scanner config path absent",
+      "recovery": "used exact800 archived unchanged config; no rules or suppression changes"
+    }
+  ],
+  "primary_evidence_sha256": "4db1c25279370486b5cfa22437d81b9db0a48a68c2b233cebd730268bc8b6714",
+  "remaining_unverified": [
+    "actual failed800runner aapt2 version string",
+    "fresh hosted Android native acceptance for corrected source",
+    "device/store/legal/calibration/production gates"
+  ],
+  "ruff": {
+    "exit": 0,
+    "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  },
+  "same_semantics_binding": {
+    "combined_mypy_executed_author_bytes": "helper differed from frozen only by one trailing ASCII space removed after the run; complete AST identical; tests byte-identical",
+    "final_ruff_on_frozen_equivalent_exact_author_helper": true,
+    "no_new_runtime_execution": true
+  },
+  "schema": "gsip-aapt-format-author-verification-v1",
+  "source_directory_tracked_files_only": 365,
+  "source_hashes_reverified": true,
+  "untracked_source_files": 0
+}

@@ -1,0 +1,12 @@
+{
+  "pr": "https://github.com/global-soil-intelligence/gsip/pull/75",
+  "merged": true,
+  "merged_at": "2026-10-15T23:05:45Z",
+  "merge_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "parents": [
+    "ccbe716caf8406dda7ffd58ecb9cab62ea0702bf",
+    "d13abfb1bace8ba84e6091ce0033f104b53edf78"
+  ],
+  "message": "feat(site-1f): introduce the open soil spectral library (#75)\n\nCommunicate the library mission and full public software stack, with builder entry points and closed capture/library intake.\n\nMerged under Justin Hart\u2019s explicit approval after green CI and resolved independent review. Pages deployment requires his separate approval.\n\nCo-Authored-By: Codex <codex@openai.com>",
+  "pages_approval": "NOT_GRANTED"
+}

@@ -1,0 +1,5 @@
+Command/check: mypy
+Observed final exit_code: 0
+
+Success: no issues found in 83 source files
+

@@ -1,0 +1,148 @@
+{
+  "schema": "gsip-app2b-core19-formatted-disclosure-candidate",
+  "prepared_utc": "2026-10-13T16:48:40.219547+00:00",
+  "status": "prepared_only_not_applied",
+  "source_basis_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "verified_pr_predecessor_head": "bb3910164cc47eae72958ad521b2186684584978",
+  "predecessor_core_manifest_sha256": "98182ef49b25a473ea367273e5d128e8bb3fc932674d8393e5e16fc3f432cd3f",
+  "predecessor_core_closure_sha256": "f78f2fb3fa8547e4ae4d1f8bb873c84893520c58339aab03d09e1e7896eece60",
+  "core_file_count": 19,
+  "unchanged_core_files": 18,
+  "semantic_delta": "One literal codeload.github.com in existing CI public build-evidence hosts cell; required table whitespace alignment only.",
+  "files": [
+    {
+      "path": "apps/capture-pwa/package.json",
+      "baseline_sha256": "9c0e7a2b670eddeabfb7ab29347f306a85bfccc66c18e6672f0c8f36284b2e15",
+      "candidate_sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115",
+      "bytes": 1081,
+      "owner": "core"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "baseline_sha256": "492c699cb8e0d3ca9302dd8cbd04d882bc749b4b33d8047040eec8376dd34644",
+      "candidate_sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+      "bytes": 225620,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/capacitor.config.ts",
+      "baseline_sha256": "705916ffd4b7341091bc44e6010632739d54ce924f342ca46fe19ef7e28b2bb7",
+      "candidate_sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69",
+      "bytes": 1112,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/src/App.tsx",
+      "baseline_sha256": "97e38f91065c77d07a26cc7f98bd6ad96aa593501a672efb813e847c6965b5b0",
+      "candidate_sha256": "efe1015dc54392a105767b4e8955d370047ac880aa005bffbdcc7a8c6ba6907c",
+      "bytes": 51031,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/src/YourData.tsx",
+      "baseline_sha256": "4d6e1daebe001c557d00502837e517e77915584ddae40121b1671670d5c403a4",
+      "candidate_sha256": "f3085983a3ebcb28796adf6c738f5b1ebfb468708aaa0966476bb53e538f76c8",
+      "bytes": 7363,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/src/queue.ts",
+      "baseline_sha256": "74f0ccba9eeaff7a0ac44c7332a208cbe3e4a02e9d56ceb7778ff9acafe89319",
+      "candidate_sha256": "ce389c528acdfce3cb75acab1bfd55d615f3cf5ba8104130a8813ec6cd889f31",
+      "bytes": 15180,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/src/platform/notifications.ts",
+      "baseline_sha256": null,
+      "candidate_sha256": "696c89be417cc8dfac6466f6f163b7aaff7eb84143c43200c1a793e8ed05787f",
+      "bytes": 5850,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/src/syncReminder.ts",
+      "baseline_sha256": null,
+      "candidate_sha256": "f118a3ff7cfdcb2489b4cda1df0e33a029d63bab778b45a68926c883972259d3",
+      "bytes": 15754,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/tests/notifications.test.ts",
+      "baseline_sha256": null,
+      "candidate_sha256": "ada3f36d6db6bc3a7b0100d66b0a771d913d09521a51044b13f7b9ab030e5d22",
+      "bytes": 9733,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/tests/sync-reminder.test.ts",
+      "baseline_sha256": null,
+      "candidate_sha256": "0b9ffb103f9126c488006faa8cd339c22e331af7a0040f5d1cbb7f6a05baa901",
+      "bytes": 26553,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/tests/reminder-queue.test.ts",
+      "baseline_sha256": null,
+      "candidate_sha256": "1022b1f169467ea09aac7a18e0109f698054ca8873346930feb16e962db4fe21",
+      "bytes": 6615,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/tests/reminder-rights.test.tsx",
+      "baseline_sha256": null,
+      "candidate_sha256": "952bf872c7bdac266ad1eec7ac31477c4afff2a0893400e907d124062a929b4d",
+      "bytes": 7347,
+      "owner": "core"
+    },
+    {
+      "path": "apps/capture-pwa/tests/reminder-app.test.tsx",
+      "baseline_sha256": null,
+      "candidate_sha256": "e7a90f1fe2f26060f5611472415102763700f3ea9745b58cfe5d5b5a9d44691f",
+      "bytes": 5078,
+      "owner": "core"
+    },
+    {
+      "path": "scripts/app_permissions.py",
+      "baseline_sha256": "4a0e78dd1b153217fdcad4ddc94d5ce5ea7b6f6b60d220a9199a0302a8374675",
+      "candidate_sha256": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3",
+      "bytes": 12571,
+      "owner": "core"
+    },
+    {
+      "path": "tests/test_app_permissions.py",
+      "baseline_sha256": "b749b7603c3bdaea72931c0a5315b0bed15baf0250a3fbac9313d8fdcffbd3cf",
+      "candidate_sha256": "511addd80ca24b30bf8a6f7291917dd56b5bcf305b0ed0f003d7a209139ecfda",
+      "bytes": 10787,
+      "owner": "core"
+    },
+    {
+      "path": "tests/test_app_build.py",
+      "baseline_sha256": "b3461e625b4942b00f108cc9c00d847ae47a8d2c7f464d9040edeb3ce62496b1",
+      "candidate_sha256": "5b1df866e578c3c78b301c94e1a6f136347194907c75ed71de3aee240c126757",
+      "bytes": 18263,
+      "owner": "core"
+    },
+    {
+      "path": "docs/APP_SYNC_REMINDERS.md",
+      "baseline_sha256": null,
+      "candidate_sha256": "37f8b6521751cf51658a07b97ed99b14b8e2ee8858e2ccc66345402719ff064a",
+      "bytes": 10003,
+      "owner": "core"
+    },
+    {
+      "path": "docs/APP_STORE.md",
+      "baseline_sha256": "d4a54fea2633f053bc676f936b50c9ef1be86e8ca3edfc0c5ee35ff807f4890f",
+      "candidate_sha256": "bc5be716c7cb6365defafa70db9546741ec0b5e27e6d46b38ff7e33da2e1d411",
+      "bytes": 22534,
+      "owner": "core"
+    },
+    {
+      "path": "docs/legal/PRIVACY.md",
+      "baseline_sha256": "145310bedd63e346a085d84dd079ddfa6a7861ac8d6866dd44ce99da1e5c3734",
+      "candidate_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+      "bytes": 19032,
+      "owner": "core",
+      "predecessor_candidate_sha256": "b5458b944ef3b1b9895ef9ac1870ecfbd94c8345aabd1644e54eae1e9654bf2d"
+    }
+  ]
+}

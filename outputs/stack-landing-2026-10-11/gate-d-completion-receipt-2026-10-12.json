@@ -1,0 +1,122 @@
+{
+  "state": "PASS_GATE_D_COMPLETED_AND_VERIFIED",
+  "completed_at_utc": "2026-10-12T19:28:40.682880+00:00",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1"
+  },
+  "source_commit": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "applied_once": true,
+  "exact_authorized_migrations": [
+    {
+      "name": "20261012141828_wp6b_invoker_boundary.sql",
+      "sha256": "afe4f698989729bd456fe763582f93042f58bf66a271704cdaa1c556eeb124d6"
+    },
+    {
+      "name": "20261012142348_wp6d_private_rights_boundary.sql",
+      "sha256": "27c0b1ae001351358b6a56490bc1389d1075dd62cbd6ffc4e6250943fa507260"
+    }
+  ],
+  "ledger_before": 26,
+  "ledger_after": 28,
+  "all26_historical_record_hashes_preserved": true,
+  "hosted_security_findings": 0,
+  "table_identities_compared": 61,
+  "table_counts_unchanged_except_ledger_delta": true,
+  "counts_only": {
+    "contributors": 5,
+    "submissions": 25,
+    "photos": 25,
+    "auth_users": 0,
+    "public_cells": 0
+  },
+  "capture_open": false,
+  "sign_up_enabled": false,
+  "anonymous_sign_in_enabled": false,
+  "private_schema_exposed": false,
+  "existing_public_signatures_owners_and_complete_caller_acls_unchanged": true,
+  "existing_table_column_schema_grants_and_storage_policies_unchanged": true,
+  "three_new_private_helpers_exact_reviewed_definition_owner_and_complete_acls": true,
+  "backfill_k_anonymity_anomalies": 0,
+  "hosted_anonymous_capture_rpc": {
+    "http_status": 200,
+    "value": false
+  },
+  "migration_test": {
+    "pass": 13,
+    "total": 13
+  },
+  "metadata_postchecks": {
+    "pass": 20,
+    "total": 20
+  },
+  "aggregate_postchecks": {
+    "pass": 7,
+    "total": 7
+  },
+  "all13_prs_open_and_green_at_current_heads": true,
+  "other_production_changes": [],
+  "deployments_other_than_exact_Gate_D": [],
+  "PR_merges_or_approvals": false,
+  "capture_opening": false,
+  "bound_receipts": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-authorized-preflight-20261012T1925Z.json",
+      "sha256": "5bb6b4f126f895192a04786fd3f065f95fdf90fceeb187d1ce41b22801c58472"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-01-db-push-command-2026-10-12.json",
+      "sha256": "8a48e6be8efcae6b5988ccbcc32197cb03672bd7cbb7ff8f70371be985877f00"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-metadata-verification-20261012T192521Z.json",
+      "sha256": "d7335af97bb60e6af2e8f5647a7e28754562c8df8c174f2480c1af670a8c6acb"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-aggregate-verification-20261012T192521Z.json",
+      "sha256": "bc6bfda41ec93a9a73c97ab85b849039de8a46dcec21863567bc54a5e1c871c5"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-auth-api-pages-postcheck-verified-20261012T1926Z.json",
+      "sha256": "596dea745bf567269a4184138fca09e201bec52167cdba1d05bed68c59720bcb"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-hosted-capture-rpc-postcheck-2026-10-12.json",
+      "sha256": "f2090a75db4ca1da2da69624985f65e13fbbc34d25c7cfa68b73609cc77d1cc0"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-fix-all-pr-ci-20261012T192003Z.json",
+      "sha256": "4888cbb34f6fa159e9db9f0cb629de51c5fb50446c552729245ea70b063bde4b"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-fresh-migration-test-20261012T192201Z.json",
+      "sha256": "70a4c8158eb548da022b3671d22af2561b62759642b51edc87e5b5fff3c0a9b8"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-worker-native-readiness-20261012T192235Z.json",
+      "sha256": "af09b233e063133fdf677a24096dd2ba86a4f828ca2381c7b4c5ac8b8fef6d4b"
+    }
+  ],
+  "report": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/REPORT-gate-d-complete-2026-10-12.md",
+    "sha256": "46ce0e0372b95acdf4da2b213bf6fd389798f6a6ace44027119f572cbdac4ee8"
+  },
+  "previous_report_preserved": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/REPORT-current.md",
+    "sha256": "73b3105ae7dc5d183aba39dadea40027e063757088fb3a5d133aaa4e7f5f9f20"
+  },
+  "assumptions": [
+    "No external writer or setting change after the readbacks; snapshots are not a persistent lock.",
+    "Local tests supplement, rather than replace, the verified hosted advisor and complete source-bound postchecks."
+  ],
+  "next_gates_held": [
+    "Edge Functions",
+    "repository deployment configuration",
+    "rights/QA/export workers",
+    "tiles",
+    "Pages",
+    "owner PR review/merge",
+    "launch and capture opening"
+  ]
+}

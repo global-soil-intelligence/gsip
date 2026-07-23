@@ -1,0 +1,121 @@
+{
+  "files": [
+    {
+      "bytes": 2115,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/ANDROID_ARTIFACT_CORE_PROOF_COMPLETE.json",
+      "sha256": "4985f3be7508b85af8368f7455116952f8cc54dec5a5f9b8777cb3adccf5cac5"
+    },
+    {
+      "bytes": 128,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/DOWNLOAD_ATTEMPTED.json",
+      "sha256": "3c804735c4ec261c33874fa93d466a404b4fcca4472d3126cdccfd8eae8fe68a"
+    },
+    {
+      "bytes": 6449,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/EXACT_SOURCE_PARENT_BINDING.json",
+      "sha256": "802ad13740196761bbb0185728168bf9d3037f29028b5d2577c1bac7eca288df"
+    },
+    {
+      "bytes": 1330,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_ACTUAL_MERGE_BINDING.json",
+      "sha256": "a2c2c8ccd4518f2166aff93b02704f53cef5acf760ad8e8efd6cf5c039b9e48a"
+    },
+    {
+      "bytes": 344,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_ARTIFACT_DOWNLOAD.json",
+      "sha256": "60d02a9ee94911c63d39f2a1d5cfd986d78fc1f13f37a3a9d06d414e49f8b02c"
+    },
+    {
+      "bytes": 3342,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_OUTER_ARTIFACT_TREE.json",
+      "sha256": "17e271f70e050741926238cac3f7e7379c1a6c314648c2d67cd9faf96ba3b817"
+    },
+    {
+      "bytes": 1126,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_FOUR_APK_BOUNDS.json",
+      "sha256": "d12701c1c7a29fbda9df9b46590ad94d19e37eaf8d63b57aa9e5000f3d14c80a"
+    },
+    {
+      "bytes": 7882,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_FOUR_APK_METADATA_POLICY_REPLAY.json",
+      "sha256": "97431dec1276a314b6c849ddade5a12034c23533543a5ee6c2c37ee42b110662"
+    },
+    {
+      "bytes": 2959,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_STRICT_ANDROID_REPLAY.json",
+      "sha256": "18472d96067caa49a7b9bc508150e5bafd4047ec63571bd5df01e5331885cbb4"
+    },
+    {
+      "bytes": 6420,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/METADATA_20261014T032517Z.json",
+      "sha256": "f6d26b4fccf9ae5d92e99ee9ca80f87afda21ebfdfb7023235c7d557195ab62f"
+    },
+    {
+      "bytes": 6463,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/METADATA_20261014T032621Z.json",
+      "sha256": "84e2cc8085de64e6d04a1e5ce93378fb48aa2c2f9faa377138e826058e489748"
+    },
+    {
+      "bytes": 6463,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/METADATA_20261014T032758Z.json",
+      "sha256": "b4c7b9a936bf5c311795c7c3de8ec50ee0a9c1f61078e83050b93e41fb113063"
+    },
+    {
+      "bytes": 8196,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/METADATA_20261014T032937Z.json",
+      "sha256": "428835c235756e9bb6f3832e464e2bb24e34ddba4f3ca428523350bf1122f409"
+    },
+    {
+      "bytes": 538,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/PREPARATION_AND_INITIAL_NETWORK_LIMIT.json",
+      "sha256": "c22f01b8fadbf01d9354f26a2329c54189f5be5e3251cbc4bce32b78f8e200b4"
+    },
+    {
+      "bytes": 672,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/PRIVATE_AAPT2_VERSION_PROBE.json",
+      "sha256": "ffd1aa6617e95fd489bcf9d5f3b5bf21850741393f415e4c293eaad5806da6e0"
+    },
+    {
+      "bytes": 807,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/SAFE_ANDROID_TERMINAL_LOG.json",
+      "sha256": "fa9dfbc4cc8c2cd257244985cc610a64ba24070554df92644344d8829830c857"
+    },
+    {
+      "bytes": 514,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/WATCH_CONFIG.json",
+      "sha256": "158316824b25e209ad779b72a6452df6089de422130df981173d41896fac158d"
+    },
+    {
+      "bytes": 474,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/WATCH_CONFIG_INITIAL.json",
+      "sha256": "119270e104dc33680747c507a61da0f96ec30aec1fefa67106454c6f1a3ca040"
+    },
+    {
+      "bytes": 3874,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/bind_source.py",
+      "sha256": "7db50e9ecc3a8e34aa04d176958d44bf588dcea8837334a9e86697992a60be45"
+    },
+    {
+      "bytes": 4959,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/extract_safe_terminal_log.py",
+      "sha256": "4a31b7d801ac16a7c4588b0024cc6c05d4cbad1952db474f5dc838da9e3f6fcd"
+    },
+    {
+      "bytes": 6519,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/replay_apk_metadata_policy.py",
+      "sha256": "819ee1ca13b48154919dc82116f26713871f6be6fce7a487782847c92c709cd6"
+    },
+    {
+      "bytes": 2116,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/snapshot.py",
+      "sha256": "b4b071a0d59fcb032094b29fbb66fd82e0c6dcf0a70ffbfe3e2b9c128499f0cd"
+    },
+    {
+      "bytes": 14811,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/verify_fresh_android_artifact.py",
+      "sha256": "ba3cbf6071d3d1ef9c2fcd7d74d303c66b76ba1cfc26badacc0b323c793296a8"
+    }
+  ],
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "schema": "gsip-independent-exact-faab-android-evidence-manifest-v1"
+}

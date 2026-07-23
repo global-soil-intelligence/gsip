@@ -1,0 +1,391 @@
+{
+  "observed_at_utc": "2026-10-12 01:21:43 UTC",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1",
+    "last_status": "ACTIVE_HEALTHY",
+    "restore_performed_by_agent": false
+  },
+  "row_counts": [
+    {
+      "table_name": "auth.audit_log_entries",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.custom_oauth_providers",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.flow_state",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.identities",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.instances",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.mfa_amr_claims",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.mfa_challenges",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.mfa_factors",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.mfa_recovery_code_sets",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.mfa_recovery_codes",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.oauth_authorizations",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.oauth_client_states",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.oauth_clients",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.oauth_consents",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.one_time_tokens",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.refresh_tokens",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.saml_providers",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.saml_relay_states",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.schema_migrations",
+      "row_count": 82
+    },
+    {
+      "table_name": "auth.scim_tokens",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.scim_users",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.sessions",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.sso_domains",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.sso_providers",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.users",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.webauthn_challenges",
+      "row_count": 0
+    },
+    {
+      "table_name": "auth.webauthn_credentials",
+      "row_count": 0
+    },
+    {
+      "table_name": "public.contribution_grants",
+      "row_count": 5
+    },
+    {
+      "table_name": "public.contributors",
+      "row_count": 5
+    },
+    {
+      "table_name": "public.gold_labels",
+      "row_count": 0
+    },
+    {
+      "table_name": "public.h3_cells",
+      "row_count": 0
+    },
+    {
+      "table_name": "public.photos",
+      "row_count": 25
+    },
+    {
+      "table_name": "public.predictions",
+      "row_count": 0
+    },
+    {
+      "table_name": "public.prior_jobs",
+      "row_count": 25
+    },
+    {
+      "table_name": "public.priors",
+      "row_count": 0
+    },
+    {
+      "table_name": "public.qa_events",
+      "row_count": 0
+    },
+    {
+      "table_name": "public.qa_jobs",
+      "row_count": 25
+    },
+    {
+      "table_name": "public.submissions",
+      "row_count": 25
+    },
+    {
+      "table_name": "storage.buckets",
+      "row_count": 2
+    },
+    {
+      "table_name": "storage.buckets_analytics",
+      "row_count": 0
+    },
+    {
+      "table_name": "storage.buckets_vectors",
+      "row_count": 0
+    },
+    {
+      "table_name": "storage.migrations",
+      "row_count": 73
+    },
+    {
+      "table_name": "storage.objects",
+      "row_count": 0
+    },
+    {
+      "table_name": "storage.s3_multipart_uploads",
+      "row_count": 0
+    },
+    {
+      "table_name": "storage.s3_multipart_uploads_parts",
+      "row_count": 0
+    },
+    {
+      "table_name": "storage.vector_indexes",
+      "row_count": 0
+    },
+    {
+      "table_name": "supabase_migrations.schema_migrations",
+      "row_count": 18
+    }
+  ],
+  "applied_migrations": [
+    {
+      "version": "20260722164727",
+      "name": "wp1_extensions"
+    },
+    {
+      "version": "20260722164749",
+      "name": "wp1_schema"
+    },
+    {
+      "version": "20260722164806",
+      "name": "wp1_rls"
+    },
+    {
+      "version": "20260722170020",
+      "name": "wp1_review_hardening"
+    },
+    {
+      "version": "20260722182403",
+      "name": "wp1_v22_privacy_and_grants"
+    },
+    {
+      "version": "20260722182446",
+      "name": "wp1_performance_indexes"
+    },
+    {
+      "version": "20260722190912",
+      "name": "wp4_prior_jobs"
+    },
+    {
+      "version": "20260722191140",
+      "name": "wp4_prior_jobs_hardening"
+    },
+    {
+      "version": "20260722191802",
+      "name": "wp4b_photo_qa"
+    },
+    {
+      "version": "20260722194033",
+      "name": "wp6_export_guardrails"
+    },
+    {
+      "version": "20260723011122",
+      "name": "phase1_actor_hardening"
+    },
+    {
+      "version": "20260723011144",
+      "name": "qa_event_provenance"
+    },
+    {
+      "version": "20260723011159",
+      "name": "public_h3_aggregates"
+    },
+    {
+      "version": "20260723011219",
+      "name": "atomic_public_h3_refresh"
+    },
+    {
+      "version": "20260723050851",
+      "name": "atomic_prior_attempt_claim"
+    },
+    {
+      "version": "20260723050903",
+      "name": "document_authenticated_h3_role"
+    },
+    {
+      "version": "20260723050918",
+      "name": "remove_public_submission_residue"
+    },
+    {
+      "version": "20260730174047",
+      "name": "wavefunction_beta_schema"
+    }
+  ],
+  "migration_statement_digests": [
+    {
+      "name": "wp1_extensions",
+      "version": "20260722164727",
+      "digest_md5": "fb0f00f4ab33631b5add74bbe67d7681",
+      "statement_count": 1
+    },
+    {
+      "name": "wp1_schema",
+      "version": "20260722164749",
+      "digest_md5": "55a1bca6a3729256c2d315924a0ac792",
+      "statement_count": 1
+    },
+    {
+      "name": "wp1_rls",
+      "version": "20260722164806",
+      "digest_md5": "d1bacb63c303ab679b9c7098f43a04d2",
+      "statement_count": 1
+    },
+    {
+      "name": "wp1_review_hardening",
+      "version": "20260722170020",
+      "digest_md5": "72fc4101114f178a126c1989f4e630d6",
+      "statement_count": 1
+    },
+    {
+      "name": "wp1_v22_privacy_and_grants",
+      "version": "20260722182403",
+      "digest_md5": "d94a31a7d39bcbd20aebc9badc53876e",
+      "statement_count": 1
+    },
+    {
+      "name": "wp1_performance_indexes",
+      "version": "20260722182446",
+      "digest_md5": "e6c282a22191baf0fce565f5e071afe3",
+      "statement_count": 1
+    },
+    {
+      "name": "wp4_prior_jobs",
+      "version": "20260722190912",
+      "digest_md5": "8eb92b965b59cd277c0a37e066de60e8",
+      "statement_count": 1
+    },
+    {
+      "name": "wp4_prior_jobs_hardening",
+      "version": "20260722191140",
+      "digest_md5": "1b2dc686858868a3b403748b9a0889b0",
+      "statement_count": 1
+    },
+    {
+      "name": "wp4b_photo_qa",
+      "version": "20260722191802",
+      "digest_md5": "a1802f4e98186451ace66eb328835e89",
+      "statement_count": 1
+    },
+    {
+      "name": "wp6_export_guardrails",
+      "version": "20260722194033",
+      "digest_md5": "72739a39a02a9d2dc7fd5bf6078f6453",
+      "statement_count": 1
+    },
+    {
+      "name": "phase1_actor_hardening",
+      "version": "20260723011122",
+      "digest_md5": "cc3d4e3e0b6853846d86f2abdf0f844b",
+      "statement_count": 1
+    },
+    {
+      "name": "qa_event_provenance",
+      "version": "20260723011144",
+      "digest_md5": "f17b6612c17ea252a958ed10b46b77cf",
+      "statement_count": 1
+    },
+    {
+      "name": "public_h3_aggregates",
+      "version": "20260723011159",
+      "digest_md5": "5966500a5eea104e2006d9517bed9cf6",
+      "statement_count": 1
+    },
+    {
+      "name": "atomic_public_h3_refresh",
+      "version": "20260723011219",
+      "digest_md5": "9388000f26d4e5167e62a8510484fe26",
+      "statement_count": 1
+    },
+    {
+      "name": "atomic_prior_attempt_claim",
+      "version": "20260723050851",
+      "digest_md5": "577d308d2788de38f9647873117de3be",
+      "statement_count": 1
+    },
+    {
+      "name": "document_authenticated_h3_role",
+      "version": "20260723050903",
+      "digest_md5": "37f24c64d263c95ae2f91846f901031e",
+      "statement_count": 1
+    },
+    {
+      "name": "remove_public_submission_residue",
+      "version": "20260723050918",
+      "digest_md5": "0522eaab84e5cafbc986aec33d7464ba",
+      "statement_count": 1
+    },
+    {
+      "name": "wavefunction_beta_schema",
+      "version": "20260730174047",
+      "digest_md5": "f09529eecc658113fd39557f32e7d257",
+      "statement_count": 1
+    }
+  ],
+  "capture_gate_table_exists": false,
+  "public_tables_without_rls": 0,
+  "security_advisor": {
+    "lints": []
+  },
+  "anonymous_auth_enabled": "UNVERIFIED",
+  "operations": "Read-only metadata/count/advisor queries and CLI migration list/dry-run; CLI initialized a temporary login role. No application migration, data update, history repair, restore, auth-setting change or deployment."
+}

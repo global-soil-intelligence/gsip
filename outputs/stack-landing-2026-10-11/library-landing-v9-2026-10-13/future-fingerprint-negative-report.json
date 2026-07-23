@@ -1,0 +1,22 @@
+[
+ {
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 32,
+  "EndLine": 32,
+  "StartColumn": 26,
+  "EndColumn": 60,
+  "Match": "BLISHABLE_KEY=\"REDACTED\"",
+  "Secret": "REDACTED",
+  "File": "scripts/e2e_server.py",
+  "SymlinkFile": "",
+  "Commit": "37f01bd234eb10ee4b2e53bc16e749c139604fa1",
+  "Entropy": 3.5110855,
+  "Author": "Codex",
+  "Email": "codex@openai.com",
+  "Date": "2026-10-13T11:37:03Z",
+  "Message": "test(wp-lib-4c): prove future fixture matches remain failures\n\nCo-Authored-By: Codex \u003ccodex@openai.com\u003e",
+  "Tags": [],
+  "RuleID": "generic-api-key",
+  "Fingerprint": "37f01bd234eb10ee4b2e53bc16e749c139604fa1:scripts/e2e_server.py:generic-api-key:32"
+ }
+]

@@ -1,0 +1,166 @@
+{
+  "actual_independent_checks": {
+    "effective_grammar_broadening_mutation": {
+      "failed": 18,
+      "passed": 26,
+      "skipped": 0
+    },
+    "effective_toolchain_equality_removal_mutation": {
+      "failed": 2,
+      "passed": 42,
+      "skipped": 0
+    },
+    "failures": 0,
+    "full_project_mypy_files": 75,
+    "new44_against_baseline": {
+      "failed": 5,
+      "passed": 39,
+      "skipped": 0
+    },
+    "new_format_cases": 44,
+    "own_private_value_diagnostic_cases": 4,
+    "pinned_prettier_exit": 0,
+    "positive_cases": 91,
+    "ruff_exit": 0,
+    "skips": 0,
+    "unchanged_diagnostic_bank_cases": 43
+  },
+  "author_checks_not_claimed_as_reviewer_execution": "Author709pass/30toolskip,old43 and five mutation probes are separate; review relies on its own91case run, baseline44 and two effective mutation runs above.",
+  "base_commit": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+  "evidence": {
+    "BASELINE_NEW44.json": {
+      "path": "/private/tmp/gsip-aapt2-format-independent-8jis36kt/BASELINE_NEW44.json",
+      "sha256": "64add50d5bd98abdc6addadb51a8a2d8d6965502ee7c240c369d3438c553dd34"
+    },
+    "BASELINE_PUBLIC_FORMAT_WITNESS.json": {
+      "path": "/private/tmp/gsip-aapt2-format-independent-8jis36kt/BASELINE_PUBLIC_FORMAT_WITNESS.json",
+      "sha256": "c1f6ed2b4a235825828decfa3ecb885b8e7181ecc8893b1e26583fde5f46a334"
+    },
+    "CURRENT_44_43_4_CASES.json": {
+      "path": "/private/tmp/gsip-aapt2-format-independent-8jis36kt/CURRENT_44_43_4_CASES.json",
+      "sha256": "1f7a50feb9c93d0b6d84128fe6802e90fc0e97ee3222fc384b1cd341c3e2d403"
+    },
+    "EXACT_SOURCE_BINDING.json": {
+      "path": "/private/tmp/gsip-aapt2-format-independent-8jis36kt/EXACT_SOURCE_BINDING.json",
+      "sha256": "b6a3a9de7dd3e0064a653ba00972fd98ea53f9124dd88d734236bb9e7f6d5a1b"
+    },
+    "FINITE_REPLAY_SUMMARY.json": {
+      "path": "/private/tmp/gsip-aapt2-format-independent-8jis36kt/FINITE_REPLAY_SUMMARY.json",
+      "sha256": "34615ee5da1f1e8be4d547927f420f52bbfd33b052d63fcad774e8522d4c7f2b"
+    },
+    "MUTATION_parent_candidate_toolchain_equality.json": {
+      "path": "/private/tmp/gsip-aapt2-format-independent-8jis36kt/MUTATION_parent_candidate_toolchain_equality.json",
+      "sha256": "66cbb589815caaa45a1df4352b8dfb121ecf92a371fd909017401665dd03f5e8"
+    },
+    "MUTATION_unbounded_version_grammar.json": {
+      "path": "/private/tmp/gsip-aapt2-format-independent-8jis36kt/MUTATION_unbounded_version_grammar.json",
+      "sha256": "8c7f698084035f2991ceae1a6ab3a2d7c8a42857dccf284254cf9dd199117614"
+    },
+    "STATIC_VERIFICATION.json": {
+      "path": "/private/tmp/gsip-aapt2-format-independent-8jis36kt/STATIC_VERIFICATION.json",
+      "sha256": "85bd38c9fc8eee5065d911651c6440b9ef4f8c0c200d1aaf0dcd2922cac87fd9"
+    }
+  },
+  "exact_scope": {
+    "all_other_helper_bytes_including_fourfield_diagnostics13field_receipts_equality_metadata_and_runtime_tasks_exact": true,
+    "base_commit": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+    "candidate_replay_contains_only365declared_source_files": true,
+    "changed_files": {
+      "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+        "base_sha256": "b9cf2cc25a934ad5c072bc27d26252025b5759f8db7bb92e02d3fb557d2e515a",
+        "bytes": 40648,
+        "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+        "sha256": "90be661ac7e140806378f701ce33052aab37a69199e1ea61e47c9502005a6136"
+      },
+      "scripts/app_notification_audit.py": {
+        "base_sha256": "c4df1700e0efce6ca014f9a8bca0e0e7bdcdde11496a50900e88b47024474da6",
+        "bytes": 133574,
+        "path": "scripts/app_notification_audit.py",
+        "sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee"
+      },
+      "tests/test_app_notification_audit.py": {
+        "base_sha256": "a804fb87a6bf162f3ce513e2894047345dde7e8d97c75a10a9629c932d467c71",
+        "bytes": 224140,
+        "path": "tests/test_app_notification_audit.py",
+        "sha256": "5e2db7a77923d6110ce2abcdfe6fc74fdb1abeb264c9d05c2d9fb4262cd12b27"
+      }
+    },
+    "frozen_untracked_paths_not_part_of365source_binding": [],
+    "metadata_sha256": {
+      "FROZEN_SOURCE_RECEIPT.json": "797935d4d05f5c157f793efa7329712bcce3c44919f47e371fe5fa0f9f885e4b",
+      "MANIFEST.json": "199c97413bb14b8da187670bc1e58febd78545dbc2f6249b73212cd796278e6b",
+      "candidate.patch": "c8ba54ccc7159882ff1ef4f197fe9dbc9c05d995afaaab6c2beee3551ef2440f"
+    },
+    "old_test_prefix_bytes": 219529,
+    "old_test_prefix_exact": true,
+    "sole_existing_function_AST_change": "validate_toolchain",
+    "source_count": 365,
+    "unchanged_source_files": 362,
+    "whole_helper_erasure_exact_except_optional_third_component": true,
+    "workflow_tasks_pins_policies_exact": true
+  },
+  "execution_limits": {
+    "network": "Read-only official Android documentation only; no SDK download or tool execution",
+    "raw_private_inputs_or_test_streams_persisted": "Only synthetic fixtures, bounded safe test nodeid/outcome summaries and stream hashes; no actual CI raw value read",
+    "real_SDK_tool_native_key_APK_build_or_read": false,
+    "source_Git_GH_workflow_production_mutation": false,
+    "synthetic_disposable_archive_bytes_only": true
+  },
+  "files": {
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_sha256": "b9cf2cc25a934ad5c072bc27d26252025b5759f8db7bb92e02d3fb557d2e515a",
+      "bytes": 40648,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "90be661ac7e140806378f701ce33052aab37a69199e1ea61e47c9502005a6136"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_sha256": "c4df1700e0efce6ca014f9a8bca0e0e7bdcdde11496a50900e88b47024474da6",
+      "bytes": 133574,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_sha256": "a804fb87a6bf162f3ce513e2894047345dde7e8d97c75a10a9629c932d467c71",
+      "bytes": 224140,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "5e2db7a77923d6110ce2abcdfe6fc74fdb1abeb264c9d05c2d9fb4262cd12b27"
+    }
+  },
+  "frozen_directory": "/private/tmp/gsip-aapt-version-frozen-fmtonhwr",
+  "frozen_metadata_sha256": {
+    "AUTHOR_VERIFICATION.json": "a9f67235514c7c397de626ce29918b7f0fda601d71db74079f41b55de936eb0d",
+    "FROZEN_SOURCE_RECEIPT.json": "797935d4d05f5c157f793efa7329712bcce3c44919f47e371fe5fa0f9f885e4b",
+    "MANIFEST.json": "199c97413bb14b8da187670bc1e58febd78545dbc2f6249b73212cd796278e6b",
+    "PRIMARY_VERSION_EVIDENCE.json": "4db1c25279370486b5cfa22437d81b9db0a48a68c2b233cebd730268bc8b6714",
+    "candidate.patch": "c8ba54ccc7159882ff1ef4f197fe9dbc9c05d995afaaab6c2beee3551ef2440f"
+  },
+  "primary_evidence": {
+    "actual_failed_hosted_run_version": "unavailable; neither local value nor documented example is attributed to CI",
+    "author_version_only_probe": "Reported2.19-11948202 from existing copied SDK; receipt hash bound, not independently executed in this review",
+    "documented_two_component_example": "Android Asset Packaging Tool (aapt) 2.19-8678579",
+    "independently_browsed_current_official_section": true,
+    "official_document_lines": [
+      358,
+      363
+    ],
+    "official_source": "https://developer.android.com/tools/aapt2#version",
+    "old_parser_rejects_documented_value": true,
+    "retained_legacy_three_component_control_passes": true
+  },
+  "remaining": [
+    "Fresh exact-head hosted CI must prove actual current toolchain parsing and complete both native artifact/source/licence/reference/repeat comparisons.",
+    "The800iOSartifact closure is historical for a future pushed head.",
+    "Actual failed800AAPT2 text remains unavailable; no producer/environment/root-cause conclusion is inferred.",
+    "No legal/device/distribution/capture/owner-signing/production or merge approval is conferred."
+  ],
+  "review_findings": [
+    "The only helper change is making the third bounded numeric component optional; exact whole-helper erasure restores c4df. This adds valid two-component acceptance while retaining existing three-component acceptance.",
+    "Exact fixed prefix, re.fullmatch, ASCII/control-free string validation,128-character cap,1-4 digits per component and1-16 digits per build suffix are unchanged. Unknown prefixes, extra components, suffix junk, leading/trailing whitespace, control/unicode values, oversize values and nonstrings continue to refuse.",
+    "No version normalization occurs. Parent/candidate equality still compares the entire raw toolchain dictionary, including exact AAPT2 text; different build suffixes and two-versus-three-component strings remain unequal. Removing equality produces2 failing controls.",
+    "Both complete13-field receipt/artifact digest binding and private-value fixed4-field diagnostics remain operative. Four own CLI failure controls emit no supplied value/path/URL; existing43 diagnostic cases pass unchanged.",
+    "All362 other tracked files, workflow, runtime74ad and metadatacad326 tasks, pins, source/licence/permission/archive/signing/repeat/reference/fault/context guards and219529-byte test prefix are exact800. No suppressions/schema/evidence exemptions were added."
+  ],
+  "schema": "gsip-independent-aapt2-format-source-closure-v1",
+  "scope": "Finite three-file valid-AAPT2-format parser/privacy/equality review only; no new native artifact or exact hosted version claim",
+  "status": "CLOSED_NO_BLOCKER"
+}

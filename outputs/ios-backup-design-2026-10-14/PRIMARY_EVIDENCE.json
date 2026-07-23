@@ -1,0 +1,99 @@
+{
+  "read_at_utc": "2026-10-14T11:20:55.900819+00:00",
+  "source_root": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0",
+  "operation": "read-only public and source inventory; no native build or device proof",
+  "public_files": [
+    {
+      "name": "ion-filesystem-manager.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-filesystem/56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c/IONFilesystemLib/IONFILEManager.swift",
+      "bytes": 15865,
+      "sha256": "0d59a711c547b26f9d16b9743142c32087b94b40ee4f530665b1b76434c1a084"
+    },
+    {
+      "name": "ion-filesystem-enums.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-filesystem/56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c/IONFilesystemLib/IONFILEManager+Enums.swift",
+      "bytes": 754,
+      "sha256": "5c8b443568acf7526ae3b892ad20a878774ecf5f63908618fe60cca6665ea683"
+    },
+    {
+      "name": "ion-camera-url.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-camera/00c3dfdd6267f80db299d9c5a0bad522156b6cbc/Sources/IONCameraLib/Interfaces/Extensions/URL+Transformations.swift",
+      "bytes": 2770,
+      "sha256": "4026b77b0196e9843c22648f5d0f12defc07c43826a2ad5b8e7725bff7f84dee"
+    },
+    {
+      "name": "ion-camera-data.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-camera/00c3dfdd6267f80db299d9c5a0bad522156b6cbc/Sources/IONCameraLib/Interfaces/Extensions/Data+Transformations.swift",
+      "bytes": 1031,
+      "sha256": "53940fcee8eb0d0709e7fadd747bee11a8c0e8f72b5cbfeb35d26269c2cf8527"
+    },
+    {
+      "name": "apple-backup.json",
+      "url": "https://developer.apple.com/tutorials/data/documentation/foundation/optimizing-your-app-s-data-for-icloud-backup.json",
+      "bytes": 15078,
+      "sha256": "7d0ce18ae98d2bfe7c70aabb8edf71465a9db3d1f109fa7a008f73d3e47c59a5"
+    }
+  ],
+  "local_source_hashes": [
+    {
+      "path": "apps/capture-pwa/src/queue.ts",
+      "bytes": 15180,
+      "sha256": "ce389c528acdfce3cb75acab1bfd55d615f3cf5ba8104130a8813ec6cd889f31"
+    },
+    {
+      "path": "apps/capture-pwa/src/supabase.ts",
+      "bytes": 17613,
+      "sha256": "ab953f710703d675d9d3138227dcf840f3c6c51eec0c65d360932630340d3197"
+    },
+    {
+      "path": "apps/capture-pwa/src/platform/camera.ts",
+      "bytes": 4859,
+      "sha256": "33b5e2a6bbf61c2bd537a4ff7b0973adb959a37a50ed5e51d4cc51234836f4df"
+    },
+    {
+      "path": "apps/capture-pwa/capacitor.config.ts",
+      "bytes": 1112,
+      "sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69"
+    },
+    {
+      "path": "apps/capture-pwa/package.json",
+      "bytes": 1081,
+      "sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "bytes": 225620,
+      "sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19"
+    },
+    {
+      "path": "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+      "bytes": 1260,
+      "sha256": "5734e9e6485f2aaa1fb6419d3be44157c89810a48ccca5e92e25f1c899ef4503"
+    },
+    {
+      "path": "node_modules/.pnpm/@capacitor+filesystem@8.1.3_@capacitor+core@8.5.2/node_modules/@capacitor/filesystem/Package.swift",
+      "bytes": 1048,
+      "sha256": "1e2799f6a21acc5707709e81de7682eff9fd3df294a80b0f1cb115f7093505f4"
+    },
+    {
+      "path": "node_modules/.pnpm/@capacitor+ios@8.5.2_@capacitor+core@8.5.2/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPBridgeViewController.swift",
+      "bytes": 16487,
+      "sha256": "0485aee1f25b0ed028ce944fb98306e6a92330038ce7fd923aa87b4ada4bbfec"
+    },
+    {
+      "path": "node_modules/.pnpm/@capacitor+ios@8.5.2_@capacitor+core@8.5.2/node_modules/@capacitor/ios/Capacitor/Capacitor/Plugins/CapacitorCookieManager.swift",
+      "bytes": 4758,
+      "sha256": "57f0163dcf2e446a5d17fb96919b369479b1202f41bd77fa0f5f357e261f3def"
+    },
+    {
+      "path": "node_modules/.pnpm/@capacitor+ios@8.5.2_@capacitor+core@8.5.2/node_modules/@capacitor/ios/Capacitor/Capacitor/WebViewAssetHandler.swift",
+      "bytes": 22897,
+      "sha256": "5a7886af564e9891fb66aafbb890f8d2b6d6379d8b616aa34ad564c962813fc1"
+    }
+  ],
+  "limits": [
+    "Generated Package.resolved is observed local resolution, not a repository tracked iOS lock or proof of every CI run",
+    "Npm integrity is lock-declared; this review did not refetch and reverify npm package archive",
+    "No real contributor records, tokens, device data, native build, Git mutation, GitHub mutation, or production operation"
+  ]
+}

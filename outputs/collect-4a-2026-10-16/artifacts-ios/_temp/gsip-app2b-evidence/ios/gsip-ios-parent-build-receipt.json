@@ -1,0 +1,41 @@
+{
+  "source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "platform": "ios",
+  "marketing_version": "0.1.0",
+  "run_number": 77,
+  "android_version_code": 77,
+  "ios_build_version": "1.0.76",
+  "lockfile_sha256": {
+    "pnpm-lock.yaml": "492c699cb8e0d3ca9302dd8cbd04d882bc749b4b33d8047040eec8376dd34644",
+    "uv.lock": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912",
+    "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "a5680c03c8d0e2c29f821fcbd6afd1fce69377941b95f7d2db63d17f4b7c9692",
+    "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-filesystem/IONFilesystemLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767",
+    "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-geolocation/IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767"
+  },
+  "toolchain": {
+    "node": "v24.20.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.10 (v3.12.10:0cc81280367, Apr  8 2025, 08:46:59) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "runner": "macOS-26.6.2-arm64-arm-64bit",
+    "runner_image": {
+      "ImageOS": "macos26",
+      "ImageVersion": "20260907.0351.1",
+      "RUNNER_OS": "macOS",
+      "RUNNER_ARCH": "ARM64"
+    },
+    "xcode": "Xcode 26.6\nBuild version 17F113",
+    "sdk": "26.5"
+  },
+  "source_tree_clean": true,
+  "comparison_scope": "same run/generated project; actual repeated native build; iOS unsigned simulator; signing disabled",
+  "artifact_sha256": "9b690cc781fb4567d58dba4af2a546578598078d2c6fc0cea26438975eebe12a",
+  "reference_sha256": "30872b31cd236e6fa9754495c66c9fb3d3199d9431f7461d1f813991efd3853b",
+  "comparison": {
+    "byte_equal": false,
+    "entry_content_equal": true,
+    "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+    "changed_entries": [],
+    "first_only": [],
+    "second_only": []
+  }
+}

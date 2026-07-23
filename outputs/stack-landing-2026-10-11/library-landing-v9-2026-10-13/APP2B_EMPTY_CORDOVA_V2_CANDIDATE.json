@@ -1,0 +1,50 @@
+{
+  "actual_four_generated_archive_guard_passed": true,
+  "actual_graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+  "candidate_patch_sha256": "6d09d6a4ce3c0a304dd6ce9a7b9760f7738a492cea400aab5dc76caaa088dd52",
+  "existing_changed_functions": [
+    "runtime_evidence"
+  ],
+  "files": [
+    {
+      "base_c1_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 118830,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "00410e0cc4ef998ca87be29060bf1fec1c883924d4a8ec1d766a243a2c8d574b",
+      "v1_sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071"
+    },
+    {
+      "base_c1_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 159345,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "e2ca6b707848393f29af24d6bc0f6c7a8997342632dea4def66f5ee9f7359817",
+      "v1_sha256": "de89652a0f0bb814ee68c7cc25f5bcf44db35e3440e7805e39c8a427b3c10450"
+    },
+    {
+      "base_c1_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 25907,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "a20ec33ff3756cfd86023fe14d593e1b521bf3b5126db15e2383e96ec5546b97",
+      "v1_sha256": "fdd8ddf980f2a1f565ff8c658809bf31c6620deebbd90272fb6605690435fb79"
+    }
+  ],
+  "license_blocker_remains_separate": true,
+  "manifest_sha256": "fd9351ec25549d528b5af9696bafa9134f2f2b680e1519dcd48652f209439cb1",
+  "native_product_acceptance": false,
+  "new_focused_pass": 31,
+  "new_focused_tests": 31,
+  "new_functions": [
+    "empty_cordova_resource_class",
+    "validate_empty_cordova_project"
+  ],
+  "other_maintained_files_edited": false,
+  "parent_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "production_changes": false,
+  "schema": "gsip-native-cordova-frozen-v2",
+  "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "v1_delta_sha256": "f12d2343efab6c2bf28a7facdda1e4886b32acdbff7a61c761acc3a4b9432467",
+  "v1_test_prefix_bytes": 151583,
+  "v1_test_prefix_exact": true,
+  "v1_test_prefix_sha256": "de89652a0f0bb814ee68c7cc25f5bcf44db35e3440e7805e39c8a427b3c10450",
+  "verification_status": "FOCUSED_PASS_ACTUAL_CORDOVA_GUARD_PASS_STATIC_AND_MUTATION_RECEIPT_FOLLOW"
+}

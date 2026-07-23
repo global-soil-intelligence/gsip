@@ -1,0 +1,171 @@
+Browser tab: 1234838671, Title: "Squarespace Domains — globalsoilintelligence.com — DNS Settings", URL: "https://account.squarespace.com/domains/managed/globalsoilintelligence.com/dns/dns-settings".
+0 AXWebArea Squarespace Domains — globalsoilintelligence.com — DNS Settings, URL: account.squarespace.com/domains/managed/globalsoilintelligence.com/dns/dns-settings
+	1 container
+		2 container renderTarget
+			3 image
+			4 text Secure your account with Two-factor Authentication
+			5 text Keep your Squarespace account secure by adding an additional layer of security, two-factor authentication (2FA).
+			6 button SET UP
+			7 button Close Two-factor Authentication banner
+			8 container
+				9 image Squarespace
+				10 link Description: Help, Value: account.squarespace.com/redirects/help
+				11 link Description: Account Settings, Value: account.squarespace.com/settings
+				12 button Manage account for Justin Hart
+				13 tab group TabsField-1
+					14 tab (selectable, settable, boolean) Description: Dashboard, Value: 0, ID: tab_/
+					15 tab (selected, settable, boolean) Description: Domains, Value: 1, ID: tab_/domains
+			16 container
+				17 link Description: Domains List, Value: account.squarespace.com/domains
+				18 container
+					19 combo box (collapsed, settable) Value: globalsoilintelligence.com, ID: :r56:, Secondary Actions: Expand
+					20 image
+				21 content list
+					22 container
+						23 link Description: Overview Overview, Value: account.squarespace.com/domains/managed/globalsoilintelligence.com
+						24 link Description: DNS DNS, Value: account.squarespace.com/domains/managed/globalsoilintelligence.com/dns/dns-settings
+						25 link Description: Website Website, Value: account.squarespace.com/domains/managed/globalsoilintelligence.com/website
+						26 link Description: Email Email, Value: account.squarespace.com/domains/managed/globalsoilintelligence.com/email
+						27 link Description: Pay Links New Pay Links, Value: account.squarespace.com/domains/managed/globalsoilintelligence.com/pay-links
+						28 link Description: LLC Formation LLC Formation, Value: account.squarespace.com/domains/managed/globalsoilintelligence.com/llc-formation
+						29 link Description: Billing Billing, Value: account.squarespace.com/domains/managed/globalsoilintelligence.com/billing/settings
+						30 link Description: Activity Activity, Value: account.squarespace.com/domains/managed/globalsoilintelligence.com/activity
+						31 link Description: Permissions Permissions, Value: account.squarespace.com/domains/managed/globalsoilintelligence.com/permissions
+				32 heading DNS Settings, Value: 1
+					33 text DNS Settings
+				34 text DNS records point to services your domain uses, like forwarding your domain or setting up an email service. 
+				35 link Description: Learn more about DNS settings, Value: support.squarespace.com/hc/articles/205812348
+				36 heading DNS Presets, Value: 2
+					37 text DNS Presets
+				38 text DNS presets in Squarespace simplify common connections for your website and email services.
+				39 button ADD PRESET
+					40 text ADD PRESET
+				41 content list
+					42 container
+						43 text Squarespace Defaults
+						44 button Delete preset Squarespace Defaults
+							45 image
+						46 table
+							47 row
+								48 cell
+									49 text TYPE
+									50 button More info
+										51 image
+								52 cell
+									53 text NAME
+									54 button More info
+										55 image
+								56 cell
+									57 text PRIORITY
+									58 button More info
+										59 image
+								60 cell
+									61 text TTL
+									62 button More info
+										63 image
+								64 cell
+									65 text DATA
+									66 button More info
+										67 image
+							68 row
+								69 cell
+									70 text A
+								71 cell
+									72 text @
+								73 cell
+									74 text N/A
+								75 cell
+									76 text 4 hrs
+								77 cell
+									78 text 198.49.23.144
+							79 row
+								80 cell
+									81 text CNAME
+								82 cell
+									83 text www
+								84 cell
+									85 text N/A
+								86 cell
+									87 text 4 hrs
+								88 cell
+									89 text ext-sq.squarespace.com
+					90 container
+						91 text Squarespace Domain Connect
+						92 button More info
+							93 image
+						94 button Delete preset Squarespace Domain Connect
+							95 image
+						96 table
+							97 row
+								98 cell
+									99 text TYPE
+									100 button More info
+										101 image
+								102 cell
+									103 text NAME
+									104 button More info
+										105 image
+								106 cell
+									107 text PRIORITY
+									108 button More info
+										109 image
+								110 cell
+									111 text TTL
+									112 button More info
+										113 image
+								114 cell
+									115 text DATA
+									116 button More info
+										117 image
+							118 row
+								119 cell
+									120 text CNAME
+								121 cell
+									122 text _domainconnect
+								123 cell
+									124 text N/A
+								125 cell
+									126 text 1 hr
+								127 cell
+									128 text _domainconnect.domains.squarespace.com
+				129 content list
+					130 container
+						131 heading Custom records, Value: 2
+							132 text Custom records
+						133 text Add and manage DNS records to connect your domain to external hosting, email, and other services.
+						134 button ADD RECORD
+						135 table
+							136 row
+								137 cell
+									138 text TYPE
+									139 button More info
+										140 image
+								141 cell
+									142 text NAME
+									143 button More info
+										144 image
+								145 cell
+									146 text PRIORITY
+									147 button More info
+										148 image
+								149 cell
+									150 text TTL
+									151 button More info
+										152 image
+								153 cell
+									154 text DATA
+									155 button More info
+										156 image
+							157 row
+								158 cell
+									159 text TXT
+								160 cell
+									161 text _github-pages-challenge-global-soil-intelligence
+								162 cell
+									163 text N/A
+								164 cell
+									165 text 1 hr
+								166 cell
+									167 text ec9866a89c5b447bc5d09ef7ceb232
+
+The focused UI element is 0 AXWebArea Squarespace Domains — globalsoilintelligence.com — DNS Settings, URL: account.squarespace.com/domains/managed/globalsoilintelligence.com/dns/dns-settings

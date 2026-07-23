@@ -1,0 +1,69 @@
+{
+  "state": "APPROVED_NARROW_METADATA_EXCEPTION",
+  "owner": "Justin Hart",
+  "approval_date_local": "2026-10-12",
+  "timezone": "America/New_York",
+  "recorded_at_utc": "2026-10-13T00:28:33.704960+00:00",
+  "owner_response": "Accept this narrow metadata exception (Recommended)",
+  "scope": "Only GitHub-generated merge commits for PRs #28\u2013#40: standard merge titles and missing Codex Co-Authored-By trailer.",
+  "commits": [
+    {
+      "pr": 28,
+      "sha": "517bc1d13118b09d5c8c02973e9e8f04744e13a0"
+    },
+    {
+      "pr": 29,
+      "sha": "55d89764375bacaebfcb49662826bc3e6bc2bdb4"
+    },
+    {
+      "pr": 30,
+      "sha": "f84f8464c5dee21d68e0b362ebc64c50c3cbf412"
+    },
+    {
+      "pr": 31,
+      "sha": "acf10eb41d22c043ffa6f8b6b9af6c1815e96138"
+    },
+    {
+      "pr": 32,
+      "sha": "7449070d25111340d8c8200bfda38c5735052fb8"
+    },
+    {
+      "pr": 33,
+      "sha": "02c2ccb91ad8da1e4a6f7325cb2e9087e93b4efc"
+    },
+    {
+      "pr": 34,
+      "sha": "766423725819e77bfc7fa114b8a28f52974f3bb0"
+    },
+    {
+      "pr": 35,
+      "sha": "e72ecd1901c676da249ae39fe14b6f57f5268eb4"
+    },
+    {
+      "pr": 36,
+      "sha": "0bde5e7529580b9bbb389070aa824ce853ebc874"
+    },
+    {
+      "pr": 37,
+      "sha": "7f017dc68c58021dd7a8f227d61a9fa2adc386a1"
+    },
+    {
+      "pr": 38,
+      "sha": "3cdd8c238399c138655feedb997b72d6c40186cf"
+    },
+    {
+      "pr": 39,
+      "sha": "b42cb67965891265beeb432c4b03171588ea72f6"
+    },
+    {
+      "pr": 40,
+      "sha": "665506fd7a2e4d972bb9fe03c4faf0f174c4675b"
+    }
+  ],
+  "audit_sha256": "0473e1c3ac02259dcc04f3b5a70e55022d98fc3d20f8e86ceb602f960547acbb",
+  "approved_proposal_sha256": "bd79fb13779faaf1dabe70b3b161ba09bc08a18e1c4f3c540ac4baba62313ee3",
+  "original_report_sha256": "ddee8cb0f444fb0a23b272a870efe5e6d4b5da453034e801f11eee4ac30e379b",
+  "history_rewritten": false,
+  "future_requirement": "Explicit Conventional Commit subject and Codex Co-Authored-By trailer for agent-executed merges.",
+  "additional_authority": "None: no new merges, deployments, worker runs, capture opening, secret-scan suppressions or policy exceptions."
+}

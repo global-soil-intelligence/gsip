@@ -1,0 +1,20 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "read_only": true,
+  "counts": [
+    {
+      "rights_requests_total": 0,
+      "rights_requests_open": 0,
+      "storage_objects": 0,
+      "contributors": 5,
+      "submissions": 25,
+      "photos": 25,
+      "auth_users": 0,
+      "ledger": 28,
+      "capture_open_rows": 0
+    }
+  ],
+  "security": {
+    "lints": []
+  }
+}

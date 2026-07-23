@@ -1,0 +1,8 @@
+{
+  "worktree": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0",
+  "base": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "branch": "wp-app-2b-local-notifications",
+  "clean_before_and_after": true,
+  "fetch_source": "local operational clone only; no remote or production call",
+  "reviewed_branches_rewritten": false
+}

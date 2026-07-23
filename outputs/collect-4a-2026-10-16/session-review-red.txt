@@ -1,0 +1,105 @@
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+ ❯ tests/guide-session.test.ts (32 tests | 2 failed) 53ms
+     × resumes a frozen identity with a fresh attempt while the pre-hide attempt stays stale 3ms
+     × holds an expired frozen snapshot until explicit fresh resume, including reconciliation at its successor 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guide-session.test.ts > guide bounds and immutable pending queue identity > resumes a frozen identity with a fresh attempt while the pre-hide attempt stays stale
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/guide-session.test.ts:319:93
+    317|     expect(retry.token).toBe(frozen.token)
+    318|     expect(guide.originalContextCurrent(frozen.token, access, now, fro…
+    319|     expect(guide.originalContextCurrent(retry.token, access, now, retr…
+       |                                                                                             ^
+    320|     expect(guide.complete(frozen.token, { status: 'held', revision: 7 …
+    321|     expect(guide.pending(access, now)?.record.submissionId).toBe(obser…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/guide-session.test.ts > guide bounds and immutable pending queue identity > holds an expired frozen snapshot until explicit fresh resume, including reconciliation at its successor
+AssertionError: expected { token: { …(3) }, revision: 7, …(1) } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "record": {
+    "acceptedAt": "2026-10-16T00:00:00Z",
+    "accuracyM": null,
+    "attributionName": "",
+    "capturedAt": "2026-10-16T00:00:00Z",
+    "collectionMode": "invited_private",
+    "deviceModel": "synthetic-device",
+    "disturbed": false,
+    "grantId": "00000000-0000-4000-8000-000000000002",
+    "landCover": "cropland",
+    "latitude": 0,
+    "longitude": 0,
+    "ownerUid": "synthetic-owner",
+    "photos": [
+      {
+        "bytes": Uint8Array [
+          255,
+          216,
+          255,
+          1,
+        ],
+        "mimeType": "image/jpeg",
+        "objectId": "00000000-0000-4000-8000-000000000003",
+        "shotType": "A",
+      },
+      {
+        "bytes": Uint8Array [
+          255,
+          216,
+          255,
+          1,
+        ],
+        "mimeType": "image/jpeg",
+        "objectId": "00000000-0000-4000-8000-000000000004",
+        "shotType": "B",
+      },
+    ],
+    "queuedAt": "2026-10-16T00:00:00Z",
+    "submissionId": "00000000-0000-4000-8000-000000000001",
+    "surfaceCondition": "dry",
+    "termsVersion": "synthetic-terms",
+  },
+  "revision": 7,
+  "token": {
+    "generation": 4,
+    "sessionId": "synthetic-session",
+    "submissionId": "00000000-0000-4000-8000-000000000001",
+  },
+}
+
+ ❯ tests/guide-session.test.ts:332:41
+    330|     expect(guide.pending(access, later)).toBeNull()
+    331|     const fresh = { ...access, verifiedAt: later }
+    332|     expect(guide.pending(fresh, later)).toBeNull()
+       |                                         ^
+    333|     expect(guide.resume(fresh, later)).toBe(true)
+    334|     expect(guide.pending(fresh, later)?.token).toBe(frozen.token)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 30 passed (32)
+   Start at  21:57:51
+   Duration  676ms (transform 64ms, setup 69ms, import 99ms, tests 53ms, environment 380ms)
+
+undefined
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run tests/guide-session.test.ts

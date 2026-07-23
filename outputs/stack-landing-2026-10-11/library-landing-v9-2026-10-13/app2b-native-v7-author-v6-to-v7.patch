@@ -1,0 +1,117 @@
+--- a/scripts/app_notification_audit.py
++++ b/scripts/app_notification_audit.py
+@@ -183,7 +183,7 @@
+ ) -> bytes:
+     """Only explicit bounded regular single-link files beneath trusted CI roots."""
+     absolute = contained(path, roots)
+-    fd = os.open(absolute, os.O_RDONLY | os.O_NOFOLLOW)
++    fd = os.open(absolute, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+     try:
+         info = os.fstat(fd)
+         if (
+--- a/tests/test_app_notification_audit.py
++++ b/tests/test_app_notification_audit.py
+@@ -1942,3 +1942,88 @@
+         native["cordova_apache_source_header"]["sha256"] = "f" * 64
+     with pytest.raises(audit.AuditError):
+         audit.validate_native(native, build)
++
++
++@pytest.mark.parametrize("kind", ["regular", "fifo", "fifo_allow_empty", "swapped_fifo"])
++def test_bounded_descriptor_read_refuses_fifo_without_waiting_for_a_writer(
++    tmp_path: Path, kind: str
++) -> None:
++    """Actual FIFO/open-time substitution; every child is bounded and reaped."""
++    import select
++    import subprocess
++    import sys
++
++    path = tmp_path / "synthetic-input"
++    if kind in {"fifo", "fifo_allow_empty"}:
++        os.mkfifo(path)
++    else:
++        path.write_bytes(b"synthetic regular content")
++    child_code = """import sys,os
++from pathlib import Path
++from scripts import app_notification_audit as audit
++path=Path(sys.argv[1]);kind=sys.argv[2]
++if kind=='swapped_fifo':
++ original_open=audit.os.open
++ def replace_at_open(file,flags,*args,**kwargs):
++  if Path(file)==path:
++   path.unlink();os.mkfifo(path)
++  return original_open(file,flags,*args,**kwargs)
++ audit.os.open=replace_at_open
++print('ready',flush=True)
++if sys.stdin.readline().strip()!='go':sys.exit(2)
++try:
++ data=audit.read(path,(path.parent,),allow_empty=kind=='fifo_allow_empty')
++except (audit.AuditError,OSError):print('refused',flush=True)
++else:print('regular-ok' if data==b'synthetic regular content' else 'unexpected',flush=True)
++"""
++    command = [sys.executable, "-c", child_code, str(path), kind]
++    child = subprocess.Popen(  # noqa: S603 - fixed synthetic read-only child, explicitly bounded and reaped
++        command,
++        cwd=ROOT,
++        stdin=subprocess.PIPE,
++        stdout=subprocess.PIPE,
++        stderr=subprocess.PIPE,
++        text=True,
++        env={"PYTHONPATH": str(ROOT), "PATH": os.defpath},
++    )
++    completed = False
++    output = stderr = ""
++    try:
++        assert child.stdout is not None
++        ready, _, _ = select.select([child.stdout], [], [], 2)
++        assert ready, "synthetic child did not start within its startup bound"
++        assert child.stdout.readline() == "ready\n"
++        try:
++            output, stderr = child.communicate(input="go\n", timeout=0.25)
++            completed = True
++        except subprocess.TimeoutExpired:
++            child.kill()
++            output, stderr = child.communicate(timeout=2)
++    finally:
++        if child.poll() is None:
++            child.kill()
++            child.communicate(timeout=2)
++    assert child.poll() is not None
++    assert completed, "special-file open blocked before descriptor type refusal"
++    assert child.returncode == 0
++    assert stderr == ""
++    assert output == ("regular-ok\n" if kind == "regular" else "refused\n")
++
++
++def test_nonblocking_open_keeps_nofollow_and_descriptor_type_checks(
++    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
++) -> None:
++    file = tmp_path / "regular"
++    file.write_bytes(b"synthetic bytes")
++    actual_open = os.open
++    flags_seen: list[int] = []
++
++    def checked_open(path: Any, flags: int, *args: Any, **kwargs: Any) -> int:
++        flags_seen.append(flags)
++        return actual_open(path, flags, *args, **kwargs)
++
++    monkeypatch.setattr(os, "open", checked_open)
++    assert audit.read(file, (tmp_path,)) == b"synthetic bytes"
++    assert len(flags_seen) == 1
++    assert flags_seen[0] & os.O_NOFOLLOW
++    assert flags_seen[0] & os.O_NONBLOCK
+--- a/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
++++ b/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
+@@ -40,7 +40,11 @@
+ `check-dependencies` checks continue on both configurations. Closed SDK coordinates,
+ missing graphs, unknown projects, malformed or ambiguous metadata, unsafe files and
+ unknown licenses fail the additional audit as well. Traversal components are rejected
+-before canonical containment checks. Runtime binaries remain inside their exact
++before canonical containment checks. File opens use `O_NOFOLLOW | O_NONBLOCK`, then
++validate the opened descriptor as a bounded single-link regular file. A FIFO with no
++writer is promptly refused, including an input replaced between containment and open;
++regular-file reads retain their existing behavior. A path-only preflight cannot replace
++these descriptor checks. Runtime binaries remain inside their exact
+ module/version cache directory or known generated project output; the temporary task
+ emits canonical paths for pnpm package links.
+ 

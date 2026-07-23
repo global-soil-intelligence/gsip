@@ -1,0 +1,22 @@
+{
+  "checked_at_utc": "2026-10-16T01:31:31.252471+00:00",
+  "scope": "Independent second bounded read-only certificate wait after DNS check succeeded; no mutations",
+  "returncode": 0,
+  "pages": {
+    "status": "built",
+    "cname": "globalsoilintelligence.com",
+    "html_url": "http://globalsoilintelligence.com/",
+    "protected_domain_state": "verified",
+    "https_certificate": {
+      "state": "approved",
+      "description": "The certificate has been approved.",
+      "domains": [
+        "globalsoilintelligence.com",
+        "www.globalsoilintelligence.com"
+      ],
+      "expires_at": "2027-01-13"
+    },
+    "https_enforced": false
+  },
+  "error": ""
+}

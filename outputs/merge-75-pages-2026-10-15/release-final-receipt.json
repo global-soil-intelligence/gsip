@@ -1,0 +1,446 @@
+{
+  "status": "DEPLOYED_AND_LIVE_VERIFIED_CAPTURE_AND_LIBRARY_UPLOADS_CLOSED",
+  "checked_at_utc": "2026-10-15T23:52:08.897298+00:00",
+  "authority": "Justin: Go for Pages run 38821460183. Keep capture and library uploads closed, then verify the live website.",
+  "run": {
+    "conclusion": "success",
+    "headSha": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+    "jobs": [
+      {
+        "completedAt": "2026-10-15T23:06:33Z",
+        "conclusion": "success",
+        "databaseId": 116718759284,
+        "name": "build",
+        "startedAt": "2026-10-15T23:05:51Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-15T23:05:55Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-15T23:05:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:05:56Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-10-15T23:05:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:07Z",
+            "conclusion": "success",
+            "name": "Run pnpm/action-setup@v6",
+            "number": 3,
+            "startedAt": "2026-10-15T23:05:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:16Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v7",
+            "number": 4,
+            "startedAt": "2026-10-15T23:06:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:21Z",
+            "conclusion": "success",
+            "name": "Run pnpm install --frozen-lockfile",
+            "number": 5,
+            "startedAt": "2026-10-15T23:06:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:27Z",
+            "conclusion": "success",
+            "name": "Run pnpm build:pages",
+            "number": 6,
+            "startedAt": "2026-10-15T23:06:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:28Z",
+            "conclusion": "success",
+            "name": "Run pnpm check:map-budget",
+            "number": 7,
+            "startedAt": "2026-10-15T23:06:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:28Z",
+            "conclusion": "success",
+            "name": "Run pnpm check:prior-tiles",
+            "number": 8,
+            "startedAt": "2026-10-15T23:06:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:29Z",
+            "conclusion": "success",
+            "name": "Run pnpm check:site-budget",
+            "number": 9,
+            "startedAt": "2026-10-15T23:06:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:29Z",
+            "conclusion": "success",
+            "name": "Run actions/configure-pages@v6",
+            "number": 10,
+            "startedAt": "2026-10-15T23:06:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-pages-artifact@v5",
+            "number": 11,
+            "startedAt": "2026-10-15T23:06:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v7",
+            "number": 20,
+            "startedAt": "2026-10-15T23:06:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Post Run pnpm/action-setup@v6",
+            "number": 21,
+            "startedAt": "2026-10-15T23:06:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 22,
+            "startedAt": "2026-10-15T23:06:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 23,
+            "startedAt": "2026-10-15T23:06:31Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116718759284"
+      },
+      {
+        "completedAt": "2026-10-15T23:47:45Z",
+        "conclusion": "success",
+        "databaseId": 116719022589,
+        "name": "deploy",
+        "startedAt": "2026-10-15T23:47:36Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-15T23:47:38Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-15T23:47:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:47:43Z",
+            "conclusion": "success",
+            "name": "Run actions/deploy-pages@v5",
+            "number": 2,
+            "startedAt": "2026-10-15T23:47:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:47:43Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 3,
+            "startedAt": "2026-10-15T23:47:43Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116719022589"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183"
+  },
+  "deployment_readback": {
+    "run": {
+      "conclusion": "success",
+      "headSha": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+      "jobs": [
+        {
+          "completedAt": "2026-10-15T23:06:33Z",
+          "conclusion": "success",
+          "databaseId": 116718759284,
+          "name": "build",
+          "startedAt": "2026-10-15T23:05:51Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-15T23:05:55Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-15T23:05:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:05:56Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@v7",
+              "number": 2,
+              "startedAt": "2026-10-15T23:05:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:07Z",
+              "conclusion": "success",
+              "name": "Run pnpm/action-setup@v6",
+              "number": 3,
+              "startedAt": "2026-10-15T23:05:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:16Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@v7",
+              "number": 4,
+              "startedAt": "2026-10-15T23:06:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:21Z",
+              "conclusion": "success",
+              "name": "Run pnpm install --frozen-lockfile",
+              "number": 5,
+              "startedAt": "2026-10-15T23:06:16Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:27Z",
+              "conclusion": "success",
+              "name": "Run pnpm build:pages",
+              "number": 6,
+              "startedAt": "2026-10-15T23:06:21Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:28Z",
+              "conclusion": "success",
+              "name": "Run pnpm check:map-budget",
+              "number": 7,
+              "startedAt": "2026-10-15T23:06:27Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:28Z",
+              "conclusion": "success",
+              "name": "Run pnpm check:prior-tiles",
+              "number": 8,
+              "startedAt": "2026-10-15T23:06:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:29Z",
+              "conclusion": "success",
+              "name": "Run pnpm check:site-budget",
+              "number": 9,
+              "startedAt": "2026-10-15T23:06:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:29Z",
+              "conclusion": "success",
+              "name": "Run actions/configure-pages@v6",
+              "number": 10,
+              "startedAt": "2026-10-15T23:06:29Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:31Z",
+              "conclusion": "success",
+              "name": "Run actions/upload-pages-artifact@v5",
+              "number": 11,
+              "startedAt": "2026-10-15T23:06:29Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:31Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@v7",
+              "number": 20,
+              "startedAt": "2026-10-15T23:06:31Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:31Z",
+              "conclusion": "success",
+              "name": "Post Run pnpm/action-setup@v6",
+              "number": 21,
+              "startedAt": "2026-10-15T23:06:31Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:31Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v7",
+              "number": 22,
+              "startedAt": "2026-10-15T23:06:31Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:06:31Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 23,
+              "startedAt": "2026-10-15T23:06:31Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116718759284"
+        },
+        {
+          "completedAt": "2026-10-15T23:47:45Z",
+          "conclusion": "success",
+          "databaseId": 116719022589,
+          "name": "deploy",
+          "startedAt": "2026-10-15T23:47:36Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-15T23:47:38Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-15T23:47:36Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:47:43Z",
+              "conclusion": "success",
+              "name": "Run actions/deploy-pages@v5",
+              "number": 2,
+              "startedAt": "2026-10-15T23:47:38Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-15T23:47:43Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 3,
+              "startedAt": "2026-10-15T23:47:43Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116719022589"
+        }
+      ],
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183"
+    },
+    "deployments": [
+      {
+        "id": 7106555973,
+        "sha": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+        "environment": "github-pages",
+        "statuses": [
+          {
+            "state": "success",
+            "environment_url": "https://global-soil-intelligence.github.io/gsip/",
+            "created_at": "2026-10-15T23:47:46Z",
+            "log_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116719022589"
+          },
+          {
+            "state": "in_progress",
+            "environment_url": "",
+            "created_at": "2026-10-15T23:47:36Z",
+            "log_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116719022589"
+          },
+          {
+            "state": "queued",
+            "environment_url": "",
+            "created_at": "2026-10-15T23:47:35Z",
+            "log_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116719022589"
+          },
+          {
+            "state": "waiting",
+            "environment_url": "",
+            "created_at": "2026-10-15T23:06:35Z",
+            "log_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116719022589"
+          },
+          {
+            "state": "waiting",
+            "environment_url": "",
+            "created_at": "2026-10-15T23:06:35Z",
+            "log_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116719022589"
+          }
+        ]
+      }
+    ]
+  },
+  "artifact_sha256": "2bc0829549d98331c7a8dc5e451b6e5457125fd5863f166e63ce1ea90a4cde33",
+  "live_url": "https://global-soil-intelligence.github.io/gsip/",
+  "live_files_verified": 38,
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "browser_capture": {
+    "buttons": [],
+    "closedHeading": "Contributions open after our launch review.",
+    "fileInputs": 0,
+    "forms": 0,
+    "url": "https://global-soil-intelligence.github.io/gsip/capture/"
+  },
+  "home_library_navigation": "verified in browser",
+  "browser_console_errors_observed": 0,
+  "independent_review": {
+    "file": "live-independent-review.md",
+    "sha256": "05e26df7f8167acf2ecc01a443f088a4e980f7b7a655b34943a566a18960e813"
+  },
+  "screenshots": {
+    "live-home.png": "686fef844234b6fd3c8221d370d164feef331d09541e32ac200dff50b69383f8",
+    "live-capture-closed.png": "0ab44b145e1514542a0c5f796a1cccd8804524281a203534cd5ab187c8003e33"
+  },
+  "canonical_domain": {
+    "url": "https://globalsoilintelligence.com/",
+    "final_url": "https://globalsoilintelligence.com/",
+    "status": 200,
+    "title": "Coming Soon",
+    "h1": "globalsoilintelligence.com",
+    "checked_at_utc": "2026-10-15T23:51:03.425361+00:00",
+    "dns_change_performed": false
+  },
+  "protection_preserved": {
+    "environment": "github-pages",
+    "required_reviewer": "jdhart81",
+    "admins_can_bypass": false
+  },
+  "remote_writes_performed": [
+    "Approved exact Pages run 38821460183 under explicit owner go",
+    "Append deployment evidence to PR #75 description"
+  ],
+  "no_operations": [
+    "database migration or history repair",
+    "Edge Function deployment",
+    "worker dispatch",
+    "auth configuration",
+    "DNS cutover",
+    "app signing",
+    "data submission",
+    "capture/library activation"
+  ]
+}

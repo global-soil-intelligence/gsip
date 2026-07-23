@@ -1,0 +1,62 @@
+{
+  "utc": "2026-10-14T03:51:16.259299+00:00",
+  "branch": "wp-doc-1-reminder-status",
+  "head": "8b8cc24841d58c231743ff69472d3354f612dcf3",
+  "base": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "changed_paths": [
+    "README.md",
+    "docs/BUILD_ORDER.md",
+    "docs/SPEC.md"
+  ],
+  "commit_message": "docs(wp-doc-1): record merged sync reminder source\n\nCo-Authored-By: Codex <codex@openai.com>",
+  "local_clean": true,
+  "author_receipt_copies": {
+    "WP_DOC1_DELIVERY.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_AUTHOR_WP_DOC1_DELIVERY.json",
+      "sha256": "ab01d01d0116c87617efc6138481cfe29f2e9ac276092ebf92314fde8df420e3"
+    },
+    "MANIFEST.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_AUTHOR_MANIFEST.json",
+      "sha256": "24ca03aeb649a1f496e8576c791b60e9a5fc12bf62997bec2cf6cf46cd4b1eff"
+    },
+    "BASELINE_BINDING.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_AUTHOR_BASELINE_BINDING.json",
+      "sha256": "151633ea2d743167ee467025ea26f606af140597c5f452c7eb9b26807e6df0a4"
+    },
+    "APPROVED_STATUS_EDITS.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_AUTHOR_APPROVED_STATUS_EDITS.json",
+      "sha256": "9518ec48ddd4d250d536469449a0b5df66aa4b0fa2b7ab94b83eb334775b05ef"
+    },
+    "BASELINE_WITNESS.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_AUTHOR_BASELINE_WITNESS.json",
+      "sha256": "3bad900a8ad5674b40058bb4c95c87060ac157e6692e9f8966fe6e9fa905eecb"
+    },
+    "CANDIDATE_WITNESS.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_AUTHOR_CANDIDATE_WITNESS.json",
+      "sha256": "130d68f25c0e70cc5da17f55497ec8d4ae20d64f01a9f9535752d258be4c023b"
+    },
+    "FORMAT_CHECK.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_AUTHOR_FORMAT_CHECK.json",
+      "sha256": "29021eb3a66f85db6e368bbb20ef6053dd4142205a8466c29767469bbed10f8e"
+    },
+    "reminder-source-status.patch": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_AUTHOR_reminder-source-status.patch",
+      "sha256": "a3c53c4d709bd57e9cb8ed6441f7959733b7810812cf5cbaf53ebdd941cd942e"
+    },
+    "acceptance_witness.py": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_AUTHOR_acceptance_witness.py",
+      "sha256": "0638c5cb4f502e02a5a563923d901e327f8bd524156c1013f7e04a99b838ae3e"
+    }
+  },
+  "gitleaks": {
+    "version": "8.21.2",
+    "all_refs_full_history": true,
+    "nonshallow": true,
+    "redaction": true,
+    "commits_reported": 156,
+    "findings": 0,
+    "new_suppression": false,
+    "output_sha256": "1daaf7da5d5558f2d484d01fc414146f9c0f77ca53271e3b38384318523e2dcc"
+  },
+  "production_changes": false
+}

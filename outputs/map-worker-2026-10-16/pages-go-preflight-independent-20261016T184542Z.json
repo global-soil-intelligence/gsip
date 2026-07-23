@@ -1,0 +1,131 @@
+{
+  "checked_at_utc": "2026-10-16T18:45:42.392176+00:00",
+  "status": "PREFLIGHT_MISMATCH_STOP",
+  "scope": "Owner approved only this Pages run; root owns approval mutation. Independent read-only preflight.",
+  "checks": {
+    "no_api_errors": true,
+    "exact_run_source": true,
+    "main_still_exact": true,
+    "tree_matches_review": true,
+    "pages_waiting": false,
+    "build_succeeded": true,
+    "deploy_waiting_not_completed": false,
+    "artifact_id_digest_size_current": true,
+    "main_ci_success_exact": true,
+    "reviewer_and_no_admin_bypass_preserved": true,
+    "allowed_branches_preserved": true,
+    "pending_expected_environment": false,
+    "reviewed_artifact_closed_flags": true
+  },
+  "pages_run": {
+    "id": 38895620835,
+    "name": "Deploy GitHub Pages",
+    "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "head_branch": "main",
+    "event": "push",
+    "status": "in_progress",
+    "conclusion": null,
+    "run_attempt": 1,
+    "created_at": "2026-10-16T11:43:06Z",
+    "updated_at": "2026-10-16T18:45:35Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835"
+  },
+  "main_ci": {
+    "id": 38895620789,
+    "name": "CI",
+    "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "head_branch": "main",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-16T11:43:06Z",
+    "updated_at": "2026-10-16T11:52:32Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620789"
+  },
+  "main_ref": {
+    "ref": "refs/heads/main",
+    "node_id": "REF_kwDOTgVRPa9yZWZzL2hlYWRzL21haW4",
+    "url": "https://api.github.com/repos/global-soil-intelligence/gsip/git/refs/heads/main",
+    "object": {
+      "sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+      "type": "commit",
+      "url": "https://api.github.com/repos/global-soil-intelligence/gsip/git/commits/27c3d9143ff78dce65fa4d2e88e1660c79574232"
+    }
+  },
+  "commit_tree": {
+    "sha": "d49fa2ef6b31a0042db64d74e78b8a12df5b758b",
+    "url": "https://api.github.com/repos/global-soil-intelligence/gsip/git/trees/d49fa2ef6b31a0042db64d74e78b8a12df5b758b"
+  },
+  "artifacts": [
+    {
+      "id": 12043617713,
+      "node_id": "MDg6QXJ0aWZhY3QxMjA0MzYxNzcxMw==",
+      "name": "github-pages",
+      "size_in_bytes": 3901961,
+      "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12043617713",
+      "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12043617713/zip",
+      "expired": false,
+      "digest": "sha256:d818ff8663588d7eb12bdf691b92127ee6ca61495c4e6ab9c08eae1c596fbc0b",
+      "created_at": "2026-10-16T11:43:38Z",
+      "updated_at": "2026-10-16T11:43:38Z",
+      "expires_at": "2026-10-17T11:43:36Z",
+      "workflow_run": {
+        "id": 38895620835,
+        "repository_id": 1308971325,
+        "head_repository_id": 1308971325,
+        "head_branch": "main",
+        "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232"
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "id": 116955267851,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-16T11:43:09Z",
+      "completed_at": "2026-10-16T11:43:40Z",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835/job/116955267851"
+    },
+    {
+      "id": 116955470777,
+      "name": "deploy",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-16T18:45:34Z",
+      "completed_at": null,
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835/job/116955470777"
+    }
+  ],
+  "pending": [],
+  "environment": {
+    "id": 18657050755,
+    "name": "github-pages",
+    "can_admins_bypass": false,
+    "reviewers": [
+      "jdhart81"
+    ],
+    "deployment_branch_policy": {
+      "protected_branches": false,
+      "custom_branch_policies": true
+    }
+  },
+  "branch_policies": [
+    {
+      "id": 55456772,
+      "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTQ1Njc3Mg==",
+      "name": "gh-pages",
+      "type": "branch"
+    },
+    {
+      "id": 55456704,
+      "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTQ1NjcwNA==",
+      "name": "main",
+      "type": "branch"
+    }
+  ],
+  "api_errors": {},
+  "mutations": "NONE; no approval, deployment, rerun or settings change"
+}

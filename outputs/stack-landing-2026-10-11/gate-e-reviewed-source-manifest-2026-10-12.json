@@ -1,0 +1,127 @@
+{
+  "state": "PASS_EXACT_CLEAN_EDGE_SOURCE_MANIFEST",
+  "verified_at_utc": "2026-10-12T19:44:11.680200+00:00",
+  "source_directory": "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+  "source_commit": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "source_clean": true,
+  "function_source_closures": {
+    "prior-attach": [
+      {
+        "path": "packages/schema/src/database.types.ts",
+        "sha256": "9959305b0c07b4b69fb5cc0733cfe96fe854abbac4a98ed47203062740235f40"
+      },
+      {
+        "path": "packages/schema/src/prior.ts",
+        "sha256": "22a162d1474ce7b66685e359b128efb1415efc7efcdf5701f807a859dd2d244c"
+      },
+      {
+        "path": "packages/schema/src/priorJob.ts",
+        "sha256": "71dc9d04b89a6448c5881b149e3be76c5cf4329713aba3129a686b3d72f0f7b4"
+      },
+      {
+        "path": "supabase/functions/prior-attach/index.ts",
+        "sha256": "32d32f4e4fbf983d0404e8f37d86c8debed6c4ba6c66dd83fb96d48a1d610846"
+      }
+    ],
+    "gsip-public": [
+      {
+        "path": "packages/schema/src/agent/api.ts",
+        "sha256": "1f08fdf6d499041b066f9922cb555a91618585d5df09b563df1895e6b0734ce1"
+      },
+      {
+        "path": "packages/schema/src/agent/config.ts",
+        "sha256": "0d66e4775774e532df9acfc9a8076a8ef92ceb95f49095556192a6499545a4ad"
+      },
+      {
+        "path": "packages/schema/src/agent/envelope.ts",
+        "sha256": "322482bf03b11a07279d5e509389ec29c9688953fd5ce12d11a76133cd30b6db"
+      },
+      {
+        "path": "packages/schema/src/agent/h3.ts",
+        "sha256": "204ca9c42b9bf39a1f3a1d5e78cccbd7722f36571843413f584f091bbc858d0c"
+      },
+      {
+        "path": "packages/schema/src/agent/handler.ts",
+        "sha256": "5909702edb4d6a07fcbc79f6e1b29ee7865e1aa4671b16bf1f7ea4d0db97b65a"
+      },
+      {
+        "path": "packages/schema/src/agent/http.ts",
+        "sha256": "ad7f509ae868d2bb088f845f4c67a1b57c4c56b0e76fca19e9f7900d1ce13ed8"
+      },
+      {
+        "path": "packages/schema/src/agent/keys.ts",
+        "sha256": "b5eb1e3c4028ec2a271c07a48f8cf06a7480cac64f1c2a936ec4f8eb953bc96d"
+      },
+      {
+        "path": "packages/schema/src/agent/mcp.ts",
+        "sha256": "c2571dff4b84f1bc41a73db8dd3f8aeb7b85c430d79e200cc5574eb7b1719fd4"
+      },
+      {
+        "path": "packages/schema/src/agent/openapi.ts",
+        "sha256": "95108f5a9e8785a21d92664da8e9a9e6b8c4a9dfda8388fa465934667a31f3f8"
+      },
+      {
+        "path": "packages/schema/src/agent/rateLimit.ts",
+        "sha256": "04c64e82509a3fecc7319381c39536fea37562d6ed9b4a11c3a6d80f2fb78274"
+      },
+      {
+        "path": "packages/schema/src/agent/reader.ts",
+        "sha256": "c4e51eed77f4410defc173aefe1a11c22e9d039d9741fa67ade0955a42827f76"
+      },
+      {
+        "path": "packages/schema/src/agent/rest.ts",
+        "sha256": "2d0f8dbe27ea8b5c14ee7cf2bb425443345cfd1b65bb174cd52877c73b3202ee"
+      },
+      {
+        "path": "packages/schema/src/agent/schemas.ts",
+        "sha256": "27ea0b3ffde99245f14354fcc96ba35755c8db9ab461df8ce381f272f691a439"
+      },
+      {
+        "path": "packages/schema/src/prior.ts",
+        "sha256": "22a162d1474ce7b66685e359b128efb1415efc7efcdf5701f807a859dd2d244c"
+      },
+      {
+        "path": "packages/schema/src/protocol.ts",
+        "sha256": "f2d85a53361eacfc8020541112f033a3789d0ada3312d25291bc3fae03c083f4"
+      },
+      {
+        "path": "supabase/functions/gsip-public/index.ts",
+        "sha256": "62a381c29db726136c08b1a4b618cd1276ff3ac1eaf529bf91026a161b3b9668"
+      }
+    ]
+  },
+  "locked_external_imports": {
+    "prior-attach": [
+      "npm:@supabase/supabase-js@2.110.8",
+      "npm:h3-js@4.5.0",
+      "npm:zod@4.6.5"
+    ],
+    "gsip-public": [
+      "npm:h3-js@4.5.0",
+      "npm:zod@4.6.5"
+    ]
+  },
+  "common_configuration": [
+    {
+      "path": "supabase/config.toml",
+      "sha256": "7e8a9661057c3b8bf84f600a353a7bd4d99f9d20276303d2038df4bb6f42753d"
+    },
+    {
+      "path": "supabase/functions/deno.json",
+      "sha256": "429dcbf73312b11d02f8f8230be71b0bd05743c362f06f3bc524cf8e34fed81b"
+    },
+    {
+      "path": "supabase/functions/deno.lock",
+      "sha256": "18cbea2e11a367c3941de8737b115885bbe410dbc6a5d68bfe2f1598876d5cba"
+    }
+  ],
+  "JWT": {
+    "prior-attach": true,
+    "gsip-public": false
+  },
+  "local_anonymous_auth_config_not_for_production_push": true,
+  "new_dependencies": [],
+  "source_changes": [],
+  "production_changes": [],
+  "closure_method": "Static import/export and literal dynamic-import traversal; all local files must match the exact Git commit and be inside the reviewed repository."
+}

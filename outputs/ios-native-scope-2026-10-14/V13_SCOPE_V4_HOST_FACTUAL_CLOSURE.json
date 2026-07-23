@@ -1,0 +1,50 @@
+{
+  "status": "v4_host_build_copy_scope_factual_review_closed_no_further_blockers",
+  "scope": "Read-only final factual rebind, no source/Git/GitHub/native/test/app-data/device or production action. Mapping validation does not claim copies or prototype tests executed.",
+  "manifest": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/ios-native-scope-2026-10-14/V4_MANIFEST.json",
+    "sha256": "06710bba4738a0a4cebfea27b4c5d34ea282ad21fd40e80a5670e47970364402",
+    "file_count": 377,
+    "all_file_hashes_verified": true,
+    "changed_paths_from_v3": [
+      "docs/IOS_NATIVE_SCOPE.md",
+      "docs/ios-native-scope.json",
+      "tests/test_ios_native_scope.py"
+    ]
+  },
+  "documents": [
+    {
+      "path": "docs/IOS_NATIVE_SCOPE.md",
+      "bytes": 25961,
+      "sha256": "d6463222a40ea9a132c8423600caea41df2b7ecb58e38414b22786ea504e0271"
+    },
+    {
+      "path": "docs/ios-native-scope.json",
+      "bytes": 14175,
+      "sha256": "810bca4dcaa09a796e3622f72c0c5f48f56d0ce70b0688eb24de4cf6fab7ac9d"
+    }
+  ],
+  "mapping_checks": {
+    "source_entries": 21,
+    "exact_native_source_list_coverage": true,
+    "unique_destination_count": 21,
+    "relative_no_traversal": true,
+    "nine_generated_edit_targets_disjoint": true,
+    "core_sibling": "GSIPPrivateStorePrototype/",
+    "core_manifest": "GSIPPrivateStorePrototype/Package.swift",
+    "host_output": "App/App/GSIPStorageHostPrototype/",
+    "host_test_output": "App/GSIPStorageHostPrototypeTests/",
+    "future_hash_preserving_copy_requirement_not_execution": true
+  },
+  "unchanged_v3_scope": {
+    "all_json_fields_except_new_generated_copies_unchanged": true,
+    "host_constructor_notification_paragraph_byte_equal": true,
+    "prospective_native_count": 21,
+    "support_file_count": 3,
+    "generated_edit_count": 9,
+    "app_delegate_still_no_edit": true,
+    "native_language_exception_pending_and_no_implementation": true,
+    "prototype_files_still_absent": true
+  },
+  "additional_blockers": []
+}

@@ -1,0 +1,203 @@
+{
+  "actual_collector_replay": {
+    "AAR_deletions_or_relabeling": false,
+    "actual_compile_role_archives_independently_read": 4,
+    "actual_compile_zip_bytes_each": 330,
+    "actual_new_guard_passes": 2,
+    "actual_old_guard_refusals": 2,
+    "actual_primary_derived_R_class_bytes_each": 150,
+    "all_actual_archive_sha256": "8f8440ab7c76027736349da5c25413f6fb2abf61698d21d31f4968a418c62aec",
+    "author_roots_or_cache_modified": false,
+    "both_results_byte_equal_author_frozen_actual_proof": true,
+    "candidate": {
+      "resolved_binary_inputs_per_view": 79,
+      "selected_modules_per_view": 75,
+      "strict_NPM_sources": 7,
+      "strict_POM_chains": 150,
+      "tracked_e0_app_files_byte_bound": 59
+    },
+    "eight_current_Android_source_input_hashes_recomputed_per_root": true,
+    "five_committed_platform_inputs_and_two_locks_bound_per_root": true,
+    "network_build_APK_signing_key_operations": false,
+    "parent": {
+      "resolved_binary_inputs_per_view": 78,
+      "selected_modules_per_view": 75,
+      "strict_NPM_sources": 6,
+      "strict_POM_chains": 150
+    },
+    "receipt": {
+      "bytes": 5112,
+      "path": "/private/tmp/gsip-compile-role-independent-2b6a6991/INDEPENDENT_ACTUAL_BOTH_COLLECTORS.json",
+      "sha256": "6b88c68bd275e105b720915e793f0fa61043b0553e1fd9c9595bfc7dd6602f4c"
+    }
+  },
+  "authority": {
+    "metadata_GET_only_for_fresh_official_source_binding": true,
+    "native_build_signing_install_or_real_data_operations": false,
+    "owned_tmp_only_writes": true,
+    "raw_test_or_tool_streams_printed_or_persisted": false,
+    "shared_or_author_source_cache_Git_GH_CI_production_mutations": false
+  },
+  "base_commit": "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d",
+  "baseline_and_effective_mutations": {
+    "baseline_new19": {
+      "failed": 3,
+      "failures": "two genuine compile-role positive cases plus original unqualified workflow target control",
+      "passed": 16
+    },
+    "effective_guard_mutations": 4,
+    "mutation_failed_cases": {
+      "R_payload": 4,
+      "empty_compile": 2,
+      "unknown_role": 2,
+      "variant": 2
+    },
+    "receipt": {
+      "bytes": 4221,
+      "path": "/private/tmp/gsip-compile-role-independent-2b6a6991/INDEPENDENT_BASELINE_AND_MUTATIONS.json",
+      "sha256": "64100ed7d57892730c7436f15a0dc94f11025e18e2379e8e248bebe2ceec4e8b"
+    }
+  },
+  "combined_native_acceptance": false,
+  "created_at_utc": "2026-10-14T00:17:47.756236+00:00",
+  "current_tests": {
+    "collected": 364,
+    "composition": {
+      "existing_app_workflow_safety_case": 1,
+      "new_compile_and_workflow_cases": 19,
+      "privacy_gate_cases": 6,
+      "retained_pure_including_43_diagnostics": 338
+    },
+    "failed": 0,
+    "passed": 364,
+    "process": {
+      "bytes": 299,
+      "path": "/private/tmp/gsip-compile-role-independent-2b6a6991/finite-current-process.json",
+      "sha256": "a18816eb4f161fe981b39d78c9e473584aaeed085e7cfa1ef3ff999086c44ecf"
+    },
+    "separate_prior_runs_not_added_to_count": true,
+    "single_final_execution": {
+      "bytes": 255029,
+      "path": "/private/tmp/gsip-compile-role-independent-2b6a6991/finite-current.json",
+      "sha256": "756d277a4868d5d9c291bacabc5b2826d5d7430a3213d913fd3663d6f2fc58c6"
+    },
+    "skipped": 0
+  },
+  "files": [
+    {
+      "base_e0_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "bytes": 126055,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8"
+    },
+    {
+      "base_e0_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+      "bytes": 189650,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99"
+    },
+    {
+      "base_e0_sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164",
+      "bytes": 32861,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5"
+    },
+    {
+      "base_e0_sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+      "bytes": 17983,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa"
+    }
+  ],
+  "findings": [],
+  "frozen_directory": "/private/tmp/gsip-cordova-compile-role-frozen-2mfd9j2q",
+  "frozen_receipt": {
+    "bytes": 3604,
+    "path": "/private/tmp/gsip-cordova-compile-role-frozen-2mfd9j2q/FROZEN_CANDIDATE_RECEIPT.json",
+    "sha256": "fa2efcbf53f836bb9177da2b28d60facbda3d41e1721039bb6c8b9a8872db1dd"
+  },
+  "harness_recovery": "Initial full-source metadata helper assumed every tracked file was mode100644; it refused an executable tracked file. The corrected helper accepts only published normal/executable blob modes100644/100755 and then verified all365 exact bytes. Initial helper retained; no test, source or permission contract was changed.",
+  "manifest": {
+    "bytes": 1006,
+    "path": "/private/tmp/gsip-cordova-compile-role-frozen-2mfd9j2q/manifest.json",
+    "sha256": "538123232d1a01b9029c63aa41f03e60f60e685604d06c63e06bf83e709f7824"
+  },
+  "not_claimed": [
+    "Current corrected-source hosted Android or iOS artifact acceptance",
+    "Reuse of e0 historical iOS proof for a future head",
+    "Local APK build or signing proof",
+    "Original hosted UNKNOWN failure cause identity",
+    "Legal/distribution/store/device/capture or production acceptance"
+  ],
+  "patch": {
+    "bytes": 9573,
+    "path": "/private/tmp/gsip-cordova-compile-role-frozen-2mfd9j2q/candidate-from-e0.patch",
+    "sha256": "d4d1c1156d653df2849c639d99d939f8798d1ee9cf973e55154d253f111760c7"
+  },
+  "prior_closures_preserved": {
+    "Cordova_guard_v2b": {
+      "bytes": 10147,
+      "path": "/private/tmp/gsip-cordova-v2b-independent-amt07pob/INDEPENDENT_CORDOVA_V2B_CLOSURE.json",
+      "sha256": "2a994038a516ba5bc7ac03818296c282e81099e8f869287ba0e4c1df9f7ebd87"
+    },
+    "historical_e0_iOS_only": {
+      "bytes": 2279,
+      "path": "/private/tmp/gsip-e0-ios-independent-boby50cu/EXACT_E0_IOS_ARTIFACT_CLOSURE.json",
+      "sha256": "f22bf3832b0e2916d5822f3048da2d430cbf1b6cb4a4195426c63bd811b7c629"
+    },
+    "licence_classification": {
+      "bytes": 10182,
+      "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/INDEPENDENT_FINAL_V3A_CLASSIFICATION_CLOSURE.json",
+      "sha256": "1e11ec2c4fab261c0e2c94c70dd9695754e40acc5776a364703b75a4dc648316"
+    },
+    "privacy_reference_hosts": {
+      "bytes": 4508,
+      "path": "/private/tmp/gsip-license-reference-privacy-independent-2m730_e5/INDEPENDENT_PRIVACY_REFERENCE_HOSTS_CLOSURE.json",
+      "sha256": "f8e3cd0fc1474f8db1dc20c5fe01cbad1dc1c7d6e2adf1b62a42e381f04c82c5"
+    }
+  },
+  "schema": "gsip-independent-compile-role-and-app-target-closure-v1",
+  "scope": "Finite generated compile-library R330 role recognition and exact app-qualified first/repeated build tasks for parent and candidate. Existing native source/licence/proof policies unchanged.",
+  "source_binding": {
+    "changed_files": 4,
+    "every_other_helper_byte_exact_after_removing_only_compile_role_regex": true,
+    "fresh_base_365_source_blobs": {
+      "bytes": 83171,
+      "path": "/private/tmp/gsip-compile-role-independent-2b6a6991/FRESH_E0_BASE_SOURCE_BINDING.json",
+      "sha256": "bdcc8ae2c6d58dab345681a325b59b2e9f7f29f9ac4ca4115f413194e6bde3a0"
+    },
+    "head_and_actual_merge_trees_identical": true,
+    "inspection_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "other_tracked_files_exact": 361,
+    "privacy_row_and_gate_test_unchanged": true,
+    "source_scope_projection": {
+      "bytes": 1745,
+      "path": "/private/tmp/gsip-compile-role-independent-2b6a6991/SOURCE_SCOPE_PROJECTION.json",
+      "sha256": "f0da019424e97f80540e2af99e4d3debd7d804361a1abbaf4e0a9cc1b917cd0a"
+    },
+    "strict_R_class_ZIP_predicate_licences_aliases_caps_file_safety_diagnostics_and_protocols_exact": true,
+    "test_prefix_bytes": 185334,
+    "test_prefix_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+    "workflow_reverts_byte_exact_after_only_four_app_target_dequalifications": true
+  },
+  "status": "CLOSED_NO_BLOCKER",
+  "task_selection_evidence": {
+    "actual_two_root_dryrun_receipt": {
+      "bytes": 3219,
+      "path": "/private/tmp/gsip-exact-d7-native-parent-gowu1p6z/ACTUAL_APP_TASK_SCOPE_DRY_RUNS.json",
+      "sha256": "ad75f7562de39abbe37c34dd9df1a540ab0b7c5e62fea77696757aaf68b47eb8"
+    },
+    "all43_app_tasks_retained_per_root": true,
+    "all_AAR_bans_and_app_transitive_dependency_operations_preserved": true,
+    "driver_source_reviewed": {
+      "bytes": 3046,
+      "path": "/private/tmp/gsip-exact-d7-native-parent-gowu1p6z/verify_app_task_scope.py",
+      "sha256": "3d1bc51c706dada52423dddae0cd275bb82a3857678f93a2f88bd205dd83489a"
+    },
+    "qualified_subset_of_unqualified": true,
+    "required_compile_library_producer_preserved": true,
+    "reviewed_driver_compares_actual_task_sets_not_counts_only": true,
+    "reviewer_reran_Gradle_dryruns": false,
+    "unconsumed_Cordova_AAR_aggregate_producers_omitted": true
+  }
+}

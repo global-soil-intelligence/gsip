@@ -1,0 +1,137 @@
+{
+  "PR": 63,
+  "acceptance": {
+    "combined_native_acceptance": false,
+    "production_deployment_device_backup_legal_store_acceptance_claimed": false,
+    "source_PR_merge_or_readiness_claimed": false
+  },
+  "actual_checkout": "be9a123f26a4143127d31315e35f861037b25cd2",
+  "all_candidate_steps_1_through_18": "success",
+  "android_conclusion": "failure",
+  "android_job_id": 115637371413,
+  "android_job_link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38497768132/job/115637371413",
+  "artifact": {
+    "artifact_replay_executed": false,
+    "current_Android_artifact_present": false,
+    "download_attempts": 0,
+    "fresh_iOS_artifact_owned_by_other_reviewer": true,
+    "older_artifact_downloaded_or_substituted": false
+  },
+  "authority": {
+    "GET_only_GH": true,
+    "local_build_metadata_task_key_APK_or_signing_tool_execution": false,
+    "private_receipts_and_helper_copies_only": true,
+    "raw_logs_arbitrary_stderr_compiled_strings_or_key_values_persisted": false,
+    "shared_source_Git_PR_workflow_production_mutations": false
+  },
+  "checkout_parents": [
+    "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+    "800e669fd3f663b25b378fcdf1591557b3cd1c94"
+  ],
+  "current_source_inputs_verified": 9,
+  "entire_checkout_tree_exact_head": true,
+  "evidence": {
+    "EXACT_SOURCE_PARENT_BINDING.json": {
+      "bytes": 6539,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/EXACT_SOURCE_PARENT_BINDING.json",
+      "sha256": "343803868a9d25fc1ffdbb17eaf127e9a1906b378246b7636014e21c397bea53"
+    },
+    "FIXED_FAILURE_SOURCE_LOCATION.json": {
+      "bytes": 934,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/FIXED_FAILURE_SOURCE_LOCATION.json",
+      "sha256": "4cb1530a7b1505c32f91e3a4fd4a88c05346e02d8accb8e93185df07ec91b1cc"
+    },
+    "METADATA_20261014T015819Z.json": {
+      "bytes": 7589,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/METADATA_20261014T015819Z.json",
+      "sha256": "900616d72c35e74a24ae71ea7071a15132fb4d4973a20218d40832c6635261c2"
+    },
+    "SAFE_ANDROID_TERMINAL_LOG.json": {
+      "bytes": 942,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/SAFE_ANDROID_TERMINAL_LOG.json",
+      "sha256": "a467a989fa6ff6105767fa52cfce078a827f085aa163c0738b3df6a6d1f8baa8"
+    },
+    "WATCH_CONFIG.json": {
+      "bytes": 439,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/WATCH_CONFIG.json",
+      "sha256": "fb476468fcb0109d88b3cab3640868e68cf83a2b32cceb6a5a1d7c0673669dde"
+    },
+    "bind_source.py": {
+      "bytes": 4026,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/bind_source.py",
+      "sha256": "8066740c4977f78f54a74ef1eaa0d7c9be2b3f77340dc5be907db9e459362e16"
+    },
+    "extract_safe_terminal_log.py": {
+      "bytes": 4945,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/extract_safe_terminal_log.py",
+      "sha256": "e68eb75af921cb3c0e5a5649193ac9d8129f8da8847ed090ab16827c26011e1c"
+    },
+    "snapshot.py": {
+      "bytes": 2099,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/snapshot.py",
+      "sha256": "848868dff532214729e82e3457cbee0955c93370eb777e93daf650eccfd48ade"
+    },
+    "verify_fresh_android_artifact.py": {
+      "bytes": 13579,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/verify_fresh_android_artifact.py",
+      "sha256": "1264dc844ed2aaf18ac556670b117cfc33c5a2added75f0bd241c39b9287abcf"
+    }
+  },
+  "failure_location": {
+    "actual_gradle_success_markers": 4,
+    "actual_parent_and_candidate_collector_success_markers": 2,
+    "actual_tool_value_available": false,
+    "function": "validate_toolchain",
+    "guard_condition": "not re.fullmatch(\n        r\"Android Asset Packaging Tool \\(aapt\\) [0-9]{1,4}\\.[0-9]{1,4}\\.[0-9]{1,4}-[0-9]{1,16}\",\n        aapt,\n    )",
+    "guard_condition_lines": [
+      2976,
+      2980
+    ],
+    "hosted_tool_value_or_root_cause_inferred": false,
+    "operation": "final feature comparison, after both native collectors",
+    "shell_step": 19,
+    "shell_step_name": "Build the exact APP-2B parent in an isolated checkout",
+    "source_flow": "feature_comparison first calls validate_build_receipt(parent), which calls validate_toolchain before validating candidate; failure is in the parent receipt aapt2-format guard. This is source-flow location, not an assertion of the unavailable captured version string.",
+    "source_line": 2980
+  },
+  "fixed_failure": [
+    {
+      "counts": {},
+      "error_class": "AUDIT_REFUSAL",
+      "source_line": 2980,
+      "stage": "feature-comparison"
+    }
+  ],
+  "head": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+  "helper_sha256": "c4df1700e0efce6ca014f9a8bca0e0e7bdcdde11496a50900e88b47024474da6",
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "observed_at": "2026-10-14T02:00:54.757776+00:00",
+  "parent_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "parent_committed_inputs_verified": 6,
+  "parent_shell_step19": "failure",
+  "primary_generated_inputs_verified": 3,
+  "raw_log": {
+    "bytes": 152466,
+    "persisted": false,
+    "sha256": "5f6dc24dd10c2e34a2f2dc6f9e9a89ce7a970b68b6acc422efe435b0395cc140"
+  },
+  "recoveries": [
+    "Initial sandbox network attempts refused connection; bounded metadata/log GET calls then completed with authorized escalation.",
+    "An exploratory prior-procedure file search used a nonmatching zsh glob; corrected to its exact known path before read.",
+    "Android fresh-artifact replay driver was prepared and syntax-checked only, not executed because no Android artifact was published."
+  ],
+  "remaining": [
+    "Establish actual aapt2 version metadata and a minimal reviewed guard correction only if its exact public output is proven unsupported.",
+    "Fresh corrected-head Android CI artifact/source/reference/repeat/native/license/permission proof remains unavailable.",
+    "Other reviewer owns fresh iOS artifact; root owns general checks and all mutations."
+  ],
+  "run_attempt": 1,
+  "run_conclusion": "failure",
+  "run_id": 38497768132,
+  "run_link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38497768132",
+  "run_number": 53,
+  "schema": "gsip-independent-exact-800-android-terminal-closure-v1",
+  "status": "ANDROID_FAILED_FINAL_COMPARISON_NO_ARTIFACT",
+  "upload20": "skipped",
+  "workflow_sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+}

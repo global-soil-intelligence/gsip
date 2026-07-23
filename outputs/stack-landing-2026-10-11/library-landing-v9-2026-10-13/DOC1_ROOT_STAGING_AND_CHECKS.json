@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-13T21:45:01.922978+00:00",
+  "base_head": "710d144db94097be71989c67b5d3b4bb48135ad8",
+  "files": [
+    {
+      "path": "README.md",
+      "base_sha256": "0f12bdb2bc7276a7588d949cdf392a33c194976ab97c1195fa778d1afa8b886c",
+      "source_sha256": "e730b652306926233acaf0ae68a2c5c03e342d4a09259c28fff357554a73b10a",
+      "bytes": 3064
+    },
+    {
+      "path": "docs/BUILD_ORDER.md",
+      "base_sha256": "102396787dfdb341e4f397f72fb708bc484b889d32df15c2dde4939bbd1ab81c",
+      "source_sha256": "7f243f4ce91cd2be9ba972fd1086ef02dee6a55bfd03436feca8058a71a4bd0a",
+      "bytes": 84087
+    },
+    {
+      "path": "docs/SPEC.md",
+      "base_sha256": "ce894fb49e1eac6239cbad596c8df8f2c98e2eeca69eb13ba3892101fc3d3bf7",
+      "source_sha256": "90642673b06d9d7acbef0736e301a227efb0fa6a0210118a0e2228fec3da7975",
+      "bytes": 154248
+    }
+  ],
+  "unchanged_other_tracked": 349,
+  "independent_closure_sha256": "30d93f0a6a47b06b8f31cb8981f445d78f624392f05deeae0e4f41c679062124",
+  "results": [
+    {
+      "check": "documentation-contracts",
+      "exit_code": 0,
+      "seconds": 0.507,
+      "output_sha256": "ea7ed0516efe6736a8eaee426685e40a2393fbf3ae84104a743f394204c2ec33"
+    },
+    {
+      "check": "lint-language-format",
+      "exit_code": 0,
+      "seconds": 3.218,
+      "output_sha256": "8185ff7bbf60b066e20260e56c4a3fd10de339d2124fc13559b612a19578a977"
+    }
+  ],
+  "production_changes": false
+}

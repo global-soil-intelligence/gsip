@@ -1,0 +1,59 @@
+{
+  "ciBefore": {
+    "baseRefName": "main",
+    "headRefOid": "61130b8e09d3e6b2a7412081c2edc34c69e4e42b",
+    "mergeStateStatus": "CLEAN",
+    "mergeable": "MERGEABLE",
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-12T23:52:36Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38324403971/job/115059624719",
+        "name": "dco",
+        "startedAt": "2026-10-12T23:52:36Z",
+        "status": "COMPLETED",
+        "workflowName": "DCO"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-12T23:58:35Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38324403824/job/115059623684",
+        "name": "validate",
+        "startedAt": "2026-10-12T23:53:45Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-12T23:52:48Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38324403856/job/115059623523",
+        "name": "gitleaks",
+        "startedAt": "2026-10-12T23:52:42Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-12T23:52:43Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38324400121/job/115059611068",
+        "name": "gitleaks",
+        "startedAt": "2026-10-12T23:52:35Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      }
+    ]
+  },
+  "after": {
+    "mergeCommit": {
+      "oid": "acf10eb41d22c043ffa6f8b6b9af6c1815e96138"
+    },
+    "mergedAt": "2026-10-12T23:59:35Z",
+    "state": "MERGED",
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/31"
+  }
+}

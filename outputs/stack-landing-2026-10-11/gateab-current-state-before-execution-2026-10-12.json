@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-12",
+  "gate_a": "AUTHORIZED_BUT_STOPPED_ON_PLATFORM_COUNT_MISMATCH",
+  "gate_b": "AUTHORIZED_CONDITIONAL_A_NOT_RUN",
+  "gate_c_database": "NOT_AUTHORIZED",
+  "signup_only_go": "PENDING",
+  "supabase_repairs_deletions_migrations_auth_changes": [],
+  "github_pages_reviewer": "jdhart81",
+  "github_pages_admin_bypass_disabled": false,
+  "spec38_head": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+  "app39_head": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+  "report_sha256": "b116182c2fc0957809199e1b36f2487e734bc0927a2c639f9806153fbf562571"
+}

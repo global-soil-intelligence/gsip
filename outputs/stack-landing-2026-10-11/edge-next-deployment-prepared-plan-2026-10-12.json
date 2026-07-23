@@ -1,0 +1,139 @@
+{
+  "assumptions": [
+    "--use-api uses CLI-supported server-side bundling; this plan has not exercised production bundling.",
+    "JWT-on is expressed by the pinned function config and absence of --no-verify-jwt for prior-attach; CLI2.118 has no positive --verify-jwt flag.",
+    "Local config has anonymous auth enabled for development. Function deployment does not authorize an auth/config push; persisted production auth stays off.",
+    "Function deploy output and public smoke metadata must be captured without --debug or response/private-data dumps.",
+    "Repository names-only readiness does not establish valid configuration values or bound keys.",
+    "Local deno check was not run because Deno is unavailable; exact-head CI validated the reviewed source."
+  ],
+  "cli_help_path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/edge-next-cli-deploy-help-2.118.0.txt",
+  "cli_help_sha256": "24c99c290a8f7c78bc6c26c3c8d99ef2c05fc11a1d97fe6f2fa2d6b7d131e172",
+  "cli_version": "2.118.0",
+  "deployment_commands_executed": false,
+  "function_config": {
+    "gsip-public": {
+      "enabled": true,
+      "import_map": "./functions/deno.json",
+      "verify_jwt": false
+    },
+    "prior-attach": {
+      "enabled": true,
+      "import_map": "./functions/deno.json",
+      "verify_jwt": true
+    }
+  },
+  "import_map": {
+    "compilerOptions": {
+      "strict": true
+    },
+    "imports": {
+      "h3-js": "npm:h3-js@4.5.0",
+      "zod": "npm:zod@4.6.5"
+    }
+  },
+  "invariants": [
+    "capture_open stays false; signup and anonymous sign-in stay disabled.",
+    "Only the named two functions deploy; no --prune, db reset, config push, migrations or bulk omitted-function deployment.",
+    "prior-attach verify_jwt stays true; gsip-public is public read-only and never uses a service-role key or user session.",
+    "Import map strictness and pinned package imports remain exactly the reviewed source.",
+    "No new secrets, repository variable changes, worker dispatch, Pages deployment, merges or comments."
+  ],
+  "names_readiness_receipt": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/edge-next-repository-name-readiness-2026-10-12.json",
+  "preconditions": [
+    "Root completes C post-migration verification and reports its sanitized evidence.",
+    "Justin gives a separate explicit go for these exact function deploy commands and project.",
+    "Recheck source commit and clean tree immediately before running; stop if changed.",
+    "Use existing owner Supabase CLI login and platform secret store; stop if authentication or credentials are required, never request pasted credentials.",
+    "No new function secrets are required by the runbook; required platform built-ins are runtime assumptions checked by smoke responses, not secret reads."
+  ],
+  "prepared_at_utc": "2026-10-12T13:46:47.907483+00:00",
+  "prepared_commands": [
+    {
+      "command": "'/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase' functions deploy prior-attach --project-ref toxldjgwkxtneoqsazym --import-map '/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/supabase/functions/deno.json' --use-api --workdir '/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo'",
+      "function": "prior-attach",
+      "phase": "production_mutation",
+      "required_persisted_verify_jwt": true
+    },
+    {
+      "command": "'/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase' functions deploy gsip-public --project-ref toxldjgwkxtneoqsazym --import-map '/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/supabase/functions/deno.json' --use-api --workdir '/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo' --no-verify-jwt",
+      "function": "gsip-public",
+      "phase": "production_mutation",
+      "required_persisted_verify_jwt": false
+    },
+    {
+      "acceptance": "Confirm both target function records and persisted verify_jwt values; if CLI omits the field use visible function settings, without reading keys.",
+      "command": "'/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase' functions list --project-ref toxldjgwkxtneoqsazym --workdir '/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo' --output json",
+      "phase": "post_deploy_read_only"
+    },
+    {
+      "acceptance": "Unauthenticated prior request401; public protocol200; synthetic resolution9cell400; MCP exactly4tools.",
+      "command": "python3 '/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/edge-next-readonly-smoke-2026-10-12.py'",
+      "phase": "post_deploy_read_only"
+    }
+  ],
+  "production_mutations": false,
+  "repository": "global-soil-intelligence/gsip",
+  "smoke_script": {
+    "additional_contract_checks": [
+      "Protocol license values match ODbL-1.0/CC-BY-SA-4.0/MIT and nonempty citation fields.",
+      "MCP tool names exactly get_protocol/get_cell/list_cells/get_release; all readOnlyHint=true/destructiveHint=false."
+    ],
+    "bounded_body_bytes": 262144,
+    "contributor_data_requests": false,
+    "credentials_sent": false,
+    "executed": false,
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/edge-next-readonly-smoke-2026-10-12.py",
+    "request_timeout_seconds": 30,
+    "sha256": "6d9ca0da3417241a73b008cc523ed57b2009196e8dbbd8f439378f0a18d86363",
+    "syntax_compiled": true
+  },
+  "source_commit": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "source_files": [
+    {
+      "matches_exact_commit": true,
+      "path": "docs/PHASE1_DEPLOYMENT.md",
+      "sha256": "71c8f44f2b3e0f0e519931a1beb441fae0ca49cdc7bd50b8b72d150d1d38e886"
+    },
+    {
+      "matches_exact_commit": true,
+      "path": "supabase/config.toml",
+      "sha256": "7e8a9661057c3b8bf84f600a353a7bd4d99f9d20276303d2038df4bb6f42753d"
+    },
+    {
+      "matches_exact_commit": true,
+      "path": "supabase/functions/deno.json",
+      "sha256": "429dcbf73312b11d02f8f8230be71b0bd05743c362f06f3bc524cf8e34fed81b"
+    },
+    {
+      "matches_exact_commit": true,
+      "path": "supabase/functions/prior-attach/index.ts",
+      "sha256": "32d32f4e4fbf983d0404e8f37d86c8debed6c4ba6c66dd83fb96d48a1d610846"
+    },
+    {
+      "matches_exact_commit": true,
+      "path": "supabase/functions/gsip-public/index.ts",
+      "sha256": "62a381c29db726136c08b1a4b618cd1276ff3ac1eaf529bf91026a161b3b9668"
+    },
+    {
+      "matches_exact_commit": true,
+      "path": "packages/schema/src/agent/config.ts",
+      "sha256": "0d66e4775774e532df9acfc9a8076a8ef92ceb95f49095556192a6499545a4ad"
+    },
+    {
+      "matches_exact_commit": true,
+      "path": "packages/schema/src/agent/keys.ts",
+      "sha256": "b5eb1e3c4028ec2a271c07a48f8cf06a7480cac64f1c2a936ec4f8eb953bc96d"
+    },
+    {
+      "matches_exact_commit": true,
+      "path": "packages/schema/src/agent/mcp.ts",
+      "sha256": "c2571dff4b84f1bc41a73db8dd3f8aeb7b85c430d79e200cc5574eb7b1719fd4"
+    }
+  ],
+  "source_tree_clean": true,
+  "source_workdir": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+  "status": "PREPARED_NOT_EXECUTED_WAIT_FOR_SEPARATE_OWNER_GO_AFTER_DATABASE_POSTCHECKS",
+  "target_project_name": "gsip",
+  "target_project_ref": "toxldjgwkxtneoqsazym"
+}

@@ -1,0 +1,64 @@
+{
+  "actual_hosted_missing_path_identified": false,
+  "actual_test_counts": {
+    "focused_baseline_failed": 7,
+    "focused_baseline_passed": 5,
+    "focused_candidate_passed": 12,
+    "old43bank_passed": 43,
+    "own_controls_passed": 28,
+    "own_effective_mutations": 4
+  },
+  "base_head": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "code_evidence_carry_forward": "Actual12focused/43priorbank/28owncontrols/4mutations apply to finalv2 because helper/tests and all other code bytes are unchanged. No behavioral rerun or author-proof substitution was needed.",
+  "code_privacy_review_v1_sha256": "d778ec7552a22b007195c986ae84810b6739be4290c27bb2b7fedb34b31d687f",
+  "conclusion": "CLOSED_NO_BLOCKER_DIAGNOSTIC_SOURCE_ONLY",
+  "created_at": "2026-10-14T00:50:26.591380+00:00",
+  "exact_scope_receipt_sha256": "d615f233be609b564310d140bedf490ce4729265b6d2c103533ad84a3c0635d6",
+  "final_author_manifest_sha256": "fd61e4a4d7fd3f44dec7273ad08791246c1378effebb71e95e38ec88f8722a62",
+  "final_author_receipt_sha256": "c4ad0a9b03cb0cd1d3c0f2347abe8f95d16e9454922614b449d6d4841eaf4401",
+  "final_files": {
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_bytes": 32861,
+      "base_sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5",
+      "bytes": 33577,
+      "sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_bytes": 126055,
+      "base_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+      "bytes": 126232,
+      "sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_bytes": 189650,
+      "base_sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99",
+      "bytes": 195169,
+      "sha256": "a5ac8205344fa71f455e756fa232b54f7f5472244118ee12cc42b89e7872c3d7"
+    }
+  },
+  "format_blocker_status": "V1 failure preserved; resolved only by verified one-byte doc correction in v2. Final repository-config Prettier and language checks both exit0.",
+  "format_correction_receipt_sha256": "e860afb486f10fb95e27194740bdb977c7a858115a5ef0302f9e24d442e91aa7",
+  "independent_harness_recoveries_recorded_in_v1_review": true,
+  "independently_verified_final_delta_from_v1": "Exactly one LF removed from appended doc; all364 other files, helper and test bytes exact.",
+  "protected_scope": {
+    "GRADLE_TASK_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "all362other_base_files_exact": true,
+    "four_diagnostic_fields_and_fixed_stage_category_counts_unchanged": true,
+    "old_test_prefix_bytes": 189650,
+    "old_test_prefix_sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99",
+    "workflow_guard_permission_license_schema_limit_caps_and_runtime_selection_code_unchanged": true
+  },
+  "raw_private_paths_or_tool_logs_added_to_diagnostic": false,
+  "remaining_gates": [
+    "Root integration/full repository checks and fresh exact-head hosted CI remain required.",
+    "This diagnostic correction only makes the owned caller visible; the actual1385 source-binding MissingFile input remains unidentified.",
+    "No native/Gradle replay, APK/key read, artifact comparison, device/iOS-backup, legal/store, deployment, capture or production acceptance established."
+  ],
+  "schema": "gsip-independent-final-caller-diagnostic-v2-closure-v1",
+  "source_Git_GH_or_production_mutations": false,
+  "v2_binding_receipt_sha256": "4e2f1b6d95d080cf7ec6fd35fa2bf2b71bf42545a456eae9b67259cb637d7efa",
+  "verified_tools": {
+    "managed_project_prettier": "3.9.9",
+    "node": "v24.19.0"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "gate": "B",
+  "status": "PASS_ONLY_FOREIGN_FUNCTION_REMOVED",
+  "read_at": "2026-10-12T12:47:23.407Z",
+  "wavefunction_api_present": false,
+  "gsip_public_present": false,
+  "functions": [
+    {
+      "id": "be4b0424-e6a2-4ddf-9533-b9625f4be235",
+      "name": "prior-attach",
+      "slug": "prior-attach",
+      "status": "ACTIVE",
+      "version": 3,
+      "verify_jwt": true,
+      "created_at": 1784747428489,
+      "updated_at": 1784783397734,
+      "ezbr_sha256": "25d45a61e1032e4f6d47b695b2501bd434511f5a275b8a797907bb5c75c48499"
+    }
+  ]
+}

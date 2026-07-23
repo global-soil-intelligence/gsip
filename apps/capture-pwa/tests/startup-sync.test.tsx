@@ -16,7 +16,11 @@ const mocks = vi.hoisted(() => ({
 }))
 
 vi.mock('../src/supabase', () => ({
-  createGsipClient: () => ({ hosted: true }),
+  createGsipClient: () => ({
+    hosted: true,
+    auth: { getSession: async () => ({ data: { session: null } }) },
+  }),
+  observationHistory: async () => [],
   isServiceConfigured: () => true,
   submitQueued: mocks.submitQueued,
 }))
@@ -60,7 +64,10 @@ describe('capture retry behavior', () => {
     render(<App />)
 
     await waitFor(() =>
-      expect(mocks.submitQueued).toHaveBeenCalledWith({ hosted: true }, record),
+      expect(mocks.submitQueued).toHaveBeenCalledWith(
+        expect.objectContaining({ hosted: true }),
+        record,
+      ),
     )
     expect(await screen.findByText(/1 observation synced/i)).toBeDefined()
   })
@@ -109,6 +116,7 @@ describe('capture retry behavior', () => {
     })
     render(<App />)
 
+    fireEvent.click(screen.getByRole('button', { name: 'My observations' }))
     expect(
       await screen.findByRole('button', {
         name: /retry failed observations/i,
@@ -120,32 +128,11 @@ describe('capture retry behavior', () => {
 
   it('rejects a non-JPEG gallery file with a visible recovery message', async () => {
     render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Capture' }))
     const png = new File(['png'], 'soil.png', { type: 'image/png' })
     fireEvent.change(screen.getByLabelText(/A · Context/i), {
       target: { files: [png] },
     })
-    fireEvent.change(screen.getByLabelText(/B · Fresh face/i), {
-      target: { files: [png] },
-    })
-    fireEvent.change(screen.getByLabelText('Latitude'), {
-      target: { value: '40.446' },
-    })
-    fireEvent.change(screen.getByLabelText('Longitude'), {
-      target: { value: '-79.982' },
-    })
-    fireEvent.change(screen.getByLabelText('Land cover'), {
-      target: { value: 'cropland' },
-    })
-    fireEvent.change(screen.getByLabelText('Surface condition'), {
-      target: { value: 'moist' },
-    })
-    fireEvent.click(screen.getByRole('checkbox'))
-    fireEvent.submit(
-      screen
-        .getByRole('button', { name: /queue observation/i })
-        .closest('form')!,
-    )
-
     expect(await screen.findByText(/choose jpeg photos/i)).toBeDefined()
   })
 })

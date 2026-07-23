@@ -1,0 +1,40 @@
+{
+  "state": "changes_required P2-3 companion synthetic restriction witness",
+  "frozen_at": "2026-10-13T15:33:50.999358+00:00",
+  "primary_finding_receipt": {
+    "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/v2-findings-receipt.json",
+    "sha256": "8846de78d4cf359f978f77060439cbef113258923cae4ee57ae891662f044bdd",
+    "bytes": 7909
+  },
+  "exact_simulator_sha256": "2601595ed7f862d2c0bc504e685daa83885ce830117e3e028ca93f7da9667d27",
+  "additional_case": {
+    "summary": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test": {
+      "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/test_independent_initial_synthetic.py",
+      "sha256": "df42faa345166538c90889e9b7017df8eb433d4d5241c1b5968d90c755c2ea70",
+      "bytes": 1443
+    },
+    "log": {
+      "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/initial-synthetic-findings.log",
+      "sha256": "99d5163d640af1a51b0ed0ac2048e2a54024919a9b961ab43e028a0b2debd54c",
+      "bytes": 1830
+    },
+    "junit": {
+      "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/initial-synthetic-findings.xml",
+      "sha256": "b8acc1449d3f6bc7f52ffffd9bf32c94ffcb2a4680bbac2f574b95d1c8cd6892",
+      "bytes": 1928
+    },
+    "actual_exit_code": 1,
+    "trigger": "Selected origin M synthetic_restricted false, same-human/sample/grant sibling N already true, no initial group.",
+    "observed": "New durable group.synthetic false; first source declaration synthetic_claim false; witness fails meaningful assertion.",
+    "same_cause": "New group initially ORs only selected origin, rather than complete canonical sample facts."
+  },
+  "repair_scope": "Before alias/event/slot/blob/outbox/charge, aggregate all known same-human/sample facts. Refuse inconsistent original grant generically rather than selecting one opportunistically. Preserve sample-wide monotonic restrictions if records/aliases disappear. At metadata saturation, restrictions that cannot create a new origin row need existing same-human reserved fence or a generic unresolved refusal; no payload/charge/fabricated success. Test these narrow local cases; no real or field policy change.",
+  "remaining_full_cards": "Incomplete; halted for correction as instructed. This companion adds no exhaustive closure claim.",
+  "source_edits_or_network_or_production": false
+}

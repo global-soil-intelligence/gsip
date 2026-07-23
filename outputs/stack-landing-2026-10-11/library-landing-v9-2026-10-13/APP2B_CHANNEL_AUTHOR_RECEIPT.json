@@ -1,0 +1,292 @@
+{
+  "base_commit": "77582b1269cb27d011b5d217996d8c863123f044",
+  "scope": "Three owned files; diagnostic-only correction, no acceptance/source-proof/product/production change",
+  "invariants": [
+    "raw stdout/stderr UTF8/control and 65536 cap unchanged",
+    "existing four-field diagnostic unchanged",
+    "exact original Throwable/CPE and tool/CLI failure status retained",
+    "debug and release selection/resolution/artifact/license/source/repeat/permission/backup checks retained",
+    "no graph evidence accepted from diagnostics",
+    "only bounded fixed schema/phase/cause tokens escape",
+    "exclusive writer and descriptor-bound no-follow regular single-link reader",
+    "lease bound to exact original CPE identity/canonical command/nonzero returncode/inspection stage; resets CLI and inspection entry"
+  ],
+  "manifest": [
+    {
+      "path": "scripts/app_notification_audit.py",
+      "base_sha256": "c5057469e93edc5b3d519061bb1478aea3afae547dcfa81b654dcd22cbf36ded",
+      "candidate_sha256": "3e5bd547b86a0a106333126ad29cb86357dce266b903492049519dd63a12e436",
+      "base_bytes": 106295,
+      "candidate_bytes": 109836
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "base_sha256": "0dd282c1642fe09321f2eeda83907728056998aa833bbb71d7835ef9af9b148e",
+      "candidate_sha256": "e7d0a2a4eeb5898796d60bf8988555692d7ff3070e0d4563c41bc02421092f8a",
+      "base_bytes": 111057,
+      "candidate_bytes": 118953
+    },
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "base_sha256": "9c44d4e4cc313279918ddfe8ea35186903b07db8728b314a999501305e92790d",
+      "candidate_sha256": "a884c44ed63f8f4d4f508fcd56aab7be53641d8dd7b64b82bf310621e7f90645",
+      "base_bytes": 15914,
+      "candidate_bytes": 17907
+    }
+  ],
+  "source_inventory_files": 495,
+  "only_changed_paths": [
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py"
+  ],
+  "preserved_existing_function_ASTs": [
+    "_gradle_context_framing",
+    "_gradle_context_marker",
+    "_gradle_context_stream",
+    "_gradle_inspection_command",
+    "artifact_stats",
+    "canonical_version",
+    "checkout_source_tree",
+    "collect_ios",
+    "collect_remote_sources",
+    "contained",
+    "coordinate",
+    "count",
+    "decoded",
+    "diagnostic",
+    "evidence_digest",
+    "feature_comparison",
+    "gradle_failure_class",
+    "gradle_failure_context",
+    "gradle_failure_details",
+    "items",
+    "license_id",
+    "mark",
+    "npm_evidence",
+    "pom_bytes",
+    "pom_evidence",
+    "public_bytes",
+    "read",
+    "record",
+    "refuse",
+    "relative_name",
+    "resolved_inventory",
+    "run",
+    "runtime_evidence",
+    "selected_pins",
+    "sha",
+    "singleton_text",
+    "source_archive",
+    "source_inputs",
+    "text_value",
+    "tree_evidence",
+    "validate_android",
+    "validate_build_receipt",
+    "validate_capacitor_binary",
+    "validate_capacitor_source",
+    "validate_ios",
+    "validate_native",
+    "validate_notices",
+    "validate_npm",
+    "validate_pom_chain",
+    "validate_resolved_inventory",
+    "validate_source_packages",
+    "validate_toolchain",
+    "validate_tree",
+    "write",
+    "zip_evidence"
+  ],
+  "original_test_prefix": {
+    "bytes": 111057,
+    "sha256": "0dd282c1642fe09321f2eeda83907728056998aa833bbb71d7835ef9af9b148e",
+    "byte_identical": true
+  },
+  "actual_checks": {
+    "baseline": {
+      "tests": 371,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "candidate": {
+      "tests": 396,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "new_shipped_cases": 25,
+    "unchanged_bank43": {
+      "tests": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fail_before": {
+      "tests": 3,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    "guard_mutations": [
+      {
+        "guard": "original_error_identity",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "xml_sha256": "0b9cced7ecfdf28e13bdd78be28c6c7ff53673d03520115d56b0b86c3875262d",
+        "captured_output_sha256": "96f59e70d2a328bfaef9b34e1cfa07c8745a78ca0e2789faef7e209b5d0f1cea",
+        "raw_output_persisted": false
+      },
+      {
+        "guard": "single_receipt",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "xml_sha256": "ac3fb494b97285f517489a59967ae252e19a9e17dcf5ee594a164bd4614ca4a1",
+        "captured_output_sha256": "f9b644007b24ae625db74afff7c397bf87af817e680d6f277bad1b0f0b380a0b",
+        "raw_output_persisted": false
+      },
+      {
+        "guard": "independent_size_cap",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "xml_sha256": "06514c0c278f6ebe2a04d0eb6db7db667ab8f7ae3cff913e5dacdae2aceb5899",
+        "captured_output_sha256": "c5238e38cb108d3e15516ecb14789ba7222496a0a51f5bdfa198e2a6d74bbb9d",
+        "raw_output_persisted": false
+      },
+      {
+        "guard": "cli_entry_reset",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "xml_sha256": "443c1740fdd44f3c90fe7f5aef37413a1ee42a854367de436461ae57564e75d6",
+        "captured_output_sha256": "8fdf5e2e4e3500252c70e067073dec3df5a6f598cc7375f95e8cb4b9f8531390",
+        "raw_output_persisted": false
+      },
+      {
+        "guard": "inspection_entry_reset",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "xml_sha256": "2b43515b43b3b6fb76113e63ea8068067dff6149090bcdd33fe9eabedfed3678",
+        "captured_output_sha256": "6c088e70bf29b14ac6baef6c9c2b6fa4557eb9aad142f0606589d8b37ccff052",
+        "raw_output_persisted": false
+      }
+    ],
+    "ruff": "passed",
+    "mypy_two_files": "passed",
+    "prettier_document": "passed",
+    "language": "passed",
+    "real_offline_gradle": {
+      "gradle": "8.14.3",
+      "java": "21.0.1",
+      "scope": "Owned offline synthetic Java project/module fixtures only; no Android product/native SDK build",
+      "task_sha256": "cc60ea5720b5c07bd746b7e4c443181a1ab1b40e2e74cbb985d31cbf68dda190",
+      "positive": {
+        "exit_code": 0,
+        "graph_byte_equal": true,
+        "graph_sha256": "274e103c23e8ac1be5d6ea6876fbb6a82fe1512c25363323f0d70a6abdc6e21f",
+        "views": 2
+      },
+      "failures": [
+        {
+          "case": "missing-release-configuration",
+          "original_tool_exit_code": 1,
+          "cli_exit_code": 1,
+          "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|TEXT_VALID|SIZE_REJECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED",
+          "fixed_fault": "GSIP_FIXED_FAULT_V1|VALID|RELEASE_CONFIGURATION|CONFIGURATION_MISSING",
+          "diagnostic": {
+            "counts": {},
+            "error_class": "BUILD_TOOL",
+            "source_line": 606,
+            "stage": "android-gradle-inspection"
+          },
+          "stdout_bytes": 352,
+          "stderr_bytes": 70651,
+          "stdout_sha256": "6a3cf53a7e336d26ea2e1d56a43af3a9e5411f4dbfd3c937bfe1777e444132f2",
+          "stderr_sha256": "a2344d4fd2efb294f480a40e7b31ffee0ce7588246a8fc7415a79cc55480947c",
+          "raw_streams_persisted": false,
+          "graph_absent": true
+        },
+        {
+          "case": "setup",
+          "original_tool_exit_code": 1,
+          "cli_exit_code": 1,
+          "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|TEXT_VALID|SIZE_REJECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED",
+          "fixed_fault": "GSIP_FIXED_FAULT_V1|VALID|TASK_SETUP|UNKNOWN",
+          "diagnostic": {
+            "counts": {},
+            "error_class": "BUILD_TOOL",
+            "source_line": 606,
+            "stage": "android-gradle-inspection"
+          },
+          "stdout_bytes": 282,
+          "stderr_bytes": 70585,
+          "stdout_sha256": "12812f9a9159ac325cab71a0af0341539cf234cd12d31c2b9c91e95aacc6c88e",
+          "stderr_sha256": "34062cb8b7fccccce48bf6d6cd8ca200711a9938fd3e54706fafc8f173306c3e",
+          "raw_streams_persisted": false,
+          "graph_absent": true
+        },
+        {
+          "case": "settings",
+          "original_tool_exit_code": 1,
+          "cli_exit_code": 1,
+          "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|TEXT_VALID|SIZE_REJECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED",
+          "fixed_fault": "GSIP_FIXED_FAULT_V1|UNKNOWN",
+          "diagnostic": {
+            "counts": {},
+            "error_class": "BUILD_TOOL",
+            "source_line": 606,
+            "stage": "android-gradle-inspection"
+          },
+          "stdout_bytes": 282,
+          "stderr_bytes": 70572,
+          "stdout_sha256": "12812f9a9159ac325cab71a0af0341539cf234cd12d31c2b9c91e95aacc6c88e",
+          "stderr_sha256": "462cf14d7e4bb820b0f0f61e77de33a6828697018d35f370183d6e81e23fa407",
+          "raw_streams_persisted": false,
+          "graph_absent": true
+        }
+      ],
+      "settings_before_callback_coverage": "UNKNOWN; not covered"
+    }
+  },
+  "evidence_hashes": {
+    "baseline.xml": "5a64ec9ba0adfa8239306b85ee1fb474414aa2123c40563212aac3dfc9cdf8a0",
+    "focused-final.xml": "c6701774125d56a861670adc2724bc90707117011b748b7f428b33bd9b10bf7f",
+    "bank43-final.xml": "bf3e02fb9dccc87d29e27b1a364888e536ad4e8232d91f72cb895692894bc914",
+    "fault-fail-before.xml": "e071602b117d340c0a21f2aee85c0bd6899a3c759fd0ad3baa36e057ee8930c8",
+    "fault-fail-before.log": "1519df94716fa231d4d4c1622dc68a8eaa5a8e5b6bb5b7b893ad047069dd6d17",
+    "guard-mutations.json": "ea4c2cdb1991dfabaacb3483a5ac9af08afdc7959b8d258a1845bcf3e9c7d605",
+    "real-fault-controls.json": "4d690a26e323f35f784bf823969ac6618d52fe8ea100cbcdc1c4ebc19b5ab5d9",
+    "real-fault-controls.py": "7948a2121aeb81bcbdb02a048e1003bcb4d64ee16ea278a1d25b30676b7f84a4",
+    "mutate-fault.py": "bfd4e76557b6ca99ad4cde2845106c1b3abdfd7e5d10ca8c937d875d43b951d4",
+    "creation-receipt.json": "235176cb0f0ed63ac347b3e26795d44326a8d803d431e03394b5eda6a54ae90e",
+    "ruff-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "mypy-final.log": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8",
+    "format-final.log": "9fb9bb75d4a689025be46bcc72b6b9418cd33825605b44012c6a48848bf7241f",
+    "language-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gitleaks-authored.log": "de984fb7053d8d0227ece9f2bf7b34465f22af0143cb0684d0ff4a838f41abde"
+  },
+  "patch_sha256": "5b21b52441fd6226e2468f025f181e8b095ffbeb3c9ef6906c39b2cb07a1efdd",
+  "manifest_sha256": "7e536b5ec2b769c038971cfbbc0ed701738e7075ac5351ff5a59095d159140f3",
+  "assumptions": [
+    "Python-emitted temporary Gradle/Java file API configuration is permitted; adds no shipped native source/dependency",
+    "existing public projectsEvaluated callback can record task setup failures; earlier settings/init compilation remain UNKNOWN",
+    "diagnostic fault receipt is build-local metadata; never audit acceptance"
+  ],
+  "limits": [
+    "Hosted Android underlying cause remains unknown",
+    "Actual SDK/product builds, device behavior and acceptance are not supplied by synthetic Java fixtures",
+    "No production/merge/capture action occurred"
+  ],
+  "scan": {
+    "tool_version": "8.21.2",
+    "scope": "Frozen authored three files; unchanged current scanner rules/redaction, no suppressions",
+    "exit_code": 0,
+    "leaks": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "full_history_scan": "Not run in this author task; root integration owns it"
+  }
+}

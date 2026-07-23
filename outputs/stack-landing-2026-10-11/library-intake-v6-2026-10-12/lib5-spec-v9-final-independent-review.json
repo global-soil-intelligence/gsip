@@ -1,0 +1,148 @@
+{
+  "schema_version": "gsip-independent-spec-review-v1",
+  "reviewed_at_utc": "2026-10-13T05:51:35.443738+00:00",
+  "reviewer": "/root/lib5_spec_review",
+  "review_kind": "Independent final read-only prose and static consistency review of the corrected local two-document candidate.",
+  "status": "no_remaining_findings_for_corrected_local_spec_candidate",
+  "disposition": "R1 and R2 are closed by the hash-bound prose corrections. Candidate may be presented for Justin review; this receipt is not specification approval, a GitHub approving review or implementation/production authority.",
+  "input_identity": {
+    "isolated_draft": "/private/tmp/gsip-lib5-spec9-draft-j2npfohn",
+    "base_commit_supplied": "e03e20457a11456d1cd3842caa224d049b44265f",
+    "base_commit_verification": "Parent identifies immutable e03 base docs as authoritative; this reviewer verified equivalent read-only two-document bytes but performed no Git command.",
+    "source_repository": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+    "scope_warning": "The live source repository has unrelated concurrent code changes. No full-tree equality or runtime-change claim is made from comparing it to the isolated snapshot; this receipt binds the corrected two-document patch only.",
+    "manifest_path": "/private/tmp/gsip-lib5-spec-v9-corrected-manifest.json",
+    "manifest_sha256": "fd694e96f43dd948608afa746a84f4b6753616e61d4094f59456fe70f3f7a737",
+    "draft_file_sha256": {
+      "docs/SPEC.md": "f50f56da1fb25c4a15f5496e6455811c82e40fe2e5cb9ed931de28b01df3c0ae",
+      "docs/BUILD_ORDER.md": "eff2434d700ee83669136d03efeaf973426b2452740301bbca357cc75734f0b2"
+    },
+    "patch_path": "/private/tmp/gsip-lib5-spec-v9-corrected.patch",
+    "patch_sha256": "fe45913a91a2b9fe29031d271c6cc58222828f6c364d5a2b02735f6537e3d204",
+    "initial_receipt_path": "/private/tmp/gsip-lib5-spec-v9-independent-review.json",
+    "initial_receipt_sha256": "b9a279f1dfb61eace601864b37bb4a326c60281013b2652f13092efe93b3c7c5"
+  },
+  "finding_resolutions": [
+    {
+      "id": "LIB5-V9-R1",
+      "original_severity": "P2",
+      "status": "closed_in_prose",
+      "references": [
+        {
+          "file": "docs/SPEC.md",
+          "start": 528,
+          "end": 530
+        },
+        {
+          "file": "docs/BUILD_ORDER.md",
+          "start": 378,
+          "end": 379
+        }
+      ],
+      "evidence": "The normalized source/destination/scope tuple defines a stream. Event IDs and sequence slots bind immutably to exact bytes/digests. The receiver advances a committed head only through contiguous validated predecessor hashes. Authenticated retirement records a monotonic refusal independently of head advancement, permits only nonresurrecting in-memory validation of late covered declarations, and leaves irrecoverable gaps held. Conflicts hold normal processing while cleanup still restricts. No automatic reset or new-scope escape is invented.",
+      "implementation_limit": "This resolves protocol prose; future synthetic conformance must prove actual behavior, including retirement-before-gap, conflicting slot/event and continuation only through validated predecessors."
+    },
+    {
+      "id": "LIB5-V9-R2",
+      "original_severity": "P2",
+      "status": "closed_in_prose",
+      "references": [
+        {
+          "file": "docs/SPEC.md",
+          "start": 556,
+          "end": 560
+        },
+        {
+          "file": "docs/BUILD_ORDER.md",
+          "start": 390,
+          "end": 391
+        }
+      ],
+      "evidence": "Aggregate scope/declaration/gap/slot/refusal/cleanup/payload caps apply across all humans and streams. Atomic reservation precedes writes; rejected work cannot leave partial payload. Enrolled scopes reserve durable fence capacity before admission. Saturated retirement handling fences the already enrolled scope, blocks later declarations/use, preserves every refusal and leaves erasure pending until covered payload absence. Cleanup remains outside the contribution quota; the shared 20-event batch/five-attempt bounds constrain processing. Unknown scopes have no authority.",
+      "implementation_limit": "The numeric limits are expressly provisional engineering bounds, not measured capacity, memory usage or deletion SLA. No tombstone/slot eviction or fence reopening is permitted to recover capacity. The simulator must behavior-test saturation and pending completion; real retention/fence-release/recovery changes stay behind the later LIB-5C review."
+    }
+  ],
+  "private_digest_retention_resolution": {
+    "status": "clarified_for_synthetic_5B_real_policy_held",
+    "references": [
+      {
+        "file": "docs/SPEC.md",
+        "start": 536,
+        "end": 536
+      },
+      {
+        "file": "docs/SPEC.md",
+        "start": 574,
+        "end": 574
+      },
+      {
+        "file": "docs/BUILD_ORDER.md",
+        "start": 392,
+        "end": 392
+      }
+    ],
+    "evidence": "Covered retirement erases full declaration-event bytes and derived scientific/context payload. The simulator may retain private sequence-slot/exact-event digest metadata separately from minimal tombstones for synthetic conflict/chain demonstrations. No anonymity, full derived-metadata deletion or remote-erasure claim follows. Purpose/retention/erasure of real private digests and source-lineage records is an explicit owner/privacy/legal LIB-5C hold."
+  },
+  "remaining_findings": [],
+  "new_bounds_coherence": {
+    "enrolled_scopes": 100,
+    "queued_declarations": 1000,
+    "gapped_events_per_stream": 20,
+    "retained_sequence_slots": 10000,
+    "sample_measurement_refusal_identities": 10000,
+    "pending_cleanup_items": 1000,
+    "total_queued_payload_bytes": 200000000,
+    "review_conclusion": "Coherent conservative finite bounds for a local synthetic simulator. Per-event maximum and independent total-byte cap are simultaneous upper limits, not promises that every maximum-size queued event fits. Refusal/slot retention can exhaust admission permanently in version one; the specified hold/fence/operator path handles that honestly. No operational sizing or performance was measured.",
+    "scope_fence": "Reservation before admission provides a bounded coarse refusal fallback when detailed cleanup/alias/slot capacity is unavailable. It cannot be released or acknowledged prematurely to create room."
+  },
+  "preserved_boundaries": {
+    "I1_I15_and_L1_L7": true,
+    "B1_B8_binding_no_governance_patch": true,
+    "RGB_not_wavelength_resolved_spectrum": true,
+    "unverified_physical_pairing_and_original_instrument_lab_evidence": true,
+    "original_grant_and_withdrawal_no_identity_revival": true,
+    "private_payload_tombstones_before_erasure_and_honest_pending_ack": true,
+    "no_public_cross_contributor_fingerprint_or_lineage_linkage": true,
+    "public_agents_anonymous_read_only_no_service_or_user_credential": true,
+    "LIB5A_LIB5B_synthetic_only_after_owner_spec_approval": true,
+    "LIB5C_real_consent_peer_credential_cleanup_retention_policy_held": true,
+    "no_dependency_license_capture_production_or_automatic_training_change_in_patch": true
+  },
+  "unapproved_choices_preserved": [
+    "Recipient-specific private-sharing purpose/consent/retention and notices remain unapproved; no current legal draft is treated as active authorization.",
+    "Owner-enrolled peers and named private human of record are recommended policies, not current enrollment authority.",
+    "Expiring/revocable peer credentials and separately authenticated steward cleanup are required concepts; their exact mechanism, approved secret locations and lifecycle remain unselected.",
+    "Same-contributor lineage aliasing is weaker than physical pairing. Cross-contributor same-material linkage remains refused by the proposed default and still requires its owner/privacy/scientific decision.",
+    "Size, depth, quota, batch and retry bounds are engineering proposals requiring review and later measurement; the two queue/sequence clarifications in the findings are also unapproved until incorporated and reviewed.",
+    "No measured-spectrum privacy clearance, reference-data license, lab/biological adapter, field-use eligibility or scientific performance is established.",
+    "Recipient erasure duties, acknowledgment and operational response to loss of contact remain owner-policy work; no immediate distributed-erasure guarantee is inferred.",
+    "Real event-digest/private lineage metadata retention is an unresolved LIB-5C policy choice; digest retention does not imply anonymity or complete distributed erasure."
+  ],
+  "verification": {
+    "static_checks_run": {
+      "corrected_manifest_sha256_matches_supplied": true,
+      "corrected_spec_and_build_sha256_match_manifest": true,
+      "corrected_patch_sha256_matches_manifest": true,
+      "patch_has_exactly_two_document_paths": true,
+      "patch_reconstructs_from_read_only_base_doc_bytes": true,
+      "I1_I15_bytes_unchanged": true,
+      "L1_L7_bytes_unchanged": true,
+      "existing_v8_photo_and_library_sections_bytes_unchanged": true
+    },
+    "behavior_tests_run": false,
+    "CI_runs_queried": false,
+    "runtime_implementation_verified": false,
+    "capacity_or_memory_measured": false,
+    "prose_review_is_not_behavior_test_evidence": true,
+    "files_read": "Initial full SPEC/BUILD review plus corrected sections and static byte comparison preserving all prior unaffected sections; current AGENTS/CONTRIBUTING/GOVERNANCE and read-first supporting docs were reviewed in the initial pass.",
+    "mutations": "Only this private final review receipt was written; initial review receipt and patches remain preserved. No draft or repository edits; no Git, network or production operations."
+  },
+  "memory_routing": {
+    "used_for": "Lightweight historical routing only; current repository instructions supersede historical owner/merge notes. No current state claimed from memory.",
+    "citations": [
+      "MEMORY.md:129-132",
+      "rollout_summaries/2026-10-11T23-45-06-aucV-gsip_stack_landing_ci_and_production_preflight.md:15-18"
+    ],
+    "rollout_id": "01a12d5b-1792-7312-9a93-99c50d5c2c39"
+  }
+}

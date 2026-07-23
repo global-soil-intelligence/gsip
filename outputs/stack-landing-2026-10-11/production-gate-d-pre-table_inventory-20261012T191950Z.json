@@ -1,0 +1,185 @@
+[
+  {
+    "table_name": "auth.audit_log_entries"
+  },
+  {
+    "table_name": "auth.custom_oauth_providers"
+  },
+  {
+    "table_name": "auth.flow_state"
+  },
+  {
+    "table_name": "auth.identities"
+  },
+  {
+    "table_name": "auth.instances"
+  },
+  {
+    "table_name": "auth.mfa_amr_claims"
+  },
+  {
+    "table_name": "auth.mfa_challenges"
+  },
+  {
+    "table_name": "auth.mfa_factors"
+  },
+  {
+    "table_name": "auth.mfa_recovery_code_sets"
+  },
+  {
+    "table_name": "auth.mfa_recovery_codes"
+  },
+  {
+    "table_name": "auth.oauth_authorizations"
+  },
+  {
+    "table_name": "auth.oauth_client_states"
+  },
+  {
+    "table_name": "auth.oauth_clients"
+  },
+  {
+    "table_name": "auth.oauth_consents"
+  },
+  {
+    "table_name": "auth.one_time_tokens"
+  },
+  {
+    "table_name": "auth.refresh_tokens"
+  },
+  {
+    "table_name": "auth.saml_providers"
+  },
+  {
+    "table_name": "auth.saml_relay_states"
+  },
+  {
+    "table_name": "auth.schema_migrations"
+  },
+  {
+    "table_name": "auth.scim_tokens"
+  },
+  {
+    "table_name": "auth.scim_users"
+  },
+  {
+    "table_name": "auth.sessions"
+  },
+  {
+    "table_name": "auth.sso_domains"
+  },
+  {
+    "table_name": "auth.sso_providers"
+  },
+  {
+    "table_name": "auth.users"
+  },
+  {
+    "table_name": "auth.webauthn_challenges"
+  },
+  {
+    "table_name": "auth.webauthn_credentials"
+  },
+  {
+    "table_name": "extensions.spatial_ref_sys"
+  },
+  {
+    "table_name": "public.actors"
+  },
+  {
+    "table_name": "public.attribution_reviews"
+  },
+  {
+    "table_name": "public.contribution_grants"
+  },
+  {
+    "table_name": "public.contributors"
+  },
+  {
+    "table_name": "public.dataset_releases"
+  },
+  {
+    "table_name": "public.deletion_requests"
+  },
+  {
+    "table_name": "public.gold_labels"
+  },
+  {
+    "table_name": "public.grant_withdrawals"
+  },
+  {
+    "table_name": "public.h3_cells"
+  },
+  {
+    "table_name": "public.photos"
+  },
+  {
+    "table_name": "public.predictions"
+  },
+  {
+    "table_name": "public.prior_cell_cache"
+  },
+  {
+    "table_name": "public.prior_jobs"
+  },
+  {
+    "table_name": "public.priors"
+  },
+  {
+    "table_name": "public.qa_events"
+  },
+  {
+    "table_name": "public.qa_jobs"
+  },
+  {
+    "table_name": "public.service_state"
+  },
+  {
+    "table_name": "public.submissions"
+  },
+  {
+    "table_name": "public.terms_versions"
+  },
+  {
+    "table_name": "public.upstream_buckets"
+  },
+  {
+    "table_name": "realtime.messages"
+  },
+  {
+    "table_name": "realtime.schema_migrations"
+  },
+  {
+    "table_name": "realtime.subscription"
+  },
+  {
+    "table_name": "storage.buckets"
+  },
+  {
+    "table_name": "storage.buckets_analytics"
+  },
+  {
+    "table_name": "storage.buckets_vectors"
+  },
+  {
+    "table_name": "storage.migrations"
+  },
+  {
+    "table_name": "storage.objects"
+  },
+  {
+    "table_name": "storage.s3_multipart_uploads"
+  },
+  {
+    "table_name": "storage.s3_multipart_uploads_parts"
+  },
+  {
+    "table_name": "storage.vector_indexes"
+  },
+  {
+    "table_name": "supabase_migrations.schema_migrations"
+  },
+  {
+    "table_name": "vault.secrets"
+  }
+]

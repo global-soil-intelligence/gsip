@@ -1,0 +1,157 @@
+# WP-SITE-1D — globalsoilintelligence.com cutover proposal
+
+Current status: **DNS AND HTTPS EXECUTED; FULL SITE ACCEPTANCE HELD.** The full reviewed cutover was approved and saved. Independent DNS 42/42, both trusted certificates, HTTPS enforcement, all 38 HTTPS artifact files and closed upload flags pass. Two original GitHub URL redirects still downgrade through a cached HTTP destination, and the existing map artifact is missing its required worker module. See CUTOVER-STATUS.md and cutover-final-receipt.json for current evidence and the separate build-fix gate. Earlier proposal and gate states below are historical.
+
+## Invariants and intended change
+
+- Serve the already approved Pages artifact from `https://globalsoilintelligence.com/`; use the apex as canonical and redirect `www` to it.
+- Capture and library uploads remain closed. The deployed activation manifest was freshly read and is exactly `{"capture_live":false,"library_intake_live":false}`.
+- Keep the existing `github-pages` environment: Justin (`jdhart81`) is its required reviewer, and administrators cannot bypass approval.
+- Preserve nameservers, DNSSEC, domain registration, subscriptions and every unrelated DNS record, including mail and ownership records. No Supabase, Auth, worker, source, licence, merge or further deployment changes.
+- Add only the approved web-routing records and a separately reviewed GitHub-generated verification TXT. Stop on any unexpected record, account state, deployment or activation mismatch.
+
+## Verified baseline
+
+The four authoritative nameservers agree:
+
+`ns-cloud-d1.googledomains.com`, `ns-cloud-d2.googledomains.com`, `ns-cloud-d3.googledomains.com`, `ns-cloud-d4.googledomains.com`.
+
+Public registry: **Squarespace Domains LLC**. Public website: HTTP 200, title **Coming Soon**, heading `globalsoilintelligence.com`.
+
+| Record | Current value | Current TTL |
+|---|---|---:|
+| `@` A | `198.49.23.144` | 14,400 seconds (4 hours) |
+| `www` CNAME | `ext-sq.squarespace.com.` | 14,400 seconds (4 hours) |
+| `@` AAAA | No answer | — |
+| `@` MX, TXT, CAA | No answers at these queried names | — |
+| `_github-pages-challenge-global-soil-intelligence` TXT | No answer | — |
+
+These are named public lookups, **not a full zone export**. They do not prove that other subdomains or mail records are absent. The authenticated panel has now been read and saved in `signed-in-account-readback.json`: the two web records match, and the panel has one additional CNAME `_domainconnect` → `_domainconnect.domains.squarespace.com` (TTL 3,600) under Squarespace Domain Connect. Preserve that record and group. The panel says No custom records. Its nameserver list matches all four authoritative servers. Refresh this inventory before any edit; stop on a mismatch.
+
+GitHub Pages is built with `build_type=workflow`, `cname=null`, and `https_enforced=true` for its current default address. Run [38821460183](https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183) succeeded at main `73088050d6fc68baedf893990ab3fbe76d5e749c`. Its artifact is SHA256 `2bc0829549d98331c7a8dc5e451b6e5457125fd5863f166e63ce1ea90a4cde33`. The deployed site is [global-soil-intelligence.github.io/gsip/](https://global-soil-intelligence.github.io/gsip/).
+
+All three Vite configurations use relative base `./`; capture's manifest uses relative `start_url`. Canonical links, sitemap and robots already name the apex. No source change or rebuild is proposed. The root Pages artifact was verified in the preceding release; custom-domain routing and its certificate are **not yet verified**.
+
+## Account and verification prerequisites
+
+Update after Justin opened the signed-in Chrome tab: both account panels are accessible and were inspected read-only. Earlier sign-in screens are superseded by the following readback:
+
+- [Squarespace DNS panel](https://account.squarespace.com/domains/managed/globalsoilintelligence.com/dns/dns-settings): the complete displayed inventory is three records, matching the two traffic records plus the preserved Domain Connect record. Nameservers match. The two traffic records belong to the Squarespace Defaults group; if removal is later approved, remove only that group containing exactly those two records. Do not remove Squarespace Domain Connect or replace the whole zone.
+- [Organization Pages settings](https://github.com/organizations/global-soil-intelligence/settings/pages): the signed-in panel states There are no verified domains for this organization. No existing challenge was displayed. Justin subsequently approved submitting the prepared form. It now displays the exact TXT challenge below; GitHub Verify has **not** been clicked. This is Pages domain verification, separate from GitHub's organization badge verification.
+
+Under Justin’s explicit go, **Add domain → globalsoilintelligence.com** was submitted once in organization Pages settings. The generated record is shown below. No DNS record or Pages repository setting was changed.
+
+Exact GitHub-generated ownership record for the next approval to save it:
+
+| Type | Host in provider panel | Fully qualified name | Value | TTL |
+|---|---|---|---|---:|
+| TXT | `_github-pages-challenge-global-soil-intelligence` | `_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com.` | `ec9866a89c5b447bc5d09ef7ceb232` | 3,600 |
+
+Verify the TXT on all four nameservers, then complete GitHub's Verify action and read the result back. Keep this TXT permanently. Verification is the recommended prerequisite to this cutover; failure or another organization's claim stops the work. [GitHub verification instructions](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages).
+
+## Exact traffic-record changes proposed for approval
+
+Delete only these two existing web records:
+
+| Type | Host | Value |
+|---|---|---|
+| A | `@` | `198.49.23.144` |
+| CNAME | `www` | `ext-sq.squarespace.com.` |
+
+Replace them with these nine records, all at proposed TTL **3,600 seconds (1 hour)**:
+
+| Type | Host | Value |
+|---|---|---|
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| AAAA | `@` | `2606:50c0:8000::153` |
+| AAAA | `@` | `2606:50c0:8001::153` |
+| AAAA | `@` | `2606:50c0:8002::153` |
+| AAAA | `@` | `2606:50c0:8003::153` |
+| CNAME | `www` | `global-soil-intelligence.github.io.` |
+
+The CNAME has no scheme, path or repository suffix. No apex CNAME, wildcard, forwarding rule or nameserver change is proposed. These are [GitHub's current published records](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site). Squarespace supports editing custom TTLs; if the actual panel cannot accept 1 hour for these records, stop and show the available choice before saving. [Squarespace DNS documentation](https://support.squarespace.com/hc/en-us/articles/360002101888-Edit-your-domain-s-DNS-records).
+
+## Execution order after explicit approval
+
+1. Refresh the exact DNS, complete zone inventory, verified ownership, Pages run/source and both closed flags. Stop on a mismatch. The review of public DNS so far is not permission to edit it.
+2. Bind the domain to this repository **before** changing traffic DNS. The following requests are proposed only; do not run them during preparation:
+
+   ```sh
+   gh api --method PUT repos/global-soil-intelligence/gsip/pages \
+     -f cname=globalsoilintelligence.com
+   gh api repos/global-soil-intelligence/gsip/pages
+   ```
+
+   Require `cname=globalsoilintelligence.com`, the same workflow source and the existing approval protection. Do not add a committed CNAME file; this Actions publishing mode does not need one.
+3. In the authenticated DNS panel, replace only the two listed records with the nine listed records. Save and read back each affected record set. Existing records are cached for 4 hours; setting new TTLs to 1 hour does not shorten already cached answers. No advance TTL change is included. Allow up to 24 hours for propagation and certificate readiness; temporary mixed old/new views or HTTPS unavailability are possible.
+4. Confirm all four authoritative servers, then independent recursive resolvers, give the exact expected A/AAAA/CNAME sets. Read GitHub DNS health:
+
+   ```sh
+   gh api repos/global-soil-intelligence/gsip/pages/health
+   gh api repos/global-soil-intelligence/gsip/pages
+   ```
+
+   Wait for a trusted certificate that covers apex and `www`; never disable certificate validation. The current default-domain HTTPS setting does not prove custom-domain certificate readiness. No CAA record is proposed because none was returned; a new restrictive CAA finding stops the work for review. [GitHub HTTPS instructions](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https).
+5. Once the custom certificate is ready, retain or reassert HTTPS enforcement and read back:
+
+   ```sh
+   gh api --method PUT repos/global-soil-intelligence/gsip/pages \
+     -F https_enforced=true
+   gh api repos/global-soil-intelligence/gsip/pages
+   ```
+
+   This uses [GitHub's documented Pages settings API](https://docs.github.com/en/rest/pages/pages#update-information-about-a-github-pages-site). It does not dispatch a deployment or modify a branch.
+6. Verify HTTPS apex serves the reviewed artifact; HTTP and `www` redirect to HTTPS apex. Check the previous GitHub URL and a nested path redirect without duplicated `/gsip/`. Compare all 38 deployed files against the approved artifact at their new root. Check the homepage, map, methods, data, card, about, reference-card PDF, share image, `robots.txt`, `sitemap.xml` and `llms.txt`; canonical URLs must resolve. Test visible navigation, asset loading, PWA manifest/service-worker scope and browser console errors.
+7. Read `https://globalsoilintelligence.com/capture/gsip-activation.json`: require exactly both booleans false. Inspect capture in a clean browser: closed notice, no submission form, upload control or sign-in attempt. Do not test a real submission. Save immutable evidence and the completed/blocked checklist.
+
+## Rollback proposed for review
+
+This is a documented recovery plan, **not an executed action or implicit authority**. If a mismatch arises during execution, stop and report. Run rollback only if included in the explicit go or separately authorized.
+
+Restore `@` A to the single `198.49.23.144` record and `www` CNAME to `ext-sq.squarespace.com.`, both TTL 14,400. Remove only the four added GitHub A and four AAAA records. Preserve the verification TXT, all unrelated records and subscriptions. Confirm all four nameservers have restored records; wait at least the added records’ 3,600-second TTL after authoritative convergence, then check named independent resolvers (Cloudflare `1.1.1.1` and Google `8.8.8.8`) before unbinding the repository domain. This sample cannot prove that every worldwide cache has expired. Keep the verified ownership TXT and the GitHub domain claim during the transition.
+
+Once routing has returned to Squarespace, remove the Pages custom-domain setting with the prepared JSON body `{"cname":null}`; sending a JSON null is required, not the string `"null"`. Then read Pages back, confirm `cname=null`, default-site HTTPS enforcement, the original `github.io/gsip/` address, successful artifact delivery and the closed flags. If settings require a new Pages deployment, that is a separate approval; do not dispatch automatically. Rollback cannot instantly clear third-party DNS caches.
+
+## Assumptions, holds and evidence
+
+- Apex is the canonical address requested by Justin; `www` is a redirect. Dual-stack IPv4/IPv6 is proposed explicitly above.
+- The parked Squarespace page should be replaced; its subscription and domain registration should stay intact. This plan does not cancel, transfer or delete them.
+- The signed-in DNS panel and nameserver list now match public DNS. Its three-record inventory is saved; refresh it before execution.
+- A safe cutover requires organization Pages ownership verification. The exact TXT value is now generated; approval to add it and complete GitHub verification remains pending. Account sign-in and the displayed complete zone inventory are verified. Traffic and TXT records above are exact; no DNS mutation is authorized yet.
+- No code changed; no new implementation tests were appropriate. Current GitHub deployment success, current public DNS and current closed activation were checked. Custom-domain, HTTPS, redirect, browser and 38-file checks after cutover remain **not run**.
+- Machine-readable proposal: `proposed-changes.json`. Public evidence: `authoritative-dns-preflight.json` (48 queries), `registrar-preflight.json`, `http-preflight.json`, `github-pages-preflight.json`, `pages-environment-preflight.json`, `pages-run-preflight.json`. No credentials, contributor records or coordinates were collected.
+
+## Generated ownership request receipt
+
+Justin authorized only generation: “Go. Generate the GitHub ownership-verification code for globalsoilintelligence.com and show me the exact TXT record. No DNS cutover yet; keep capture and library uploads closed.”
+
+The request was generated and read back. Exact type TXT; relative host `_github-pages-challenge-global-soil-intelligence`; full name `_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com.`; value `ec9866a89c5b447bc5d09ef7ceb232`. Proposed TTL 3,600 seconds. Independent review confirmed all 30 characters and that the domain suffix occurs once.
+
+The TXT has not been added, GitHub Verify has not been clicked, all four public nameservers retain the original routing, the Pages repository CNAME is still null, and both live activation flags are false. Evidence: `github-ownership-txt.GENERATED.json`, `github-verification-code.GENERATED.txt`, `github-verification-code.GENERATED.jpg`, `post-challenge-dns-readback.json`, `post-challenge-pages-activation-readback.json`.
+
+Next gate, if requested: add **only this TXT**, read it back, complete GitHub ownership verification, and retain the TXT. This must be authorized separately; it does not include the traffic cutover.
+
+## Ownership verification completed — traffic cutover still held
+
+Justin gave the explicit go to add only the exact TXT and complete GitHub verification. Saved one TXT record at relative host `_github-pages-challenge-global-soil-intelligence`, value `ec9866a89c5b447bc5d09ef7ceb232`, TTL 3,600. All four authoritative nameservers returned exactly this value and TTL. Independent pre/post comparison found no changes to the original A, absent AAAA, www CNAME or Domain Connect CNAME and their authoritative TTLs. The provider displays Domain Connect TTL as 1 hour while its public authoritative value was and remains 4 hours; this pre-existing difference was not edited.
+
+Clicked GitHub Verify once. GitHub reported **Successfully verified globalsoilintelligence.com** and listed the domain as **Verified** for `global-soil-intelligence`. Retain the TXT permanently. The blank Squarespace embedded reauthentication prompt was resolved through its normal existing Google sign-in flow; no credential or security setting was changed.
+
+Final checks: repository Pages CNAME remains null; workflow publishing and HTTPS enforcement remain as before; Justin remains the required Pages reviewer with no administrator bypass; the canonical website still says Coming Soon; both deployed activation flags are false. No traffic cutover, deployment, merge, capture opening or library intake opening occurred. No other production service changed.
+
+Receipt: `ownership-verification-final-receipt.json`; visible proof: `github-ownership.VERIFIED.jpg`; exact DNS comparison: `independent-post-txt-dns-readback.json`. Earlier pending-state sections and archived snapshots are historical; this completion entry supersedes their ownership-verification status. The proposed traffic records still require a separate go.
+
+
+## Approved traffic cutover executed — HTTPS pending
+
+The existing full cutover go was executed without a rebuild, merge or upload activation. The two original Squarespace traffic records were replaced by exactly the nine reviewed records, TTL 3,600. Nameservers, permanent ownership TXT, Domain Connect and unrelated records were preserved. The repository is bound to globalsoilintelligence.com. All four authorities and both independent recursive resolvers pass 42 checks. The same run 38821460183 and source 73088050d6fc68baedf893990ab3fbe76d5e749c serve all 38 approved artifact files exactly over HTTP; five page canonicals and eight internal routes also pass.
+
+GitHub has requested an apex/www certificate and reports authorization_created. HTTP verification is not HTTPS verification. No certificate warning was bypassed, no TLS validation was weakened, and HTTPS has not yet been enforced. The remaining reviewed steps need no additional go: wait for a trusted apex/www certificate, enforce HTTPS, verify redirects and all files over HTTPS, then verify rendered pages and closed capture. Evidence is indexed in CUTOVER-STATUS.md and cutover-certificate-pending-receipt.json.
+
+
+## HTTPS executed; acceptance exceptions retained
+
+GitHub approved the apex/www certificate at 01:31:31 UTC. Both hosts passed trusted TLS/hostname checks at 01:31:49. The exact reviewed https_enforced=true request ran and was read back true. All 38 files match over HTTPS; both activation booleans are false. HTTP and www reach the HTTPS apex. The strict complete helper remains failing on two cached old GitHub URL redirects; its guard was not weakened. Browser review also found a pre-existing missing MapLibre worker in the approved artifact, confirmed 404 and documented in map-worker-diagnostic.md. No source correction or replacement deployment ran. Final state, limitations and evidence are in CUTOVER-STATUS.md and cutover-final-receipt.json.

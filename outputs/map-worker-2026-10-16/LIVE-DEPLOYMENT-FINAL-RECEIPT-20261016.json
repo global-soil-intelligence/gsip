@@ -1,0 +1,62 @@
+{
+  "status": "APPROVED_PAGES_DEPLOYED_AND_LIVE_VERIFIED_CAPTURE_AND_LIBRARY_CLOSED",
+  "recorded_at_utc": "2026-10-16T18:48:45.379168+00:00",
+  "run": 38895620835,
+  "deployment": 7118088317,
+  "source": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+  "artifact_sha256": "d818ff8663588d7eb12bdf691b92127ee6ca61495c4e6ab9c08eae1c596fbc0b",
+  "files_matched": 40,
+  "redirect_routes_passed": 8,
+  "https": "trusted_apex_and_www",
+  "live_browser": "map_render_layer_switch_zoom_pass_no_firstparty_error",
+  "capture_live": false,
+  "library_intake_live": false,
+  "other_mutations": "NONE",
+  "evidence": [
+    {
+      "path": "LIVE-DEPLOYMENT-REPORT-20261016.md",
+      "bytes": 5060,
+      "sha256": "c47d34e547a3da95fefad7dada72b87b37fb0fde48be74ac4e20ff5ff45b5efb"
+    },
+    {
+      "path": "pages-go-preflight-20261016.json",
+      "bytes": 683,
+      "sha256": "fd19f7bd8d3890f925a1acf6aea85a26bf39c8c362118e7e51766a59644948b3"
+    },
+    {
+      "path": "pages-approved-readback-20261016.json",
+      "bytes": 1357,
+      "sha256": "e6379fa4945d55624a3df1f48a6295f11f8537d8326e1c4dcb18e8229b410a7a"
+    },
+    {
+      "path": "live-final-independent-20261016T184639Z.json",
+      "bytes": 36783,
+      "sha256": "fb6e258f994fb9cf86dd8e109809cf519d9b473c8142a223307f2565c157c9f6"
+    },
+    {
+      "path": "pages-run-38895620835-artifact-verification.json",
+      "bytes": 7996,
+      "sha256": "406c45b59328844d692a23cf262897d42990a702e139510c765fad6e0336f825"
+    },
+    {
+      "path": "live-map-browser-readback-20261016.json",
+      "bytes": 288,
+      "sha256": "eae4fc5356607312a0333f45dd7ed6c9703bc2d917054503fadeddc1e0065967"
+    },
+    {
+      "path": "live-map-38895620835.jpg",
+      "bytes": 98416,
+      "sha256": "cb19d47c014abe56ac3d491f381ed81791e7c3c540101073bd2ffec29e40c16a"
+    },
+    {
+      "path": "live-capture-closed-20261016.json",
+      "bytes": 173,
+      "sha256": "393ba4cacd3f50ccb2553da84d8a95db6369d74a583affb4241124742beac130"
+    },
+    {
+      "path": "live-capture-closed-20261016.jpg",
+      "bytes": 59123,
+      "sha256": "b388e7464acd7f95323304778635e4483629da3fba982f2a909db586e540434d"
+    }
+  ]
+}

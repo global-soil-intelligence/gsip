@@ -1,0 +1,45 @@
+{
+  "utc": "2026-10-14T00:53:34.461274+00:00",
+  "base": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "files": [
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "base_bytes": 32861,
+      "base_sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5",
+      "bytes": 33577,
+      "sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9"
+    },
+    {
+      "path": "scripts/app_notification_audit.py",
+      "base_bytes": 126055,
+      "base_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+      "bytes": 126232,
+      "sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6"
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "base_bytes": 189650,
+      "base_sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99",
+      "bytes": 195169,
+      "sha256": "a5ac8205344fa71f455e756fa232b54f7f5472244118ee12cc42b89e7872c3d7"
+    }
+  ],
+  "manifest_sha256": "fd61e4a4d7fd3f44dec7273ad08791246c1378effebb71e95e38ec88f8722a62",
+  "independent_closures": [
+    {
+      "path": "/private/tmp/gsip-refusal-diagnostic-independent-pztagjdp/caller-review/INDEPENDENT_FINAL_CALLER_V2_CLOSURE.json",
+      "sha256": "a17188f1f9a5aab9f18e3dc2d5ede0417b792d78bb1e6b43daae6f0799c12f0c"
+    },
+    {
+      "path": "/private/tmp/gsip-caller-line-v2-independent-ntc5j0sk/INDEPENDENT_FINAL_CALLER_LINE_V2_CLOSURE.json",
+      "sha256": "16a8267d9ed34525e29387c1558bfae42020323c83b3f8f03fc618183385b188"
+    }
+  ],
+  "unchanged_other_tracked_files": 362,
+  "retained_test_prefix_bytes": 189650,
+  "gradle_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "workflow_and_scan_policy_unchanged": true,
+  "diagnostic_only": true,
+  "native_acceptance": false,
+  "production_changes": false
+}

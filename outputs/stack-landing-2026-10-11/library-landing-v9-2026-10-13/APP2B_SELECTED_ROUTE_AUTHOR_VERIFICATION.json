@@ -1,0 +1,187 @@
+{
+  "actual_case_arithmetic": "Full default module799pass/31toolskip, separately final31actual pass0skip; all830 distinct final module cases exercised successfully. New50pure+1actual vs normalizer779cases. Old43 separate.",
+  "actual_new_bridge_control": {
+    "bytes": 351,
+    "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/actual-fixtures-final/test_real_gradle_gmm_available0/actual-control.json",
+    "sha256": "0742439b415c34f03f18faba75f05bd689b445615a2f3a9969d1dc33f657c782"
+  },
+  "actual_readonly_runtime_replay": {
+    "bytes": 4507,
+    "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/ACTUAL_SELECTED_ROUTE_REPLAY.json",
+    "sha256": "97490c4a86ec0d79aa60eaea1bfe99a7f4f19ed561ad15b574f789dc9d8e0af5"
+  },
+  "assumptions": [
+    "Gradle8.14.3 pinned producer maps getDisplayName to metadata variant name; exact unique selected names and six raw contexts are checked.",
+    "Exact six existing AndroidX metadata contexts only; versions/routes outside reviewed set refuse.",
+    "Retained actual artifact graphs are joined with fresh same-toolchain final production-closure metadata-only observations, not claimed as a new full native/hosted graph.",
+    "Tool inputs reused existing verified distribution and private copied caches; HOME inherited unchanged.",
+    "Current controlled Gradle/Capacitor/CI trust remains; no compiler attestation."
+  ],
+  "at": "2026-10-14T03:15:31.336186+00:00",
+  "base_commit": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "baseline_and_three_effective_guard_mutations": {
+    "bytes": 2587,
+    "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/FINITE_BASELINE_MUTATION_RECEIPT.json",
+    "sha256": "1023ce37984099089109e7c3bef1cb944bbe032d6cfad0bb93a0534bf9392825"
+  },
+  "candidate_patch": {
+    "bytes": 65881,
+    "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/candidate-from-623.patch",
+    "sha256": "5a606ba84e7e171cece3680f825b24f1cfb49ab7bc6014fc2ba1e1ba306c375f"
+  },
+  "checks": {
+    "actual_final_scoped_Gradle": {
+      "bytes": 5172,
+      "errors": 0,
+      "failures": 0,
+      "passed": 31,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/final31.xml",
+      "sha256": "0b6e61db531b82cc3e45e1f0873c6608f1d6d5273c5d8195ba9695e5e9c5e47c",
+      "skipped": 0,
+      "tests": 31
+    },
+    "full_module_default": {
+      "bytes": 144907,
+      "errors": 0,
+      "failures": 0,
+      "passed": 799,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/full-module.xml",
+      "sha256": "ec2bb44a60d81547b5cda90c989ac2cc460680b051234cdcb0e274f6a202de89",
+      "skipped": 31,
+      "tests": 830
+    },
+    "historical_pre_scope_actual_Gradle_NOT_final": {
+      "bytes": 5172,
+      "errors": 0,
+      "failures": 0,
+      "passed": 31,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/historical-pre-scope-real31.xml",
+      "sha256": "a93f3eacee9178d41f930eb1ecbdb8c4e9e98dc24492e420c0ed727c7604c607",
+      "skipped": 0,
+      "tests": 31
+    },
+    "retained_diagnostic_bank": {
+      "bytes": 7135,
+      "errors": 0,
+      "failures": 0,
+      "passed": 43,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/old43-final.xml",
+      "sha256": "535c6599628c7527efaab5203967e6d3b58a85bab454852061959d00b3cb749b",
+      "skipped": 0,
+      "tests": 43
+    },
+    "scoped_pure": {
+      "bytes": 8522,
+      "errors": 0,
+      "failures": 0,
+      "passed": 50,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/scoped-gmm.xml",
+      "sha256": "c39b8a60b5afc6d99b16caacedbef2a2a577025ab472a4640c80474dcb2259ab",
+      "skipped": 1,
+      "tests": 51
+    }
+  },
+  "coroutine_existing_pom_rule": {
+    "bytes": 977,
+    "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/EXISTING_COROUTINE_POM_RULE.json",
+    "sha256": "f3100082642677d083c0fbaadff7a3091a04bd82e8da4cd6d2e68fceb126708e"
+  },
+  "delta_from_normalizer": {
+    "bytes": 55076,
+    "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/delta-from-normalizer.patch",
+    "sha256": "26d80de7847308df1949b994448c4750b37bd7cb446b596913138a762439fd24"
+  },
+  "full_configured_mypy_files": 75,
+  "historical_corrections": [
+    "Initial terminal URL-basename proposal rejected by actual graphics file.name cache identity and primary specification; exact name+URL roles used, no alternate fallback.",
+    "Generic four-bridge emitter probe succeeded but three-count harness failed; fourth coroutine root already validated packaging=pom. Final emitter observes exactly three pinned non-POM roots, not a full bridge inventory.",
+    "Earlier31actual run used preliminary pre-scope task; preserved historical and superseded by fresh final31 using f90e task.",
+    "First historical-copy command used wrong cwd, left originals intact; corrected copies are hash-bound.",
+    "New test Ruff line-length/fixed-subprocess justification issues corrected before freeze; no broad ignores."
+  ],
+  "native_device_store_legal_production_acceptance_claimed": false,
+  "no_new_dependency_workflow_schema_permission_backup_scanner_policy_change": true,
+  "no_shared_source_Git_GitHub_CI_dispatch_production_build_signing_key_APK_operations": true,
+  "normalizer_base_helper_sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4",
+  "preserved_failed_probe": {
+    "bytes": 1413,
+    "path": "/private/tmp/gsip-selected-route-parent-v8vhfw_t/FINAL_EMITTER_PROBE_RECEIPT.json",
+    "sha256": "c44d172854df87485463f689e55d0a0d03f1067da916eb8281680eb749776668"
+  },
+  "remaining": [
+    "Independent exact frozen-source closure",
+    "Root integration/checks/normal push",
+    "Fresh hosted Android+iOS artifacts and full native acceptance"
+  ],
+  "scanner": {
+    "scope": "Authored three files only, original base config, --redact, zero findings; root owns full-history after commit.",
+    "tool": {
+      "bytes": 7282178,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/tools/gitleaks-8.21.2/gitleaks",
+      "sha256": "90e39dd8b483e30698fc6fbdbe6794b36a6cc49ccde31e2ce9e2d3048838fd74"
+    },
+    "version": "8.21.2"
+  },
+  "schema": "gsip-author-finite-selected-route-adapter-v1",
+  "scoped_metadata_only_final_emitter_probes": [
+    {
+      "bytes": 4085,
+      "path": "/private/tmp/gsip-selected-route-parent-v8vhfw_t/SCOPED_EMITTER_PROBE_RECEIPT.json",
+      "sha256": "0d41df6e73b73e45cbe9b7a22fb58c6dd7c7ff1a40e84a0765206689fbf5d7de"
+    },
+    {
+      "bytes": 4089,
+      "path": "/private/tmp/gsip-selected-route-probe-zv8b6aj4/SCOPED_EMITTER_PROBE_RECEIPT.json",
+      "sha256": "9a188ce9ce0dbcab72f351c70e21c6ec38520e4b9c1efe30fdb32c2e28acdcb1"
+    }
+  ],
+  "source_freeze": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm",
+  "source_manifest": {
+    "bytes": 98862,
+    "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/SOURCE_MANIFEST.json",
+    "sha256": "bf75009c671b84cc5b0366ecf25aabc78d9dca2c298888fcaee910047bc48deb"
+  },
+  "source_projection": {
+    "bytes": 688,
+    "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/SOURCE_PROJECTION_PROOF.json",
+    "sha256": "f2dfbbe6081a6c79d8a291f641248223680fb77c5be795ab99155a2d968346e4"
+  },
+  "static_checks": [
+    {
+      "bytes": 44,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/full-mypy-final.txt",
+      "sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c"
+    },
+    {
+      "bytes": 19,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/full-ruff-final.txt",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "bytes": 0,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/eslint-final.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/language-final.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 66,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/prettier-final.txt",
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    },
+    {
+      "bytes": 165,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/authored-gitleaks.txt",
+      "sha256": "b7559ad28ad3d78496e161f15e049b5a68d581310593d4c76e945ca58f141f08"
+    },
+    {
+      "bytes": 3,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/authored-gitleaks.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "status": "AUTHOR_CHECKS_COMPLETE_SOURCE_REVIEW_PENDING"
+}

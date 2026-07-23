@@ -1,0 +1,16 @@
+{
+  "project_ref": "toxldjgwkxtneoqsazym",
+  "observed_at_utc": "2026-10-12T20:06:58.853Z",
+  "signup": false,
+  "anonymous_signin": false,
+  "confirm_email": true,
+  "save_enabled": false,
+  "exposed_schemas": [
+    "graphql_public",
+    "public"
+  ],
+  "private_exposed": false,
+  "schema_readback_at_utc": "2026-10-12T20:07:35Z",
+  "read_only": true,
+  "settings_saved": 0
+}

@@ -1,0 +1,24 @@
+{
+  "state": "PASS_HTTP_SMOKES_METADATA_SEPARATELY_REQUIRED",
+  "phase": "prior",
+  "target": "toxldjgwkxtneoqsazym",
+  "started_at_utc": "2026-10-12T19:42:12.958858+00:00",
+  "completed_at_utc": "2026-10-12T19:42:13.385403+00:00",
+  "checks": [
+    {
+      "check": "prior_unauthenticated_denied",
+      "http_status": 401,
+      "expected_status": 401,
+      "response_sha256": "2fa2c84fed16d2ecfffc375515c8095ca6be18d8dabe1f54fd12142d23834634"
+    }
+  ],
+  "credentials_used": false,
+  "private_rows_read": false,
+  "prior_jobs_started": false,
+  "automatic_retries": false,
+  "limits": [
+    "HTTP denial alone cannot prove JWT verification; read function metadata.",
+    "Prior owner/service success paths are not invoked; no authenticated job smoke.",
+    "Empty-reader checks require zero public cells and zero dataset releases."
+  ]
+}

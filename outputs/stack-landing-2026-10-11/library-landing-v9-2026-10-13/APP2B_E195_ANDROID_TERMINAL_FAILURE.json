@@ -1,0 +1,57 @@
+{
+  "GET_only": true,
+  "artifact_verification": "not performed unless fresh Android success",
+  "artifacts": [],
+  "conclusion": "failure",
+  "head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "job_id": 115623711481,
+  "observations": [
+    {
+      "at_utc": "2026-10-14T01:04:19Z",
+      "completed_steps": 12,
+      "current_steps": [
+        13
+      ],
+      "failed_steps": [],
+      "job_conclusion": null,
+      "job_status": "in_progress"
+    },
+    {
+      "at_utc": "2026-10-14T01:04:50Z",
+      "completed_steps": 15,
+      "current_steps": [
+        16
+      ],
+      "failed_steps": [],
+      "job_conclusion": null,
+      "job_status": "in_progress"
+    },
+    {
+      "at_utc": "2026-10-14T01:05:21Z",
+      "completed_steps": 17,
+      "current_steps": [
+        18
+      ],
+      "failed_steps": [],
+      "job_conclusion": null,
+      "job_status": "in_progress"
+    },
+    {
+      "at_utc": "2026-10-14T01:06:22Z",
+      "completed_steps": 26,
+      "current_steps": [],
+      "failed_steps": [
+        18
+      ],
+      "job_conclusion": "failure",
+      "job_status": "completed"
+    }
+  ],
+  "run_attempt": 1,
+  "run_id": 38493436921,
+  "run_number": 52,
+  "safe_failure_receipt_sha256": "3f9d02377b05e526fd5427a1fa49345dc937448e0e565db5efeaeb499bd64a37",
+  "schema": "gsip-pr63-e195-finite-android-watch-v1",
+  "source_Git_production_mutations": false,
+  "terminal": true
+}

@@ -1,0 +1,34 @@
+{
+  "GET_only": true,
+  "actual_checkout": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "attempt": 1,
+  "conclusion": "success",
+  "head": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "job_id": 115666719046,
+  "main": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "metrics": {
+    "bytes": 7372,
+    "path": "/private/tmp/gsip-main-a638-general-watch/GENERAL_TERMINAL_METRICS.json",
+    "sha256": "3307d4070b34d37a37ffc46ded09fe54921a34975b25e0f4feebf8c9fc100c92"
+  },
+  "mutations": false,
+  "native_artifacts_or_actions_touched": false,
+  "premerge_main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "rawlogs_saved": false,
+  "reviewed_PR_head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "run_conclusion": "success",
+  "run_id": 38507012733,
+  "run_number": 257,
+  "run_status": "completed",
+  "scans": {
+    "bytes": 698,
+    "path": "/private/tmp/gsip-main-a638-general-watch/SCAN_CLOSURE.json",
+    "sha256": "707e627baa75a85bc24afbd822302af590c6331f65e0fc53bff7fe4c2373a7e2"
+  },
+  "source_binding": {
+    "bytes": 3975,
+    "path": "/private/tmp/gsip-main-a638-general-watch/SOURCE_BINDING.json",
+    "sha256": "73cc6aedf5e23e8fe0ab12d2745008a6b96a8929ff4bea62882c8befc2cec252"
+  },
+  "status": "completed"
+}

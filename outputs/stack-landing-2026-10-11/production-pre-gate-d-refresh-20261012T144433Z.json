@@ -1,0 +1,386 @@
+{
+  "bound_receipts": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-post-gate-c-verification-2026-10-12.json",
+      "sha256": "85b1f1b89960582446550883ea3556a34d2a3efba9b7a414d9023d7cc246c73e"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-post-c-metadata-2026-10-12.json",
+      "sha256": "d0bcb3caaec11782797ba9bac045c4fb30e9dfb2ddcaa7e54bf09ba911b07061"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-c-root-ledger-capture-readback-2026-10-12.json",
+      "sha256": "1d55444df57084153cc54159b41eafa7c81686570e4187a1dd67daec8b2a1d5e"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-post-c-security-advisor-2026-10-12.json",
+      "sha256": "395cfb65171df63342c756f9f7da823336d5516c608d51172f90f2b9b99f4165"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-catalog-target26.json",
+      "sha256": "eca562018a82a5df9f2ddd37b1f47e81a26be709f34e4b967c21d5442a562393"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-catalog-target26-supplement.json",
+      "sha256": "1ea270359d6b9587d1dc444e9196cc4628c49d21047fa4d0604cfc0925ea136d"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-catalog-20261012T144433Z.json",
+      "sha256": "021b41dd8b3142098180ac6f958aa228895962b4f1604a12a30c5708eaa13c2b"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-supplement-20261012T144433Z.json",
+      "sha256": "2aa5f571ce328eeb62727e5f6985420779b6dd80bc254260b60ddae6ad755552"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-counts-20261012T144433Z.json",
+      "sha256": "b3db87bdf239248bd26296ab1a11692202d17401c58a466ea74fa7102a3eae93"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-ledger-20261012T144433Z.json",
+      "sha256": "656fe0bfe04b0d4179070f350fee01bbc4a49b0470d0bad3520ba53ffb25e1a2"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-table_inventory-20261012T144433Z.json",
+      "sha256": "484890515a255e498cd94a41d266e431b732170396ea060c34d9b3655c5e6193"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-capture-20261012T144433Z.json",
+      "sha256": "387fa4455088dfce6e9bc7e4adda5eeffd9b2b3b5561df78827812d2e0bb7bb1"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-security_advisor-20261012T144433Z.json",
+      "sha256": "86311bbba6c95cd8af0381282e64c00992819303d12eacf5a52ffe3949873a26"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-edge_inventory-20261012T144433Z.json",
+      "sha256": "b9b1e5c947096ac7cbd3b551e79f6e9a8f1f8a64db3f9cf083e23917e941d78b"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-query-inputs-20261012T144433Z.json",
+      "sha256": "d13114d84bf16941c6e1fb06cfaa2e3bc7f284d26ff1030970567575579732d7"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-query-response-times-20261012T144433Z.json",
+      "sha256": "3f6aba5805ce5b31dff6277c6767d1145851db0aaf0e8497bb7a2cfbfcb8a8da"
+    }
+  ],
+  "checks": {
+    "all26_identity_and_whole_row_hash_records_exact_postC": true,
+    "all61_table_counts_exact_postC": true,
+    "all61_table_names_exact_postC": true,
+    "capture_exactly_one_closed_singleton": true,
+    "catalog_byte_hash_exact_postC": true,
+    "edge_full_sanitized_metadata_exact_postC": true,
+    "exact_same3_security_categories_and7_objects": true,
+    "exactly5_bound_select_aliases": true,
+    "explicit_requested_counts_exact": true,
+    "prior_attach_v3_only_jwt_on": true,
+    "strict_OPS_comparator_unchanged": true,
+    "supplement_byte_hash_exact_postC": true,
+    "target26_strict_catalog_comparator_PASS": true
+  },
+  "completed_at_utc": "2026-10-12T14:48:50.576925+00:00",
+  "edge_inventory": [
+    {
+      "created_at": 1784747428489,
+      "ezbr_sha256": "25d45a61e1032e4f6d47b695b2501bd434511f5a275b8a797907bb5c75c48499",
+      "id": "be4b0424-e6a2-4ddf-9533-b9625f4be235",
+      "name": "prior-attach",
+      "slug": "prior-attach",
+      "status": "ACTIVE",
+      "updated_at": 1784783397734,
+      "verify_jwt": true,
+      "version": 3
+    }
+  ],
+  "explicit_counts": {
+    "auth.users": 0,
+    "public.contributors": 5,
+    "public.h3_cells": 0,
+    "public.photos": 25,
+    "public.submissions": 25,
+    "realtime.schema_migrations": 89,
+    "supabase_migrations.schema_migrations": 26
+  },
+  "failed_checks": [],
+  "production_mutations_by_this_agent": 0,
+  "query_times": {
+    "completed_queries_at_utc": "2026-10-12 14:47:17 UTC",
+    "started_at_utc": "2026-10-12 14:44:33 UTC"
+  },
+  "scope_limits": [
+    "No contributor row contents, function bodies, coordinates, credentials or raw upload metadata were retrieved.",
+    "Only schema metadata, full-ledger-row hashes, aggregate table counts, capture-state aggregates, security advisor metadata and Edge metadata were read.",
+    "Auth settings and PostgREST exposed schema configuration were not queried; root owns their separate current receipts.",
+    "No Supabase CLI call, production mutation, source edit, merge, capture opening or function deployment was performed.",
+    "Current production has26 applied migrations. The prepared2 GateD migrations remain unapplied and need separate exact-command owner approval.",
+    "PASS labels no-drift preparation only; the security-zero gate remains blocked until remediation is separately approved, executed and verified."
+  ],
+  "security_advisor": [
+    {
+      "categories": [
+        "SECURITY"
+      ],
+      "count": 2,
+      "facing": "EXTERNAL",
+      "findings": [
+        {
+          "metadata": {
+            "name": "attribution_reviews",
+            "schema": "public",
+            "type": "table"
+          },
+          "observed_at": "2026-10-12T14:45:05.866Z"
+        },
+        {
+          "metadata": {
+            "name": "grant_withdrawals",
+            "schema": "public",
+            "type": "table"
+          },
+          "observed_at": "2026-10-12T14:45:05.866Z"
+        }
+      ],
+      "level": "INFO",
+      "name": "rls_enabled_no_policy",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+      "title": "RLS Enabled No Policy"
+    },
+    {
+      "categories": [
+        "SECURITY"
+      ],
+      "count": 1,
+      "facing": "EXTERNAL",
+      "findings": [
+        {
+          "metadata": {
+            "arguments": "",
+            "language": "sql",
+            "name": "capture_is_open",
+            "schema": "public",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-12T14:45:05.866Z"
+        }
+      ],
+      "level": "WARN",
+      "name": "anon_security_definer_function_executable",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable",
+      "title": "Public Can Execute SECURITY DEFINER Function"
+    },
+    {
+      "categories": [
+        "SECURITY"
+      ],
+      "count": 4,
+      "facing": "EXTERNAL",
+      "findings": [
+        {
+          "metadata": {
+            "arguments": "",
+            "language": "sql",
+            "name": "capture_is_open",
+            "schema": "public",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-12T14:45:05.866Z"
+        },
+        {
+          "metadata": {
+            "arguments": "",
+            "language": "sql",
+            "name": "current_auth_user_exists",
+            "schema": "public",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-12T14:45:05.866Z"
+        },
+        {
+          "metadata": {
+            "arguments": "p_submission_id uuid",
+            "language": "plpgsql",
+            "name": "finalize_submission",
+            "schema": "public",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-12T14:45:05.866Z"
+        },
+        {
+          "metadata": {
+            "arguments": "p_submission text",
+            "language": "sql",
+            "name": "my_submission_accepts_uploads",
+            "schema": "public",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-12T14:45:05.866Z"
+        }
+      ],
+      "level": "WARN",
+      "name": "authenticated_security_definer_function_executable",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+      "title": "Signed-In Users Can Execute SECURITY DEFINER Function"
+    }
+  ],
+  "security_findings_accepted_for_drift_comparison_only": {
+    "categories": 3,
+    "note": "These are the unchanged reviewed remediation targets; no launch/deployment security exception is created.",
+    "objects": 7
+  },
+  "security_zero_gate_satisfied": false,
+  "state": "PASS_READONLY_PRE_GATED_NO_DRIFT",
+  "strict_catalog_helper": {
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "scripts.reconciliation",
+      "--reference-catalog",
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-catalog-target26.json",
+      "--observed-catalog",
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-catalog-20261012T144433Z.json",
+      "--reference-supplement",
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-catalog-target26-supplement.json",
+      "--observed-supplement",
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-supplement-20261012T144433Z.json"
+    ],
+    "exit_code": 0,
+    "result": {
+      "allowed_differences": [
+        {
+          "identifier": "pg_stat_statements",
+          "kind": "exact_platform_addition",
+          "section": "extensions"
+        },
+        {
+          "identifier": "supabase_vault",
+          "kind": "exact_platform_addition",
+          "section": "extensions"
+        },
+        {
+          "identifier": "uuid-ossp",
+          "kind": "exact_platform_addition",
+          "section": "extensions"
+        },
+        {
+          "identifier": "gold_labels_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "photos_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "predictions_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "priors_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "qa_events_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "extensions.dashboard_user.CREATE",
+          "kind": "exact_platform_addition",
+          "section": "schema_grants"
+        },
+        {
+          "identifier": "extensions.dashboard_user.USAGE",
+          "kind": "exact_platform_addition",
+          "section": "schema_grants"
+        },
+        {
+          "identifier": "public.postgres.USAGE",
+          "kind": "exact_platform_addition",
+          "section": "schema_grants"
+        }
+      ],
+      "counts": {
+        "column_grants": {
+          "observed": 56,
+          "reference": 56
+        },
+        "columns": {
+          "observed": 162,
+          "reference": 162
+        },
+        "constraints": {
+          "observed": 126,
+          "reference": 126
+        },
+        "extensions": {
+          "observed": 6,
+          "reference": 3
+        },
+        "functions": {
+          "observed": 19,
+          "reference": 19
+        },
+        "indexes": {
+          "observed": 42,
+          "reference": 42
+        },
+        "policies": {
+          "observed": 24,
+          "reference": 24
+        },
+        "private_functions": {
+          "observed": 22,
+          "reference": 22
+        },
+        "schema_grants": {
+          "observed": 16,
+          "reference": 13
+        },
+        "storage_policies": {
+          "observed": 5,
+          "reference": 5
+        },
+        "table_grants": {
+          "observed": 315,
+          "reference": 315
+        },
+        "tables": {
+          "observed": 20,
+          "reference": 20
+        },
+        "triggers": {
+          "observed": 22,
+          "reference": 22
+        },
+        "views": {
+          "observed": 1,
+          "reference": 1
+        }
+      },
+      "input_sha256": {
+        "observed-catalog": "021b41dd8b3142098180ac6f958aa228895962b4f1604a12a30c5708eaa13c2b",
+        "observed-supplement": "2aa5f571ce328eeb62727e5f6985420779b6dd80bc254260b60ddae6ad755552",
+        "reference-catalog": "eca562018a82a5df9f2ddd37b1f47e81a26be709f34e4b967c21d5442a562393",
+        "reference-supplement": "1ea270359d6b9587d1dc444e9196cc4628c49d21047fa4d0604cfc0925ea136d"
+      },
+      "ok": true,
+      "scope": "provided catalog metadata only; no data or deployment proof",
+      "unexpected_differences": []
+    },
+    "source_sha256": "2ea3ce49a3a68a9ba4e42b4b0314d8c118bc0098f702d540b82fba9f8207e620"
+  },
+  "target": "toxldjgwkxtneoqsazym",
+  "tool_event": {
+    "first_catalog_call_reported_error": true,
+    "other7_readonly_calls_successful": true,
+    "raw_error_suppressed": true,
+    "retry_successful": true,
+    "same_readonly_query_retried_once": true
+  }
+}

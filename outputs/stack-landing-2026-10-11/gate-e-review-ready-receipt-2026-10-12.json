@@ -1,0 +1,28 @@
+{
+  "state": "PREPARED_ONLY_WAITING_JUSTIN_GO",
+  "prepared_at_utc": "2026-10-12T19:50:37.391673+00:00",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1"
+  },
+  "source_commit": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "plan_markdown": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/GATE-E-edge-functions-2026-10-12.md",
+    "sha256": "cce64f35d56cdd682746660da68c460cd58418d80e32f71f0f4eb5bf7ba76622"
+  },
+  "plan_json": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-edge-functions-plan-2026-10-12.json",
+    "sha256": "e039f322cb1d35a5fc53b20f69b40deb51c2df878f4ff31f39d4cbdbd6bd4ac8"
+  },
+  "smoke_verifier": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-edge-smoke-2026-10-12.py",
+    "sha256": "2b74853beea8d08ec1a43a1f4f1a5ed2f7fc1ecd0b0b4404b61edf801ed982f0",
+    "self_tests_passed": 13,
+    "live_post_deployment_smokes_run": false
+  },
+  "deployment_commands_run": [],
+  "production_mutations": [],
+  "PR_merges_or_approvals": false,
+  "capture_opening": false
+}

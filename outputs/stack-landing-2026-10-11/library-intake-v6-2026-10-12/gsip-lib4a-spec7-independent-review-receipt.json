@@ -1,0 +1,83 @@
+{
+  "review": "Independent adversarial review of WP-LIB-4A #48 and SPEC-v7 #49",
+  "created_at": "2026-10-13T02:57:40.843552+00:00",
+  "reviewer": "library_optics_model_review; did not author either reviewed change",
+  "read_only": true,
+  "github_approving_review": false,
+  "contract": {
+    "head": "575630964d721e044c685de130667fd849244848",
+    "base": "b37cc13c3ca186b14c76416cd3b4ae84746be2d6",
+    "snapshot": "/private/tmp/gsip-lib4a-independent-575630",
+    "changed_files_sha256": {
+      "docs/LIBRARY_INTAKE_CONTRACT.md": "03ba705053802b75f9ba8d41e67ff379256e802159f95daadaa1073ff3a54e42",
+      "docs/SOIL_LIBRARY.md": "db2c58bd00cd1eecaccf8118f582f42251a2ba5568fc48d3851f4992a6898263",
+      "packages/schema/src/index.ts": "8b83f86de138fcaec38020d41150352a27be7d6c1793a05ddec8b2ce220fb368",
+      "packages/schema/src/libraryIntake.ts": "032e35cb21a773bf84d5b1a65b9ac29b2ecbd628dabf04eed87edc284fa98ac4",
+      "packages/schema/tests/fixtures/library-intake-conformance.json": "08f62c305b80533e33b5d8aed71c22c247ed31d70e0672bc41d1c7f7c4c126bc",
+      "packages/schema/tests/library-intake.test.ts": "c5bfd144f2da4bb174fedb2228295aea092cdf15ec728d4295c71cf39d4c7639",
+      "tests/test_library_intake_contract.py": "ee2b132424629ddc8f8ceaec3d7f2cb0e0421da32ab0a92e94a5e455936cd04e"
+    },
+    "snapshot_matches": 7,
+    "conclusion": "No merge blocker found in exact-head caller contract, raw parser, synthetic corpus or docs.",
+    "findings": [],
+    "checks": {
+      "full_schema_tests": {
+        "passed": 203,
+        "failed": 0,
+        "report": "/private/tmp/gsip-lib4a-independent-full-schema.json",
+        "sha256": "1bde3bc76a758109d50177304674443612797b19652c53fe24c15fa70e6791d0"
+      },
+      "focused_intake_contract_tests": {
+        "passed": 77,
+        "failed": 0,
+        "report": "/private/tmp/gsip-lib4a-independent-vitest.json",
+        "sha256": "5ae2bd2f4dbf5b1151d0ea062f01733d5d9bb94d2452dd643e8fa2fa7143d706"
+      },
+      "shared_python_instrument_corpus": {
+        "passed": 45,
+        "failed": 0
+      },
+      "additional_deterministic_synthetic_checks": {
+        "passed": 134,
+        "script": "/private/tmp/gsip-lib4a-adversarial-checks.mjs",
+        "script_sha256": "7f2d1bb4760a83f925ef6e0c63ad56b5bb8a1b1f8a654249d728c205f49fbf41",
+        "seed": 478
+      }
+    },
+    "audited": [
+      "Raw UTF-8 byte bounds before duplicate scanner and full parse; inclusive 2,000,000 bytes.",
+      "Duplicate decoded keys rejected at all object levels, including escaped aliases; hostile nesting bounded.",
+      "Strict nested shapes forbid caller authority, raw report/path/URL extras and unsupported schemas.",
+      "Finite typed numeric bounds, aligned and increasing instrument arrays; no unit coercion.",
+      "UUID canonical lowercase without invented version/variant claim; source digests lowercase.",
+      "Generic raw/schema errors without input values, field names or attached causes.",
+      "Safe receipt/capability exact fields; storage remains private and unverified.",
+      "Shared synthetic corpus agrees with existing Python instrument validator; decoded JSON limitations documented."
+    ]
+  },
+  "specification": {
+    "head": "fba2aa9b8e09ab542009022e189fe8cd0bb40236",
+    "base": "575630964d721e044c685de130667fd849244848",
+    "changed_files_sha256": {
+      "AGENTS.md": "4ba74819704a59f4bcd7fa06af85b6927ef8e942e929659e3b028634c552dadb",
+      "docs/BUILD_ORDER.md": "cfcb36a21483b621b7539eda6f0cb240a5ad958b12b2d0cffc558c80dc6b839b",
+      "docs/SPEC.md": "4c0402472bb771a8c5a69984536b87ec984280114e41b5c5fb78fa63495d4ff8"
+    },
+    "conclusion": "No merge blocker found in the exact three-file specification prerequisite.",
+    "findings": [],
+    "diff_check": "pass",
+    "audited": [
+      "Implementation dependency order inserts reviewed spec-v7 before hosted-intake and phone packages.",
+      "Additive rights-request/withdrawal and completion hooks preserve old worker function signatures and allow bodies intact.",
+      "Same contributor-lock serialization, tombstones-first erase and refusal on remaining covered payload remain mandatory.",
+      "Retired intake/measurement/node identifiers are minimal opaque immutable refusal state; no contributor/source/context bytes.",
+      "No positive pairing authority, verification export, public release or production activation is added.",
+      "Current governing AGENTS version replaces stale pre-merge v3 branch routing."
+    ]
+  },
+  "limits": [
+    "Independent review does not constitute GitHub approval or deployment authorization.",
+    "Parent must bind merged heads to successful exact-head CI; specification does not prove SQL trigger implementation.",
+    "No production migration, capture opening, hosted RPC call, secrets or real contributor inputs used."
+  ]
+}

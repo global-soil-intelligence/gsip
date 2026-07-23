@@ -1,0 +1,12 @@
+{
+  "parent_head": "d495d7fed932cc25dcc92fa4fa0b7628b730b26f",
+  "base_C_head": "e03e20457a11456d1cd3842caa224d049b44265f",
+  "forward_B_head": "b0f8e0f808629754bc6f4213f9c94e3149adfe55",
+  "files": {
+    "pipeline/export.py": "a39ae3f7c2fab8785c05d8fdb4c17f80bc5040b5d31fb667a825e21cca241a88",
+    "pipeline/photo_export_privacy.py": "53655a2ccc8f89c942ea4630ff827c9e0d10ded7755c9d684c85672fc60e621e",
+    "tests/test_export.py": "402d9767fef1fa31e96d532cd324646f94087150e5722875cce9d9fef3e0217e",
+    "tests/test_photo_export_privacy.py": "6dcc5a197c4e8b8a82ee00451f1247eb26e624b9dd408fa64a8dffa245e898e9"
+  },
+  "inherited_qa_sha256": "bac8fe0b1ad179e999f7ec2b0d6718fd516fd0ee76f03c5b9f26723b3ca7c575"
+}

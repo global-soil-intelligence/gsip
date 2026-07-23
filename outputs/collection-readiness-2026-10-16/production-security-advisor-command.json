@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "./node_modules/.bin/supabase",
+    "db",
+    "advisors",
+    "--linked",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--type",
+    "security",
+    "--level",
+    "info",
+    "--fail-on",
+    "info",
+    "--output",
+    "json"
+  ],
+  "utc": "2026-10-16T22:30:04.277028+00:00",
+  "exit_code": 0,
+  "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

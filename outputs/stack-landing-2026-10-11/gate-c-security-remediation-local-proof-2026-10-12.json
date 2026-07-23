@@ -1,0 +1,281 @@
+{
+  "status": "PASS_ISOLATED_LOCAL_PROPOSAL_PROOF",
+  "started_at": "2026-10-12T14:04:03.782713+00:00",
+  "completed_at": "2026-10-12T14:04:06.749189+00:00",
+  "source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "image_id": "sha256:521e67f2812db505fe6d462b1820136394824d7f5c6016a19234b07ac93d6760",
+  "postgres_version": "17.6",
+  "network": "none",
+  "host_ports": [],
+  "user": "postgres",
+  "source_mount": "read-only",
+  "source_changes": false,
+  "production_operations": [],
+  "official_rule_source_sha256": "d8d558baad3e03832e521c527907fa50a9a172fabd899dd0f5c2504a5a0e9349",
+  "official_scoped_rule_sha256": "58f34aeda9df73e64ad78fab7da8f6f7690e4ed568cab89ac0b0155cb67c9f9f",
+  "sql_proposal_sha256": "f56380b5a479045d65fda8318ccaa51aa0910d6d837fb3f06ea620598b6d43e7",
+  "new_test_sql_sha256": "bd030c46f750ec6484c8280cc9c02759c3c557a14aa3dd28a191f9f2880244bb",
+  "new_contract_before": {
+    "planned": 28,
+    "passed": 23,
+    "failed": 5,
+    "failures": [
+      "not ok 1 - all four public functions use caller privileges",
+      "not ok 2 - all three wrappers have definition-time bound SQL bodies",
+      "not ok 3 - exact three private guarded bodies pin empty search path",
+      "not ok 4 - authenticated has only the required private guarded dispatch grants",
+      "not ok 8 - both private tables have restrictive false policies"
+    ]
+  },
+  "new_contract_after": {
+    "planned": 28,
+    "passed": 28,
+    "failed": 0,
+    "failures": []
+  },
+  "baseline_existing_suites": {
+    "prior_attempts.test.sql": {
+      "planned": 30,
+      "passed": 30,
+      "failed": 0,
+      "failures": []
+    },
+    "rls.test.sql": {
+      "planned": 42,
+      "passed": 42,
+      "failed": 0,
+      "failures": []
+    },
+    "wp6b_integrity.test.sql": {
+      "planned": 51,
+      "passed": 51,
+      "failed": 0,
+      "failures": []
+    },
+    "wp6d_rights.test.sql": {
+      "planned": 70,
+      "passed": 70,
+      "failed": 0,
+      "failures": []
+    },
+    "wp6e_provenance.test.sql": {
+      "planned": 57,
+      "passed": 57,
+      "failed": 0,
+      "failures": []
+    },
+    "wp_agent1_public.test.sql": {
+      "planned": 12,
+      "passed": 12,
+      "failed": 0,
+      "failures": []
+    }
+  },
+  "after_existing_suites": {
+    "prior_attempts.test.sql": {
+      "planned": 30,
+      "passed": 30,
+      "failed": 0,
+      "failures": []
+    },
+    "rls.test.sql": {
+      "planned": 42,
+      "passed": 42,
+      "failed": 0,
+      "failures": []
+    },
+    "wp6b_integrity.test.sql": {
+      "planned": 51,
+      "passed": 51,
+      "failed": 0,
+      "failures": []
+    },
+    "wp6d_rights.test.sql": {
+      "planned": 70,
+      "passed": 70,
+      "failed": 0,
+      "failures": []
+    },
+    "wp6e_provenance.test.sql": {
+      "planned": 57,
+      "passed": 57,
+      "failed": 0,
+      "failures": []
+    },
+    "wp_agent1_public.test.sql": {
+      "planned": 12,
+      "passed": 12,
+      "failed": 0,
+      "failures": []
+    }
+  },
+  "unchanged_metadata_sections": [
+    "column_grants",
+    "columns",
+    "constraints",
+    "extensions",
+    "indexes",
+    "table_grants",
+    "tables",
+    "triggers",
+    "schema_grants",
+    "storage_policies",
+    "views"
+  ],
+  "public_function_names_callers_and_owners_unchanged": true,
+  "all_old_private_function_records_unchanged": true,
+  "new_private_function_names": [
+    "current_auth_user_exists",
+    "finalize_submission",
+    "my_submission_accepts_uploads"
+  ],
+  "official_scoped_lints_before": [
+    {
+      "name": "rls_enabled_no_policy",
+      "title": "RLS Enabled No Policy",
+      "level": "INFO",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+      "detail": "Table \\`public.attribution_reviews\\` has RLS enabled, but no policies exist",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+      "metadata": {
+        "name": "attribution_reviews",
+        "type": "table",
+        "schema": "public"
+      },
+      "cache_key": "rls_enabled_no_policy_public_attribution_reviews"
+    },
+    {
+      "name": "rls_enabled_no_policy",
+      "title": "RLS Enabled No Policy",
+      "level": "INFO",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+      "detail": "Table \\`public.grant_withdrawals\\` has RLS enabled, but no policies exist",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+      "metadata": {
+        "name": "grant_withdrawals",
+        "type": "table",
+        "schema": "public"
+      },
+      "cache_key": "rls_enabled_no_policy_public_grant_withdrawals"
+    },
+    {
+      "name": "anon_security_definer_function_executable",
+      "title": "Public Can Execute SECURITY DEFINER Function",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects `SECURITY DEFINER` functions that are callable without signing in. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if it is not meant to be public.",
+      "detail": "Function `public.capture_is_open()` can be executed by the `anon` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/capture_is_open`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable",
+      "metadata": {
+        "name": "capture_is_open",
+        "schema": "public",
+        "language": "sql",
+        "arguments": "",
+        "security_definer": true
+      },
+      "cache_key": "anon_security_definer_function_executable_public_capture_is_open_"
+    },
+    {
+      "name": "authenticated_security_definer_function_executable",
+      "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+      "detail": "Function `public.capture_is_open()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/capture_is_open`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+      "metadata": {
+        "name": "capture_is_open",
+        "schema": "public",
+        "language": "sql",
+        "arguments": "",
+        "security_definer": true
+      },
+      "cache_key": "authenticated_security_definer_function_executable_public_capture_is_open_"
+    },
+    {
+      "name": "authenticated_security_definer_function_executable",
+      "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+      "detail": "Function `public.current_auth_user_exists()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/current_auth_user_exists`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+      "metadata": {
+        "name": "current_auth_user_exists",
+        "schema": "public",
+        "language": "sql",
+        "arguments": "",
+        "security_definer": true
+      },
+      "cache_key": "authenticated_security_definer_function_executable_public_current_auth_user_exists_"
+    },
+    {
+      "name": "authenticated_security_definer_function_executable",
+      "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+      "detail": "Function `public.finalize_submission(p_submission_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/finalize_submission`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+      "metadata": {
+        "name": "finalize_submission",
+        "schema": "public",
+        "language": "plpgsql",
+        "arguments": "p_submission_id uuid",
+        "security_definer": true
+      },
+      "cache_key": "authenticated_security_definer_function_executable_public_finalize_submission_p_submission_id uuid"
+    },
+    {
+      "name": "authenticated_security_definer_function_executable",
+      "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+      "detail": "Function `public.my_submission_accepts_uploads(p_submission text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/my_submission_accepts_uploads`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+      "metadata": {
+        "name": "my_submission_accepts_uploads",
+        "schema": "public",
+        "language": "sql",
+        "arguments": "p_submission text",
+        "security_definer": true
+      },
+      "cache_key": "authenticated_security_definer_function_executable_public_my_submission_accepts_uploads_p_submission text"
+    }
+  ],
+  "official_scoped_lints_after": [],
+  "capture_final_counts": {
+    "rows": 1,
+    "open_rows": 0
+  },
+  "limits": [
+    "Disposable synthetic stand-in; not production remediation or production advisor result.",
+    "Scoped immutable official SQL checks only0008,0028,0029 with local pgrst.db_schemas=public; hosted API config must still prove private not exposed.",
+    "No pgTAP fixture data, SQL row contents or coordinates persisted in the receipt.",
+    "Spec-first architecture and owning-branch fix-forward decision remain required before source implementation."
+  ]
+}

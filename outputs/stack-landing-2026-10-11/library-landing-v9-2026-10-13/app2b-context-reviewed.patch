@@ -1,0 +1,545 @@
+--- a/scripts/app_notification_audit.py
++++ b/scripts/app_notification_audit.py
+@@ -142,6 +142,149 @@
+         refuse()
+     _diagnostic_stage = stage
+     _diagnostic_counts = counts
++
++
++def _gradle_inspection_command(error: subprocess.CalledProcessError) -> bool:
++    args = error.cmd
++    if (
++        type(error.returncode) is not int
++        or error.returncode == 0
++        or type(args) not in (list, tuple)
++        or len(args) != 7
++        or any(
++            type(arg) is not str
++            or not 0 < len(arg) <= 4096
++            or any(ord(char) < 32 or ord(char) == 127 for char in arg)
++            for arg in args
++        )
++        or not Path(args[0]).is_absolute()
++        or Path(args[0]).name != "gradlew"
++        or list(args[1:4]) != ["--no-daemon", "--console=plain", "-I"]
++        or not Path(args[4]).is_absolute()
++        or Path(args[4]).name != "inspection.gradle"
++        or args[5] != ":app:gsipRuntimeEvidence"
++        or not args[6].startswith("-PgsipEvidenceOutput=")
++        or not Path(args[6].removeprefix("-PgsipEvidenceOutput=")).is_absolute()
++    ):
++        return False
++    return True
++
++
++def _gradle_context_stream(raw: Any) -> tuple[str, str | None, int]:
++    """No coercion or partial inspection: match existing type/UTF-8/size/control guards."""
++    if raw is None:
++        return "MISSING", "", 0
++    if type(raw) not in (str, bytes):
++        return "TYPE_REJECTED", None, 0
++    if len(raw) > MAX_DIAGNOSTIC_BYTES:
++        return "SIZE_REJECTED", None, 0
++    try:
++        text = raw.decode("utf-8") if isinstance(raw, bytes) else raw
++        size = len(text.encode("utf-8"))
++    except UnicodeError:
++        return "UTF8_REJECTED", None, 0
++    if size > MAX_DIAGNOSTIC_BYTES:
++        return "SIZE_REJECTED", None, 0
++    if any((ord(char) < 32 and char not in "\n\r\t") or ord(char) == 127 for char in text):
++        return "CONTROL_REJECTED", None, 0
++    return (
++        ("BYTES_VALID" if isinstance(raw, bytes) else "TEXT_VALID"),
++        text.replace("\r\n", "\n"),
++        size,
++    )
++
++
++def _gradle_context_marker(text: str) -> str:
++    if "GSIP_RUNTIME_FAILURE" not in text:
++        return "ABSENT"
++    lines = [line for line in text.splitlines() if "GSIP_RUNTIME_FAILURE_V1|" in line]
++    if text.count("GSIP_RUNTIME_FAILURE") != 1 or len(lines) != 1:
++        return "INVALID"
++    parts = lines[0].split("|")
++    if (
++        len(parts) != 3
++        or parts[0] != "GSIP_RUNTIME_FAILURE_V1"
++        or parts[1] not in GRADLE_FAILURE_PHASES
++        or parts[2] not in GRADLE_FAILURE_CAUSES
++    ):
++        return "INVALID"
++    return "VALID"
++
++
++def _gradle_context_framing(text: str) -> tuple[str, str]:
++    """Classify public Gradle framing only; never return its opaque message values."""
++    single = text.count("FAILURE: Build failed with an exception.\n")
++    multiple = len(
++        re.findall(r"(?m)^FAILURE: Build completed with [2-9][0-9]{0,2} failures\.$", text)
++    )
++    if not single and not multiple:
++        return "ABSENT", "UNKNOWN"
++    chunks = text.split("* What went wrong:\n")[1:]
++    if not chunks or any("* Try:\n" not in chunk for chunk in chunks):
++        return "MALFORMED", "UNKNOWN"
++    structure = "MULTIPLE" if multiple or single > 1 or len(chunks) > 1 else "SINGLE"
++    labels = set()
++    for chunk in chunks:
++        section = chunk.split("* Try:\n", 1)[0].strip()
++        first = section.splitlines()[0] if section else ""
++        matched = False
++        for prefix, label in (
++            ("Could not compile initialization script ", "INIT_COMPILE"),
++            ("A problem occurred evaluating initialization script.", "INIT_EVALUATION"),
++            ("A problem occurred evaluating settings ", "SETTINGS_EVALUATION"),
++            ("Could not compile settings file ", "SETTINGS_COMPILE"),
++            ("Could not compile build file ", "PROJECT_COMPILE"),
++            ("A problem occurred evaluating root project ", "PROJECT_EVALUATION"),
++            ("A problem occurred evaluating project ", "PROJECT_EVALUATION"),
++            ("A problem occurred configuring root project ", "PROJECT_CONFIGURATION"),
++            ("A problem occurred configuring project ", "PROJECT_CONFIGURATION"),
++            ("Task 'gsipRuntimeEvidence' not found in project ':app'.", "TASK_SELECTION"),
++            ("Execution failed for task ':app:gsipRuntimeEvidence'.", "TASK_EXECUTION"),
++            ("Could not resolve all files for configuration ", "DEPENDENCY_RESOLUTION"),
++            ("Could not resolve all artifacts for configuration ", "DEPENDENCY_RESOLUTION"),
++        ):
++            if first.startswith(prefix):
++                labels.add(label)
++                matched = True
++        if not matched:
++            labels.add("UNKNOWN")
++    return structure, (
++        next(iter(labels)) if len(labels) == 1 else "AMBIGUOUS" if labels else "UNKNOWN"
++    )
++
++
++def gradle_failure_context(error: subprocess.CalledProcessError) -> str | None:
++    """Supplemental fixed-token origin only; never alters the four-field diagnostic."""
++    if (
++        _diagnostic_stage != "android-gradle-inspection"
++        or not isinstance(error, subprocess.CalledProcessError)
++        or not _gradle_inspection_command(error)
++    ):
++        return None
++    stdout, left, left_size = _gradle_context_stream(error.stdout)
++    stderr, right, right_size = _gradle_context_stream(error.stderr)
++    combined = "UNINSPECTED"
++    marker = structure = framing = "UNINSPECTED"
++    if left is not None and right is not None:
++        if left_size + right_size > MAX_DIAGNOSTIC_BYTES:
++            combined = "SIZE_REJECTED"
++        else:
++            combined = "WITHIN_BOUND"
++            text = left + "\n" + right
++            marker = _gradle_context_marker(text)
++            structure, framing = _gradle_context_framing(text)
++    return "|".join(
++        (
++            "GSIP_GRADLE_CONTEXT_V1",
++            "COMMAND_VALID",
++            stdout,
++            stderr,
++            combined,
++            marker,
++            structure,
++            framing,
++        )
++    )
+ 
+ 
+ def gradle_failure_details(error: subprocess.CalledProcessError) -> tuple[str, str]:
+@@ -2546,6 +2689,10 @@
+         tarfile.TarError,
+     ) as error:
+         print("native-audit: evidence missing, invalid or unreviewed", file=sys.stderr)
++        if isinstance(error, subprocess.CalledProcessError):
++            context = gradle_failure_context(error)
++            if context is not None:
++                print(context, file=sys.stderr)
+         print(
+             "native-audit: diagnostic " + json.dumps(diagnostic(error), sort_keys=True),
+             file=sys.stderr,
+--- a/tests/test_app_notification_audit.py
++++ b/tests/test_app_notification_audit.py
+@@ -2480,3 +2480,359 @@
+     assert "printStackTrace" not in task
+     assert "System.getenv" not in task
+     assert "failure.toString" not in task
++
++
++@pytest.mark.parametrize("case", ["unknown", "overflow", "pretask"])
++def test_gradle_context_main_exposes_fixed_origin_and_preserves_failure(
++    case: str, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path
++) -> None:
++    import subprocess
++
++    private = "synthetic private payload https://example.invalid/private"
++    stderr = private
++    expected = (
++        "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|TEXT_VALID|TEXT_VALID|"
++        "WITHIN_BOUND|ABSENT|ABSENT|UNKNOWN"
++    )
++    if case == "overflow":
++        stderr += "x" * audit.MAX_DIAGNOSTIC_BYTES
++        expected = (
++            "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|TEXT_VALID|SIZE_REJECTED|"
++            "UNINSPECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED"
++        )
++    elif case == "pretask":
++        stderr = gradle_failure_fixture(private).replace(
++            "Execution failed for task ':app:gsipRuntimeEvidence'.",
++            "A problem occurred evaluating initialization script.",
++        )
++        expected = (
++            "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|TEXT_VALID|TEXT_VALID|"
++            "WITHIN_BOUND|ABSENT|SINGLE|INIT_EVALUATION"
++        )
++    failure = subprocess.CalledProcessError(
++        1, GRADLE_INSPECTION_COMMAND, output=private, stderr=stderr
++    )
++
++    def fail(*args: Any, **kwargs: Any) -> None:
++        raise failure
++
++    def collect(*args: Any) -> None:
++        audit.mark("android-gradle-inspection")
++        audit.run(GRADLE_INSPECTION_COMMAND, tmp_path)
++
++    monkeypatch.setattr("scripts.app_notification_audit.subprocess.run", fail)
++    monkeypatch.setattr(audit, "collect_android", collect)
++    assert (
++        audit.main(
++            [
++                "android",
++                str(tmp_path),
++                str(tmp_path),
++                str(tmp_path / "out.json"),
++                str(tmp_path / "key"),
++            ]
++        )
++        == 1
++    )
++    captured = capsys.readouterr()
++    assert expected in captured.err.splitlines()
++    assert (
++        sum(line.startswith("GSIP_GRADLE_CONTEXT_V1|") for line in captured.err.splitlines()) == 1
++    )
++    diagnostic = json.loads(captured.err.split("native-audit: diagnostic ", 1)[1])
++    assert set(diagnostic) == {"stage", "error_class", "source_line", "counts"}
++    assert diagnostic["stage"] == "android-gradle-inspection"
++    assert diagnostic["error_class"] == "BUILD_TOOL"
++    assert 0 < diagnostic["source_line"] < 10_000
++    assert diagnostic["counts"] == {}
++    assert private not in captured.err
++    assert str(tmp_path) not in captured.err
++    assert "https://" not in captured.err
++    assert captured.out == ""
++    assert failure.__traceback__ is not None
++
++
++@pytest.mark.parametrize(
++    ("case", "stdout_state", "stderr_state", "combined", "marker", "structure", "framing"),
++    [
++        ("missing", "MISSING", "MISSING", "WITHIN_BOUND", "ABSENT", "ABSENT", "UNKNOWN"),
++        ("bytes", "BYTES_VALID", "TEXT_VALID", "WITHIN_BOUND", "ABSENT", "ABSENT", "UNKNOWN"),
++        ("private", "TEXT_VALID", "TEXT_VALID", "WITHIN_BOUND", "ABSENT", "ABSENT", "UNKNOWN"),
++        (
++            "type",
++            "TYPE_REJECTED",
++            "MISSING",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++        ),
++        (
++            "bool",
++            "TYPE_REJECTED",
++            "MISSING",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++        ),
++        (
++            "raw_size",
++            "SIZE_REJECTED",
++            "MISSING",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++        ),
++        (
++            "encoded_size",
++            "SIZE_REJECTED",
++            "MISSING",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++        ),
++        (
++            "combined_size",
++            "TEXT_VALID",
++            "TEXT_VALID",
++            "SIZE_REJECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++        ),
++        (
++            "bad_utf8",
++            "UTF8_REJECTED",
++            "MISSING",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++        ),
++        (
++            "surrogate",
++            "UTF8_REJECTED",
++            "MISSING",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++        ),
++        (
++            "control",
++            "CONTROL_REJECTED",
++            "MISSING",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++        ),
++        ("valid_marker", "MISSING", "TEXT_VALID", "WITHIN_BOUND", "VALID", "ABSENT", "UNKNOWN"),
++        ("invalid_marker", "MISSING", "TEXT_VALID", "WITHIN_BOUND", "INVALID", "ABSENT", "UNKNOWN"),
++        (
++            "duplicate_marker",
++            "MISSING",
++            "TEXT_VALID",
++            "WITHIN_BOUND",
++            "INVALID",
++            "ABSENT",
++            "UNKNOWN",
++        ),
++        (
++            "marker_control",
++            "MISSING",
++            "CONTROL_REJECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++            "UNINSPECTED",
++        ),
++        (
++            "malformed_structure",
++            "MISSING",
++            "TEXT_VALID",
++            "WITHIN_BOUND",
++            "ABSENT",
++            "MALFORMED",
++            "UNKNOWN",
++        ),
++        (
++            "ambiguous_structure",
++            "MISSING",
++            "TEXT_VALID",
++            "WITHIN_BOUND",
++            "ABSENT",
++            "MULTIPLE",
++            "AMBIGUOUS",
++        ),
++        (
++            "partial_structure",
++            "MISSING",
++            "TEXT_VALID",
++            "WITHIN_BOUND",
++            "ABSENT",
++            "MULTIPLE",
++            "AMBIGUOUS",
++        ),
++    ],
++)
++def test_gradle_context_fields_are_bounded_typed_and_fixed(
++    case: str,
++    stdout_state: str,
++    stderr_state: str,
++    combined: str,
++    marker: str,
++    structure: str,
++    framing: str,
++) -> None:
++    import subprocess
++
++    audit.mark("android-gradle-inspection")
++    stdout: Any = None
++    stderr: Any = None
++    if case == "bytes":
++        stdout = b"synthetic private bytes"
++        stderr = "synthetic private text"
++    elif case == "private":
++        stdout = "synthetic private /private/payload https://example.invalid"
++        stderr = "synthetic private failure"
++    elif case == "type":
++
++        class PrivatePayload:
++            def __str__(self) -> str:
++                pytest.fail("context must not stringify private payload")
++
++        stdout = PrivatePayload()
++    elif case == "bool":
++        stdout = True
++    elif case == "raw_size":
++        stdout = "x" * (audit.MAX_DIAGNOSTIC_BYTES + 1)
++    elif case == "encoded_size":
++        stdout = "é" * audit.MAX_DIAGNOSTIC_BYTES
++    elif case == "combined_size":
++        stdout = "x" * audit.MAX_DIAGNOSTIC_BYTES
++        stderr = "x"
++    elif case == "bad_utf8":
++        stdout = b"\xff"
++    elif case == "surrogate":
++        stdout = "\ud800"
++    elif case == "control":
++        stdout = "\x1b[31msynthetic private"
++    elif case == "valid_marker":
++        stderr = "GSIP_RUNTIME_FAILURE_V1|DEBUG_COMPONENTS|UNKNOWN\n"
++    elif case == "invalid_marker":
++        stderr = "GSIP_RUNTIME_FAILURE_V1|synthetic private|UNKNOWN\n"
++    elif case == "duplicate_marker":
++        stderr = "GSIP_RUNTIME_FAILURE_V1|DEBUG_COMPONENTS|UNKNOWN\n" * 2
++    elif case == "marker_control":
++        stderr = "GSIP_RUNTIME_FAILURE_V1|DEBUG_COMPONENTS|UNKNOWN\n\x00"
++    elif case == "malformed_structure":
++        stderr = "FAILURE: Build failed with an exception.\n* What went wrong:\nsynthetic private"
++    elif case == "ambiguous_structure":
++        first = gradle_failure_fixture("synthetic private").replace(
++            "Execution failed for task ':app:gsipRuntimeEvidence'.",
++            "A problem occurred evaluating initialization script.",
++        )
++        second = gradle_failure_fixture("synthetic private").replace(
++            "Execution failed for task ':app:gsipRuntimeEvidence'.",
++            "A problem occurred evaluating settings 'synthetic'.",
++        )
++        stderr = first + second
++    elif case == "partial_structure":
++        known = gradle_failure_fixture("synthetic private").replace(
++            "Execution failed for task ':app:gsipRuntimeEvidence'.",
++            "A problem occurred evaluating initialization script.",
++        )
++        unknown = gradle_failure_fixture("synthetic private").replace(
++            "Execution failed for task ':app:gsipRuntimeEvidence'.", "synthetic private reason"
++        )
++        stderr = known + unknown
++    error = subprocess.CalledProcessError(
++        1, GRADLE_INSPECTION_COMMAND, output=stdout, stderr=stderr
++    )
++    expected = "|".join(
++        (
++            "GSIP_GRADLE_CONTEXT_V1",
++            "COMMAND_VALID",
++            stdout_state,
++            stderr_state,
++            combined,
++            marker,
++            structure,
++            framing,
++        )
++    )
++    before = audit.diagnostic(error)
++    assert audit.gradle_failure_context(error) == expected
++    assert audit.diagnostic(error) == before
++    assert "private" not in expected
++    assert "https://" not in expected
++    assert len(expected.split("|")) == 8
++    assert len(expected) <= 200
++
++
++@pytest.mark.parametrize(
++    ("reason", "category"),
++    [
++        ("Could not compile initialization script 'synthetic-private'.", "INIT_COMPILE"),
++        ("A problem occurred evaluating initialization script.", "INIT_EVALUATION"),
++        ("A problem occurred evaluating settings 'synthetic-private'.", "SETTINGS_EVALUATION"),
++        ("Could not compile settings file 'synthetic-private'.", "SETTINGS_COMPILE"),
++        ("Could not compile build file 'synthetic-private'.", "PROJECT_COMPILE"),
++        ("A problem occurred evaluating root project 'synthetic-private'.", "PROJECT_EVALUATION"),
++        ("A problem occurred evaluating project ':synthetic-private'.", "PROJECT_EVALUATION"),
++        (
++            "A problem occurred configuring root project 'synthetic-private'.",
++            "PROJECT_CONFIGURATION",
++        ),
++        ("A problem occurred configuring project ':synthetic-private'.", "PROJECT_CONFIGURATION"),
++        ("Task 'gsipRuntimeEvidence' not found in project ':app'.", "TASK_SELECTION"),
++        ("Execution failed for task ':app:gsipRuntimeEvidence'.", "TASK_EXECUTION"),
++        (
++            "Could not resolve all files for configuration 'synthetic-private'.",
++            "DEPENDENCY_RESOLUTION",
++        ),
++        (
++            "Could not resolve all artifacts for configuration 'synthetic-private'.",
++            "DEPENDENCY_RESOLUTION",
++        ),
++    ],
++)
++def test_gradle_context_structured_category_never_copies_input_values(
++    reason: str, category: str
++) -> None:
++    import subprocess
++
++    audit.mark("android-gradle-inspection")
++    text = gradle_failure_fixture("synthetic-private-failure").replace(
++        "Execution failed for task ':app:gsipRuntimeEvidence'.", reason
++    )
++    error = subprocess.CalledProcessError(1, GRADLE_INSPECTION_COMMAND, stderr=text)
++    context = audit.gradle_failure_context(error)
++    assert context is not None
++    assert context.endswith("|ABSENT|SINGLE|" + category)
++    assert "synthetic-private" not in context
++
++
++@pytest.mark.parametrize(
++    "case", ["wrong_stage", "wrong_command", "noninteger_code", "unexpected_error"]
++)
++def test_gradle_context_outside_scope_has_no_supplemental_line(case: str) -> None:
++    import subprocess
++
++    audit.mark("android-gradle-inspection")
++    command = list(GRADLE_INSPECTION_COMMAND)
++    code: Any = 1
++    if case == "wrong_stage":
++        audit.mark("ios-resolution")
++    elif case == "wrong_command":
++        command[5] = ":app:synthetic-private"
++    elif case == "noninteger_code":
++        code = True
++    error: Any = subprocess.CalledProcessError(code, command, stderr="synthetic private")
++    if case == "unexpected_error":
++        error = ValueError("synthetic private")
++    assert audit.gradle_failure_context(error) is None
+--- a/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
++++ b/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
+@@ -164,6 +164,17 @@
+ selection, artifact and output operations remain mandatory. The marker is diagnostic
+ build configuration emitted by Python, with its exact hash recorded in the audit;
+ it adds no shipped native application source or dependency.
++If the exact inspection command fails, the CLI also reports one
++`GSIP_GRADLE_CONTEXT_V1` line with eight fixed tokens: version, canonical command,
++stdout state, stderr state, combined bound, task-marker state, structured framing
++and public Gradle framing category. This distinguishes an absent marker from a
++marker that could not be inspected because of type, UTF-8, control or size guards.
++The cap remains 65,536 bytes. Unknown or ambiguous framing stays explicitly unknown
++or ambiguous; no message, path, property, URL or stream fragment is copied. Commands
++outside the exact inspection scope emit no supplemental line. The original
++four-field diagnostic remains last and unchanged, and the CLI still fails. This
++context establishes where diagnostic inspection stopped; it does not establish a
++producer/API repair or native acceptance. The generated Gradle task is unchanged.
+ Both actual debug and release inputs remain required; there is no debug substitution
+ or check skip. If the next CI run confirms absent release project outputs, their
+ actual variant producers must run before inspection in a separate forward fix.

@@ -1,0 +1,1 @@
+$ eslint src tests vite.config.ts capacitor.config.ts

@@ -1,0 +1,160 @@
+{
+  "extensions": {
+    "local_only": [],
+    "production_only": [
+      {
+        "name": "pg_stat_statements",
+        "schema": "extensions",
+        "version": "1.11"
+      },
+      {
+        "name": "supabase_vault",
+        "schema": "vault",
+        "version": "0.3.1"
+      },
+      {
+        "name": "uuid-ossp",
+        "schema": "extensions",
+        "version": "1.1"
+      }
+    ]
+  },
+  "policies": {
+    "local_only": [
+      {
+        "check": "(submission_id IN ( SELECT submissions.id\n   FROM public.submissions\n  WHERE (submissions.contributor_id = public.current_contributor_id())))",
+        "command": "a",
+        "name": "photos_insert_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "photos",
+        "using": null
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "gold_labels_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "gold_labels",
+        "using": "(submission_id IN ( SELECT submissions.id\n   FROM public.submissions\n  WHERE (submissions.contributor_id = public.current_contributor_id())))"
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "photos_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "photos",
+        "using": "(submission_id IN ( SELECT submissions.id\n   FROM public.submissions\n  WHERE (submissions.contributor_id = public.current_contributor_id())))"
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "predictions_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "predictions",
+        "using": "(submission_id IN ( SELECT submissions.id\n   FROM public.submissions\n  WHERE (submissions.contributor_id = public.current_contributor_id())))"
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "priors_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "priors",
+        "using": "(submission_id IN ( SELECT submissions.id\n   FROM public.submissions\n  WHERE (submissions.contributor_id = public.current_contributor_id())))"
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "qa_events_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "qa_events",
+        "using": "(submission_id IN ( SELECT submissions.id\n   FROM public.submissions\n  WHERE (submissions.contributor_id = public.current_contributor_id())))"
+      }
+    ],
+    "production_only": [
+      {
+        "check": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))",
+        "command": "a",
+        "name": "photos_insert_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "photos",
+        "using": null
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "gold_labels_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "gold_labels",
+        "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))"
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "photos_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "photos",
+        "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))"
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "predictions_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "predictions",
+        "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))"
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "priors_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "priors",
+        "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))"
+      },
+      {
+        "check": null,
+        "command": "r",
+        "name": "qa_events_select_own",
+        "permissive": true,
+        "roles": [
+          "authenticated"
+        ],
+        "table": "qa_events",
+        "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))"
+      }
+    ]
+  }
+}

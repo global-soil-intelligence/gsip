@@ -1,0 +1,3 @@
+Owner-authorized ordered merge of #79 after exact-head CI and independent review. No production, capture or library activation authority.
+
+Co-Authored-By: Codex <codex@openai.com>

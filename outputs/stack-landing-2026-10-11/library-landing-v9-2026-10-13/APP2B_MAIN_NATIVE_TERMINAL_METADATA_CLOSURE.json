@@ -1,0 +1,128 @@
+{
+  "PR_run55_artifact_proofs": "separatelyretainedbyrootandnotreusedasmainartifactverification",
+  "actual_checkout_bindings": {
+    "android": {
+      "actual_checkout": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+      "raw_log_bytes": 155318,
+      "raw_log_discarded": true,
+      "raw_log_sha256": "7d5c6ef2ee42e6c0210a96987acc3682bb85a17c2330bce3f93dccea4430e6cd",
+      "receipt": {
+        "bytes": 640,
+        "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/TERMINAL_ANDROID_LOG_METADATA.json",
+        "sha256": "4f09294b7c36cde06881e4de95ec2bde26e3fd60042935c6d143ae1059697e8c"
+      }
+    },
+    "ios": {
+      "actual_checkout": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+      "raw_log_bytes": 3539941,
+      "raw_log_discarded": true,
+      "raw_log_sha256": "5e0387015d8abe4e91718774f0edd66473741b16e39c2034794ebbfa2c8bfe88",
+      "receipt": {
+        "bytes": 637,
+        "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/TERMINAL_IOS_LOG_METADATA.json",
+        "sha256": "96b6a83821ab909e3018218c51508941f219e0b9313449f208ac3644f7d3af6a"
+      }
+    }
+  },
+  "all26_steps_success_per_job": true,
+  "artifact_downloads": 0,
+  "artifacts_metadata_run_and_head_bound": true,
+  "artifacts_reported_by_GitHub_API": [
+    {
+      "created_at": "2026-10-14T03:40:40Z",
+      "digest": "sha256:eff2caa7cfabd2c27a6aa926b184655fa9253e8b1eba2c05a612bbb0cfc72292",
+      "expired": false,
+      "id": 11869025268,
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 13914635,
+      "updated_at": "2026-10-14T03:40:40Z",
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1308971325,
+        "head_sha": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+        "id": 38507012693,
+        "repository_id": 1308971325
+      }
+    },
+    {
+      "created_at": "2026-10-14T03:43:44Z",
+      "digest": "sha256:ea229568e97e94e7beb2da4e5ce7fff5cdf6a87834f6044aabc867f192ae0128",
+      "expired": false,
+      "id": 11868775955,
+      "name": "gsip-capture-android-debug",
+      "size_in_bytes": 29121137,
+      "updated_at": "2026-10-14T03:43:44Z",
+      "workflow_run": {
+        "head_branch": "main",
+        "head_repository_id": 1308971325,
+        "head_sha": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+        "id": 38507012693,
+        "repository_id": 1308971325
+      }
+    }
+  ],
+  "at": "2026-10-14T03:45:22.475968+00:00",
+  "authority": {
+    "GET_only": true,
+    "Git_source_CI_dispatch_Pages_build_key_signing_production_capture_changes": false,
+    "owned_temporary_metadata_and_receipts_only": true
+  },
+  "event": "push",
+  "evidence_manifest": {
+    "bytes": 2708,
+    "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/EVIDENCE_MANIFEST.json",
+    "sha256": "829abfff91a92b229c892628469525848c03d1755e5b301d637a716dbbe08a1a"
+  },
+  "jobs": {
+    "android": {
+      "completed_at": "2026-10-14T03:43:50Z",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012693/job/115666719261",
+      "id": 115666719261,
+      "status": "completed"
+    },
+    "ios": {
+      "completed_at": "2026-10-14T03:41:18Z",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012693/job/115666719513",
+      "id": 115666719513,
+      "status": "completed"
+    }
+  },
+  "main": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "main_artifact_bytes_hashes_bounds_source_license_native_repeat_policy_or_comparison_replayed": false,
+  "main_artifacts_independently_verified": false,
+  "main_commit_parents": [
+    "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+    "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc"
+  ],
+  "main_tree_exact_reviewed_PR_tree": true,
+  "not_claimed": [
+    "mainartifactindependentverification",
+    "physicaldeviceoractualbackuprestorebehavior",
+    "storelegaldistributionapproval",
+    "productionhealthordeploymentapproval",
+    "captureactivation"
+  ],
+  "raw_job_logs_persisted": false,
+  "reviewed_PR_head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "run_attempt": 1,
+  "run_conclusion": "success",
+  "run_id": 38507012693,
+  "run_number": 56,
+  "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012693",
+  "safe_diagnostic_findings": [],
+  "schema": "gsip-main-native-terminal-metadata-closure-v1",
+  "source_tree_binding": {
+    "bytes": 416,
+    "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/SOURCE_TREE_BINDING.json",
+    "sha256": "7104418844539ae85cd9d4434a787c5bd795cc33a25a5950ea1d9d26d4571020"
+  },
+  "status": "MAIN_ANDROID_AND_IOS_NATIVE_CI_SUCCESS_METADATA_ONLY",
+  "terminal_snapshot": {
+    "bytes": 16307,
+    "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/METADATA_20261014T034359Z.json",
+    "sha256": "93c4b9e04471c08e578a2dc87a1d07f55851dd0d3a84f41e4a1e749800de191f"
+  },
+  "tree_sha": "88baee8e3e9606b386fa011ac71f2d759cf20e50"
+}

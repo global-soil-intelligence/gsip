@@ -1,0 +1,11 @@
+{
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "helper_sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
+  "initial_default_sandbox_GET_failed_before_JSON_metadata": true,
+  "initial_error_stream_not_persisted_or_exposed": true,
+  "network_authorized_retry_pending": true,
+  "older_artifact_bytes_or_receipts_used_as_proof": false,
+  "review_drivers_reused_and_repointed_in_owned_new_directory": true,
+  "source9_pins_copied_from_exact_reviewed_freeze": true,
+  "status": "GET_ONLY_WATCH_PREPARED"
+}

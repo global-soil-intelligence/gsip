@@ -1,0 +1,55 @@
+{
+  "checked_at_utc": "2026-10-16T18:45:53.577165+00:00",
+  "run": {
+    "id": 38895620835,
+    "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835",
+    "run_attempt": 1
+  },
+  "jobs": [
+    {
+      "id": 116955267851,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 116955470777,
+      "name": "deploy",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "deployment_id": 7118088317,
+  "deployment_statuses": [
+    {
+      "state": "success",
+      "created_at": "2026-10-16T18:45:45Z",
+      "environment_url": "https://globalsoilintelligence.com/"
+    },
+    {
+      "state": "in_progress",
+      "created_at": "2026-10-16T18:45:35Z",
+      "environment_url": ""
+    },
+    {
+      "state": "queued",
+      "created_at": "2026-10-16T18:45:33Z",
+      "environment_url": ""
+    },
+    {
+      "state": "waiting",
+      "created_at": "2026-10-16T11:43:41Z",
+      "environment_url": ""
+    },
+    {
+      "state": "waiting",
+      "created_at": "2026-10-16T11:43:41Z",
+      "environment_url": ""
+    }
+  ],
+  "pending_approvals": 0,
+  "action": "One authorized pending-deployment approval submitted; no further mutation"
+}

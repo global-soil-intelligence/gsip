@@ -1,0 +1,203 @@
+diff --git a/README.md b/README.md
+index 55d91f2a24bcb47983dd6b6ef46e6c06f93ea5d5..8bf8037196c45006331d384761e16ab7ec8e571f 100644
+--- a/README.md
++++ b/README.md
+@@ -1,6 +1,6 @@
+ # Global Soil Intelligence Project
+ 
+-GSIP is building an **open soil spectral reference library**, with smartphones as the accessible capture and sample-linking tool. The library connects camera observations and metadata to instrument spectra and verified laboratory evidence; open AI models and the soil map are downstream goals. Ordinary RGB phone photos are optical observations, not wavelength-resolved spectra. See the [v5 library proposal](docs/SPEC.md#16-open-soil-spectral-library-v5) and [implementation sequence](docs/BUILD_ORDER.md#library-first-implementation-sequence-v5-spec-16).
++GSIP is building an **open soil spectral reference library**, with smartphones as the accessible capture and sample-linking tool. The library connects camera observations and metadata to instrument spectra and verified laboratory evidence; open AI models and the soil map are downstream goals. Ordinary RGB phone photos are optical observations, not wavelength-resolved spectra. See the [library specification](docs/SPEC.md#16-open-soil-spectral-library-v5-foundation-v6v7-private-intake) and [implementation sequence](docs/BUILD_ORDER.md#library-first-implementation-sequence-spec-16).
+ 
+ The existing collection foundation is a phone app (also a no-install web app) guides contributors through privacy-safe soil photography with a printable reference card. The current map supplies public soil-map priors; later evaluated library models will supply estimates with explicit uncertainty. Agents can read public cells, the protocol and dataset releases through a public API and an MCP server; see the [agent guide](docs/AGENTS.md).
+ 
+@@ -23,8 +23,12 @@
+ `pnpm --filter @gsip/map-web dev` for the map.
+ 
+ For the private soil-library record contract and local node commands, see the
+-[soil library developer guide](docs/SOIL_LIBRARY.md). Hosted intake, federation and
+-scientific model validation remain scheduled work; these tools do not open capture.
++[soil library developer guide](docs/SOIL_LIBRARY.md). Private intake and compatible
++phone integration have merged source, including [LIB-4C (#51)](https://github.com/global-soil-intelligence/gsip/pull/51).
++The [LIB-5A exchange contract (#58)](https://github.com/global-soil-intelligence/gsip/pull/58)
++and [LIB-5B synthetic local simulator (#64)](https://github.com/global-soil-intelligence/gsip/pull/64)
++are also merged. Hosted deployment and activation, real peer sharing and scientific
++model validation remain gated; these tools do not open capture.
+ 
+ ## Governing documents
+ 
+diff --git a/docs/BUILD_ORDER.md b/docs/BUILD_ORDER.md
+index b606d679aeb75c6db608ec1654e03b35b2274767..4e5f66665bf5c603e2271f155bfc59fed04d2997 100644
+--- a/docs/BUILD_ORDER.md
++++ b/docs/BUILD_ORDER.md
+@@ -1,15 +1,15 @@
+ # GSIP Build Order — Work Plan
+ 
+ **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
+-**Version:** 10.0 — 2026-10-13 (draft local clarification; SPEC §16.12)
+-**v10 amendment status:** specification-only draft for the four LIB-5B local accounting/fence/admission/root clarifications. Independent source review, green CI and amendment merge precede LIB-5B code; approved v9 LIB-5A contract work remains independent.
+-**Owner approval:** Justin approved ordered #51–#56 source merges after green CI on 2026-10-13; those source/specification merges are complete. LIB-5A pure contracts may proceed under approved v9. LIB-5B synthetic code follows both merged LIB-5A and the reviewed/green/merged v10 clarification. Real-sharing source/retention/peer/credential choices remain unresolved; no federation rollout or production authority is granted.
++**Version:** 10.0 — 2026-10-13 (merged local clarification; SPEC §16.12)
++**v10 amendment status:** the four LIB-5B local accounting/fence/admission/root clarifications are merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60). The approved v9 LIB-5A contract source is merged in [#58](https://github.com/global-soil-intelligence/gsip/pull/58); the synthetic LIB-5B ledger/rights simulator is merged in [#64](https://github.com/global-soil-intelligence/gsip/pull/64).
++**Owner approval:** Justin approved ordered #51–#56 source merges after green CI on 2026-10-13; those source/specification merges are complete. LIB-5A and LIB-5B source are merged after their specification prerequisites. Real-sharing source/retention/peer/credential choices remain unresolved; no federation rollout or production authority is granted.
+ 
+ **Baseline:** v3 plus the v4 amendment merged in #38 and the v5 library foundation merged under Justin's 2026-10-12 owner authorization, with separately gated v6/v7 private intake. v8 defines exact WP-6f database/worker/review/export authority under the approved photo policy. Implementation preparation and code merges follow their own prerequisite review/CI; all production gates remain required.
+ **Builder:** Codex, acting for Justin Hart as human of record.
+ **Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) against the §5 review gates; findings and resolutions are posted to the PR. Justin Hart provides the final product-owner go/no-go. On 2026-10-12 he approved an owner exception: the extra non-author GitHub approval is no longer required for this owner-operated repository. Independent adversarial review and green CI remain required; an agent never submits an approving review or certifies the human DCO.
+ **Product owner:** Justin Hart
+-**Governing document:** reviewed `docs/SPEC.md` on `main` (v5 foundation, v6/v7 private intake, v8 photo privacy and v9 bounded local exchange architecture; v10 proposes only local simulator clarification in §16.12). Existing launch gates are preserved; the draft is not an implementation or merge result. If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
++**Governing document:** reviewed `docs/SPEC.md` on `main` (v5 foundation, v6/v7 private intake, v8 photo privacy, v9 bounded local exchange architecture and merged v10 local simulator clarification in §16.12). Existing launch gates are preserved; merged source is not deployment or external-readiness evidence. If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
+ 
+ ---
+ 
+@@ -250,11 +250,11 @@
+ - [ ] Android `check-dependencies` still rejects proprietary SDKs. List the chosen plugin's code license, release/maintenance signal, compressed/unpacked size and measured APK impact; inspect transitive dependencies rather than assume the plugin name proves compliance.
+ - [ ] Android/iOS synthetic device evidence covers permission prompts/denial, scheduled reminder delivery and cancellation. Unsupported behavior is documented honestly; no claim of App Store guideline 4.2 acceptance follows from an artifact build.
+ 
+-**WP-6f: Every-photo publication privacy screen — specification approved; implementation pending**
+-
+-Branch: `wp-6f-photo-privacy-screening`. Justin's chosen policy is server-side open-detector screening of every photo, with individual flagged photos withheld for private human CLI review and no automatic blur. Start with face and scene-text screening. Until WP-6f is deployed and Justin approves calibration evidence, releases contain structured data only under the SPEC §11 photo-publication gate; passing existing QA or individual review cannot bypass it. After that gate, eligible observation data and other cleared photos proceed normally. **The specification approval and merge prerequisite was satisfied in #38.** Implementation remains pending; unresolved weight licenses, uncalibrated category coverage and separate production authorization remain gates. See SPEC §15.4 and [the detector comparison](PHOTO_PRIVACY_SCREENING.md).
+-
+-Acceptance criteria for the later implementation PR:
++**WP-6f: Every-photo publication privacy screen — source merged; deployment and calibration gated**
++
++Branch: `wp-6f-photo-privacy-screening`. Justin's chosen policy is server-side open-detector screening of every photo, with individual flagged photos withheld for private human CLI review and no automatic blur. Start with face and scene-text screening. Until WP-6f is deployed and Justin approves calibration evidence, releases contain structured data only under the SPEC §11 photo-publication gate; passing existing QA or individual review cannot bypass it. After that gate, eligible observation data and other cleared photos proceed normally. **The specification approval and merge prerequisite was satisfied in #38.** WP-6fA/B/C source is merged in [#53](https://github.com/global-soil-intelligence/gsip/pull/53), [#54](https://github.com/global-soil-intelligence/gsip/pull/54) and [#55](https://github.com/global-soil-intelligence/gsip/pull/55); unresolved weight licenses, uncalibrated category coverage and separate production authorization remain gates. See SPEC §15.4 and [the detector comparison](PHOTO_PRIVACY_SCREENING.md).
++
++Acceptance requirements for source and separately gated deployment:
+ 
+ - [ ] Migration/pgTAP tests give every existing/new photo a pending private publication state, reject client clearance, bind clearance to content/version evidence and preserve RLS strength. QA settlement remains independent of privacy withholding.
+ - [ ] Worker tests cover every sanitized/oriented A/B/C photo. Face screening covers the entire frame. Scene-text may exclude only the detected GSIP reference-card quadrilateral plus a bounded margin from the existing marker homography; screen the entire remainder of the frame. With no reliably localized card, screen the entire frame. Tests cover text immediately outside the margin, rotation/partial cards and failed localization; no soil-region mask or other context exclusion is used. Retries are bounded/idempotent; detector errors, unsupported input and ambiguous detections withhold only that photo.
+@@ -265,7 +265,7 @@
+ - [ ] Contributor-facing/legal copy explains individual photo withholding, private review and residual privacy limits, subject to counsel review. Any immutable older release is identified honestly; no retroactive erasure claim.
+ - [ ] No raw images, precise points, OCR strings or private screening metadata enter public fixtures/reports, CI logs or agent surfaces; I7/I11/I12 tests cover the new path.
+ 
+-**WP-6f implementation details (v8 proposal, SPEC §15.5–15.9):** `docs/spec-v8` → `wp-6fa-private-photo-privacy` → `wp-6fb-photo-privacy-worker` → `wp-6fc-photo-export-enforcement`, separate independently reviewed PRs with green CI. Preparation may proceed after the prerequisite specification commit; no implementation merge before its specification/predecessor. Owner-authorized code merges supply no production migration, dispatch, model approval, operator credential or photo-publication permission.
++**WP-6f implementation details (merged v8 architecture, SPEC §15.5–15.9):** `docs/spec-v8` → `wp-6fa-private-photo-privacy` → `wp-6fb-photo-privacy-worker` → `wp-6fc-photo-export-enforcement`, separate independently reviewed PRs with green CI. The architecture is merged in [#52](https://github.com/global-soil-intelligence/gsip/pull/52), and the three source packages are merged in #53–#55 after their specification/predecessor prerequisites. Owner-authorized code merges supply no production migration, dispatch, model approval, operator credential or photo-publication permission.
+ 
+ | Package    | Deliverable                                                | Acceptance refinements                                                                                                                                                                                                                                                                                                                                                                                                     |
+ | ---------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+@@ -288,6 +288,10 @@
+ 
+ ### Phase 1.5a — Follow-ups independent of production deployment
+ 
++**WP-DOC-1: Merged source status and remaining readiness gates**
++
++Scope: update only `README.md`, `docs/SPEC.md` and this build order with verified merged-source/specification status and PR links. This factual documentation package adds no architecture, runtime behavior, dependency or future implementation promise. Acceptance: every completion claim is bound to a merged PR present on `main`; existing documentation link, language and formatting checks pass; all existing acceptance boxes, invariants and deployment/calibration/operator/model/photo/capture/real-peer/scientific/device gates remain intact. Source and CI verification never supplies external-readiness evidence.
++
+ **WP-AGENT-0: Coding-agent guidance**
+ Scope: add root `AGENTS.md` for repository contributors, linking the public-reader guide at
+ `docs/AGENTS.md`; collect the invariant, reviewed-stack, privacy, verification and per-step
+@@ -319,7 +323,7 @@
+ 
+ WP-AGENT-2 delegated capture for assistants (scoped tokens, consent screen, path-bound upload URLs) · WP-APP-2 store release of the phone app (deep-link e-mail sign-in, icons, signing and store listings; `docs/APP_STORE.md`) · WP-7 QA gate model (slots into the WP-4b/6b interface) · WP-8 estimator v0 · WP-9 nightly retrain and model cards · WP-10 estimate API · WP-11 gold-label bulk ingestion and gold kits · WP-12 fused correction and Most Wanted layers with information-gain credit · WP-13 SoilGrids file sampler replacing the REST dependency · WP-14 silver-label protocols · WP-AGENT-3 verifier task API with I13 consensus · WP-AGENT-4 evaluation service (I15) · WP-DATA-1 Parquet photo shards, Croissant metadata and PROV provenance · WP-OPS-1 event-driven worker queue.
+ 
+-### Library-first implementation sequence (v5 foundation; proposed v6 intake, SPEC §16)
++### Library-first implementation sequence (SPEC §16)
+ 
+ The spectral library is the primary asset. The existing capture, QA, rights and provenance infrastructure remains the collection foundation; priors and the map are downstream context. Do not train an estimator on unpaired imagery and imply measured spectra or biological ground truth.
+ 
+@@ -367,7 +371,7 @@
+ - [ ] `VITE_LIBRARY_INTAKE_LIVE=false` default preserves existing UI and sends no new RPC; capability probing does not change the legacy gate query or trigger anonymous sign-in. Actual intake also requires compatible capabilities, server library gate and existing capture gates.
+ - [ ] Synthetic end-to-end capture → queued sample → owner-private unverified receipt → exact retry → withdrawal/deletion succeeds; the test artifact stays local, and the actual app/Pages artifact is rebuilt with both build flags false.
+ 
+-**Approved local LIB-5 sequence (v9, with proposed v10 §16.12 clarification):** merged `docs/spec-v9` → `wp-lib-5a-exchange-contract`; `wp-lib-5b-private-exchange-ledger` follows both merged LIB-5A and reviewed/green/merged `docs/spec-v10`. Justin approved the local v9 architecture on 2026-10-13. v10 resolves only the four local simulator ambiguities; it changes neither LIB-5A's approved contract nor the unresolved real-sharing policies and transport in LIB-5C. Each package is a separate PR with independent adversarial review and green CI. `wp-lib-5c-scoped-peer-transport` remains blocked until the new source-sharing/privacy, peer-admission, credential/cleanup and same-material policy decisions are resolved. Preparing synthetic local code never permits real exchange, peer enrollment, production migration, deployment, public release or field training. Existing public readers remain anonymous/read-only and no service-role key or contributor session reaches an agent interface.
++**Approved local LIB-5 sequence (v9 and merged v10 §16.12 clarification):** merged `docs/spec-v9` → `wp-lib-5a-exchange-contract` ([#58](https://github.com/global-soil-intelligence/gsip/pull/58)) → `wp-lib-5b-private-exchange-ledger` ([#64](https://github.com/global-soil-intelligence/gsip/pull/64)), with the reviewed/green/merged `docs/spec-v10` ([#60](https://github.com/global-soil-intelligence/gsip/pull/60)) prerequisite satisfied before LIB-5B. Justin approved the local v9 architecture on 2026-10-13. v10 resolves only the four local simulator ambiguities; it changes neither LIB-5A's approved contract nor the unresolved real-sharing policies and transport in LIB-5C. Each package is a separate PR with independent adversarial review and green CI. `wp-lib-5c-scoped-peer-transport` remains blocked until the new source-sharing/privacy, peer-admission, credential/cleanup and same-material policy decisions are resolved. Preparing synthetic local code never permits real exchange, peer enrollment, production migration, deployment, public release or field training. Existing public readers remain anonymous/read-only and no service-role key or contributor session reaches an agent interface.
+ 
+ **WP-LIB-5A: Strict private exchange event contract**
+ 
+@@ -382,7 +386,7 @@
+ 
+ **WP-LIB-5B: Local private exchange ledger and rights simulator**
+ 
+-Branch: `wp-lib-5b-private-exchange-ledger`. Depends on merged LIB-5A and independently reviewed/green/merged v10 §16.12. Implement one deterministic synthetic-only draft/outbox/receiver simulator per operator-designated private root with fake authority and transport; do not add a real sender, downloader, peer listener, automatic contributor-directory scan or field-data export. A locally stored record's verified-state declarations and LIB-5A supplied-fact helpers cannot be treated as source authority. No implementation or test result is claimed by this specification draft.
++Branch: `wp-lib-5b-private-exchange-ledger`. Depends on merged LIB-5A and independently reviewed/green/merged v10 §16.12. Implement one deterministic synthetic-only draft/outbox/receiver simulator per operator-designated private root with fake authority and transport; do not add a real sender, downloader, peer listener, automatic contributor-directory scan or field-data export. A locally stored record's verified-state declarations and LIB-5A supplied-fact helpers cannot be treated as source authority. The synthetic-only source is merged in [#64](https://github.com/global-soil-intelligence/gsip/pull/64); source/CI verification supplies no real-sharing, scientific or production readiness.
+ 
+ - [ ] Operator-designated private storage enforces the configured allowed root, directory/file permissions, regular single-link payloads, no-follow reads, atomic writes and locks. Tests reject symlink/traversal/special/multi-link paths and conflicting IDs. Shared/cloud folders are prohibited by operator policy; no claim of exhaustive provider detection.
+ - [ ] Recipient/scope-specific handles are allocated once and remain tied to the same original simulated lineage. Repeated copies never increase independent sample/contributor counts; only within-owner known aliases group, and unverified physical pairing remains held.
+@@ -459,7 +463,7 @@
+ 
+ ## 8. Changelog
+ 
+-- **v10.0 proposed (2026-10-13):** records only the four LIB-5B local accounting, reserved-fence, daily-admission and single-root clarifications in SPEC §16.12. Adds the reviewed/green/merged clarification as a 5B code prerequisite while keeping LIB-5A independent, all existing queued/capacity limits and all real-sharing/scientific/production gates. No implementation, new dependency or test evidence is claimed.
++- **v10.0 (2026-10-13; clarification merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60)):** records only the four LIB-5B local accounting, reserved-fence, daily-admission and single-root clarifications in SPEC §16.12. Adds the reviewed/green/merged clarification as a 5B code prerequisite while keeping LIB-5A independent, all existing queued/capacity limits and all real-sharing/scientific/production gates. The specification amendment itself claims no implementation, new dependency or test evidence.
+ 
+ - **v9.0 (2026-10-13):** owner-approved local architecture splits LIB-5 into a strict local event contract, synthetic private ledger/rights simulator and separately held peer authority/transport. Flags unapproved private-sharing purpose, credential/cleanup and same-material policy; preserves anonymous readers and all scientific/privacy/production gates.
+ 
+@@ -469,7 +473,7 @@
+ 
+ - **v5.0 proposed (2026-10-12):** library-first mission and seven explicit work packages, executable private foundations before hosted integration, federation and evaluated models. Existing launch/owner gates retained.
+ 
+-- **v4.0 (2026-10-12; specification merged in #38):** schedules account-free WP-APP-2A, sync reminders only in version 1 for WP-APP-2B, and gated every-photo screening WP-6f. Nearby suggestions wait for Most Wanted and land-access eligibility. Records the separate data-only publication gate, bounded card exception for scene-text, and evaluation/license conditions for a dedicated plate detector without claiming iOS protection, model recall or store readiness; WP-6f implementation and calibration remain separately gated.
++- **v4.0 (2026-10-12; specification merged in #38):** schedules account-free WP-APP-2A, sync reminders only in version 1 for WP-APP-2B, and gated every-photo screening WP-6f. Nearby suggestions wait for Most Wanted and land-access eligibility. Records the separate data-only publication gate, bounded card exception for scene-text, and evaluation/license conditions for a dedicated plate detector without claiming iOS protection, model recall or store readiness; WP-6f source subsequently merged in #53–#55, while deployment and calibration remain separately gated.
+ - **v3.0 (2026-10-10):** follows SPEC v3.0. Completed WP-0 to WP-6 summarized and archived. Added Phase 1.1 launch hardening (WP-6b ingest, QA and release integrity; WP-6c priors and tiles; WP-6d contributor rights; WP-6e provenance), Phase 1.5 (WP-SITE-1D, WP-AGENT-1, WP-APP-1) and the Phase 2+ outline. Added stacked-PR workflow, human-of-record DCO rule, guardrails 9 (I12) and 10 (B1–B8), updated environment variables, and review gates for I12.
+ - **v2.2 (2026-07-22):** anonymous sign-ins; immutable per-submission grants; canonical units and depth constraints; owner-prefixed quarantine paths.
+ - **v2.1 (2026-07-22):** builder changed to Claude; non-author approval plus product-owner go/no-go; WP-4b ingest QA; z8 native tiles; export metadata assertions.
+diff --git a/docs/SPEC.md b/docs/SPEC.md
+index 6ff24fed71d96dbac834e1d7acc30cee50cc2c6e..6092aa9ae23760668123c756714c0ebd0429081a 100644
+--- a/docs/SPEC.md
++++ b/docs/SPEC.md
+@@ -1,13 +1,13 @@
+ # GSIP v10 — Open Soil Spectral Library Specification
+ 
+ **Project:** Global Soil Intelligence Project (globalsoilintelligence.com)
+-**Version:** 10.0 — 2026-10-13 (draft local simulator clarification)
+-**v10 amendment status:** proposed clarification of LIB-5B local accounting, reserved fences, daily admission and the single-root simulation boundary in §16.12. This is specification work under Justin's keep-building authority; independent source review, green CI and this amendment's merge precede LIB-5B code. LIB-5A remains governed by the approved v9 pure contract. No real-source grant, credential, cleanup-authentication or retention policy is selected.
++**Version:** 10.0 — 2026-10-13 (merged local simulator clarification)
++**v10 amendment status:** the LIB-5B local accounting, reserved-fence, daily-admission and single-root clarification in §16.12 is merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60). LIB-5A remains governed by the approved v9 pure contract. No real-source grant, credential, cleanup-authentication or retention policy is selected.
+ **v9 owner approval:** Justin approved ordered merges of #51–#56 on 2026-10-13 after green CI. Following this specification merge, §16.9–16.13 permits LIB-5A pure contracts and LIB-5B synthetic local preparation. Real peer sharing, credentials/cleanup authority and retention policy remain held for LIB-5C; production and launch gates are unchanged.
+ 
+ **v8 photo architecture:** §15.5–15.9 defines private photo-screening/worker/review/export enforcement for the already approved §15.4 policy. Justin approved its ordered source merges with #51–#56. Detector/runtime licence verification, calibration approval, operator provisioning and production activation remain separate.
+ 
+-**Status:** the v5–v9 library/photo foundation, LIB-1 through LIB-4C and WP-6fA/B/C source are merged, including the owner-authorized ordered #51–#56 merges after independent review and green exact-head CI. LIB-5A implementation is separately reviewed; LIB-5B code awaits both merged LIB-5A and this reviewed clarification. Runtime photo code is built and reviewed; model calibration and production deployment remain separate gates. No code or specification merge authorizes production migration, deployment, publication, worker dispatch, peer enrollment or capture opening.
++**Status:** the v5–v10 library/photo foundation, LIB-1 through LIB-4C and WP-6fA/B/C source are merged, including the owner-authorized ordered #51–#56 merges after independent review and green exact-head CI. The LIB-5A pure contract is merged in [#58](https://github.com/global-soil-intelligence/gsip/pull/58), the v10 clarification in [#60](https://github.com/global-soil-intelligence/gsip/pull/60), and the LIB-5B synthetic local ledger/rights simulator in [#64](https://github.com/global-soil-intelligence/gsip/pull/64). Runtime photo code is built and reviewed; model calibration and production deployment remain separate gates. No code or specification merge authorizes production migration, deployment, publication, worker dispatch, peer enrollment or capture opening.
+ **Scope:** the open soil spectral library is primary; smartphones are the accessible capture and sample-linking tool. Maps and models are downstream products. Earlier spectroscopy documents are references, not implemented protocols or evidence of measurement accuracy.
+ **Owner:** Justin Hart, Viridis LLC (steward; see `GOVERNANCE.md`)
+ **Hosting:** GitHub (org monorepo) · Supabase (canonical instance) · Hugging Face (open dataset and models)
+@@ -293,7 +293,7 @@
+ 
+ ## 14. Changelog
+ 
+-- **v10.0 proposed (2026-10-13):** clarifies only LIB-5B's retained-byte/metadata/staging accounting, pre-reserved permanent scope fences, independent source/recipient daily admission views and single-root synthetic aggregate boundary. Preserves the existing queued-byte cap and LIB-5A contract; chooses no real sharing, credential or retention policy and changes no production/capture/worker gate.
++- **v10.0 (2026-10-13; clarification merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60)):** clarifies only LIB-5B's retained-byte/metadata/staging accounting, pre-reserved permanent scope fences, independent source/recipient daily admission views and single-root synthetic aggregate boundary. Preserves the existing queued-byte cap and LIB-5A contract; chooses no real sharing, credential or retention policy and changes no production/capture/worker gate.
+ - **v9.0 (2026-10-13):** owner-approved local architecture schedules LIB-5A strict private event contract, LIB-5B local synthetic outbox/rights simulation and separately gated LIB-5C peer authority/transport. Keeps same-owner lineage distinct from physical-pair verification and cross-contributor/public linkage; adds no real exchange, release, training or deployment permission.
+ - **v8.0 proposed (2026-10-12):** specifies service-owned private photo state and immutable content/policy evidence, bounded lease/retry worker RPCs, personally authenticated private human review, owner-admin-only calibration/operator/publication configuration and fresh exact-byte export authorization. Splits WP-6f into database (6fA), detector/worker/review (6fB) and export enforcement (6fC). All production/photo gates stay closed; license selection, measured calibration and operator provisioning remain unresolved owner deployment actions.
+ 
+@@ -301,7 +301,7 @@
+ 
+ - **v5.0 proposed (2026-10-12):** makes the open soil spectral library primary, smartphones the capture/linking tool, and maps/models downstream. Adds L1–L7 and WP-LIB-1 through WP-LIB-7; preserves capture and photo-publication gates. Local preparation is authorized, production remains separately gated.
+ 
+-- **v4.0 (2026-10-12; specification merged in #38):** proposed §11 photo-publication gate and §15 schedule WP-APP-2A (CI versions, reproducibility evidence and private-storage backup exclusions), WP-APP-2B (local sync reminders only in version 1) and WP-6f (per-photo privacy screening). Nearby suggestions wait for Most Wanted and land-access eligibility. Scene-text screening may exclude only the detected reference-card quadrilateral plus its bounded margin; face screening covers the entire frame. Start with face and scene-text screening; a dedicated plate model needs an evidenced gap and verified licenses. The publication gate is normative; photo-screening implementation and calibration remain outstanding.
++- **v4.0 (2026-10-12; specification merged in #38):** proposed §11 photo-publication gate and §15 schedule WP-APP-2A (CI versions, reproducibility evidence and private-storage backup exclusions), WP-APP-2B (local sync reminders only in version 1) and WP-6f (per-photo privacy screening). Nearby suggestions wait for Most Wanted and land-access eligibility. Scene-text screening may exclude only the detected reference-card quadrilateral plus its bounded margin; face screening covers the entire frame. Start with face and scene-text screening; a dedicated plate model needs an evidenced gap and verified licenses. The publication gate is normative; photo-screening source subsequently merged in #53–#55, while deployment and calibration remain gated.
+ - **v3.0 (2026-10-10):** humans and agents. Added I9–I15. Amended I2 (finalize with required shots A and B; app or web), I3 ("no prior" is terminal), I6 (agents contribute only under a human of record's grant), I7 (k = 3 distinct-contributor publication at resolution 8 → 6 → 4; processors receive resolution-9 cell centres; withdrawal and deletion; independent quarantine cleanup) and I8 (soil-region QA with the card masked). §4 moves the Capacitor phone app from Phase 4 to Phase 1.5 as the main funnel and adds agent interfaces, provenance tiers and palette-driven tiles. §5 adds the finalize step, settlement table, sampling rules, capture-time precipitation, colour handling and upstream fair use. §6 adds path binding, per-photo QA status, provenance, the capture gate, withdrawals, releases and the holdout flag, and makes export set aside bad rows instead of aborting. §8 adds palette legends and multi-resolution contribution cells. New §9 Agents. §10 adds the steward, guardrails, trademarks and human-of-record DCO. §11 adds Phase 1.1 launch hardening, launch gates and Phase 1.5.
+ - **v2.2 (2026-07-22):** anonymous contribution pinned to Supabase Anonymous Sign-Ins; immutable `contribution_grants` referenced by every submission; canonical units and depth bounds; private Storage path, metadata allowlist, fail-closed promotion and 24-hour quarantine cleanup.
+ - **v2.1 (2026-07-22):** I7 made fail-closed; ODbL data separated from CC BY-SA photos with a legal-review gate; elevation source pinned; QA gate phased; canonical property mapping; legacy-repo disposition.
+@@ -309,7 +309,7 @@
+ 
+ ## 15. Merged v4.0 amendment: app readiness and photo privacy
+ 
+-**Status: merged in #38.** Justin approved the backup and screening policy specification on 2026-10-12. WP-6f implementation, detector licensing and calibration evidence remain separate requirements; the amendment does not authorize production changes. [BUILD_ORDER.md](BUILD_ORDER.md) schedules the implementation PRs.
++**Status: merged in #38.** Justin approved the backup and screening policy specification on 2026-10-12. WP-6f source subsequently merged in #53–#55; detector licensing, calibration evidence and production deployment remain separate requirements. The amendment does not authorize production changes. [BUILD_ORDER.md](BUILD_ORDER.md) records the source status and remaining gates.
+ 
+ ### 15.1 Invariants and activation
+ 
+@@ -333,7 +333,7 @@
+ 
+ Notifications carry generic text and opaque local identifiers, never photos, coordinates, address text, contributor names, account tokens or private queue contents. Selecting one opens the relevant in-app view subject to existing access checks. Reminders are bounded, cancellable, and cleared after sync, withdrawal, deletion, sign-out or opt-out; no repeated alerts for an empty queue. No contribution invitation is scheduled while capture is closed. No exact alarm is required: use inexact scheduling and remove `SCHEDULE_EXACT_ALARM`/`USE_EXACT_ALARM` from effective Android permissions. Add only the notification/runtime and boot/wake permissions demonstrably needed by the selected plugin, preserving the permission and closed-SDK checks. Device tests must verify permission denial, reminder cancellation and behavior with capture closed; local delivery and App Store acceptance are not guaranteed by scheduling success.
+ 
+-### 15.4 WP-6f: every-photo privacy screening, pending implementation approval
++### 15.4 WP-6f: every-photo privacy screening, source merged; deployment gated
+ 
+ **Chosen outcome: withhold the flagged photo for private human review.** Screen every shot A, B and C server-side in the private QA worker, including optional, retried and legacy photos that could reach a future public release. Start with face and scene-text screening on the sanitized, correctly oriented image, evaluating house-number/address text and number plates as sensitive text regions. Do not send images to an external processor. Any detected candidate, ambiguous result, unsupported image or unavailable/erroring screen withholds that individual photo until reviewed. Never automatically blur a photo. Until WP-6f is deployed and Justin approves calibration evidence under §11, newly built releases contain structured data only; neither an individual review nor passing existing QA bypasses that deployment/calibration gate.
+ 
+@@ -345,9 +345,9 @@
+ 
+ [The detector comparison](PHOTO_PRIVACY_SCREENING.md) separates code licenses from weight licenses, records payload size and maintenance signals, and explains unmeasured recall. YuNet and open scene-text detection are first-stage benchmark candidates; OCR may aid evaluation but cannot be the clearance gate. Add a dedicated plate detector only if staged evaluation exposes a material gap in face and scene-text coverage, and its exact artifact has verified code and weight licenses. The listed plate candidate remains ineligible while its weight license is unresolved; that candidate is not a required dependency. No model is selected for deployment. Prefer high recall and human review over automatic clearance based on OCR recognition alone: an unreadable plate or house number may still identify a place or person. Confidence thresholds, full-resolution/multiscale handling and unsupported cases must be calibrated and approved before public photo publication; absence of a detection is not a guarantee of anonymity. Report sample counts, per-category misses/false positives and uncertainty, including tiny/occluded faces, varied skin tones, oblique plates and multiple numeral scripts. Use synthetic/staged, consented evaluation material with no real contributor uploads in fixtures or public reports. Unknown recall, unresolved weight licenses for a selected artifact or missing category coverage are explicit blockers; fail closed for photos while eligible data continues.
+ 
+-**Implementation gate:** the specification merge prerequisite is satisfied by #38. The later implementation PR needs migrations/RLS and export tests, private review authorization tests, reproducible detector-license/digest evidence, and calibration evidence before deployment; production commands still require a separate exact-target "go". This proposal neither starts screening nor claims current photos are screened.
+-
+-### 15.5 WP-6f private state, policy and authority (v8 architecture proposal)
++**Source status and deployment gate:** the specification merge prerequisite was satisfied by #38, followed by merged [WP-6fA (#53)](https://github.com/global-soil-intelligence/gsip/pull/53), [WP-6fB (#54)](https://github.com/global-soil-intelligence/gsip/pull/54) and [WP-6fC (#55)](https://github.com/global-soil-intelligence/gsip/pull/55) source. Acceptance still requires migrations/RLS and export tests, private review authorization tests, reproducible detector-license/digest evidence, and calibration evidence before deployment; production commands still require a separate exact-target "go". Source merges neither start screening nor claim current photos are screened.
++
++### 15.5 WP-6f private state, policy and authority (merged v8 architecture)
+ 
+ The approved §15.4 face/scene-text policy is implemented as three separately reviewed packages: private database authority (WP-6fA), detector/worker/private human CLI (WP-6fB), and release enforcement (WP-6fC). v8 supplies implementation detail, not detector selection, license approval, calibrated performance, capture opening or production permission. The independent global photo-publication gate defaults closed. Screening may run privately under a configured benchmark policy while publication remains closed; a passing screen or human decision cannot open that gate.
+ 

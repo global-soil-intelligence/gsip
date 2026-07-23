@@ -1,0 +1,392 @@
+{
+  "work_package": "WP-LIB-5B",
+  "state": "changes_required; P2-4 normal multi-scope cleanup loses retirement chain and strict identity checks",
+  "frozen_at": "2026-10-13T16:10:36.662214+00:00",
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "base_tree": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64",
+  "input": {
+    "patch": {
+      "path": "/private/tmp/gsip-lib5b-private-exchange-ledger-v3.patch",
+      "sha256": "23eeb622fc92c5ac9f44214fbfd172ec79d8ee76fddc68a6d338606526ef8a38",
+      "bytes": 263212
+    },
+    "manifest": {
+      "path": "/private/tmp/gsip-lib5b-final-v3-file-manifest.json",
+      "sha256": "d7a304e5e35b630c215cdab509076561ed4beb5a98ab2d39767c3c2c52486f2b",
+      "bytes": 1916
+    },
+    "author_receipt": {
+      "path": "/private/tmp/gsip-lib5b-final-v3-delivery-receipt.json",
+      "sha256": "0cc72a45955503cfefa84e26161024a9cce2cfc1123dca01153f4fa5c1cadb2b",
+      "bytes": 16306
+    },
+    "authored_files": [
+      {
+        "path": "pipeline/node_exchange_store.py",
+        "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+        "bytes": 39798
+      },
+      {
+        "path": "pipeline/node_exchange_simulator.py",
+        "sha256": "ef181863e3216c2467fd6ba814043d7cc7be16086361ac95171dd79448837d6d",
+        "bytes": 85132
+      },
+      {
+        "path": "tests/test_node_exchange_store.py",
+        "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+        "bytes": 46450
+      },
+      {
+        "path": "tests/test_node_exchange_simulator.py",
+        "sha256": "b44ca67d949780c6c5e559d7822d4dd1814dfb79b83a6b83c2ca4b9171e15707",
+        "bytes": 63963
+      },
+      {
+        "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+        "sha256": "60233a337912ed94b674392c10313ffb2c102a74d625acfa2e8ea20621c92b7a",
+        "bytes": 21082
+      }
+    ],
+    "all5_owned_author_frozen_hashes_still_match": true
+  },
+  "preservation": {
+    "immutable_base_files_compared": 347,
+    "changed_base_files": [],
+    "app_public_RLS_capture_photo_worker_model_legal_configuration_files": "unchanged exact base bytes; no runtime or deployment health claim"
+  },
+  "isolation": {
+    "owned_copy": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/source",
+    "author_shared_source_changes": false,
+    "git_or_pr_writes": false,
+    "network_listener_secret_model_real_data_or_production_actions": false
+  },
+  "checks": {
+    "preserved5": {
+      "summary": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/preserved-five-witnesses.log",
+        "sha256": "1fe0a5d05103e725adb9b8255b68b09f479d93a75d94d241e9f791b04b716537",
+        "bytes": 98
+      },
+      "junit": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/preserved-five-witnesses.xml",
+        "sha256": "a72e835b325c1503c7fb068a596b62b349c9476b07670c444aaba2645e350801",
+        "bytes": 986
+      },
+      "exit_code": 0,
+      "test_files": [
+        {
+          "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/test_original_independent_findings.py",
+          "sha256": "cdb50809f72855144c399eb22f424ef4824dcb14b898f91ab47199f3dfe4582f",
+          "bytes": 3352
+        },
+        {
+          "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/test_independent_initial_restriction.py",
+          "sha256": "0b0c3cf6652208ed610d8a14dc15c86d5e04c591f45e5edd140adab85a3d4048",
+          "bytes": 1627
+        },
+        {
+          "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/test_independent_initial_synthetic.py",
+          "sha256": "df42faa345166538c90889e9b7017df8eb433d4d5241c1b5968d90c755c2ea70",
+          "bytes": 1443
+        }
+      ]
+    },
+    "scoped_author_cases": {
+      "summary": {
+        "tests": 209,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/scoped-209-author-cases.log",
+        "sha256": "4d4bf9283594e2e61a345c1e9bf46e35b3e58f810e46a7ab7899780fe67b565c",
+        "bytes": 240
+      },
+      "junit": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/scoped-209-author-cases.xml",
+        "sha256": "9f0259296e42592525b0f1f446d7440ca95a6b30e0a91173e263277b82abe0f9",
+        "bytes": 2032479
+      },
+      "exit_code": 0,
+      "command": "<approved Python> -m pytest -q tests/test_node_exchange_store.py tests/test_node_exchange_simulator.py --junitxml=<owned scoped209.xml>"
+    },
+    "independent_card_bank": {
+      "initial_summary": {
+        "tests": 51,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "initial_test": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/test_independent_cards_initial_preserved.py",
+        "sha256": "a0a9ea35e3ea50f762f651cd5f72194217f19d8032e72c5573b3110136053d64",
+        "bytes": 21242
+      },
+      "current_test": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/test_independent_cards.py",
+        "sha256": "c871ebdf4e10d23eb7564569cb2aeab433b883285f7fee4837bc76e01afb80d1",
+        "bytes": 21270
+      },
+      "log": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/independent-cards.log",
+        "sha256": "ab8e0973198300851c52e5f4c1a1e3c3101bada06c085242a4361cfcb2660ea2",
+        "bytes": 2979
+      },
+      "junit": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/independent-cards.xml",
+        "sha256": "ff026a9ad76011fff1dfa1caacc2ea42d6bbfba569d644dbeb4aa50d0ff38322",
+        "bytes": 9157
+      },
+      "command": "PYTHONPATH=<owned source> <approved Python> -m pytest -q <owned test_independent_cards.py> --junitxml=<owned independent-cards.xml>",
+      "exit_code": 1,
+      "harness_correction": "One test wrongly expected SyntheticExchangeError from private _checkpoint; it correctly propagates fixed PrivateExchangeStoreError. Corrected only that expected exception type; all other50 cases unchanged. Corrected targeted case independently passes below. This was a harness error, not a source defect.",
+      "corrected_case": {
+        "summary": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "log": {
+          "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/corrected-private-boundary.log",
+          "sha256": "1bb55a95080737ae9470c7728b57bf43112d81dc33e6cdf1d239d4ff4cba08ea",
+          "bytes": 113
+        },
+        "junit": {
+          "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/corrected-private-boundary.xml",
+          "sha256": "05075b8eaba8b0c2183f061f64b7e611cc966cd0bb3431a463f9a7ccb642eb5a",
+          "bytes": 374
+        },
+        "exit_code": 0
+      },
+      "effective_independent_card_cases_passed": 51,
+      "process_limits": "One fork-in-multithread deprecation warning in the successful controlled delivery barrier; child exited0 and thread settled. macOS tested; no Linux portability claim."
+    },
+    "newP2": {
+      "summary": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "test": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/test_independent_cleanup_heads.py",
+        "sha256": "3cc9e4980a0b744335843a1850ce62f95996bbef9bdf8431aa10e9897df826b2",
+        "bytes": 3326
+      },
+      "log": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/final-cleanup-head-findings.log",
+        "sha256": "298ef844b95054f11502f7998d8bc83ecbf22796b091276816c864ed411f6ba4",
+        "bytes": 5563
+      },
+      "junit": {
+        "path": "/private/tmp/gsip-lib5b-v3-full-review-lvbky9vy/final-cleanup-head-findings.xml",
+        "sha256": "9c3ea21241ba073cc360e5b59503f391be2b7fea9588ea36fbd7f8ec17d9be28",
+        "bytes": 7016
+      },
+      "exit_code": 1
+    }
+  },
+  "finding": {
+    "id": "P2-4",
+    "title": "Retain validated retirement slots and exact identity checks after alias erasure",
+    "file": "pipeline/node_exchange_simulator.py",
+    "lines": [
+      1533,
+      1536
+    ],
+    "cause": "Known-refusal/no-live-alias fast path ACKs retirement absence before check_node_exchange_identity, recipient slot admission or head advancement. First same-owner retirement removes aliases for every scope, so subsequent legitimate scoped retirements hit this shortcut.",
+    "normal_trigger": "Send same original sample in two scopes; deliver both declarations; withdraw sample; deliver both cleanup retirements. Both complete with no retained payload/pending cleanup/fence. Stage unrelated known sample in second scope and deliver it.",
+    "observed": "Later declaration is stored/delivery-completed but remains gapped/held because its delivered retirement predecessor is absent from recipient slots/head; no source outbox/cleanup bytes remain to replay the missing predecessor.",
+    "companion_trigger": "Capture both exact retirement claims, deliver/checkpoint both, then retry second retained event identity with trailing whitespace.",
+    "companion_observed": "Response retired instead of conflict/held although exact bytes/digest changed; immutable retained source event identity is ignored on shortcut.",
+    "requirement": "SPEC16.10 receiver heads advance only and fully through consecutively validated slots, retirement slot can commit once predecessors validate, exact identity/slot/byte conflicts remain binding; cards A04/R02/C05.",
+    "suggested_repair": "Under fresh fake cleanup authority, bind received retirement to durable minimal original/stream/scope/refusal facts after alias erasure, retain/check immutable event identity and recipient slot/head, and ACK absence only after complete coverage. At capacity preserve reserved fence/pending obligation, never invent head or fake completion.",
+    "test_cases": [
+      "test_all_delivered_retirement_slots_advance_their_recipient_heads",
+      "test_retirement_retry_after_alias_erasure_keeps_exact_identity_conflicts"
+    ]
+  },
+  "all33_cards_assessed": [
+    {
+      "card": "F01",
+      "state": "supported",
+      "evidence": "Independent traversal/symlink/literal-root and live-root substitution tests; root/ancestor descriptor checks reviewed; authored ancestor races pass."
+    },
+    {
+      "card": "F02",
+      "state": "supported",
+      "evidence": "Independent live lock replacement refusal; creator process/thread/lock inode guards reviewed; authored two-process exclusion and inherited-session cases pass."
+    },
+    {
+      "card": "F03",
+      "state": "supported",
+      "evidence": "Own read refusal for substituted root/lock/directory/link/permission; authored six descriptor byte/inode mutation and final audit guards rerun."
+    },
+    {
+      "card": "F04",
+      "state": "supported",
+      "evidence": "Own FIFO/symlink/hardlink/weak-permission and directory cases; authored regular single-link target matrix rerun."
+    },
+    {
+      "card": "F05",
+      "state": "supported",
+      "evidence": "Own publication barriers observe one link before/after publish/commit; authored no-replace collision and unavailable primitive cases pass."
+    },
+    {
+      "card": "F06",
+      "state": "supported",
+      "evidence": "Own unknown files in root/blobs/staging preserve canaries and prevent open/ACK; no sweep source reviewed."
+    },
+    {
+      "card": "T01",
+      "state": "supported",
+      "evidence": "Own before-admission four-cap refusals preserve metadata/aliases/quota/bytes; five historical findings replay pass; no partial science."
+    },
+    {
+      "card": "T02",
+      "state": "supported",
+      "evidence": "Own real process exits at reservation/payload-write/publish/commit reopen twice with zero-or-one event/charge; authored23 crash matrix rerun."
+    },
+    {
+      "card": "T03",
+      "state": "supported",
+      "evidence": "Own simulator process crash after durable erasure restriction leaves withdrawal and cleanup obligation; authored tombstone/unlink crash matrix rerun."
+    },
+    {
+      "card": "T04",
+      "state": "supported",
+      "evidence": "Own source/recipient/draft/preparation erasure and all-alias coverage plus unknown-file ACK refusal; exact registered absence code reviewed."
+    },
+    {
+      "card": "T05",
+      "state": "supported",
+      "evidence": "Own 600-second nonce replacement rejects stale checkpoint and false receipt; store generations/recovery and authored stale writer tests pass."
+    },
+    {
+      "card": "C01",
+      "state": "supported_with_projections",
+      "evidence": "Own exact inclusive logical projections for100/1000/10000 caps, actual20 gap/+1; authored100-scope and process/contention tests rerun. Large caps not all populated end-to-end."
+    },
+    {
+      "card": "C02",
+      "state": "supported_actual_store_and_simulator_projections",
+      "evidence": "Own actual200000000 bytes across all4 blob categories, +1 refusal, erasure absence then refill; simulator queued200M exact bound projected, retained copies count source+recipient."
+    },
+    {
+      "card": "C03",
+      "state": "supported_actual_store_and_simulator_projections",
+      "evidence": "Own actual32000000 encoded metadata image and +1 refusal; actual2000000 blob and +1; pending image overflow no staging. Authored two-image/one-stage barriers pass. Simulator metadata saturation reduced projection."
+    },
+    {
+      "card": "C04",
+      "state": "supported_with_projections",
+      "evidence": "Own alias/cleanup/slot/metadata saturation activates reserved fence without new records; same-human new scope refusal and other-human positive control. Author cases pending marker false/fence permanence pass."
+    },
+    {
+      "card": "C05",
+      "state": "reviewed_not_full_closure",
+      "evidence": "Cleanup coalescence and no-eviction source inspected and author cases rerun; new two-scope cleanup chain defect prevents full cleanup/identity closure."
+    },
+    {
+      "card": "Q01",
+      "state": "supported_actual_daily_limits",
+      "evidence": "Own100 distinct source events across two scopes and100 independent recipient charges; repeat tuple events charged; exact retries free."
+    },
+    {
+      "card": "Q02",
+      "state": "supported",
+      "evidence": "Own UTC23:59:59 -> midnight/restart retry free; source old-day100, recipient first old-day1 and new-day99; erasure preserves all charges."
+    },
+    {
+      "card": "Q03",
+      "state": "supported",
+      "evidence": "Own caller Prepared/bytearray/wrong owner/stream refusals; human and role derived from strict fake scope and exact original mapping, no envelope human authority."
+    },
+    {
+      "card": "R01",
+      "state": "supported",
+      "evidence": "Own raw-only parsing and revalidation tests; persisted hidden science/unknown boolean/forged recipient head refused; full prior binding and byte digest source reviewed."
+    },
+    {
+      "card": "R02",
+      "state": "blocked_by_P2_4",
+      "evidence": "Own whitespace/case/numeric/slot/science conflicts pass for declarations; no-alias retirement shortcut accepts changed whitespace under retained event identity."
+    },
+    {
+      "card": "R03",
+      "state": "supported",
+      "evidence": "Own science/context/owner mutation and known-alias restrictions; same original grants and exact measurement authority v1/v2 witnesses now pass."
+    },
+    {
+      "card": "R04",
+      "state": "supported",
+      "evidence": "Own initial sealed/synthetic witnesses now pass, withdrawal across camera/instrument aliases; authored full-sample/cross-grant/missing-label/saturation cases rerun."
+    },
+    {
+      "card": "R05",
+      "state": "supported",
+      "evidence": "Own other-human same sample/measurement/source-hash fixture remains usable and counted separately after H withdrawal; alias scopes distinct; no digest linkage source."
+    },
+    {
+      "card": "A01",
+      "state": "supported",
+      "evidence": "Own known/disconnected/expired/revoked/exact-M-missing/ambiguous-grant cases refuse recipient admission/use/claim/preparation with no charge."
+    },
+    {
+      "card": "A02",
+      "state": "supported",
+      "evidence": "Own delivery thread held at unlocked barrier, separate process withdraws and exits0; stale delivery then cannot complete. Own admission and erasure crashes plus root lock source reviewed."
+    },
+    {
+      "card": "A03",
+      "state": "supported",
+      "evidence": "Own concurrent-process withdrawal during fake delivery, changed receipt and stale nonce negatives; no root lock held during FakeTransport calls."
+    },
+    {
+      "card": "A04",
+      "state": "blocked_by_P2_4",
+      "evidence": "Own out-of-order empty retirement restricts immediately without fabricating predecessor/head. Normal multi-scope cleanup loses second delivered retirement slot/head, trapping unrelated subsequent sample."
+    },
+    {
+      "card": "A05",
+      "state": "supported",
+      "evidence": "Own ordinary revoke with cleanup false holds; restoring separate cleanup permission permits lost-reply retry and erasure; no ordinary actor revival."
+    },
+    {
+      "card": "A06",
+      "state": "supported",
+      "evidence": "Own cleanup priority20/21, five explicit transient attempts60/120/240/480, terminal hold, 600-second recovery and nonce replacement; authority-unavailable non-consuming cases author rerun."
+    },
+    {
+      "card": "I01",
+      "state": "supported",
+      "evidence": "Own fixed generic cause/context-free errors and fictional canary preservation; public fixed count/status surfaces and strict private metadata reviewed."
+    },
+    {
+      "card": "I02",
+      "state": "supported_source_preservation",
+      "evidence": "All347 base files preserved; only5 new files. Exact FakeAuthority/FakeTransport types; source imports no network/secret/model/real-ingest/CLI path; no live calls made."
+    },
+    {
+      "card": "I03",
+      "state": "partial_until_refreeze",
+      "evidence": "Five unchanged independent fail-before witnesses preserve prior meaningful failures and now pass.51 new card probes exercise critical boundaries; current newP2 witnesses fail. Additional independent guard mutations/full closure deferred to corrected freeze."
+    }
+  ],
+  "closure_limits": {
+    "full5_file_closure": false,
+    "independent_cards_complete": false,
+    "stop_reason": "Coordinator requires freezing concrete newP2 and ending for author correction. Full closure resumes on refrozen bytes.",
+    "actual_caps_this_turn": "Actual200M retained bytes and32M complete low-level metadata image, actual2M blob max/+1 pass in new independent bank. Simulator queued bytes and large logical cardinalities projected; no measured capacity/throughput claim.",
+    "GDAL_Linux_full_CI": "Not run here; scoped209 cases have no skips. Required full GDAL and exact-head CI remain root/external checks, never inferred passing.",
+    "no_real_authority_science_deployment_or_GitHub_approval": true
+  }
+}

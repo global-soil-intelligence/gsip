@@ -1,0 +1,303 @@
+{
+  "base_commit": "e9a6893ee980bfe62a8ecf0b2664e3ab2ec9f0c3",
+  "scope": "Only five task-configuration lines plus meaningful tests/docs; isolated author, no operational mutation",
+  "manifest": [
+    {
+      "path": "scripts/app_notification_audit.py",
+      "base_sha256": "3e5bd547b86a0a106333126ad29cb86357dce266b903492049519dd63a12e436",
+      "candidate_sha256": "fba437191cd7bfe38a9a79d6adccd42ed10d71a9f16774e5a5de4bb07c6241f3",
+      "base_bytes": 109836,
+      "candidate_bytes": 110031
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "base_sha256": "e7d0a2a4eeb5898796d60bf8988555692d7ff3070e0d4563c41bc02421092f8a",
+      "candidate_sha256": "ed80d0d9cfd9318a470652922b0a80f534abb8d6f5e27c3768b94d91728bd166",
+      "base_bytes": 118953,
+      "candidate_bytes": 127882
+    },
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "base_sha256": "a884c44ed63f8f4d4f508fcd56aab7be53641d8dd7b64b82bf310621e7f90645",
+      "candidate_sha256": "a353247b42f0285934c89bef3e53c09d35a8f2aeb464f231ce8f78a9b9c57f35",
+      "base_bytes": 17907,
+      "candidate_bytes": 20361
+    }
+  ],
+  "only_changed_paths": [
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py"
+  ],
+  "source_inventory_files": 481,
+  "all_existing_python_function_ASTs_unchanged": true,
+  "temporary_gradle_task": {
+    "base_sha256": "cc60ea5720b5c07bd746b7e4c443181a1ab1b40e2e74cbb985d31cbf68dda190",
+    "candidate_sha256": "378545f139571e28e6f4970697a82f894b8986ff501ead286f7c7945c6eb269d",
+    "only_added_five_lines": "        dependsOn {\n            ['debugRuntimeClasspath','releaseRuntimeClasspath'].collect { name ->\n                app.configurations.getByName(name).buildDependencies\n            }\n        }\n",
+    "all_other_task_bytes_unchanged": true
+  },
+  "original_test_prefix": {
+    "sha256": "e7d0a2a4eeb5898796d60bf8988555692d7ff3070e0d4563c41bc02421092f8a",
+    "bytes": 118953,
+    "byte_identical": true,
+    "original_cases": 396
+  },
+  "invariants": [
+    "both actual runtime configurations remain mandatory",
+    "both selected project artifact producers execute before artifact transforms/inspection",
+    "no artifact substitution/check skip/API migration/signing input",
+    "all source/license/binary/repeat/permission/backup/closed flags and scanner guards preserved",
+    "all fixed diagnostic channels, original status/rethrow and raw stream caps unchanged",
+    "producer order never licenses a foreign selected project or grants graph acceptance"
+  ],
+  "actual_checks": {
+    "candidate_with_verified_gradle": {
+      "tests": 403,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ordinary_tool_unavailable": {
+      "tests": 403,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 7
+    },
+    "real_shipped_new_cases": 7,
+    "unchanged_bank43": {
+      "tests": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "meaningful_real_fail_before": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "per_control": [
+      {
+        "fixed_fault": null,
+        "graph_created": true,
+        "graph_sha256": "845e92dcdcc5d3719036b0a1e48ca97644eb9e04e140fba7f974edd0fc901e45",
+        "mode": "success",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": true,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1187,
+        "stdout_sha256": "b2c711950ceccef0de65d7dbb3fa19639e8250bb18594a91610dcd44645a63b0",
+        "task_sha256": "378545f139571e28e6f4970697a82f894b8986ff501ead286f7c7945c6eb269d",
+        "tool_exit_code": 0
+      },
+      {
+        "fixed_fault": [
+          "DEBUG_ARTIFACTS",
+          "FILE_MISSING"
+        ],
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "no_debug_dependency",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": false,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 1410,
+        "stderr_sha256": "5d7c73245d53173152021e69c5e2606870b136e9d3fca015cb9ee7c15f9a6943",
+        "stdout_bytes": 932,
+        "stdout_sha256": "d2edc945187ecc07696b663cc5cee7874685452c8f8f1ef48a3b3e369ad0b659",
+        "task_sha256": "50d04177a87929dba913c1e6817dc6471fe40c3dce4afda1337e1876fde6df1b",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": [
+          "RELEASE_ARTIFACTS",
+          "FILE_MISSING"
+        ],
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "no_release_dependency",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": true,
+          "other-library": false
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 1450,
+        "stderr_sha256": "4c84572b9cb31dd7068d24a1d33c5d85d66988cff2d9ee898ae1a3d16bca2596",
+        "stdout_bytes": 896,
+        "stdout_sha256": "89f0db753d1f28e40d9ac7bced2545652818f40fba2fdf92847fc2e1f500791e",
+        "task_sha256": "631059184461f0cfee43ee0527280e7474513ee4801752159add5aec189d8f2d",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": [
+          "DEBUG_ARTIFACTS",
+          "FILE_MISSING"
+        ],
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "missing_producer",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": false,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 1410,
+        "stderr_sha256": "f97301902339b37658dc82203d0c59bb30d33c9f5369626ca225885b333db1c3",
+        "stdout_bytes": 1076,
+        "stdout_sha256": "951eae9df1685e4af74f5b6e54bddb2556080e1a25c0e1462547c7ba921c83c8",
+        "task_sha256": "378545f139571e28e6f4970697a82f894b8986ff501ead286f7c7945c6eb269d",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": null,
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "producer_failure",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": false,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 577,
+        "stderr_sha256": "5790cf8483347354b7ca4b71cd75a49675e610831971270d98b5c64fba893865",
+        "stdout_bytes": 1001,
+        "stdout_sha256": "80a310c1c34fd217299558f39d61a4e273d662e81f7e3350a229469faddd555c",
+        "task_sha256": "378545f139571e28e6f4970697a82f894b8986ff501ead286f7c7945c6eb269d",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": null,
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "missing_configuration",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": false,
+          "other-library": false
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 634,
+        "stderr_sha256": "3a41d32affbf6cc14468e9bd15b0c54f9857efae405d69753efbc863b1e331f0",
+        "stdout_bytes": 553,
+        "stdout_sha256": "72f8f448c3d45d039c507821e5aad82449affae595814f3d54531011c4d829ac",
+        "task_sha256": "378545f139571e28e6f4970697a82f894b8986ff501ead286f7c7945c6eb269d",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": null,
+        "graph_created": true,
+        "graph_sha256": "f7445644b201184ab8553880ee23e641bbb6ff7d88c894d27e535d242e250fa0",
+        "mode": "foreign",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": true,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1425,
+        "stdout_sha256": "0539f91040809f3666cc587ed1de3dcea6154a0ce326ec3804e9ef317cb2759c",
+        "task_sha256": "378545f139571e28e6f4970697a82f894b8986ff501ead286f7c7945c6eb269d",
+        "tool_exit_code": 0
+      }
+    ],
+    "graph_preservation": {
+      "tool_binding_sha256": "b4519f0f693050405a272a416d3d70e723bd5c08a624e1827702eaf19e5f858e",
+      "prebuilt_same_project_graph_byte_equal": true,
+      "baseline_graph_sha256": "d1db66ff6cbb83773b7200f0a717f971aa875fca133426b636aafcc7e89d93e5",
+      "candidate_graph_sha256": "d1db66ff6cbb83773b7200f0a717f971aa875fca133426b636aafcc7e89d93e5",
+      "no_native_product_build": true,
+      "hosted_original_cause": "UNKNOWN; local transform defect is independently demonstrated only"
+    },
+    "ruff": "passed",
+    "mypy_two_files": "passed",
+    "prettier_docs": "passed",
+    "language": "passed"
+  },
+  "tool_binding": {
+    "gradle_version": "8.14.3",
+    "archive_bytes": 224584249,
+    "archive_sha256": "ed1a8d686605fd7c23bdf62c7fc7add1c5b23b2bbc3721e661934ef4a4911d7c",
+    "owned_full_distribution_files": 22432,
+    "owned_full_distribution_manifest_sha256": "45efd22826d38a1dffca4dbeb190ad04a7665cb8a5d16af9be17866e2d780c9e",
+    "gradle_launcher_sha256": "4f4e6088759550eab2a3e7904265a3e9e3043d178e96ab169da0c7ea09795984",
+    "java_version": "21.0.1",
+    "java_binary_sha256": "c44bb5e63341a3210c998cc953f25546f8474fa7d83044965af84889d4594159",
+    "java_version_output_sha256": "ee4b7a54cec941471df3539fc1c4bb12ed04d11ce2e04a43b5746155630183f6",
+    "test_environment": {
+      "GSIP_TEST_GRADLE_HOME": "/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-producer-author-2_r5v6jo/real-gradle/gradle-user-home/wrapper/dists/gradle-8.14.3-all/10utluxaxniiv4wxiphsi49nj/gradle-8.14.3",
+      "JAVA_HOME": "/Users/justinhart/Library/Java/JavaVirtualMachines/openjdk-21.0.1/Contents/Home"
+    },
+    "license": "Apache-2.0 (existing Gradle build tool; not a new runtime dependency)",
+    "primary_archive": "https://services.gradle.org/distributions/gradle-8.14.3-all.zip",
+    "primary_api_documents": {
+      "docs/javadoc/org/gradle/api/artifacts/Configuration.html": "136948a768462a1b5da7284632f77f4726fa699a6f0517532e81f06190f59aea",
+      "docs/javadoc/org/gradle/api/artifacts/ResolvedConfiguration.html": "cc695d059dd2fc384ebb7ba3518fda5df9867fd76a690842de9f4259178d722c"
+    }
+  },
+  "evidence_hashes": {
+    "creation-receipt.json": "a620531cdb6ca399275cc140acb6653878869559f3fd0076f85bc74398951413",
+    "candidate-all-actual.xml": "2b32683d7505bc6c4662636719d0e974dd71a60b307001a674b8765ca63b3fd6",
+    "candidate-all-actual.log": "784f253d15a6ed2bc2a7e6cb973f9320b2ec20f390db8551d376da0968076c6b",
+    "candidate-default-final.xml": "11f6322700687373c67e9cae89c9865fc237734d2042b3a3335c318b09bfb89d",
+    "candidate-default-final.log": "2e3c746e9fb85879c0007c3b521333509c4360e1a6cbce9f020b7fde9df40797",
+    "bank43.xml": "2038101b09070f076f62762a675c54d11693056db448e63a4580f691796e2fa7",
+    "bank43.log": "4bf4e52be384ebaf55a16e572c0c8b6b711955e9480b639574b66b0e52d0fd45",
+    "fail-before.xml": "4e082a63e3d856da657033326b2807acc0ac53a5f4735eba0c41e6dbd0756bfb",
+    "fail-before.log": "c210980c43d2df933a5be092c6eeb136fdecb9c2cc614839efb1d718030467ce",
+    "producer-transform-first-probe.json": "a0d9bc364092a8860ca34d2270a9c3f7a1bb6d7d2eff766408156b1db6ca6af2",
+    "producer-transform-corrected-probe.json": "af3b938d760faec91c918b856ac23692a1fb9a0bf025c9ce6a9ce6658f1b56d7",
+    "verified-tool-binding.json": "b4519f0f693050405a272a416d3d70e723bd5c08a624e1827702eaf19e5f858e",
+    "prebuilt-graph-preservation.json": "515ea29d7be6d7666c165b2e1f5139914704c1768e7b7632e035b835233a3181",
+    "ruff-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "mypy-final.log": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8",
+    "format-final.log": "3e18d6791608611c60e42eae5745e1423930a3e53878e1c283a72eb7089e4445",
+    "language-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "probe-producer.py": "51c6a34a1afd879f9bd2d107ce9fb91494e4b57cb0362ad03ba460f0a5b41d40",
+    "probe-corrected-producer.py": "ef1fd9dfe14db40cdbded413d1b91627904029e7250fa8211685b892f9071a51",
+    "final-producer-tool-controls.py": "e3ff5f1626335ba93cd2e3705723e2f674613ffdd77d9d6778fa73baf03983b0",
+    "success-control.json": "e64a4b0facce58a6f06495abe97c105286bd103697cb8af3cd9f59f8ac3974ef",
+    "no_debug_dependency-control.json": "2ca802c5db6cc1892716c5a4db1abc817c44d6504d5232fa3d45eac95906a51a",
+    "no_release_dependency-control.json": "d63b3fc4f8639ac26027a3ccf108d69a95fb25f1bd8fc731f02ca38b33ce2b71",
+    "missing_producer-control.json": "257eaecd3343d26f2bcb67f87f6c1aff063bf9c1c2550276b3d7352b66ce8aeb",
+    "producer_failure-control.json": "0d0d12c98d0e036e10ee842c5e748beca5774cd591c874bfd7a7d7e68739515b",
+    "missing_configuration-control.json": "16765014bf38b6310e064b0d4e4c4397c9bff0d3cc5a6c682941ff8cf00c2e6f",
+    "foreign-control.json": "6132a731fafcb9b1daa476557a22f403a32686124fff3b35ceed593cf831af62",
+    "gitleaks-authored.log": "265861474e9aea152db7fd9dfba038d1c023cb0a53ef1da7c9710fcae0a94171"
+  },
+  "patch_sha256": "dc01ab442cfef149717de97e88081b9087bebbdfb2c53b00f4296d8c4cc353da",
+  "manifest_sha256": "21290750ab8468b5da64aa1f214fdb00d72684cc95a18ca0e0f12a8be9536fc3",
+  "fixture_manifest_sha256": "76eea32d42d73daa3a79801789d73d53ef2810380e82d94315d035a598de4b3c",
+  "assumptions": [
+    "Python-emitted ephemeral Gradle build configuration uses public buildDependencies API; no maintained/shipped native app source",
+    "An offline content-reading artifact transform proves the independent task-input defect; actual hosted Android specific cause remains UNKNOWN",
+    "Actual regression requires explicit verified Gradle home/Java; hosted general default seven skips are unavailable, not pass",
+    "Selected dependent library artifact producers do not supply owner app release signing/accounts/keys"
+  ],
+  "limits": [
+    "Hosted original failure was DEBUG_ARTIFACTS/UNKNOWN; this local defect is not proof of that specific cause",
+    "Fresh hosted native CI/APK/license/size/repeat evidence is still required",
+    "No Android SDK/product build, production deployment, merge/capture/photo publication/signing change performed"
+  ],
+  "scan": {
+    "tool_version": "8.21.2",
+    "scope": "Frozen authored three files; current scanner rules and redaction unchanged, no suppression",
+    "exit_code": 0,
+    "leaks": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "full_history_scan": "Not run by author; root integration owns it"
+  }
+}

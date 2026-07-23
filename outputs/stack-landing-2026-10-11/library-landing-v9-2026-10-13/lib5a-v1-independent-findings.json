@@ -1,0 +1,127 @@
+{
+  "reviewer": "Codex independent subagent /root/spec9_clarity_review",
+  "recorded_at_utc": "2026-10-13T12:21:54.219131+00:00",
+  "mode": "Fresh-context read-only source review plus isolated synthetic probes; not an approving GitHub review.",
+  "approved_base": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+  "candidate_patch_sha256": "9dd4407a20638ce5ba7479e4734f0f40d8f7502fdab782c900a5e80bc96b9093",
+  "files": [
+    {
+      "path": "docs/NODE_EXCHANGE_CONTRACT.md",
+      "base_sha256": null,
+      "source_sha256": "15661ea52671707884f6ad67ed43f8e1c703739a510fcacd615250645c5ffcf3",
+      "byte_count": 4715
+    },
+    {
+      "path": "packages/schema/src/index.ts",
+      "base_sha256": "8b83f86de138fcaec38020d41150352a27be7d6c1793a05ddec8b2ce220fb368",
+      "source_sha256": "88f0441e7f3aeb62da4081d22ebf72a874ad0c583b40b1610dfa48ab926a3cb6",
+      "byte_count": 297
+    },
+    {
+      "path": "packages/schema/src/nodeExchange.ts",
+      "base_sha256": null,
+      "source_sha256": "9dccc62b16c40d43b9f7adfae3aa4c04bd4ec25eddef7c52a33e7b3da8f0fdda",
+      "byte_count": 15635
+    },
+    {
+      "path": "packages/schema/tests/fixtures/node-exchange-conformance.json",
+      "base_sha256": null,
+      "source_sha256": "05ba6c11e1e0b8073618341ca07805f3e70ed0e7b5af3bc8ad3aac5c889c3f9a",
+      "byte_count": 91050
+    },
+    {
+      "path": "packages/schema/tests/node-exchange.test.ts",
+      "base_sha256": null,
+      "source_sha256": "0329095c32930ae78e0a47dcced71e190fefcc650e2cf8b758030f92e69bc36b",
+      "byte_count": 11549
+    },
+    {
+      "path": "pipeline/node_exchange.py",
+      "base_sha256": null,
+      "source_sha256": "79075a943e66ec50046b0aafea7a80c2bf35ce5320d9bce5486cdaa1532944f7",
+      "byte_count": 15457
+    },
+    {
+      "path": "tests/test_node_exchange_contract.py",
+      "base_sha256": null,
+      "source_sha256": "89db1cf7cd1d70e4db0c0ac817b82826b50c6a8a5405aba768e8fedd587fb1a2",
+      "byte_count": 10526
+    }
+  ],
+  "independent_copy": "/private/tmp/gsip-lib5a-independent-0pa8u004/source",
+  "verdict": "Two P2 findings block independent review closure for this exact v1 candidate.",
+  "findings": [
+    {
+      "id": "LIB5A-R1",
+      "priority": 2,
+      "title": "Suppress private getter exceptions at every TS semantic/fact helper boundary",
+      "file": "packages/schema/src/nodeExchange.ts",
+      "lines": [
+        111,
+        346,
+        355
+      ],
+      "trigger": "A valid-shaped supplied synthetic event with a kind getter throwing a fictional private canary, or a supplied slot/Prepared object with a throwing stream/event getter.",
+      "observed": "The original Error with private message escapes from semantic schema and stream/binding/retirement/coverage/slot/identity/head helpers.",
+      "required": "Fresh generic boundary errors with no private message, validation details or attached cause; include all exported helpers and semantic-schema access."
+    },
+    {
+      "id": "LIB5A-R2",
+      "priority": 2,
+      "title": "Check actual byte storage size before copying or decoding subclass input",
+      "files": [
+        "packages/schema/src/nodeExchange.ts",
+        "pipeline/node_exchange.py"
+      ],
+      "lines": [
+        237,
+        220
+      ],
+      "trigger": "Uint8Array subclass whose byteLength getter returns zero, or bytes subclass whose __len__ returns zero, backed by 2,000,001 bytes of permitted ASCII JSON whitespace plus a valid event.",
+      "observed": "Both raw parsers accept the oversized event, bypassing the inclusive 2,000,000 input-byte bound before copying/decoding/full parse.",
+      "required": "Trusted intrinsic byte length before copy/decode or explicit refusal of unsafe subclasses; preserve normal Node Buffer snapshots and prevent Python __bytes__ overrides from replacing original-byte evidence."
+    }
+  ],
+  "independent_validation": {
+    "typescript": {
+      "numTotalTests": 171,
+      "numPassedTests": 161,
+      "numFailedTests": 10
+    },
+    "python": {
+      "tests": 163,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "wire_corpus_cases_per_language": 155,
+    "wire_corpus_failures": 0,
+    "TS_failure_categories": "one oversized-byte case plus nine generic getter-error regressions",
+    "Python_failure_categories": "one oversized-byte refusal regression"
+  },
+  "passed_scope": [
+    "Exact raw hashes/owned Buffer and Uint8Array view copies across hashing await",
+    "Exact event/slot/stream retries and spelling conflicts",
+    "Nested UUID normalization and scientific/context/camera/instrument bounds",
+    "Decoded duplicate/escaped keys, prototype/authority extras, strict UTF-8/BOM/Unicode/depth grammar",
+    "Pre-conversion integer rounding traps and unchanged finite-number scientific rules",
+    "Immutable scientific bindings, monotonic synthetic restriction, gaps/retirement-first sample coverage and maximum sequence bound",
+    "Python generic exception causes and contexts absent under ordinary helper rejection"
+  ],
+  "source_review_boundaries": "Helpers consume supplied synthetic facts only, no ledger/authentication/rights certification. No new network/filesystem/credential/environment call, dependency, app integration, scientific verification, private-real exchange or production gate in the seven-file delta. Existing LIB-1/4 source is unchanged.",
+  "evidence_sha256": {
+    "/private/tmp/gsip-lib5a-independent-0pa8u004/input-manifest.json": "a5154a6e26f152017dbe979ee2050747b291d53749a114bbf3c26b0548d84b64",
+    "/private/tmp/gsip-lib5a-independent-0pa8u004/ts-extended-probe-results.json": "d7dd9162fc13f2950bef0a021ddc47220f172010c61bdb787e4b3f5f81c9f929",
+    "/private/tmp/gsip-lib5a-independent-0pa8u004/python-extended-probe-results.xml": "910857a784f550e79afef3e20ba2cf936b19e47bc46e615eda218e3733e5d032",
+    "/private/tmp/gsip-lib5a-independent-0pa8u004/probe-failure-summary.json": "cee79c619a9c768a4c6c7a95bf0fa0d62018fa6c7a2be205f6cb34db7b027f17",
+    "/private/tmp/gsip-lib5a-independent-0pa8u004/node-exchange-independent.test.ts": "9357652dd9a1eda6448fa3fb3cc078326343b681b80e0c39a792023fb644e09b",
+    "/private/tmp/gsip-lib5a-independent-0pa8u004/test_node_exchange_independent.py": "3cc5b780f9e65e51f1f7a29d2acc7a5821090a7fc3f9241c590caed6b35add39"
+  },
+  "actions": {
+    "author_or_shared_source_edits": false,
+    "git_mutations": false,
+    "network_HTTP_or_production_actions": false,
+    "real_contributor_data": false
+  },
+  "remaining": "Author fixes then a fresh exact-hash candidate and independent regression rerun; root owns workspace-wide integration and exact-head CI. No merge clearance yet."
+}

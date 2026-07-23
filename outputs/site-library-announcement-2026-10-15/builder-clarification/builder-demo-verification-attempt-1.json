@@ -1,0 +1,32 @@
+{
+  "commands": [
+    {
+      "command": "/opt/homebrew/bin/uv run --frozen --offline --no-sync python -m pipeline.library_demo --output /private/tmp/gsip-builder-entry-20261015-5412r9o2/synthetic-demo",
+      "exit_status": 2,
+      "stderr_empty": false,
+      "step": 1,
+      "summary": null
+    }
+  ],
+  "environment": {
+    "credential_environment_variables_passed": false,
+    "environment_sync_disabled": true,
+    "frozen": true,
+    "offline": true,
+    "production_credentials_used": false,
+    "python": "Python 3.12.7",
+    "uv": "uv 0.5.5 (Homebrew 2024-11-27)"
+  },
+  "fictional_paired_sample_count": null,
+  "lockfile_sha256": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912",
+  "private_synthetic_root": "/private/tmp/gsip-builder-entry-20261015-5412r9o2",
+  "receipts": [],
+  "schema_version": "gsip-builder-demo-verification-v1",
+  "scientific_validation": false,
+  "scope": "Synthetic local software verification only; no accounts, production access, real data, source or Git mutation. No field accuracy or scientific validity claim.",
+  "source_commit": "d13abfb1bace8ba84e6091ce0033f104b53edf78",
+  "status": "failed",
+  "synthetic_record_count": 0,
+  "verified_at_utc": "2026-10-15T22:52:00.219112+00:00",
+  "working_directory": "/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0"
+}

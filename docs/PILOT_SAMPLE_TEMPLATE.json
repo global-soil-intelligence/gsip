@@ -1,0 +1,41 @@
+{
+  "submission_id": "COPY_FROM_MY_OBSERVATIONS",
+  "sample_id": "YOUR_LAB_SAMPLE_ID",
+  "site_id": "YOUR_SITE_ID",
+  "region": "YOUR_PILOT_REGION",
+  "h3_r8": "YOUR_PUBLIC_H3_R8_CELL",
+  "depth_top_cm": 0,
+  "depth_bottom_cm": 5,
+  "image_path": "photos/sample-B.jpg",
+  "soil_roi": [0, 0, 128, 128],
+  "roi_verified": false,
+  "phone_group": "PHONE_MODEL_FAMILY",
+  "lighting": "diffuse_daylight",
+  "surface_condition": "dry",
+  "is_synthetic": false,
+  "prior": {
+    "source": "SoilGrids",
+    "version": "PINNED_SOURCE_VERSION",
+    "property": "soc",
+    "unit": "g/kg",
+    "depth_top_cm": 0,
+    "depth_bottom_cm": 5,
+    "mean": null,
+    "lower": null,
+    "upper": null
+  },
+  "lab": {
+    "sample_id": "YOUR_LAB_SAMPLE_ID",
+    "lab_name": "LAB_NAME",
+    "method": "LAB_SOC_METHOD",
+    "document_sha256": "SHA256_OF_LAB_REPORT",
+    "document_path": "lab/sample-report.pdf",
+    "verified_by": "REVIEWER",
+    "verified": false,
+    "property": "soc",
+    "unit": "g/kg",
+    "depth_top_cm": 0,
+    "depth_bottom_cm": 5,
+    "value": null
+  }
+}

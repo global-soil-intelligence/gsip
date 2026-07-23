@@ -1,0 +1,18 @@
+{
+  "utc": "2026-10-13T23:52:10.898111+00:00",
+  "source_helper_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+  "commands": [
+    {
+      "check": "pytest",
+      "exit_code": 1,
+      "seconds": 210.7,
+      "output_sha256": "76c62eba506a4dcc18bfc0c7b4f3deeeb183c3d0c98c7923150b4fe6f47c8877",
+      "output_bytes": 4017,
+      "output_file": "app2b-root-reviewed-native-v3-pytest.txt"
+    }
+  ],
+  "all_pass": false,
+  "verified_gradle_opt_in": true,
+  "HOME_inherited": true,
+  "production_changes": false
+}

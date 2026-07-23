@@ -1,0 +1,29 @@
+{
+  "observed_at": "2026-10-12T15:02:21.769142+00:00",
+  "status": "PASS",
+  "repository": "global-soil-intelligence/gsip",
+  "tool": "local SDK35.0.0 aapt2 plus unchanged scripts/app_permissions.py",
+  "checks": [
+    {
+      "pr": 34,
+      "head": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+      "run_id": 38265397710,
+      "android_actual_apk_permissions": "PASS",
+      "ios_actual_built_plist_permissions": "PASS",
+      "source": "downloaded exact-head CI platform payloads"
+    },
+    {
+      "pr": 39,
+      "head": "d522c770c3a7fa490c6906817a7d3121842c365b",
+      "run_id": 38265400180,
+      "android_actual_apk_permissions": "PASS",
+      "ios_actual_built_plist_permissions": "PASS",
+      "source": "downloaded exact-head CI platform payloads"
+    }
+  ],
+  "limits": [
+    "Closed-SDK dependency tree was checked in the successful native CI jobs; this separate download readback checks packaged permissions only.",
+    "No physical-device or signed store release is established."
+  ],
+  "production_mutations": []
+}

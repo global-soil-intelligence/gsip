@@ -1,0 +1,20 @@
+[
+  {
+    "path": "scripts/app_notification_audit.py",
+    "base_sha256": "25c648dea41a51a8dcd076f61419b2b94a350c279c4d0f465059451cbf13bdd8",
+    "candidate_sha256": "c5057469e93edc5b3d519061bb1478aea3afae547dcfa81b654dcd22cbf36ded",
+    "candidate_bytes": 106295
+  },
+  {
+    "path": "tests/test_app_notification_audit.py",
+    "base_sha256": "e75ef368e51c6eae9d3f53f6e812953be543732bf8f2c041917e1133c61ab8b7",
+    "candidate_sha256": "0dd282c1642fe09321f2eeda83907728056998aa833bbb71d7835ef9af9b148e",
+    "candidate_bytes": 111057
+  },
+  {
+    "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+    "base_sha256": "2fd32bb8140c359467d3ca1eea9aab4ca862ec2a4adfebd8b058c0f11f5a368c",
+    "candidate_sha256": "9c44d4e4cc313279918ddfe8ea35186903b07db8728b314a999501305e92790d",
+    "candidate_bytes": 15914
+  }
+]

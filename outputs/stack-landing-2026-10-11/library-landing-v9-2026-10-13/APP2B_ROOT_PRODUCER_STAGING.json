@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-13T21:29:04.124600+00:00",
+  "base_head": "e9a6893ee980bfe62a8ecf0b2664e3ab2ec9f0c3",
+  "files": [
+    {
+      "path": "scripts/app_notification_audit.py",
+      "base_sha256": "3e5bd547b86a0a106333126ad29cb86357dce266b903492049519dd63a12e436",
+      "candidate_sha256": "fba437191cd7bfe38a9a79d6adccd42ed10d71a9f16774e5a5de4bb07c6241f3",
+      "base_bytes": 109836,
+      "candidate_bytes": 110031
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "base_sha256": "e7d0a2a4eeb5898796d60bf8988555692d7ff3070e0d4563c41bc02421092f8a",
+      "candidate_sha256": "ed80d0d9cfd9318a470652922b0a80f534abb8d6f5e27c3768b94d91728bd166",
+      "base_bytes": 118953,
+      "candidate_bytes": 127882
+    },
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "base_sha256": "a884c44ed63f8f4d4f508fcd56aab7be53641d8dd7b64b82bf310621e7f90645",
+      "candidate_sha256": "a353247b42f0285934c89bef3e53c09d35a8f2aeb464f231ce8f78a9b9c57f35",
+      "base_bytes": 17907,
+      "candidate_bytes": 20361
+    }
+  ],
+  "unchanged_other_tracked": 362,
+  "invariants": "only lazy producer dependencies; all original task bytes, Python function AST, runtime variants, source/license/repeat/permission/fault/cap/status proof guards preserved",
+  "independent_closure": "pending; required before commit/push",
+  "tool_launcher_and_java_hash_verified": true,
+  "snapshot": "/private/tmp/gsip-app2b-root-producer-three",
+  "commit_push": false
+}

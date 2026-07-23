@@ -1,0 +1,34 @@
+{
+  "status": "PREPARED_AWAITING_JUSTIN_GO",
+  "repository": "global-soil-intelligence/gsip",
+  "run_id": 38821460183,
+  "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183",
+  "merge_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "artifact_id": 12013740607,
+  "artifact_sha256": "2bc0829549d98331c7a8dc5e451b6e5457125fd5863f166e63ce1ea90a4cde33",
+  "target": "https://global-soil-intelligence.github.io/gsip/",
+  "environment": "github-pages",
+  "approval_command": "gh api --method POST repos/global-soil-intelligence/gsip/actions/runs/38821460183/pending_deployments --input '/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/merge-75-pages-2026-10-15/pages-approval-request.PROPOSED.json'",
+  "approval_payload": {
+    "environment_ids": [
+      18657050755
+    ],
+    "state": "approved",
+    "comment": "Release the reviewed static library website from merge 73088050d6fc68baedf893990ab3fbe76d5e749c. Artifact 12013740607 verified; capture_live=false and library_intake_live=false. No database, Edge Function, worker, auth, DNS or app-store deployment."
+  },
+  "effect": "Publish the new static library/whole-stack builder website from this exact uploaded artifact.",
+  "cost": "No new paid tier or service; existing GitHub Pages hosting.",
+  "rollback": "Owner-approved revert of #75 through a fresh PR with CI, followed by a separately approved closed Pages build; no history rewrite.",
+  "verification_after_approval": [
+    "Wait for deployment success for this exact run/source commit.",
+    "GET home, about, card, data, methods, llms.txt and og-library.png at the Pages origin.",
+    "GET capture/gsip-activation.json; require exactly both flags false.",
+    "Check capture route renders closed without sign-in or data submission."
+  ],
+  "not_authorized": [
+    "Deployment approval",
+    "Capture or library upload activation",
+    "Database, functions, workers, auth, DNS, signing or accounts"
+  ],
+  "supersedes": "Cancelled stale Pages run 38657274196; do not approve that run."
+}

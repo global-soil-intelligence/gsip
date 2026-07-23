@@ -1,0 +1,332 @@
+{
+  "prepared_at": "2026-10-12T13:38:14.154213+00:00",
+  "kind": "GitHub read-only production worker quiescence observation",
+  "production_project": "toxldjgwkxtneoqsazym",
+  "observations": {
+    "main": {
+      "queried_at": "2026-10-12T13:38:13.087222+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/commits/main",
+      "pages": 1,
+      "data": {
+        "sha": "7a2c082ced29a9da2e731484590ea5aedfe5a657",
+        "committed_at": "2026-10-02T21:57:09Z"
+      }
+    },
+    "workflows": {
+      "queried_at": "2026-10-12T13:38:13.088725+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/actions/workflows?per_page=100",
+      "pages": 1,
+      "data": {
+        "total_count": 11,
+        "workflows": [
+          {
+            "id": 381647102,
+            "name": "App build",
+            "path": ".github/workflows/app-build.yml",
+            "state": "active"
+          },
+          {
+            "id": 318365326,
+            "name": "CI",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          },
+          {
+            "id": 371718024,
+            "name": "DCO",
+            "path": ".github/workflows/dco.yml",
+            "state": "active"
+          },
+          {
+            "id": 372626465,
+            "name": "Nightly public dataset export",
+            "path": ".github/workflows/nightly-export.yml",
+            "state": "disabled_manually"
+          },
+          {
+            "id": 372625331,
+            "name": "Deploy GitHub Pages",
+            "path": ".github/workflows/pages.yml",
+            "state": "active"
+          },
+          {
+            "id": 372626162,
+            "name": "Private photo QA",
+            "path": ".github/workflows/photo-qa.yml",
+            "state": "disabled_manually"
+          },
+          {
+            "id": 372625971,
+            "name": "Prior enrichment drain",
+            "path": ".github/workflows/prior-enrichment.yml",
+            "state": "disabled_manually"
+          },
+          {
+            "id": 371718011,
+            "name": "Secret scan",
+            "path": ".github/workflows/secret-scan.yml",
+            "state": "active"
+          },
+          {
+            "id": 372625680,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          },
+          {
+            "id": 372625360,
+            "name": "Dependency Graph",
+            "path": "dynamic/dependabot/update-graph",
+            "state": "active"
+          },
+          {
+            "id": 319210878,
+            "name": "pages-build-deployment",
+            "path": "dynamic/pages/pages-build-deployment",
+            "state": "active"
+          }
+        ]
+      }
+    },
+    "prior": {
+      "queried_at": "2026-10-12T13:38:13.090242+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/actions/workflows/372625971/runs?per_page=100",
+      "pages": 1,
+      "data": {
+        "total_counts": [
+          4
+        ],
+        "returned_runs": 4,
+        "runs": [
+          {
+            "id": 37054035121,
+            "workflow_id": 372625971,
+            "name": "Prior enrichment drain",
+            "path": ".github/workflows/prior-enrichment.yml",
+            "status": "completed",
+            "conclusion": "failure",
+            "event": "schedule",
+            "head_branch": "main",
+            "head_sha": "5ffa1e590a7dd29ef5f3a4043a01f5700d94a18e",
+            "created_at": "2026-10-02T19:25:40Z",
+            "updated_at": "2026-10-02T19:25:55Z",
+            "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/37054035121"
+          },
+          {
+            "id": 37019080175,
+            "workflow_id": 372625971,
+            "name": "Prior enrichment drain",
+            "path": ".github/workflows/prior-enrichment.yml",
+            "status": "completed",
+            "conclusion": "failure",
+            "event": "schedule",
+            "head_branch": "main",
+            "head_sha": "5ffa1e590a7dd29ef5f3a4043a01f5700d94a18e",
+            "created_at": "2026-10-02T14:19:39Z",
+            "updated_at": "2026-10-02T14:19:52Z",
+            "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/37019080175"
+          },
+          {
+            "id": 36980616703,
+            "workflow_id": 372625971,
+            "name": "Prior enrichment drain",
+            "path": ".github/workflows/prior-enrichment.yml",
+            "status": "completed",
+            "conclusion": "failure",
+            "event": "schedule",
+            "head_branch": "main",
+            "head_sha": "5ffa1e590a7dd29ef5f3a4043a01f5700d94a18e",
+            "created_at": "2026-10-02T07:49:33Z",
+            "updated_at": "2026-10-02T07:49:47Z",
+            "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/36980616703"
+          },
+          {
+            "id": 36952828870,
+            "workflow_id": 372625971,
+            "name": "Prior enrichment drain",
+            "path": ".github/workflows/prior-enrichment.yml",
+            "status": "completed",
+            "conclusion": "failure",
+            "event": "schedule",
+            "head_branch": "main",
+            "head_sha": "5ffa1e590a7dd29ef5f3a4043a01f5700d94a18e",
+            "created_at": "2026-10-02T01:50:21Z",
+            "updated_at": "2026-10-02T01:50:33Z",
+            "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/36952828870"
+          }
+        ]
+      }
+    },
+    "qa": {
+      "queried_at": "2026-10-12T13:38:13.090479+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/actions/workflows/372626162/runs?per_page=100",
+      "pages": 1,
+      "data": {
+        "total_counts": [
+          4
+        ],
+        "returned_runs": 4,
+        "runs": [
+          {
+            "id": 37052904167,
+            "workflow_id": 372626162,
+            "name": "Private photo QA",
+            "path": ".github/workflows/photo-qa.yml",
+            "status": "completed",
+            "conclusion": "failure",
+            "event": "schedule",
+            "head_branch": "main",
+            "head_sha": "5ffa1e590a7dd29ef5f3a4043a01f5700d94a18e",
+            "created_at": "2026-10-02T19:15:19Z",
+            "updated_at": "2026-10-02T19:15:31Z",
+            "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/37052904167"
+          },
+          {
+            "id": 37017590579,
+            "workflow_id": 372626162,
+            "name": "Private photo QA",
+            "path": ".github/workflows/photo-qa.yml",
+            "status": "completed",
+            "conclusion": "failure",
+            "event": "schedule",
+            "head_branch": "main",
+            "head_sha": "5ffa1e590a7dd29ef5f3a4043a01f5700d94a18e",
+            "created_at": "2026-10-02T14:06:47Z",
+            "updated_at": "2026-10-02T14:07:03Z",
+            "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/37017590579"
+          },
+          {
+            "id": 36979268149,
+            "workflow_id": 372626162,
+            "name": "Private photo QA",
+            "path": ".github/workflows/photo-qa.yml",
+            "status": "completed",
+            "conclusion": "failure",
+            "event": "schedule",
+            "head_branch": "main",
+            "head_sha": "5ffa1e590a7dd29ef5f3a4043a01f5700d94a18e",
+            "created_at": "2026-10-02T07:34:24Z",
+            "updated_at": "2026-10-02T07:34:38Z",
+            "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/36979268149"
+          },
+          {
+            "id": 36952807108,
+            "workflow_id": 372626162,
+            "name": "Private photo QA",
+            "path": ".github/workflows/photo-qa.yml",
+            "status": "completed",
+            "conclusion": "failure",
+            "event": "schedule",
+            "head_branch": "main",
+            "head_sha": "5ffa1e590a7dd29ef5f3a4043a01f5700d94a18e",
+            "created_at": "2026-10-02T01:50:05Z",
+            "updated_at": "2026-10-02T01:50:16Z",
+            "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/36952807108"
+          }
+        ]
+      }
+    },
+    "export": {
+      "queried_at": "2026-10-12T13:38:13.091395+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/actions/workflows/372626465/runs?per_page=100",
+      "pages": 1,
+      "data": {
+        "total_counts": [
+          1
+        ],
+        "returned_runs": 1,
+        "runs": [
+          {
+            "id": 36991343725,
+            "workflow_id": 372626465,
+            "name": "Nightly public dataset export",
+            "path": ".github/workflows/nightly-export.yml",
+            "status": "completed",
+            "conclusion": "failure",
+            "event": "schedule",
+            "head_branch": "main",
+            "head_sha": "5ffa1e590a7dd29ef5f3a4043a01f5700d94a18e",
+            "created_at": "2026-10-02T09:42:39Z",
+            "updated_at": "2026-10-02T09:42:53Z",
+            "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/36991343725"
+          }
+        ]
+      }
+    },
+    "active_queued": {
+      "queried_at": "2026-10-12T13:38:13.533198+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/actions/runs?status=queued&per_page=100",
+      "pages": 1,
+      "data": {
+        "total_counts": [
+          0
+        ],
+        "returned_runs": 0,
+        "runs": []
+      }
+    },
+    "active_in_progress": {
+      "queried_at": "2026-10-12T13:38:13.567688+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/actions/runs?status=in_progress&per_page=100",
+      "pages": 1,
+      "data": {
+        "total_counts": [
+          0
+        ],
+        "returned_runs": 0,
+        "runs": []
+      }
+    },
+    "active_waiting": {
+      "queried_at": "2026-10-12T13:38:13.605082+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/actions/runs?status=waiting&per_page=100",
+      "pages": 1,
+      "data": {
+        "total_counts": [
+          0
+        ],
+        "returned_runs": 0,
+        "runs": []
+      }
+    },
+    "active_pending": {
+      "queried_at": "2026-10-12T13:38:13.613104+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/actions/runs?status=pending&per_page=100",
+      "pages": 1,
+      "data": {
+        "total_counts": [
+          0
+        ],
+        "returned_runs": 0,
+        "runs": []
+      }
+    },
+    "active_requested": {
+      "queried_at": "2026-10-12T13:38:13.853978+00:00",
+      "endpoint": "repos/global-soil-intelligence/gsip/actions/runs?status=requested&per_page=100",
+      "pages": 1,
+      "data": {
+        "total_counts": [
+          0
+        ],
+        "returned_runs": 0,
+        "runs": []
+      }
+    }
+  },
+  "worker_nonterminal_runs": {
+    "prior": [],
+    "qa": [],
+    "export": []
+  },
+  "all_observed_nonterminal_runs": [],
+  "active_worker_runs": [],
+  "status": "PASS_GITHUB_WORKER_QUIESCENCE",
+  "coverage": "Paginated full run history for all three registered worker workflows, plus repository nonterminal status filters. Current main workflow inventory read independently.",
+  "limits": [
+    "Read-only GitHub metadata cannot prove universal absence of direct Edge Function invocations, database cron, external clients, or local processes. Root owns separate fresh production activity preflight.",
+    "Disabled workflow state is observed, not changed. New f9 rights and quarantine workflow files are not present on current main.",
+    "Snapshot is not a lock; a separately authorized operator could dispatch activity after observation.",
+    "No workflow logs, secret stores, production rows, or Supabase calls inspected; no schedules, run states, source, or production settings changed."
+  ]
+}

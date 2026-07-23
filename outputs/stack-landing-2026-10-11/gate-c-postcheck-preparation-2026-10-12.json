@@ -1,0 +1,251 @@
+{
+  "prepared_at": "2026-10-12T13:40:31.315093+00:00",
+  "state": "LOCAL_PREPARED_READ_ONLY_NOT_EXECUTED_BY_PREPARER",
+  "target_project": "toxldjgwkxtneoqsazym",
+  "bound_source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "gate_c_go": "Parent reports owner go received; parent alone executes and records production execution.",
+  "plan_sha256": "3cd28d14a2ef09b853999158675d2b275acfc9d7a9b807df2dd59db02ee91e35",
+  "github_worker_receipt_sha256": "6f6c5c8f1e8d2aff8a32e1f9c9780123c25bdccb27cbe0e377949c73f35659ee",
+  "expected_ledger": [
+    {
+      "version": "20260722164727",
+      "name": "wp1_extensions",
+      "file": "supabase/migrations/20260722164727_wp1_extensions.sql",
+      "sha256": "a47384b6b2f103e31ae4777534d1e9b1e97be2c51d009be30c7e6396cdb09cb2"
+    },
+    {
+      "version": "20260722164749",
+      "name": "wp1_schema",
+      "file": "supabase/migrations/20260722164749_wp1_schema.sql",
+      "sha256": "92ad08bf95c2ec28b36a6973631388c3135ac56a69c87d24173535b29d09efe5"
+    },
+    {
+      "version": "20260722164806",
+      "name": "wp1_rls",
+      "file": "supabase/migrations/20260722164806_wp1_rls.sql",
+      "sha256": "49f7ff7782cf06fe50df421d747ea21d049f1996bea5dce8dca8170c268af482"
+    },
+    {
+      "version": "20260722170020",
+      "name": "wp1_review_hardening",
+      "file": "supabase/migrations/20260722170020_wp1_review_hardening.sql",
+      "sha256": "cba2ec74526c597170b454851d8012051f238a7db93d818b91d85d96cde6b30b"
+    },
+    {
+      "version": "20260722181500",
+      "name": "wp1_v22_privacy_and_grants",
+      "file": "supabase/migrations/20260722181500_wp1_v22_privacy_and_grants.sql",
+      "sha256": "86213d751d8df64404a5aaea332f7ea93d996716f569bfa036aca9f8812e34ff"
+    },
+    {
+      "version": "20260722183000",
+      "name": "wp1_performance_indexes",
+      "file": "supabase/migrations/20260722183000_wp1_performance_indexes.sql",
+      "sha256": "2efb4383f8629154a031342e0494e04c3105b979353911e3d9415e4fba93880a"
+    },
+    {
+      "version": "20260722190000",
+      "name": "wp4_prior_jobs",
+      "file": "supabase/migrations/20260722190000_wp4_prior_jobs.sql",
+      "sha256": "430b0c9064e6d075197d755d661bf00e345faff49b4e8e9db59de13253fa2358"
+    },
+    {
+      "version": "20260722190500",
+      "name": "wp4_prior_jobs_hardening",
+      "file": "supabase/migrations/20260722190500_wp4_prior_jobs_hardening.sql",
+      "sha256": "8160abac06009fdf3eab8d9f38b1e4add8330995dd274014a85182eb8e44249c"
+    },
+    {
+      "version": "20260722193000",
+      "name": "wp4b_photo_qa",
+      "file": "supabase/migrations/20260722193000_wp4b_photo_qa.sql",
+      "sha256": "7dad54be4ec8354fccacd652143ec4f26449d76a6fdf7da107adda6aa7c23ded"
+    },
+    {
+      "version": "20260722200000",
+      "name": "wp6_export_guardrails",
+      "file": "supabase/migrations/20260722200000_wp6_export_guardrails.sql",
+      "sha256": "c6d491d01686ee2e293b98ccd84e074e96603d4b9d0a8ceaef239e1cb004233f"
+    },
+    {
+      "version": "20260723002255",
+      "name": "phase1_actor_hardening",
+      "file": "supabase/migrations/20260723002255_phase1_actor_hardening.sql",
+      "sha256": "a3b0a00dc2878a4b1d7b1f9e289d6e1970ef7499105e14bc764c92f69dc1678d"
+    },
+    {
+      "version": "20260723004439",
+      "name": "qa_event_provenance",
+      "file": "supabase/migrations/20260723004439_qa_event_provenance.sql",
+      "sha256": "f2ef7ab587c72fd008383edee716761c908a71f94c82dfb0daedc2dcc3e7698d"
+    },
+    {
+      "version": "20260723005752",
+      "name": "public_h3_aggregates",
+      "file": "supabase/migrations/20260723005752_public_h3_aggregates.sql",
+      "sha256": "4ac1f12cb35e1d9a4c5ce4d5c81c9d962a1ec54b60ff99cca87debed4fdce81b"
+    },
+    {
+      "version": "20260723010313",
+      "name": "atomic_public_h3_refresh",
+      "file": "supabase/migrations/20260723010313_atomic_public_h3_refresh.sql",
+      "sha256": "e8a80e13b2dfcef185bdb6b84de054cd90bb5656449b095842fb152bfc7bba62"
+    },
+    {
+      "version": "20260723044745",
+      "name": "atomic_prior_attempt_claim",
+      "file": "supabase/migrations/20260723044745_atomic_prior_attempt_claim.sql",
+      "sha256": "695520093d1332c38563fd83cdefbf726b4c3cde5be360ed851e52580f6a42c4"
+    },
+    {
+      "version": "20260723045317",
+      "name": "document_authenticated_h3_role",
+      "file": "supabase/migrations/20260723045317_document_authenticated_h3_role.sql",
+      "sha256": "fac47eb129ae5e913c973d063f19380b48eede88cd023326a543cc6e769b9220"
+    },
+    {
+      "version": "20260723045606",
+      "name": "remove_public_submission_residue",
+      "file": "supabase/migrations/20260723045606_remove_public_submission_residue.sql",
+      "sha256": "1f133d48265e25fcdfd7d7b7714697ad4db774fbb8d87fcc8d84683ac5f1a634"
+    },
+    {
+      "version": "20261010120000",
+      "name": "wp6b_capture_gate",
+      "file": "supabase/migrations/20261010120000_wp6b_capture_gate.sql",
+      "sha256": "d5dc5bb281927e0c3e6d72705ec1d24094de93be17ffa7e02c02c56c375e5964"
+    },
+    {
+      "version": "20261010120100",
+      "name": "wp6b_path_binding",
+      "file": "supabase/migrations/20261010120100_wp6b_path_binding.sql",
+      "sha256": "7d6d410f6cfb532d9166088e02bea4f36f6e5c02307d674bac3516b76928c017"
+    },
+    {
+      "version": "20261010120200",
+      "name": "wp6b_finalize_and_settle",
+      "file": "supabase/migrations/20261010120200_wp6b_finalize_and_settle.sql",
+      "sha256": "da54235f99d2935601753d8461393838672cb0c62a9709616d06e1ca83e725fc"
+    },
+    {
+      "version": "20261010120300",
+      "name": "wp6b_k_anonymous_cells",
+      "file": "supabase/migrations/20261010120300_wp6b_k_anonymous_cells.sql",
+      "sha256": "29e4b3b97b7bbb64e6dbd986d857c73e416a4a7ca4244d4b166210594fc73f3e"
+    },
+    {
+      "version": "20261010120400",
+      "name": "wp6b_attribution_and_metadata",
+      "file": "supabase/migrations/20261010120400_wp6b_attribution_and_metadata.sql",
+      "sha256": "fe4bf14607abd0ce669e34b849a5b6ee016307bcbfe3e272e429626a55d16561"
+    },
+    {
+      "version": "20261010130000",
+      "name": "wp6c_priors",
+      "file": "supabase/migrations/20261010130000_wp6c_priors.sql",
+      "sha256": "6f3bdc4b13dbe661eee30e6bd1f74fbe4e6853e200705b07e7ab69f347d3f68b"
+    },
+    {
+      "version": "20261010140000",
+      "name": "wp6d_contributor_rights",
+      "file": "supabase/migrations/20261010140000_wp6d_contributor_rights.sql",
+      "sha256": "9cb7c770f3772c463bfa1191741164122513155ab4f60e5db5899fa9c4407790"
+    },
+    {
+      "version": "20261010150000",
+      "name": "wp6e_provenance",
+      "file": "supabase/migrations/20261010150000_wp6e_provenance.sql",
+      "sha256": "d3e772403dd912fe5146210be802906a8d9be1f5c65516a0d5bbd13c63105f05"
+    },
+    {
+      "version": "20261011090000",
+      "name": "wp_agent1_releases",
+      "file": "supabase/migrations/20261011090000_wp_agent1_releases.sql",
+      "sha256": "b61dd6ebbff44b8034585673b01958d4ce45e79e77a30c33245bd89bcf49c5fd"
+    }
+  ],
+  "unchanged_original_counts_except_ledger": {
+    "auth.audit_log_entries": 0,
+    "auth.custom_oauth_providers": 0,
+    "auth.flow_state": 0,
+    "auth.identities": 0,
+    "auth.instances": 0,
+    "auth.mfa_amr_claims": 0,
+    "auth.mfa_challenges": 0,
+    "auth.mfa_factors": 0,
+    "auth.mfa_recovery_code_sets": 0,
+    "auth.mfa_recovery_codes": 0,
+    "auth.oauth_authorizations": 0,
+    "auth.oauth_client_states": 0,
+    "auth.oauth_clients": 0,
+    "auth.oauth_consents": 0,
+    "auth.one_time_tokens": 0,
+    "auth.refresh_tokens": 0,
+    "auth.saml_providers": 0,
+    "auth.saml_relay_states": 0,
+    "auth.schema_migrations": 82,
+    "auth.scim_tokens": 0,
+    "auth.scim_users": 0,
+    "auth.sessions": 0,
+    "auth.sso_domains": 0,
+    "auth.sso_providers": 0,
+    "auth.users": 0,
+    "auth.webauthn_challenges": 0,
+    "auth.webauthn_credentials": 0,
+    "extensions.spatial_ref_sys": 8500,
+    "public.contribution_grants": 5,
+    "public.contributors": 5,
+    "public.gold_labels": 0,
+    "public.h3_cells": 0,
+    "public.photos": 25,
+    "public.predictions": 0,
+    "public.prior_jobs": 25,
+    "public.priors": 0,
+    "public.qa_events": 0,
+    "public.qa_jobs": 25,
+    "public.submissions": 25,
+    "realtime.messages": 0,
+    "realtime.schema_migrations": 89,
+    "realtime.subscription": 0,
+    "storage.buckets": 2,
+    "storage.buckets_analytics": 0,
+    "storage.buckets_vectors": 0,
+    "storage.migrations": 73,
+    "storage.objects": 0,
+    "storage.s3_multipart_uploads": 0,
+    "storage.s3_multipart_uploads_parts": 0,
+    "storage.vector_indexes": 0,
+    "vault.secrets": 0,
+    "supabase_migrations.schema_migrations": 26
+  },
+  "new_expected_counts": {
+    "public.service_state": 1,
+    "public.upstream_buckets": 3,
+    "public.prior_cell_cache": 0,
+    "public.deletion_requests": 0,
+    "public.grant_withdrawals": 0,
+    "public.attribution_reviews": 0,
+    "public.actors": 5,
+    "public.dataset_releases": 0
+  },
+  "terms_expected_count": "1 plus distinct legacy grant versions other than 2026-07-22-v1; compare aggregates only",
+  "query_files": {
+    "gate-c-postcheck-ledger-2026-10-12.sql": "e5a68daf3b1e241ca636e7b66069d82e900e4ef6348a06bb8a4cda10ccd663c2",
+    "gate-c-postcheck-counts-2026-10-12.sql": "8526766b3bd43f7a70c1dea678d4334b64732e5944c03e4f79d4d9aa059b1b4f",
+    "gate-c-postcheck-backfills-2026-10-12.sql": "aecb5d1021e5ec2d8b8c8837e71511de2a00da45478025d12b68578f447a403e"
+  },
+  "rpc_transition": {
+    "current_main_source": "7a2c082ced29a9da2e731484590ea5aedfe5a657",
+    "old_claim_reference_verified": true,
+    "bound_f9_begin_reference_verified": true,
+    "migration_drops_old_claim": true,
+    "constraint": "Do not invoke stale prior-attach or dispatch a drain until a separately authorized redeploy replaces its old claim RPC usage. No service or workflow disabled by this preparer."
+  },
+  "limits": [
+    "Prepared SQL has not been parsed or executed against a database by this preparer. No production calls made. Parent owns execution, privilege-bound catalog comparison, advisor, Edge inventory, and fresh persisted auth configuration readbacks.",
+    "Select-only scalar capture_is_open is the sole project function called; its reviewed source reads the fail-closed switch. No mutation RPC is invoked.",
+    "Aggregate checks depend on a quiescent post-C snapshot; owner seed classification is not independently validated by counts and synthetic flags must be preserved.",
+    "Nine reviewed migrations do not implement WP-6f photo screening or reliable data-only export enforcement. Do not dispatch existing photo export or publish photos. No detector/plugin or enforcement implementation authorized here.",
+    "Auth signup, anonymous sign-in and email confirmation settings cannot be verified from these database aggregate queries; parent must use persisted target-bound configuration readback."
+  ]
+}

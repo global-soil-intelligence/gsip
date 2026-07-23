@@ -1,0 +1,12 @@
+{
+  "candidate_manifest": "wp6fb-jpeg-final-candidate-manifest.json",
+  "status": "blocked_independent_review",
+  "local_validation": {
+    "python_passed": 608,
+    "python_skipped": 4,
+    "synthetic_cpu_frames": 7,
+    "children_after_deadline": 0,
+    "new_authored_gitleaks_findings": 0
+  },
+  "limitation": "These results do not close the decoder-ignored table/control payload finding. Candidate remains uncommitted and is not merge-ready. No production changes."
+}

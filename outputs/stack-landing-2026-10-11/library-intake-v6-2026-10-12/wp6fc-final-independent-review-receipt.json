@@ -1,0 +1,62 @@
+{
+  "review": "WP-6fC final frozen Python export independent read-only adversarial review",
+  "base": "e98bdb9b806c4bb126b550ddd1376f427ed00cdc",
+  "governing_spec": "00914392344e26d38479b24f3360377b6955e6fe; rendering-only successor of base, substantive tokens independently verified equal",
+  "manifest": "/private/tmp/gsip-wp6fc-inventory-final-review-manifest.json",
+  "files": {
+    "pipeline/export.py": "a39ae3f7c2fab8785c05d8fdb4c17f80bc5040b5d31fb667a825e21cca241a88",
+    "pipeline/photo_export_privacy.py": "53655a2ccc8f89c942ea4630ff827c9e0d10ded7755c9d684c85672fc60e621e",
+    "tests/test_export.py": "402d9767fef1fa31e96d532cd324646f94087150e5722875cce9d9fef3e0217e",
+    "tests/test_photo_export_privacy.py": "28e85d61e6fff0e539d80bd7ab462ad26dae9e10ed9d4b8730d5672fe1f6bfaf"
+  },
+  "review_copy": "/private/tmp/gsip-wp6fc-final-bound-independent-8ltboq8c",
+  "conclusion": "No merge-blocking finding remains in these four exact files. This is an independent source/test review, not an approving GitHub review or deployment/publication approval.",
+  "blocking_findings": [],
+  "independent_checks": {
+    "scoped_tests_passed": 125,
+    "legacy_export_tests_retained": 49,
+    "ruff": "PASS four files",
+    "mypy": "PASS four files",
+    "fail_before_initial_export_and_public_guard_cases": 27,
+    "fail_before_deep_json_cases": 4,
+    "fail_before_final_inventory_cases": 10,
+    "final_tests_network": "Real httpx HTTPTransport handle_request forcibly blocked; existing mock transports and fake Hub only; HF offline and private temporary caches.",
+    "one_changed_photo_witness": "Three structured rows and five unaffected photos survive; changed file removed; every retained file digest matches its current binding."
+  },
+  "logs": {
+    "/private/tmp/gsip-wp6fc-final-bound-independent-tests.log": "4e8a49db1bee26f8567c1fa94908eaa4aa570aef3515cbca6af9413a3e982327",
+    "/private/tmp/gsip-wp6fc-independent-failbefore.log": "2bf995e334097b0a915fca7fa4e17b0625f8ea02c60d4e66d924bc7b4d4f9fa6",
+    "/private/tmp/gsip-wp6fc-decoder-independent-failbefore.log": "7272066eba98f20f044a011aaa95352aab404152b4f6ea513113b5a026a631ac",
+    "/private/tmp/gsip-wp6fc-final-bound-independent-failbefore.log": "a52ca42a270bc6296b25212e273aca6f67989cc589525c8d3bb08759a463ade3"
+  },
+  "closed_findings": [
+    "Empty cached artifact orphan photo bypassed closed policy.",
+    "Withdrawal during final photo RPC retained covered structured row and stale k-anonymity.",
+    "Byte mutation during authorization inherited prior input digest.",
+    "Deeply nested raw RPC JSON escaped the photo-only fallback.",
+    "New private policy/digest/operator/card/binding fields were missing from recursive public-field refusal.",
+    "Cached photos/README/root/data/manifest symlinks could traverse or overwrite outside artifacts; hardlinks were not refused.",
+    "Unknown cached thumbnails/private/data files could be uploaded under closed policy."
+  ],
+  "source_audit": [
+    "No second JPEG encoding; actual staged bytes match immutable private content/policy bindings and fresh ordered authorization responses.",
+    "Old/missing/unsupported/closed policy causes zero image loader calls and preserves eligible structured rows.",
+    "Fresh post-staging grant withdrawal check rebuilds and recomputes k with bounded refusal on continuing changes.",
+    "Private pre-promotion staging is mode0700 outside output and requires same filesystem for atomic promotion.",
+    "Artifact root and full inventory are checked with non-following stats before cached read/write and immediately after RPC before byte reads/cleanup.",
+    "Symlinks, special files, multilink regular files and unknown root/data paths are refused; unknown photo files are pruned.",
+    "Final artifact inventory matches exactly canonical data/card/manifest and freshly bound photo paths; staged photo metadata/digests are checked before fake/real upload boundary.",
+    "Private bindings/source snapshots are repr-hidden and never serialized in public artifact/report/summary; new private keys are recursively refused.",
+    "Strict RPC response shape, duplicate keys, nonfinite values, size limits, ordered decision identity/policy, decoder recursion and generic CLI errors fail closed."
+  ],
+  "residual_limits": [
+    "Actual WP-6fA SQL and WP-6fB detector integration have separate independent review and runtime evidence; this receipt does not clear their findings.",
+    "Owner-approved exact model/weight licenses, measured category calibration and provisioning remain unresolved separate gates.",
+    "Current fresh DB checks cannot atomically commit a later filesystem/Hub operation; no immediate distributed withdrawal/retraction guarantee is asserted.",
+    "Exact-head CI/full-suite evidence, owner merge authority and historical scanner exception remain separate; no approval/push/merge/deploy performed."
+  ],
+  "review_environment_note": "An earlier excluded inventory fail-before run exposed unmocked post-upload hooks in old code and attempted reserved .test transport without production keys/data. Author replaced those hooks; final bound fail-before run adds an explicit transport block and all ten cases fail safely.",
+  "no_shared_source_edits": true,
+  "production_access": false,
+  "approval_push_merge_deployment": false
+}

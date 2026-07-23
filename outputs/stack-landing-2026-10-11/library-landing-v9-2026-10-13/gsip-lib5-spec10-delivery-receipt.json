@@ -1,0 +1,72 @@
+{
+  "schema_version": "gsip-spec10-local-clarification-delivery-v1",
+  "state": "frozen_specification_draft_pending_independent_review_and_CI",
+  "date": "2026-10-13",
+  "base_head": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+  "manifest": {
+    "path": "/private/tmp/gsip-lib5-spec10-final-manifest.json",
+    "sha256": "9bceb2e01274948b26e5b96793dd6e09e763bacaea464c296a1a7a71c4a37cf8"
+  },
+  "scope_exactly_four": [
+    "queued-plus-retained-byte metadata/staging accounting",
+    "pre-reserved permanent scope fence and pending-erasure metadata",
+    "daily first durable admission and independent source/recipient views",
+    "one private root aggregate synthetic simulation"
+  ],
+  "validation": {
+    "node": "24.19.0",
+    "prettier": "3.9.9",
+    "prettier_check": {
+      "exit_code": 0,
+      "paths": [
+        "docs/SPEC.md",
+        "docs/BUILD_ORDER.md",
+        "LIB5B_UNDERSPEC_ISSUE_DRAFT.md"
+      ],
+      "log": "/private/tmp/gsip-lib5-spec10-xfwjq270/format-check.log"
+    },
+    "repository_language_guard": {
+      "exit_code": 0,
+      "scope": "exact archived baseline public/contributor roots; SPEC/BUILD not included by existing guard",
+      "log": "/private/tmp/gsip-lib5-spec10-xfwjq270/language-check.log"
+    },
+    "supplemental_added_doc_language_check": {
+      "same_guard_regex": "soil[\\s-]+test",
+      "violations": 0,
+      "scope": "added SPEC/BUILD lines plus full issue draft"
+    },
+    "patch_dry_run": {
+      "exit_code": 0,
+      "target": "isolated exact-base docs only",
+      "log": "/private/tmp/gsip-lib5-spec10-xfwjq270/patch-apply-check.log"
+    },
+    "policy_preservation": {
+      "SPEC_sections_1_through_13_byte_identical": true,
+      "SPEC_sections_15_through_16_8_byte_identical": true,
+      "SPEC_section_16_9_policy_after_status_byte_identical": true,
+      "SPEC_sections_16_10_and_16_11_byte_identical": true,
+      "SPEC_section_16_13_and_license_byte_identical": true,
+      "SPEC_16_12_canonical_rights_and_receiving_checks_byte_identical": true,
+      "SPEC_16_12_existing_saturation_rule_byte_identical": true,
+      "BUILD_workflow_guardrails_and_other_WPs_before_library_table_byte_identical": true,
+      "BUILD_review_env_sequence_policies_byte_identical": true
+    }
+  },
+  "tests_run": false,
+  "CI_run": false,
+  "issue_posted": false,
+  "implementation_created": false,
+  "new_dependencies": false,
+  "operational_repo_mutated": false,
+  "Git_mutations": false,
+  "GitHub_actions": false,
+  "network_access": false,
+  "production_access": false,
+  "real_sharing_or_retention_policy_selected": false,
+  "remaining_gates": [
+    "independent exact-hash draft review",
+    "green actual specification CI and merge",
+    "LIB5A merge before LIB5B code",
+    "all existing LIB5C real-sharing policy and production/launch/scientific gates"
+  ]
+}

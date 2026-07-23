@@ -1,0 +1,14 @@
+{
+  "head": "e9f5bade7a54601ded41ea7eda09e9b96c2c21bc",
+  "parent": "6a652f94b220be7eeff49508283883c502baa527",
+  "manifest_sha256": "06710bba4738a0a4cebfea27b4c5d34ea282ad21fd40e80a5670e47970364402",
+  "tracked_files": 377,
+  "gitleaks": "8.21.2",
+  "nonshallow": true,
+  "all_refs": true,
+  "redacted": true,
+  "findings": 0,
+  "approved_ignore_and_config_unchanged": true,
+  "native_implementation": false,
+  "production_operations": false
+}

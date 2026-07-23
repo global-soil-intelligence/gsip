@@ -1,0 +1,400 @@
+{
+  "assertions": {
+    "actual_streams_within_65536": true,
+    "all_eight_relevant_source_inputs_exact": true,
+    "canonical_seven_arguments": true,
+    "offline_init_exact": true,
+    "original_task_sha256_preserved": true,
+    "sdk_download_false_in_generated_owned_properties": true,
+    "zero_foreign_links_and_multilinks": true
+  },
+  "authority": {
+    "no_broader_native_cards": true,
+    "no_keys_or_local_properties_secret_content": true,
+    "no_network_or_installs": true,
+    "no_source_or_git_github_mutations": true,
+    "own_tmp_writes_only": true
+  },
+  "cache_inventory_selected": [
+    {
+      "coordinate": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
+      "exists": true,
+      "files": [
+        {
+          "bytes": 1581,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.7.10/1905bbcb22b41bd917604589c74bd8092ce55516/kotlin-stdlib-jdk8-1.7.10.pom",
+          "sha256": "592b5252f018e3dbefeca1a535fd2315dda7cb9e7bde5a06d6b419cf3643d47d"
+        }
+      ]
+    },
+    {
+      "coordinate": "com.google.android.gms:strict-version-matcher-plugin:1.2.4",
+      "exists": true,
+      "files": [
+        {
+          "bytes": 43176,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/com.google.android.gms/strict-version-matcher-plugin/1.2.4/37f8b2ab56ecab699697602acdd598cb6d809b38/strict-version-matcher-plugin-1.2.4.jar",
+          "sha256": "df1b48b67a3c5fea7267e9e51d20de4757818b6e8ed576484c74c96ea2951200"
+        },
+        {
+          "bytes": 1653,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/com.google.android.gms/strict-version-matcher-plugin/1.2.4/64382e5666d083a8f09f353a5d3b385474223112/strict-version-matcher-plugin-1.2.4.pom",
+          "sha256": "221cbb4cda6aa91073c3bc62df5a0da605c0fe7179a8b74f095582d1c29c94cc"
+        },
+        {
+          "bytes": 2790,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/com.google.android.gms/strict-version-matcher-plugin/1.2.4/72de58fcbf744d0b071aec262ba21b6e000845f0/strict-version-matcher-plugin-1.2.4.module",
+          "sha256": "5bf4e13eaa96fa8f1e5b1c46e9ea5dbdd38e45653247b449d63be49f567792ac"
+        }
+      ]
+    },
+    {
+      "coordinate": "com.google.code.gson:gson:2.8.5",
+      "exists": false,
+      "files": []
+    },
+    {
+      "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21",
+      "exists": false,
+      "files": []
+    },
+    {
+      "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20",
+      "exists": true,
+      "files": [
+        {
+          "bytes": 13034,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin/2.2.20/15d7c4f3438aaddc7d7b440f929ad80fa4cb8ad2/kotlin-gradle-plugin-2.2.20.pom",
+          "sha256": "b9c3fd2ebd5484d60c5fe0db7aa10878303eeddfc93f942f735c07ba998187cc"
+        },
+        {
+          "bytes": 23807949,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin/2.2.20/9c5953786765b9373d172097da74efe77ac90481/kotlin-gradle-plugin-2.2.20-gradle813.jar",
+          "sha256": "5d325b5c2c5d4bc8bf44145d24eb4d4beb060d13d11ebe48898936ed5cd1564e"
+        },
+        {
+          "bytes": 169250,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin/2.2.20/b5ce930c13243ca1e0065365647176fc63b89ead/kotlin-gradle-plugin-2.2.20.module",
+          "sha256": "dc24bfa47e0442283290e21f069a056141d1f088d6cb9ecaa2eaace1b47b6b8c"
+        }
+      ]
+    },
+    {
+      "coordinate": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0",
+      "exists": false,
+      "files": []
+    },
+    {
+      "coordinate": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0",
+      "exists": true,
+      "files": [
+        {
+          "bytes": 1578,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.8.0/fb9dbe3343144298825b8d9f23a51f4af4be6cb0/kotlin-stdlib-jdk8-1.8.0.pom",
+          "sha256": "2bb6c7551b97c7ba029f9866582e7aa19d63abfd4cd53da3fc0c462f3ab5fc26"
+        }
+      ]
+    },
+    {
+      "coordinate": "org.jetbrains.kotlin:kotlin-stdlib-common:2.2.0",
+      "exists": false,
+      "files": []
+    },
+    {
+      "coordinate": "org.jetbrains:annotations:13.0",
+      "exists": true,
+      "files": [
+        {
+          "bytes": 17536,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar",
+          "sha256": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478"
+        },
+        {
+          "bytes": 4930,
+          "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/fa7d3d07cc80547e2d15bf4839d3267c637c642f/annotations-13.0.pom",
+          "sha256": "965aeb2bedff369819bdde1bf7a0b3b89b8247dd69c88b86375d76163bb8c397"
+        }
+      ]
+    }
+  ],
+  "corrected_execution_observed": {
+    "command_argv_count": 7,
+    "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|BYTES_VALID|BYTES_VALID|WITHIN_BOUND|VALID|SINGLE|PROJECT_CONFIGURATION",
+    "coordinate_allowlist_sha256": "217a72f3d44be4d66945a43676a71e174e04a7d5984e8cce6b5d8519347c713e",
+    "diagnostic": {
+      "counts": {},
+      "error_class": "GRADLE_DEPENDENCY_UNRESOLVED",
+      "source_line": 0,
+      "stage": "android-gradle-inspection"
+    },
+    "elapsed_seconds": 5.05,
+    "environment": {
+      "ANDROID_HOME": "TASK_PRIVATE_SDK_COPY",
+      "ANDROID_SDK_ROOT": "TASK_PRIVATE_SDK_COPY",
+      "ANDROID_USER_HOME": "TASK_PRIVATE_DIRECTORY",
+      "GRADLE_USER_HOME": "TASK_PRIVATE_COPY",
+      "HOME": "INHERITED_UNCHANGED"
+    },
+    "fault_file_count": 1,
+    "fixed_fault": "GSIP_FIXED_FAULT_V1|VALID|BUILD_FAILURE|DEPENDENCY_UNRESOLVED",
+    "graph_exists": false,
+    "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+    "missing_allowed_public_coordinates": [],
+    "missing_unlisted_coordinate_count": 1,
+    "offline_enforced": true,
+    "public_fixed_token_counts": {
+      "BUILD_FAILED": 1,
+      "DEPENDENCY_RESOLUTION": 1,
+      "OFFLINE_CACHE_MISSING": 6
+    },
+    "raw_streams_persisted": false,
+    "returncode": 1,
+    "schema": "gsip-c1-offline-inspection-v1",
+    "sdk_download_disabled": true,
+    "shared_inputs_read_only": true,
+    "stderr_bytes": 938,
+    "stderr_sha256": "d94029abad11a45392c6a585fae1f02bfa3b2e3f0d1f32485af85c864bf8e7cd",
+    "stdout_bytes": 546,
+    "stdout_sha256": "43f589ae9a135707cf3aa7caa3df64a40b70ae58e4dbc1d4c0f5172a0ff0e4e4",
+    "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+  },
+  "created_at_utc": "2026-10-13T22:37:25.649521+00:00",
+  "environment_review": {
+    "ANDROID_HOME_AND_ANDROID_SDK_ROOT": "owned android-sdk",
+    "ANDROID_USER_HOME": "owned android-user-home",
+    "GRADLE_USER_HOME": "owned gradle-home",
+    "HOME_expression": "os.environ[HOME], inherited value unchanged",
+    "common_system_options_repurposed": false,
+    "first_HOME_reassignment": "disclosed violation preserved; corrected execution has distinct receipt and directory",
+    "only_subprocess_tool_launchers_external": "fixed read-only verified Java/Node; owned gradlew distribution copy"
+  },
+  "freshness_correction": "Pre-existing generated tree is stale because it lacks current local-notifications include. Geolocation omission is intentional under current closed Capacitor config; fresh author generation correctly excludes geolocation and includes local-notifications.",
+  "google_services_pom": {
+    "bytes": 1535,
+    "path": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/com.google.gms/google-services/4.4.4/bb50bdc3130b688618c5c6df4ca4b5c2b8ca7dbe/google-services-4.4.4.pom",
+    "sha256": "2d83f74b5f51f488a5545313b1b76e25d3610fceb04b10f3b91825d6ddc95bfd"
+  },
+  "google_services_three_literal_dependencies": [
+    "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
+    "com.google.android.gms:strict-version-matcher-plugin:1.2.4",
+    "com.google.code.gson:gson:2.8.5"
+  ],
+  "input_bindings": {
+    "FIRST_OFFLINE_RESULT_FROZEN.json": {
+      "bytes": 1752,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/FIRST_OFFLINE_RESULT_FROZEN.json",
+      "sha256": "f4fb3e49bb00370c9a8dd941cfcf4932228476ea371ebcf708cc13b6d340028b"
+    },
+    "LITERAL_KOTLIN_BUILD_PIN.json": {
+      "bytes": 991,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/LITERAL_KOTLIN_BUILD_PIN.json",
+      "sha256": "805e3b9a207f06953c9e33289803721a2ccd53ce8961ea480a00324057bcf530"
+    },
+    "gradle-home/init.d/offline.gradle": {
+      "bytes": 37,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/gradle-home/init.d/offline.gradle",
+      "sha256": "6f61c4c4b8f8534572105566e989cab7ba9ec5450dfceacf095c633ffdb11d39"
+    },
+    "inspection-corrected.json": {
+      "bytes": 1581,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/inspection-corrected.json",
+      "sha256": "a4873ce9406746579e835f354153ef3360948a20fd47215b7766e29a65c281c9"
+    },
+    "inspection.json": {
+      "bytes": 1041,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/inspection.json",
+      "sha256": "324d5b576db83b14aab21b3b6c33e08de8272d13e1e1e9dce418911b15195ef3"
+    },
+    "offline_run.py": {
+      "bytes": 5625,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/offline_run.py",
+      "sha256": "e23bd35d7563c16a89625ab551927adef9792d0dce7484090f51025540a42eea"
+    },
+    "prepare.json": {
+      "bytes": 825,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/prepare.json",
+      "sha256": "8e1955b6d35f4d27d71a5481bfd5a6d01c7aabc84b11745b1f1ade9738f2e43a"
+    },
+    "prepare.py": {
+      "bytes": 2268,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/prepare.py",
+      "sha256": "b0c2c0bdcf7b4d4d20130df89f761fbaebb34476670a845d28c94a50588efec4"
+    },
+    "primary-coordinate-allowlist.json": {
+      "bytes": 3118,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/primary-coordinate-allowlist.json",
+      "sha256": "217a72f3d44be4d66945a43676a71e174e04a7d5984e8cce6b5d8519347c713e"
+    },
+    "setup.json": {
+      "bytes": 673,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/setup.json",
+      "sha256": "212d8009358039fde538a1bc4e48d497b225e63b54a6391101d160242314b65b"
+    }
+  },
+  "kind": "independent-corrected-offline-driver-and-input-review",
+  "limits": [
+    "No reviewer build executed",
+    "No raw streams read/persisted by reviewer",
+    "No global/shared runtime write audit or pre-run global snapshot exists; static owned-path targeting and no shared inode/link routes verified, historical absence of all implicit tool writes not claimed",
+    "No held raw text exists to identify the unlisted coordinate from corrected run; no identity inferred",
+    "No hosted cause, CI/device/native acceptance inferred"
+  ],
+  "next_step": "Root-authorized one bounded offline rerun after allowlisting literal Kotlin plugin2.0.21/2.2.20 and three google-services POM dependencies. Do not change dependency versions/task/guards. If exact missing coordinate is confirmed absent from existing input copy, report it as local missing tool-input prerequisite; no network/install authorized here. Separate fixed-only route remains fallback if acquiring exact input closure is outside scope.",
+  "original_allowlist": {
+    "literal_count": 56,
+    "matches_exact_54_direct_plus_2_roots": true,
+    "missing_expected": [],
+    "unbound_extra": [],
+    "unique_count": 56
+  },
+  "outcome": "CORRECTED_DRIVER_AND_PRIMARY_PIN_ALLOWLIST_VALID; OFFLINE_INPUT_COMPLETENESS_BLOCKED_PENDING_MISSING_COORDINATE_CLASSIFICATION",
+  "own_driver_snapshots": [
+    {
+      "bytes": 5625,
+      "path": "/private/tmp/gsip-c1-offline-input-review-ls6zidkx/offline_run.py",
+      "sha256": "e23bd35d7563c16a89625ab551927adef9792d0dce7484090f51025540a42eea"
+    },
+    {
+      "bytes": 2268,
+      "path": "/private/tmp/gsip-c1-offline-input-review-ls6zidkx/prepare.py",
+      "sha256": "b0c2c0bdcf7b4d4d20130df89f761fbaebb34476670a845d28c94a50588efec4"
+    }
+  ],
+  "ownership_scan": [
+    {
+      "foreign_symlinks": 0,
+      "regular_files": 22769,
+      "regular_multilinks": 0,
+      "symlinks": 1978,
+      "tree": "source"
+    },
+    {
+      "foreign_symlinks": 0,
+      "regular_files": 34374,
+      "regular_multilinks": 0,
+      "symlinks": 0,
+      "tree": "gradle-home"
+    },
+    {
+      "foreign_symlinks": 0,
+      "regular_files": 11513,
+      "regular_multilinks": 0,
+      "symlinks": 0,
+      "tree": "android-sdk"
+    },
+    {
+      "foreign_symlinks": 0,
+      "regular_files": 0,
+      "regular_multilinks": 0,
+      "symlinks": 0,
+      "tree": "android-user-home"
+    }
+  ],
+  "primary_build_pins": [
+    {
+      "kotlin_declarations": [
+        {
+          "line": 12,
+          "text": "ext.kotlin_version = project.hasProperty(\"kotlin_version\") ? rootProject.ext.kotlin_version : '2.2.20'"
+        },
+        {
+          "line": 22,
+          "text": "classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version\""
+        }
+      ],
+      "package": "@capacitor/camera",
+      "source": {
+        "bytes": 3703,
+        "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/source/apps/capture-pwa/node_modules/@capacitor/camera/android/build.gradle",
+        "sha256": "88981982038d76247541f615cb3f2e559c6842d9cdda27282be2882ab7e29204"
+      }
+    },
+    {
+      "kotlin_declarations": [
+        {
+          "line": 11,
+          "text": "ext.kotlin_version = project.hasProperty(\"kotlin_version\") ? rootProject.ext.kotlin_version : '2.2.20'"
+        },
+        {
+          "line": 21,
+          "text": "classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version\""
+        }
+      ],
+      "package": "@capacitor/filesystem",
+      "source": {
+        "bytes": 3386,
+        "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/source/apps/capture-pwa/node_modules/@capacitor/filesystem/android/build.gradle",
+        "sha256": "24664002af2a281eda5e1ad727540f77e4c51463b386aeb8ad3facb7d3d3bd2d"
+      }
+    },
+    {
+      "kotlin_declarations": [
+        {
+          "line": 10,
+          "text": "ext.kotlin_version = project.hasProperty('kotlin_version') ? rootProject.ext.kotlin_version : '2.0.21'"
+        },
+        {
+          "line": 20,
+          "text": "classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version\""
+        }
+      ],
+      "package": "@capacitor/local-notifications",
+      "source": {
+        "bytes": 3102,
+        "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/source/apps/capture-pwa/node_modules/@capacitor/local-notifications/android/build.gradle",
+        "sha256": "242d69f56ed428e9d36b0a1892d4cc709ba7bb0bbdece69bb8c57dfe83cb0315"
+      }
+    }
+  ],
+  "schema": 1,
+  "source_bindings": [
+    {
+      "current_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "exact": true,
+      "owned_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "path": "scripts/app_notification_audit.py"
+    },
+    {
+      "current_sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+      "exact": true,
+      "owned_sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+      "path": ".github/workflows/app-build.yml"
+    },
+    {
+      "current_sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+      "exact": true,
+      "owned_sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+      "path": "pnpm-lock.yaml"
+    },
+    {
+      "current_sha256": "091768fd1ac0ffc68b08b4b121b64ee51ce3dfa87d4fbe1d3eb5818294d78c16",
+      "exact": true,
+      "owned_sha256": "091768fd1ac0ffc68b08b4b121b64ee51ce3dfa87d4fbe1d3eb5818294d78c16",
+      "path": "package.json"
+    },
+    {
+      "current_sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115",
+      "exact": true,
+      "owned_sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115",
+      "path": "apps/capture-pwa/package.json"
+    },
+    {
+      "current_sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69",
+      "exact": true,
+      "owned_sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69",
+      "path": "apps/capture-pwa/capacitor.config.ts"
+    },
+    {
+      "current_sha256": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3",
+      "exact": true,
+      "owned_sha256": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3",
+      "path": "scripts/app_permissions.py"
+    },
+    {
+      "current_sha256": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4",
+      "exact": true,
+      "owned_sha256": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4",
+      "path": "scripts/app_build.py"
+    }
+  ]
+}

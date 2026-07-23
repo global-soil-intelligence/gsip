@@ -1,0 +1,15 @@
+{
+  "synthetic_only": true,
+  "production_access": false,
+  "target": "gsip_lib4b_review_6fa_jmxl1zhj",
+  "insert_used_authenticated_role": true,
+  "insert_waited_while_withdrawal_held_lock": true,
+  "withdrawal_exit": 0,
+  "insert_exit": 0,
+  "withdrawal_sqlstate": [],
+  "insert_sqlstate": [],
+  "new_status": "pending",
+  "new_photo_exists": true,
+  "withdrawal_recorded": true,
+  "new_private_payload_exists": true
+}

@@ -1,5 +1,7 @@
 import { type DBSchema, type IDBPDatabase, openDB } from 'idb'
 import type { QueueRecord } from './types'
+import { isNative } from './platform'
+import { nativeEnqueue, nativeQueued, nativeRemove } from './nativeStore'
 
 interface CaptureQueueDatabase extends DBSchema {
   submissions: {
@@ -20,14 +22,17 @@ function database() {
 }
 
 export async function enqueue(record: QueueRecord): Promise<void> {
+  if (isNative()) return nativeEnqueue(record)
   await (await database()).put('submissions', record)
 }
 
 export async function queued(): Promise<QueueRecord[]> {
+  if (isNative()) return nativeQueued()
   return (await database()).getAll('submissions')
 }
 
 export async function removeQueued(submissionId: string): Promise<void> {
+  if (isNative()) return nativeRemove(submissionId)
   await (await database()).delete('submissions', submissionId)
 }
 

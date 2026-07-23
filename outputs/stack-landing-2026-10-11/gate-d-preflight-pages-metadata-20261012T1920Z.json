@@ -1,0 +1,1 @@
+{"can_admins_bypass":false,"deployment_branch_policy":{"custom_branch_policies":true,"protected_branches":false},"id":18657050755,"name":"github-pages","required_reviewers":[{"prevent_self_review":false,"reviewers":[{"id":179389866,"login":"jdhart81","type":"User"}]}]}

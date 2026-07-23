@@ -1,0 +1,206 @@
+{
+  "verified_at_utc": "2026-10-16T23:09:44.518762+00:00",
+  "status": "PASS_LOCAL_ISOLATED_DATABASE_PROOF",
+  "source_base": "69b57a99c8e4b250b120a12824a377b255a94f98",
+  "runtime": {
+    "image": "gsip-local:collect2-pg16-pgtap-20261016",
+    "image_id": "sha256:56d922665f176f90809591a724324471acaee68f9b41cbdc6f75c1042c7f4f4d",
+    "database": "PostgreSQL16 / PostGIS / pgTAP",
+    "network": "none",
+    "source_mount": "read-only",
+    "host_ports": [],
+    "production_credentials_supplied": false,
+    "docker_availability": "Daemon became available after startup; prior unavailable statement was initial shell state."
+  },
+  "roles": [
+    {
+      "file": "prior_attempts.test.sql",
+      "passed": 30,
+      "total": 30
+    },
+    {
+      "file": "rls.test.sql",
+      "passed": 42,
+      "total": 42
+    },
+    {
+      "file": "wp6b_integrity.test.sql",
+      "passed": 51,
+      "total": 51
+    },
+    {
+      "file": "wp6b_invoker_boundary.test.sql",
+      "passed": 16,
+      "total": 16
+    },
+    {
+      "file": "wp6d_private_rights_boundary.test.sql",
+      "passed": 21,
+      "total": 21
+    },
+    {
+      "file": "wp6d_rights.test.sql",
+      "passed": 70,
+      "total": 70
+    },
+    {
+      "file": "wp6e_provenance.test.sql",
+      "passed": 57,
+      "total": 57
+    },
+    {
+      "file": "wp6fa_photo_privacy.test.sql",
+      "passed": 143,
+      "total": 143
+    },
+    {
+      "file": "wp_agent1_public.test.sql",
+      "passed": 13,
+      "total": 13
+    },
+    {
+      "file": "wp_collect2_invited_pilot.test.sql",
+      "passed": 40,
+      "total": 40
+    },
+    {
+      "file": "wp_lib4_contract_conformance.test.sql",
+      "passed": 45,
+      "total": 45
+    },
+    {
+      "file": "wp_lib4_private_intake.test.sql",
+      "passed": 104,
+      "total": 104
+    }
+  ],
+  "role_assertions": 632,
+  "migration": [
+    {
+      "file": "wp6e_provenance.test.sql",
+      "passed": 13,
+      "total": 13
+    },
+    {
+      "file": "wp6fa_photo_privacy.test.sql",
+      "passed": 19,
+      "total": 19
+    },
+    {
+      "file": "wp_collect2_invited_pilot.test.sql",
+      "passed": 16,
+      "total": 16
+    },
+    {
+      "file": "wp_lib4_private_intake.test.sql",
+      "passed": 13,
+      "total": 13
+    }
+  ],
+  "migration_assertions": 61,
+  "library_races": 12,
+  "photo_privacy_races": 31,
+  "other_local_checks": [
+    "ruff check two owned concurrency scripts PASS",
+    "ruff format --check two owned concurrency scripts PASS",
+    "mypy two owned concurrency scripts PASS",
+    "git diff --check PASS"
+  ],
+  "owned_source_files": [
+    {
+      "path": "packages/schema/src/database.types.ts",
+      "sha256": "4a1c4925e15a9ac4090c196f891b50a5afe3e76cf6b660e67a328d45b8fed955"
+    },
+    {
+      "path": "scripts/test-library-intake-concurrency.py",
+      "sha256": "7ff29ec0ed7567fe7c9eb3f62c7f77e7c30f9cde2267c1c1192e6668370aa453"
+    },
+    {
+      "path": "scripts/test-photo-privacy-concurrency.py",
+      "sha256": "bb97aab55be74e5a1c6b60d562082c8ac74f4d1d75828065b96f915feb113eff"
+    },
+    {
+      "path": "supabase/migrations/20261016225028_wp_collect2_invited_private_pilot.sql",
+      "sha256": "6467fe774302a7910bdc6e0a7acff97a05d11d492b9ab5e91c266a7c5c537c1b"
+    },
+    {
+      "path": "supabase/migration-tests/stand_in.sql",
+      "sha256": "bfb593d6707eebc85219244efbb597102201986fbf26df072df01b1a280ed8d1"
+    },
+    {
+      "path": "supabase/migration-tests/wp6e_provenance.test.sql",
+      "sha256": "eb905cde61ccdd6f42fd3f15a7708bb7c1818b1a42cd09b0d4aba4b7762ee2bd"
+    },
+    {
+      "path": "supabase/migration-tests/wp6fa_photo_privacy.test.sql",
+      "sha256": "f3b1bc8368b358e9b3f4be5f973bc11a194e65e45f19a24d0618d6dfe5d5c414"
+    },
+    {
+      "path": "supabase/migration-tests/wp_lib4_private_intake.test.sql",
+      "sha256": "0c6e88284d9f9873e0d3bd8ba198140ae51aa1bab1891562167e0c1289143e8e"
+    },
+    {
+      "path": "supabase/migration-tests/before_20261016225028_wp_collect2_invited_private_pilot.sql",
+      "sha256": "f80492442cc2ea3e77673a2798f231d361a33b96c1542d1a68e36da57b8a676f"
+    },
+    {
+      "path": "supabase/migration-tests/wp_collect2_invited_pilot.test.sql",
+      "sha256": "164f45d52659be9fba58d556be4b07ced9ee1f236e264a179d4861990eeb26c1"
+    },
+    {
+      "path": "supabase/tests/database/rls.test.sql",
+      "sha256": "c5f07f369f68ae5f1c578977789927e52f467443e815d78c5d1beb12173a86ef"
+    },
+    {
+      "path": "supabase/tests/database/wp6b_integrity.test.sql",
+      "sha256": "fee5771635962ba273b40d89e1c25b6f958b1924ea473204c758ee279c90fe12"
+    },
+    {
+      "path": "supabase/tests/database/wp6d_rights.test.sql",
+      "sha256": "49ee557e4d464a9ea5afddb0b2a7f71940b541f875915714ad32e1f9d8faceb0"
+    },
+    {
+      "path": "supabase/tests/database/wp6e_provenance.test.sql",
+      "sha256": "e44b3465fb7effcad476bef61267f7132e97fc8fdc311a0fb6f2186c90a35688"
+    },
+    {
+      "path": "supabase/tests/database/wp_agent1_public.test.sql",
+      "sha256": "908f62c138b7853fcc453f85143c6309d41e7e49195d693ae96b40ca96f22ddd"
+    },
+    {
+      "path": "supabase/tests/database/wp_lib4_private_intake.test.sql",
+      "sha256": "c90cb1fe6ea88fb8e00dcd54379e2b2c943c3b1e717102bb79c82899792415f5"
+    },
+    {
+      "path": "supabase/tests/database/wp_collect2_invited_pilot.test.sql",
+      "sha256": "80e86c8b9d2260b9476e151061a707cdba678b72d9e8a659e5c71a2aa4ccec6c"
+    }
+  ],
+  "logs": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/collect2-sql-role-tests.log",
+      "sha256": "d60168e42e2270c7b41b35cdc82ab9f6b1d4ac3fe91cde0bbb9eac29745bbd91"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/collect2-populated-migration-tests.log",
+      "sha256": "ace0294a77a01e64ecef7a22864f99ef0a46c798bbaac5f5637fc5f043874843"
+    }
+  ],
+  "commands": {
+    "cli_help": "pnpm exec supabase migration new --help",
+    "cli_new": "pnpm exec supabase migration new wp_collect2_invited_private_pilot",
+    "roles": "docker run --rm --network none --env LANG=C.UTF-8 --mount type=bind,source=<source>,target=/repo,readonly --mount type=bind,source=/private/tmp/gsip-collect2-dbtest-image,target=/checks,readonly gsip-local:collect2-pg16-pgtap-20261016 bash /checks/run-role-tests.sh",
+    "populated": "docker run --rm --network none --env LANG=C.UTF-8 --mount type=bind,source=<source>,target=/repo,readonly gsip-local:collect2-pg16-pgtap-20261016 bash scripts/db-migration-test.sh"
+  },
+  "limitations": [
+    "Plain PostgreSQL stand-in role/Storage fixtures; not a hosted Supabase/PostgREST proof.",
+    "No production migration, query, account, membership, worker, deployment, gate or publication operation performed.",
+    "Security advisor and physical device/mail delivery checks not run by this proof.",
+    "CI and independent full-change review remain separate."
+  ],
+  "baseline_negative": {
+    "status": "EXPECTED_FAILURE_WITHOUT_MIGRATION",
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/collect2-sql-baseline-negative.log",
+    "sha256": "db8d55ca96b629f1505b2ddf48bfbeebe115fe680504ceaeefad21121f7b09b7"
+  }
+}

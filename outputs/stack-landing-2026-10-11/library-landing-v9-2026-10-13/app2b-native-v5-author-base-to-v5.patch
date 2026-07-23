@@ -1,0 +1,4289 @@
+--- /dev/null
++++ b/scripts/app_notification_audit.py
+@@ -0,0 +1,2187 @@
++"""APP-2B CI evidence only: exact resolved native inputs and overall feature delta.
++
++No contributor data, credentials, deployment or signing is read. The temporary Gradle
++inspection task is build configuration, never shipped app source. Missing evidence fails.
++"""
++
++from __future__ import annotations
++
++import argparse
++import hashlib
++import io
++import json
++import math
++import os
++import re
++import stat
++import subprocess
++import sys
++import tarfile
++import tempfile
++import urllib.error
++import urllib.request
++import xml.etree.ElementTree as ET  # noqa: S405 - bounded public POM metadata only
++import zipfile
++from datetime import datetime
++from pathlib import Path
++from typing import Any, NoReturn, cast
++
++from scripts import app_build, app_permissions
++
++BASELINE = "d7ed716ed0921381da04f542e90902ede36cb462"
++MAX_META = 2_000_000
++MAX_BINARY = 200_000_000
++MAX_ZIP_BYTES = 500_000_000
++MAX_ITEMS = 2_000
++TOKEN = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_.+-]{0,127}\Z")
++REPOSITORIES = ("https://dl.google.com/dl/android/maven2/", "https://repo.maven.apache.org/maven2/")
++LICENSE_NAMES = {
++    "Apache-2.0": {
++        "apache license, version 2.0",
++        "apache 2.0",
++        "the apache license, version 2.0",
++        "apache license version 2.0",
++        "apache license 2.0",
++        "apache-2.0",
++        "the apache software license, version 2.0",
++    },
++    "MIT": {"mit", "mit license", "the mit license"},
++    "BSD-2-Clause": {"bsd 2-clause", "bsd 2-clause license", "bsd-2-clause"},
++    "BSD-3-Clause": {"bsd 3-clause", "bsd 3-clause license", "bsd-3-clause", "the bsd license"},
++}
++PROJECT_PACKAGES = {
++    ":capacitor-android": "@capacitor/android",
++    ":capacitor-camera": "@capacitor/camera",
++    ":capacitor-filesystem": "@capacitor/filesystem",
++    ":capacitor-local-notifications": "@capacitor/local-notifications",
++}
++NPM_PACKAGES = (
++    "@capacitor/core",
++    "@capacitor/android",
++    "@capacitor/ios",
++    "@capacitor/camera",
++    "@capacitor/filesystem",
++    "@capacitor/geolocation",
++    "@capacitor/local-notifications",
++)
++
++
++class AuditError(ValueError):
++    """Generic refusal; never copy arbitrary parser, tool or network error details."""
++
++
++def refuse() -> NoReturn:
++    raise AuditError("native evidence missing, invalid or unreviewed")
++
++
++DIAGNOSTIC_STAGES = {
++    "start",
++    "android-dependency-trees",
++    "android-build-environment",
++    "android-gradle-inspection",
++    "android-npm-sources",
++    "android-runtime-graph",
++    "android-runtime-licenses",
++    "android-project-sources",
++    "android-runtime-binaries",
++    "android-source-bindings",
++    "ios-pods",
++    "ios-resolution",
++    "ios-remote-sources",
++    "ios-capacitor-checkout",
++    "ios-capacitor-licenses",
++    "ios-capacitor-binaries",
++    "ios-npm-sources",
++    "ios-source-bindings",
++    "feature-comparison",
++}
++DIAGNOSTIC_COUNTS = {
++    "runtime_views",
++    "module_inputs",
++    "project_inputs",
++    "remote_pins",
++    "resolved_files",
++    "source_packages",
++}
++_diagnostic_stage = "start"
++_diagnostic_counts: dict[str, int] = {}
++
++
++def mark(stage: str, **counts: int) -> None:
++    global _diagnostic_stage, _diagnostic_counts
++    if stage not in DIAGNOSTIC_STAGES or not set(counts) <= DIAGNOSTIC_COUNTS:
++        refuse()
++    if any(type(value) is not int or not 0 <= value <= 30_000 for value in counts.values()):
++        refuse()
++    _diagnostic_stage = stage
++    _diagnostic_counts = counts
++
++
++def diagnostic(error: BaseException) -> dict[str, Any]:
++    category = next(
++        (
++            label
++            for kind, label in (
++                (AuditError, "AUDIT_REFUSAL"),
++                (FileNotFoundError, "MISSING_FILE"),
++                (PermissionError, "FILE_PERMISSION"),
++                (urllib.error.URLError, "PUBLIC_METADATA"),
++                (subprocess.SubprocessError, "BUILD_TOOL"),
++                (zipfile.BadZipFile, "INVALID_ARCHIVE"),
++                (tarfile.TarError, "INVALID_ARCHIVE"),
++                (ET.ParseError, "MALFORMED_METADATA"),
++                (OSError, "FILE_ERROR"),
++                (ValueError, "MALFORMED_METADATA"),
++            )
++            if isinstance(error, kind)
++        ),
++        "INVALID_EVIDENCE",
++    )
++    line = 0
++    trace = error.__traceback__
++    while trace is not None:
++        if trace.tb_frame.f_code.co_filename == __file__:
++            line = trace.tb_lineno
++        trace = trace.tb_next
++    return {
++        "stage": _diagnostic_stage,
++        "error_class": category,
++        "source_line": line,
++        "counts": _diagnostic_counts,
++    }
++
++
++def sha(data: bytes) -> str:
++    return hashlib.sha256(data).hexdigest()
++
++
++def contained(path: Path, roots: tuple[Path, ...]) -> Path:
++    """Reject lexical traversal first, then verify physical containment without symlink inputs."""
++    if ".." in path.parts or any(".." in root.parts for root in roots):
++        refuse()
++    absolute = path.absolute()
++    permitted = next(
++        (root.absolute() for root in roots if absolute.is_relative_to(root.absolute())), None
++    )
++    if permitted is None:
++        refuse()
++    for ancestor in (
++        permitted,
++        *reversed(absolute.parents[: len(absolute.parents) - len(permitted.parents)]),
++        absolute,
++    ):
++        if ancestor.is_symlink():
++            refuse()
++    physical = absolute.resolve(strict=True)
++    if not physical.is_relative_to(permitted.resolve(strict=True)):
++        refuse()
++    return physical
++
++
++def read(
++    path: Path, roots: tuple[Path, ...], limit: int = MAX_META, *, allow_empty: bool = False
++) -> bytes:
++    """Only explicit bounded regular single-link files beneath trusted CI roots."""
++    absolute = contained(path, roots)
++    fd = os.open(absolute, os.O_RDONLY | os.O_NOFOLLOW)
++    try:
++        info = os.fstat(fd)
++        if (
++            not stat.S_ISREG(info.st_mode)
++            or info.st_nlink != 1
++            or not (0 if allow_empty else 1) <= info.st_size <= limit
++        ):
++            refuse()
++        with os.fdopen(fd, "rb", closefd=False) as stream:
++            data = stream.read(limit + 1)
++        if len(data) != info.st_size or len(data) > limit:
++            refuse()
++        return data
++    finally:
++        os.close(fd)
++
++
++def decoded(raw: bytes) -> dict[str, Any]:
++    def pairs(items: list[tuple[str, Any]]) -> dict[str, Any]:
++        result: dict[str, Any] = {}
++        for key, value in items:
++            if key in result:
++                refuse()
++            result[key] = value
++        return result
++
++    if len(raw) > MAX_META:
++        refuse()
++
++    def finite_float(text: str) -> float:
++        value = float(text)
++        if not math.isfinite(value):
++            refuse()
++        return value
++
++    result = json.loads(
++        raw,
++        object_pairs_hook=pairs,
++        parse_constant=lambda unused: refuse(),
++        parse_float=finite_float,
++    )
++    if not isinstance(result, dict):
++        refuse()
++    return cast(dict[str, Any], result)
++
++
++def coordinate(value: Any) -> tuple[str, str, str]:
++    if (
++        not isinstance(value, list)
++        or len(value) != 3
++        or any(not isinstance(item, str) or not TOKEN.fullmatch(item) for item in value)
++    ):
++        refuse()
++    return value[0], value[1], value[2]
++
++
++def run(args: list[str], cwd: Path | None = None) -> str:
++    result = subprocess.run(args, cwd=cwd, capture_output=True, text=True, check=True)  # noqa: S603 - fixed CI build tools
++    return result.stdout.strip()
++
++
++def public_bytes(url: str, limit: int, redirects: bool = False) -> bytes:
++    class Redirect(urllib.request.HTTPRedirectHandler):
++        def redirect_request(
++            self, req: Any, fp: Any, code: int, msg: str, headers: Any, newurl: str
++        ) -> Any:
++            if not redirects or not newurl.startswith(
++                "https://release-assets.githubusercontent.com/"
++            ):
++                refuse()
++            return super().redirect_request(req, fp, code, msg, headers, newurl)
++
++    opener = urllib.request.build_opener(Redirect())
++    with opener.open(url, timeout=30) as response:  # noqa: S310 - caller constructs pinned public repository URLs
++        length = response.headers.get("Content-Length")
++        if length is not None and (not length.isdecimal() or int(length) > limit):
++            refuse()
++        data = response.read(limit + 1)
++    if not 0 < len(data) <= limit:
++        refuse()
++    if not isinstance(data, bytes):
++        refuse()
++    return data
++
++
++def pom_bytes(coord: tuple[str, str, str], cache: Path, allow_fetch: bool) -> tuple[bytes, str]:
++    group, artifact, version = coord
++    folder = cache / "modules-2/files-2.1" / group / artifact / version
++    matches = sorted(folder.glob(f"*/{artifact}-{version}.pom"))
++    if len(matches) > 1:
++        refuse()
++    if matches:
++        return read(matches[0], (cache,)), "resolved Gradle metadata cache"
++    if not allow_fetch:
++        refuse()
++    relative = f"{group.replace('.', '/')}/{artifact}/{version}/{artifact}-{version}.pom"
++    for repository in REPOSITORIES:
++        try:
++            return public_bytes(repository + relative, MAX_META), repository + relative
++        except urllib.error.HTTPError as error:
++            if error.code != 404:
++                raise
++    refuse()
++    raise AssertionError("unreachable")
++
++
++def license_id(name: str) -> str:
++    normal = " ".join(name.casefold().split())
++    for identifier, names in LICENSE_NAMES.items():
++        if normal in names:
++            return identifier
++    refuse()
++    raise AssertionError("unreachable")
++
++
++def singleton_text(element: ET.Element, key: str, *, required: bool) -> str | None:
++    matches = element.findall(key)
++    if len(matches) > 1 or (required and not matches):
++        refuse()
++    if not matches:
++        return None
++    field = matches[0]
++    if len(field) or field.attrib or not isinstance(field.text, str) or not field.text.strip():
++        refuse()
++    return field.text.strip()
++
++
++def pom_evidence(
++    coord: tuple[str, str, str],
++    cache: Path,
++    allow_fetch: bool,
++    seen: tuple[tuple[str, str, str], ...] = (),
++) -> list[dict[str, Any]]:
++    if len(seen) >= 8 or coord in seen:
++        refuse()
++    raw, origin = pom_bytes(coord, cache, allow_fetch)
++    if b"<!DOCTYPE" in raw.upper() or b"<!ENTITY" in raw.upper() or raw.count(b"<") > 10_000:
++        refuse()
++    root = ET.fromstring(raw)  # noqa: S314 - bounded entity/doctype-free public metadata
++    pending = [(root, 1)]
++    while pending:
++        node, depth = pending.pop()
++        if depth > 64:
++            refuse()
++        pending.extend((child, depth + 1) for child in node)
++    for element in root.iter():
++        element.tag = element.tag.rsplit("}", 1)[-1]
++    if root.tag != "project":
++        refuse()
++    parents = root.findall("parent")
++    if len(parents) > 1 or len(root.findall("licenses")) > 1:
++        refuse()
++    parent = parents[0] if parents else None
++    parent_coord = (
++        None
++        if parent is None
++        else coordinate(
++            [
++                singleton_text(parent, key, required=True)
++                for key in ("groupId", "artifactId", "version")
++            ]
++        )
++    )
++    actual = tuple(
++        singleton_text(root, key, required=(index == 1))
++        or (parent_coord[index] if parent_coord and index != 1 else "")
++        for index, key in enumerate(("groupId", "artifactId", "version"))
++    )
++    if actual != coord:
++        refuse()
++    licenses = root.findall("./licenses/license")
++    record: dict[str, Any] = {
++        "coordinate": list(coord),
++        "pom_sha256": sha(raw),
++        "pom_bytes": len(raw),
++        "origin": origin,
++        "packaging": singleton_text(root, "packaging", required=False) or "jar",
++        "licenses": [],
++    }
++    for item in licenses:
++        name, url = (singleton_text(item, key, required=True) for key in ("name", "url"))
++        if (
++            not name
++            or len(name) > 200
++            or not url
++            or len(url) > 500
++            or not re.fullmatch(r"https?://[^\s<>]+", url)
++        ):
++            refuse()
++        record["licenses"].append(
++            {"spdx": license_id(name), "declared_name": name, "declared_url": url}
++        )
++    if licenses:
++        return [record]
++    if parent_coord is None:
++        refuse()
++    inherited = pom_evidence(parent_coord, cache, allow_fetch, (*seen, coord))
++    record["inherits_license_from"] = list(parent_coord)
++    return [record, *inherited]
++
++
++def zip_evidence(path: Path, roots: tuple[Path, ...]) -> dict[str, Any]:
++    raw = read(path, roots, MAX_BINARY)
++    with zipfile.ZipFile(io.BytesIO(raw)) as archive:
++        entries = archive.infolist()
++        if (
++            len(entries) > 30_000
++            or sum(item.file_size for item in entries) > MAX_ZIP_BYTES
++            or len({item.filename for item in entries}) != len(entries)
++        ):
++            refuse()
++        notices = []
++        for item in entries:
++            if (
++                Path(item.filename).is_absolute()
++                or ".." in Path(item.filename).parts
++                or stat.S_ISLNK(item.external_attr >> 16)
++            ):
++                refuse()
++            if not item.is_dir() and re.search(
++                r"(^|/)(LICENSE|NOTICE|COPYING)([._-][^/]*)?$", item.filename, re.I
++            ):
++                if item.file_size > MAX_META:
++                    refuse()
++                payload = archive.read(item)
++                notices.append(
++                    {"entry": item.filename, "sha256": sha(payload), "bytes": len(payload)}
++                )
++    return {"sha256": sha(raw), "bytes": len(raw), "embedded_license_notice_files": notices}
++
++
++def npm_evidence(repo: Path, names: tuple[str, ...]) -> list[dict[str, Any]]:
++    result = []
++    for name in names:
++        installed = repo / "apps/capture-pwa/node_modules" / name
++        if not installed.exists():
++            if name == "@capacitor/local-notifications":
++                continue
++            refuse()
++        directory = installed.resolve()
++        # pnpm's explicit installed package link resolves only into this clone's node_modules.
++        if not directory.is_relative_to((repo / "node_modules").resolve()):
++            refuse()
++        raw = read(directory / "package.json", (repo / "node_modules",))
++        package = decoded(raw)
++        if (
++            package.get("name") != name
++            or package.get("license") != "MIT"
++            or not isinstance(package.get("version"), str)
++            or not TOKEN.fullmatch(package["version"])
++        ):
++            refuse()
++        license_raw = read(directory / "LICENSE", (repo / "node_modules",))
++        if b"Permission is hereby granted" not in license_raw:
++            refuse()
++        files: list[tuple[str, str]] = []
++        total = 0
++        for file in sorted(directory.rglob("*")):
++            relative = file.relative_to(directory)
++            if any(part in {"build", ".gradle", "node_modules"} for part in relative.parts):
++                continue  # Generated compilation/cache files are not published npm source.
++            if file.is_symlink():
++                refuse()
++            if not file.is_file():
++                continue
++            if file.suffix in {".jar", ".aar", ".so"} or any(
++                part.endswith((".xcframework", ".framework")) for part in relative.parts
++            ):
++                refuse()  # A package MIT label does not license an unexpected bundled binary.
++            payload = read(file, (repo / "node_modules",), MAX_BINARY, allow_empty=True)
++            total += len(payload)
++            if total > MAX_ZIP_BYTES or len(files) >= 10_000:
++                refuse()
++            files.append((str(file.relative_to(directory)), sha(payload)))
++        result.append(
++            {
++                "name": name,
++                "version": package["version"],
++                "package_json_sha256": sha(raw),
++                "license": "MIT",
++                "license_sha256": sha(license_raw),
++                "installed_source_bytes": total,
++                "installed_file_count": len(files),
++                "installed_source_manifest_sha256": sha(
++                    json.dumps(files, separators=(",", ":")).encode()
++                ),
++            }
++        )
++    return result
++
++
++# Only inspect already resolved configurations; no network, shell, environment or credentials.
++GRADLE_TASK = """import groovy.json.JsonOutput
++import org.gradle.api.artifacts.component.ModuleComponentIdentifier
++import org.gradle.api.artifacts.component.ProjectComponentIdentifier
++gradle.projectsEvaluated {
++    def app = gradle.rootProject.project(':app')
++    app.tasks.register('gsipRuntimeEvidence') {
++        doLast {
++            def views = ['debugRuntimeClasspath','releaseRuntimeClasspath'].collect { name ->
++                def config = app.configurations.getByName(name)
++                config.resolvedConfiguration.rethrowFailure()
++                def modules = []
++                def projects = []
++                config.incoming.resolutionResult.allComponents.each { component ->
++                    def id = component.id
++                    if (id instanceof ModuleComponentIdentifier) {
++                        modules.add([id.group,id.module,id.version])
++                    } else if (id instanceof ProjectComponentIdentifier) {
++                        projects.add(id.projectPath)
++                    } else { throw new GradleException('unsupported runtime component') }
++                }
++                def artifacts = config.resolvedConfiguration.resolvedArtifacts.collect { artifact ->
++                    def id = artifact.id.componentIdentifier
++                    if (id instanceof ModuleComponentIdentifier) {
++                        [kind:'module', coordinate:[id.group,id.module,id.version],
++                         file:artifact.file.canonicalPath]
++                    } else if (id instanceof ProjectComponentIdentifier) {
++                        [kind:'project', project:id.projectPath, file:artifact.file.canonicalPath]
++                    } else { throw new GradleException('unsupported runtime artifact') }
++                }
++                [name:name,modules:modules.unique().sort { it.join(':') },
++                 projects:projects.unique().sort(),artifacts:artifacts]
++            }
++            def output = new File(app.findProperty('gsipEvidenceOutput').toString())
++            output.text = JsonOutput.toJson([views:views])
++        }
++    }
++}
++"""
++
++
++def runtime_evidence(
++    data: dict[str, Any], repo: Path, cache: Path, allow_fetch: bool
++) -> dict[str, Any]:
++    mark("android-runtime-graph")
++    views = data.get("views")
++    if (
++        not isinstance(views, list)
++        or len(views) != 2
++        or {view.get("name") for view in views if isinstance(view, dict)}
++        != {"debugRuntimeClasspath", "releaseRuntimeClasspath"}
++    ):
++        refuse()
++    mark("android-npm-sources")
++    npm = npm_evidence(repo, NPM_PACKAGES)
++    npm_by_name = {item["name"]: item for item in npm}
++    receipts = []
++    for view in views:
++        if (
++            not isinstance(view, dict)
++            or set(view) != {"name", "modules", "projects", "artifacts"}
++            or not all(
++                isinstance(view[key], list) and len(view[key]) <= MAX_ITEMS
++                for key in ("modules", "projects", "artifacts")
++            )
++        ):
++            refuse()
++        modules = [coordinate(item) for item in view["modules"]]
++        if not modules or len(set(modules)) != len(modules):
++            refuse()
++        if app_permissions.closed_dependencies("\n".join(":".join(item) for item in modules)):
++            refuse()
++        mark("android-runtime-licenses", module_inputs=len(modules))
++        selected = []
++        for coord in modules:
++            selected.append(
++                {
++                    "coordinate": list(coord),
++                    "pom_license_evidence": pom_evidence(coord, cache, allow_fetch),
++                }
++            )
++        mark("android-project-sources", project_inputs=len(view["projects"]))
++        projects = []
++        for project in view["projects"]:
++            if project == ":app":
++                continue
++            if project == ":capacitor-cordova-android-plugins":
++                generated = repo / "apps/capture-pwa/android/capacitor-cordova-android-plugins"
++                if (
++                    any(generated.rglob("*.jar"))
++                    or any(generated.rglob("*.aar"))
++                    or any((generated / "src").rglob("*.java"))
++                    or any((generated / "src").rglob("*.kt"))
++                ):
++                    refuse()
++                projects.append(
++                    {
++                        "project": project,
++                        "source": (
++                            "generated empty Cordova compatibility project; "
++                            "no third-party plugin source/binary"
++                        ),
++                    }
++                )
++                continue
++            name = PROJECT_PACKAGES.get(project)
++            if name is None or name not in npm_by_name:
++                refuse()
++            projects.append(
++                {
++                    "project": project,
++                    "npm": name,
++                    "source_manifest_sha256": npm_by_name[name]["installed_source_manifest_sha256"],
++                }
++            )
++        mark(
++            "android-runtime-binaries",
++            module_inputs=len(modules),
++            project_inputs=len(view["projects"]),
++        )
++        binaries = []
++        for artifact in view["artifacts"]:
++            if (
++                not isinstance(artifact, dict)
++                or artifact.get("kind") not in {"project", "module"}
++                or not isinstance(artifact.get("file"), str)
++            ):
++                refuse()
++            file = Path(artifact["file"])
++            if artifact["kind"] == "module":
++                coord = coordinate(artifact.get("coordinate"))
++                if coord not in modules:
++                    refuse()
++                file = contained(
++                    file, (cache / "modules-2/files-2.1" / coord[0] / coord[1] / coord[2],)
++                )
++                identity: dict[str, Any] = {"coordinate": list(coord)}
++            else:
++                project = artifact.get("project")
++                if not isinstance(project, str) or project not in view["projects"]:
++                    refuse()
++                if project == ":capacitor-cordova-android-plugins":
++                    output_root = (
++                        repo / "apps/capture-pwa/android/capacitor-cordova-android-plugins/build"
++                    )
++                else:
++                    package = PROJECT_PACKAGES.get(project)
++                    if package is None:
++                        refuse()
++                    package_root = (repo / "apps/capture-pwa/node_modules" / package).resolve(
++                        strict=True
++                    )
++                    if not package_root.is_relative_to(
++                        (repo / "node_modules").resolve(strict=True)
++                    ):
++                        refuse()
++                    output_root = (
++                        package_root
++                        / ("capacitor" if project == ":capacitor-android" else "android")
++                        / "build"
++                    )
++                file = contained(file, (output_root,))
++                identity = {"project": project}
++            if file.suffix not in {".jar", ".aar"}:
++                refuse()
++            binaries.append(
++                {**identity, "filename": file.name, **zip_evidence(file, (repo, cache))}
++            )
++        if not binaries:
++            refuse()
++        receipts.append(
++            {
++                "configuration": view["name"],
++                "selected_modules": selected,
++                "project_sources": projects,
++                "resolved_runtime_inputs": binaries,
++            }
++        )
++    return {
++        "runtime_views": receipts,
++        "npm_sources": npm,
++        "temporary_gradle_task_sha256": sha(GRADLE_TASK.encode()),
++        "scope": (
++            "resolved inputs of both shipped runtime configurations; "
++            "build/test/toolchain inputs are separate, not inferred shipped"
++        ),
++    }
++
++
++def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> None:
++    mark("android-dependency-trees")
++    for configuration in ("debugRuntimeClasspath", "releaseRuntimeClasspath"):
++        text = run(
++            [
++                str(repo / "apps/capture-pwa/android/gradlew"),
++                "--no-daemon",
++                "--console=plain",
++                "-q",
++                ":app:dependencies",
++                "--configuration",
++                configuration,
++            ],
++            repo / "apps/capture-pwa/android",
++        )
++        if "--- " not in text or app_permissions.closed_dependencies(text):
++            refuse()
++        (output.parent / f"{output.stem}-{configuration}.txt").write_text(text + "\n")
++    mark("android-build-environment")
++    build_environment = run(
++        [
++            str(repo / "apps/capture-pwa/android/gradlew"),
++            "--no-daemon",
++            "--console=plain",
++            ":app:buildEnvironment",
++        ],
++        repo / "apps/capture-pwa/android",
++    )
++    (output.parent / f"{output.stem}-build-environment.txt").write_text(build_environment + "\n")
++    with tempfile.TemporaryDirectory(prefix="gsip-runtime-audit-") as directory:
++        temporary = Path(directory)
++        task, graph = temporary / "inspection.gradle", temporary / "resolved.json"
++        task.write_text(GRADLE_TASK)
++        mark("android-gradle-inspection")
++        run(
++            [
++                str(repo / "apps/capture-pwa/android/gradlew"),
++                "--no-daemon",
++                "--console=plain",
++                "-I",
++                str(task),
++                ":app:gsipRuntimeEvidence",
++                f"-PgsipEvidenceOutput={graph}",
++            ],
++            repo / "apps/capture-pwa/android",
++        )
++        raw = read(graph, (temporary,))
++        result = runtime_evidence(decoded(raw), repo, cache, True)
++    mark("android-source-bindings")
++    result["build_only_environment_sha256"] = sha(build_environment.encode())
++    result["runtime_tree_sha256"] = {
++        configuration: sha(
++            read(output.parent / f"{output.stem}-{configuration}.txt", (output.parent,))
++        )
++        for configuration in ("debugRuntimeClasspath", "releaseRuntimeClasspath")
++    }
++    result.update(
++        {
++            "schema_version": "gsip-app-notification-native-audit-v1",
++            "platform": "android",
++            "resolved_graph_sha256": sha(raw),
++            "source_inputs": source_inputs(repo),
++            "source_commit": run(["git", "-C", str(repo), "rev-parse", "HEAD"]),
++            "debug_signing_key_sha256": sha(read(debug_key, (debug_key.parent,), MAX_META)),
++            "built_artifact_sha256": sha(
++                read(
++                    repo / "apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk",
++                    (repo,),
++                    MAX_BINARY,
++                )
++            ),
++        }
++    )
++    write(output, result)
++
++
++def source_inputs(repo: Path) -> dict[str, str]:
++    names: tuple[str, ...] = (
++        "pnpm-lock.yaml",
++        "apps/capture-pwa/package.json",
++        "apps/capture-pwa/capacitor.config.ts",
++        "scripts/app_permissions.py",
++        "scripts/app_build.py",
++    )
++    names += tuple(
++        name
++        for name in (
++            "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties",
++            "apps/capture-pwa/android/build.gradle",
++            "apps/capture-pwa/android/variables.gradle",
++        )
++        if (repo / name).exists()
++    )
++    return {name: sha(read(repo / name, (repo,))) for name in names}
++
++
++def tree_evidence(root: Path, allowed: Path) -> dict[str, Any]:
++    files: list[dict[str, Any]] = []
++    total = 0
++    for file in sorted(root.rglob("*")):
++        if file.is_symlink():
++            refuse()
++        if not file.is_file():
++            continue
++        payload = read(file, (allowed,), MAX_BINARY)
++        total += len(payload)
++        if len(files) >= 30_000 or total > MAX_ZIP_BYTES:
++            refuse()
++        files.append(
++            {"path": str(file.relative_to(root)), "sha256": sha(payload), "bytes": len(payload)}
++        )
++    if not files:
++        refuse()
++    return {
++        "bytes": total,
++        "file_count": len(files),
++        "files": files,
++        "tree_sha256": sha(json.dumps(files, sort_keys=True, separators=(",", ":")).encode()),
++    }
++
++
++# Reviewed existing selected remote source dependencies, exact public tag evidence.
++ION_PACKAGES: dict[str, dict[str, Any]] = {
++    "ion-ios-camera": {
++        "version": "2.0.0",
++        "revision": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
++        "manifest_sha256": "9c996d5e3d272926b9ca7375db032769554479b39088f3c6261a9b6db3f0e398",
++        "license_sha256": "731d2fac39f3d6dc79c04f9a7d2e59c2999caa0dd1dbcf295f9c0e922580dacc",
++        "archive_sha256": "973aa971e499abe35869c939dddb31ebec2c11b1e646cda3c2eb3fe95329b322",
++        "source_tree_sha256": "ee2d399fea29b2136b17f6183fe7fb4afd528f71f193e40a78b1f34c233fd3bf",
++        "source_bytes": 522080,
++        "source_file_count": 110,
++        "archive_bytes": 273170,
++        "test_dependencies": [
++            {"location": "https://github.com/Quick/Nimble.git", "minimum_version": "13.0.0"},
++            {"location": "https://github.com/Quick/Quick.git", "minimum_version": "7.0.0"},
++        ],
++    },
++    "ion-ios-filesystem": {
++        "version": "1.1.4",
++        "revision": "56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c",
++        "manifest_sha256": "2af20bd56bf4fd79f19e89fcc8bf524c225edece060ea1e08d0970799481d465",
++        "license_sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d",
++        "archive_sha256": "8efe6d8d1dd40b6894d5c128e9bb81bc557f8d58d3c4c4f6dc12ab9ac5c891d9",
++        "source_tree_sha256": "e9b94d4a60923891b387d45fe7be988ab21e343ccd705901bbc046acc590b057",
++        "source_bytes": 150959,
++        "source_file_count": 36,
++        "archive_bytes": 31020,
++        "test_dependencies": [],
++    },
++    "ion-ios-geolocation": {
++        "version": "2.1.1",
++        "revision": "db363927d3a954e3ea24d2e72b6e9814769a84be",
++        "manifest_sha256": "1afefd99f4747c429c71ccd2823a8623095da3b9a2fa0df7f341f31beb310245",
++        "license_sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d",
++        "archive_sha256": "bbff6b0ab17490d7ef80b18af0f520a83f4eee3c042fa980c0f60c234bff33fb",
++        "source_tree_sha256": "8d834e023fc57cdcf8cb183d29db71dd089219f802c5baf3aae24b78c7d0476b",
++        "source_bytes": 95915,
++        "source_file_count": 35,
++        "archive_bytes": 23644,
++        "test_dependencies": [],
++    },
++}
++APPLICATION_RESOLVED = (
++    "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace/"
++    "xcshareddata/swiftpm/Package.resolved"
++)
++UPSTREAM_RESOLVED = {
++    "ion-ios-filesystem": (
++        "IONFilesystemLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
++    ),
++    "ion-ios-geolocation": (
++        "IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
++    ),
++}
++SWIFTLINT_PIN = {
++    "identity": "swiftlintplugins",
++    "kind": "remoteSourceControl",
++    "location": "https://github.com/SimplyDanny/SwiftLintPlugins",
++    "state": {"revision": "f9731bef175c3eea3a0ca960f1be78fcc2bc7853", "version": "0.57.1"},
++}
++
++
++def selected_pins(value: Any) -> dict[str, dict[str, Any]]:
++    pins = items(value, 4)
++    result = {}
++    for value in pins:
++        if not isinstance(value, dict):
++            refuse()
++        pin = record(
++            value, {"identity", "location", "state"} | ({"kind"} if "kind" in value else set())
++        )
++        identity = pin["identity"]
++        if not isinstance(identity, str) or identity in result:
++            refuse()
++        expected = ION_PACKAGES.get(identity)
++        version = expected["version"] if expected else "8.5.2"
++        if (
++            identity not in {"capacitor-swift-pm", *ION_PACKAGES}
++            or pin["location"] != f"https://github.com/ionic-team/{identity}.git"
++            or ("kind" in pin and pin["kind"] != "remoteSourceControl")
++        ):
++            refuse()
++        state = record(pin["state"], {"version", "revision"})
++        if (
++            state["version"] != version
++            or not isinstance(state["revision"], str)
++            or not re.fullmatch(r"[0-9a-f]{40}", state["revision"])
++            or (expected is not None and state["revision"] != expected["revision"])
++        ):
++            refuse()
++        result[identity] = pin
++    if set(result) != {"capacitor-swift-pm", *ION_PACKAGES}:
++        refuse()
++    return result
++
++
++def source_archive(data: bytes, identity: str, version: str) -> dict[str, Any]:
++    files: list[dict[str, Any]] = []
++    total = 0
++    prefix = f"{identity}-{version}/"
++    with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as archive:
++        for member in archive:
++            if member.isdir():
++                continue
++            if not member.isfile() or not member.name.startswith(prefix):
++                refuse()
++            path = relative_name(member.name[len(prefix) :])
++            if path.endswith((".jar", ".aar", ".a", ".dylib", ".zip")) or any(
++                part.endswith((".framework", ".xcframework")) for part in Path(path).parts
++            ):
++                refuse()
++            if not 0 <= member.size <= MAX_BINARY:
++                refuse()
++            stream = archive.extractfile(member)
++            if stream is None:
++                refuse()
++            payload = stream.read(MAX_BINARY + 1)
++            if len(payload) != member.size:
++                refuse()
++            total += len(payload)
++            files.append({"path": path, "bytes": len(payload), "sha256": sha(payload)})
++            if total > MAX_ZIP_BYTES or len(files) > 30_000:
++                refuse()
++    files.sort(key=lambda item: item["path"])
++    if not files or len({item["path"] for item in files}) != len(files):
++        refuse()
++    return {
++        "bytes": total,
++        "file_count": len(files),
++        "files": files,
++        "tree_sha256": sha(json.dumps(files, sort_keys=True, separators=(",", ":")).encode()),
++    }
++
++
++def checkout_source_tree(checkout: Path, repo: Path) -> dict[str, Any]:
++    files: list[dict[str, Any]] = []
++    total = 0
++    for file in sorted(checkout.rglob("*")):
++        relative = file.relative_to(checkout)
++        if relative.parts[0] == ".git":
++            continue  # Git metadata is not package source and is never read.
++        if file.is_symlink():
++            refuse()
++        if file.is_dir():
++            continue
++        payload = read(file, (repo,), MAX_BINARY, allow_empty=True)
++        total += len(payload)
++        files.append({"path": str(relative), "bytes": len(payload), "sha256": sha(payload)})
++        if total > MAX_ZIP_BYTES or len(files) > 30_000:
++            refuse()
++    if not files:
++        refuse()
++    files.sort(key=lambda item: item["path"])
++    return {
++        "bytes": total,
++        "file_count": len(files),
++        "files": files,
++        "tree_sha256": sha(json.dumps(files, sort_keys=True, separators=(",", ":")).encode()),
++    }
++
++
++def collect_remote_sources(repo: Path, pins: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
++    result = []
++    for identity, expected in sorted(ION_PACKAGES.items()):
++        checkout = repo / f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}"
++        contained(checkout, (repo,))
++        head = run(["git", "-C", str(checkout), "rev-parse", "HEAD"])
++        tag = run(
++            ["git", "-C", str(checkout), "rev-parse", f"refs/tags/{expected['version']}^{{commit}}"]
++        )
++        if head != pins[identity]["state"]["revision"] or tag != head:
++            refuse()
++        manifest = read(checkout / "Package.swift", (repo,))
++        license_data = read(checkout / "LICENSE", (repo,))
++        if (
++            sha(manifest) != expected["manifest_sha256"]
++            or sha(license_data) != expected["license_sha256"]
++            or b".binaryTarget" in manifest
++            or b"Permission is hereby granted" not in license_data
++        ):
++            refuse()
++        url = f"https://codeload.github.com/ionic-team/{identity}/tar.gz/refs/tags/{expected['version']}"
++        data = public_bytes(url, MAX_BINARY)
++        if sha(data) != expected["archive_sha256"]:
++            refuse()
++        published = source_archive(data, identity, expected["version"])
++        actual = checkout_source_tree(checkout, repo)
++        if published != actual:
++            refuse()
++        result.append(
++            {
++                "identity": identity,
++                "location": pins[identity]["location"],
++                "version": expected["version"],
++                "checkout_revision": head,
++                "release_tag_revision": tag,
++                "manifest_sha256": sha(manifest),
++                "license": {
++                    "spdx": "MIT",
++                    "sha256": sha(license_data),
++                    "source": f"https://raw.githubusercontent.com/ionic-team/{identity}/{expected['version']}/LICENSE",
++                },
++                "source_archive": {"url": url, "sha256": sha(data), "bytes": len(data)},
++                "actual_source_tree": actual,
++                "test_only_dependencies": expected["test_dependencies"],
++                "runtime_remote_dependencies": [],
++                "binary_targets": [],
++            }
++        )
++    return result
++
++
++def resolved_inventory(repo: Path, application_pins: Any) -> list[dict[str, Any]]:
++    ios = repo / "apps/capture-pwa/ios"
++    expected = {APPLICATION_RESOLVED: "application selected graph"}
++    for identity, relative in UPSTREAM_RESOLVED.items():
++        expected[
++            f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}/{relative}"
++        ] = "upstream development project tool lock; not selected in application graph"
++    paths = list(ios.rglob("Package.resolved"))
++    if {str(path.relative_to(repo)) for path in paths} != set(expected):
++        refuse()
++    result = []
++    for path in sorted(paths):
++        raw = read(path, (repo,))
++        value = decoded(raw)
++        relative = str(path.relative_to(repo))
++        keys = (
++            {"pins"}
++            | ({"version"} if "version" in value else set())
++            | ({"originHash"} if "originHash" in value else set())
++        )
++        record(value, keys)
++        if "version" in value and (
++            type(value["version"]) is not int or value["version"] not in {1, 2, 3}
++        ):
++            refuse()
++        if "originHash" in value:
++            evidence_digest(value["originHash"])
++        if relative == APPLICATION_RESOLVED:
++            selected_pins(value["pins"])
++            if value["pins"] != application_pins:
++                refuse()
++        elif value["pins"] != [SWIFTLINT_PIN]:
++            refuse()
++        result.append(
++            {
++                "path": relative,
++                "sha256": sha(raw),
++                "scope": expected[relative],
++                "pins": value["pins"],
++            }
++        )
++    return result
++
++
++def collect_ios(repo: Path, output: Path, artifact: Path | None = None) -> None:
++    artifact = artifact if artifact is not None else repo / "gsip-capture-ios-simulator.zip"
++    ios = repo / "apps/capture-pwa/ios"
++    mark("ios-pods")
++    if list(ios.rglob("Podfile.lock")):
++        refuse()  # This workflow selects SPM; a new Pod resolution needs an explicit audit adapter.
++    mark("ios-resolution")
++    raw = read(repo / APPLICATION_RESOLVED, (repo,))
++    resolved = decoded(raw)
++    pins = resolved.get("pins")
++    selected = selected_pins(pins)
++    inventory = resolved_inventory(repo, pins)
++    mark("ios-remote-sources", remote_pins=len(selected), resolved_files=len(inventory))
++    remote_sources = collect_remote_sources(repo, selected)
++    pin = selected["capacitor-swift-pm"]
++    state = pin["state"]
++    mark("ios-capacitor-checkout")
++    checkout = ios / "App/build/SourcePackages/checkouts/capacitor-swift-pm"
++    contained(checkout, (repo,))
++    checkout_revision = run(["git", "-C", str(checkout), "rev-parse", "HEAD"])
++    release_revision = run(["git", "-C", str(checkout), "rev-parse", "refs/tags/8.5.2^{commit}"])
++    if checkout_revision != state["revision"] or release_revision != checkout_revision:
++        refuse()
++    manifest = read(checkout / "Package.swift", (repo,))
++    manifest_text = manifest.decode()
++    matches = re.findall(
++        r'\.binaryTarget\(\s*name:\s*"(Capacitor|Cordova)",\s*url:\s*"(https://github\.com/ionic-team/capacitor-swift-pm/releases/download/8\.5\.2/(?:Capacitor|Cordova)\.xcframework\.zip)",\s*checksum:\s*"([0-9a-f]{64})"\s*\)',
++        manifest_text,
++    )
++    if (
++        len(matches) != 2
++        or {item[0] for item in matches} != {"Capacitor", "Cordova"}
++        or manifest_text.count(".binaryTarget(") != 2
++    ):
++        refuse()
++    mark("ios-capacitor-licenses")
++    readme_url = "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md"
++    license_url = "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE"
++    upstream_readme = public_bytes(readme_url, MAX_META)
++    upstream_license = public_bytes(license_url, MAX_META)
++    installed_ios = (repo / "apps/capture-pwa/node_modules/@capacitor/ios").resolve()
++    if (
++        b"binary xcframework releases of Capacitor and CapacitorCordova" not in upstream_readme
++        or upstream_license != read(installed_ios / "LICENSE", (repo / "node_modules",))
++    ):
++        refuse()
++    mark("ios-capacitor-binaries")
++    frameworks = []
++    for name, url, checksum in matches:
++        if not url.endswith(f"/{name}.xcframework.zip"):
++            refuse()
++        data = public_bytes(url, MAX_BINARY, redirects=True)
++        if sha(data) != checksum:
++            refuse()
++        folder = (
++            ios / f"App/build/SourcePackages/artifacts/capacitor-swift-pm/{name}/{name}.xcframework"
++        )
++        tree = tree_evidence(folder, repo)
++        with tempfile.TemporaryDirectory(prefix="gsip-swift-binary-") as directory:
++            archive = Path(directory) / "binary.zip"
++            archive.write_bytes(data)
++            zip_metadata = zip_evidence(archive, (Path(directory),))
++            with zipfile.ZipFile(archive) as zipped:
++                entries = {
++                    item.filename: sha(zipped.read(item))
++                    for item in zipped.infolist()
++                    if not item.is_dir() and not item.filename.startswith("__MACOSX/")
++                }
++            expected = {
++                f"{name}.xcframework/{item['path']}": item["sha256"] for item in tree["files"]
++            }
++            if entries != expected:
++                refuse()
++        frameworks.append(
++            {
++                "name": name,
++                "published_archive_url": url,
++                "swift_manifest_checksum": checksum,
++                "actual_resolved_tree": tree,
++                "archive": zip_metadata,
++                "license_source": (
++                    "Capacitor npm ios MIT LICENSE; Cordova files additionally "
++                    "retain Apache-2.0 source headers; package metadata alone "
++                    "does not license other binary contents"
++                ),
++            }
++        )
++    mark("ios-npm-sources")
++    npm = npm_evidence(repo, NPM_PACKAGES)
++    ios_package = (repo / "apps/capture-pwa/node_modules/@capacitor/ios").resolve()
++    header = read(
++        ios_package / "CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h",
++        (repo / "node_modules",),
++    )
++    if b"Apache License, Version 2.0" not in header:
++        refuse()
++    mark("ios-source-bindings")
++    write(
++        output,
++        {
++            "schema_version": "gsip-app-notification-native-audit-v1",
++            "platform": "ios",
++            "built_artifact_sha256": sha(read(artifact, (repo, output.parent), MAX_BINARY)),
++            "source_commit": run(["git", "-C", str(repo), "rev-parse", "HEAD"]),
++            "source_inputs": source_inputs(repo),
++            "npm_sources": npm,
++            "spm": {
++                "package_resolved_sha256": sha(raw),
++                "pins": pins,
++                "resolved_inventory": inventory,
++                "remote_source_packages": remote_sources,
++                "selected_manifest_sha256": sha(manifest),
++                "checkout_revision": checkout_revision,
++                "release_tag_revision": release_revision,
++                "upstream_binary_host_description": {
++                    "url": readme_url,
++                    "sha256": sha(upstream_readme),
++                },
++                "upstream_capacitor_source_license": {
++                    "url": license_url,
++                    "spdx": "MIT",
++                    "sha256": sha(upstream_license),
++                },
++                "binary_inputs": frameworks,
++            },
++            "cordova_apache_source_header": {
++                "spdx": "Apache-2.0",
++                "sha256": sha(header),
++                "source": "@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h",
++            },
++            "pods": "not selected; no Podfile.lock",
++            "system_frameworks": (
++                "Apple SDK/toolchain inputs; not claimed open-source plugin dependencies"
++            ),
++        },
++    )
++
++
++def artifact_stats(path: Path, platform: str) -> dict[str, Any]:
++    raw = read(path, (path.parent,), MAX_BINARY)
++    with zipfile.ZipFile(io.BytesIO(raw)) as archive:
++        entries = archive.infolist()
++        if (
++            len(entries) > 30_000
++            or sum(item.file_size for item in entries) > MAX_ZIP_BYTES
++            or len({item.filename for item in entries}) != len(entries)
++        ):
++            refuse()
++        activation = (
++            "assets/public/gsip-activation.json"
++            if platform == "android"
++            else "App.app/public/gsip-activation.json"
++        )
++        if archive.namelist().count(activation) != 1:
++            refuse()
++        app_build.check_activation(archive.read(activation))
++        kinds: dict[str, int] = {"dex": 0, "native_libraries": 0, "resources": 0, "other": 0}
++        for item in entries:
++            if item.is_dir():
++                continue
++            kind = (
++                "dex"
++                if re.fullmatch(r"classes[0-9]*\.dex", item.filename)
++                else "native_libraries"
++                if item.filename.startswith("lib/")
++                else "resources"
++                if item.filename.startswith("res/") or item.filename == "resources.arsc"
++                else "other"
++            )
++            kinds[kind] += item.file_size
++    return {
++        "sha256": sha(raw),
++        "archive_bytes": len(raw),
++        "uncompressed_entry_bytes_by_kind": kinds,
++    }
++
++
++def record(value: Any, fields: set[str]) -> dict[str, Any]:
++    if not isinstance(value, dict) or set(value) != fields:
++        refuse()
++    return cast(dict[str, Any], value)
++
++
++def items(value: Any, limit: int, minimum: int = 1) -> list[Any]:
++    if not isinstance(value, list) or not minimum <= len(value) <= limit:
++        refuse()
++    return value
++
++
++def evidence_digest(value: Any) -> str:
++    if not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{64}", value):
++        refuse()
++    return value
++
++
++def count(value: Any, maximum: int, minimum: int = 1) -> int:
++    if type(value) is not int or not minimum <= value <= maximum:
++        refuse()
++    return value
++
++
++def relative_name(value: Any) -> str:
++    if (
++        not isinstance(value, str)
++        or not value
++        or len(value) > 512
++        or "\\" in value
++        or any(ord(char) < 32 for char in value)
++        or Path(value).is_absolute()
++        or not Path(value).parts
++        or str(Path(value)) != value
++        or ".." in Path(value).parts
++    ):
++        refuse()
++    return value
++
++
++def validate_notices(value: Any) -> None:
++    names = []
++    for notice in items(value, MAX_ITEMS, 0):
++        row = record(notice, {"entry", "sha256", "bytes"})
++        names.append(relative_name(row["entry"]))
++        evidence_digest(row["sha256"])
++        count(row["bytes"], MAX_META, 0)
++    if len(set(names)) != len(names):
++        refuse()
++
++
++def validate_pom_chain(value: Any, expected: tuple[str, str, str]) -> str:
++    chain = items(value, 8)
++    seen = set()
++    packaging = ""
++    for index, entry in enumerate(chain):
++        inherited = isinstance(entry, dict) and "inherits_license_from" in entry
++        fields = {"coordinate", "pom_sha256", "pom_bytes", "origin", "packaging", "licenses"}
++        row = record(entry, fields | ({"inherits_license_from"} if inherited else set()))
++        actual = coordinate(row["coordinate"])
++        if actual != expected or actual in seen:
++            refuse()
++        seen.add(actual)
++        evidence_digest(row["pom_sha256"])
++        count(row["pom_bytes"], MAX_META)
++        if row["packaging"] not in {"jar", "aar", "pom"}:
++            refuse()
++        if index == 0:
++            packaging = row["packaging"]
++        relative = (
++            f"{actual[0].replace('.', '/')}/{actual[1]}/{actual[2]}/{actual[1]}-{actual[2]}.pom"
++        )
++        if row["origin"] not in {
++            "resolved Gradle metadata cache",
++            *(base + relative for base in REPOSITORIES),
++        }:
++            refuse()
++        licenses = items(row["licenses"], 10, 0)
++        for entry_license in licenses:
++            license_row = record(entry_license, {"spdx", "declared_name", "declared_url"})
++            name, url = license_row["declared_name"], license_row["declared_url"]
++            if (
++                not isinstance(name, str)
++                or len(name) > 200
++                or license_id(name) != license_row["spdx"]
++                or not isinstance(url, str)
++                or len(url) > 500
++                or not re.fullmatch(r"https?://[^\s<>]+", url)
++            ):
++                refuse()
++        if inherited:
++            if licenses or index == len(chain) - 1:
++                refuse()
++            expected = coordinate(row["inherits_license_from"])
++        elif not licenses or index != len(chain) - 1:
++            refuse()
++    return packaging
++
++
++def validate_npm(value: Any, source_commit: str) -> dict[str, dict[str, Any]]:
++    required = set(NPM_PACKAGES) - {"@capacitor/local-notifications"}
++    if source_commit != BASELINE:
++        required.add("@capacitor/local-notifications")
++    result = {}
++    for entry in items(value, len(NPM_PACKAGES)):
++        row = record(
++            entry,
++            {
++                "name",
++                "version",
++                "package_json_sha256",
++                "license",
++                "license_sha256",
++                "installed_source_bytes",
++                "installed_file_count",
++                "installed_source_manifest_sha256",
++            },
++        )
++        name, version = row["name"], row["version"]
++        if (
++            not isinstance(name, str)
++            or name not in NPM_PACKAGES
++            or name in result
++            or row["license"] != "MIT"
++            or not isinstance(version, str)
++            or not TOKEN.fullmatch(version)
++        ):
++            refuse()
++        if (
++            name in {"@capacitor/core", "@capacitor/android", "@capacitor/ios"}
++            and version != "8.5.2"
++        ):
++            refuse()
++        if name == "@capacitor/local-notifications" and version != "8.3.1":
++            refuse()
++        for key in ("package_json_sha256", "license_sha256", "installed_source_manifest_sha256"):
++            evidence_digest(row[key])
++        count(row["installed_source_bytes"], MAX_ZIP_BYTES)
++        count(row["installed_file_count"], 10_000)
++        result[name] = row
++    if set(result) != required:
++        refuse()
++    return result
++
++
++def validate_android(native: dict[str, Any], npm: dict[str, dict[str, Any]]) -> None:
++    if native["scope"] != (
++        "resolved inputs of both shipped runtime configurations; "
++        "build/test/toolchain inputs are separate, not inferred shipped"
++    ):
++        refuse()
++    for key in (
++        "resolved_graph_sha256",
++        "build_only_environment_sha256",
++        "debug_signing_key_sha256",
++    ):
++        evidence_digest(native[key])
++    if native["temporary_gradle_task_sha256"] != sha(GRADLE_TASK.encode()):
++        refuse()
++    trees = record(
++        native["runtime_tree_sha256"], {"debugRuntimeClasspath", "releaseRuntimeClasspath"}
++    )
++    for digest in trees.values():
++        evidence_digest(digest)
++    configurations = set()
++    for view in items(native["runtime_views"], 2):
++        row = record(
++            view,
++            {"configuration", "selected_modules", "project_sources", "resolved_runtime_inputs"},
++        )
++        name = row["configuration"]
++        if name not in trees or name in configurations:
++            refuse()
++        configurations.add(name)
++        modules = {}
++        for module in items(row["selected_modules"], MAX_ITEMS):
++            selected = record(module, {"coordinate", "pom_license_evidence"})
++            coord = coordinate(selected["coordinate"])
++            if coord in modules or app_permissions.closed_dependencies(":".join(coord)):
++                refuse()
++            modules[coord] = validate_pom_chain(selected["pom_license_evidence"], coord)
++        projects = {}
++        for project in items(row["project_sources"], MAX_ITEMS):
++            if not isinstance(project, dict) or not isinstance(project.get("project"), str):
++                refuse()
++            project_name = project["project"]
++            if project_name in projects:
++                refuse()
++            if project_name == ":capacitor-cordova-android-plugins":
++                project = record(project, {"project", "source"})
++                if project["source"] != (
++                    "generated empty Cordova compatibility project; "
++                    "no third-party plugin source/binary"
++                ):
++                    refuse()
++            else:
++                project = record(project, {"project", "npm", "source_manifest_sha256"})
++                package = PROJECT_PACKAGES.get(project_name)
++                if (
++                    package not in npm
++                    or project["npm"] != package
++                    or project["source_manifest_sha256"]
++                    != npm[package]["installed_source_manifest_sha256"]
++                ):
++                    refuse()
++            projects[project_name] = project
++        expected_projects = {
++            project for project, package in PROJECT_PACKAGES.items() if package in npm
++        }
++        if not expected_projects <= set(projects):
++            refuse()
++        module_binaries = set()
++        project_binaries = set()
++        identities = set()
++        for binary in items(row["resolved_runtime_inputs"], MAX_ITEMS):
++            if not isinstance(binary, dict):
++                refuse()
++            module = "coordinate" in binary
++            fields = {"filename", "sha256", "bytes", "embedded_license_notice_files"}
++            binary = record(binary, fields | ({"coordinate"} if module else {"project"}))
++            filename = binary["filename"]
++            if (
++                not isinstance(filename, str)
++                or not TOKEN.fullmatch(filename)
++                or Path(filename).suffix not in {".aar", ".jar"}
++            ):
++                refuse()
++            evidence_digest(binary["sha256"])
++            count(binary["bytes"], MAX_BINARY)
++            validate_notices(binary["embedded_license_notice_files"])
++            if module:
++                identity = coordinate(binary["coordinate"])
++                if identity not in modules or modules[identity] == "pom":
++                    refuse()
++                module_binaries.add(identity)
++            else:
++                identity = binary["project"]
++                if not isinstance(identity, str) or identity not in projects:
++                    refuse()
++                project_binaries.add(identity)
++            if (identity, filename) in identities:
++                refuse()
++            identities.add((identity, filename))
++        if (
++            any(
++                coord not in module_binaries
++                for coord, packaging in modules.items()
++                if packaging != "pom"
++            )
++            or not expected_projects <= project_binaries
++        ):
++            refuse()
++    if configurations != set(trees):
++        refuse()
++
++
++def validate_tree(value: Any, *, allow_empty_files: bool = False) -> None:
++    tree = record(value, {"bytes", "file_count", "files", "tree_sha256"})
++    files = items(tree["files"], 30_000)
++    total = 0
++    names = []
++    for file in files:
++        row = record(file, {"path", "sha256", "bytes"})
++        names.append(relative_name(row["path"]))
++        evidence_digest(row["sha256"])
++        total += count(row["bytes"], MAX_BINARY, 0 if allow_empty_files else 1)
++    if (
++        names != sorted(set(names))
++        or tree["file_count"] != len(files)
++        or tree["bytes"] != total
++        or total > MAX_ZIP_BYTES
++        or tree["tree_sha256"]
++        != sha(json.dumps(files, sort_keys=True, separators=(",", ":")).encode())
++    ):
++        refuse()
++
++
++def validate_source_packages(value: Any, pins: dict[str, dict[str, Any]]) -> None:
++    identities = []
++    for item in items(value, 3):
++        row = record(
++            item,
++            {
++                "identity",
++                "location",
++                "version",
++                "checkout_revision",
++                "release_tag_revision",
++                "manifest_sha256",
++                "license",
++                "source_archive",
++                "actual_source_tree",
++                "test_only_dependencies",
++                "runtime_remote_dependencies",
++                "binary_targets",
++            },
++        )
++        identity = row["identity"]
++        if not isinstance(identity, str) or identity not in ION_PACKAGES or identity in identities:
++            refuse()
++        identities.append(identity)
++        expected = ION_PACKAGES[identity]
++        if (
++            row["location"] != pins[identity]["location"]
++            or row["version"] != expected["version"]
++            or row["checkout_revision"] != pins[identity]["state"]["revision"]
++            or row["release_tag_revision"] != row["checkout_revision"]
++            or evidence_digest(row["manifest_sha256"]) != expected["manifest_sha256"]
++            or row["test_only_dependencies"] != expected["test_dependencies"]
++            or row["runtime_remote_dependencies"] != []
++            or row["binary_targets"] != []
++        ):
++            refuse()
++        license_source = record(row["license"], {"spdx", "sha256", "source"})
++        archive = record(row["source_archive"], {"url", "sha256", "bytes"})
++        if (
++            license_source["spdx"] != "MIT"
++            or evidence_digest(license_source["sha256"]) != expected["license_sha256"]
++            or license_source["source"]
++            != f"https://raw.githubusercontent.com/ionic-team/{identity}/{expected['version']}/LICENSE"
++            or archive["url"]
++            != f"https://codeload.github.com/ionic-team/{identity}/tar.gz/refs/tags/{expected['version']}"
++            or evidence_digest(archive["sha256"]) != expected["archive_sha256"]
++        ):
++            refuse()
++        if count(archive["bytes"], MAX_BINARY) != expected["archive_bytes"]:
++            refuse()
++        validate_tree(row["actual_source_tree"], allow_empty_files=True)
++        if (
++            row["actual_source_tree"]["tree_sha256"] != expected["source_tree_sha256"]
++            or row["actual_source_tree"]["bytes"] != expected["source_bytes"]
++            or row["actual_source_tree"]["file_count"] != expected["source_file_count"]
++        ):
++            refuse()
++        source_files = {file["path"]: file["sha256"] for file in row["actual_source_tree"]["files"]}
++        if (
++            source_files.get("LICENSE") != license_source["sha256"]
++            or source_files.get("Package.swift") != row["manifest_sha256"]
++        ):
++            refuse()
++    if set(identities) != set(ION_PACKAGES):
++        refuse()
++
++
++def validate_resolved_inventory(
++    value: Any, pins: Any, locks: dict[str, Any], remote_sources: Any
++) -> None:
++    expected = {APPLICATION_RESOLVED: "application selected graph"}
++    for identity, relative in UPSTREAM_RESOLVED.items():
++        expected[
++            f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}/{relative}"
++        ] = "upstream development project tool lock; not selected in application graph"
++    actual = set()
++    for item in items(value, 3):
++        row = record(item, {"path", "sha256", "scope", "pins"})
++        path = relative_name(row["path"])
++        if path not in expected or path in actual or row["scope"] != expected[path]:
++            refuse()
++        actual.add(path)
++        if evidence_digest(row["sha256"]) != locks.get(path):
++            refuse()
++        if row["pins"] != (pins if path == APPLICATION_RESOLVED else [SWIFTLINT_PIN]):
++            refuse()
++        if path != APPLICATION_RESOLVED:
++            source = next((item for item in remote_sources if item["identity"] in path), None)
++            if source is None:
++                refuse()
++            relative = UPSTREAM_RESOLVED[source["identity"]]
++            digest = next(
++                (
++                    item["sha256"]
++                    for item in source["actual_source_tree"]["files"]
++                    if item["path"] == relative
++                ),
++                None,
++            )
++            if digest != row["sha256"]:
++                refuse()
++    if actual != set(expected) or set(locks) != {"pnpm-lock.yaml", "uv.lock", *expected}:
++        refuse()
++
++
++def validate_ios(
++    native: dict[str, Any], npm: dict[str, dict[str, Any]], locks: dict[str, Any]
++) -> None:
++    spm = record(
++        native["spm"],
++        {
++            "package_resolved_sha256",
++            "pins",
++            "resolved_inventory",
++            "remote_source_packages",
++            "selected_manifest_sha256",
++            "checkout_revision",
++            "release_tag_revision",
++            "upstream_binary_host_description",
++            "upstream_capacitor_source_license",
++            "binary_inputs",
++        },
++    )
++    selected = selected_pins(spm["pins"])
++    pin = selected["capacitor-swift-pm"]
++    revision = pin["state"]["revision"]
++    if revision != spm["checkout_revision"] or revision != spm["release_tag_revision"]:
++        refuse()
++    validate_source_packages(spm["remote_source_packages"], selected)
++    validate_resolved_inventory(
++        spm["resolved_inventory"], spm["pins"], locks, spm["remote_source_packages"]
++    )
++    evidence_digest(spm["selected_manifest_sha256"])
++    if evidence_digest(spm["package_resolved_sha256"]) != locks.get(APPLICATION_RESOLVED):
++        refuse()
++    description = record(spm["upstream_binary_host_description"], {"url", "sha256"})
++    license_source = record(spm["upstream_capacitor_source_license"], {"url", "spdx", "sha256"})
++    if (
++        description["url"]
++        != "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md"
++        or license_source["url"]
++        != "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE"
++        or license_source["spdx"] != "MIT"
++        or license_source["sha256"] != npm["@capacitor/ios"]["license_sha256"]
++    ):
++        refuse()
++    evidence_digest(description["sha256"])
++    names = set()
++    for binary in items(spm["binary_inputs"], 2):
++        row = record(
++            binary,
++            {
++                "name",
++                "published_archive_url",
++                "swift_manifest_checksum",
++                "actual_resolved_tree",
++                "archive",
++                "license_source",
++            },
++        )
++        name = row["name"]
++        if name not in {"Capacitor", "Cordova"} or name in names:
++            refuse()
++        names.add(name)
++        if (
++            row["published_archive_url"]
++            != f"https://github.com/ionic-team/capacitor-swift-pm/releases/download/8.5.2/{name}.xcframework.zip"
++        ):
++            refuse()
++        archive = record(row["archive"], {"sha256", "bytes", "embedded_license_notice_files"})
++        if evidence_digest(row["swift_manifest_checksum"]) != evidence_digest(archive["sha256"]):
++            refuse()
++        count(archive["bytes"], MAX_BINARY)
++        validate_notices(archive["embedded_license_notice_files"])
++        validate_tree(row["actual_resolved_tree"])
++        if row["license_source"] != (
++            "Capacitor npm ios MIT LICENSE; Cordova files additionally "
++            "retain Apache-2.0 source headers; package metadata alone "
++            "does not license other binary contents"
++        ):
++            refuse()
++    if names != {"Capacitor", "Cordova"}:
++        refuse()
++    header = record(native["cordova_apache_source_header"], {"spdx", "sha256", "source"})
++    if (
++        header["spdx"] != "Apache-2.0"
++        or header["source"]
++        != "@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h"
++    ):
++        refuse()
++    evidence_digest(header["sha256"])
++    if (
++        native["pods"] != "not selected; no Podfile.lock"
++        or native["system_frameworks"]
++        != "Apple SDK/toolchain inputs; not claimed open-source plugin dependencies"
++    ):
++        refuse()
++
++
++def validate_native(native: dict[str, Any], build: dict[str, Any]) -> None:
++    platform = build["platform"]
++    common = {
++        "schema_version",
++        "platform",
++        "source_commit",
++        "source_inputs",
++        "npm_sources",
++        "built_artifact_sha256",
++    }
++    android = {
++        "runtime_views",
++        "temporary_gradle_task_sha256",
++        "scope",
++        "build_only_environment_sha256",
++        "runtime_tree_sha256",
++        "resolved_graph_sha256",
++        "debug_signing_key_sha256",
++    }
++    ios = {"spm", "cordova_apache_source_header", "pods", "system_frameworks"}
++    record(native, common | (android if platform == "android" else ios))
++    if (
++        native["schema_version"] != "gsip-app-notification-native-audit-v1"
++        or native["source_commit"] != build["source_commit"]
++        or native["platform"] != platform
++    ):
++        refuse()
++    source_names = {
++        "pnpm-lock.yaml",
++        "apps/capture-pwa/package.json",
++        "apps/capture-pwa/capacitor.config.ts",
++        "scripts/app_permissions.py",
++        "scripts/app_build.py",
++    }
++    if platform == "android":
++        source_names |= {
++            "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties",
++            "apps/capture-pwa/android/build.gradle",
++            "apps/capture-pwa/android/variables.gradle",
++        }
++    if evidence_digest(native["built_artifact_sha256"]) != build["artifact_sha256"]:
++        refuse()
++    inputs = record(native["source_inputs"], source_names)
++    locks = build["lockfile_sha256"]
++    if not isinstance(locks, dict) or not {"pnpm-lock.yaml", "uv.lock"} <= set(locks):
++        refuse()
++    for key, digest in inputs.items():
++        evidence_digest(digest)
++        if key in locks and digest != locks[key]:
++            refuse()
++    for key, digest in locks.items():
++        relative_name(key)
++        evidence_digest(digest)
++        if key != "uv.lock" and not key.endswith("/Package.resolved") and key not in inputs:
++            refuse()
++    npm = validate_npm(native["npm_sources"], native["source_commit"])
++    if platform == "android":
++        if not {name for name in source_names if name.endswith((".gradle", ".properties"))} <= set(
++            locks
++        ):
++            refuse()
++        validate_android(native, npm)
++    else:
++        validate_ios(native, npm, locks)
++
++
++def text_value(value: Any, maximum: int, *, multiline: bool = False) -> str:
++    if (
++        not isinstance(value, str)
++        or not 1 <= len(value) <= maximum
++        or any(ord(char) < 32 and not (multiline and char == "\n") for char in value)
++        or any(ord(char) > 126 for char in value)
++    ):
++        refuse()
++    return value
++
++
++def canonical_version(value: Any, *, prefix: str = "", minimum_major: int = 0) -> str:
++    text = text_value(value, 64)
++    match = re.fullmatch(
++        re.escape(prefix) + r"(0|[1-9][0-9]{0,5})\.(0|[1-9][0-9]{0,5})\.(0|[1-9][0-9]{0,5})", text
++    )
++    if not match or int(match[1]) < minimum_major:
++        refuse()
++    return text
++
++
++def validate_toolchain(value: Any, target: str) -> None:
++    common = {"node", "pnpm", "python", "runner", "runner_image"}
++    tools = record(
++        value, common | ({"gradle", "java", "aapt2"} if target == "android" else {"xcode", "sdk"})
++    )
++    canonical_version(tools["node"], prefix="v", minimum_major=24)
++    canonical_version(tools["pnpm"], minimum_major=1)
++    python = text_value(tools["python"], 1_024)
++    if not re.fullmatch(
++        r"3\.(?:1[1-9]|[2-9][0-9])\.[0-9]{1,4} \([^\n\[\]]{1,512}\) \[[^\n\[\]]{1,256}\]", python
++    ):
++        refuse()
++    runner = text_value(tools["runner"], 512)
++    host = "Linux" if target == "android" else "macOS"
++    if not re.fullmatch(re.escape(host) + r"-[A-Za-z0-9_.+-]{1,480}", runner):
++        refuse()
++    image = record(tools["runner_image"], {"ImageOS", "ImageVersion", "RUNNER_OS", "RUNNER_ARCH"})
++    if (
++        image["RUNNER_OS"] != host
++        or not isinstance(image["RUNNER_ARCH"], str)
++        or image["RUNNER_ARCH"] not in {"X64", "ARM64"}
++    ):
++        refuse()
++    image_os = text_value(image["ImageOS"], 64)
++    if not re.fullmatch(
++        r"ubuntu[0-9]{2}" if target == "android" else r"macos[0-9]{2}(?:-arm64)?", image_os
++    ):
++        refuse()
++    image_version = text_value(image["ImageVersion"], 64)
++    if not re.fullmatch(r"[0-9]{8}\.[0-9]{1,8}(?:\.[0-9]{1,8})?", image_version):
++        refuse()
++    try:
++        datetime.strptime(image_version.split(".")[0], "%Y%m%d")
++    except ValueError:
++        refuse()
++    architecture = (
++        "(?:x86_64|x86-64|amd64)" if image["RUNNER_ARCH"] == "X64" else "(?:arm64|aarch64)"
++    )
++    if not re.search(architecture, runner):
++        refuse()
++    if target == "ios":
++        xcode = text_value(tools["xcode"], 256, multiline=True)
++        if not re.fullmatch(
++            r"Xcode [1-9][0-9]{0,3}(?:\.(?:0|[1-9][0-9]{0,3})){1,2}\n"
++            r"Build version [0-9]{1,4}[A-Z][0-9]{1,8}[a-z]?",
++            xcode,
++        ):
++            refuse()
++        sdk = text_value(tools["sdk"], 32)
++        if not re.fullmatch(r"[1-9][0-9]{0,3}(?:\.(?:0|[1-9][0-9]{0,3})){1,2}", sdk):
++            refuse()
++        return
++    aapt = text_value(tools["aapt2"], 128)
++    if not re.fullmatch(
++        r"Android Asset Packaging Tool \(aapt\) [0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}-[0-9]{1,16}",
++        aapt,
++    ):
++        refuse()
++    java = text_value(tools["java"], 4_096, multiline=True).splitlines()
++    if (
++        len(java) != 3
++        or not re.fullmatch(
++            r'openjdk version "21(?:\.[0-9]{1,4}){0,3}" [0-9]{4}-[0-9]{2}-[0-9]{2}(?: LTS)?',
++            java[0],
++        )
++        or not re.fullmatch(
++            r"OpenJDK Runtime Environment [A-Za-z0-9._+ -]{1,256}\(build [A-Za-z0-9._+,-]{1,128}\)",
++            java[1],
++        )
++        or not re.fullmatch(
++            r"OpenJDK 64-Bit Server VM [A-Za-z0-9._+ -]{1,256}\(build "
++            r"[A-Za-z0-9._+,-]{1,128}, mixed mode(?:, sharing)?\)",
++            java[2],
++        )
++    ):
++        refuse()
++    try:
++        datetime.strptime(java[0].split()[3], "%Y-%m-%d")
++    except ValueError:
++        refuse()
++    gradle = text_value(tools["gradle"], 8_192, multiline=True)
++    lines = [line.strip() for line in gradle.splitlines() if line.strip()]
++    if (
++        len(lines) < 10
++        or lines[0] != "-" * 60
++        or lines[2] != "-" * 60
++        or not re.fullmatch(r"Gradle [1-9][0-9]{0,3}(?:\.[0-9]{1,4}){1,2}", lines[1])
++    ):
++        refuse()
++    fields = {}
++    for line in lines[3:]:
++        name, separator, body = line.partition(":")
++        if not separator or name in fields:
++            refuse()
++        fields[name] = body.strip()
++    base = {"Build time", "Revision", "Kotlin", "Groovy", "Ant", "OS"}
++    if set(fields) not in (base | {"JVM"}, base | {"Launcher JVM", "Daemon JVM"}):
++        refuse()
++    if not re.fullmatch(
++        r"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} UTC", fields["Build time"]
++    ) or not re.fullmatch(r"[0-9a-f]{40}", fields["Revision"]):
++        refuse()
++    try:
++        datetime.strptime(fields["Build time"], "%Y-%m-%d %H:%M:%S UTC")
++    except ValueError:
++        refuse()
++    canonical_version(fields["Kotlin"])
++    canonical_version(fields["Groovy"])
++    if not re.fullmatch(
++        r"Apache Ant\(TM\) version [0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4} "
++        r"compiled on [A-Za-z]{3,12} [0-9]{1,2} [0-9]{4}",
++        fields["Ant"],
++    ):
++        refuse()
++    try:
++        datetime.strptime(fields["Ant"].split(" compiled on ")[1], "%B %d %Y")
++    except ValueError:
++        refuse()
++    if not re.fullmatch(
++        r"Linux [A-Za-z0-9_.+-]{1,128} (?:amd64|x86_64|aarch64|arm64)", fields["OS"]
++    ):
++        refuse()
++    for name in ("JVM", "Launcher JVM"):
++        if name in fields and not re.fullmatch(
++            r"21(?:\.[0-9]{1,4}){0,3} \([A-Za-z0-9 ._+(),=-]{1,256}\)", fields[name]
++        ):
++            refuse()
++    if "Daemon JVM" in fields and not re.fullmatch(
++        r"/[A-Za-z0-9_./+-]{1,512} \(no JDK specified, using current Java home\)",
++        fields["Daemon JVM"],
++    ):
++        refuse()
++
++
++def validate_build_receipt(value: dict[str, Any], artifact: Path, reference: Path | None) -> None:
++    fields = {
++        "source_commit",
++        "platform",
++        "marketing_version",
++        "run_number",
++        "android_version_code",
++        "ios_build_version",
++        "lockfile_sha256",
++        "toolchain",
++        "source_tree_clean",
++        "comparison_scope",
++        "artifact_sha256",
++        "reference_sha256",
++        "comparison",
++    }
++    record(value, fields)
++    target = value["platform"]
++    if (
++        not isinstance(target, str)
++        or target not in {"android", "ios"}
++        or not isinstance(value["source_commit"], str)
++        or not re.fullmatch(r"[0-9a-f]{40}", value["source_commit"])
++    ):
++        refuse()
++    number = count(value["run_number"], app_build.MAX_RUN_NUMBER)
++    if count(value["android_version_code"], app_build.MAX_RUN_NUMBER) != number:
++        refuse()
++    canonical_version(value["marketing_version"])
++    index = number - 1
++    if value["ios_build_version"] != f"{1 + index // 10_000}.{index // 100 % 100}.{index % 100}":
++        refuse()
++    if value["source_tree_clean"] is not True:
++        refuse()
++    expected_scope = "same run/generated project; actual repeated native build; " + (
++        "Android shared disposable debug key"
++        if target == "android"
++        else "iOS unsigned simulator; signing disabled"
++    )
++    if value["comparison_scope"] != expected_scope:
++        refuse()
++    locks = value["lockfile_sha256"]
++    if not isinstance(locks, dict):
++        refuse()
++    lock_names = {"pnpm-lock.yaml", "uv.lock"}
++    if target == "android":
++        lock_names |= {
++            "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties",
++            "apps/capture-pwa/android/build.gradle",
++            "apps/capture-pwa/android/variables.gradle",
++        }
++    else:
++        lock_names.add(APPLICATION_RESOLVED)
++        for identity, relative in UPSTREAM_RESOLVED.items():
++            lock_names.add(
++                f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}/{relative}"
++            )
++    record(locks, lock_names)
++    for digest in locks.values():
++        evidence_digest(digest)
++    validate_toolchain(value["toolchain"], target)
++    actual = artifact_stats(artifact, target)
++    if evidence_digest(value["artifact_sha256"]) != actual["sha256"]:
++        refuse()
++    reference_digest = evidence_digest(value["reference_sha256"])
++    if reference is None:
++        if reference_digest != actual["sha256"]:
++            refuse()
++        reference = artifact
++    if artifact_stats(reference, target)["sha256"] != reference_digest:
++        refuse()
++    compared = record(
++        value["comparison"],
++        {
++            "byte_equal",
++            "entry_content_equal",
++            "normalization",
++            "changed_entries",
++            "first_only",
++            "second_only",
++        },
++    )
++    if (
++        type(compared["byte_equal"]) is not bool
++        or type(compared["entry_content_equal"]) is not bool
++    ):
++        refuse()
++    for name in ("changed_entries", "first_only", "second_only"):
++        names = [relative_name(entry) for entry in items(compared[name], 30_000, 0)]
++        if names != sorted(set(names)):
++            refuse()
++    if (
++        sum(len(compared[name]) for name in ("changed_entries", "first_only", "second_only"))
++        > 30_000
++    ):
++        refuse()
++    if compared != app_build.comparison(reference, artifact):
++        refuse()
++
++
++def feature_comparison(
++    parent: Path,
++    candidate: Path,
++    parent_receipt: dict[str, Any],
++    candidate_receipt: dict[str, Any],
++    expected_candidate: str,
++    parent_audit: dict[str, Any],
++    candidate_audit: dict[str, Any],
++    parent_reference: Path | None = None,
++    candidate_reference: Path | None = None,
++) -> dict[str, Any]:
++    mark("feature-comparison")
++    validate_build_receipt(parent_receipt, parent, parent_reference)
++    validate_build_receipt(candidate_receipt, candidate, candidate_reference)
++
++    if (
++        parent_receipt.get("source_commit") != BASELINE
++        or candidate_receipt.get("source_commit") != expected_candidate
++        or not re.fullmatch(r"[0-9a-f]{40}", expected_candidate)
++    ):
++        refuse()
++    for key in (
++        "platform",
++        "run_number",
++        "marketing_version",
++        "android_version_code",
++        "ios_build_version",
++        "toolchain",
++        "comparison_scope",
++    ):
++        if parent_receipt.get(key) != candidate_receipt.get(key) or key not in parent_receipt:
++            refuse()
++    if (
++        candidate_receipt.get("source_tree_clean") is not True
++        or parent_receipt.get("source_tree_clean") is not True
++    ):
++        refuse()
++    if parent_receipt.get("artifact_sha256") != sha(
++        read(parent, (parent.parent,), MAX_BINARY)
++    ) or candidate_receipt.get("artifact_sha256") != sha(
++        read(candidate, (candidate.parent,), MAX_BINARY)
++    ):
++        refuse()
++    platform = parent_receipt["platform"]
++    if (
++        platform not in {"android", "ios"}
++        or parent_audit.get("platform") != platform
++        or candidate_audit.get("platform") != platform
++    ):
++        refuse()
++    for native, build in ((parent_audit, parent_receipt), (candidate_audit, candidate_receipt)):
++        validate_native(native, build)
++    if platform == "android":
++        signing_key = parent_audit.get("debug_signing_key_sha256")
++        if (
++            not isinstance(signing_key, str)
++            or not re.fullmatch(r"[0-9a-f]{64}", signing_key)
++            or signing_key != candidate_audit.get("debug_signing_key_sha256")
++        ):
++            refuse()
++    left, right = artifact_stats(parent, platform), artifact_stats(candidate, platform)
++    return {
++        "schema_version": "gsip-app2b-feature-comparison-v1",
++        "scope": (
++            "overall APP-2B feature delta from exact pinned parent; "
++            "no dependency-only attribution or universal reproducibility claim"
++        ),
++        "parent_source_commit": BASELINE,
++        "candidate_source_commit": expected_candidate,
++        "identical_toolchain": parent_receipt["toolchain"],
++        "run_number": parent_receipt["run_number"],
++        "closed_flags": {"capture_live": False, "library_intake_live": False},
++        "parent": left,
++        "candidate": right,
++        "archive_byte_delta": right["archive_bytes"] - left["archive_bytes"],
++        "zip_comparison": app_build.comparison(parent, candidate),
++        "input_receipts": {"parent": parent_receipt, "candidate": candidate_receipt},
++        "native_audit_sha256": {
++            "parent": sha(json.dumps(parent_audit, sort_keys=True).encode()),
++            "candidate": sha(json.dumps(candidate_audit, sort_keys=True).encode()),
++        },
++        "android_shared_disposable_debug_key_sha256": parent_audit.get("debug_signing_key_sha256"),
++    }
++
++
++def write(path: Path, value: dict[str, Any]) -> None:
++    payload = json.dumps(value, indent=2, sort_keys=True).encode() + b"\n"
++    if len(payload) > 10_000_000:
++        refuse()
++    path.write_bytes(payload)
++
++
++def main(argv: list[str] | None = None) -> int:
++    mark("start")
++    parser = argparse.ArgumentParser(description=__doc__)
++    commands = parser.add_subparsers(dest="action", required=True)
++    android = commands.add_parser("android")
++    android.add_argument("repo", type=Path)
++    android.add_argument("cache", type=Path)
++    android.add_argument("output", type=Path)
++    android.add_argument("debug_key", type=Path)
++    ios = commands.add_parser("ios")
++    ios.add_argument("repo", type=Path)
++    ios.add_argument("output", type=Path)
++    ios.add_argument("artifact", type=Path)
++    compare = commands.add_parser("compare")
++    compare.add_argument("parent", type=Path)
++    compare.add_argument("candidate", type=Path)
++    compare.add_argument("parent_receipt", type=Path)
++    compare.add_argument("candidate_receipt", type=Path)
++    compare.add_argument("candidate_commit")
++    compare.add_argument("output", type=Path)
++    compare.add_argument("parent_audit", type=Path)
++    compare.add_argument("candidate_audit", type=Path)
++    compare.add_argument("parent_reference", type=Path)
++    compare.add_argument("candidate_reference", type=Path)
++    args = parser.parse_args(argv)
++    try:
++        if args.action == "android":
++            collect_android(args.repo.resolve(), args.cache.resolve(), args.output, args.debug_key)
++        elif args.action == "ios":
++            collect_ios(args.repo.resolve(), args.output, args.artifact)
++        else:
++            left = decoded(read(args.parent_receipt, (args.parent_receipt.parent,), 10_000_000))
++            right = decoded(
++                read(args.candidate_receipt, (args.candidate_receipt.parent,), 10_000_000)
++            )
++            left_audit = decoded(read(args.parent_audit, (args.parent_audit.parent,), 10_000_000))
++            right_audit = decoded(
++                read(args.candidate_audit, (args.candidate_audit.parent,), 10_000_000)
++            )
++            write(
++                args.output,
++                feature_comparison(
++                    args.parent,
++                    args.candidate,
++                    left,
++                    right,
++                    args.candidate_commit,
++                    left_audit,
++                    right_audit,
++                    args.parent_reference,
++                    args.candidate_reference,
++                ),
++            )
++        print("native-audit: bounded evidence recorded")
++        return 0
++    except (
++        ValueError,
++        OSError,
++        ET.ParseError,
++        subprocess.SubprocessError,
++        zipfile.BadZipFile,
++        urllib.error.URLError,
++        TypeError,
++        KeyError,
++        RecursionError,
++        RuntimeError,
++        tarfile.TarError,
++    ) as error:
++        print("native-audit: evidence missing, invalid or unreviewed", file=sys.stderr)
++        print(
++            "native-audit: diagnostic " + json.dumps(diagnostic(error), sort_keys=True),
++            file=sys.stderr,
++        )
++        return 1
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+--- /dev/null
++++ b/tests/test_app_notification_audit.py
+@@ -0,0 +1,1751 @@
++"""APP-2B evidence refuses incomplete native graphs, licenses and comparisons."""
++
++from __future__ import annotations
++
++import copy
++import gzip
++import json
++import os
++import platform
++import tarfile
++import zipfile
++from pathlib import Path
++from typing import Any, cast
++
++import pytest
++
++from scripts import app_build
++from scripts import app_notification_audit as audit
++
++COORD = ("org.example", "example-runtime", "1.2.3")
++ROOT = Path(__file__).parents[1]
++
++
++def pom(
++    coord: tuple[str, str, str] = COORD,
++    license_name: str | None = "Apache License, Version 2.0",
++    parent: tuple[str, str, str] | None = None,
++) -> bytes:
++    licenses = (
++        ""
++        if license_name is None
++        else (
++            f"<licenses><license><name>{license_name}</name>"
++            "<url>https://www.apache.org/licenses/LICENSE-2.0</url></license></licenses>"
++        )
++    )
++    inherited = (
++        ""
++        if parent is None
++        else (
++            f"<parent><groupId>{parent[0]}</groupId><artifactId>{parent[1]}</artifactId>"
++            f"<version>{parent[2]}</version></parent>"
++        )
++    )
++    return (
++        f"<project>{inherited}<groupId>{coord[0]}</groupId>"
++        f"<artifactId>{coord[1]}</artifactId><version>{coord[2]}</version>"
++        f"{licenses}</project>"
++    ).encode()
++
++
++def cached(cache: Path, coord: tuple[str, str, str], data: bytes) -> Path:
++    path = (
++        cache
++        / "modules-2/files-2.1"
++        / coord[0]
++        / coord[1]
++        / coord[2]
++        / "synthetic-hash"
++        / f"{coord[1]}-{coord[2]}.pom"
++    )
++    path.parent.mkdir(parents=True, exist_ok=True)
++    path.write_bytes(data)
++    return path
++
++
++def zipped(
++    path: Path, payload: bytes = b"synthetic class bytes", activation: bool | None = None
++) -> None:
++    path.parent.mkdir(parents=True, exist_ok=True)
++    with zipfile.ZipFile(path, "w") as archive:
++        archive.writestr("classes.dex", payload)
++        archive.writestr("META-INF/LICENSE", b"Synthetic Apache-2.0 notice")
++        if activation is not None:
++            archive.writestr(
++                "assets/public/gsip-activation.json",
++                json.dumps({"capture_live": activation, "library_intake_live": False}),
++            )
++
++
++@pytest.fixture
++def graph(
++    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
++) -> tuple[dict[str, Any], Path, Path, Path]:
++    repo, cache = tmp_path / "repo", tmp_path / "cache"
++    repo.mkdir()
++    cached(cache, COORD, pom())
++    artifact = (
++        cache / "modules-2/files-2.1" / COORD[0] / COORD[1] / COORD[2] / "binary-hash/runtime.jar"
++    )
++    zipped(artifact)
++    view = {
++        "name": "debugRuntimeClasspath",
++        "modules": [list(COORD)],
++        "projects": [":app"],
++        "artifacts": [{"kind": "module", "coordinate": list(COORD), "file": str(artifact)}],
++    }
++    release = copy.deepcopy(view)
++    release["name"] = "releaseRuntimeClasspath"
++    monkeypatch.setattr(audit, "npm_evidence", lambda repo, names: [])
++    monkeypatch.setattr(
++        audit,
++        "public_bytes",
++        lambda *args, **kwargs: pytest.fail("fixture audit must never fetch a network resource"),
++    )
++    return {"views": [view, release]}, repo, cache, artifact
++
++
++def test_exact_graph_retains_both_selected_license_and_binary_evidence(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++) -> None:
++    data, repo, cache, artifact = graph
++    result = audit.runtime_evidence(data, repo, cache, False)
++    assert {view["configuration"] for view in result["runtime_views"]} == {
++        "debugRuntimeClasspath",
++        "releaseRuntimeClasspath",
++    }
++    runtime = result["runtime_views"][0]
++    assert (
++        runtime["selected_modules"][0]["pom_license_evidence"][0]["licenses"][0]["spdx"]
++        == "Apache-2.0"
++    )
++    assert runtime["resolved_runtime_inputs"][0]["sha256"] == audit.sha(artifact.read_bytes())
++    assert runtime["resolved_runtime_inputs"][0]["bytes"] == artifact.stat().st_size
++    assert (
++        runtime["resolved_runtime_inputs"][0]["embedded_license_notice_files"][0]["entry"]
++        == "META-INF/LICENSE"
++    )
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "missing_release",
++        "duplicate_view",
++        "empty_modules",
++        "unresolved_module",
++        "outside_cache",
++        "closed_sdk",
++        "unknown_project",
++        "unknown_binary",
++    ],
++)
++def test_graph_refuses_missing_or_unreviewed_runtime(
++    graph: tuple[dict[str, Any], Path, Path, Path], defect: str, tmp_path: Path
++) -> None:
++    data, repo, cache, artifact = graph
++    if defect == "missing_release":
++        data["views"].pop()
++    elif defect == "duplicate_view":
++        data["views"][1]["name"] = "debugRuntimeClasspath"
++    elif defect == "empty_modules":
++        data["views"][0]["modules"] = []
++    elif defect == "unresolved_module":
++        data["views"][0]["artifacts"][0]["coordinate"][2] = "99.0"
++    elif defect == "outside_cache":
++        outside = tmp_path / "other.jar"
++        zipped(outside)
++        data["views"][0]["artifacts"][0]["file"] = str(outside)
++    elif defect == "closed_sdk":
++        closed = ("com.google.android.gms", "play-services-location", "1.0")
++        cached(cache, closed, pom(closed))
++        closed_file = (
++            cache
++            / "modules-2/files-2.1"
++            / closed[0]
++            / closed[1]
++            / closed[2]
++            / "binary-hash/closed.jar"
++        )
++        zipped(closed_file)
++        data["views"][0]["modules"] = [list(closed)]
++        data["views"][0]["artifacts"] = [
++            {"kind": "module", "coordinate": list(closed), "file": str(closed_file)}
++        ]
++    elif defect == "unknown_project":
++        data["views"][0]["projects"].append(":unreviewed-proprietary-wrapper")
++    elif defect == "unknown_binary":
++        renamed = artifact.with_suffix(".so")
++        artifact.rename(renamed)
++        data["views"][0]["artifacts"][0]["file"] = str(renamed)
++    with pytest.raises(audit.AuditError):
++        audit.runtime_evidence(data, repo, cache, False)
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "missing",
++        "ambiguous",
++        "wrong_coordinate",
++        "no_license",
++        "closed_license",
++        "entity",
++        "parent_cycle",
++    ],
++)
++def test_pom_license_evidence_refuses_unknown_or_ambiguous(
++    graph: tuple[dict[str, Any], Path, Path, Path], defect: str
++) -> None:
++    _, _, cache, _ = graph
++    path = cached(cache, COORD, pom())
++    if defect == "missing":
++        path.unlink()
++    elif defect == "ambiguous":
++        alternate = path.parent.parent / "other-hash" / path.name
++        alternate.parent.mkdir()
++        alternate.write_bytes(path.read_bytes())
++    elif defect == "wrong_coordinate":
++        path.write_bytes(pom((COORD[0], COORD[1], "9.9.9")))
++    elif defect == "no_license":
++        path.write_bytes(pom(license_name=None))
++    elif defect == "closed_license":
++        path.write_bytes(pom(license_name="Proprietary commercial runtime"))
++    elif defect == "entity":
++        path.write_bytes(
++            b'<!DOCTYPE project [<!ENTITY x SYSTEM "file:///private/synthetic-test">]>' + pom()
++        )
++    elif defect == "parent_cycle":
++        path.write_bytes(pom(license_name=None, parent=COORD))
++    with pytest.raises(audit.AuditError):
++        audit.pom_evidence(COORD, cache, False)
++
++
++def test_explicit_parent_inheritance_is_retained_not_inferred(tmp_path: Path) -> None:
++    parent = ("org.example", "example-parent", "1.2.3")
++    cached(tmp_path, COORD, pom(license_name=None, parent=parent))
++    cached(tmp_path, parent, pom(parent))
++    result = audit.pom_evidence(COORD, tmp_path, False)
++    assert result[0]["inherits_license_from"] == list(parent)
++    assert result[1]["coordinate"] == list(parent)
++    assert result[1]["licenses"][0]["spdx"] == "Apache-2.0"
++
++
++@pytest.mark.parametrize(
++    "defect", ["symlink", "ancestor_symlink", "hardlink", "oversized", "outside", "directory"]
++)
++def test_file_reads_are_explicit_bounded_regular_single_link(tmp_path: Path, defect: str) -> None:
++    root = tmp_path / "allowed"
++    root.mkdir()
++    file = root / "evidence"
++    file.write_bytes(b"synthetic metadata")
++    target = file
++    if defect == "symlink":
++        target = root / "link"
++        target.symlink_to(file)
++    elif defect == "ancestor_symlink":
++        directory = root / "real"
++        directory.mkdir()
++        (directory / "evidence").write_bytes(b"synthetic metadata")
++        (root / "alias").symlink_to(directory, target_is_directory=True)
++        target = root / "alias/evidence"
++    elif defect == "hardlink":
++        os.link(file, root / "copy")
++    elif defect == "oversized":
++        file.write_bytes(b"x" * 100)
++    elif defect == "outside":
++        target = tmp_path / "outside"
++        target.write_bytes(b"synthetic metadata")
++    elif defect == "directory":
++        target = root
++    with pytest.raises((audit.AuditError, OSError)):
++        audit.read(target, (root,), 32)
++
++
++@pytest.mark.parametrize("defect", ["duplicate", "traversal", "symlink", "huge_entry"])
++def test_zip_refuses_ambiguous_paths_and_unbounded_unpacking(
++    tmp_path: Path, defect: str, monkeypatch: pytest.MonkeyPatch
++) -> None:
++    file = tmp_path / "runtime.jar"
++    with zipfile.ZipFile(file, "w") as archive:
++        if defect == "duplicate":
++            with pytest.warns(UserWarning):
++                archive.writestr("LICENSE", b"one")
++                archive.writestr("LICENSE", b"two")
++        elif defect == "traversal":
++            archive.writestr("../LICENSE", b"synthetic")
++        elif defect == "symlink":
++            info = zipfile.ZipInfo("LICENSE")
++            info.external_attr = 0o120777 << 16
++            archive.writestr(info, b"../private-synthetic")
++        else:
++            archive.writestr("LICENSE", b"too long")
++            monkeypatch.setattr(audit, "MAX_ZIP_BYTES", 3)
++    with pytest.raises(audit.AuditError):
++        audit.zip_evidence(file, (tmp_path,))
++
++
++def test_raw_metadata_rejects_duplicate_json_and_oversize() -> None:
++    with pytest.raises(audit.AuditError):
++        audit.decoded(b'{"views":[],"views":[]}')
++    with pytest.raises(audit.AuditError):
++        audit.decoded(b" " * (audit.MAX_META + 1))
++
++
++FIXTURE_LOCK_BYTES = b"synthetic locked build input\n"
++FIXTURE_LOCK_SHA = audit.sha(FIXTURE_LOCK_BYTES)
++
++
++def toolchain_fixture(target: str) -> dict[str, Any]:
++    import sys
++
++    tools: dict[str, Any] = {
++        "node": "v24.11.0",
++        "pnpm": "11.9.0",
++        "python": sys.version,
++        "runner": "Linux-6.11.0-1018-azure-x86_64-with-glibc2.39"
++        if target == "android"
++        else "macOS-26.0-arm64-arm-64bit",
++        "runner_image": {
++            "ImageOS": "ubuntu24" if target == "android" else "macos26",
++            "ImageVersion": "20261013.2.0",
++            "RUNNER_OS": "Linux" if target == "android" else "macOS",
++            "RUNNER_ARCH": "X64" if target == "android" else "ARM64",
++        },
++    }
++    if target == "ios":
++        tools.update({"xcode": "Xcode 26.0\nBuild version 17A324", "sdk": "26.0"})
++    else:
++        tools.update(
++            {
++                "aapt2": "Android Asset Packaging Tool (aapt) 2.19.2-13409019",
++                "java": (
++                    'openjdk version "21.0.8" 2025-07-15 LTS\n'
++                    "OpenJDK Runtime Environment Temurin-21.0.8+9 (build 21.0.8+9-LTS)\n"
++                    "OpenJDK 64-Bit Server VM Temurin-21.0.8+9 "
++                    "(build 21.0.8+9-LTS, mixed mode, sharing)"
++                ),
++                "gradle": "\n".join(
++                    [
++                        "-" * 60,
++                        "Gradle 8.14.3",
++                        "-" * 60,
++                        "Build time: 2025-07-04 13:23:44 UTC",
++                        "Revision: " + "a" * 40,
++                        "Kotlin: 2.0.21",
++                        "Groovy: 3.0.24",
++                        "Ant: Apache Ant(TM) version 1.10.15 compiled on August 25 2024",
++                        "Launcher JVM: 21.0.8 (Eclipse Adoptium 21.0.8+9-LTS)",
++                        "Daemon JVM: /opt/hostedtoolcache/Java_Temurin_jdk/21.0.8/x64 "
++                        "(no JDK specified, using current Java home)",
++                        "OS: Linux 6.11.0-1018-azure amd64",
++                    ]
++                ),
++            }
++        )
++    return tools
++
++
++def genuine_build_receipt(
++    artifact: Path,
++    source_commit: str,
++    target: str = "android",
++    reference: Path | None = None,
++    resolved_bytes: bytes = FIXTURE_LOCK_BYTES,
++) -> dict[str, Any]:
++    """Use the actual producer on synthetic ZIPs, with fixed native/tool/environment inputs."""
++    import tempfile
++    from unittest.mock import patch
++
++    reference = artifact if reference is None else reference
++    tools = toolchain_fixture(target)
++    with tempfile.TemporaryDirectory(prefix="gsip-build-receipt-control-") as temporary:
++        root = Path(temporary)
++        for name in (
++            "pnpm-lock.yaml",
++            "uv.lock",
++            "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties",
++            "apps/capture-pwa/android/build.gradle",
++            "apps/capture-pwa/android/variables.gradle",
++        ):
++            path = root / name
++            path.parent.mkdir(parents=True, exist_ok=True)
++            path.write_bytes(FIXTURE_LOCK_BYTES)
++        package = root / "apps/capture-pwa/package.json"
++        package.write_text(json.dumps({"version": "0.1.0"}))
++        if target == "ios":
++            resolved = (
++                root
++                / "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace"
++                / "xcshareddata/swiftpm/Package.resolved"
++            )
++            resolved.parent.mkdir(parents=True)
++            resolved.write_bytes(resolved_bytes)
++            for identity, relative in audit.UPSTREAM_RESOLVED.items():
++                nested = (
++                    root
++                    / f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}"
++                    / relative
++                )
++                nested.parent.mkdir(parents=True)
++                nested.write_text(json.dumps({"pins": [audit.SWIFTLINT_PIN], "version": 2}))
++
++        def command(args: list[str]) -> str:
++            if args[0] == "git":
++                return source_commit
++            if args[0] in {"node", "pnpm", "java", "xcodebuild"}:
++                return cast(
++                    str, tools[{"java": "java", "xcodebuild": "xcode"}.get(args[0], args[0])]
++                )
++            if args[0] == "xcrun":
++                return cast(str, tools["sdk"])
++            if args[0] == "synthetic-aapt2":
++                return cast(str, tools["aapt2"])
++            if args[0].endswith("gradlew"):
++                return cast(str, tools["gradle"])
++            pytest.fail("unexpected tool invocation in synthetic producer control")
++
++        with (
++            patch.object(app_build, "__file__", str(root / "scripts/app_build.py")),
++            patch.object(app_build, "command", side_effect=command),
++            patch.object(app_build, "source_clean", return_value=True),
++            patch.object(platform, "platform", return_value=tools["runner"]),
++            patch.dict(os.environ, tools["runner_image"]),
++        ):
++            return app_build.receipt(
++                artifact,
++                reference,
++                app_build.versions("123", package),
++                target,
++                "synthetic-aapt2" if target == "android" else None,
++            )
++
++
++def complete_native(
++    source_commit: str, artifact_sha256: str, *, project_artifact_outside: bool = False
++) -> dict[str, Any]:
++    """Positive comparison control uses actual bounded collector output on synthetic inputs."""
++    import tempfile
++
++    with tempfile.TemporaryDirectory(prefix="gsip-native-sidecar-fixture-") as temporary:
++        root = Path(temporary).resolve()
++        repo, cache = root / "repo", root / "cache"
++        names = tuple(
++            name
++            for name in audit.NPM_PACKAGES
++            if source_commit != audit.BASELINE or name != "@capacitor/local-notifications"
++        )
++        versions = {
++            "@capacitor/core": "8.5.2",
++            "@capacitor/android": "8.5.2",
++            "@capacitor/ios": "8.5.2",
++            "@capacitor/camera": "8.2.4",
++            "@capacitor/filesystem": "8.1.3",
++            "@capacitor/geolocation": "8.2.2",
++            "@capacitor/local-notifications": "8.3.1",
++        }
++        for name in names:
++            package = repo / "node_modules/.pnpm/synthetic/node_modules" / name
++            package.mkdir(parents=True)
++            (package / "package.json").write_text(
++                json.dumps({"name": name, "version": versions[name], "license": "MIT"})
++            )
++            (package / "LICENSE").write_text("MIT synthetic fixture: Permission is hereby granted.")
++            installed = repo / "apps/capture-pwa/node_modules" / name
++            installed.parent.mkdir(parents=True, exist_ok=True)
++            installed.symlink_to(package, target_is_directory=True)
++        cached(cache, COORD, pom())
++        module = (
++            cache / "modules-2/files-2.1" / COORD[0] / COORD[1] / COORD[2] / "binary/runtime.jar"
++        )
++        zipped(module)
++        projects = []
++        artifacts = [{"kind": "module", "coordinate": list(COORD), "file": str(module)}]
++        for project, name in audit.PROJECT_PACKAGES.items():
++            if name not in names:
++                continue
++            projects.append(project)
++            package = (repo / "apps/capture-pwa/node_modules" / name).resolve()
++            directory = (
++                package / ("capacitor" if project == ":capacitor-android" else "android") / "build"
++            )
++            file = directory / (project[1:] + ".aar")
++            if project_artifact_outside and project == ":capacitor-android":
++                file = repo / "unmatched/renamed-capacitor.aar"
++            zipped(file)
++            artifacts.append({"kind": "project", "project": project, "file": str(file)})
++        view = {
++            "name": "debugRuntimeClasspath",
++            "modules": [list(COORD)],
++            "projects": [":app", *projects],
++            "artifacts": artifacts,
++        }
++        release = {**copy.deepcopy(view), "name": "releaseRuntimeClasspath"}
++        result = audit.runtime_evidence({"views": [view, release]}, repo, cache, False)
++        inputs = {
++            name: FIXTURE_LOCK_SHA
++            for name in (
++                "pnpm-lock.yaml",
++                "apps/capture-pwa/package.json",
++                "apps/capture-pwa/capacitor.config.ts",
++                "scripts/app_permissions.py",
++                "scripts/app_build.py",
++                "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties",
++                "apps/capture-pwa/android/build.gradle",
++                "apps/capture-pwa/android/variables.gradle",
++            )
++        }
++        result.update(
++            {
++                "schema_version": "gsip-app-notification-native-audit-v1",
++                "platform": "android",
++                "source_commit": source_commit,
++                "source_inputs": inputs,
++                "built_artifact_sha256": artifact_sha256,
++                "resolved_graph_sha256": "c" * 64,
++                "build_only_environment_sha256": "d" * 64,
++                "runtime_tree_sha256": {
++                    name: "e" * 64 for name in ("debugRuntimeClasspath", "releaseRuntimeClasspath")
++                },
++                "debug_signing_key_sha256": "b" * 64,
++            }
++        )
++        return result
++
++
++def receipts(
++    parent: Path, candidate: Path
++) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
++    value = genuine_build_receipt(parent, audit.BASELINE)
++    second = genuine_build_receipt(candidate, "a" * 40)
++    native = complete_native(audit.BASELINE, value["artifact_sha256"])
++    return value, second, native
++
++
++def test_feature_delta_uses_actual_parent_and_candidate_bytes(tmp_path: Path) -> None:
++    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
++    zipped(parent, b"parent", False)
++    zipped(candidate, b"larger feature candidate", False)
++    left, right, native = receipts(parent, candidate)
++    result = audit.feature_comparison(
++        parent,
++        candidate,
++        left,
++        right,
++        "a" * 40,
++        {**native, "source_commit": audit.BASELINE},
++        complete_native("a" * 40, right["artifact_sha256"]),
++    )
++    assert result["archive_byte_delta"] == candidate.stat().st_size - parent.stat().st_size
++    assert result["zip_comparison"]["changed_entries"] == ["classes.dex"]
++    assert "no dependency-only attribution" in result["scope"]
++    assert result["closed_flags"] == {"capture_live": False, "library_intake_live": False}
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "wrong_parent",
++        "wrong_candidate",
++        "toolchain",
++        "run_number",
++        "unclean",
++        "wrong_bytes",
++        "debug_key",
++        "open_activation",
++        "missing_activation",
++    ],
++)
++def test_feature_delta_refuses_unmatched_build_inputs(tmp_path: Path, defect: str) -> None:
++    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
++    zipped(parent, b"parent", False)
++    zipped(candidate, b"candidate", False)
++    left, right, native = receipts(parent, candidate)
++    native["source_commit"] = audit.BASELINE
++    other_native = complete_native("a" * 40, right["artifact_sha256"])
++    if defect == "wrong_parent":
++        left["source_commit"] = "c" * 40
++    elif defect == "wrong_candidate":
++        right["source_commit"] = "c" * 40
++    elif defect == "toolchain":
++        right["toolchain"] = {"node": "v25"}
++    elif defect == "run_number":
++        right["run_number"] = 124
++    elif defect == "unclean":
++        left["source_tree_clean"] = False
++    elif defect == "wrong_bytes":
++        right["artifact_sha256"] = "d" * 64
++    elif defect == "debug_key":
++        other_native["debug_signing_key_sha256"] = "c" * 64
++    elif defect == "open_activation":
++        zipped(candidate, b"candidate", True)
++        right["artifact_sha256"] = audit.sha(candidate.read_bytes())
++        other_native["built_artifact_sha256"] = right["artifact_sha256"]
++        right["reference_sha256"] = right["artifact_sha256"]
++        right["comparison"] = app_build.comparison(candidate, candidate)
++    elif defect == "missing_activation":
++        zipped(candidate)
++        right["artifact_sha256"] = audit.sha(candidate.read_bytes())
++        other_native["built_artifact_sha256"] = right["artifact_sha256"]
++        right["reference_sha256"] = right["artifact_sha256"]
++        right["comparison"] = app_build.comparison(candidate, candidate)
++    with pytest.raises((audit.AuditError, ValueError)):
++        audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other_native)
++
++
++def test_cli_error_never_copies_private_error_text(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path
++) -> None:
++    def failure(*args: Any) -> None:
++        raise ValueError("synthetic private-sentinel-not-for-output")
++
++    monkeypatch.setattr(audit, "collect_ios", failure)
++    assert (
++        audit.main(
++            [
++                "ios",
++                str(tmp_path),
++                str(tmp_path / "receipt.json"),
++                str(tmp_path / "fixture-ios.zip"),
++            ]
++        )
++        == 1
++    )
++    captured = capsys.readouterr()
++    assert "private-sentinel" not in captured.err
++    assert captured.out == ""
++
++
++def test_workflow_retains_old_gates_and_uploads_owned_evidence() -> None:
++    text = (ROOT / ".github/workflows/app-build.yml").read_text()
++    for value in (
++        "--configuration debugRuntimeClasspath",
++        "--configuration releaseRuntimeClasspath",
++        "check-dependencies -",
++        "check-apk",
++        "check-ios",
++        "assembleDebug --rerun-tasks --no-build-cache",
++        "CODE_SIGNING_ALLOWED=NO clean build",
++        "VITE_CAPTURE_LIVE: 'false'",
++        "VITE_LIBRARY_INTAKE_LIVE: 'false'",
++        "scripts/app_notification_audit.py",
++        "tests/test_app_notification_audit.py",
++        "scripts.app_notification_audit android",
++        "scripts.app_notification_audit ios",
++        "scripts.app_notification_audit compare",
++        audit.BASELINE,
++        "gsip-android-feature-comparison.json",
++        "gsip-ios-feature-comparison.json",
++    ):
++        assert value in text
++
++
++@pytest.fixture
++def ios_evidence(
++    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
++) -> tuple[Path, Path, dict[str, bytes]]:
++    import io
++
++    repo = tmp_path / "ios-repo"
++    ios = repo / "apps/capture-pwa/ios"
++    package = repo / "node_modules/@capacitor/ios"
++    package.mkdir(parents=True)
++    installed = repo / "apps/capture-pwa/node_modules/@capacitor"
++    installed.mkdir(parents=True)
++    (installed / "ios").symlink_to(package, target_is_directory=True)
++    license_data = b"MIT License\nPermission is hereby granted, synthetic upstream evidence."
++    (package / "LICENSE").write_bytes(license_data)
++    versions = {
++        "@capacitor/core": "8.5.2",
++        "@capacitor/android": "8.5.2",
++        "@capacitor/ios": "8.5.2",
++        "@capacitor/camera": "8.2.4",
++        "@capacitor/filesystem": "8.1.3",
++        "@capacitor/geolocation": "8.2.2",
++        "@capacitor/local-notifications": "8.3.1",
++    }
++    for name in audit.NPM_PACKAGES:
++        directory = repo / "node_modules" / name
++        directory.mkdir(parents=True, exist_ok=True)
++        (directory / "package.json").write_text(
++            json.dumps({"name": name, "version": versions[name], "license": "MIT"})
++        )
++        (directory / "LICENSE").write_bytes(license_data)
++        if name != "@capacitor/ios":
++            (repo / "apps/capture-pwa/node_modules" / name).symlink_to(
++                directory, target_is_directory=True
++            )
++    header = package / "CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h"
++    header.parent.mkdir(parents=True)
++    header.write_bytes(b"Synthetic source header: Apache License, Version 2.0")
++    resolved = ios / "App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
++    resolved.parent.mkdir(parents=True)
++    resolved.write_text(
++        json.dumps(
++            {
++                "pins": [
++                    {
++                        "identity": "capacitor-swift-pm",
++                        "location": "https://github.com/ionic-team/capacitor-swift-pm.git",
++                        "state": {"version": "8.5.2", "revision": "1" * 40},
++                    }
++                ]
++            }
++        )
++    )
++    expected = copy.deepcopy(audit.ION_PACKAGES)
++    for identity, entry in expected.items():
++        checkout = ios / f"App/build/SourcePackages/checkouts/{identity}"
++        checkout.mkdir(parents=True)
++        manifest_data = f"// synthetic source-only fixture {identity}\n".encode()
++        (checkout / "Package.swift").write_bytes(manifest_data)
++        (checkout / "LICENSE").write_bytes(license_data)
++        if identity in audit.UPSTREAM_RESOLVED:
++            nested = checkout / audit.UPSTREAM_RESOLVED[identity]
++            nested.parent.mkdir(parents=True)
++            nested.write_text(json.dumps({"pins": [audit.SWIFTLINT_PIN], "version": 2}))
++        source_files: list[dict[str, Any]] = []
++        stream = io.BytesIO()
++        with tarfile.open(fileobj=stream, mode="w:gz") as source_archive:
++            for file in sorted(checkout.rglob("*")):
++                if not file.is_file():
++                    continue
++                payload = file.read_bytes()
++                name = str(file.relative_to(checkout))
++                member = tarfile.TarInfo(f"{identity}-{entry['version']}/{name}")
++                member.size = len(payload)
++                source_archive.addfile(member, io.BytesIO(payload))
++                source_files.append(
++                    {"path": name, "bytes": len(payload), "sha256": audit.sha(payload)}
++                )
++        raw_archive = stream.getvalue()
++        entry.update(
++            {
++                "manifest_sha256": audit.sha(manifest_data),
++                "license_sha256": audit.sha(license_data),
++                "archive_sha256": audit.sha(raw_archive),
++                "source_tree_sha256": audit.sha(
++                    json.dumps(source_files, sort_keys=True, separators=(",", ":")).encode()
++                ),
++                "source_bytes": sum(row["bytes"] for row in source_files),
++                "source_file_count": len(source_files),
++                "archive_bytes": len(raw_archive),
++            }
++        )
++        entry["fixture_archive"] = raw_archive
++    monkeypatch.setattr(audit, "ION_PACKAGES", expected)
++    resolved_value = json.loads(resolved.read_text())
++    resolved_value["pins"] += [
++        {
++            "identity": identity,
++            "location": f"https://github.com/ionic-team/{identity}.git",
++            "kind": "remoteSourceControl",
++            "state": {"version": entry["version"], "revision": entry["revision"]},
++        }
++        for identity, entry in expected.items()
++    ]
++    resolved.write_text(json.dumps(resolved_value))
++    public = {
++        "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md": (
++            b"Synthetic binary xcframework releases of Capacitor and CapacitorCordova"
++        ),
++        "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE": license_data,
++    }
++    for identity, entry in expected.items():
++        public[
++            f"https://codeload.github.com/ionic-team/{identity}/tar.gz/refs/tags/{entry['version']}"
++        ] = entry.pop("fixture_archive")
++    manifest = ""
++    for name in ("Capacitor", "Cordova"):
++        folder = (
++            ios / f"App/build/SourcePackages/artifacts/capacitor-swift-pm/{name}/{name}.xcframework"
++        )
++        folder.mkdir(parents=True)
++        (folder / "Info.plist").write_bytes(f"synthetic-{name}".encode())
++        stream = io.BytesIO()
++        with zipfile.ZipFile(stream, "w") as archive:
++            archive.writestr(f"{name}.xcframework/Info.plist", f"synthetic-{name}".encode())
++        raw = stream.getvalue()
++        url = f"https://github.com/ionic-team/capacitor-swift-pm/releases/download/8.5.2/{name}.xcframework.zip"
++        public[url] = raw
++        manifest += f'.binaryTarget(name: "{name}", url: "{url}", checksum: "{audit.sha(raw)}")\n'
++    checkout = ios / "App/build/SourcePackages/checkouts/capacitor-swift-pm"
++    checkout.mkdir(parents=True)
++    (checkout / "Package.swift").write_text(manifest)
++    monkeypatch.setattr(audit, "public_bytes", lambda url, *args, **kwargs: public[url])
++    monkeypatch.setattr(
++        audit,
++        "source_inputs",
++        lambda *args: {
++            name: FIXTURE_LOCK_SHA
++            for name in (
++                "pnpm-lock.yaml",
++                "apps/capture-pwa/package.json",
++                "apps/capture-pwa/capacitor.config.ts",
++                "scripts/app_permissions.py",
++                "scripts/app_build.py",
++            )
++        },
++    )
++
++    def readback(args: list[str], *unused: Any) -> str:
++        for identity, entry in expected.items():
++            if identity in " ".join(args):
++                return cast(str, entry["revision"])
++        return "1" * 40 if "capacitor-swift-pm" in " ".join(args) else "a" * 40
++
++    monkeypatch.setattr(audit, "run", readback)
++    artifact = repo / "fixture-ios.zip"
++    with zipfile.ZipFile(artifact, "w") as archive:
++        archive.writestr(
++            "App.app/public/gsip-activation.json",
++            json.dumps({"capture_live": False, "library_intake_live": False}),
++        )
++    return repo, resolved, public
++
++
++def test_ios_records_selected_pins_exact_binary_tree_and_distinct_licenses(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path
++) -> None:
++    repo, _, _ = ios_evidence
++    output = tmp_path / "ios-audit.json"
++    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
++    result = json.loads(output.read_text())
++    assert result["spm"]["pins"][0]["state"]["version"] == "8.5.2"
++    assert {item["name"] for item in result["spm"]["binary_inputs"]} == {"Capacitor", "Cordova"}
++    for item in result["spm"]["binary_inputs"]:
++        assert item["swift_manifest_checksum"] == item["archive"]["sha256"]
++        assert item["actual_resolved_tree"]["file_count"] == 1
++    assert result["spm"]["upstream_capacitor_source_license"]["spdx"] == "MIT"
++    assert result["cordova_apache_source_header"]["spdx"] == "Apache-2.0"
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "unknown_pin",
++        "changed_version",
++        "checksum",
++        "changed_tree",
++        "pod_resolution",
++        "upstream_license",
++    ],
++)
++def test_ios_refuses_unexpected_native_selection_or_unbound_binary(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, defect: str
++) -> None:
++    repo, resolved, public = ios_evidence
++    if defect in {"unknown_pin", "changed_version"}:
++        data = json.loads(resolved.read_text())
++        if defect == "unknown_pin":
++            data["pins"][0]["location"] = "https://example.invalid/proprietary-runtime.git"
++        else:
++            data["pins"][0]["state"]["version"] = "8.5.3"
++        resolved.write_text(json.dumps(data))
++    elif defect == "checksum":
++        url = next(value for value in public if value.endswith("Capacitor.xcframework.zip"))
++        public[url] += b"changed-synthetic-archive"
++    elif defect == "changed_tree":
++        file = (
++            repo
++            / "apps/capture-pwa/ios/App/build/SourcePackages/artifacts"
++            / "capacitor-swift-pm/Capacitor/Capacitor.xcframework/Info.plist"
++        )
++        file.write_bytes(b"changed-synthetic-framework")
++    elif defect == "pod_resolution":
++        (repo / "apps/capture-pwa/ios/Podfile.lock").write_text("synthetic unknown pod")
++    else:
++        public["https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE"] = (
++            b"different license"
++        )
++    with pytest.raises(audit.AuditError):
++        audit.collect_ios(repo, tmp_path / "refused.json", repo / "fixture-ios.zip")
++
++
++@pytest.mark.parametrize(
++    "defect", ["unexpected_jar", "closed_license", "foreign_link", "valid_empty_source"]
++)
++def test_npm_project_source_does_not_license_unexpected_binary(tmp_path: Path, defect: str) -> None:
++    repo = tmp_path / "repo"
++    package = repo / "node_modules/.pnpm/synthetic/node_modules/@capacitor/local-notifications"
++    package.mkdir(parents=True)
++    installed = repo / "apps/capture-pwa/node_modules/@capacitor"
++    installed.mkdir(parents=True)
++    (installed / "local-notifications").symlink_to(package, target_is_directory=True)
++    (package / "package.json").write_text(
++        json.dumps({"name": "@capacitor/local-notifications", "version": "8.3.1", "license": "MIT"})
++    )
++    (package / "LICENSE").write_text(
++        "MIT License: Permission is hereby granted, synthetic fixture."
++    )
++    if defect == "unexpected_jar":
++        zipped(package / "android/libs/runtime.jar")
++    elif defect == "closed_license":
++        data = json.loads((package / "package.json").read_text())
++        data["license"] = "Proprietary"
++        (package / "package.json").write_text(json.dumps(data))
++    elif defect == "foreign_link":
++        external = tmp_path / "external"
++        external.mkdir()
++        (installed / "local-notifications").unlink()
++        (installed / "local-notifications").symlink_to(external, target_is_directory=True)
++    else:
++        (package / "empty-source-placeholder").write_bytes(b"")
++        result = audit.npm_evidence(repo, ("@capacitor/local-notifications",))
++        assert result[0]["installed_file_count"] == 3
++        assert result[0]["license"] == "MIT"
++        return
++    with pytest.raises(audit.AuditError):
++        audit.npm_evidence(repo, ("@capacitor/local-notifications",))
++
++
++def test_feature_receipt_refuses_unknown_private_sidecar_fields(tmp_path: Path) -> None:
++    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
++    zipped(parent, b"parent", False)
++    zipped(candidate, b"candidate", False)
++    left, right, native = receipts(parent, candidate)
++    right["unexpected_private_context"] = "synthetic private sentinel"
++    with pytest.raises(audit.AuditError):
++        audit.feature_comparison(
++            parent,
++            candidate,
++            left,
++            right,
++            "a" * 40,
++            {**native, "source_commit": audit.BASELINE},
++            complete_native("a" * 40, right["artifact_sha256"]),
++        )
++
++
++def test_pom_depth_bound_prevents_oversized_structural_evidence(tmp_path: Path) -> None:
++    cached(tmp_path, COORD, b"<project>" + b"<nested>" * 65 + b"</nested>" * 65 + b"</project>")
++    with pytest.raises(audit.AuditError):
++        audit.pom_evidence(COORD, tmp_path, False)
++
++
++def test_review_traversal_refuses_before_reading_outside_root(tmp_path: Path) -> None:
++    allowed = tmp_path / "allowed"
++    allowed.mkdir()
++    outside = tmp_path / "outside"
++    outside.write_bytes(b"synthetic outside-root evidence")
++    with pytest.raises(audit.AuditError):
++        audit.read(allowed / ".." / "outside", (allowed,))
++
++
++def test_review_binary_coordinate_cannot_escape_through_traversal(
++    graph: tuple[dict[str, Any], Path, Path, Path], tmp_path: Path
++) -> None:
++    data, repo, cache, _ = graph
++    outside = tmp_path / "unmatched.jar"
++    zipped(outside, b"synthetic unbound binary")
++    selected = cache / "modules-2/files-2.1" / COORD[0] / COORD[1] / COORD[2]
++    escaped = selected / "../../../../../../unmatched.jar"
++    assert escaped.resolve() == outside
++    data["views"][0]["artifacts"][0]["file"] = str(escaped)
++    with pytest.raises(audit.AuditError):
++        audit.runtime_evidence(data, repo, cache, False)
++
++
++@pytest.mark.parametrize(
++    "field",
++    ["version", "groupId", "artifactId", "license_name", "license_url", "parent", "licenses"],
++)
++def test_review_duplicate_pom_identity_or_license_fields_refuse(tmp_path: Path, field: str) -> None:
++    raw = pom()
++    if field == "license_name":
++        raw = raw.replace(b"</name>", b"</name><name>Proprietary commercial runtime</name>")
++    elif field == "license_url":
++        raw = raw.replace(b"</url>", b"</url><url>https://example.invalid/private-license</url>")
++    elif field == "parent":
++        raw = pom(parent=COORD).replace(
++            b"</parent>",
++            b"</parent><parent><groupId>org.other</groupId><artifactId>other</artifactId><version>9</version></parent>",
++        )
++    elif field == "licenses":
++        raw = raw.replace(
++            b"</licenses>",
++            b"</licenses><licenses><license><name>Proprietary</name><url>https://example.invalid/private</url></license></licenses>",
++        )
++    else:
++        raw = raw.replace(
++            f"</{field}>".encode(), f"</{field}><{field}>different</{field}>".encode()
++        )
++    cached(tmp_path, COORD, raw)
++    with pytest.raises(audit.AuditError):
++        audit.pom_evidence(COORD, tmp_path, False)
++
++
++def test_review_header_only_native_sidecars_refuse_feature_comparison(tmp_path: Path) -> None:
++    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
++    zipped(parent, b"parent", False)
++    zipped(candidate, b"candidate", False)
++    left, right, _ = receipts(parent, candidate)
++    native = {
++        "platform": "android",
++        "debug_signing_key_sha256": "b" * 64,
++        "schema_version": "gsip-app-notification-native-audit-v1",
++        "source_inputs": {"pnpm-lock.yaml": "f" * 64},
++    }
++    with pytest.raises(audit.AuditError):
++        audit.feature_comparison(
++            parent,
++            candidate,
++            left,
++            right,
++            "a" * 40,
++            {**native, "source_commit": audit.BASELINE},
++            {**native, "source_commit": "a" * 40},
++        )
++
++
++def test_review_spm_pin_revision_must_match_actual_checkout(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path
++) -> None:
++    repo, resolved, _ = ios_evidence
++    data = json.loads(resolved.read_text())
++    data["pins"][0]["state"]["revision"] = "f" * 40
++    resolved.write_text(json.dumps(data))
++    with pytest.raises(audit.AuditError):
++        audit.collect_ios(repo, tmp_path / "refused.json", repo / "fixture-ios.zip")
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "missing_graph",
++        "missing_npm",
++        "missing_binary",
++        "missing_pom",
++        "closed_pom",
++        "module_binding",
++        "project_binding",
++        "source_lock",
++        "artifact_binding",
++        "tree_digest",
++        "unknown_field",
++    ],
++)
++def test_complete_native_sidecar_rejects_removed_or_conflicting_bindings(
++    tmp_path: Path, defect: str
++) -> None:
++    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
++    zipped(parent, b"parent", False)
++    zipped(candidate, b"candidate", False)
++    left, right, native = receipts(parent, candidate)
++    other = complete_native("a" * 40, right["artifact_sha256"])
++    if defect == "missing_graph":
++        other["runtime_views"] = []
++    elif defect == "missing_npm":
++        other["npm_sources"] = []
++    elif defect == "missing_binary":
++        other["runtime_views"][0]["resolved_runtime_inputs"] = []
++    elif defect == "missing_pom":
++        other["runtime_views"][0]["selected_modules"][0]["pom_license_evidence"] = []
++    elif defect == "closed_pom":
++        other["runtime_views"][0]["selected_modules"][0]["pom_license_evidence"][0]["licenses"][0][
++            "declared_name"
++        ] = "Proprietary commercial runtime"
++    elif defect == "module_binding":
++        other["runtime_views"][0]["resolved_runtime_inputs"][0]["coordinate"][2] = "99.0"
++    elif defect == "project_binding":
++        other["runtime_views"][0]["project_sources"][0]["source_manifest_sha256"] = "1" * 64
++    elif defect == "source_lock":
++        other["source_inputs"]["apps/capture-pwa/android/build.gradle"] = "1" * 64
++    elif defect == "artifact_binding":
++        other["built_artifact_sha256"] = "1" * 64
++    elif defect == "tree_digest":
++        other["runtime_tree_sha256"]["releaseRuntimeClasspath"] = "not a digest"
++    else:
++        other["unexpected_private_field"] = "synthetic context must not be copied"
++    with pytest.raises(audit.AuditError):
++        audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other)
++
++
++def ios_build_fixture(repo: Path, native: dict[str, Any]) -> dict[str, Any]:
++    return {
++        "platform": "ios",
++        "source_commit": native["source_commit"],
++        "artifact_sha256": native["built_artifact_sha256"],
++        "lockfile_sha256": {
++            "pnpm-lock.yaml": FIXTURE_LOCK_SHA,
++            "uv.lock": FIXTURE_LOCK_SHA,
++            **{
++                str(path.relative_to(repo)): audit.sha(path.read_bytes())
++                for path in (repo / "apps/capture-pwa/ios").rglob("Package.resolved")
++            },
++        },
++    }
++
++
++def test_collected_ios_sidecar_passes_complete_validation_after_serialization(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path
++) -> None:
++    repo, _, _ = ios_evidence
++    output = tmp_path / "validated-ios.json"
++    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
++    native = json.loads(output.read_text())
++    audit.validate_native(native, ios_build_fixture(repo, native))
++    assert native["spm"]["checkout_revision"] == native["spm"]["pins"][0]["state"]["revision"]
++    assert native["spm"]["release_tag_revision"] == native["spm"]["checkout_revision"]
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "missing_spm",
++        "missing_tree",
++        "tree_digest",
++        "binary_digest",
++        "license_binding",
++        "revision_binding",
++        "missing_checkout",
++        "source_lock",
++    ],
++)
++def test_ios_sidecar_cannot_substitute_partial_or_conflicting_native_evidence(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, defect: str
++) -> None:
++    repo, _, _ = ios_evidence
++    output = tmp_path / "ios-native.json"
++    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
++    native = json.loads(output.read_text())
++    build = ios_build_fixture(repo, native)
++    if defect == "missing_spm":
++        native["spm"] = {}
++    elif defect == "missing_tree":
++        native["spm"]["binary_inputs"][0]["actual_resolved_tree"] = {}
++    elif defect == "tree_digest":
++        native["spm"]["binary_inputs"][0]["actual_resolved_tree"]["files"][0]["sha256"] = "f" * 64
++    elif defect == "binary_digest":
++        native["spm"]["binary_inputs"][0]["archive"]["sha256"] = "f" * 64
++    elif defect == "license_binding":
++        native["spm"]["upstream_capacitor_source_license"]["sha256"] = "f" * 64
++    elif defect == "revision_binding":
++        native["spm"]["checkout_revision"] = "f" * 40
++    elif defect == "missing_checkout":
++        native["spm"].pop("checkout_revision")
++    else:
++        build["lockfile_sha256"][
++            next(key for key in build["lockfile_sha256"] if key.endswith("Package.resolved"))
++        ] = "f" * 64
++    with pytest.raises(audit.AuditError):
++        audit.validate_native(native, build)
++
++
++@pytest.mark.parametrize("mismatch", ["checkout", "release_tag"])
++def test_spm_local_git_readback_refuses_mismatched_pin_or_release(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]],
++    tmp_path: Path,
++    monkeypatch: pytest.MonkeyPatch,
++    mismatch: str,
++) -> None:
++    repo, _, _ = ios_evidence
++
++    def readback(args: list[str], *unused: Any) -> str:
++        if "capacitor-swift-pm" not in " ".join(args):
++            return next(
++                (
++                    cast(str, entry["revision"])
++                    for identity, entry in audit.ION_PACKAGES.items()
++                    if identity in " ".join(args)
++                ),
++                "a" * 40,
++            )
++        if (mismatch == "checkout" and args[-1] == "HEAD") or (
++            mismatch == "release_tag" and args[-1] == "refs/tags/8.5.2^{commit}"
++        ):
++            return "f" * 40
++        return "1" * 40
++
++    monkeypatch.setattr(audit, "run", readback)
++    with pytest.raises(audit.AuditError):
++        audit.collect_ios(repo, tmp_path / "refused.json", repo / "fixture-ios.zip")
++
++
++def test_workflow_native_audit_commands_match_the_cli_contract() -> None:
++    import shlex
++
++    lines = (ROOT / ".github/workflows/app-build.yml").read_text().splitlines()
++    commands = [
++        shlex.split(line) for line in lines if "python -m scripts.app_notification_audit " in line
++    ]
++    assert len(commands) == 6
++    for argv in commands:
++        assert len(argv) == {"android": 8, "ios": 7, "compare": 14}[argv[3]]
++
++
++def test_project_artifact_must_belong_to_its_inspected_package_output() -> None:
++    with pytest.raises(audit.AuditError):
++        complete_native(audit.BASELINE, "a" * 64, project_artifact_outside=True)
++
++
++@pytest.mark.parametrize(
++    ("path", "bad"),
++    [
++        (("comparison",), {}),
++        (("comparison", "unknown"), "synthetic private sentinel"),
++        (("toolchain", "unknown"), "synthetic private sentinel"),
++        (("toolchain", "runner_image", "unknown"), "synthetic private sentinel"),
++        (("reference_sha256",), "not-a-digest"),
++        (("reference_sha256",), "f" * 64),
++        (("source_commit",), "z" * 40),
++        (("artifact_sha256",), "f" * 64),
++        (("run_number",), False),
++        (("run_number",), float("nan")),
++        (("run_number",), float("inf")),
++        (("run_number",), 123.0),
++        (("run_number",), 0),
++        (("run_number",), app_build.MAX_RUN_NUMBER + 1),
++        (("android_version_code",), True),
++        (("android_version_code",), "garbage"),
++        (("android_version_code",), 124),
++        (("ios_build_version",), {"private": "synthetic"}),
++        (("ios_build_version",), "1.1.23"),
++        (("marketing_version",), "01.1.0"),
++        (("marketing_version",), {"private": "synthetic"}),
++        (("source_tree_clean",), 1),
++        (("comparison_scope",), "unverified"),
++        (("platform",), {}),
++        (("lockfile_sha256",), {}),
++        (("lockfile_sha256", "pnpm-lock.yaml"), "not-a-digest"),
++        (("lockfile_sha256", "unknown"), "f" * 64),
++        (("toolchain",), {}),
++        (("toolchain", "node"), "v23.0.0"),
++        (("toolchain", "pnpm"), []),
++        (("toolchain", "python"), "synthetic private sentinel"),
++        (("toolchain", "runner"), "macOS-26.0-arm64"),
++        (("toolchain", "runner_image"), {}),
++        (("toolchain", "runner_image", "RUNNER_ARCH"), []),
++        (("toolchain", "runner_image", "RUNNER_ARCH"), "ARM64"),
++        (("toolchain", "runner_image", "RUNNER_OS"), "macOS"),
++        (("toolchain", "runner_image", "ImageOS"), "unavailable"),
++        (("toolchain", "runner_image", "ImageVersion"), "20260230.1.0"),
++        (("toolchain", "java"), {}),
++        (("toolchain", "gradle"), "Gradle 8.14.3"),
++        (("toolchain", "aapt2"), "synthetic private sentinel"),
++        (("comparison", "byte_equal"), 1),
++        (("comparison", "entry_content_equal"), "true"),
++        (("comparison", "byte_equal"), False),
++        (("comparison", "normalization"), "invented proof"),
++        (("comparison", "changed_entries"), ["../private"]),
++        (("comparison", "changed_entries"), ["classes.dex", "classes.dex"]),
++        (("comparison", "first_only"), ["z", "a"]),
++        (("comparison", "second_only"), {}),
++        (("comparison", "second_only"), ["unmeasured"]),
++        (("unknown",), {"private": "synthetic"}),
++    ],
++)
++def test_full_build_receipt_refuses_invalid_nested_proof(
++    tmp_path: Path, path: tuple[str, ...], bad: Any
++) -> None:
++    artifact = tmp_path / "candidate.apk"
++    zipped(artifact, b"synthetic", False)
++    value = genuine_build_receipt(artifact, "a" * 40)
++    nested = value
++    for part in path[:-1]:
++        nested = nested[part]
++    nested[path[-1]] = bad
++    with pytest.raises(audit.AuditError):
++        audit.validate_build_receipt(value, artifact, artifact)
++
++
++@pytest.mark.parametrize(
++    "raw",
++    [
++        b'{"proof":{"a":1,"a":2}}',
++        b'{"proof":NaN}',
++        b'{"proof":{"nested":Infinity}}',
++        b'{"proof":-Infinity}',
++        b'{"proof":1e999}',
++    ],
++)
++def test_json_nested_proofs_reject_duplicate_and_nonfinite_values(raw: bytes) -> None:
++    with pytest.raises(audit.AuditError):
++        audit.decoded(raw)
++
++
++def test_json_finite_decimal_is_preserved_for_incidental_package_metadata() -> None:
++    assert audit.decoded(b'{"metadata":0.5}') == {"metadata": 0.5}
++
++
++def repacked(path: Path, reference: Path, variant: str) -> None:
++    with zipfile.ZipFile(reference) as first, zipfile.ZipFile(path, "w") as second:
++        second.comment = b"synthetic different archive metadata"
++        for entry in first.infolist():
++            second.writestr(entry, first.read(entry.filename))
++        if variant == "content":
++            second.writestr("synthetic-feature-marker.txt", b"synthetic repeated content")
++
++
++@pytest.mark.parametrize("target", ["android", "ios"])
++@pytest.mark.parametrize("variant", ["identical", "metadata", "content"])
++def test_actual_producer_current_and_repeated_build_receipts_pass(
++    tmp_path: Path, target: str, variant: str
++) -> None:
++    reference = tmp_path / "reference.zip"
++    artifact = tmp_path / "current.zip"
++    if target == "android":
++        zipped(reference, b"synthetic", False)
++    else:
++        with zipfile.ZipFile(reference, "w") as archive:
++            archive.writestr(
++                "App.app/public/gsip-activation.json",
++                json.dumps({"capture_live": False, "library_intake_live": False}),
++            )
++    if variant == "identical":
++        artifact.write_bytes(reference.read_bytes())
++    else:
++        repacked(artifact, reference, variant)
++    value = genuine_build_receipt(artifact, "a" * 40, target, reference)
++    audit.validate_build_receipt(audit.decoded(json.dumps(value).encode()), artifact, reference)
++    assert value["comparison"]["byte_equal"] is (variant == "identical")
++    assert value["comparison"]["entry_content_equal"] is (variant != "content")
++    if variant != "identical":
++        with pytest.raises(audit.AuditError):
++            audit.validate_build_receipt(value, artifact, None)
++        with pytest.raises(audit.AuditError):
++            audit.validate_build_receipt(value, artifact, artifact)
++
++
++@pytest.mark.parametrize("variant", ["identical", "metadata", "content"])
++def test_ios_complete_feature_comparison_accepts_real_producer_proofs(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, variant: str
++) -> None:
++    repo, resolved, _ = ios_evidence
++    reference = repo / "fixture-ios.zip"
++    parent = tmp_path / "parent.zip"
++    candidate = tmp_path / "candidate.zip"
++    parent.write_bytes(reference.read_bytes())
++    if variant == "identical":
++        candidate.write_bytes(reference.read_bytes())
++    else:
++        repacked(candidate, reference, variant)
++    output = tmp_path / "native.json"
++    audit.collect_ios(repo, output, candidate)
++    right_native = audit.decoded(output.read_bytes())
++    left_native = copy.deepcopy(right_native)
++    left_native["source_commit"] = audit.BASELINE
++    left_native["built_artifact_sha256"] = audit.sha(parent.read_bytes())
++    left_native["npm_sources"] = [
++        entry
++        for entry in left_native["npm_sources"]
++        if entry["name"] != "@capacitor/local-notifications"
++    ]
++    left = genuine_build_receipt(parent, audit.BASELINE, "ios", reference, resolved.read_bytes())
++    right = genuine_build_receipt(candidate, "a" * 40, "ios", reference, resolved.read_bytes())
++    result = audit.feature_comparison(
++        parent, candidate, left, right, "a" * 40, left_native, right_native, reference, reference
++    )
++    assert result["input_receipts"]["candidate"]["comparison"] == app_build.comparison(
++        reference, candidate
++    )
++
++
++@pytest.mark.parametrize("field", ["xcode", "sdk", "runner", "runner_image"])
++def test_ios_toolchain_receipt_requires_each_actual_field(tmp_path: Path, field: str) -> None:
++    artifact = tmp_path / "ios.zip"
++    with zipfile.ZipFile(artifact, "w") as archive:
++        archive.writestr(
++            "App.app/public/gsip-activation.json",
++            json.dumps({"capture_live": False, "library_intake_live": False}),
++        )
++    value = genuine_build_receipt(artifact, "a" * 40, "ios")
++    value["toolchain"][field] = {"private": "synthetic"}
++    with pytest.raises(audit.AuditError):
++        audit.validate_build_receipt(value, artifact, artifact)
++
++
++def test_cli_never_writes_unknown_build_proof_fields(tmp_path: Path) -> None:
++    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
++    zipped(parent, b"parent", False)
++    zipped(candidate, b"candidate", False)
++    left, right, native = receipts(parent, candidate)
++    right["toolchain"]["unknown_private_context"] = "synthetic private sentinel"
++    paths = []
++    for name, value in [
++        ("left", left),
++        ("right", right),
++        ("left-native", native),
++        ("right-native", complete_native("a" * 40, right["artifact_sha256"])),
++    ]:
++        path = tmp_path / (name + ".json")
++        path.write_text(json.dumps(value))
++        paths.append(path)
++    output = tmp_path / "never-written.json"
++    assert (
++        audit.main(
++            [
++                "compare",
++                str(parent),
++                str(candidate),
++                str(paths[0]),
++                str(paths[1]),
++                "a" * 40,
++                str(output),
++                str(paths[2]),
++                str(paths[3]),
++                str(parent),
++                str(candidate),
++            ]
++        )
++        == 1
++    )
++    assert not output.exists()
++
++
++def test_ios_exact_ci_four_package_graph_and_nested_tool_inventory_passes(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path
++) -> None:
++    repo, _, _ = ios_evidence
++    output = tmp_path / "complete-ci-shape.json"
++    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
++    native = audit.decoded(output.read_bytes())
++    assert {pin["identity"] for pin in native["spm"]["pins"]} == {
++        "capacitor-swift-pm",
++        "ion-ios-camera",
++        "ion-ios-filesystem",
++        "ion-ios-geolocation",
++    }
++    assert len(native["spm"]["remote_source_packages"]) == 3
++    assert len(native["spm"]["resolved_inventory"]) == 3
++    assert (
++        sum(
++            row["scope"] == "application selected graph"
++            for row in native["spm"]["resolved_inventory"]
++        )
++        == 1
++    )
++    assert all(
++        row["runtime_remote_dependencies"] == [] and row["binary_targets"] == []
++        for row in native["spm"]["remote_source_packages"]
++    )
++    assert (
++        native["spm"]["remote_source_packages"][0]["test_only_dependencies"]
++        == audit.ION_PACKAGES["ion-ios-camera"]["test_dependencies"]
++    )
++    audit.validate_native(native, ios_build_fixture(repo, native))
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "missing_pin",
++        "unknown_pin",
++        "duplicate_pin",
++        "wrong_location",
++        "wrong_version",
++        "wrong_revision",
++        "wrong_kind",
++        "private_pin_field",
++        "missing_checkout",
++        "wrong_head",
++        "wrong_tag",
++        "changed_manifest",
++        "missing_license",
++        "changed_license",
++        "changed_source",
++        "source_symlink",
++        "archive_changed",
++        "archive_repacked",
++        "archive_missing",
++        "extra_resolved",
++        "tool_pin_changed",
++        "tool_unknown",
++        "tool_nested_extra",
++    ],
++)
++def test_ios_complete_graph_refuses_unbound_source_selection(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]],
++    tmp_path: Path,
++    monkeypatch: pytest.MonkeyPatch,
++    defect: str,
++) -> None:
++    repo, resolved, public = ios_evidence
++    pins = audit.decoded(resolved.read_bytes())
++    entry = pins["pins"][1]
++    checkout = repo / "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-camera"
++    if defect == "missing_pin":
++        pins["pins"].pop()
++    elif defect == "unknown_pin":
++        entry["identity"] = "unreviewed-sdk"
++    elif defect == "duplicate_pin":
++        pins["pins"][2] = copy.deepcopy(entry)
++    elif defect == "wrong_location":
++        entry["location"] = "https://example.invalid/closed.git"
++    elif defect == "wrong_version":
++        entry["state"]["version"] = "99.0.0"
++    elif defect == "wrong_revision":
++        entry["state"]["revision"] = "f" * 40
++    elif defect == "wrong_kind":
++        entry["kind"] = "binary"
++    elif defect == "private_pin_field":
++        entry["private"] = "synthetic private sentinel"
++    elif defect == "missing_checkout":
++        (checkout / "Package.swift").unlink()
++    elif defect in {"wrong_head", "wrong_tag"}:
++        original = audit.run
++
++        def mismatched(args: list[str], *unused: Any) -> str:
++            if "ion-ios-camera" in " ".join(args) and (
++                args[-1] == "HEAD" if defect == "wrong_head" else args[-1].startswith("refs/tags/")
++            ):
++                return "f" * 40
++            return original(args)
++
++        monkeypatch.setattr(audit, "run", mismatched)
++    elif defect == "changed_manifest":
++        (checkout / "Package.swift").write_text('.binaryTarget(name: "unreviewed")')
++    elif defect == "missing_license":
++        (checkout / "LICENSE").unlink()
++    elif defect == "changed_license":
++        (checkout / "LICENSE").write_text("proprietary licence")
++    elif defect == "changed_source":
++        (checkout / "unmatched.swift").write_text("synthetic different source")
++    elif defect == "source_symlink":
++        (checkout / "unmatched.swift").symlink_to(repo / "fixture-ios.zip")
++    elif defect in {"archive_changed", "archive_repacked", "archive_missing"}:
++        url = next(url for url in public if "codeload.github.com/ionic-team/ion-ios-camera" in url)
++        if defect == "archive_changed":
++            public[url] = b"synthetic corrupt source archive"
++        elif defect == "archive_repacked":
++            public[url] = gzip.compress(gzip.decompress(public[url]), mtime=1)
++        else:
++            public.pop(url)
++    elif defect == "extra_resolved":
++        (repo / "apps/capture-pwa/ios/unreviewed").mkdir()
++        (repo / "apps/capture-pwa/ios/unreviewed/Package.resolved").write_text('{"pins":[]}')
++    else:
++        nested = (
++            repo
++            / "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-filesystem"
++            / audit.UPSTREAM_RESOLVED["ion-ios-filesystem"]
++        )
++        tool = audit.decoded(nested.read_bytes())
++        if defect == "tool_pin_changed":
++            tool["pins"][0]["state"]["revision"] = "f" * 40
++        elif defect == "tool_unknown":
++            tool["pins"][0]["identity"] = "unreviewed-tool"
++        else:
++            tool["private"] = {"sentinel": "synthetic"}
++        nested.write_text(json.dumps(tool))
++    resolved.write_text(json.dumps(pins))
++    with pytest.raises((audit.AuditError, OSError, KeyError)):
++        audit.collect_ios(repo, tmp_path / "never-written.json", repo / "fixture-ios.zip")
++    assert not (tmp_path / "never-written.json").exists()
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "missing_sources",
++        "unknown_source",
++        "missing_inventory",
++        "extra_inventory",
++        "source_revision",
++        "source_tag",
++        "source_license",
++        "source_manifest",
++        "source_archive",
++        "source_tree",
++        "source_tree_bytes",
++        "selected_runtime_dependency",
++        "binary_target",
++        "unbound_tool_lock",
++        "unknown_nested_metadata",
++    ],
++)
++def test_full_ios_receipt_rejects_ambiguous_or_partial_four_graph_proof(
++    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, defect: str
++) -> None:
++    repo, _, _ = ios_evidence
++    output = tmp_path / "source.json"
++    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
++    native = audit.decoded(output.read_bytes())
++    build = ios_build_fixture(repo, native)
++    spm = native["spm"]
++    row = spm["remote_source_packages"][0]
++    if defect == "missing_sources":
++        spm["remote_source_packages"] = []
++    elif defect == "unknown_source":
++        row["identity"] = "unknown"
++    elif defect == "missing_inventory":
++        spm["resolved_inventory"] = []
++    elif defect == "extra_inventory":
++        spm["resolved_inventory"].append(copy.deepcopy(spm["resolved_inventory"][0]))
++    elif defect == "source_revision":
++        row["checkout_revision"] = "f" * 40
++    elif defect == "source_tag":
++        row["release_tag_revision"] = "f" * 40
++    elif defect == "source_license":
++        row["license"]["sha256"] = "f" * 64
++    elif defect == "source_manifest":
++        row["manifest_sha256"] = "f" * 64
++    elif defect == "source_archive":
++        row["source_archive"]["sha256"] = "f" * 64
++    elif defect == "source_tree":
++        row["actual_source_tree"]["tree_sha256"] = "f" * 64
++    elif defect == "source_tree_bytes":
++        row["actual_source_tree"]["bytes"] = False
++    elif defect == "selected_runtime_dependency":
++        row["runtime_remote_dependencies"] = [{"location": "https://example.invalid/closed"}]
++    elif defect == "binary_target":
++        row["binary_targets"] = [{"unknown": "synthetic"}]
++    elif defect == "unknown_nested_metadata":
++        row["license"]["private"] = "synthetic private sentinel"
++    else:
++        row = next(
++            entry
++            for entry in spm["resolved_inventory"]
++            if entry["scope"] != "application selected graph"
++        )
++        row["sha256"] = "f" * 64
++        build["lockfile_sha256"][row["path"]] = "f" * 64
++    with pytest.raises(audit.AuditError):
++        audit.validate_native(native, build)
++
++
++def test_missing_release_artifact_is_refused_with_fixed_safe_diagnostic(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++) -> None:
++    data, repo, cache, file = graph
++    data["views"][1]["artifacts"][0]["file"] = str(file.parent / "unbuilt-release.jar")
++    with pytest.raises(FileNotFoundError) as caught:
++        audit.runtime_evidence(data, repo, cache, False)
++    diagnostic = audit.diagnostic(caught.value)
++    assert diagnostic["stage"] == "android-runtime-binaries"
++    assert diagnostic["error_class"] == "MISSING_FILE"
++    assert set(diagnostic) == {"stage", "error_class", "source_line", "counts"}
++    assert 0 < diagnostic["source_line"] < 10_000
++    assert diagnostic["counts"] == {"module_inputs": 1, "project_inputs": 1}
++    assert "unbuilt-release" not in json.dumps(diagnostic)
++    assert str(repo) not in json.dumps(diagnostic)
++
++
++@pytest.mark.parametrize("defect", ["stage", "count_name", "bool_count", "huge_count"])
++def test_diagnostic_inputs_are_fixed_enum_and_bounded_counts(defect: str) -> None:
++    with pytest.raises(audit.AuditError):
++        if defect == "stage":
++            audit.mark("synthetic private sentinel")
++        elif defect == "count_name":
++            audit.mark("start", private_context=1)
++        elif defect == "bool_count":
++            audit.mark("start", remote_pins=True)
++        else:
++            audit.mark("start", remote_pins=30_001)
++
++
++def test_error_diagnostic_does_not_emit_paths_payloads_or_tool_stderr(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path
++) -> None:
++    def private_error(*unused: Any) -> None:
++        audit.mark("android-gradle-inspection")
++        raise __import__("subprocess").CalledProcessError(
++            1,
++            ["synthetic private path"],
++            output="synthetic private payload",
++            stderr="synthetic private stderr",
++        )
++
++    monkeypatch.setattr(audit, "collect_android", private_error)
++    assert (
++        audit.main(
++            [
++                "android",
++                str(tmp_path),
++                str(tmp_path),
++                str(tmp_path / "out.json"),
++                str(tmp_path / "synthetic-key"),
++            ]
++        )
++        == 1
++    )
++    text = capsys.readouterr().err
++    assert "synthetic private" not in text
++    assert "BUILD_TOOL" in text and "android-gradle-inspection" in text
++    assert str(tmp_path) not in text
++
++
++def test_fake_gradle_inspection_preserves_both_actual_views_and_reports_missing_release(
++    graph: tuple[dict[str, Any], Path, Path, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
++) -> None:
++    data, repo, cache, file = graph
++    data["views"][1]["artifacts"][0]["file"] = str(file.parent / "unbuilt-release.jar")
++    output = tmp_path / "evidence/native.json"
++    output.parent.mkdir()
++    calls: list[list[str]] = []
++
++    def fake_gradle(args: list[str], *unused: Any) -> str:
++        calls.append(args)
++        if ":app:gsipRuntimeEvidence" in args:
++            task = Path(args[args.index("-I") + 1])
++            assert task.read_text() == audit.GRADLE_TASK
++            assert "debugRuntimeClasspath" in task.read_text()
++            assert "releaseRuntimeClasspath" in task.read_text()
++            graph_output = Path(
++                next(
++                    arg.split("=", 1)[1] for arg in args if arg.startswith("-PgsipEvidenceOutput=")
++                )
++            )
++            graph_output.write_text(json.dumps(data))
++            return ""
++        return "synthetic runtime tree\n+--- org.example:example-runtime:1.2.3"
++
++    monkeypatch.setattr(audit, "run", fake_gradle)
++    with pytest.raises(FileNotFoundError) as caught:
++        audit.collect_android(repo, cache, output, tmp_path / "unused-debug-key")
++    assert len(calls) == 4
++    assert audit.diagnostic(caught.value)["stage"] == "android-runtime-binaries"
++    assert not output.exists()
++    assert data["views"][1]["artifacts"][0]["file"] != data["views"][0]["artifacts"][0]["file"]
++
++
++def test_primary_source_tree_uses_canonical_string_paths_for_shared_stems(tmp_path: Path) -> None:
++    import io
++
++    root = tmp_path / "repo"
++    checkout = root / "checkout"
++    payloads = {
++        "Library/source.swift": b"synthetic source",
++        "Library.xcodeproj/project.pbxproj": b"synthetic project",
++    }
++    stream = io.BytesIO()
++    with tarfile.open(fileobj=stream, mode="w:gz") as archive:
++        for name, data in payloads.items():
++            file = checkout / name
++            file.parent.mkdir(parents=True, exist_ok=True)
++            file.write_bytes(data)
++            member = tarfile.TarInfo("synthetic-library-1.0.0/" + name)
++            member.size = len(data)
++            archive.addfile(member, io.BytesIO(data))
++    actual = audit.checkout_source_tree(checkout, root)
++    published = audit.source_archive(stream.getvalue(), "synthetic-library", "1.0.0")
++    assert actual == published
++    assert [file["path"] for file in actual["files"]] == sorted(payloads)
++
++
++@pytest.mark.parametrize("defect", ["traversal", "symlink", "binary", "wrong_root", "duplicate"])
++def test_remote_source_archives_reject_unreviewed_file_inputs(defect: str) -> None:
++    import io
++
++    stream = io.BytesIO()
++    with tarfile.open(fileobj=stream, mode="w:gz") as archive:
++        name = "synthetic-library-1.0.0/source.swift"
++        if defect == "traversal":
++            name = "synthetic-library-1.0.0/../private"
++        elif defect == "binary":
++            name = "synthetic-library-1.0.0/unknown.xcframework/binary"
++        elif defect == "wrong_root":
++            name = "other-library-1.0.0/source.swift"
++        member = tarfile.TarInfo(name)
++        if defect == "symlink":
++            member.type = tarfile.SYMTYPE
++            member.linkname = "../private"
++            archive.addfile(member)
++        else:
++            member.size = 1
++            archive.addfile(member, io.BytesIO(b"a"))
++            if defect == "duplicate":
++                archive.addfile(member, io.BytesIO(b"b"))
++    with pytest.raises(audit.AuditError):
++        audit.source_archive(stream.getvalue(), "synthetic-library", "1.0.0")
+--- a/.github/workflows/app-build.yml
++++ b/.github/workflows/app-build.yml
+@@ -13,7 +13,9 @@
+       - packages/schema/**
+       - scripts/app_permissions.py
+       - scripts/app_build.py
++      - scripts/app_notification_audit.py
+       - tests/test_app_build.py
++      - tests/test_app_notification_audit.py
+       - tests/test_app_permissions.py
+       - pnpm-lock.yaml
+       - .github/workflows/app-build.yml
+@@ -24,7 +26,9 @@
+       - packages/schema/**
+       - scripts/app_permissions.py
+       - scripts/app_build.py
++      - scripts/app_notification_audit.py
+       - tests/test_app_build.py
++      - tests/test_app_notification_audit.py
+       - tests/test_app_permissions.py
+       - pnpm-lock.yaml
+       - .github/workflows/app-build.yml
+@@ -50,7 +54,7 @@
+ jobs:
+   android:
+     runs-on: ubuntu-latest
+-    timeout-minutes: 45
++    timeout-minutes: 90
+     steps:
+       - uses: actions/checkout@v7
+       - uses: pnpm/action-setup@v6
+@@ -67,7 +71,7 @@
+       - uses: actions/setup-python@v7
+         with:
+           python-version: '3.12'
+-      - run: pnpm install --frozen-lockfile
++      - run: pnpm install --frozen-lockfile --package-import-method copy
+       - run: pnpm --filter @gsip/capture-pwa build:app
+       - name: Generate the Android project
+         working-directory: apps/capture-pwa
+@@ -111,18 +115,65 @@
+           "$aapt2" dump permissions "$apk" | python scripts/app_permissions.py check-apk -
+           python scripts/app_build.py check-apk "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"
+           python scripts/app_build.py receipt "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-android-reference.apk" apps/capture-pwa/android/app/build/outputs/apk/debug/gsip-android-build-receipt.json android "$aapt2"
++      - name: Audit exact Android runtime and license inputs
++        shell: bash
++        run: |
++          mkdir -p "$RUNNER_TEMP/gsip-app2b-evidence/android"
++          python -m scripts.app_notification_audit android "$GITHUB_WORKSPACE" "$HOME/.gradle/caches" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-native-audit.json" "$HOME/.android/debug.keystore"
++      - name: Build the exact APP-2B parent in an isolated checkout
++        shell: bash
++        run: |
++          baseline=d7ed716ed0921381da04f542e90902ede36cb462
++          git fetch --no-tags origin "$baseline"
++          git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2b-parent"
++          git -C "$RUNNER_TEMP/gsip-app2b-parent" checkout --detach "$baseline"
++          test "$(git -C "$RUNNER_TEMP/gsip-app2b-parent" rev-parse HEAD)" = "$baseline"
++          cd "$RUNNER_TEMP/gsip-app2b-parent"
++          pnpm install --frozen-lockfile --package-import-method copy
++          pnpm --filter @gsip/capture-pwa build:app
++          cd apps/capture-pwa
++          pnpm exec cap add android
++          cd ../..
++          python scripts/app_permissions.py apply-android apps/capture-pwa/android/app/src/main/AndroidManifest.xml
++          python scripts/app_build.py apply-android apps/capture-pwa/android/app "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
++          cd apps/capture-pwa/android
++          {
++            ./gradlew --no-daemon -q :app:dependencies --configuration debugRuntimeClasspath
++            ./gradlew --no-daemon -q :app:dependencies --configuration releaseRuntimeClasspath
++          } | python ../../../scripts/app_permissions.py check-dependencies -
++          ./gradlew --no-daemon assembleDebug
++          cd ../../..
++          aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2"
++          apk=apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk
++          "$aapt2" dump permissions "$apk" | python scripts/app_permissions.py check-apk -
++          python scripts/app_build.py check-apk "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"
++          cp "$apk" "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk"
++          cd apps/capture-pwa/android
++          ./gradlew --no-daemon assembleDebug --rerun-tasks --no-build-cache
++          cd ../../..
++          "$aapt2" dump permissions "$apk" | python scripts/app_permissions.py check-apk -
++          python scripts/app_build.py check-apk "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"
++          cp "$apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent.apk"
++          python scripts/app_build.py receipt "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-build-receipt.json" android "$aapt2"
++          cd "$GITHUB_WORKSPACE"
++          python -m scripts.app_notification_audit android "$RUNNER_TEMP/gsip-app2b-parent" "$HOME/.gradle/caches" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-native-audit.json" "$HOME/.android/debug.keystore"
++          candidate_commit="$(git rev-parse HEAD)"
++          cp "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-repeat-reference.apk"
++          cp "$RUNNER_TEMP/gsip-android-reference.apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-repeat-reference.apk"
++          python -m scripts.app_notification_audit compare "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent.apk" apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-build-receipt.json" apps/capture-pwa/android/app/build/outputs/apk/debug/gsip-android-build-receipt.json "$candidate_commit" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-feature-comparison.json" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-native-audit.json" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-native-audit.json" "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk" "$RUNNER_TEMP/gsip-android-reference.apk"
+       - uses: actions/upload-artifact@v7
+         with:
+           name: gsip-capture-android-debug
+           path: |
+             apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk
+             apps/capture-pwa/android/app/build/outputs/apk/debug/gsip-android-build-receipt.json
++            ${{ runner.temp }}/gsip-app2b-evidence/android/**
+           if-no-files-found: error
+           retention-days: 14
+ 
+   ios:
+     runs-on: macos-latest
+-    timeout-minutes: 60
++    timeout-minutes: 90
+     steps:
+       - uses: actions/checkout@v7
+       - uses: pnpm/action-setup@v6
+@@ -140,7 +191,7 @@
+           newest="$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)"
+           if [ -n "$newest" ]; then sudo xcode-select -s "$newest"; fi
+           xcodebuild -version
+-      - run: pnpm install --frozen-lockfile
++      - run: pnpm install --frozen-lockfile --package-import-method copy
+       - run: pnpm --filter @gsip/capture-pwa build:app
+       - name: Generate the iOS project
+         working-directory: apps/capture-pwa
+@@ -176,11 +227,52 @@
+         run: ditto -c -k --sequesterRsrc --keepParent App.app "$GITHUB_WORKSPACE/gsip-capture-ios-simulator.zip"
+       - name: Record iOS build evidence
+         run: python scripts/app_build.py receipt gsip-capture-ios-simulator.zip "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-ios-reference.zip" gsip-ios-build-receipt.json ios
++      - name: Audit actual iOS native selection and licenses
++        shell: bash
++        run: |
++          mkdir -p "$RUNNER_TEMP/gsip-app2b-evidence/ios"
++          python -m scripts.app_notification_audit ios "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-candidate-native-audit.json" "$GITHUB_WORKSPACE/gsip-capture-ios-simulator.zip"
++      - name: Build the exact iOS parent in an isolated checkout
++        shell: bash
++        run: |
++          baseline=d7ed716ed0921381da04f542e90902ede36cb462
++          git fetch --no-tags origin "$baseline"
++          git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2b-parent"
++          git -C "$RUNNER_TEMP/gsip-app2b-parent" checkout --detach "$baseline"
++          test "$(git -C "$RUNNER_TEMP/gsip-app2b-parent" rev-parse HEAD)" = "$baseline"
++          cd "$RUNNER_TEMP/gsip-app2b-parent"
++          pnpm install --frozen-lockfile --package-import-method copy
++          pnpm --filter @gsip/capture-pwa build:app
++          cd apps/capture-pwa
++          pnpm exec cap add ios
++          cd ../..
++          python scripts/app_permissions.py apply-ios apps/capture-pwa/ios/App/App/Info.plist
++          python scripts/app_build.py apply-ios apps/capture-pwa/ios/App/App/Info.plist "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
++          cd apps/capture-pwa/ios/App
++          xcodebuild -project App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
++          cd ../../../..
++          python scripts/app_permissions.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist
++          python scripts/app_build.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
++          ditto -c -k --sequesterRsrc --keepParent apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app "$RUNNER_TEMP/gsip-ios-parent-repeat-reference.zip"
++          cd apps/capture-pwa/ios/App
++          xcodebuild -project App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build
++          cd ../../../..
++          python scripts/app_permissions.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist
++          python scripts/app_build.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
++          ditto -c -k --sequesterRsrc --keepParent apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent.zip"
++          python scripts/app_build.py receipt "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent.zip" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-ios-parent-repeat-reference.zip" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-build-receipt.json" ios
++          cd "$GITHUB_WORKSPACE"
++          python -m scripts.app_notification_audit ios "$RUNNER_TEMP/gsip-app2b-parent" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-native-audit.json" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent.zip"
++          candidate_commit="$(git rev-parse HEAD)"
++          cp "$RUNNER_TEMP/gsip-ios-parent-repeat-reference.zip" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-repeat-reference.zip"
++          cp "$RUNNER_TEMP/gsip-ios-reference.zip" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-candidate-repeat-reference.zip"
++          python -m scripts.app_notification_audit compare "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent.zip" gsip-capture-ios-simulator.zip "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-build-receipt.json" gsip-ios-build-receipt.json "$candidate_commit" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-feature-comparison.json" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-native-audit.json" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-candidate-native-audit.json" "$RUNNER_TEMP/gsip-ios-parent-repeat-reference.zip" "$RUNNER_TEMP/gsip-ios-reference.zip"
+       - uses: actions/upload-artifact@v7
+         with:
+           name: gsip-capture-ios-simulator
+           path: |
+             gsip-capture-ios-simulator.zip
+             gsip-ios-build-receipt.json
++            ${{ runner.temp }}/gsip-app2b-evidence/ios/**
+           if-no-files-found: error
+           retention-days: 14
+--- /dev/null
++++ b/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
+@@ -0,0 +1,173 @@
++# APP-2B native dependency and size evidence
++
++The app reminder behavior is described in [APP_SYNC_REMINDERS.md](APP_SYNC_REMINDERS.md).
++This document describes evidence produced by `app-build.yml`; it is not a claim that
++CI or a device test has run. The existing permission, closed-SDK, backup, closed
++activation, version and repeated-build checks remain required.
++
++## Scope and inputs
++
++The native workflow builds the current checkout and the exact pre-reminder source
++`d7ed716ed0921381da04f542e90902ede36cb462` in a separate checkout under the runner's
++temporary directory. Candidate and parent frozen installs explicitly copy package files,
++so audit inputs are single-link files rather than pnpm store hardlinks. The parent is fetched by its full commit, read back and built
++with its own frozen lockfile, generated projects and policy scripts. It never modifies
++the candidate working tree. Both builds use the same job, Node/pnpm/Python/Java/Gradle/
++Android SDK or Xcode, workflow run number, public configuration and false capture and
++library-intake flags. Android uses the same disposable debug key; only its digest is
++recorded. No owner-controlled signing input is read or created.
++
++Both parent and candidate are actually built twice. Their existing build receipts
++retain artifact hashes, input lock hashes, exact toolchain outputs, source identity,
++source-clean results and repeat comparisons. The audit runs after those receipts;
++new output remains outside the source checkout. The comparison receives both actual
++first-build reference artifacts, validates their hashes, and recomputes each repeat
++comparison against the corresponding current artifact. Both references are included
++in the uploaded evidence. A failed or unavailable build,
++unclean source, changed signing key/toolchain/build number, wrong source identity,
++changed artifact or open activation receipt refuses the feature comparison.
++
++**Assumption:** this fixed parent is the baseline for APP-2B as a whole. Later workflow
++runs still measure changes from that same source and must describe their broader scope
++if additional app changes have landed. The fixed source is not an unrelated earlier
++artifact: CI rebuilds it under the candidate's current job inputs.
++
++## Android runtime evidence
++
++`python -m scripts.app_notification_audit android` retains separate exact
++`debugRuntimeClasspath` and `releaseRuntimeClasspath` dependency trees, their digests
++and a JSON view of selected resolved modules and actual JAR/AAR inputs. The existing
++`check-dependencies` checks continue on both configurations. Closed SDK coordinates,
++missing graphs, unknown projects, malformed or ambiguous metadata, unsafe files and
++unknown licenses fail the additional audit as well. Traversal components are rejected
++before canonical containment checks. Runtime binaries remain inside their exact
++module/version cache directory or known generated project output; the temporary task
++emits canonical paths for pnpm package links.
++
++A small temporary Gradle inspection task, emitted by the Python helper, reads resolved
++configurations and artifact paths. Its exact digest is recorded. It has no shell,
++network, environment, credential or service logic. This is generated build-tool
++configuration, consistent with the existing Python-applied Gradle versions, not new
++maintained or shipped Java/Kotlin/Groovy app code.
++
++Each resolved public module records its coordinate, actual binary digest/size and
++coordinate-matched POM digest/size, declared license and license URL. A missing child
++license requires explicit bounded parent-POM inheritance; duplicate identity, parent,
++license-container, name or URL fields are refused rather than taking the first match; unknown/absent/ambiguous
++licenses refuse the audit. POM metadata comes from the exact resolved Gradle cache or
++only the public Google Maven/Maven Central paths for that coordinate. A repository
++host does not approve a closed Google SDK. Embedded license/notice files are recorded
++when present; their absence is reported by an empty list, never invented content.
++These are declared licensing/provenance facts about exact resolved inputs, not an
++attestation that a checksum proves the upstream compiler's source-to-binary build.
++
++Local Capacitor/plugin projects are tied to their installed npm source manifests and
++MIT license hashes. Generated build/cache files are excluded from those source
++manifests. Unexpected prebundled JAR/AAR/native-framework inputs are refused instead
++of inheriting a wrapper's MIT label. The empty generated Cordova compatibility project
++must contain no third-party plugin source or binary. The installed geolocation package
++can appear in npm inspection; its Android project remains excluded from the runtime.
++
++Build-only `:app:buildEnvironment` is retained separately and hashed. It describes
++Gradle/AGP/Kotlin tooling, not shipped runtime code. The resolved runtime audit does not
++claim a complete license audit of every test/compiler/SDK artifact.
++
++## iOS selection and license evidence
++
++The current workflow selects Swift Package Manager. Its application graph selects
++Capacitor SwiftPM 8.5.2, IONCameraLib 2.0.0, IONFilesystemLib 1.1.4 and
++IONGeolocationLib 2.1.1. All four identities, official repositories, exact versions and
++checkout HEAD/tag revisions are required. Unknown, missing or changed selections
++refuse the audit. Capacitor retains its selected manifest and both official checksummed
++Capacitor/Cordova XCFramework archives. It compares the
++actual extracted framework tree with the verified archive entries. Changed checksums,
++unknown pins/binary targets, unexpected Pod resolution or mismatched extracted bytes
++refuse the audit. Each ION package additionally records its exact reviewed manifest,
++MIT licence, compressed source archive hash/size and full unpacked source tree. The
++actual checkout tree must match that reviewed tag archive, including the licence and
++manifest. Source trees with extra files, symlinks or prebundled native archives fail.
++A new native version or Pod path needs an explicit adapter/review;
++there is no permissive fallback.
++
++The application lockfile and two upstream ION development-project lockfiles are
++inventoried separately and bound to both the build receipt and the reviewed source
++archive. The latter declare SwiftLintPlugins 0.57.1 at its exact recorded revision;
++it is absent from the application's selected graph. Camera's Quick/Nimble declarations
++serve its upstream test target. These declarations remain visible as development/test
++inputs; no tool or test binary is represented as shipped or licensed by a wrapper.
++An extra resolved file or inconsistent tool pin is rejected.
++
++The existing ION selections are source libraries, not newly added app dependencies.
++Their exact public tags were verified independently on 2026-10-13. These are source
++archive sizes, not application overhead:
++
++| Selected library      | Licence source                                                              | Compressed / unpacked source bytes | Selected-tag commit date |
++| --------------------- | --------------------------------------------------------------------------- | ---------------------------------: | ------------------------ |
++| ION camera 2.0.0      | [MIT](https://github.com/ionic-team/ion-ios-camera/blob/2.0.0/LICENSE)      |                  273,170 / 522,080 | 2026-08-28               |
++| ION filesystem 1.1.4  | [MIT](https://github.com/ionic-team/ion-ios-filesystem/blob/1.1.4/LICENSE)  |                   31,020 / 150,959 | 2026-09-08               |
++| ION geolocation 2.1.1 | [MIT](https://github.com/ionic-team/ion-ios-geolocation/blob/2.1.1/LICENSE) |                    23,644 / 95,915 | 2026-03-10               |
++
++Exact archive, manifest, licence and source-tree digests are retained by the audit.
++`codeload.github.com` supplies only the reviewed public source archives during build
++evidence collection; it receives no app-runtime request or contributor data.
++
++The [official SwiftPM manifest](https://github.com/ionic-team/capacitor-swift-pm/blob/8.5.2/Package.swift)
++and [host description](https://github.com/ionic-team/capacitor-swift-pm/blob/8.5.2/README.md)
++identify the binary distribution. The audit verifies the npm iOS license matches the
++[versioned Capacitor MIT source license](https://github.com/ionic-team/capacitor/blob/8.5.2/LICENSE).
++Cordova additionally retains Apache-2.0 headers in its source; audit records the exact
++installed `CDV.h` header hash separately. A package-level MIT label never licenses
++unrelated binary contents. Apple SDK/system frameworks remain platform/toolchain
++inputs and are not represented as open plugin dependencies. This evidence does not
++prove reproducible reconstruction of upstream XCFrameworks or device behavior.
++
++## Safe failure diagnostics
++
++A failure reports only a fixed audit-stage label, fixed error-class label, source line
++number and bounded counts. It never prints paths, coordinates, parser payloads, tool
++stderr, environment values, credentials or arbitrary exception text. This diagnoses
++the Android audit failure without assuming that release artifacts are its cause.
++Both actual debug and release inputs remain required; there is no debug substitution
++or check skip. If the next CI run confirms absent release project outputs, their
++actual variant producers must run before inspection in a separate forward fix.
++
++## Reading the artifacts
++
++The existing Android and simulator artifact archives contain their original builds
++and repeat receipts plus the parent build, native audit JSON, Android dependency-tree/
++build-environment text and `gsip-android-feature-comparison.json` or
++`gsip-ios-feature-comparison.json`.
++
++Before comparison, complete platform-specific sidecars are validated: both runtime
++views with licensed coordinate/project-bound binaries and npm sources, or the resolved
++SPM selection, archive/tree checksums and license-source bindings. Source/lock hashes
++and native audit artifact hashes must match the corresponding build receipt. Empty,
++partial, contradictory or unknown sidecars cannot become feature evidence. Tree digests
++use canonical key ordering so writing/reading JSON cannot change their meaning.
++
++Every build receipt has the exact schema emitted by `app_build.py`, including all
++platform-specific tool outputs, runner-image fields, source and lock digests, version
++mapping, source-clean status and six repeat-comparison fields. Unknown fields at any
++nesting level, duplicate JSON keys, nonfinite or boolean proof numbers, missing or
++unbounded tool output, malformed digests and conflicting repeat entries refuse the
++audit before any input receipt can be copied to output. Repeat ZIP contents and full
++byte equality are recomputed from both actual artifacts. A valid repeat may contain
++packaging metadata differences; the evidence reports those differences rather than
++claiming byte equality. Tool outputs use bounded adapters for the selected CI tools;
++a changed output format needs a reviewed adapter, and actual native CI remains pending.
++
++A feature comparison records archive byte sizes/delta, full hashes, changed/added/
++removed ZIP entries and Android DEX/resource/native-library versus other entry sizes.
++The result is the **overall APP-2B feature delta**, including Kotlin, resources, UI
++and packaging changes. It is not the plugin's isolated overhead. No dependency-only
++control is built. Compressed npm package bytes are not an APK size measurement.
++ZIP-entry equality excludes archive metadata/signing-block differences; full artifact
++hashes and byte equality include them. Neither comparison establishes universal or
++cross-runner reproducibility.
++
++Only actual successful CI output supplies native builds, resolved licenses and measured
++native size. Local fixture/mutation tests prove the audit's refusals, not a native build.
++Android/iPhone permission, delivery, cancellation, reboot, native logging and backup
++checks remain synthetic real-device gates. iOS WebKit cloud-backup exclusion, signing,
++accounts and store acceptance remain blocked/unverified. No artifact or code merge
++opens production, capture, photo publication or notification permission on a real phone.

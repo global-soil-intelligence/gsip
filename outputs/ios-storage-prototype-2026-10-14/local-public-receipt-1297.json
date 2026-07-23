@@ -1,0 +1,45 @@
+{
+  "schema": "gsip-app2c2a-synthetic-receipt-v1",
+  "results": {
+    "core": {
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0
+    },
+    "keychain_api_probe": "held-group-unverified",
+    "host": {
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0
+    },
+    "simulator_runtime": {
+      "version": "27.0",
+      "build": "24A434"
+    },
+    "generated_source_manifest_sha256": "1d6c8c34513e48e9a4897d2fdc2339a0c355ca08cbd4c74bbf493f103d6afae5",
+    "ordinary": {
+      "debug": {
+        "ordinary_bundle_files": 44,
+        "ordinary_bundle_manifest_sha256": "4b2cdfc4f5fa4c2aeb577068c82606c45110d4f9b68257dd78a4eb7e2c567652",
+        "emitted_code_inputs": 309,
+        "ordinary_compile_link_closure_sha256": "42cf2d0ec6c6dd6a7c1cd20a2351b986a723dcb452cbc0d2d1975b3b6f8715b8",
+        "native_audit_sha256": "a133f69960754e779b0e9307b96350ce03be57e9f56b70fcad61011ab7607bc7",
+        "ordinary_backend_admitted": false
+      },
+      "release": {
+        "ordinary_bundle_files": 42,
+        "ordinary_bundle_manifest_sha256": "2382f911ce37eb3a8adf79414483dfb53c02becd500820db06ac4e8145b202af",
+        "emitted_code_inputs": 309,
+        "ordinary_compile_link_closure_sha256": "ec6fdc76b581919ffa2cec1f26b2e9cb56fb9b3f2b7ebb1cb3cb03a4064cbb0e",
+        "native_audit_sha256": "a82b3a0992e563de29d4b46a9f49215545426e04316f4b950539d16e3c54fc7c",
+        "ordinary_backend_admitted": false
+      }
+    }
+  },
+  "production_changed": false,
+  "capture_opened": false,
+  "ordinary_backend_admitted": false,
+  "physical_device_backup_proven": false,
+  "power_loss_proven": false,
+  "platform_anchor": "held: simulator does not establish physical passcode/restore behavior"
+}

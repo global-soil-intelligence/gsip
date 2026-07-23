@@ -1,0 +1,133 @@
+{
+  "observed_at_utc": "2026-10-13T16:27:17.369433+00:00",
+  "status": "FAILURE_DIAGNOSED",
+  "pr": 63,
+  "repository": "global-soil-intelligence/gsip",
+  "head": "bb3910164cc47eae72958ad521b2186684584978",
+  "fresh_pr_head": "bb3910164cc47eae72958ad521b2186684584978",
+  "fresh_pr_head_matches": true,
+  "native_run_id": 38429415336,
+  "native_run_number": 42,
+  "native_run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38429415336",
+  "failed_job_id": 115407346754,
+  "failed_step": "Audit actual iOS native selection and licenses",
+  "error_class": "Fail-closed native audit evidence schema mismatch",
+  "full_log_sha256": "b9d0cf3abff77e1956daa9ae12225057d842a3ad986cb03a3085ae6f512b671b",
+  "full_log_read_in_memory": true,
+  "raw_log_persisted": false,
+  "observed_runner": {
+    "labels": [
+      "macos-latest"
+    ],
+    "xcode": "26.6",
+    "xcode_build": "17F113"
+  },
+  "actual_selected_remote_packages": {
+    "capacitor-swift-pm": "8.5.2",
+    "ion-ios-camera": "2.0.0",
+    "ion-ios-filesystem": "1.1.4",
+    "ion-ios-geolocation": "2.1.1"
+  },
+  "findings": [
+    "Both actual iOS native builds, packaged permissions and embedded version checks succeeded before audit refusal.",
+    "collect_ios expects exactly one Package.resolved file and one pin; actual successful Xcode resolution selects four remote packages.",
+    "The generic safe error handler hides whether the first refusal was extra resolution files or multiple pins; exact generated resolution files were not uploaded."
+  ],
+  "recommended_owning_fix": [
+    "Extend scripts/app_notification_audit.py and its tests to bind the actual application Package.resolved while inventorying nested resolved files, not silently ignoring them.",
+    "Audit each allowlisted selected ION checkout version/revision, manifest and licence plus Capacitor binary checks. Reject unknown identities/revisions, missing licences, extra unresolved binary targets and inconsistent nested resolution.",
+    "Add meaningful specimens for the exact four-pin graph, genuine nested Package.resolved files and unknown/changed dependency negative cases; preserve privacy-safe errors and all permission/closed-SDK checks."
+  ],
+  "check_snapshot": [
+    {
+      "name": "android",
+      "context": null,
+      "status": "COMPLETED",
+      "conclusion": "FAILURE",
+      "state": null,
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38429415336/job/115407346686",
+      "targetUrl": null
+    },
+    {
+      "name": "dco",
+      "context": null,
+      "status": "COMPLETED",
+      "conclusion": "SKIPPED",
+      "state": null,
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38429415365/job/115407349655",
+      "targetUrl": null
+    },
+    {
+      "name": "validate",
+      "context": null,
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "state": null,
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38429415175/job/115407344690",
+      "targetUrl": null
+    },
+    {
+      "name": "gitleaks",
+      "context": null,
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "state": null,
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38429415303/job/115407346244",
+      "targetUrl": null
+    },
+    {
+      "name": "gitleaks",
+      "context": null,
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "state": null,
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38429407459/job/115407317352",
+      "targetUrl": null
+    },
+    {
+      "name": "ios",
+      "context": null,
+      "status": "COMPLETED",
+      "conclusion": "FAILURE",
+      "state": null,
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38429415336/job/115407346754",
+      "targetUrl": null
+    }
+  ],
+  "native_job_states": [
+    {
+      "id": 115407346686,
+      "name": "android",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 115407346754,
+      "name": "ios",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "artifact_inventory": {
+    "total_count": 0,
+    "returned_count": 0,
+    "artifacts": []
+  },
+  "sanitized_evidence_hashes": {
+    "failure-readback-pr63-metadata.json": "7d69734a89247b96ad75466917f7cf3b1ff694c53a661e713f4e80f1ea675463",
+    "ios-failed-job-metadata.json": "55253081346d76b2bdcb9b321b6b742f569eff7f380fa03e416f01113a9f78de",
+    "ios-failed-step-sanitized.json": "2ce11ae8bfdb80f3070924521beafd00c458137dde2769e3ff0edded3e506f23",
+    "initial-pr63-runs.json": "ee357f6fae247027d05676ab710eb3c66ddc7a74ea210150c38c956bfa0a3869",
+    "failure-native-artifact-metadata.json": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+    "failure-native-jobs.json": "cc9255026be7c267638a3e706d8bc99dfde6dc44d096b150feb4d529e033dd20",
+    "ios-resolved-graph-log-evidence.json": "25b28141d4e5fafa5675069a4a96bcd4acc446e9a0993b1debbcb4566f666667",
+    "initial-pr63-metadata.json": "1fdef639169d99e6ace3d6549b3b23f437a30a0291804ae0e96ffa0c8b6079f7",
+    "ios-failed-log-diagnostics.json": "cc0bc08e0ac5e71174d3fcdf3a427cdae2e0556408186309311d2bba41fd5bce"
+  },
+  "mutations": [],
+  "limits": [
+    "No successful iOS native audit, parent-feature comparison or iOS published artifact is established on this failed run.",
+    "This watcher did not change source or rerun CI; author owns the forward fix.",
+    "Android/validate states are only the final snapshot at this receipt timestamp, not a claim that unfinished checks passed."
+  ]
+}

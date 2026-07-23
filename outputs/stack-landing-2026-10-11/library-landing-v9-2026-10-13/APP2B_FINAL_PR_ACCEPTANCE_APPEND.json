@@ -1,0 +1,12 @@
+{
+  "utc": "2026-10-14T03:34:47.288504+00:00",
+  "pr": 63,
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "prior_body_sha256": "5ed7120e313a554c1bc2e68d9e3d6c1ad768c9226e53eadcad61358aab6b8834",
+  "prior_body_exact_prefix": true,
+  "new_body_sha256": "d778d14fef6fa8c2e8261c323e8685c5af6e73e73d18ccedb28ae552f7fdef40",
+  "new_body_bytes": 64724,
+  "native_proof_sha256": "fb4bb4a73a429377c194cc43c2cfd6a1cd8a37dd0c1d64888ae790b33cb71ddb",
+  "physical_device_box_unchecked": true,
+  "production_changes": false
+}

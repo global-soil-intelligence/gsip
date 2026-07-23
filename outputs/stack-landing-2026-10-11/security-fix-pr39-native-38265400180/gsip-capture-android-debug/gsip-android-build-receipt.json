@@ -1,0 +1,42 @@
+{
+  "source_commit": "b3155ee9776827a14d24cbb82284c2735d7096b5",
+  "platform": "android",
+  "marketing_version": "0.1.0",
+  "run_number": 11,
+  "android_version_code": 11,
+  "ios_build_version": "1.0.10",
+  "lockfile_sha256": {
+    "pnpm-lock.yaml": "141fe7fd542a08d39eee82085740d7ef64dea773933d744746fa3b36979ad097",
+    "uv.lock": "b985ee2c3c8fc0fa41c81e77b45371ed1ca23060f17e40e4617a962c5776535e",
+    "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435",
+    "apps/capture-pwa/android/build.gradle": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
+    "apps/capture-pwa/android/variables.gradle": "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88"
+  },
+  "toolchain": {
+    "node": "v24.21.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.15 (main, Oct  1 2026, 02:35:59) [GCC 13.3.0]",
+    "runner": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "runner_image": {
+      "ImageOS": "ubuntu24",
+      "ImageVersion": "20261004.327.1",
+      "RUNNER_OS": "Linux",
+      "RUNNER_ARCH": "X64"
+    },
+    "gradle": "------------------------------------------------------------\nGradle 8.14.3\n------------------------------------------------------------\n\nBuild time:    2025-07-04 13:15:44 UTC\nRevision:      e5ee1df3d88b8ca3a8074787a94f373e3090e1db\n\nKotlin:        2.0.21\nGroovy:        3.0.24\nAnt:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024\nLauncher JVM:  21.0.12.1 (Eclipse Adoptium 21.0.12.1+1-LTS)\nDaemon JVM:    /usr/lib/jvm/temurin-21-jdk-amd64 (no JDK specified, using current Java home)\nOS:            Linux 6.17.0-1022-azure amd64",
+    "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+    "aapt2": "Android Asset Packaging Tool (aapt) 2.20-15087165"
+  },
+  "source_tree_clean": true,
+  "comparison_scope": "same run/generated project; actual repeated native build; Android shared disposable debug key",
+  "artifact_sha256": "c542c46a3335136b19d648e822faeee64e49fe684eb444d0e67a0cbb800000f9",
+  "reference_sha256": "c542c46a3335136b19d648e822faeee64e49fe684eb444d0e67a0cbb800000f9",
+  "comparison": {
+    "byte_equal": true,
+    "entry_content_equal": true,
+    "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+    "changed_entries": [],
+    "first_only": [],
+    "second_only": []
+  }
+}

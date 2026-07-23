@@ -1,0 +1,9 @@
+{
+  "completion-receipt.json": "48fbbdb393c26db92d441175e3fc20414e1d015e779f15d2111b942312d4c7b5",
+  "native-artifacts.json": "4e27cbb3038a0f3e7e8f0e4e1e280d91a42c76d79a353fca0e3b8c6c63108784",
+  "live-activation-readback.json": "979472b4d8064e50d96ec4d457516063414022721ac31780bb686a6926a8cc22",
+  "gitleaks-final-history.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "gitleaks-final-history.log": "6b0963c9326bddfe310ebf1b2bbe67de6234e1068fe932814fc263238bd925ec",
+  "pytest-full.log": "95370581fcce409c1e6f66b1febfc49e313ae24a87efff7dfff14ed64e9cae15",
+  "final-closed-build.log": "2336e4ce9a5cb56cd3817b6ebfd511e045ccdacedc8e3a5401714951b9b9dad6"
+}

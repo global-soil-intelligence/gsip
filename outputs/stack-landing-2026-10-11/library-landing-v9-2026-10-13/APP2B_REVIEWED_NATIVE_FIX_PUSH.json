@@ -1,0 +1,15 @@
+{
+  "utc": "2026-10-13T23:59:54.651618+00:00",
+  "head": "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d",
+  "base_main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "normal_push_no_force": true,
+  "old_description_prefix_preserved": true,
+  "old_body_sha256": "318c375f12b1435b3d5776cf3ce3b52852dfdd399e7ca6ca4e10d11b719c3196",
+  "new_body_sha256": "7218e9e6a525f82b845babe7fab7c33cf69b13d23e62be2113a7b5c335c7cbca",
+  "new_body_characters": 42586,
+  "draft": true,
+  "native_acceptance": false,
+  "fresh_CI": "pending; no check success inferred",
+  "production_changes": false,
+  "merge_or_review_approval": false
+}

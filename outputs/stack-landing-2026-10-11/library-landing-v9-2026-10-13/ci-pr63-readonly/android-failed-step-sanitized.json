@@ -1,0 +1,114 @@
+{
+  "observed_at_utc": "2026-10-13T16:28:01.698518+00:00",
+  "job_id": 115407346686,
+  "run_id": 38429415336,
+  "head": "bb3910164cc47eae72958ad521b2186684584978",
+  "log_sha256": "5573a5347a3a21e30fa3baa10dfa8a90debac80cdd1512071259b98a0f87bc2a",
+  "log_bytes": 114010,
+  "log_lines": 1314,
+  "read_full_log": true,
+  "raw_log_persisted": false,
+  "failed_step_lines": [
+    {
+      "line": 1254,
+      "text": "2026-10-13T16:22:53.5722560Z ##[group]Run mkdir -p \"$RUNNER_TEMP/gsip-app2b-evidence/android\""
+    },
+    {
+      "line": 1255,
+      "text": "2026-10-13T16:22:53.5723046Z \u001b[36;1mmkdir -p \"$RUNNER_TEMP/gsip-app2b-evidence/android\"\u001b[0m"
+    },
+    {
+      "line": 1256,
+      "text": "2026-10-13T16:22:53.5724156Z \u001b[36;1mpython -m scripts.app_notification_audit android \"$GITHUB_WORKSPACE\" \"$HOME/.gradle/caches\" \"$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-native-audit.json\" \"$HOME/.android/debug.keystore\"\u001b[0m"
+    },
+    {
+      "line": 1257,
+      "text": "2026-10-13T16:22:53.5795486Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}"
+    },
+    {
+      "line": 1258,
+      "text": "2026-10-13T16:22:53.5806250Z env:"
+    },
+    {
+      "line": 1259,
+      "text": "2026-10-13T16:22:53.5806726Z   VITE_SUPABASE_URL: https://toxldjgwkxtneoqsazym.supabase.co"
+    },
+    {
+      "line": 1260,
+      "text": "2026-10-13T16:22:53.5807339Z   VITE_SUPABASE_PUBLISHABLE_KEY: [REDACTED]"
+    },
+    {
+      "line": 1261,
+      "text": "2026-10-13T16:22:53.5807739Z   VITE_CAPTURE_LIVE: false"
+    },
+    {
+      "line": 1262,
+      "text": "2026-10-13T16:22:53.5807982Z   VITE_LIBRARY_INTAKE_LIVE: false"
+    },
+    {
+      "line": 1263,
+      "text": "2026-10-13T16:22:53.5808228Z   VITE_TERMS_URL: "
+    },
+    {
+      "line": 1264,
+      "text": "2026-10-13T16:22:53.5808437Z   VITE_PRIVACY_URL: "
+    },
+    {
+      "line": 1265,
+      "text": "2026-10-13T16:22:53.5808702Z   VITE_SAMPLING_RULES_URL: "
+    },
+    {
+      "line": 1266,
+      "text": "2026-10-13T16:22:53.5809008Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin"
+    },
+    {
+      "line": 1267,
+      "text": "2026-10-13T16:22:53.5809436Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64"
+    },
+    {
+      "line": 1268,
+      "text": "2026-10-13T16:22:53.5809910Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64"
+    },
+    {
+      "line": 1269,
+      "text": "2026-10-13T16:22:53.5810283Z   MAVEN_ARGS: -ntp"
+    },
+    {
+      "line": 1270,
+      "text": "2026-10-13T16:22:53.5810563Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64"
+    },
+    {
+      "line": 1271,
+      "text": "2026-10-13T16:22:53.5810983Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig"
+    },
+    {
+      "line": 1272,
+      "text": "2026-10-13T16:22:53.5811398Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64"
+    },
+    {
+      "line": 1273,
+      "text": "2026-10-13T16:22:53.5811765Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64"
+    },
+    {
+      "line": 1274,
+      "text": "2026-10-13T16:22:53.5812132Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64"
+    },
+    {
+      "line": 1275,
+      "text": "2026-10-13T16:22:53.5812501Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib"
+    },
+    {
+      "line": 1276,
+      "text": "2026-10-13T16:22:53.5812817Z ##[endgroup]"
+    },
+    {
+      "line": 1277,
+      "text": "2026-10-13T16:23:39.9134037Z native-audit: evidence missing, invalid or unreviewed"
+    },
+    {
+      "line": 1278,
+      "text": "2026-10-13T16:23:39.9277281Z ##[error]Process completed with exit code 1."
+    }
+  ],
+  "mutations": []
+}

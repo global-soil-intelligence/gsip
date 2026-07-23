@@ -1,0 +1,7 @@
+{
+  "environment_ids": [
+    18657050755
+  ],
+  "state": "approved",
+  "comment": "Release the reviewed static library website from merge 73088050d6fc68baedf893990ab3fbe76d5e749c. Artifact 12013740607 verified; capture_live=false and library_intake_live=false. No database, Edge Function, worker, auth, DNS or app-store deployment."
+}

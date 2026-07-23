@@ -1,0 +1,264 @@
+--- a/scripts/app_notification_audit.py
++++ b/scripts/app_notification_audit.py
+@@ -1389,6 +1389,7 @@
+             project_inputs=len(view["projects"]),
+         )
+         binaries = []
++        seen: dict[tuple[str, str], tuple[Path, dict[str, Any]]] = {}
+         for artifact in view["artifacts"]:
+             if (
+                 not isinstance(artifact, dict)
+@@ -1433,9 +1434,15 @@
+                 identity = {"project": project}
+             if file.suffix not in {".jar", ".aar"}:
+                 refuse()
+-            binaries.append(
+-                {**identity, "filename": file.name, **zip_evidence(file, (repo, cache))}
+-            )
++            binary = {**identity, "filename": file.name, **zip_evidence(file, (repo, cache))}
++            key = (json.dumps(identity, sort_keys=True, separators=(",", ":")), file.name)
++            previous = seen.get(key)
++            if previous is not None:
++                if previous[0] != file or previous[1] != binary:
++                    refuse()
++            else:
++                seen[key] = (file, binary)
++                binaries.append(binary)
+         if not binaries:
+             refuse()
+         receipts.append(
+--- a/tests/test_app_notification_audit.py
++++ b/tests/test_app_notification_audit.py
+@@ -5297,3 +5297,214 @@
+     else:
+         value = audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other)
+         assert value["identical_toolchain"]["aapt2"] == left["toolchain"]["aapt2"]
++
++
++# Collector normalization is lossless only after every occurrence passes the original checks.
++def repeated_runtime_fixture(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    monkeypatch: pytest.MonkeyPatch,
++) -> tuple[dict[str, Any], Path, Path, Path]:
++    data, repo, cache, module_artifact = graph
++    package = repo / "node_modules/@capacitor/camera"
++    project_artifact = package / "android/build/intermediates/classes/debug/classes.jar"
++    zipped(project_artifact)
++    link = repo / "apps/capture-pwa/node_modules/@capacitor/camera"
++    link.parent.mkdir(parents=True)
++    link.symlink_to(package, target_is_directory=True)
++    monkeypatch.setattr(
++        audit,
++        "npm_evidence",
++        lambda *_args: [
++            {"name": "@capacitor/camera", "installed_source_manifest_sha256": "a" * 64}
++        ],
++    )
++    for view in data["views"]:
++        view["projects"].append(":capacitor-camera")
++        project = {"kind": "project", "project": ":capacitor-camera", "file": str(project_artifact)}
++        if kind == "project":
++            view["artifacts"].append(project)
++        else:
++            view["artifacts"].insert(0, project)
++    return data, repo, cache, project_artifact if kind == "project" else module_artifact
++
++
++def runtime_validator_fixture(result: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
++    native = {
++        **result,
++        "resolved_graph_sha256": "a" * 64,
++        "build_only_environment_sha256": "b" * 64,
++        "debug_signing_key_sha256": "c" * 64,
++        "runtime_tree_sha256": {
++            "debugRuntimeClasspath": "d" * 64,
++            "releaseRuntimeClasspath": "e" * 64,
++        },
++    }
++    return native, {row["name"]: row for row in result["npm_sources"]}
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("views", [[0], [1], [0, 1]])
++@pytest.mark.parametrize("copies", [2, 3])
++def test_runtime_duplicate_same_canonical_file_is_reaudited_then_recorded_once(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    views: list[int],
++    copies: int,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    expected = audit.runtime_evidence(data, repo, cache, False)
++    real_zip = audit.zip_evidence
++    seen: list[Path] = []
++
++    def inspected(file: Path, roots: tuple[Path, ...]) -> dict[str, Any]:
++        value = real_zip(file, roots)
++        seen.append(file)
++        return value
++
++    monkeypatch.setattr(audit, "zip_evidence", inspected)
++    for index in views:
++        row = data["views"][index]["artifacts"][-1]
++        data["views"][index]["artifacts"].extend(copy.deepcopy(row) for _ in range(copies - 1))
++    actual = audit.runtime_evidence(data, repo, cache, False)
++    assert actual == expected
++    assert seen.count(artifact.resolve()) == 2 + len(views) * (copies - 1)
++    native, npm = runtime_validator_fixture(actual)
++    audit.validate_android(native, npm)
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("views", [[0], [1], [0, 1]])
++def test_runtime_duplicate_identity_retains_each_distinct_filename(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    views: list[int],
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    second = artifact.with_name("distinct-runtime.jar")
++    second.write_bytes(artifact.read_bytes())
++    for index in views:
++        row = copy.deepcopy(data["views"][index]["artifacts"][-1])
++        row["file"] = str(second)
++        data["views"][index]["artifacts"].append(row)
++    actual = audit.runtime_evidence(data, repo, cache, False)
++    for index in views:
++        assert {artifact.name, second.name} <= {
++            row["filename"] for row in actual["runtime_views"][index]["resolved_runtime_inputs"]
++        }
++    native, npm = runtime_validator_fixture(actual)
++    audit.validate_android(native, npm)
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("defect", ["different_path_same_bytes", "different_path_new_bytes"])
++def test_runtime_duplicate_same_identity_filename_refuses_distinct_canonical_files(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    defect: str,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    second = artifact.parent / "other-producer" / artifact.name
++    second.parent.mkdir()
++    if defect == "different_path_same_bytes":
++        second.write_bytes(artifact.read_bytes())
++    else:
++        zipped(second, b"different synthetic bytes")
++    row = copy.deepcopy(data["views"][0]["artifacts"][-1])
++    row["file"] = str(second)
++    data["views"][0]["artifacts"].append(row)
++    with pytest.raises(audit.AuditError):
++        audit.runtime_evidence(data, repo, cache, False)
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("defect", ["changed_bytes", "changed_notices", "changed_size"])
++def test_runtime_duplicate_same_file_refuses_changed_complete_evidence(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    defect: str,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    data["views"][0]["artifacts"].append(copy.deepcopy(data["views"][0]["artifacts"][-1]))
++    real_zip = audit.zip_evidence
++    hits = 0
++
++    def changing(file: Path, roots: tuple[Path, ...]) -> dict[str, Any]:
++        nonlocal hits
++        value = real_zip(file, roots)
++        if file == artifact.resolve():
++            hits += 1
++            if hits == 1 and defect == "changed_bytes":
++                zipped(file, b"synthetic replacement bytes between observations")
++            elif hits == 2 and defect == "changed_notices":
++                value["embedded_license_notice_files"][0]["sha256"] = "f" * 64
++            elif hits == 2 and defect == "changed_size":
++                value["bytes"] += 1
++        return value
++
++    monkeypatch.setattr(audit, "zip_evidence", changing)
++    with pytest.raises(audit.AuditError):
++        audit.runtime_evidence(data, repo, cache, False)
++    assert hits == 2
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("defect", ["bad_zip", "symlink", "hardlink", "fifo"])
++def test_runtime_duplicate_second_occurrence_cannot_skip_original_safety_checks(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    defect: str,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    data["views"][0]["artifacts"].append(copy.deepcopy(data["views"][0]["artifacts"][-1]))
++    real_zip = audit.zip_evidence
++    hits = 0
++
++    def becomes_unsafe(file: Path, roots: tuple[Path, ...]) -> dict[str, Any]:
++        nonlocal hits
++        value = real_zip(file, roots)
++        if file == artifact.resolve():
++            hits += 1
++            if hits == 1:
++                if defect == "bad_zip":
++                    file.write_bytes(b"not a ZIP")
++                else:
++                    saved = file.with_name("synthetic-backup.jar")
++                    saved.write_bytes(file.read_bytes())
++                    if defect == "hardlink":
++                        os.link(file, file.with_name("synthetic-linked.jar"))
++                    else:
++                        file.unlink()
++                        if defect == "symlink":
++                            file.symlink_to(saved)
++                        else:
++                            os.mkfifo(file)
++        return value
++
++    monkeypatch.setattr(audit, "zip_evidence", becomes_unsafe)
++    with pytest.raises((audit.AuditError, zipfile.BadZipFile)):
++        audit.runtime_evidence(data, repo, cache, False)
++    assert hits == 1
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("index", [0, 1])
++def test_runtime_duplicate_final_validator_still_rejects_duplicate_receipt_rows(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    index: int,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, _ = repeated_runtime_fixture(graph, kind, monkeypatch)
++    result = audit.runtime_evidence(data, repo, cache, False)
++    native, npm = runtime_validator_fixture(result)
++    audit.validate_android(native, npm)
++    binaries = native["runtime_views"][index]["resolved_runtime_inputs"]
++    binaries.append(copy.deepcopy(binaries[-1]))
++    with pytest.raises(audit.AuditError):
++        audit.validate_android(native, npm)
+--- a/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
++++ b/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
+@@ -563,3 +563,15 @@
+ version string in the failed hosted run was unavailable, so the local value is
+ not attributed to that runner. This parser correction changes no build, runtime
+ selection, source/licence guard, signing-key proof or native acceptance requirement.
++
++Runtime evidence is normalized within each configuration only after every artifact
++occurrence passes the original identity, containment, descriptor, ZIP and licence
++evidence checks. Repeated references to the same canonical file under the same
++typed module/project identity and filename produce one identical proof row. A
++different canonical file refuses even when its bytes match; changed complete
++evidence for the same file also refuses. No occurrence is skipped before checking,
++and the original bounded input list, both configuration graphs and strict final
++validator duplicate rejection remain unchanged. No path or new receipt field is
++exported. Historical local parent and candidate graphs contained five repeated
++same-file groups per configuration; that observation does not identify the values
++in the failed hosted run.

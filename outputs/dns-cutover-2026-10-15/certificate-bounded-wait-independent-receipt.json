@@ -1,0 +1,74 @@
+{
+  "status": "BOUNDED_WAIT_ENDED_CERTIFICATE_STILL_PENDING",
+  "first_request_at_utc": "2026-10-16T01:16:16Z",
+  "independent_poll_started_at_utc": "2026-10-16T01:19:54.593339+00:00",
+  "independent_poll_finished_at_utc": "2026-10-16T01:29:55.844457+00:00",
+  "last_certificate": {
+    "state": "authorization_created",
+    "description": "Authorization created",
+    "domains": [
+      "globalsoilintelligence.com",
+      "www.globalsoilintelligence.com"
+    ]
+  },
+  "https_enforced": false,
+  "source_authority": "Root reports original request at 01:16:16Z; independent timestamped API evidence listed below",
+  "observations": [
+    {
+      "checked_at_utc": "2026-10-16T01:19:54.593339+00:00",
+      "state": "authorization_created",
+      "https_enforced": false,
+      "evidence": "certificate-status-independent-20261016T011954Z.json"
+    },
+    {
+      "checked_at_utc": "2026-10-16T01:21:09.399167+00:00",
+      "state": "authorization_created",
+      "https_enforced": false,
+      "evidence": "certificate-status-independent-20261016T012109Z.json"
+    },
+    {
+      "checked_at_utc": "2026-10-16T01:22:20.063980+00:00",
+      "state": "authorization_created",
+      "https_enforced": false,
+      "evidence": "certificate-status-independent-20261016T012220Z.json"
+    },
+    {
+      "checked_at_utc": "2026-10-16T01:23:30.990666+00:00",
+      "state": "authorization_created",
+      "https_enforced": false,
+      "evidence": "certificate-status-independent-20261016T012330Z.json"
+    },
+    {
+      "checked_at_utc": "2026-10-16T01:24:41.577150+00:00",
+      "state": "authorization_created",
+      "https_enforced": false,
+      "evidence": "certificate-status-independent-20261016T012441Z.json"
+    },
+    {
+      "checked_at_utc": "2026-10-16T01:26:04.285720+00:00",
+      "state": "authorization_created",
+      "https_enforced": false,
+      "evidence": "certificate-status-independent-20261016T012604Z.json"
+    },
+    {
+      "checked_at_utc": "2026-10-16T01:27:16.131116+00:00",
+      "state": "authorization_created",
+      "https_enforced": false,
+      "evidence": "certificate-status-independent-20261016T012716Z.json"
+    },
+    {
+      "checked_at_utc": "2026-10-16T01:28:35.906730+00:00",
+      "state": "authorization_created",
+      "https_enforced": false,
+      "evidence": "certificate-status-independent-20261016T012835Z.json"
+    },
+    {
+      "checked_at_utc": "2026-10-16T01:29:55.844457+00:00",
+      "state": "authorization_created",
+      "https_enforced": false,
+      "evidence": "certificate-status-independent-20261016T012955Z.json"
+    }
+  ],
+  "mutations": "NONE",
+  "next_step": "Root may continue active verification within existing authority; this independent bounded poll has stopped; no background schedule created"
+}

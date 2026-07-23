@@ -1,0 +1,114 @@
+{
+  "authenticated_user": {
+    "id": 179389866,
+    "login": "jdhart81",
+    "public_name": "Justin Hart",
+    "repository_permission": "admin",
+    "type": "User"
+  },
+  "before": {
+    "can_admins_bypass": true,
+    "deployment_branch_policies": [
+      {
+        "id": 55456772,
+        "name": "gh-pages",
+        "type": "branch"
+      },
+      {
+        "id": 55456704,
+        "name": "main",
+        "type": "branch"
+      }
+    ],
+    "deployment_branch_policy": {
+      "custom_branch_policies": true,
+      "protected_branches": false
+    },
+    "required_reviewers": []
+  },
+  "docs": [
+    "https://docs.github.com/en/rest/deployments/environments#create-or-update-an-environment",
+    "https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments"
+  ],
+  "environment": {
+    "id": 18657050755,
+    "name": "github-pages"
+  },
+  "fresh_get_readback": {
+    "can_admins_bypass": true,
+    "deployment_branch_policies": [
+      {
+        "id": 55456772,
+        "name": "gh-pages",
+        "type": "branch"
+      },
+      {
+        "id": 55456704,
+        "name": "main",
+        "type": "branch"
+      }
+    ],
+    "deployment_branch_policy": {
+      "custom_branch_policies": true,
+      "protected_branches": false
+    },
+    "prevent_self_review": false,
+    "required_reviewers": [
+      {
+        "id": 179389866,
+        "login": "jdhart81",
+        "type": "User"
+      }
+    ],
+    "required_reviewers_rule_id": 68521163
+  },
+  "limitations": [
+    "Official documented REST/GraphQL environment update parameters inspected do not expose an administrator-bypass setter.",
+    "Authenticated automation uses Justin\u2019s account, so prevent_self_review remains false to allow Justin to review runs initiated through that identity; agent approvals remain forbidden."
+  ],
+  "merge_or_deployment_actions": false,
+  "mutation": {
+    "command_argv": [
+      "gh",
+      "api",
+      "--method",
+      "PUT",
+      "-H",
+      "Accept: application/vnd.github+json",
+      "-H",
+      "X-GitHub-Api-Version: 2026-03-10",
+      "repos/global-soil-intelligence/gsip/environments/github-pages",
+      "--input",
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/pages-required-reviewer-payload.json",
+      "--include"
+    ],
+    "http_status": 200,
+    "payload": {
+      "deployment_branch_policy": {
+        "custom_branch_policies": true,
+        "protected_branches": false
+      },
+      "prevent_self_review": false,
+      "reviewers": [
+        {
+          "id": 179389866,
+          "type": "User"
+        }
+      ],
+      "wait_timer": 0
+    },
+    "request_id": "1389:1BF8F8:D701E:2BD5F8:6ACCCF6C",
+    "response_date": "Mon, 12 Oct 2026 12:15:40 GMT"
+  },
+  "recorded_at_utc": "2026-10-12T12:17:38.221415+00:00",
+  "remaining_owner_action": "Settings > Environments > github-pages: deselect Allow administrators to bypass configured protection rules and save. A fully enforced Justin-only gate is not yet established.",
+  "repository": "global-soil-intelligence/gsip",
+  "secret_reads": false,
+  "status": "REVIEWER_SET_ADMIN_BYPASS_PENDING",
+  "verification": {
+    "administrator_bypass_disabled": false,
+    "branch_policies_preserved": true,
+    "no_other_reviewer_can_approve": true,
+    "sole_reviewer_is_justin": true
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "utc": "2026-10-13T17:24:00.040648+00:00",
+  "candidate": "app2b-root-v6",
+  "actual_exit_codes": {
+    "whole_python": 0,
+    "ruff": 0,
+    "mypy": 0,
+    "lint": 0,
+    "pinned8_21_2_authored_scan": 0
+  },
+  "python_passed": 1123,
+  "python_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "4",
+      "tests": "1127",
+      "time": "14.108",
+      "timestamp": "2026-10-13T13:22:03.748596-04:00",
+      "hostname": "MacBook-Pro-6.local"
+    }
+  ],
+  "logs": {
+    "app2b-root-v6-mypy.log": {
+      "sha256": "678fe31f7c301580d40b75d6f71bcd76bd575618a9bdc72484a136988d5fd034",
+      "bytes": 44
+    },
+    "app2b-root-v6-ruff.log": {
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    "app2b-root-v6-authored-gitleaks.log": {
+      "sha256": "ff4980af4483997318bcbd9c993e66d414eff4ad0ca3fa9c4e87ace31420726a",
+      "bytes": 98
+    },
+    "app2b-root-v6-lint.log": {
+      "sha256": "8986dfcda5512e47b979aa7120521e228da209dd4c32cf7f8eec8d7ee49e4dfa",
+      "bytes": 134
+    },
+    "app2b-root-v6-whole-python.log": {
+      "sha256": "db41301d4f4cd9e795334b41c4360c1b023ab804c83f63bc93aeaaf726238682",
+      "bytes": 1280
+    }
+  },
+  "offline_task_private_HF_caches": true,
+  "scanner_findings": [],
+  "independent_final_review_and_CI_pending": true,
+  "native_device_production_acceptance": false,
+  "exact23": {
+    "apps/capture-pwa/package.json": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115",
+    "pnpm-lock.yaml": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+    "apps/capture-pwa/capacitor.config.ts": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69",
+    "apps/capture-pwa/src/App.tsx": "efe1015dc54392a105767b4e8955d370047ac880aa005bffbdcc7a8c6ba6907c",
+    "apps/capture-pwa/src/YourData.tsx": "f3085983a3ebcb28796adf6c738f5b1ebfb468708aaa0966476bb53e538f76c8",
+    "apps/capture-pwa/src/queue.ts": "ce389c528acdfce3cb75acab1bfd55d615f3cf5ba8104130a8813ec6cd889f31",
+    "apps/capture-pwa/src/platform/notifications.ts": "696c89be417cc8dfac6466f6f163b7aaff7eb84143c43200c1a793e8ed05787f",
+    "apps/capture-pwa/src/syncReminder.ts": "f118a3ff7cfdcb2489b4cda1df0e33a029d63bab778b45a68926c883972259d3",
+    "apps/capture-pwa/tests/notifications.test.ts": "ada3f36d6db6bc3a7b0100d66b0a771d913d09521a51044b13f7b9ab030e5d22",
+    "apps/capture-pwa/tests/sync-reminder.test.ts": "0b9ffb103f9126c488006faa8cd339c22e331af7a0040f5d1cbb7f6a05baa901",
+    "apps/capture-pwa/tests/reminder-queue.test.ts": "1022b1f169467ea09aac7a18e0109f698054ca8873346930feb16e962db4fe21",
+    "apps/capture-pwa/tests/reminder-rights.test.tsx": "952bf872c7bdac266ad1eec7ac31477c4afff2a0893400e907d124062a929b4d",
+    "apps/capture-pwa/tests/reminder-app.test.tsx": "e7a90f1fe2f26060f5611472415102763700f3ea9745b58cfe5d5b5a9d44691f",
+    "scripts/app_permissions.py": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3",
+    "tests/test_app_permissions.py": "511addd80ca24b30bf8a6f7291917dd56b5bcf305b0ed0f003d7a209139ecfda",
+    "tests/test_app_build.py": "5b1df866e578c3c78b301c94e1a6f136347194907c75ed71de3aee240c126757",
+    "docs/APP_SYNC_REMINDERS.md": "37f8b6521751cf51658a07b97ed99b14b8e2ee8858e2ccc66345402719ff064a",
+    "docs/APP_STORE.md": "bc5be716c7cb6365defafa70db9546741ec0b5e27e6d46b38ff7e33da2e1d411",
+    "docs/legal/PRIVACY.md": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+    "scripts/app_notification_audit.py": "b9af11f753ab9630ecca1fdd9262796f7996c7fad4709d69f61f3ddc3a78d762",
+    "tests/test_app_notification_audit.py": "2868d1721ce606a5d210143c242ebe59084e37f379424490acf0aa8b3d5dcd58",
+    ".github/workflows/app-build.yml": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": "75747b73ceda9e507bdfc7d40d57aa7daa55379625dc12a61af0fc67e45e31bc"
+  },
+  "core18_workflow_and_other335_unchanged": true,
+  "privacy_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00"
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "argv": [
+      "pnpm",
+      "check:map-budget"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "pnpm",
+      "check:site-budget"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "node",
+      "scripts/build-pages.mjs"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "pnpm",
+      "--filter",
+      "@gsip/capture-pwa",
+      "build:app"
+    ],
+    "exit_code": 0
+  }
+]

@@ -15,6 +15,8 @@ class SupabasePriorWorker:
         )
 
     def drain(self, limit: int = 25) -> tuple[int, int]:
+        recovered = self.client.post(f"{self.url}/rest/v1/rpc/requeue_stale_prior_jobs", json={})
+        recovered.raise_for_status()
         response = self.client.get(
             f"{self.url}/rest/v1/prior_jobs",
             params={

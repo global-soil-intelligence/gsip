@@ -1,0 +1,24 @@
+{
+  "status": "exact_commit_tree_metadata_closed",
+  "head": "e9f5bade7a54601ded41ea7eda09e9b96c2c21bc",
+  "parent": "6a652f94b220be7eeff49508283883c502baa527",
+  "branch": "docs/spec-v13",
+  "manifest_sha256": "06710bba4738a0a4cebfea27b4c5d34ea282ad21fd40e80a5670e47970364402",
+  "tracked_blob_count": 377,
+  "all_blob_hashes_modes_match_independent_v4": true,
+  "exact_authorized_paths": [
+    "docs/BUILD_ORDER.md",
+    "docs/IOS_NATIVE_SCOPE.md",
+    "docs/IOS_NATIVE_STORAGE_DESIGN.md",
+    "docs/SPEC.md",
+    "docs/ios-native-scope.json",
+    "tests/test_ios_native_scope.py"
+  ],
+  "working_tree_clean": true,
+  "commit_message": "docs(spec): bound synthetic iOS native prototype scope\n\nRecord accepted passcode and preserve-quarantine policy, and propose exact native/support files, API effects and disposable harness copy/edit boundaries for a separate owner go. Create no native implementation and preserve all existing acceptance states.\n\nCo-Authored-By: Codex <codex@openai.com>\n\n",
+  "conventional_commit": true,
+  "codex_trailer": true,
+  "signed_off_by_absent": true,
+  "tests_repeated": false,
+  "native_or_git_mutation_or_GitHub_or_production": false
+}

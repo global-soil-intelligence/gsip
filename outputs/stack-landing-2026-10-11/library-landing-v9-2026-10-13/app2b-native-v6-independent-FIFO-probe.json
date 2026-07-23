@@ -1,0 +1,7 @@
+{
+  "probe": "explicit synthetic FIFO with no writer, bounded 250 ms interruption",
+  "actual": "open_blocked_before_regular_file_check",
+  "file": "scripts/app_notification_audit.py",
+  "line": 185,
+  "source_sha256": "b9af11f753ab9630ecca1fdd9262796f7996c7fad4709d69f61f3ddc3a78d762"
+}

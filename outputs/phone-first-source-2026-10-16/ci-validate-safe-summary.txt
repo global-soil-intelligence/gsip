@@ -1,0 +1,17 @@
+Run: https://github.com/global-soil-intelligence/gsip/actions/runs/38986477510
+Job: validate 117259027991
+Source head: 731a30ff6f8f3a90e0df31eb1d977edf1fcaf912
+2026-10-17T00:29:12.9832594Z apps/site-web test: [2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+2026-10-17T00:29:12.9833923Z apps/site-web test: [2m      Tests [22m [1m[32m41 passed[39m[22m[90m (41)[39m
+2026-10-17T00:29:13.0783696Z packages/schema test: [2m Test Files [22m [1m[32m15 passed[39m[22m[90m (15)[39m
+2026-10-17T00:29:13.0784821Z packages/schema test: [2m      Tests [22m [1m[32m310 passed[39m[22m[90m (310)[39m
+2026-10-17T00:29:15.5720746Z apps/map-web test: [2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+2026-10-17T00:29:15.5743297Z apps/map-web test: [2m      Tests [22m [1m[32m16 passed[39m[22m[90m (16)[39m
+2026-10-17T00:29:28.7624537Z apps/capture-pwa test: [2m Test Files [22m [1m[32m31 passed[39m[22m[90m (31)[39m
+2026-10-17T00:29:28.7625825Z apps/capture-pwa test: [2m      Tests [22m [1m[32m338 passed[39m[22m[90m (338)[39m
+2026-10-17T00:30:32.5648177Z   16 passed (20.4s)
+2026-10-17T00:31:00.1802383Z   4 passed (26.9s)
+2026-10-17T00:33:45.2796775Z 2167 passed, 31 skipped, 37 warnings in 153.56s (0:02:33)
+2026-10-17T00:36:55.5603729Z All tests successful.
+2026-10-17T00:36:55.5604543Z Files=12, Tests=632,  2 wallclock secs ( 0.07 usr  0.02 sys +  0.07 cusr  0.07 csys =  0.23 CPU)
+2026-10-17T00:36:55.5618043Z Result: PASS

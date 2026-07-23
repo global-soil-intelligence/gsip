@@ -1,0 +1,3 @@
+Owner-authorized ordered merge of #84 after #83, exact-head green CI and resolved independent review. Retargeted to main with no source changes; the approved specification and main trees match. No production migration/deployment, account enrollment, capture/library activation or publication.
+
+Co-Authored-By: Codex <codex@openai.com>

@@ -1,0 +1,90 @@
+{
+  "backfill_aggregate_counts": {
+    "actor_backfill_status_mismatch_count": 0,
+    "actor_count": 5,
+    "complete_ab_count": 0,
+    "contributor_count": 5,
+    "finalization_mismatch_count": 0,
+    "finalized_count": 0,
+    "gold_label_count": 0,
+    "grant_count": 5,
+    "human_actor_missing_or_duplicated_count": 0,
+    "invented_submission_tier_one_or_higher_count": 0,
+    "legacy_grant_receipt_nonnull_count": 0,
+    "legacy_grant_terms_missing_count": 0,
+    "legacy_holdout_true_count": 0,
+    "legacy_photo_evidence_nonnull_count": 0,
+    "nonsynthetic_submission_count": 0,
+    "photo_count": 25,
+    "photo_qa_backfill_mismatch_count": 0,
+    "photo_tier_backfill_mismatch_count": 0,
+    "settlement_mismatch_count": 0,
+    "submission_actor_binding_mismatch_count": 0,
+    "submission_count": 25,
+    "submission_legacy_claim_mismatch_count": 0,
+    "submission_tier_backfill_mismatch_count": 0,
+    "synthetic_submission_count": 25,
+    "terms_active_version_mismatch_count": 0,
+    "terms_expected_count": 2,
+    "terms_july_published_unretired_count": 1,
+    "terms_other_retired_count": 1,
+    "terms_total_count": 2,
+    "unexpected_actor_kind_or_orphan_count": 0
+  },
+  "bound_inputs": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-backfill-20261012T192521Z.json",
+      "sha256": "b824ec872bb6a07fa117d8e371ff5fefd7ba558b41563eeeb7a409a943796a69"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-prior_k-20261012T192521Z.json",
+      "sha256": "6cefe48b5908e73d8bf17c0cb9086903afec847705747c628f73d5dd3bdd8e96"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-pre-backfill-20261012T191950Z.json",
+      "sha256": "b824ec872bb6a07fa117d8e371ff5fefd7ba558b41563eeeb7a409a943796a69"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-pre-prior_k-20261012T191950Z.json",
+      "sha256": "60e343e59aef95ffe2e8072b19635b72948d247ae15123dec9f2e09129c33621"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-post-gate-c-backfill-verification-2026-10-12.sql",
+      "sha256": "7d6a16ff997967ab1aacc4d436b533c765ed6d026f89c3e5d07ec5d84fe26b21"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-post-c-prior-k-aggregates-2026-10-12.sql",
+      "sha256": "870f8febe86b5e472925276c8eeceffa810942ea32c857a2a62483103cae6612"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-catalog-target28.json",
+      "sha256": "ad00014b27dbead6250853c7fc16071d6532c15353e234e777de66d4608dcacc"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-supplement-target28.json",
+      "sha256": "d9bb5d6c74f35251d3204c6e4b1b79d1259e52b017663ebf561c30f7ecf7150b"
+    }
+  ],
+  "checks": {
+    "all16_backfill_anomalies_zero": true,
+    "all_backfill_aggregate_predicates_exact_post_c": true,
+    "all_backfill_predicates_unchanged_from_pre_d": true,
+    "all_prior_and_k_aggregates_unchanged_from_pre_d": true,
+    "all_prior_and_k_anonymity_aggregates_exact_post_c": true,
+    "all_prior_k_anomalies_zero": true,
+    "target28_references_exact_pinned_hashes": true
+  },
+  "completed_at_utc": "2026-10-12T19:26:33.844945+00:00",
+  "failed_checks": [],
+  "prior_and_k_aggregates": {
+    "k_anonymity_violations": 0,
+    "prior_cache_rows": 0,
+    "prior_jobs_nonempty_new_empty_sources": 0,
+    "public_cells": 0,
+    "upstream_bucket_config_mismatch": 0,
+    "upstream_bucket_rows": 3
+  },
+  "production_mutations_by_this_agent": 0,
+  "state": "PASS_READONLY_GATE_D_POST_AGGREGATES",
+  "target_project_ref": "toxldjgwkxtneoqsazym"
+}

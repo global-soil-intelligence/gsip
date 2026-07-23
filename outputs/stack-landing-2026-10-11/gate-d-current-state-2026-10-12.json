@@ -1,0 +1,17 @@
+{
+  "state": "PASS_GATE_D_COMPLETED_AND_VERIFIED",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1"
+  },
+  "ledger": 28,
+  "hosted_security_findings": 0,
+  "capture_open": false,
+  "completion_receipt": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-completion-receipt-2026-10-12.json",
+  "completion_receipt_sha256": "258c5c8f47fcb439af08acf9c07e788036d3816e649b91d4d6ff965ec4d021db",
+  "report": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/REPORT-gate-d-complete-2026-10-12.md",
+    "sha256": "46ce0e0372b95acdf4da2b213bf6fd389798f6a6ace44027119f572cbdac4ee8"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "HOME": "INHERITED_UNCHANGED",
+  "exact_missing_coordinate_not_allowlisted": 1,
+  "files": {
+    "inspection-corrected.json": {
+      "bytes": 1581,
+      "sha256": "a4873ce9406746579e835f354153ef3360948a20fd47215b7766e29a65c281c9"
+    },
+    "offline_run.py": {
+      "bytes": 5625,
+      "sha256": "e23bd35d7563c16a89625ab551927adef9792d0dce7484090f51025540a42eea"
+    },
+    "primary-coordinate-allowlist.json": {
+      "bytes": 3118,
+      "sha256": "217a72f3d44be4d66945a43676a71e174e04a7d5984e8cce6b5d8519347c713e"
+    }
+  },
+  "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "maintained_source_changes": false,
+  "network": false,
+  "no_unlisted_value_disclosed": true,
+  "schema": "gsip-c1-corrected-offline-frozen-v1"
+}

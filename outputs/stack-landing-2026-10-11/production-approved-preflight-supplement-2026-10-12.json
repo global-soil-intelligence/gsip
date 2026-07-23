@@ -1,0 +1,203 @@
+{
+  "private_functions": [
+    {
+      "arguments": "",
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition_sha256": "7c79d75fe309f47dd71cb5d7de579a47516c3352ff3e1491c94db998aa38aa51",
+      "grants": [
+        {
+          "grantable": false,
+          "privilege": "EXECUTE",
+          "role": "postgres"
+        }
+      ],
+      "name": "clear_untrusted_submission_h3",
+      "owner": "postgres",
+      "result": "trigger",
+      "security_definer": false,
+      "volatility": "v"
+    },
+    {
+      "arguments": "",
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition_sha256": "5bfa98998222ae7b670d0b8d9ae18d7ea6bc3da987a0ca2e3154c617e95a34a7",
+      "grants": [
+        {
+          "grantable": false,
+          "privilege": "EXECUTE",
+          "role": "PUBLIC"
+        },
+        {
+          "grantable": false,
+          "privilege": "EXECUTE",
+          "role": "postgres"
+        }
+      ],
+      "name": "reject_contribution_grant_mutation",
+      "owner": "postgres",
+      "result": "trigger",
+      "security_definer": false,
+      "volatility": "v"
+    }
+  ],
+  "schema_grants": [
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "anon",
+      "schema": "extensions"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "authenticated",
+      "schema": "extensions"
+    },
+    {
+      "grantable": false,
+      "privilege": "CREATE",
+      "role": "dashboard_user",
+      "schema": "extensions"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "dashboard_user",
+      "schema": "extensions"
+    },
+    {
+      "grantable": false,
+      "privilege": "CREATE",
+      "role": "postgres",
+      "schema": "extensions"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "postgres",
+      "schema": "extensions"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "service_role",
+      "schema": "extensions"
+    },
+    {
+      "grantable": false,
+      "privilege": "CREATE",
+      "role": "postgres",
+      "schema": "private"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "postgres",
+      "schema": "private"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "PUBLIC",
+      "schema": "public"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "anon",
+      "schema": "public"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "authenticated",
+      "schema": "public"
+    },
+    {
+      "grantable": false,
+      "privilege": "CREATE",
+      "role": "pg_database_owner",
+      "schema": "public"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "pg_database_owner",
+      "schema": "public"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "postgres",
+      "schema": "public"
+    },
+    {
+      "grantable": false,
+      "privilege": "USAGE",
+      "role": "service_role",
+      "schema": "public"
+    }
+  ],
+  "storage_policies": [
+    {
+      "check": null,
+      "command": "d",
+      "name": "incoming_photos_delete_own",
+      "permissive": true,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": "((bucket_id = 'incoming-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))"
+    },
+    {
+      "check": "((bucket_id = 'incoming-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))",
+      "command": "a",
+      "name": "incoming_photos_insert_own",
+      "permissive": true,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": null
+    },
+    {
+      "check": null,
+      "command": "r",
+      "name": "incoming_photos_select_own",
+      "permissive": true,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": "((bucket_id = 'incoming-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))"
+    },
+    {
+      "check": "((bucket_id = 'incoming-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))",
+      "command": "w",
+      "name": "incoming_photos_update_own",
+      "permissive": true,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": "((bucket_id = 'incoming-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))"
+    },
+    {
+      "check": null,
+      "command": "r",
+      "name": "submission_photos_select_own",
+      "permissive": true,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": "((bucket_id = 'submission-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))"
+    }
+  ],
+  "views": []
+}

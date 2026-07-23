@@ -1,0 +1,64 @@
+{
+  "recorded_date": "2026-10-17",
+  "owner_authority": "Merge and update as needed to close session. No production, Pages, capture, library or device authority added.",
+  "pr": {
+    "number": 91,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/91",
+    "reviewed_head": "9b5331569602db7f2a54b0748e03325f591ffa9d",
+    "merge": "b7107fe7a06b856a9ac5c137d0370db365009e27",
+    "merged_at": "2026-10-17T13:57:18Z",
+    "tree_equals_reviewed_head": true,
+    "tree": "ebad8683407010e1a7d24e2d07415061fbd67ce6",
+    "metadata": {
+      "conventional_commit": true,
+      "codex_coauthor": true,
+      "human_signed_off_by": false
+    },
+    "independent_review_findings": 0,
+    "premerge_checks": "validate/android/ios/PR and branch secret scans success; DCO policy skip"
+  },
+  "issue": {
+    "number": 90,
+    "state": "CLOSED"
+  },
+  "pages": {
+    "run": 39038685785,
+    "head": "b7107fe7a06b856a9ac5c137d0370db365009e27",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "can_admins_bypass": false,
+    "required_reviewer": "jdhart81"
+  },
+  "main_checks": {
+    "ci": 39038685793,
+    "app": 39038685787,
+    "secret_scan": 39038685827,
+    "secret_scan_result": "success",
+    "ci_and_app": "pending"
+  },
+  "source_checkout": {
+    "path": "/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0",
+    "branch": "main",
+    "head": "b7107fe7a06b856a9ac5c137d0370db365009e27",
+    "clean": true,
+    "unpushed_commits": 0
+  },
+  "monitor": {
+    "id": "monitor-gsip-website-and-pull-requests",
+    "kind": "heartbeat",
+    "status": "ACTIVE",
+    "time": "09:00 America/New_York daily",
+    "read_only": true,
+    "baseline_updated_for_merged_91": true,
+    "quiet_when_unchanged": true
+  },
+  "remaining": {
+    "open_pr": 73,
+    "state": "DRAFT",
+    "reason": "Known unsupported iOS simulator storage protection; not part of live website",
+    "future_work": "COLLECT-4B live preview and separately approved phone qualification"
+  },
+  "production_changes": [],
+  "activation_changes": [],
+  "source_edits_after_merge": []
+}

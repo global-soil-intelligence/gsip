@@ -1,0 +1,3 @@
+Owner-authorized merge of #83 after exact-head green CI and resolved independent review. Source specification only. No production deployment, account enrollment or capture/library activation.
+
+Co-Authored-By: Codex <codex@openai.com>

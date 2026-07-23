@@ -1,0 +1,17 @@
+{
+  "local_lint": "passed ESLint/language/Prettier",
+  "ruff": "passed",
+  "mypy": "passed80sourcefiles",
+  "related_pytest": "131passed,zeroerrors/failures/skips",
+  "new_tests_baseline": "38expectedfailures,zeroerrors/skips,independentlyrepeated",
+  "independent_external_mutants_rejected": 21,
+  "existing_files_unchanged": 371,
+  "final_tracked_files": 377,
+  "existing_criteria_preserved": 138,
+  "new_unchecked_criteria": 2,
+  "native_files_created": 0,
+  "native_api_or_device_execution": false,
+  "production_operations": false,
+  "scope_json_sha256": "810bca4dcaa09a796e3622f72c0c5f48f56d0ce70b0688eb24de4cf6fab7ac9d",
+  "reviewed_manifest_sha256": "06710bba4738a0a4cebfea27b4c5d34ea282ad21fd40e80a5670e47970364402"
+}

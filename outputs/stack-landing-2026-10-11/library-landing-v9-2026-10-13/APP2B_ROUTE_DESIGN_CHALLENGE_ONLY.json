@@ -1,0 +1,113 @@
+{
+  "actual_check_counts": {
+    "agp_direct_coordinates_with_cached_artifact": 54,
+    "agp_direct_dependency_coordinates": 54,
+    "builds_executed": 0,
+    "illustrative_serialization_examples": 3,
+    "sdk_concrete_items": 7,
+    "sdk_concrete_items_present": 7,
+    "tests_executed": 0
+  },
+  "confirmed_findings": [
+    {
+      "finding": "Existing generated Android tree omits geolocation and local-notifications while exact current app declares and installed packages contain them. Regenerate in owned exact-source copy; existing tree is not a faithful current-source reproduction.",
+      "kind": "environment-freshness",
+      "status": "Author independently confirmed and is regenerating; not a maintained-source defect."
+    },
+    {
+      "finding": "7/7 listed concrete SDK platform/build-tool inputs present; direct AGP8.13 API/runtime union54 dependency coordinates have cached artifacts. Declared AGP/builder8.13/google-services4.4.4 triplets present.",
+      "kind": "sdk-presence",
+      "status": "Presence established; transitive offline cache completeness and actual execution not established by this read-only inventory."
+    },
+    {
+      "finding": "Pinned DefaultMultiCauseException.getCause returns first cause while getCauses exposes its list. Existing walk observes one bounded cause chain. Java getSuppressed materializes an array.",
+      "kind": "pinned-api",
+      "status": "No inference that multi-cause behavior caused hosted UNKNOWN; no added accessor/traversal authorized by design challenge."
+    }
+  ],
+  "created_at_utc": "2026-10-13T22:32:55.354711+00:00",
+  "current_helper_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+  "evidence": [
+    {
+      "bytes": 21607,
+      "path": "/private/tmp/gsip-route-design-independent-0xrhmxu5/SDK_INPUT_PRESENCE.json",
+      "sha256": "a8a308183c0987df12dbc968c8814ae8ff916644b05864669620c3088ce3d606"
+    },
+    {
+      "bytes": 5841,
+      "path": "/private/tmp/gsip-route-design-independent-0xrhmxu5/PINNED_THROWABLE_DESIGN_EVIDENCE.json",
+      "sha256": "5c7d22b3d784d1176d1538061123f57393db96bf66a392ab987d2b3a111c96d2"
+    }
+  ],
+  "hosted_observation": {
+    "fixed_fault": "BUILD_FAILURE|UNKNOWN",
+    "no_specific_fix_or_resource_failure_inference": true,
+    "receipt_path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-pr63-c1-android-ci-watch-_h7vj49b/finite-android-closeout.json",
+    "receipt_sha256": "49dad74f139a45fa6a0ab81de9ca5f1a985782e9a24b7177373961ced8f2e6fc",
+    "underlying_cause": "UNKNOWN"
+  },
+  "implementation_acceptance_gates": [
+    {
+      "gate": "original-byte-pairing",
+      "requirement": "Bind route digest to the same descriptor-checked bounded original fault bytes used by the accepted original fault lease; do not validate original fault then obtain pairing bytes by a second pathname read."
+    },
+    {
+      "gate": "exact-256-byte-bound",
+      "requirement": "Freeze inventory/schema then measure actual serializer worst case with 16 IDs, largest allowed IDs, all bounded numeric fields, longest route enum, full schema and digest. Refuse overflow; never truncate or raise cap. Illustrative schema:1 sizes are examples only, not actual candidate proof."
+    },
+    {
+      "gate": "observational-chain-only",
+      "requirement": "Instrument the original <=16 getCause chain with same getter ordering, short-circuit/cycle/depth decisions and original catches. No getCauses/getSuppressed/message/stack/location/task/property traversal. Reuse the original per-node class-name lookup where feasible; added observation failures may only suppress route, never change old cause/fault/failure."
+    },
+    {
+      "gate": "type-provenance",
+      "requirement": "Freeze numeric IDs from exact pinned source/class metadata; distinguish public supported types from published internal implementation names. Qualified-name equality identifies a name match, not authenticated loaded byte identity; no eager inventory class loading. Unknown/custom names remain OTHER."
+    },
+    {
+      "gate": "file-and-lease-isolation",
+      "requirement": "Separate sibling route directory, strict singleton exclusive file, private permission, regular/no-follow/one-link/bounded strict JSON, fixed ID/range/enum/schema checks, no arbitrary payload. Missing/multiple/malformed/mismatched/stale/foreign command or exception returns route UNKNOWN without altering old fault. Same CPE identity/canonical7command/nonzero exactstatus/stage and both reset boundaries."
+    },
+    {
+      "gate": "status-and-byte-controls",
+      "requirement": "Finite exact frozen implementation controls must preserve actual success graph bytes and original failure exception/status; original task/setup fault wins without duplicate/replace; absent/unsafe/oversized/unknown/conflict/cycle/depth/accessor failures remain conservative. Guard removals must fail meaningful controls."
+    }
+  ],
+  "kind": "independent-bounded-design-challenge",
+  "local_reproduction_route": {
+    "limitation": "Local macOS/tool success or failure is evidence about that exact reproduction, not proof of hosted Linux cause or native/device acceptance",
+    "required_isolation": "Owned source/node_modules/cache/SDK/tool copy; no shared generated-project execution, global writes, installs, signing-key reads or account data; prevent downloads, SDK-install and network; actual offline resolution decides completeness",
+    "reviewer_executed": false,
+    "state": "Author authorized and preparing independent exact-c1 regenerated Android offline copy"
+  },
+  "not_claimed": [
+    "implementation acceptance",
+    "transitive offline resolution completeness",
+    "fresh current generated native tree",
+    "hosted cause identification",
+    "real CI acceptance",
+    "fresh artifact proof",
+    "native build/device acceptance"
+  ],
+  "outcome": "NO_CONCRETE_DESIGN_BLOCKER_TO_SEPARATE_FIXED_ONLY_ROUTE; NO_IMPLEMENTATION_OR_NATIVE_ACCEPTANCE_REVIEWED",
+  "parent_reported_source_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "proposed_design_under_review": {
+    "maximum_new_route_bytes": 256,
+    "maximum_observed_chain_nodes": 16,
+    "maximum_original_fault_bytes": 256,
+    "maximum_stream_bytes": 65536,
+    "new_route": "independent private bounded singleton receipt, fixed enums/IDs/counts only, SHA256-paired with original fault",
+    "old_fault_unchanged": "exact existing schema/phase/cause and cause decisions",
+    "unknown_arbitrary_types": "OTHER, never raw or hashed arbitrary class names"
+  },
+  "schema": 1,
+  "scope_constraints": {
+    "no_build_execution": true,
+    "no_git_or_github_actions": true,
+    "no_local_properties_or_signing_key_contents_read": true,
+    "no_network": true,
+    "no_new_primary_or_native_card_scope": true,
+    "no_raw_runtime_logs_persisted_or_printed": true,
+    "no_shared_or_author_source_edits": true,
+    "own_tmp_writes_only": true
+  }
+}

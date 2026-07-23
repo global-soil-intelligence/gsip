@@ -1,0 +1,37 @@
+{
+  "recorded_utc": "2026-10-13T03:12:13.587318+00:00",
+  "private_intake_head": "7d6153a4e4e79cfd809fe34d43c2e7690d2ba906",
+  "phone_head": "8803a7dad2e80e89b5d59810d601aca77ea092ea",
+  "web_tests": 424,
+  "python_tests": 455,
+  "python_gdal_skips": 4,
+  "actual_local_supabase_pgtap": 450,
+  "lint": "pass",
+  "typecheck": "pass",
+  "ruff": "pass",
+  "mypy_source_files": 51,
+  "closed_web_build": "pass",
+  "closed_app_assets": "pass",
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "map_bytes": 1656755,
+  "map_budget": 5242880,
+  "home_bytes": 313574,
+  "home_budget": 716800,
+  "gitleaks": {
+    "version": "8.21.2",
+    "full_history_commits": 123,
+    "leaks": 0,
+    "only_three_approved_entries": true
+  },
+  "deployment": "none; production untouched",
+  "ci": "pending",
+  "local_limitations": [
+    "GDAL/deno/Android SDK/Xcode unavailable",
+    "Local PostgreSQL image lacks Python for combined migration race hook; author six races passed and CI whole runner required",
+    "Local Playwright mock-open build previously rejected by automatic approval review; use unchanged required CI browser tests",
+    "Real-device iOS WebKit backup exclusion remains unverified"
+  ]
+}

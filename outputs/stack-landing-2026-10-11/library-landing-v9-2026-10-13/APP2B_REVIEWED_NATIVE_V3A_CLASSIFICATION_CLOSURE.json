@@ -1,0 +1,220 @@
+{
+  "actual_selected_pom_replay": {
+    "actual_coordinates": 75,
+    "metadata_only_pom_packaging_preserved": true,
+    "network_disabled": true,
+    "offline_validator_passes": 75,
+    "original_view_module_counts": [
+      75,
+      75
+    ],
+    "primary_diagnosis_input_receipts_hash_verified": 18,
+    "producer_passes": 75,
+    "receipt": {
+      "bytes": 18451,
+      "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/INDEPENDENT_75_POM_REPLAY.json",
+      "sha256": "cf5ae9b14e4287664665d4eab847a7718ffe8ea83507d986739fdeb75f6a7219"
+    },
+    "six_fixture_cache_primary_byte_matches": 6
+  },
+  "base_commit": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "candidate_from_c1": {
+    "bytes": 88277,
+    "path": "/private/tmp/gsip-native-license-v3a-frozen-tw6gv53l/candidate-from-c1.patch",
+    "sha256": "395a2a91e36960170ca06d78f5cc0933b0c8c379ea58c580536760cdfb1c9fc2"
+  },
+  "carried_evidence": {
+    "authority_assessment": {
+      "bytes": 9227,
+      "path": "/private/tmp/gsip-cordova-v2b-independent-amt07pob/LOCAL_LICENSE_CLASSIFICATION_AUTHORITY_ASSESSMENT.json",
+      "sha256": "d3c3a8d0ac5d65ee4dcb5ca83fe67e19bea728be4db52b53ac9a5bcdd75ef774"
+    },
+    "closed_v2b_guard": {
+      "bytes": 10147,
+      "path": "/private/tmp/gsip-cordova-v2b-independent-amt07pob/INDEPENDENT_CORDOVA_V2B_CLOSURE.json",
+      "sha256": "2a994038a516ba5bc7ac03818296c282e81099e8f869287ba0e4c1df9f7ebd87"
+    },
+    "preserved_v1_blocked_receipt": {
+      "bytes": 9379,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/INDEPENDENT_SPLIT_VIEW_BLOCKED_RECEIPT.json",
+      "sha256": "a01f751975ab22eedbca15cfb5cfed9ac2b9e6c30ed1ee384aa6d894bbd18766"
+    },
+    "prior_30_actual_Gradle_controls": {
+      "carried_by_exact_task_and_all_non_POM_function_bytes": true,
+      "fresh_in_this_licence_review": false,
+      "original_sandbox_30_all_excluded_as_recorded_before_protected_recovery": true
+    }
+  },
+  "constraints": {
+    "Git_GH_CI_actions": false,
+    "native_build_or_signing": false,
+    "network": false,
+    "owned_tmp_writes_only": true,
+    "raw_tool_streams_printed_or_persisted": false,
+    "shared_or_author_source_writes": false
+  },
+  "created_at_utc": "2026-10-13T23:52:15.052631+00:00",
+  "current_tests": {
+    "collected": 338,
+    "composition": {
+      "new_licence": 83,
+      "retained_pure_and_guard": 255,
+      "unchanged_diagnostic_bank_included_in_255": 43
+    },
+    "earlier_separate_v3_83_and_255_runs_not_added_to_unique_count": true,
+    "failed": 0,
+    "passed": 338,
+    "process_receipt": {
+      "bytes": 318,
+      "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/combined-final-process.json",
+      "sha256": "848f6897eff76df3ffc38b724eda0880b6d3624388f80ee9711fb77f40294617"
+    },
+    "single_final_pytest_execution": {
+      "bytes": 238025,
+      "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/combined-final.json",
+      "sha256": "72765f0abcb82b03e689ea870bfa79cc647aabbd9371f2c7186c30220b614aa7"
+    },
+    "skipped": 0,
+    "source_script_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4"
+  },
+  "delta_from_v2b": {
+    "bytes": 40525,
+    "path": "/private/tmp/gsip-native-license-v3a-frozen-tw6gv53l/delta-from-v2b.patch",
+    "sha256": "ff3b05a2aa945619b2cdc261e91dcc019a3a649c3303e6bfe403e78a9d7db0cc"
+  },
+  "delta_from_v3": {
+    "bytes": 1066,
+    "path": "/private/tmp/gsip-native-license-v3a-frozen-tw6gv53l/delta-from-v3.patch",
+    "sha256": "3f656e638430b9b43449dbbe729b60fbd4f9eb54e2762dffad45e12cbb42bafd"
+  },
+  "files": [
+    {
+      "base_c1_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 125844,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "v2b_sha256": "71425d41f957c8c5bee05acf2f2456b2fae181828f0384914f1e0f7c97864655",
+      "v3_sha256": "32a888e72f22dc160f244179701509baccf8cc04acb66e9ef0df70a8d7708bf4"
+    },
+    {
+      "base_c1_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 185334,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+      "v2b_sha256": "e2fd5781cfc7169216cfb2bf2b3256137861fd0dadbb0e3a5a80fbb148be10ef",
+      "v3_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3"
+    },
+    {
+      "base_c1_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 31897,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164",
+      "v2b_sha256": "ca0736fb18669534ffd7ef661c44f2c28968d483eebee31a5f19aea7a15cef76",
+      "v3_sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164"
+    }
+  ],
+  "findings": [],
+  "frozen_directory": "/private/tmp/gsip-native-license-v3a-frozen-tw6gv53l",
+  "frozen_receipt": {
+    "bytes": 4071,
+    "path": "/private/tmp/gsip-native-license-v3a-frozen-tw6gv53l/FROZEN_CANDIDATE_RECEIPT.json",
+    "sha256": "fcf51ced814ebc766a2438c31bbec44db662bc8c5fd349c8afd05f6abca5d5eb"
+  },
+  "harness_recovery": "A readback helper initially expected all upstream source files extracted beside the selected licences. It correctly failed; the corrected readback compared all49 source entries directly against the already hash-bound immutable source archives. Initial helper preserved; no source changes or acceptance result inferred from that failed helper.",
+  "independent_baseline_and_mutations": {
+    "all_mutations_owned_temporary_variants_only": true,
+    "baseline_83_cases": {
+      "failed": 20,
+      "passed": 63
+    },
+    "effective_guard_mutations": 7,
+    "failed_case_counts_by_mutation": {
+      "coordinate_rebinding": 2,
+      "digest": 6,
+      "exact_spdx": 6,
+      "generic_unknown": 1,
+      "packaging": 6,
+      "parent": 1,
+      "size": 6
+    },
+    "receipt": {
+      "bytes": 9879,
+      "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/INDEPENDENT_BASELINE_AND_MUTATIONS.json",
+      "sha256": "aa1c3730855b1d42ca3da64475aae211aed38fc8ed142305e5466fb1483adc2d"
+    }
+  },
+  "manifest": {
+    "bytes": 1272,
+    "path": "/private/tmp/gsip-native-license-v3a-frozen-tw6gv53l/manifest.json",
+    "sha256": "7c700bf3a139592748351eb5fbdcd273fdb48455aafc2ecc4a72266b7e9e0942"
+  },
+  "not_claimed": [
+    "Legal compatibility or distribution approval",
+    "GSIP relicensing or dependency exclusion",
+    "Source-to-binary compiler attestation",
+    "Whole actual runtime collector replay by this reviewer",
+    "Current-head hosted Android or iOS success/artifact acceptance",
+    "Original hosted UNKNOWN failure cause or native/device/product acceptance"
+  ],
+  "primary_classification_proof": {
+    "camera_snapshot_not_asserted_release_tag": true,
+    "factual_existing_licence_bytes_checked": [
+      "libyuv BSD3",
+      "ION camera MIT",
+      "ION filesystem MIT",
+      "JUnit EPL1",
+      "Hamcrest BSD3"
+    ],
+    "libyuv_bundled_source_revision_not_established": true,
+    "published_to_immutable_source_file_matches": {
+      "ION_camera": 29,
+      "ION_filesystem": 20
+    },
+    "receipt": {
+      "bytes": 1646,
+      "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/INDEPENDENT_PRIMARY_LICENSE_PROOF.json",
+      "sha256": "a6b118d68c56c60fdbddedc61615e09bb2861e4210074a62c7effad637d0a268"
+    }
+  },
+  "reviewed_invariants": [
+    "Both producer and offline validator bind each reviewed coordinate to the complete POM digest/size, packaging, ordered name-URL-SPDX tuples and exact applicable inheritance parent.",
+    "Changed POM bytes, reviewed context rebound to another coordinate, changed/partial/duplicate/reordered licence declarations and altered inheritance refuse. Generic ambiguous names and generic unknown licences remain refused.",
+    "Hamcrest child retains an empty own licence list and exact parent chain; Camera retains Apache and BSD together. JUnit remains an actual runtime binary and its exact context is reported EPL-1.0.",
+    "The exact source/task/guard erasure proof preserves all previously closed source, binary, licence, view, permission, repeat, comparison, diagnostic and bounded file-reading behavior outside these POM classification changes."
+  ],
+  "schema": "gsip-independent-exact-pom-classification-v3a-closure-v1",
+  "scope": "Finite licence-only classification delta from independently closed Cordova v2b; no new dependency, version, scope, receipt schema, project licence, global licence-name alias, runtime view, build-task, permission or other proof-policy changes.",
+  "source_binding": {
+    "LICENSE_NAMES_unchanged": true,
+    "existing_function_changes_only": [
+      "pom_evidence",
+      "validate_pom_chain"
+    ],
+    "new_constant": "REVIEWED_POM_CONTEXTS",
+    "new_helper": "reviewed_pom_licenses",
+    "other362_tracked_source_files_unchanged_by_prior_exact_c1_snapshot_and_current_threefile_diff": true,
+    "remaining_script_bytes_exact_v2b_after_removing_only_new_constant_helper_and_restoring_two_pom_functions": true,
+    "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "unchanged43_bank_sha256": "4017b63fe4614833f8ded1b38ac545e1c286367e0422d4857ec07f05d5b6c7a5",
+    "v2b_test_prefix_bytes": 161005,
+    "v2b_test_prefix_sha256": "e2fd5781cfc7169216cfb2bf2b3256137861fd0dadbb0e3a5a80fbb148be10ef"
+  },
+  "source_projection_receipts": [
+    {
+      "bytes": 516,
+      "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/SOURCE_PROJECTION.json",
+      "sha256": "aff5f0d4cfa7021508dfd5904e03e191ab677c39c277c4655421a9f3e9cd12cc"
+    },
+    {
+      "bytes": 1645,
+      "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/V3A_REBIND.json",
+      "sha256": "5646683a0ade5dfb4882e7a57e328709e1201b70dcd303099c8b9e571e97f2b6"
+    },
+    {
+      "bytes": 401,
+      "path": "/private/tmp/gsip-license-v3-independent-qaifp3_a/V3A_EXACT_TEXT_PROJECTION.json",
+      "sha256": "476bb16e58c8608bb7641ddd05668bc5e94abc23345e6cc367e8cb10862927d1"
+    }
+  ],
+  "status": "CLOSED_NO_BLOCKER"
+}

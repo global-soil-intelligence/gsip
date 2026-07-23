@@ -1,0 +1,127 @@
+$ vitest run tests/queue.test.ts tests/library-drafts.test.ts
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+ ❯ tests/library-drafts.test.ts (26 tests | 5 failed) 65ms
+   × refuses namespace mutation when its original library-start intent is already cancelled 4ms
+   × preserves namespace state (existing=false) if library start cancels before-read 2ms
+   × preserves namespace state (existing=true) if library start cancels before-read 2ms
+   × preserves namespace state (existing=false) if library start cancels after-put 2ms
+   × preserves namespace state (existing=true) if library start cancels after-put 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/library-drafts.test.ts > refuses namespace mutation when its original library-start intent is already cancelled
+AssertionError: promise resolved "'f849949b-d546-4e9c-a616-c078ecce2d45'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"f849949b-d546-4e9c-a616-c078ecce2d45"
+
+ ❯ tests/library-drafts.test.ts:182:72
+    180| it('refuses namespace mutation when its original library-start intent …
+    181|   const q = await queue(), revision = await q.queueRevision()
+    182|   await expect(q.libraryNodeForOwner('owner-a', revision, () => false)…
+       |                                                                        ^
+    183|   const db = await openDB('gsip-capture-v1')
+    184|   expect(await db.get('libraryNamespace', 'current')).toBeUndefined()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/library-drafts.test.ts > preserves namespace state (existing=false) if library start cancels before-read
+AssertionError: promise resolved "'a5b65a43-e941-4e1f-8441-ca9ef11bc812'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"a5b65a43-e941-4e1f-8441-ca9ef11bc812"
+
+ ❯ tests/library-drafts.test.ts:207:24
+    205|   const pending = q.libraryNodeForOwner('owner-b', revision, () => all…
+    206|   if (cancellation === 'before-read') allowed = false
+    207|   await expect(pending).rejects.toThrow('Private draft was discarded.')
+       |                        ^
+    208|   const db = await openDB('gsip-capture-v1')
+    209|   expect(await db.get('libraryNamespace', 'current')).toEqual(prior ? …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/library-drafts.test.ts > preserves namespace state (existing=true) if library start cancels before-read
+AssertionError: promise resolved "'91bdb01f-cf30-4b89-a256-24f9be730580'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"91bdb01f-cf30-4b89-a256-24f9be730580"
+
+ ❯ tests/library-drafts.test.ts:207:24
+    205|   const pending = q.libraryNodeForOwner('owner-b', revision, () => all…
+    206|   if (cancellation === 'before-read') allowed = false
+    207|   await expect(pending).rejects.toThrow('Private draft was discarded.')
+       |                        ^
+    208|   const db = await openDB('gsip-capture-v1')
+    209|   expect(await db.get('libraryNamespace', 'current')).toEqual(prior ? …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/library-drafts.test.ts > preserves namespace state (existing=false) if library start cancels after-put
+AssertionError: promise resolved "'f0fae6b9-e6a8-4f4d-95b2-b68c041c4501'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"f0fae6b9-e6a8-4f4d-95b2-b68c041c4501"
+
+ ❯ tests/library-drafts.test.ts:207:24
+    205|   const pending = q.libraryNodeForOwner('owner-b', revision, () => all…
+    206|   if (cancellation === 'before-read') allowed = false
+    207|   await expect(pending).rejects.toThrow('Private draft was discarded.')
+       |                        ^
+    208|   const db = await openDB('gsip-capture-v1')
+    209|   expect(await db.get('libraryNamespace', 'current')).toEqual(prior ? …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/library-drafts.test.ts > preserves namespace state (existing=true) if library start cancels after-put
+AssertionError: promise resolved "'318375f0-0c0e-4746-acef-9b14659944e4'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"318375f0-0c0e-4746-acef-9b14659944e4"
+
+ ❯ tests/library-drafts.test.ts:207:24
+    205|   const pending = q.libraryNodeForOwner('owner-b', revision, () => all…
+    206|   if (cancellation === 'before-read') allowed = false
+    207|   await expect(pending).rejects.toThrow('Private draft was discarded.')
+       |                        ^
+    208|   const db = await openDB('gsip-capture-v1')
+    209|   expect(await db.get('libraryNamespace', 'current')).toEqual(prior ? …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  5 failed | 63 passed (68)
+   Start at  22:01:30
+   Duration  2.76s (transform 150ms, setup 151ms, import 265ms, tests 2.08s, environment 898ms)
+
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @gsip/capture-pwa@0.1.0 test: `vitest run tests/queue.test.ts tests/library-drafts.test.ts`
+Exit status 1

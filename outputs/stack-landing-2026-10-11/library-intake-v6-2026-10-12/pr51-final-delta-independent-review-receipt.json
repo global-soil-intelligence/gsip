@@ -1,0 +1,87 @@
+{
+  "reviewer": "Codex independent photo_sql_review agent",
+  "reviewed_at": "2026-10-13T04:45:23.260507+00:00",
+  "review": "PR51 final browser-harness relocation delta",
+  "previous_review_head": "c87220a347d5adf56999dd48515f60d808573eaf",
+  "head": "14c4188280025c274ac7c58d1fc40138ee3922bb",
+  "diff_files": {
+    "playwright.config.ts": "use tests/e2e_server.py script entry point",
+    "tests/e2e_server.py": "100 percent identical rename of reviewed scripts/e2e_server.py",
+    "tests/test_e2e_server.py": "module imports/monkeypatch entry points updated; assertions retained"
+  },
+  "files": {
+    "tests/e2e_server.py": {
+      "sha256": "8253bee1d27d83abb9a6680e93084214e7e8ea3e9a80cec07d225c9413a6f99e",
+      "unchanged_from_previous_review": true
+    },
+    "tests/test_e2e_server.py": {
+      "sha256": "2db7eae8f0746aae4727fc36b1af028d6a26bd3b08b3a6d865e8cbb8623ceefc",
+      "unchanged_from_previous_review": false
+    },
+    "playwright.config.ts": {
+      "sha256": "d6a046b33bde1733173b561fb86c782c9d4968219fd88ada22df408f6821db15",
+      "unchanged_from_previous_review": false
+    },
+    "tests/test_processors.py": {
+      "sha256": "040fbd4d7eaa0f189ca219a68c5be6a60961418f286bf01d6af2ff3d9c7c01a2",
+      "unchanged_from_previous_review": true
+    },
+    "scripts/build-pages.mjs": {
+      "sha256": "8afb1a3a56d0de7fda14956ba3046215fc2617531799ada6498252f658099a68",
+      "unchanged_from_previous_review": true
+    },
+    "scripts/app_build.py": {
+      "sha256": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4",
+      "unchanged_from_previous_review": true
+    },
+    ".github/workflows/pages.yml": {
+      "sha256": "56ea0a0db5ab0ebb843a40e8dc471734f01ac26d64ab682c792a7bac7117a982",
+      "unchanged_from_previous_review": true
+    },
+    ".github/workflows/app-build.yml": {
+      "sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "unchanged_from_previous_review": true
+    },
+    "AGENTS.md": {
+      "sha256": "f920ba11265c09cf13f06fa1f3a59d9ea1f129089a921a89d28dc90d58328a7c",
+      "unchanged_from_previous_review": true
+    },
+    "tests/e2e/shells.spec.ts": {
+      "sha256": "ae17ab9a92d028e0af0de40d9c75c81868012f1873f4ae58e1ab2e198dee1520",
+      "unchanged_from_previous_review": true
+    },
+    ".gitleaksignore": {
+      "sha256": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+      "unchanged_from_previous_review": true
+    }
+  },
+  "code_review_blockers": [],
+  "conclusion": "No final-delta code blocker. Historical gitleaks finding remains a separate explicit owner-exception and exact-head CI merge hold; no suppression was added or approved by reviewer.",
+  "independent_validation": {
+    "snapshot": "/private/tmp/gsip-pr51-final-delta-review-9_25qr8u",
+    "mocked_harness_tests_passed": 8,
+    "processor_audit_tests_passed": 6,
+    "native_artifact_policy_unit_tests_passed": 53,
+    "total_targeted_python_tests_passed": 67,
+    "ruff_check": "passed",
+    "ruff_format": "passed",
+    "strict_mypy_harness": "passed",
+    "processor_negative_witness": "new unlisted shipped host caught by unchanged audit; temporary witness removed",
+    "mock_live_build_run": false,
+    "browser_or_listener_run": false,
+    "deployment_or_production_access": false,
+    "pnpm_prettier_first_attempt": "failed in isolated symlink environment: pnpm auto-install purge prompt lacked TTY; no install override or dependency changes attempted",
+    "prettier_playwright_config": "passed using pinned installed Prettier directly after isolated pnpm environment failure"
+  },
+  "checked": [
+    "Deployable Pages and Android/iOS workflow activation values remain false for both capture/library intake.",
+    "Pages packaging and APK/iOS activation receipt validators unchanged and require exact two-field closed receipt.",
+    "Synthetic capture fixture uses fixed reserved .test endpoints, library flag false, inherited VITE_/SUPABASE_ settings filtered.",
+    "Real closed Pages build is checked before synthetic build; mock capture lives only in temporary output, never copied into _site/native deployable artifact.",
+    "HTTP server binds only 127.0.0.1; traversal/symlink escapes/listings/logging denied; Playwright refuses server reuse; temporary directory cleaned.",
+    "Processor audit source roots/exclusions/allowlist and all production workflows are byte-for-byte unchanged by relocation.",
+    "No actual local mock-live build was run, preserving prior automatic approval rejection."
+  ],
+  "source_fixes_authored": false,
+  "publication_authorization": false
+}

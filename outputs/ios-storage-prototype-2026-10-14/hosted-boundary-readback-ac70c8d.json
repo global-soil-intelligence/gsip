@@ -1,0 +1,98 @@
+{
+  "commit": "ac70c8d17d0568e555c9422635ff1791f1c70ded",
+  "run": "https://github.com/global-soil-intelligence/gsip/actions/runs/38669675164",
+  "diagnostic": {
+    "categories": [
+      "storage-hold-boundary",
+      "timeout",
+      "xctest-suite-started"
+    ],
+    "fixture_metadata": [
+      {
+        "ancestor_safe": true,
+        "backup_excluded": true,
+        "exclusion_available": true,
+        "exclusion_query_ok": true,
+        "expected_kind": true,
+        "identity_stable": true,
+        "link_policy": true,
+        "owned": true,
+        "part": "base",
+        "present": true,
+        "private_mode": true,
+        "protection_available": true,
+        "protection_complete": false,
+        "protection_query_ok": true,
+        "size_bounded": true,
+        "volume_protection_available": true,
+        "volume_query_ok": true,
+        "volume_supports_protection": false
+      },
+      {
+        "ancestor_safe": true,
+        "backup_excluded": false,
+        "exclusion_available": false,
+        "exclusion_query_ok": false,
+        "expected_kind": false,
+        "identity_stable": false,
+        "link_policy": false,
+        "owned": false,
+        "part": "root",
+        "present": false,
+        "private_mode": false,
+        "protection_available": false,
+        "protection_complete": false,
+        "protection_query_ok": false,
+        "size_bounded": false,
+        "volume_protection_available": false,
+        "volume_query_ok": false,
+        "volume_supports_protection": false
+      },
+      {
+        "ancestor_safe": false,
+        "backup_excluded": false,
+        "exclusion_available": false,
+        "exclusion_query_ok": false,
+        "expected_kind": false,
+        "identity_stable": false,
+        "link_policy": false,
+        "owned": false,
+        "part": "database",
+        "present": false,
+        "private_mode": false,
+        "protection_available": false,
+        "protection_complete": false,
+        "protection_query_ok": false,
+        "size_bounded": false,
+        "volume_protection_available": false,
+        "volume_query_ok": false,
+        "volume_supports_protection": false
+      }
+    ],
+    "progress": {
+      "available": true,
+      "observed_failed": 15,
+      "observed_passed": 27,
+      "observed_started": 42,
+      "unfinished_test_identities": []
+    },
+    "stage": "core-test",
+    "test_identities": [
+      "ExcludedSQLiteStoreTests/testActualSQLiteBusyTimeoutHoldsWithoutReceipt",
+      "ExcludedSQLiteStoreTests/testActualSQLiteReadbacksAndExcludedPolicyPrecedeReopen",
+      "ExcludedSQLiteStoreTests/testActualSQLiteStoresExactBinaryAndSixStoreClearFences",
+      "ExcludedSQLiteStoreTests/testAvailabilityLossAfterAdmissionRevokesBeforeMutation",
+      "ExcludedSQLiteStoreTests/testCorruptedOwnedDatabaseIsRefusedWithoutNewSchema",
+      "ExcludedSQLiteStoreTests/testDatabaseLeafSymlinkHardlinkAndReplacementAreRefused",
+      "ExcludedSQLiteStoreTests/testIncompleteStagingIsNotSavedAndWrongHashCannotFinish",
+      "ExcludedSQLiteStoreTests/testInvalidGenerationQuotaAndRevisionDoNotCreateReceipts",
+      "ExcludedSQLiteStoreTests/testOnlyOneConcreteConnectionAndCoordinatorOwnTheSyntheticStore",
+      "ExcludedSQLiteStoreTests/testReceiptUniquenessFailureRollsBackEverySQLiteMutation",
+      "ExcludedSQLiteStoreTests/testRemoveRecreateNeverReusesRecordRevision",
+      "ExcludedSQLiteStoreTests/testRootSymlinkReplacementAndUnknownSidecarsAreRefused",
+      "ExcludedSQLiteStoreTests/testSameVersionUnexpectedTableOrTriggerIsHeld",
+      "ExcludedSQLiteStoreTests/testStageHashAndBinaryLengthMustMatchBeforeAtomicPublication",
+      "ExcludedSQLiteStoreTests/testUnavailableProtectedDataHoldsBeforeRootCreationOrSQLiteOpen"
+    ]
+  }
+}

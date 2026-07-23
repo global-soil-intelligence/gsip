@@ -1,0 +1,95 @@
+{
+  "utc": "2026-10-14T01:02:17.698057+00:00",
+  "pr": 63,
+  "head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "state": "open",
+  "draft": true,
+  "base": "main",
+  "checks": [
+    {
+      "name": "dco",
+      "status": "completed",
+      "conclusion": "skipped",
+      "id": 115623712460
+    },
+    {
+      "name": "ios",
+      "status": "in_progress",
+      "conclusion": null,
+      "id": 115623711908
+    },
+    {
+      "name": "validate",
+      "status": "in_progress",
+      "conclusion": null,
+      "id": 115623711833
+    },
+    {
+      "name": "android",
+      "status": "in_progress",
+      "conclusion": null,
+      "id": 115623711481
+    },
+    {
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115623711285
+    },
+    {
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115623696819
+    }
+  ],
+  "runs": [
+    {
+      "id": 38493437071,
+      "workflow": ".github/workflows/ci.yml",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 38493436865,
+      "workflow": ".github/workflows/dco.yml",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 38493436921,
+      "workflow": ".github/workflows/app-build.yml",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 38493436872,
+      "workflow": ".github/workflows/secret-scan.yml",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 38493432327,
+      "workflow": ".github/workflows/secret-scan.yml",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "all_required_checks_green": false,
+  "response_bindings": {
+    "pr": {
+      "sha256": "d04103f8243bce7b84859e01fcd7abf49c3135282a43bfa9f0929a0585455eeb",
+      "bytes": 68445
+    },
+    "checks": {
+      "sha256": "40e8ed67108ea395ccf8a508dfc70eb75d791d7f7afd6d9b68e9c78438ba1c5f",
+      "bytes": 21432
+    },
+    "runs": {
+      "sha256": "7f5cca55b0925ceaf7723888f150f2142c5a9ffd4ca7d2f78aab3f2af0a06ed9",
+      "bytes": 70370
+    }
+  },
+  "GET_only": true,
+  "production_queries": false
+}

@@ -1,0 +1,36 @@
+$ vitest run tests/queue.test.ts tests/library-drafts.test.ts
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+ ❯ tests/queue.test.ts (42 tests | 2 failed) 272ms
+     × validates strict declaration and exact original bytes: wrong-byte-type 7ms
+     × validates strict declaration and exact original bytes: oversize-raw 179ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > validates strict declaration and exact original bytes: wrong-byte-type
+ FAIL  tests/queue.test.ts > owner-bound guide handoff > validates strict declaration and exact original bytes: oversize-raw
+AssertionError: expected 'committed' to be 'held' // Object.is equality
+
+Expected: "held"
+Received: "committed"
+
+ ❯ tests/queue.test.ts:422:30
+    420|         context(revision),
+    421|       )
+    422|       expect(outcome.status).toBe(problem === 'exact' ? 'committed' : …
+       |                              ^
+    423|       expect(await q.savedLibraryDraft()).toEqual(
+    424|         problem === 'exact' ? undefined : structuredClone(saved),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 61 passed (63)
+   Start at  21:58:37
+   Duration  937ms (transform 133ms, setup 134ms, import 222ms, tests 327ms, environment 800ms)
+
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @gsip/capture-pwa@0.1.0 test: `vitest run tests/queue.test.ts tests/library-drafts.test.ts`
+Exit status 1

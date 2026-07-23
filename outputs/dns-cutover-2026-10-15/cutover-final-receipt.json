@@ -1,0 +1,67 @@
+{
+  "recorded_at_utc": "2026-10-16T01:39:33.960766+00:00",
+  "status": "DNS_AND_HTTPS_COMPLETE_SITE_ACCEPTANCE_HELD",
+  "domain": "https://globalsoilintelligence.com/",
+  "approved_pages_run": 38821460183,
+  "source_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "approved_artifact_sha256": "2bc0829549d98331c7a8dc5e451b6e5457125fd5863f166e63ce1ea90a4cde33",
+  "authorized_mutations_completed": [
+    "Replace two Squarespace traffic records with reviewed nine records only, TTL3600",
+    "Bind verified custom domain to existing workflow Pages site",
+    "Enable HTTPS enforcement after both trusted certificates verified"
+  ],
+  "verification": {
+    "dns_checks": "42/42",
+    "trusted_tls_apex_and_www": true,
+    "https_enforced": true,
+    "https_files_matching": "38/38",
+    "strict_redirect_routes": "6/8; two legacy github.io routes fail no-downgrade guard",
+    "activation": {
+      "capture_live": false,
+      "library_intake_live": false
+    },
+    "rendered_routes": [
+      "homepage",
+      "map shell",
+      "capture closed screen",
+      "data",
+      "methods",
+      "card",
+      "about"
+    ],
+    "capture_forms": 0,
+    "capture_file_inputs": 0,
+    "static_pwa_paths": true,
+    "pages_protection": "jdhart81 sole required reviewer; admin bypass disabled"
+  },
+  "holds": [
+    {
+      "issue": "Legacy URL cached HTTP redirect downgrade",
+      "evidence": "legacy-redirect-cdn-hold-independent-20261016T013342Z.json",
+      "recovery": "Read-only original URL recheck after edge refresh; no expiry assumed"
+    },
+    {
+      "issue": "Existing map build omits required MapLibre worker",
+      "evidence": "map-worker-diagnostic.md",
+      "recovery": "Separate map-build fix and built-worker regression test, CI/review, new Pages approval"
+    }
+  ],
+  "limits": [
+    "No PWA install/offline-runtime test",
+    "World-wide resolver cache expiry not proven",
+    "Final optional GitHub UI refresh could not complete because automatic review timed out; not an unsafe-action rejection. API and independent checks provide the setting readback."
+  ],
+  "assumptions": [
+    "Stale GitHub edge caching is inferred from HIT and Age headers; cache expiration is unknown",
+    "Missing worker is pre-existing because live bundle matches the approved artifact exactly"
+  ],
+  "not_performed": [
+    "New deployment/rebuild",
+    "Merge or source change",
+    "Capture or library intake activation",
+    "Supabase/Auth/worker changes",
+    "DNSSEC, nameserver or subscription change",
+    "TLS validation weakening",
+    "Background monitoring schedule"
+  ]
+}

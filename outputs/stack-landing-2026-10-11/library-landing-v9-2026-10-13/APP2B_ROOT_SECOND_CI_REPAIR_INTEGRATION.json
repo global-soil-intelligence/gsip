@@ -1,0 +1,18 @@
+{
+  "utc": "2026-10-13T18:54:22.749565+00:00",
+  "base_head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "exact_six": {
+    ".github/workflows/app-build.yml": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+    "tests/test_app_parent_checkout.py": "fe3e95e1163a77c1bbb408f073ffeb51037ec73cfe2380830e746c987339891d",
+    "docs/APP_PARENT_CHECKOUT.md": "a8b4747574b199fe01608517780528cd70521db728ff80c14cf653aba9394e21",
+    "scripts/app_notification_audit.py": "0a24bd44e461c8ac72504bb73e0be7de1f03cc7df22951e093c283bd6d2e8715",
+    "tests/test_app_notification_audit.py": "8b155bb057521a152519319915c6354fb6cb92417f4ac21f07e70dac58613ce2",
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": "e3f70e544d8a4504bd74e9927c827141ec04212db65257a40eb2a1744930eaa0"
+  },
+  "unchanged_other_tracked": 360,
+  "diagnostic_independent_closure_sha256": "c12bdd043f4b2a3ff09980199ba11f71324281c90697251a2035806ddf7a2160",
+  "parent_independent_closure_sha256": "c50cdae9a0d21593062ee1c633cfa73db5bc54cc47726af5daea89e7c93bbfb1",
+  "invariants": "exact isolated baseline, all subsequent build/source/license/permission/repeat guards retained; fixed private-safe four-field diagnostic only; no production changes",
+  "snapshot": "/private/tmp/gsip-app2b-root-second-ci-repair-six",
+  "commit_push": false
+}

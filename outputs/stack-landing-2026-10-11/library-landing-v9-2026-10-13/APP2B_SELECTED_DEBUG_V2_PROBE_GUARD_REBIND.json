@@ -1,0 +1,9 @@
+{
+  "Gradle_or_key_APK_operation_rerun": false,
+  "carry_mechanism": "Both task byte strings exactv1; only mandatory generated input pins changed, actual earlier copied probe source passes new complete source guard.",
+  "metadata_task_sha256": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf",
+  "original_runtime_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "schema": "gsip-metadata-probe-v2-source-guard-only-rebind-v1",
+  "v1_actual_metadata_probe_sha256": "edd6655a3e9225e903ce65ebe492cc95b2b3527975d675dc70a079eeb0ea6af9",
+  "v2_controlled_generated_source_guard_read_only_pass": true
+}

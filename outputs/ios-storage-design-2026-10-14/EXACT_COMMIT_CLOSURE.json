@@ -1,0 +1,22 @@
+{
+  "status": "exact_reviewed_tree_and_metadata_verified",
+  "head": "06902edf36810c55e51b169dcb813e81b22206b0",
+  "parent": "de9d1221b7c73e9be5c7e25ccaa24dcfa7903934",
+  "branch": "docs/spec-v12",
+  "review_manifest_sha256": "d87d1f26f18a2be15e28b4f82e4a9dde553fcd117866c912a94aa1d733659e10",
+  "tracked_count": 374,
+  "authorized_paths": [
+    "docs/BUILD_ORDER.md",
+    "docs/IOS_NATIVE_STORAGE_DESIGN.md",
+    "docs/SPEC.md",
+    "tests/test_ios_storage_design.py"
+  ],
+  "all_commit_tree_hashes_and_modes_match_reviewed_v4": true,
+  "working_tree_clean": true,
+  "commit_message": "docs(spec): propose native iOS private-storage design\n\nDefine a conditional excluded SQLite/anchor/owned-host candidate and held APP-2C2A/B/C sequence. Preserve current runtime, all existing acceptance states and every owner/device/production gate.\n\nCo-Authored-By: Codex <codex@openai.com>\n\n",
+  "conventional_commit": true,
+  "codex_trailer": true,
+  "signed_off_by_absent": true,
+  "tests_repeated": false,
+  "git_mutation_or_production_action": false
+}

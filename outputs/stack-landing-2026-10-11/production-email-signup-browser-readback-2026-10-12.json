@@ -1,0 +1,27 @@
+{
+  "authentication_actions_performed": false,
+  "exposure": "New email signup remains enabled. Anonymous sign-in being disabled does not itself disable all account signup.",
+  "limits": [
+    "UI state only; no signup smoke request, authentication, user creation, or hosted endpoint reachability test performed.",
+    "Gate C migration authorization remains pending."
+  ],
+  "observed_at_utc": "2026-10-12T12:18:15.872140+00:00",
+  "observed_settings": {
+    "allow_anonymous_sign_ins": false,
+    "allow_new_users_to_sign_up": true,
+    "confirm_email": true,
+    "email_provider_enabled": true,
+    "save_changes_button_disabled": true
+  },
+  "screenshots_captured": false,
+  "secret_fields_read": false,
+  "settings_mutations_performed": false,
+  "source": "Authenticated Chrome Supabase dashboard accessibility state on a newly opened exact known providers page",
+  "status": "VERIFIED_EMAIL_SIGNUP_ENABLED_ANONYMOUS_DISABLED",
+  "target": {
+    "branch": "main PRODUCTION",
+    "project_name": "gsip",
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "url": "https://supabase.com/dashboard/project/toxldjgwkxtneoqsazym/auth/providers"
+  }
+}

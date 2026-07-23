@@ -1,0 +1,100 @@
+{
+  "all_other_source_files_exact_v3a": true,
+  "author_evidence_root": "/private/tmp/gsip-privacy-license-refs-author-zm8drhw7",
+  "checks": [
+    {
+      "check": "prettier",
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        "docs/legal/PRIVACY.md"
+      ],
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 66,
+      "stdout_sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    },
+    {
+      "check": "language",
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/check-language.mjs"
+      ],
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "counsel_or_native_acceptance_claimed": false,
+  "created_at": "2026-10-13T23:56:13.408524+00:00",
+  "dependencies_or_runtime_or_capture_changed": false,
+  "draft_counsel_all_other_policy_gates_byte_exact": true,
+  "exact_unchanged_v3a_script_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+  "existing_tests": {
+    "BASELINE_FAILED_PROCESSOR_TEST.json": {
+      "counts": {
+        "failed": 1,
+        "passed": 0,
+        "skipped": 0
+      },
+      "exit_code": 1,
+      "privacy_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+      "script_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "sha256": "9896c59da2dde2a667303dfb70cce28dc4f0cef8f16ede1037ebfbf6c9d146f4",
+      "test_sha256": "040fbd4d7eaa0f189ca219a68c5be6a60961418f286bf01d6af2ff3d9c7c01a2"
+    },
+    "FINAL_FIXED_FAILED_PROCESSOR_TEST.json": {
+      "counts": {
+        "failed": 0,
+        "passed": 1,
+        "skipped": 0
+      },
+      "exit_code": 0,
+      "privacy_sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a",
+      "script_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "sha256": "fa80d0d25f74c27bfeebe5e9de39ff6f5f7159dc53d49e08a107917631a4504c",
+      "test_sha256": "040fbd4d7eaa0f189ca219a68c5be6a60961418f286bf01d6af2ff3d9c7c01a2"
+    },
+    "FINAL_PROCESSOR_SUITE.json": {
+      "counts": {
+        "failed": 0,
+        "passed": 6,
+        "skipped": 0
+      },
+      "exit_code": 0,
+      "privacy_sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a",
+      "script_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "sha256": "82c9a97fbb4e6a2b8a7ecc77092a27a5361f22d37f916d3cb83c29dd2a23be14",
+      "test_sha256": "040fbd4d7eaa0f189ca219a68c5be6a60961418f286bf01d6af2ff3d9c7c01a2"
+    }
+  },
+  "file": {
+    "base_c1_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+    "bytes": 19461,
+    "path": "docs/legal/PRIVACY.md",
+    "sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a"
+  },
+  "independent_review_pending": true,
+  "manifest_sha256": "b0167fe63d8732131313a5733cc7957abb561f595c2f283e86509e70322d1ad7",
+  "meaning": "passive public POM/upstream licence URLs and manual review; app/auditcollector do not automatically request these references; no contributor data sent; manual link opening exposes reviewer IP/browser details",
+  "new_hosts": [
+    "www.apache.org",
+    "chromium.googlesource.com",
+    "www.eclipse.org",
+    "www.opensource.org"
+  ],
+  "one_new_processor_reference_row_only": true,
+  "original_build_dependency_row_semantics_and_bytes_unchanged": true,
+  "patch_sha256": "60f23aa6c5963c7f29c405b6ccbc899ec9b24c30dd38aeb0303771fcd230686b",
+  "processor_test_and_NOT_CONTACTED_exemptions_unchanged": true,
+  "processor_test_sha256": "040fbd4d7eaa0f189ca219a68c5be6a60961418f286bf01d6af2ff3d9c7c01a2",
+  "removing_new_row_restores_entire_original_privacy_bytes": true,
+  "schema": "gsip-privacy-passive-license-references-frozen-v1",
+  "shared_source_Git_GH_production_changes": false,
+  "source_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "tests_added_or_changed": false
+}

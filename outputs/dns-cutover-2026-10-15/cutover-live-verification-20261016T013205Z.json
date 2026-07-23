@@ -1,0 +1,624 @@
+{
+  "status": "NOT_YET_FULLY_VERIFIED",
+  "checked_at_utc": "2026-10-16T01:32:05.018778+00:00",
+  "base_url": "https://globalsoilintelligence.com/",
+  "approved_run": 38821460183,
+  "approved_source_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "approved_artifact_sha256": "2bc0829549d98331c7a8dc5e451b6e5457125fd5863f166e63ce1ea90a4cde33",
+  "files_matching": 38,
+  "files_expected": 38,
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "files": [
+    {
+      "path": "about/index.html",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/about/index.html",
+      "final_url": "https://globalsoilintelligence.com/about/index.html",
+      "status": 200,
+      "bytes": 6439,
+      "sha256": "e8da342605531cb4f9ac3fb0cfbcb25436360a899aa09a585944f86af443408d",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "assets/main-CQunBpw7.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/assets/main-CQunBpw7.js",
+      "final_url": "https://globalsoilintelligence.com/assets/main-CQunBpw7.js",
+      "status": 200,
+      "bytes": 251852,
+      "sha256": "dc820ba75169e46200e1fbbeced3c807f4fca709341a630d8fd7dc4968c3bf6b",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "assets/main-CdU0pfZy.css",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/assets/main-CdU0pfZy.css",
+      "final_url": "https://globalsoilintelligence.com/assets/main-CdU0pfZy.css",
+      "status": 200,
+      "bytes": 17223,
+      "sha256": "b1a3e832a29a6f2d40376eadc93db588ff419fe7d105b54b39118ec46168b898",
+      "content_type": "text/css; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/dist-DrwtsX7j.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/dist-DrwtsX7j.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/dist-DrwtsX7j.js",
+      "status": 200,
+      "bytes": 7754,
+      "sha256": "3fb5ed5a936995d89004aa9688ea992482ec8320274d50feff3833f057740f11",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/esm-CmDILqN6.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/esm-CmDILqN6.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/esm-CmDILqN6.js",
+      "status": 200,
+      "bytes": 587,
+      "sha256": "d0e19e89da6ceefba6ff4ccc3a161c5e056cb658df61926421a939ba23e05381",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/esm-DA9dRiza.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/esm-DA9dRiza.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/esm-DA9dRiza.js",
+      "status": 200,
+      "bytes": 406,
+      "sha256": "06c6d8a4b2d4b8bb90ad7feefbfd95e790942d67e8ba533949968438b3316b79",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/esm-DceqX21T.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/esm-DceqX21T.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/esm-DceqX21T.js",
+      "status": 200,
+      "bytes": 819,
+      "sha256": "e9021c8aac3d064702503da0b5f8417f49cc26eb5c15a2b3c64ad51fd2f396df",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/esm-YcB-ubya.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/esm-YcB-ubya.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/esm-YcB-ubya.js",
+      "status": 200,
+      "bytes": 9834,
+      "sha256": "03dc21355112032d88a5be7f34462b9a29a69513e2779e5ba020f4e96fabfb8b",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/index-DZ_h-Mw_.css",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/index-DZ_h-Mw_.css",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/index-DZ_h-Mw_.css",
+      "status": 200,
+      "bytes": 7334,
+      "sha256": "359571ceba7714336ebbfcfec093e6001c5ae65f381084a27c1f7e8775b78e56",
+      "content_type": "text/css; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/index-E1VTHjAy.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/index-E1VTHjAy.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/index-E1VTHjAy.js",
+      "status": 200,
+      "bytes": 806826,
+      "sha256": "95ec3771989c272bbe85d6d6b07f914a10312925c97b79bcabbb07c6d9a3d981",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/synapse-D5y-aojA.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/synapse-D5y-aojA.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/synapse-D5y-aojA.js",
+      "status": 200,
+      "bytes": 624,
+      "sha256": "db56839eb35756ad0bfa4aee4a008a1fe40b116ef3de989b872282682baa9653",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/web-ClVSmdgs.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/web-ClVSmdgs.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/web-ClVSmdgs.js",
+      "status": 200,
+      "bytes": 4439,
+      "sha256": "c7cb85c6e43daadbb6f3dffeb100ca91b6f5f9b4f7abfed57252a2dd7e781434",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/web-XXcZAasd.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/web-XXcZAasd.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/web-XXcZAasd.js",
+      "status": 200,
+      "bytes": 8475,
+      "sha256": "820c2bb9bacc60ece35135cd87470782849800b57b2dd3a1ac06c84bfc347295",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/assets/web-Z7Um3E4a.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/assets/web-Z7Um3E4a.js",
+      "final_url": "https://globalsoilintelligence.com/capture/assets/web-Z7Um3E4a.js",
+      "status": 200,
+      "bytes": 2086,
+      "sha256": "f6f6c0067308a0d40aa744d6d9267fb1ca7e1c58f78ec042dbb81547edd511b7",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/gsip-activation.json",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/gsip-activation.json",
+      "final_url": "https://globalsoilintelligence.com/capture/gsip-activation.json",
+      "status": 200,
+      "bytes": 50,
+      "sha256": "e79c9ca28c243929e0252ffd0b42c868560e17d293c225532d09410b92d04bdc",
+      "content_type": "application/json; charset=utf-8",
+      "redirects": [],
+      "activation": {
+        "capture_live": false,
+        "library_intake_live": false
+      },
+      "closed_flags_verified": true
+    },
+    {
+      "path": "capture/icon.svg",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/icon.svg",
+      "final_url": "https://globalsoilintelligence.com/capture/icon.svg",
+      "status": 200,
+      "bytes": 370,
+      "sha256": "7bc121f182dfb271605723fd9e08db8be552b6aa1ba03d5ac249357dfd1c4e91",
+      "content_type": "image/svg+xml",
+      "redirects": []
+    },
+    {
+      "path": "capture/index.html",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/index.html",
+      "final_url": "https://globalsoilintelligence.com/capture/index.html",
+      "status": 200,
+      "bytes": 577,
+      "sha256": "419cebeae7d7703b685a3089da751c753d7863730d0012ac4bb22036aa8cd62d",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/manifest.webmanifest",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/manifest.webmanifest",
+      "final_url": "https://globalsoilintelligence.com/capture/manifest.webmanifest",
+      "status": 200,
+      "bytes": 325,
+      "sha256": "a3b1be7a5206677834f623191f7c4ae3daffdcf7fa38644498d1917cafabe0d8",
+      "content_type": "application/manifest+json; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/registerSW.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/registerSW.js",
+      "final_url": "https://globalsoilintelligence.com/capture/registerSW.js",
+      "status": 200,
+      "bytes": 136,
+      "sha256": "e12c8db54e3cc247034427f2b661b305a78fea7e7cdec1eac179fecec3da0fc7",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/sw.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/sw.js",
+      "final_url": "https://globalsoilintelligence.com/capture/sw.js",
+      "status": 200,
+      "bytes": 1565,
+      "sha256": "16d61512a42f715c845c000b1201bd5aeb49a5f77c90246554353e43327d7d5a",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "capture/workbox-9c191d2f.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/capture/workbox-9c191d2f.js",
+      "final_url": "https://globalsoilintelligence.com/capture/workbox-9c191d2f.js",
+      "status": 200,
+      "bytes": 15112,
+      "sha256": "04b086f1b2f4215ee4b659a7bc9c76162894abdb43fa876247bc7c0bd6fd1c37",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "card-bw-preview.png",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/card-bw-preview.png",
+      "final_url": "https://globalsoilintelligence.com/card-bw-preview.png",
+      "status": 200,
+      "bytes": 37508,
+      "sha256": "e3c1a24795628a17438686056e61b98df0dd368485bde0f06ec3613308ad5383",
+      "content_type": "image/png",
+      "redirects": []
+    },
+    {
+      "path": "card-color-preview.png",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/card-color-preview.png",
+      "final_url": "https://globalsoilintelligence.com/card-color-preview.png",
+      "status": 200,
+      "bytes": 37527,
+      "sha256": "cdbb6289d3d7ae6ad88dbb2ff3037698f3a729b4308a8567242e823e8f3c9534",
+      "content_type": "image/png",
+      "redirects": []
+    },
+    {
+      "path": "card/index.html",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/card/index.html",
+      "final_url": "https://globalsoilintelligence.com/card/index.html",
+      "status": 200,
+      "bytes": 6147,
+      "sha256": "a2c51a4ca4896aff80e77fda49d7cbcb01c6d72dec108f2af46602fb971148f2",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "data/index.html",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/data/index.html",
+      "final_url": "https://globalsoilintelligence.com/data/index.html",
+      "status": 200,
+      "bytes": 9469,
+      "sha256": "81b85b0325047f66324696d002cc86a12e322aafad3453d5ee9e7422e6354fc3",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "favicon.svg",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/favicon.svg",
+      "final_url": "https://globalsoilintelligence.com/favicon.svg",
+      "status": 200,
+      "bytes": 370,
+      "sha256": "7bc121f182dfb271605723fd9e08db8be552b6aa1ba03d5ac249357dfd1c4e91",
+      "content_type": "image/svg+xml",
+      "redirects": []
+    },
+    {
+      "path": "index.html",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/index.html",
+      "final_url": "https://globalsoilintelligence.com/index.html",
+      "status": 200,
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "llms.txt",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/llms.txt",
+      "final_url": "https://globalsoilintelligence.com/llms.txt",
+      "status": 200,
+      "bytes": 2389,
+      "sha256": "66a407dd647ae9fc22234d4469d01b76de459999491b6c23058a551c3ebcb6ee",
+      "content_type": "text/plain; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "map/assets/index-BvpiT6QS.js",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js",
+      "final_url": "https://globalsoilintelligence.com/map/assets/index-BvpiT6QS.js",
+      "status": 200,
+      "bytes": 1793664,
+      "sha256": "8f3c777c959b2a700d299dcd14c30b7d71c93edcff4d3339c5bb40010f44d7ca",
+      "content_type": "application/javascript; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "map/assets/index-gHsDz2RA.css",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/map/assets/index-gHsDz2RA.css",
+      "final_url": "https://globalsoilintelligence.com/map/assets/index-gHsDz2RA.css",
+      "status": 200,
+      "bytes": 85863,
+      "sha256": "2448caa8f5f478b0d524a632501bfc45a8c6f6ec8336ae39e7f8a72e3ff918cd",
+      "content_type": "text/css; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "map/index.html",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/map/index.html",
+      "final_url": "https://globalsoilintelligence.com/map/index.html",
+      "status": 200,
+      "bytes": 407,
+      "sha256": "d2520e23662ac7cfd0e0935cd5a52f47a8f849d28479e8a5cbd1e4df3b7762fd",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "methods/index.html",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/methods/index.html",
+      "final_url": "https://globalsoilintelligence.com/methods/index.html",
+      "status": 200,
+      "bytes": 8184,
+      "sha256": "d4cb407020c1fc8c159e8277f029542a51f3e0d09ff07ef6195eb96eb7878d43",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "og-library.png",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/og-library.png",
+      "final_url": "https://globalsoilintelligence.com/og-library.png",
+      "status": 200,
+      "bytes": 1965996,
+      "sha256": "07c99fc8d617edf3142267acf75ff9c39fcb88a5ad0f0fc06fb3824dad3785e0",
+      "content_type": "image/png",
+      "redirects": []
+    },
+    {
+      "path": "og.png",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/og.png",
+      "final_url": "https://globalsoilintelligence.com/og.png",
+      "status": 200,
+      "bytes": 965367,
+      "sha256": "66bd15c9c969bdfc21658ed9c5a7383eba5b4a7e73d135687109678cf112b81f",
+      "content_type": "image/png",
+      "redirects": []
+    },
+    {
+      "path": "reference-card/gsip-reference-card-v1-bw.pdf",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/reference-card/gsip-reference-card-v1-bw.pdf",
+      "final_url": "https://globalsoilintelligence.com/reference-card/gsip-reference-card-v1-bw.pdf",
+      "status": 200,
+      "bytes": 5851,
+      "sha256": "deb4a5db3aae33a03dc561a740b9924f6ad821113f85ca61012499f64021db42",
+      "content_type": "application/pdf",
+      "redirects": []
+    },
+    {
+      "path": "reference-card/gsip-reference-card-v1-color.pdf",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/reference-card/gsip-reference-card-v1-color.pdf",
+      "final_url": "https://globalsoilintelligence.com/reference-card/gsip-reference-card-v1-color.pdf",
+      "status": 200,
+      "bytes": 5898,
+      "sha256": "92e35f4cd226ed1d04c4d587ddfd5e07093735c748455ef8d92546bd608d0167",
+      "content_type": "application/pdf",
+      "redirects": []
+    },
+    {
+      "path": "robots.txt",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/robots.txt",
+      "final_url": "https://globalsoilintelligence.com/robots.txt",
+      "status": 200,
+      "bytes": 80,
+      "sha256": "e19486f8f74a744bdfe502c686b5ac8a28ec3d2f1a018d717a3fda76f7aba297",
+      "content_type": "text/plain; charset=utf-8",
+      "redirects": []
+    },
+    {
+      "path": "sitemap.xml",
+      "matches_approved_artifact": true,
+      "requested_url": "https://globalsoilintelligence.com/sitemap.xml",
+      "final_url": "https://globalsoilintelligence.com/sitemap.xml",
+      "status": 200,
+      "bytes": 498,
+      "sha256": "01ee464f47f03ab941362bdb78a488721724c96a96c66dd3752b1197d8268842",
+      "content_type": "application/xml",
+      "redirects": []
+    }
+  ],
+  "routes": [
+    {
+      "requested_url": "https://globalsoilintelligence.com/",
+      "final_url": "https://globalsoilintelligence.com/",
+      "status": 200,
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": [],
+      "expected_destination": "https://globalsoilintelligence.com/",
+      "pass": true
+    },
+    {
+      "requested_url": "http://globalsoilintelligence.com/",
+      "final_url": "https://globalsoilintelligence.com/",
+      "status": 200,
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": [
+        {
+          "from": "http://globalsoilintelligence.com/",
+          "status": 301,
+          "to": "https://globalsoilintelligence.com/"
+        }
+      ],
+      "expected_destination": "https://globalsoilintelligence.com/",
+      "pass": true
+    },
+    {
+      "requested_url": "https://www.globalsoilintelligence.com/",
+      "final_url": "https://globalsoilintelligence.com/",
+      "status": 200,
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": [
+        {
+          "from": "https://www.globalsoilintelligence.com/",
+          "status": 301,
+          "to": "https://globalsoilintelligence.com/"
+        }
+      ],
+      "expected_destination": "https://globalsoilintelligence.com/",
+      "pass": true
+    },
+    {
+      "requested_url": "http://www.globalsoilintelligence.com/",
+      "final_url": "https://globalsoilintelligence.com/",
+      "status": 200,
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": [
+        {
+          "from": "http://www.globalsoilintelligence.com/",
+          "status": 301,
+          "to": "https://globalsoilintelligence.com/"
+        }
+      ],
+      "expected_destination": "https://globalsoilintelligence.com/",
+      "pass": true
+    },
+    {
+      "requested_url": "https://global-soil-intelligence.github.io/gsip/",
+      "error_type": "ValueError",
+      "pass": false
+    },
+    {
+      "requested_url": "https://global-soil-intelligence.github.io/gsip/data/",
+      "error_type": "ValueError",
+      "pass": false
+    },
+    {
+      "requested_url": "https://global-soil-intelligence.github.io/gsip/og-library.png",
+      "final_url": "https://globalsoilintelligence.com/og-library.png",
+      "status": 200,
+      "bytes": 1965996,
+      "sha256": "07c99fc8d617edf3142267acf75ff9c39fcb88a5ad0f0fc06fb3824dad3785e0",
+      "content_type": "image/png",
+      "redirects": [
+        {
+          "from": "https://global-soil-intelligence.github.io/gsip/og-library.png",
+          "status": 301,
+          "to": "https://globalsoilintelligence.com/og-library.png"
+        }
+      ],
+      "expected_destination": "https://globalsoilintelligence.com/og-library.png",
+      "pass": true
+    },
+    {
+      "requested_url": "https://www.globalsoilintelligence.com/data/",
+      "final_url": "https://globalsoilintelligence.com/data/",
+      "status": 200,
+      "bytes": 9469,
+      "sha256": "81b85b0325047f66324696d002cc86a12e322aafad3453d5ee9e7422e6354fc3",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": [
+        {
+          "from": "https://www.globalsoilintelligence.com/data/",
+          "status": 301,
+          "to": "https://globalsoilintelligence.com/data/"
+        }
+      ],
+      "expected_destination": "https://globalsoilintelligence.com/data/",
+      "pass": true
+    }
+  ],
+  "certificates": [
+    {
+      "hostname": "globalsoilintelligence.com",
+      "trusted_and_hostname_valid": true,
+      "tls_version": "TLSv1.3",
+      "not_before": "Oct 16 00:32:33 2026 GMT",
+      "not_after": "Jan 14 00:32:32 2027 GMT",
+      "subject_alt_names": [
+        [
+          "DNS",
+          "globalsoilintelligence.com"
+        ],
+        [
+          "DNS",
+          "www.globalsoilintelligence.com"
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "US"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "Let's Encrypt"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "YR1"
+          ]
+        ]
+      ]
+    },
+    {
+      "hostname": "www.globalsoilintelligence.com",
+      "trusted_and_hostname_valid": true,
+      "tls_version": "TLSv1.3",
+      "not_before": "Oct 16 00:32:33 2026 GMT",
+      "not_after": "Jan 14 00:32:32 2027 GMT",
+      "subject_alt_names": [
+        [
+          "DNS",
+          "globalsoilintelligence.com"
+        ],
+        [
+          "DNS",
+          "www.globalsoilintelligence.com"
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "US"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "Let's Encrypt"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "YR1"
+          ]
+        ]
+      ]
+    }
+  ],
+  "mutations": "NONE; GET and TLS handshakes only; certificate validation enabled"
+}

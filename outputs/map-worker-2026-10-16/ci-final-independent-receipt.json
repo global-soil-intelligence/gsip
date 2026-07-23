@@ -1,0 +1,109 @@
+{
+  "checked_at_utc": "2026-10-16T11:40:59.196396+00:00",
+  "status": "EXACT_HEAD_CI_SUCCESS_REQUIRED_CHECK_CONFIGURATION_GAP",
+  "pr": 77,
+  "pr_url": "https://github.com/global-soil-intelligence/gsip/pull/77",
+  "head_sha": "d53eda2e835e57b4ee01dc922fb63d5ebdeceae0",
+  "run": {
+    "id": 38894216993,
+    "head_sha": "d53eda2e835e57b4ee01dc922fb63d5ebdeceae0",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-16T11:30:23Z",
+    "updated_at": "2026-10-16T11:37:39Z",
+    "run_started_at": "2026-10-16T11:30:23Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894216993"
+  },
+  "all_reported_checks": [
+    {
+      "id": 116950700125,
+      "name": "dco",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-16T11:30:23Z",
+      "completed_at": "2026-10-16T11:30:23Z",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894216700/job/116950700125"
+    },
+    {
+      "id": 116950698986,
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-16T11:30:25Z",
+      "completed_at": "2026-10-16T11:30:34Z",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894217274/job/116950698986"
+    },
+    {
+      "id": 116950698453,
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-16T11:30:25Z",
+      "completed_at": "2026-10-16T11:37:38Z",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894216993/job/116950698453"
+    },
+    {
+      "id": 116950686124,
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-16T11:30:23Z",
+      "completed_at": "2026-10-16T11:30:32Z",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894212950/job/116950686124"
+    }
+  ],
+  "unit_tests": {
+    "passed": 603,
+    "files": 44,
+    "package_pass_counts": [
+      308,
+      33,
+      16,
+      246
+    ],
+    "package_file_counts": [
+      15,
+      2,
+      3,
+      24
+    ],
+    "source": "Filtered numeric summaries from completed run log"
+  },
+  "playwright": {
+    "passed": 14,
+    "seconds": 12.6
+  },
+  "pytest_ci": {
+    "passed": 2075,
+    "skipped": 31,
+    "warnings": 37,
+    "seconds": 122.08
+  },
+  "pgtap": {
+    "assertions": 593,
+    "files": 11,
+    "result": "PASS"
+  },
+  "migration_over_existing_rows": "Completed success; numeric fractions appear in raw step log but are not certified here as suite totals",
+  "required_status_check_configuration": {
+    "validate_run_result": "SUCCESS",
+    "validate_is_configured_required_on_main": false,
+    "effective_ruleset_id": 19564478,
+    "effective_main_rule_types": [
+      "deletion",
+      "non_fast_forward",
+      "pull_request"
+    ],
+    "required_checks_cli_result": "no required checks reported on the 'wp-site-1g-map-worker' branch",
+    "state_changed": false
+  },
+  "evidence_files": [
+    "ci-watch-independent-20261016T113835Z.json",
+    "ci-completion-independent.json",
+    "ci-main-rules-independent.json",
+    "ci-unit-summary-independent.json"
+  ],
+  "watch_stopped_on": "CI completion success",
+  "mutations": "NONE; no rerun, merge, deployment or settings changes"
+}

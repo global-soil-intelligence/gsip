@@ -1,0 +1,136 @@
+{
+  "artifacts": {
+    "/private/tmp/gsip-shared-jpeg-boundary-v3-delta-from-v2.patch": "47d8b5c627eb22ef45c9897e9593afeeb2c1496e17631411d6243cc233cc1b12",
+    "/private/tmp/gsip-shared-jpeg-boundary-v3-delta.patch": "8ad3389126b8d7feb430e91088b9ce8f47e35f6ea7f2f82cf156c709060ea862",
+    "/private/tmp/gsip-shared-jpeg-boundary-v3-manifest.json": "984b4ee85c712adaf119d1677ed6872b3aae12aebf519d3309aa3a93e0194f5d",
+    "/private/tmp/gsip-shared-jpeg-boundary-v3.patch": "a3851a91ef7a82c9030f13152d5bbf43622d806ea16e3155f0d0a6e061a2ce15"
+  },
+  "boundary": [
+    "Pillow unreadable-source OSError/ValueError behavior is preserved; readable non-JPEG or unsafe canonical bytes are dirty.",
+    "Single complete JPEG with SOI at start and true EOI at exact EOF; length-delimited payloads, all entropy scans, FF00 stuffing and restart markers are walked.",
+    "Only exact first, single, 14-byte JFIF1.01/units0/densities1x1/no-thumbnail APP0 is allowed; APP1-15/COM/unsupported extension payloads are refused anywhere.",
+    "Supported frame syntax is Huffman DCT C0/C1/C2; DNL, DAC, lossless/arithmetic modes and delayed dimensions are refused.",
+    "DQT8/16-bit entries and DHT counts/symbols fully consume the segment; unknown types/destinations, zero quantization values, incomplete/padded entries, empty or oversubscribed/all-ones Huffman trees are refused. DRI is exactly two bytes.",
+    "Each definition generation must be consumed by actual scan component/table use, not SOF or inactive selector fields. Replacing an unconsumed definition and any unused definition at EOI are refused.",
+    "Progressive initial DC consumes DC Huffman; DC refinement consumes none; AC consumes AC Huffman. Unused selectors must be zero. Quantization changes after first scan are refused as a conservative canonical-profile bound.",
+    "Valid progressive consumed Huffman updates, multiple entries, actual stuffing/restarts, 8/16-bit consumed quantization and optional absent APP0 remain supported.",
+    "Each sequential component appears in one scan. Progressive initializations happen once per coefficient band, AC follows initial DC, and refinement must match the prior coefficient bit plane; valid coarse/partial progressive interchange need not reach Al0 or code every AC band.",
+    "Pending definition consumption is committed only at the end of a scan with actual entropy bytes; an empty SOS header cannot launder a table. Duplicate/impossible scan history is refused even with arbitrary nonempty ignored bytes.",
+    "Sanitizer output is byte-for-byte identical to the prior re-encoding output; input private metadata sanitization still accepts supported source formats."
+  ],
+  "delta_base": "-delta.patch applies to QA1f12cffa/tests a152fa4e; -delta-from-v2.patch applies to QA5dcb86ea/tests7a110970. Complete patch applies to original QAabe3c05d/tests9c9a9fc3. Each passed isolated git apply --check.",
+  "files": {
+    "pipeline/qa.py": {
+      "before_sha256": {
+        "complete": "abe3c05d617cb2c2fc30e194226a5db526364b7f0c27b9446c08ce7a89ecb549",
+        "delta": "1f12cffa0471d96742ae9e852f5f0ea840c0f5edb2a0e0d2ce87bfec0dbcbb0c",
+        "delta-from-v2": "5dcb86eaf5424d7af547c5487eff5186027b3e42fa6c98289e371c1f3f40387f"
+      },
+      "bytes": 24707,
+      "sha256": "bac8fe0b1ad179e999f7ec2b0d6718fd516fd0ee76f03c5b9f26723b3ca7c575"
+    },
+    "tests/test_qa.py": {
+      "before_sha256": {
+        "complete": "9c9a9fc388aaad21e93ce2e2c0ec912f4be54fa87a07620d03764412c343b7af",
+        "delta": "a152fa4e9f0244eef4007f5d2c82294c0fcaf0e478049e4f699ae47676177acb",
+        "delta-from-v2": "7a110970f4cc6dc183c8cfb64e04bc8a9e55d1e9e93c12abbbf51fb462df67bb"
+      },
+      "bytes": 36768,
+      "sha256": "52113eab3b455455d33a82fd6602362798a46552a82cb7d70cecd3bd6355b2a7"
+    }
+  },
+  "freeze": "/private/tmp/gsip-jpeg-boundary-v3-freeze",
+  "full_suite_harness": {
+    "context_hashes": {
+      "pipeline/export.py": "a39ae3f7c2fab8785c05d8fdb4c17f80bc5040b5d31fb667a825e21cca241a88",
+      "pipeline/photo_export_privacy.py": "53655a2ccc8f89c942ea4630ff827c9e0d10ded7755c9d684c85672fc60e621e",
+      "pipeline/photo_privacy.py": "f4a288aad937c73ecb64c3415187e669ba67302a63eddcc0e9a7d65bfdcfa30c",
+      "tests/test_export.py": "402d9767fef1fa31e96d532cd324646f94087150e5722875cce9d9fef3e0217e",
+      "tests/test_photo_export_privacy.py": "28e85d61e6fff0e539d80bd7ab462ad26dae9e10ed9d4b8730d5672fe1f6bfaf",
+      "tests/test_photo_privacy.py": "435fd486058a7f4cd0b135b558afe9fcc6d17d44a30c4e24caa01644b96a8b35"
+    },
+    "inherited_base": "Root e8c452e B plus prior frozen C working source used only for validation; root later five decoder tests and peer four C integration regressions are separately owned and excluded from this receipt.",
+    "path": "/private/tmp/gsip-jpeg-boundary-1kj5pel2"
+  },
+  "limits": "Narrow structural metadata/marker/JFIF/table-generation/scan-history boundary, not complete Huffman entropy-bit consumption validation or coefficient/pixel/all-codec steganography detection. Caller decoding/screening and server digest/rights authorization remain separate; trusted QA producer re-encoding is unchanged. Local tests do not constitute production activation or independent-review closure.",
+  "primary_references": [
+    "https://www.w3.org/Graphics/JPEG/itu-t81.pdf",
+    "https://www.w3.org/Graphics/JPEG/jfif3.pdf"
+  ],
+  "regression_note": "The earlier required unused-DQT3 FFD9 positive was moved to an actually referenced Q0 definition after owner/peer confirmed unused tables are an ignored-byte channel. FFD9 length-awareness is still positively tested. Legacy QA tests are unchanged.",
+  "scope": "Local synthetic JPEG canonical-boundary forward fix; exactly two authored files; no root edits, commits, pushes, production/data/secrets access or gate changes.",
+  "status": "frozen_pending_independent_review",
+  "supersedes": "Original shared guard v1 and forward v2 are blocked/superseded by this v3. Both before hashes are in the manifest.",
+  "tests": {
+    "complete_and_delta_git_apply_check": "passed against exact isolated before snapshots",
+    "fail_before_v1_guard": {
+      "exit": 1,
+      "failed": 59,
+      "guard_sha256": "1f12cffa0471d96742ae9e852f5f0ea840c0f5edb2a0e0d2ce87bfec0dbcbb0c",
+      "passed": 114
+    },
+    "fail_before_v2_guard": {
+      "exit": 1,
+      "failed": 10,
+      "guard_sha256": "5dcb86eaf5424d7af547c5487eff5186027b3e42fa6c98289e371c1f3f40387f",
+      "passed": 163
+    },
+    "full_python_after": {
+      "exit": 0,
+      "passed": 753,
+      "skip_reason": "Existing GDAL command-line tools unavailable; tests/test_tiles.py requires_gdal.",
+      "skipped": 4
+    },
+    "mypy_two_files": "passed",
+    "pinned_gitleaks_8_21_2": {
+      "authored_files_only": true,
+      "exit": 0,
+      "findings": 0,
+      "report": "/private/tmp/gsip-jpeg-boundary-v3-gitleaks.json",
+      "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "qa_after": {
+      "exit": 0,
+      "passed": 173
+    },
+    "ruff_check": "passed",
+    "ruff_format_check": "passed with repo pyproject.toml configuration (line length100); default configuration without project context is not applicable"
+  },
+  "validation_logs": {
+    "fail_before_v1": {
+      "last_line": "59 failed, 114 passed in 1.56s",
+      "path": "/private/tmp/gsip-jpeg-boundary-v3-before-v1.log",
+      "sha256": "d2a8dc4477c9efe3e6e5a9a4e0978958ca8451a1eccd8c0b9657630292ea12da"
+    },
+    "fail_before_v2": {
+      "last_line": "10 failed, 163 passed in 1.22s",
+      "path": "/private/tmp/gsip-jpeg-boundary-v3-before-v2.log",
+      "sha256": "b678c8e6ae757bac9bbfdca1997419d8e31e561b4ecb54d23d033e1c2ea9ef30"
+    },
+    "format": {
+      "last_line": "2 files already formatted",
+      "path": "/private/tmp/gsip-jpeg-boundary-v3-format.log",
+      "sha256": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938"
+    },
+    "full_python_after": {
+      "last_line": "753 passed, 4 skipped in 9.63s",
+      "path": "/private/tmp/gsip-jpeg-boundary-v3-full.log",
+      "sha256": "d561c84471ee30f709a9422d36868c68dc3b4e09c46822a7a209a765ec89161a"
+    },
+    "lint": {
+      "last_line": "All checks passed!",
+      "path": "/private/tmp/gsip-jpeg-boundary-v3-lint.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "mypy": {
+      "last_line": "Success: no issues found in 2 source files",
+      "path": "/private/tmp/gsip-jpeg-boundary-v3-mypy.log",
+      "sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    "qa_after": {
+      "last_line": "173 passed in 1.32s",
+      "path": "/private/tmp/gsip-jpeg-boundary-v3-qa.log",
+      "sha256": "2c6a6e6d1b34223a296bb8717cfe97e841e1c2c2177617470a009aa913ab97d1"
+    }
+  }
+}

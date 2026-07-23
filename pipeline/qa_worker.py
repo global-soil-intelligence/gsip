@@ -9,7 +9,7 @@ from urllib.parse import quote
 import h3  # type: ignore[import-untyped]
 import httpx
 
-from pipeline.qa import aggregate_submission_status, evaluate_photo
+from pipeline.qa import evaluate_photo
 
 
 class SupabaseQaWorker:
@@ -59,7 +59,7 @@ class SupabaseQaWorker:
         self.requeue_stale_processing()
         jobs = self._rest(
             "GET",
-            f"qa_jobs?select=photo_id,attempts&status=in.(pending,retrying)&order=updated_at.asc&limit={limit}",
+            f"qa_jobs?select=photo_id,attempts,photos!inner(submissions!inner(upload_completed_at))&photos.submissions.upload_completed_at=not.is.null&status=in.(pending,retrying)&order=updated_at.asc&limit={limit}",
         ).json()
         completed = 0
         for job in jobs:
@@ -69,11 +69,7 @@ class SupabaseQaWorker:
 
     def process_one(self, photo_id: str, attempts: int) -> bool:
         now = datetime.now(UTC).isoformat()
-        self._rest(
-            "PATCH",
-            f"qa_jobs?photo_id=eq.{photo_id}",
-            json={"attempts": attempts + 1, "status": "processing", "updated_at": now},
-        )
+        reconciliation: dict[str, str] | None = None
         try:
             photo = self._rest(
                 "GET", f"photos?id=eq.{photo_id}&select=id,submission_id,shot_type,storage_path"
@@ -81,9 +77,21 @@ class SupabaseQaWorker:
             submission_id = str(photo["submission_id"])
             submission = self._rest(
                 "GET",
-                f"submissions?id=eq.{submission_id}&select=id,geom_precise,gps_accuracy_m,land_cover",
+                f"submissions?id=eq.{submission_id}&select=id,geom_precise,gps_accuracy_m,land_cover,upload_completed_at",
             ).json()[0]
+            if not submission.get("upload_completed_at"):
+                return False
+            self._rest(
+                "PATCH",
+                f"qa_jobs?photo_id=eq.{photo_id}",
+                json={"attempts": min(attempts + 1, 4), "status": "processing", "updated_at": now},
+            )
             latitude, longitude = _coordinates(submission["geom_precise"])
+            reconciliation = {
+                "p_submission_id": submission_id,
+                "p_h3_r6": h3.latlng_to_cell(latitude, longitude, 6),
+                "p_h3_r8": h3.latlng_to_cell(latitude, longitude, 8),
+            }
             prior_rows = self._rest(
                 "GET",
                 f"priors?submission_id=eq.{submission_id}&depth_top_cm=eq.0&depth_bottom_cm=eq.30&select=property,value",
@@ -147,26 +155,6 @@ class SupabaseQaWorker:
                     for event in result.events
                 ],
             )
-            all_events = self._rest(
-                "GET",
-                f"qa_events?submission_id=eq.{submission_id}&select=check_name,passed",
-            ).json()
-            submission_status = aggregate_submission_status(
-                (str(event["check_name"]), bool(event["passed"])) for event in all_events
-            )
-            self._rest(
-                "PATCH",
-                f"submissions?id=eq.{submission_id}",
-                json={
-                    "h3_r6": h3.latlng_to_cell(latitude, longitude, 6),
-                    "h3_r8": h3.latlng_to_cell(latitude, longitude, 8),
-                    "status": submission_status,
-                },
-            )
-            removed = self.client.delete(
-                f"{self.url}/storage/v1/object/incoming-photos/{quote(path, safe='/')}"
-            )
-            removed.raise_for_status()
             self._rest(
                 "PATCH",
                 f"qa_jobs?photo_id=eq.{photo_id}",
@@ -177,6 +165,20 @@ class SupabaseQaWorker:
                     "updated_at": now,
                 },
             )
+            self._rest(
+                "POST",
+                "rpc/reconcile_submission_qa",
+                json=reconciliation,
+            )
+            # Completion is durable before deletion. Failed cleanup is retried
+            # independently by the quarantine sweeper, never by reprocessing.
+            try:
+                removed = self.client.delete(
+                    f"{self.url}/storage/v1/object/incoming-photos/{quote(path, safe='/')}"
+                )
+                removed.raise_for_status()
+            except httpx.HTTPError:
+                pass
             return True
         except Exception as error:
             next_status = "dead_letter" if attempts + 1 >= 4 else "retrying"
@@ -189,6 +191,8 @@ class SupabaseQaWorker:
                     "updated_at": now,
                 },
             )
+            if next_status == "dead_letter" and reconciliation is not None:
+                self._rest("POST", "rpc/reconcile_submission_qa", json=reconciliation)
             return False
 
     def _quarantine_objects(self, prefix: str = "", depth: int = 0) -> list[tuple[str, datetime]]:

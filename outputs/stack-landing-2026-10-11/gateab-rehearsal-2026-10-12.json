@@ -1,0 +1,26 @@
+{
+  "observed_at_utc": "2026-10-12T12:21:26.952428+00:00",
+  "command": [
+    "python3",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/rehearse-catalog-repair.py"
+  ],
+  "exit_code": 0,
+  "summary": {
+    "status": "PASS",
+    "assertions_passed": 64,
+    "expected_assertions": 64,
+    "ledger_sequence_counts": [
+      18,
+      31,
+      18,
+      17,
+      26
+    ],
+    "output": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-ledger-reconciliation-rehearsal.json",
+    "sha256": "4080346f1d0935d3bc93a428df227eaf7380450f03be7c2e1e1dcd6591372cef",
+    "driver_sha256": "f3a3698cb9dc6efeb18a3d621dfceb3ab7c7b4a0c24c294e8d29b2cfce290f0c"
+  },
+  "prior_receipts_preserved_in": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gateab-2026-10-12-prior-rehearsal",
+  "production_touched": false,
+  "earlier_attempt": "Docker engine unavailable; no production action"
+}

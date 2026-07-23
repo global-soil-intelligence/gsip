@@ -1,0 +1,12 @@
+{
+  "utc": "2026-10-13T18:59:18.497486+00:00",
+  "head": "d74ba2add9ce9bb5494be60c5f11883d3f5137ef",
+  "parent": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "description_prefix_preserved": true,
+  "body_sha256": "9bc7dfc161dd2f906e3691a533fafdc24877b77b2a8d21e0d64b0104ae3f05a6",
+  "validation_receipt_sha256": "42dfe248adc888f69a1aead1fc81f30dd71ba473e053955f6bb25cbe110269b4",
+  "full_history_leaks": 0,
+  "full_history_scanner_commits": 143,
+  "source_only": true,
+  "recovery": "Immediate post-push PR head readback lagged behind verified branch ref; halted completion assertion; GET-only refresh verifies new head and exact body. No second commit/push/edit."
+}

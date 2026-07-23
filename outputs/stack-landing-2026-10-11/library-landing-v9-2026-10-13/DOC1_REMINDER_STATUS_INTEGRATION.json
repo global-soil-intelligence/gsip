@@ -1,0 +1,14 @@
+{
+  "utc": "2026-10-14T03:49:44.366803+00:00",
+  "base": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "branch": "wp-doc-1-reminder-status",
+  "source_manifest_sha256": "24ca03aeb649a1f496e8576c791b60e9a5fc12bf62997bec2cf6cf46cd4b1eff",
+  "changed_paths": [
+    "README.md",
+    "docs/BUILD_ORDER.md",
+    "docs/SPEC.md"
+  ],
+  "all365_final_file_hashes_verified": true,
+  "unrelated_files_unchanged": 362,
+  "production_changes": false
+}

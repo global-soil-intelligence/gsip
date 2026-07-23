@@ -1,0 +1,73 @@
+{
+  "reviewer": "Codex independent subagent /root/photo_sql_review",
+  "recorded_at_utc": "2026-10-13T06:06:53.700113+00:00",
+  "scope": "Final hash binding of completed narrow WP-6fC JPEG export integration review; no additional test run or broader source review in this closure step.",
+  "verdict": "No blocking issue identified within the reviewed C integration scope.",
+  "final_C_commit": "fd5c44bd9e33ca741fc4ed59b4a362e960f3e30a",
+  "manifest": {
+    "path": "/private/tmp/gsip-6fc-final-candidate-manifest.json",
+    "sha256": "1bb9a8b9594cc79fd6742b80e6cfe27cbd1971f331e0a90647b77ae54db29e30",
+    "precommit_parent_head": "d495d7fed932cc25dcc92fa4fa0b7628b730b26f",
+    "base_C_head": "e03e20457a11456d1cd3842caa224d049b44265f",
+    "forward_B_head": "b0f8e0f808629754bc6f4213f9c94e3149adfe55"
+  },
+  "files_sha256": {
+    "pipeline/export.py": "a39ae3f7c2fab8785c05d8fdb4c17f80bc5040b5d31fb667a825e21cca241a88",
+    "pipeline/photo_export_privacy.py": "53655a2ccc8f89c942ea4630ff827c9e0d10ded7755c9d684c85672fc60e621e",
+    "tests/test_export.py": "402d9767fef1fa31e96d532cd324646f94087150e5722875cce9d9fef3e0217e",
+    "tests/test_photo_export_privacy.py": "6dcc5a197c4e8b8a82ee00451f1247eb26e624b9dd408fa64a8dffa245e898e9",
+    "pipeline/qa.py": "bac8fe0b1ad179e999f7ec2b0d6718fd516fd0ee76f03c5b9f26723b3ca7c575"
+  },
+  "hash_binding": "Each of the four C files and inherited pipeline/qa.py exactly matches both the independently tested isolated copy and git show of the final C commit. The manifest parent was the precommit merge; the final C commit now contains the test delta.",
+  "independent_copy": "/private/tmp/gsip-6fc-jpeg-final-independent-_02atn6b",
+  "independent_validation": {
+    "pytest": {
+      "pytest_exit": 0,
+      "tests": 142,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "real_HTTPTransport_and_socket_connect_blocked": true,
+      "HF_offline": true,
+      "real_upload_not_run": true,
+      "production_access": false
+    },
+    "legacy_export_tests": 49,
+    "privacy_export_tests": 93,
+    "new_hidden_payload_regressions": 17,
+    "static_previously_run_on_same_four_C_hashes": {
+      "ruff_check": "pass",
+      "ruff_format_check": "pass",
+      "strict_mypy_four_files": "pass"
+    },
+    "validation_claim_boundary": "142 scoped tests and four-file static checks were independently executed before final commit binding. Parent-reported full-suite/static/gitleaks results are not counted as independently executed here."
+  },
+  "integration_findings": [
+    "All original 49 export tests remain intact: tests/test_export.py is byte-identical to the original reviewed C file.",
+    "All 17 synthetic exact-binding hidden JPEG payload cases refuse through systemic ExportPrivacyError and leave no published artifact; clean exact-byte export behavior remains passing.",
+    "The C exporter and RPC helper are unchanged; the integration inherits pipeline.qa.has_embedded_metadata rather than re-encoding export photos.",
+    "Existing C metadata enforcement remains on build, staged pruning and final cached-artifact validation. Unreadable OSError/ValueError compatibility remains row set-aside behavior."
+  ],
+  "fail_before_evidence": {
+    "four_original_cases": "Independently executed against original C guard: all four DID NOT RAISE ExportPrivacyError as required by the regression.",
+    "thirteen_expanded_cases": "Parent-authored intermediate-guard fail-before receipt reviewed and hashed; final test-file and patch hashes match. This reviewer did not independently execute those thirteen fail-before cases.",
+    "final_result": "All seventeen pass within the independently executed 142-test suite."
+  },
+  "evidence_sha256": {
+    "/private/tmp/gsip-6fc-jpeg-final-independent-tests-receipt.json": "59bfb676be0772dfca0184c666807c7c1f0db051b502749f162b0c7ea87e99c2",
+    "/private/tmp/gsip-6fc-jpeg-final-independent-tests.log": "ea00a3bc20061f3e1451afe7a511de601c578a7c8543a3ac101e0884a38051e5",
+    "/private/tmp/gsip-6fc-jpeg-final-independent-tests.xml": "476ffee821019d914a46fa47d4ee3ed81f7327a456f27e7d3f86aa96402cf33d",
+    "/private/tmp/gsip-6fc-jpeg-integration-failbefore-receipt.json": "69a8d92ca7ec50b88b6760c944e54c277508673c785e1685ba86aa4e795cec7e",
+    "/private/tmp/gsip-6fc-jpeg-expanded-fail-before-receipt.json": "04e5d8a2b4aa587933586bec841a3653f5f4ee3a73170d3389e2e5182e0e074f",
+    "/private/tmp/gsip-6fc-jpeg-expanded-tests.patch": "85b1bcb2620732ef634e4ba3aa978db38ee171766d4aa8096462713856d82b95"
+  },
+  "limitations_and_remaining_gates": [
+    "The inherited JPEG guard has a separate B source review. This C receipt certifies its narrow exporter integration, not a full JPEG entropy-bit validator or image-steganography guarantee.",
+    "Structural byte screening and synthetic regression success do not establish detector calibration or complete privacy assurance for real photographs.",
+    "Model licensing/calibration, actor provisioning, exact-head CI, owner review/merge authorization and all production/photo-publication gates remain separate.",
+    "No real HTTP, Hugging Face upload, contributor data, coordinates, database access, migration, deployment, Git mutation, approving review or production action was performed by this closure."
+  ],
+  "assumptions": [
+    "The final commit object supplied by the parent is the candidate to review; this was verified locally and does not establish remote deployment state."
+  ]
+}

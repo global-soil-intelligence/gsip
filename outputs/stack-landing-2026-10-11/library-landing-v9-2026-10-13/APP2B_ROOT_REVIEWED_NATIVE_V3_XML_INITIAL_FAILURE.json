@@ -1,0 +1,12 @@
+{
+  "total": 1712,
+  "passed": 1707,
+  "GDAL_skipped": 4,
+  "failure_or_error": 1,
+  "failed_test": "test_every_external_host_in_the_code_is_in_the_privacy_notice",
+  "actual_real_gradle_controls": 30,
+  "real_gradle_skips": 0,
+  "source_helper_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+  "xml_sha256": "f01c1bc089ba6d08f2661ce57f8a9b54257abe552d6656be6057ff4c87184dd4",
+  "status": "ONE_DOCUMENTATION_HOST_GATE_FAILURE; no commit/push; remediation pending"
+}

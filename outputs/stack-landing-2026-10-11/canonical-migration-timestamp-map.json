@@ -1,0 +1,321 @@
+{
+  "status": "Prepared metadata mapping only; no repair or deployment executed",
+  "target_project": "toxldjgwkxtneoqsazym",
+  "source_commit": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "baseline_migrations": [
+    {
+      "name": "wp1_extensions",
+      "canonical_local_version": "20260722164727",
+      "recorded_remote_version": "20260722164727",
+      "timestamp_changes": false,
+      "canonical_filename": "20260722164727_wp1_extensions.sql",
+      "canonical_sql_sha256": "a47384b6b2f103e31ae4777534d1e9b1e97be2c51d009be30c7e6396cdb09cb2",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp1_schema",
+      "canonical_local_version": "20260722164749",
+      "recorded_remote_version": "20260722164749",
+      "timestamp_changes": false,
+      "canonical_filename": "20260722164749_wp1_schema.sql",
+      "canonical_sql_sha256": "92ad08bf95c2ec28b36a6973631388c3135ac56a69c87d24173535b29d09efe5",
+      "owner_source_classification": "substantive SQL difference"
+    },
+    {
+      "name": "wp1_rls",
+      "canonical_local_version": "20260722164806",
+      "recorded_remote_version": "20260722164806",
+      "timestamp_changes": false,
+      "canonical_filename": "20260722164806_wp1_rls.sql",
+      "canonical_sql_sha256": "49f7ff7782cf06fe50df421d747ea21d049f1996bea5dce8dca8170c268af482",
+      "owner_source_classification": "substantive SQL difference"
+    },
+    {
+      "name": "wp1_review_hardening",
+      "canonical_local_version": "20260722170020",
+      "recorded_remote_version": "20260722170020",
+      "timestamp_changes": false,
+      "canonical_filename": "20260722170020_wp1_review_hardening.sql",
+      "canonical_sql_sha256": "cba2ec74526c597170b454851d8012051f238a7db93d818b91d85d96cde6b30b",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp1_v22_privacy_and_grants",
+      "canonical_local_version": "20260722181500",
+      "recorded_remote_version": "20260722182403",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722181500_wp1_v22_privacy_and_grants.sql",
+      "canonical_sql_sha256": "86213d751d8df64404a5aaea332f7ea93d996716f569bfa036aca9f8812e34ff",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp1_performance_indexes",
+      "canonical_local_version": "20260722183000",
+      "recorded_remote_version": "20260722182446",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722183000_wp1_performance_indexes.sql",
+      "canonical_sql_sha256": "2efb4383f8629154a031342e0494e04c3105b979353911e3d9415e4fba93880a",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp4_prior_jobs",
+      "canonical_local_version": "20260722190000",
+      "recorded_remote_version": "20260722190912",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722190000_wp4_prior_jobs.sql",
+      "canonical_sql_sha256": "430b0c9064e6d075197d755d661bf00e345faff49b4e8e9db59de13253fa2358",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp4_prior_jobs_hardening",
+      "canonical_local_version": "20260722190500",
+      "recorded_remote_version": "20260722191140",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722190500_wp4_prior_jobs_hardening.sql",
+      "canonical_sql_sha256": "8160abac06009fdf3eab8d9f38b1e4add8330995dd274014a85182eb8e44249c",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp4b_photo_qa",
+      "canonical_local_version": "20260722193000",
+      "recorded_remote_version": "20260722191802",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722193000_wp4b_photo_qa.sql",
+      "canonical_sql_sha256": "7dad54be4ec8354fccacd652143ec4f26449d76a6fdf7da107adda6aa7c23ded",
+      "owner_source_classification": "substantive SQL difference"
+    },
+    {
+      "name": "wp6_export_guardrails",
+      "canonical_local_version": "20260722200000",
+      "recorded_remote_version": "20260722194033",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722200000_wp6_export_guardrails.sql",
+      "canonical_sql_sha256": "c6d491d01686ee2e293b98ccd84e074e96603d4b9d0a8ceaef239e1cb004233f",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "phase1_actor_hardening",
+      "canonical_local_version": "20260723002255",
+      "recorded_remote_version": "20260723011122",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723002255_phase1_actor_hardening.sql",
+      "canonical_sql_sha256": "a3b0a00dc2878a4b1d7b1f9e289d6e1970ef7499105e14bc764c92f69dc1678d",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "qa_event_provenance",
+      "canonical_local_version": "20260723004439",
+      "recorded_remote_version": "20260723011144",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723004439_qa_event_provenance.sql",
+      "canonical_sql_sha256": "f2ef7ab587c72fd008383edee716761c908a71f94c82dfb0daedc2dcc3e7698d",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "public_h3_aggregates",
+      "canonical_local_version": "20260723005752",
+      "recorded_remote_version": "20260723011159",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723005752_public_h3_aggregates.sql",
+      "canonical_sql_sha256": "4ac1f12cb35e1d9a4c5ce4d5c81c9d962a1ec54b60ff99cca87debed4fdce81b",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "atomic_public_h3_refresh",
+      "canonical_local_version": "20260723010313",
+      "recorded_remote_version": "20260723011219",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723010313_atomic_public_h3_refresh.sql",
+      "canonical_sql_sha256": "e8a80e13b2dfcef185bdb6b84de054cd90bb5656449b095842fb152bfc7bba62",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "atomic_prior_attempt_claim",
+      "canonical_local_version": "20260723044745",
+      "recorded_remote_version": "20260723050851",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723044745_atomic_prior_attempt_claim.sql",
+      "canonical_sql_sha256": "695520093d1332c38563fd83cdefbf726b4c3cde5be360ed851e52580f6a42c4",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "document_authenticated_h3_role",
+      "canonical_local_version": "20260723045317",
+      "recorded_remote_version": "20260723050903",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723045317_document_authenticated_h3_role.sql",
+      "canonical_sql_sha256": "fac47eb129ae5e913c973d063f19380b48eede88cd023326a543cc6e769b9220",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "remove_public_submission_residue",
+      "canonical_local_version": "20260723045606",
+      "recorded_remote_version": "20260723050918",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723045606_remove_public_submission_residue.sql",
+      "canonical_sql_sha256": "1f133d48265e25fcdfd7d7b7714697ad4db774fbb8d87fcc8d84683ac5f1a634",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    }
+  ],
+  "timestamp_remappings": [
+    {
+      "name": "wp1_v22_privacy_and_grants",
+      "canonical_local_version": "20260722181500",
+      "recorded_remote_version": "20260722182403",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722181500_wp1_v22_privacy_and_grants.sql",
+      "canonical_sql_sha256": "86213d751d8df64404a5aaea332f7ea93d996716f569bfa036aca9f8812e34ff",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp1_performance_indexes",
+      "canonical_local_version": "20260722183000",
+      "recorded_remote_version": "20260722182446",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722183000_wp1_performance_indexes.sql",
+      "canonical_sql_sha256": "2efb4383f8629154a031342e0494e04c3105b979353911e3d9415e4fba93880a",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp4_prior_jobs",
+      "canonical_local_version": "20260722190000",
+      "recorded_remote_version": "20260722190912",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722190000_wp4_prior_jobs.sql",
+      "canonical_sql_sha256": "430b0c9064e6d075197d755d661bf00e345faff49b4e8e9db59de13253fa2358",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp4_prior_jobs_hardening",
+      "canonical_local_version": "20260722190500",
+      "recorded_remote_version": "20260722191140",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722190500_wp4_prior_jobs_hardening.sql",
+      "canonical_sql_sha256": "8160abac06009fdf3eab8d9f38b1e4add8330995dd274014a85182eb8e44249c",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "wp4b_photo_qa",
+      "canonical_local_version": "20260722193000",
+      "recorded_remote_version": "20260722191802",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722193000_wp4b_photo_qa.sql",
+      "canonical_sql_sha256": "7dad54be4ec8354fccacd652143ec4f26449d76a6fdf7da107adda6aa7c23ded",
+      "owner_source_classification": "substantive SQL difference"
+    },
+    {
+      "name": "wp6_export_guardrails",
+      "canonical_local_version": "20260722200000",
+      "recorded_remote_version": "20260722194033",
+      "timestamp_changes": true,
+      "canonical_filename": "20260722200000_wp6_export_guardrails.sql",
+      "canonical_sql_sha256": "c6d491d01686ee2e293b98ccd84e074e96603d4b9d0a8ceaef239e1cb004233f",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "phase1_actor_hardening",
+      "canonical_local_version": "20260723002255",
+      "recorded_remote_version": "20260723011122",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723002255_phase1_actor_hardening.sql",
+      "canonical_sql_sha256": "a3b0a00dc2878a4b1d7b1f9e289d6e1970ef7499105e14bc764c92f69dc1678d",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "qa_event_provenance",
+      "canonical_local_version": "20260723004439",
+      "recorded_remote_version": "20260723011144",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723004439_qa_event_provenance.sql",
+      "canonical_sql_sha256": "f2ef7ab587c72fd008383edee716761c908a71f94c82dfb0daedc2dcc3e7698d",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "public_h3_aggregates",
+      "canonical_local_version": "20260723005752",
+      "recorded_remote_version": "20260723011159",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723005752_public_h3_aggregates.sql",
+      "canonical_sql_sha256": "4ac1f12cb35e1d9a4c5ce4d5c81c9d962a1ec54b60ff99cca87debed4fdce81b",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "atomic_public_h3_refresh",
+      "canonical_local_version": "20260723010313",
+      "recorded_remote_version": "20260723011219",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723010313_atomic_public_h3_refresh.sql",
+      "canonical_sql_sha256": "e8a80e13b2dfcef185bdb6b84de054cd90bb5656449b095842fb152bfc7bba62",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "atomic_prior_attempt_claim",
+      "canonical_local_version": "20260723044745",
+      "recorded_remote_version": "20260723050851",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723044745_atomic_prior_attempt_claim.sql",
+      "canonical_sql_sha256": "695520093d1332c38563fd83cdefbf726b4c3cde5be360ed851e52580f6a42c4",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "document_authenticated_h3_role",
+      "canonical_local_version": "20260723045317",
+      "recorded_remote_version": "20260723050903",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723045317_document_authenticated_h3_role.sql",
+      "canonical_sql_sha256": "fac47eb129ae5e913c973d063f19380b48eede88cd023326a543cc6e769b9220",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    },
+    {
+      "name": "remove_public_submission_residue",
+      "canonical_local_version": "20260723045606",
+      "recorded_remote_version": "20260723050918",
+      "timestamp_changes": true,
+      "canonical_filename": "20260723045606_remove_public_submission_residue.sql",
+      "canonical_sql_sha256": "1f133d48265e25fcdfd7d7b7714697ad4db774fbb8d87fcc8d84683ac5f1a634",
+      "owner_source_classification": "same apart from comments/whitespace (owner-reported; independently compare catalog and source digests)"
+    }
+  ],
+  "remote_versions_to_remove_if_owner_approves_repair": [
+    "20260722182403",
+    "20260722182446",
+    "20260722190912",
+    "20260722191140",
+    "20260722191802",
+    "20260722194033",
+    "20260723011122",
+    "20260723011144",
+    "20260723011159",
+    "20260723011219",
+    "20260723050851",
+    "20260723050903",
+    "20260723050918"
+  ],
+  "canonical_versions_to_mark_applied_if_owner_approves_repair": [
+    "20260722181500",
+    "20260722183000",
+    "20260722190000",
+    "20260722190500",
+    "20260722193000",
+    "20260722200000",
+    "20260723002255",
+    "20260723004439",
+    "20260723005752",
+    "20260723010313",
+    "20260723044745",
+    "20260723045317",
+    "20260723045606"
+  ],
+  "unrelated_remote_only_migration": {
+    "version": "20260730174047",
+    "name": "wavefunction_beta_schema",
+    "owner_disposition": "Accidental deployment; private source must not enter GSIP; wf_cards and wf_witnesses already dropped by owner; ledger disposition and wavefunction-api deletion await separately gated reconciliation commands"
+  },
+  "gates": [
+    "Prove or forward-correct the three substantive catalog differences; do not label divergent SQL applied without reconciliation",
+    "Review exact timestamp mapping and expected pending migration plan",
+    "Run mandatory db-migration-test.sh and deployed-baseline disposable rehearsal",
+    "Post exact commands and target project and wait for Justin go before any production repair/migration/function deletion"
+  ],
+  "production_mutations_performed": []
+}

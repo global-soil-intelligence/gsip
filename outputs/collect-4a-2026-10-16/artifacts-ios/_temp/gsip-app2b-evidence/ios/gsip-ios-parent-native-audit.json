@@ -1,0 +1,1875 @@
+{
+  "built_artifact_sha256": "9b690cc781fb4567d58dba4af2a546578598078d2c6fc0cea26438975eebe12a",
+  "cordova_apache_source_header": {
+    "sha256": "5b015a36af3df0bb49cfc97f9092f75e48fd02c56f366d674667b7cde888db13",
+    "source": "@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h",
+    "spdx": "Apache-2.0"
+  },
+  "npm_sources": [
+    {
+      "installed_file_count": 21,
+      "installed_source_bytes": 375957,
+      "installed_source_manifest_sha256": "79dff94665ca3d5e6803401e89b8e8cca2045eca4084f1ed4b627dca7176001d",
+      "license": "MIT",
+      "license_sha256": "9c6ebf3e5ab832ba4d5af38f340978e1fedbfee6e3d23662dfdb8917a9d864dd",
+      "name": "@capacitor/core",
+      "package_json_sha256": "11d1fd06941f61fe4bb8425ee08f53d573c899334ad9165501c029a5b3600646",
+      "version": "8.5.2"
+    },
+    {
+      "installed_file_count": 73,
+      "installed_source_bytes": 449616,
+      "installed_source_manifest_sha256": "044173ae9b4f63e6b351630db6e8a19f1e3d343539e522d205629331c3e46be6",
+      "license": "MIT",
+      "license_sha256": "9c6ebf3e5ab832ba4d5af38f340978e1fedbfee6e3d23662dfdb8917a9d864dd",
+      "name": "@capacitor/android",
+      "package_json_sha256": "0f2a47b835f900bef22b1f40e369e33669bf112df89455a3164d5146aa2e7127",
+      "version": "8.5.2"
+    },
+    {
+      "installed_file_count": 106,
+      "installed_source_bytes": 410508,
+      "installed_source_manifest_sha256": "f88b3eae408eceeb1fe3b3281138de8a87ba5603f8d3244a0e4df2837fb420c6",
+      "license": "MIT",
+      "license_sha256": "9c6ebf3e5ab832ba4d5af38f340978e1fedbfee6e3d23662dfdb8917a9d864dd",
+      "name": "@capacitor/ios",
+      "package_json_sha256": "1f919db40a10e10216b94ad91a21271b58906b33159e55d18dec0af700742540",
+      "version": "8.5.2"
+    },
+    {
+      "installed_file_count": 41,
+      "installed_source_bytes": 539175,
+      "installed_source_manifest_sha256": "7f05b0c31240cf93667984857daff66a38a7238aafe6776081cf00a2eb1bced4",
+      "license": "MIT",
+      "license_sha256": "eb99a0d61b507ad0182e18e9d2a91537c1d9025c94e098e4e7603a53b4b5218a",
+      "name": "@capacitor/camera",
+      "package_json_sha256": "fc4314691641ea524af59b7826843faa7d7eafdd76eadb6a2b7c5887d600911a",
+      "version": "8.2.4"
+    },
+    {
+      "installed_file_count": 37,
+      "installed_source_bytes": 435689,
+      "installed_source_manifest_sha256": "435f0ff5a09b7adb760da70f6d927cbd224dcc736d0c00bf67b9bf671027b095",
+      "license": "MIT",
+      "license_sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d",
+      "name": "@capacitor/filesystem",
+      "package_json_sha256": "ac932596132560aecdafcfd1e0426facff6d819df0d2e5eb8371d6e927df201b",
+      "version": "8.1.3"
+    },
+    {
+      "installed_file_count": 30,
+      "installed_source_bytes": 138192,
+      "installed_source_manifest_sha256": "882b3ec394ab02f6b6ba83a8952031f723ee55fd461d228c9268c5afcb585314",
+      "license": "MIT",
+      "license_sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d",
+      "name": "@capacitor/geolocation",
+      "package_json_sha256": "8f7a754bafafc26f46517e6b4d8785072d169aeff023c13dea1b6f6a324af929",
+      "version": "8.2.2"
+    }
+  ],
+  "platform": "ios",
+  "pods": "not selected; no Podfile.lock",
+  "schema_version": "gsip-app-notification-native-audit-v1",
+  "source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "source_inputs": {
+    "apps/capture-pwa/capacitor.config.ts": "705916ffd4b7341091bc44e6010632739d54ce924f342ca46fe19ef7e28b2bb7",
+    "apps/capture-pwa/package.json": "9c0e7a2b670eddeabfb7ab29347f306a85bfccc66c18e6672f0c8f36284b2e15",
+    "pnpm-lock.yaml": "492c699cb8e0d3ca9302dd8cbd04d882bc749b4b33d8047040eec8376dd34644",
+    "scripts/app_build.py": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4",
+    "scripts/app_permissions.py": "4a0e78dd1b153217fdcad4ddc94d5ce5ea7b6f6b60d220a9199a0302a8374675"
+  },
+  "spm": {
+    "binary_inputs": [
+      {
+        "actual_resolved_tree": {
+          "bytes": 23980848,
+          "file_count": 54,
+          "files": [
+            {
+              "bytes": 1310,
+              "path": "Info.plist",
+              "sha256": "713105ab60c0f696453457049eee406997bbe4435b8c48ae877101303c5272fe"
+            },
+            {
+              "bytes": 153,
+              "path": "_CodeSignature/CodeDirectory",
+              "sha256": "a5ed788a1d57a1b72b1d548b431345e6aa661a74596b6a963f7abb56a481b531"
+            },
+            {
+              "bytes": 172,
+              "path": "_CodeSignature/CodeRequirements",
+              "sha256": "ca0d63256a297b40a87f8a8403df6bf9a531d034c9afaa34c8a308cbe95a3945"
+            },
+            {
+              "bytes": 201,
+              "path": "_CodeSignature/CodeRequirements-1",
+              "sha256": "44eac2e142f31b1412855a13f61b3e8a734ad463867afdc8a75fff6de1fcc3cf"
+            },
+            {
+              "bytes": 21494,
+              "path": "_CodeSignature/CodeResources",
+              "sha256": "58861fa3f0e9ce97f7aac0832bf2ff460c0913b7e6986fce739b5397d6c99ed4"
+            },
+            {
+              "bytes": 9050,
+              "path": "_CodeSignature/CodeSignature",
+              "sha256": "52c37f26608a37fcabe58ba5afd7baba0b7fa54a89afa9fe708228eecda85718"
+            },
+            {
+              "bytes": 859552,
+              "path": "ios-arm64/Capacitor.framework/Capacitor",
+              "sha256": "cda8f958f28b4938db478e13b7755499de5d73d5bf060e8c4cb571d9e8b8a93e"
+            },
+            {
+              "bytes": 1272,
+              "path": "ios-arm64/Capacitor.framework/Headers/CAPBridgedPlugin.h",
+              "sha256": "e4bda27ddb41e1aacdd2c1aaa22c4bb762e275210a7e8341bf50c04a45d8ca93"
+            },
+            {
+              "bytes": 2035,
+              "path": "ios-arm64/Capacitor.framework/Headers/CAPInstanceConfiguration.h",
+              "sha256": "9e8d45ca898c2a7cac927e36af12bbaa5df73f84258544ad4bd5f969dcd936ca"
+            },
+            {
+              "bytes": 8193,
+              "path": "ios-arm64/Capacitor.framework/Headers/CAPInstanceDescriptor.h",
+              "sha256": "f5efe0da72d802d1ce0626d4e54d809281de8bdc3ab46e614a1b8e074111a88e"
+            },
+            {
+              "bytes": 4001,
+              "path": "ios-arm64/Capacitor.framework/Headers/CAPPlugin.h",
+              "sha256": "43488f84ffa6c860ade0d4d575522df5cf8fd67eeb914ba52224f8480d5404fd"
+            },
+            {
+              "bytes": 1287,
+              "path": "ios-arm64/Capacitor.framework/Headers/CAPPluginCall.h",
+              "sha256": "aa3ef7f3d40881a92b3ec0d3af3746c217544eeeb01b87c384bcbfda4c48d5c0"
+            },
+            {
+              "bytes": 1156,
+              "path": "ios-arm64/Capacitor.framework/Headers/CAPPluginMethod.h",
+              "sha256": "e8eb817ca3ec5e1ff0e09249d87199513ec892a038b7b581f90afb40ad2e77e9"
+            },
+            {
+              "bytes": 39993,
+              "path": "ios-arm64/Capacitor.framework/Headers/Capacitor-Swift.h",
+              "sha256": "15829ffb7b174a444b66a095b777838366e311822e4f010b19f9fc0244c20af7"
+            },
+            {
+              "bytes": 455,
+              "path": "ios-arm64/Capacitor.framework/Headers/Capacitor.h",
+              "sha256": "09d66a0a23430722dbcdc187d82c5fa2c5b9fcda8e2afbea27fa88fad8f88276"
+            },
+            {
+              "bytes": 762,
+              "path": "ios-arm64/Capacitor.framework/Info.plist",
+              "sha256": "81ac8ce97bc01c9e0ddb67513a7cb55574b5295e2fd80284cf4681d1aea94b6b"
+            },
+            {
+              "bytes": 1167222,
+              "path": "ios-arm64/Capacitor.framework/Modules/Capacitor.swiftmodule/arm64-apple-ios.abi.json",
+              "sha256": "70eb68821bf9c767800b5ffc72b60ab5d29f7c1d3874140f3fd221f0315a7941"
+            },
+            {
+              "bytes": 61834,
+              "path": "ios-arm64/Capacitor.framework/Modules/Capacitor.swiftmodule/arm64-apple-ios.private.swiftinterface",
+              "sha256": "082ff0c3b8c61099f095c4541e3da2a21952d29b8e50c1bf4c482d23efbe53ad"
+            },
+            {
+              "bytes": 26472,
+              "path": "ios-arm64/Capacitor.framework/Modules/Capacitor.swiftmodule/arm64-apple-ios.swiftdoc",
+              "sha256": "34d3ea9a3869058e4d5cf26826a4b1b6f5ed850f813fd4187b9e3885629ad36b"
+            },
+            {
+              "bytes": 61834,
+              "path": "ios-arm64/Capacitor.framework/Modules/Capacitor.swiftmodule/arm64-apple-ios.swiftinterface",
+              "sha256": "082ff0c3b8c61099f095c4541e3da2a21952d29b8e50c1bf4c482d23efbe53ad"
+            },
+            {
+              "bytes": 285,
+              "path": "ios-arm64/Capacitor.framework/Modules/module.modulemap",
+              "sha256": "c985e6840e919c6e4945fa7897a58cd7ca612524c90bec218259500f210ce425"
+            },
+            {
+              "bytes": 373,
+              "path": "ios-arm64/Capacitor.framework/PrivacyInfo.xcprivacy",
+              "sha256": "1bac827f49b2b8a5358491b9698203bf191791a6f1ba3a3ace3b1285d52d2d17"
+            },
+            {
+              "bytes": 1080,
+              "path": "ios-arm64/Capacitor.framework/PrivateHeaders/CAPBridgedJSTypes.h",
+              "sha256": "f8cd2e3391186e7b067c2fc0062d693e03354223592ddc27c0461052b32c2ae3"
+            },
+            {
+              "bytes": 53118,
+              "path": "ios-arm64/Capacitor.framework/native-bridge.js",
+              "sha256": "44ae55c944c91d5ebeb1ca2374e831d7920d1af6464faef8f0001a96252109bc"
+            },
+            {
+              "bytes": 658,
+              "path": "ios-arm64/dSYMs/Capacitor.framework.dSYM/Contents/Info.plist",
+              "sha256": "07055cfea5d272053cea3e224448975aef8c7299885004926c5ad8f0a1f351b3"
+            },
+            {
+              "bytes": 4349948,
+              "path": "ios-arm64/dSYMs/Capacitor.framework.dSYM/Contents/Resources/DWARF/Capacitor",
+              "sha256": "417e983067e56102cd4e443aa923effe7819f7c1c58b4fe427a880dc11e2fcb5"
+            },
+            {
+              "bytes": 380515,
+              "path": "ios-arm64/dSYMs/Capacitor.framework.dSYM/Contents/Resources/Relocations/aarch64/Capacitor.yml",
+              "sha256": "392e07bb5aa55442a7dcdd9967cf0b2a9fa22c8b4eb9690593544620077afb53"
+            },
+            {
+              "bytes": 4242000,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Capacitor",
+              "sha256": "6dfbd21d57ba7d97a7104b1f83bdb727ba105b526bfae93c81221dba3b37324f"
+            },
+            {
+              "bytes": 1272,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Headers/CAPBridgedPlugin.h",
+              "sha256": "e4bda27ddb41e1aacdd2c1aaa22c4bb762e275210a7e8341bf50c04a45d8ca93"
+            },
+            {
+              "bytes": 2035,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Headers/CAPInstanceConfiguration.h",
+              "sha256": "9e8d45ca898c2a7cac927e36af12bbaa5df73f84258544ad4bd5f969dcd936ca"
+            },
+            {
+              "bytes": 8193,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Headers/CAPInstanceDescriptor.h",
+              "sha256": "f5efe0da72d802d1ce0626d4e54d809281de8bdc3ab46e614a1b8e074111a88e"
+            },
+            {
+              "bytes": 4001,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Headers/CAPPlugin.h",
+              "sha256": "43488f84ffa6c860ade0d4d575522df5cf8fd67eeb914ba52224f8480d5404fd"
+            },
+            {
+              "bytes": 1287,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Headers/CAPPluginCall.h",
+              "sha256": "aa3ef7f3d40881a92b3ec0d3af3746c217544eeeb01b87c384bcbfda4c48d5c0"
+            },
+            {
+              "bytes": 1156,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Headers/CAPPluginMethod.h",
+              "sha256": "e8eb817ca3ec5e1ff0e09249d87199513ec892a038b7b581f90afb40ad2e77e9"
+            },
+            {
+              "bytes": 79931,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Headers/Capacitor-Swift.h",
+              "sha256": "b3f7222e095b03db2f3b06db1e1e0ad45808ea386ae8446f678406d120feb920"
+            },
+            {
+              "bytes": 455,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Headers/Capacitor.h",
+              "sha256": "09d66a0a23430722dbcdc187d82c5fa2c5b9fcda8e2afbea27fa88fad8f88276"
+            },
+            {
+              "bytes": 742,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Info.plist",
+              "sha256": "fc80373140eb763d8c7af580d69b259477e8ee7991d0ba1e3ea5c16c836d0fb7"
+            },
+            {
+              "bytes": 1432093,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Modules/Capacitor.swiftmodule/arm64-apple-ios-simulator.abi.json",
+              "sha256": "fe36f01a5b4e914605a479d0abb04139bc6dfde2f26876ff880649f898e57934"
+            },
+            {
+              "bytes": 61848,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Modules/Capacitor.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface",
+              "sha256": "bf9fc136290ae8bfaf3c015ecccd4a7caad05f9dc1e763f62d3495ffa7c20bc0"
+            },
+            {
+              "bytes": 30932,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Modules/Capacitor.swiftmodule/arm64-apple-ios-simulator.swiftdoc",
+              "sha256": "83c46ff1115cb4e9f72d12f77c9cda7b3a810bc43dc64dfc054a1b3955264b96"
+            },
+            {
+              "bytes": 61848,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Modules/Capacitor.swiftmodule/arm64-apple-ios-simulator.swiftinterface",
+              "sha256": "bf9fc136290ae8bfaf3c015ecccd4a7caad05f9dc1e763f62d3495ffa7c20bc0"
+            },
+            {
+              "bytes": 1432093,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Modules/Capacitor.swiftmodule/x86_64-apple-ios-simulator.abi.json",
+              "sha256": "fe36f01a5b4e914605a479d0abb04139bc6dfde2f26876ff880649f898e57934"
+            },
+            {
+              "bytes": 61849,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Modules/Capacitor.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface",
+              "sha256": "35ca21804fdafec8a76becd9fe0de7c4ffd5610d53050b845ce7087360471897"
+            },
+            {
+              "bytes": 30932,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Modules/Capacitor.swiftmodule/x86_64-apple-ios-simulator.swiftdoc",
+              "sha256": "272609f9ec22ea0ec40c4d518d787a364490268f0e09e6915e279b83c722b31f"
+            },
+            {
+              "bytes": 61849,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Modules/Capacitor.swiftmodule/x86_64-apple-ios-simulator.swiftinterface",
+              "sha256": "35ca21804fdafec8a76becd9fe0de7c4ffd5610d53050b845ce7087360471897"
+            },
+            {
+              "bytes": 285,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/Modules/module.modulemap",
+              "sha256": "c985e6840e919c6e4945fa7897a58cd7ca612524c90bec218259500f210ce425"
+            },
+            {
+              "bytes": 373,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/PrivacyInfo.xcprivacy",
+              "sha256": "1bac827f49b2b8a5358491b9698203bf191791a6f1ba3a3ace3b1285d52d2d17"
+            },
+            {
+              "bytes": 1080,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/PrivateHeaders/CAPBridgedJSTypes.h",
+              "sha256": "f8cd2e3391186e7b067c2fc0062d693e03354223592ddc27c0461052b32c2ae3"
+            },
+            {
+              "bytes": 7874,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/_CodeSignature/CodeResources",
+              "sha256": "b26432b65c85aab269fdf1ac41cc9e69e44d3410d236afed5bb38be3ad69d57c"
+            },
+            {
+              "bytes": 53118,
+              "path": "ios-arm64_x86_64-simulator/Capacitor.framework/native-bridge.js",
+              "sha256": "44ae55c944c91d5ebeb1ca2374e831d7920d1af6464faef8f0001a96252109bc"
+            },
+            {
+              "bytes": 658,
+              "path": "ios-arm64_x86_64-simulator/dSYMs/Capacitor.framework.dSYM/Contents/Info.plist",
+              "sha256": "07055cfea5d272053cea3e224448975aef8c7299885004926c5ad8f0a1f351b3"
+            },
+            {
+              "bytes": 7954536,
+              "path": "ios-arm64_x86_64-simulator/dSYMs/Capacitor.framework.dSYM/Contents/Resources/DWARF/Capacitor",
+              "sha256": "fc7fbb6401ebf57d1ce9f3abc0d9bf2719a07565decad978a566e20d606ff0f8"
+            },
+            {
+              "bytes": 696931,
+              "path": "ios-arm64_x86_64-simulator/dSYMs/Capacitor.framework.dSYM/Contents/Resources/Relocations/aarch64/Capacitor.yml",
+              "sha256": "99c222686f6ffc7d66c6df177b8d158c0620796d3772a0c688b8b17d29ed58f7"
+            },
+            {
+              "bytes": 697052,
+              "path": "ios-arm64_x86_64-simulator/dSYMs/Capacitor.framework.dSYM/Contents/Resources/Relocations/x86_64/Capacitor.yml",
+              "sha256": "a10fa09a756cb8b942e758669daeb349d19fae910726efe96276ec1246a72d55"
+            }
+          ],
+          "tree_sha256": "50de18f4b668ee63f13f6def160a3793a0b4c2da64bed3bd6f4364ec7d82f8bc"
+        },
+        "archive": {
+          "bytes": 6611661,
+          "embedded_license_notice_files": [],
+          "sha256": "134c65a8bd30bfaa8ccb158d78142fa7231bf3f472e4a5d808c5fbed90fd4c75"
+        },
+        "license_source": "Capacitor npm ios MIT LICENSE; Cordova files additionally retain Apache-2.0 source headers; package metadata alone does not license other binary contents",
+        "name": "Capacitor",
+        "published_archive_url": "https://github.com/ionic-team/capacitor-swift-pm/releases/download/8.5.2/Capacitor.xcframework.zip",
+        "swift_manifest_checksum": "134c65a8bd30bfaa8ccb158d78142fa7231bf3f472e4a5d808c5fbed90fd4c75"
+      },
+      {
+        "actual_resolved_tree": {
+          "bytes": 4838267,
+          "file_count": 58,
+          "files": [
+            {
+              "bytes": 1298,
+              "path": "Info.plist",
+              "sha256": "2fe83c683373324422f11eb3934495303236cf65f867f22f1f3666eb8640fb46"
+            },
+            {
+              "bytes": 151,
+              "path": "_CodeSignature/CodeDirectory",
+              "sha256": "8cd912299ee78f4f4ee62e93f08aa614219c832b69d6a5a0092985fb2acdb75c"
+            },
+            {
+              "bytes": 168,
+              "path": "_CodeSignature/CodeRequirements",
+              "sha256": "cdf8c14de8499fd4bb5f1494e13bb917d162809ce3adc190dc46551d0940c54b"
+            },
+            {
+              "bytes": 199,
+              "path": "_CodeSignature/CodeRequirements-1",
+              "sha256": "77cd069d18d78b8c504dd3931cdb5bc193e86d95a2e4edd63673f39d147cd0f7"
+            },
+            {
+              "bytes": 21946,
+              "path": "_CodeSignature/CodeResources",
+              "sha256": "c3504bd85b4f1cd0363b280dd1f9b7fa0abd3108d7a5f88c9f9a1307dd923cc8"
+            },
+            {
+              "bytes": 9051,
+              "path": "_CodeSignature/CodeSignature",
+              "sha256": "51d6c4d2c62d2c19da8358d4592a16cdcbfb2120c6b87e4bb537a28968ca02fd"
+            },
+            {
+              "bytes": 110136,
+              "path": "ios-arm64/Cordova.framework/Cordova",
+              "sha256": "18fefb8087fca514871a250fddc7da5ec39c0c0838e847f2d3d9ad28f5ca9077"
+            },
+            {
+              "bytes": 171,
+              "path": "ios-arm64/Cordova.framework/Headers/AppDelegate.h",
+              "sha256": "68f3026b61fe09c54520f1008b2a822c3ddf5c1a56a8c1c95451f4510c74afb9"
+            },
+            {
+              "bytes": 1056,
+              "path": "ios-arm64/Cordova.framework/Headers/CDV.h",
+              "sha256": "5b015a36af3df0bb49cfc97f9092f75e48fd02c56f366d674667b7cde888db13"
+            },
+            {
+              "bytes": 3497,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVAvailability.h",
+              "sha256": "5bb69006c12f30750782d05fb6c729badd90e34f4f24a65e733585c000893dc1"
+            },
+            {
+              "bytes": 1022,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVAvailabilityDeprecated.h",
+              "sha256": "cb16b1a31420637e059e6dfe3eeb473f62c801610bd6ee4c656951c83f3f9d37"
+            },
+            {
+              "bytes": 1960,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVCommandDelegate.h",
+              "sha256": "fdf61ee34a83ab1e803618f36d48d5a7bb6897f8ffe81beecef8947c5b3a4c54"
+            },
+            {
+              "bytes": 1349,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVCommandDelegateImpl.h",
+              "sha256": "cda8d978ae516c4a1c5437c0f7e291dfb4f4b75845cea9a24a71cfcb38155666"
+            },
+            {
+              "bytes": 1189,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVConfigParser.h",
+              "sha256": "6c46116e66b48ebe2b197fabea6f272035a33a1605835a3c582200aa07a9b28e"
+            },
+            {
+              "bytes": 2022,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVInvokedUrlCommand.h",
+              "sha256": "2070e24a8bd657254f9453ebfc38293310d060f86f43b2304017cf2c0e4ec6f7"
+            },
+            {
+              "bytes": 1538,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVPlugin+Resources.h",
+              "sha256": "67ead49587370b87199fb470b794743815098b0b22d8b54d91ed56338d10b4c7"
+            },
+            {
+              "bytes": 2728,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVPlugin.h",
+              "sha256": "663e0357e15f8400faa1ecc1be7c7faa1e201cc1c01d6462625f9f39de900a4a"
+            },
+            {
+              "bytes": 832,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVPluginManager.h",
+              "sha256": "c0b46726f1ccdcd12664ee58a918b55d64c187012e0ad88ef14b9e6954b87ca5"
+            },
+            {
+              "bytes": 4371,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVPluginResult.h",
+              "sha256": "ad46099ce88b85d75d62322184bf7c8bf7565a9319643912a74eed406d134632"
+            },
+            {
+              "bytes": 1158,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVScreenOrientationDelegate.h",
+              "sha256": "d4ed94121a00091f2e2c5ae065c3059d622e9098aaf917587778249d8f115c73"
+            },
+            {
+              "bytes": 916,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVURLProtocol.h",
+              "sha256": "cd17b7c2a7d5eadd1a1607175ddf9f000f41ed8b7660f89464187eb31f4ccb41"
+            },
+            {
+              "bytes": 1106,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVViewController.h",
+              "sha256": "88ad438279f01318c8295aad45b5a6f02c2cd927ab770685b2c3c85f03643d3e"
+            },
+            {
+              "bytes": 1189,
+              "path": "ios-arm64/Cordova.framework/Headers/CDVWebViewProcessPoolFactory.h",
+              "sha256": "b8b030b7dea5d453627e783fc023f00cbe7b84fa7136b3a2b311883da272a88c"
+            },
+            {
+              "bytes": 915,
+              "path": "ios-arm64/Cordova.framework/Headers/CapacitorCordova.h",
+              "sha256": "86d9bf3495c19536b6ac18ce1ac6d7236f7bc8db104efaaaa5fba95b566a9214"
+            },
+            {
+              "bytes": 1217,
+              "path": "ios-arm64/Cordova.framework/Headers/NSDictionary+CordovaPreferences.h",
+              "sha256": "a8ac8abb1a41f220fb2a51bd6011d0620dd265a095a6e5764d06225ee8723256"
+            },
+            {
+              "bytes": 794,
+              "path": "ios-arm64/Cordova.framework/Info.plist",
+              "sha256": "3bcea8e01759f45b9a7e2a58563b85a10c7d0df0ce4e227c2901a7380248e966"
+            },
+            {
+              "bytes": 104,
+              "path": "ios-arm64/Cordova.framework/Modules/module.modulemap",
+              "sha256": "b160b38151320db63f1d93b7d44d480b6d5b507ae92c17c9fcb8abfa4ee45c59"
+            },
+            {
+              "bytes": 373,
+              "path": "ios-arm64/Cordova.framework/PrivacyInfo.xcprivacy",
+              "sha256": "5a9b8fc0cddb10201bb47cc2804b3f004c7251476622d25bfc4eb54ed46e1084"
+            },
+            {
+              "bytes": 666,
+              "path": "ios-arm64/dSYMs/Cordova.framework.dSYM/Contents/Info.plist",
+              "sha256": "2e1fa94e80d524a1ede4dddd22865972c00417fed35c0c997ccef5846d985087"
+            },
+            {
+              "bytes": 1433581,
+              "path": "ios-arm64/dSYMs/Cordova.framework.dSYM/Contents/Resources/DWARF/Cordova",
+              "sha256": "0e2bb99bd446dcddc5bd50448d1c319efdc52d3710c22b5cd227e2e96cc38642"
+            },
+            {
+              "bytes": 28415,
+              "path": "ios-arm64/dSYMs/Cordova.framework.dSYM/Contents/Resources/Relocations/aarch64/Cordova.yml",
+              "sha256": "42e7f247fb9bcb42874fc0e80a31b137c40e2eb5cf79bcadafc878ed5da66329"
+            },
+            {
+              "bytes": 277984,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Cordova",
+              "sha256": "57f174fa3621f408cef8b702ffc65f2e903818b20a97c2eef0a511914b726995"
+            },
+            {
+              "bytes": 171,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/AppDelegate.h",
+              "sha256": "68f3026b61fe09c54520f1008b2a822c3ddf5c1a56a8c1c95451f4510c74afb9"
+            },
+            {
+              "bytes": 1056,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDV.h",
+              "sha256": "5b015a36af3df0bb49cfc97f9092f75e48fd02c56f366d674667b7cde888db13"
+            },
+            {
+              "bytes": 3497,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVAvailability.h",
+              "sha256": "5bb69006c12f30750782d05fb6c729badd90e34f4f24a65e733585c000893dc1"
+            },
+            {
+              "bytes": 1022,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVAvailabilityDeprecated.h",
+              "sha256": "cb16b1a31420637e059e6dfe3eeb473f62c801610bd6ee4c656951c83f3f9d37"
+            },
+            {
+              "bytes": 1960,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVCommandDelegate.h",
+              "sha256": "fdf61ee34a83ab1e803618f36d48d5a7bb6897f8ffe81beecef8947c5b3a4c54"
+            },
+            {
+              "bytes": 1349,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVCommandDelegateImpl.h",
+              "sha256": "cda8d978ae516c4a1c5437c0f7e291dfb4f4b75845cea9a24a71cfcb38155666"
+            },
+            {
+              "bytes": 1189,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVConfigParser.h",
+              "sha256": "6c46116e66b48ebe2b197fabea6f272035a33a1605835a3c582200aa07a9b28e"
+            },
+            {
+              "bytes": 2022,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVInvokedUrlCommand.h",
+              "sha256": "2070e24a8bd657254f9453ebfc38293310d060f86f43b2304017cf2c0e4ec6f7"
+            },
+            {
+              "bytes": 1538,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVPlugin+Resources.h",
+              "sha256": "67ead49587370b87199fb470b794743815098b0b22d8b54d91ed56338d10b4c7"
+            },
+            {
+              "bytes": 2728,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVPlugin.h",
+              "sha256": "663e0357e15f8400faa1ecc1be7c7faa1e201cc1c01d6462625f9f39de900a4a"
+            },
+            {
+              "bytes": 832,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVPluginManager.h",
+              "sha256": "c0b46726f1ccdcd12664ee58a918b55d64c187012e0ad88ef14b9e6954b87ca5"
+            },
+            {
+              "bytes": 4371,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVPluginResult.h",
+              "sha256": "ad46099ce88b85d75d62322184bf7c8bf7565a9319643912a74eed406d134632"
+            },
+            {
+              "bytes": 1158,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVScreenOrientationDelegate.h",
+              "sha256": "d4ed94121a00091f2e2c5ae065c3059d622e9098aaf917587778249d8f115c73"
+            },
+            {
+              "bytes": 916,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVURLProtocol.h",
+              "sha256": "cd17b7c2a7d5eadd1a1607175ddf9f000f41ed8b7660f89464187eb31f4ccb41"
+            },
+            {
+              "bytes": 1106,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVViewController.h",
+              "sha256": "88ad438279f01318c8295aad45b5a6f02c2cd927ab770685b2c3c85f03643d3e"
+            },
+            {
+              "bytes": 1189,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CDVWebViewProcessPoolFactory.h",
+              "sha256": "b8b030b7dea5d453627e783fc023f00cbe7b84fa7136b3a2b311883da272a88c"
+            },
+            {
+              "bytes": 915,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/CapacitorCordova.h",
+              "sha256": "86d9bf3495c19536b6ac18ce1ac6d7236f7bc8db104efaaaa5fba95b566a9214"
+            },
+            {
+              "bytes": 1217,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Headers/NSDictionary+CordovaPreferences.h",
+              "sha256": "a8ac8abb1a41f220fb2a51bd6011d0620dd265a095a6e5764d06225ee8723256"
+            },
+            {
+              "bytes": 774,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Info.plist",
+              "sha256": "c57ef2424de02bf6362dfaf8744da8d893d0626c2405270e3d6935e2480a4a4b"
+            },
+            {
+              "bytes": 104,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/Modules/module.modulemap",
+              "sha256": "b160b38151320db63f1d93b7d44d480b6d5b507ae92c17c9fcb8abfa4ee45c59"
+            },
+            {
+              "bytes": 373,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/PrivacyInfo.xcprivacy",
+              "sha256": "5a9b8fc0cddb10201bb47cc2804b3f004c7251476622d25bfc4eb54ed46e1084"
+            },
+            {
+              "bytes": 6620,
+              "path": "ios-arm64_x86_64-simulator/Cordova.framework/_CodeSignature/CodeResources",
+              "sha256": "e95aecf8ede57f4c6a67b6e84c019fc97317cfdca7fde8c962676cbb6dd741c4"
+            },
+            {
+              "bytes": 666,
+              "path": "ios-arm64_x86_64-simulator/dSYMs/Cordova.framework.dSYM/Contents/Info.plist",
+              "sha256": "2e1fa94e80d524a1ede4dddd22865972c00417fed35c0c997ccef5846d985087"
+            },
+            {
+              "bytes": 2832024,
+              "path": "ios-arm64_x86_64-simulator/dSYMs/Cordova.framework.dSYM/Contents/Resources/DWARF/Cordova",
+              "sha256": "874af79d114d2ce5ca8dd745888d132a54bb0725a80a2a2c2a370cb76b0656c7"
+            },
+            {
+              "bytes": 28188,
+              "path": "ios-arm64_x86_64-simulator/dSYMs/Cordova.framework.dSYM/Contents/Resources/Relocations/aarch64/Cordova.yml",
+              "sha256": "79b5ea4e89ffafbbd233bc2a4c012878951290c8f64185190ddf24c211dddad2"
+            },
+            {
+              "bytes": 28180,
+              "path": "ios-arm64_x86_64-simulator/dSYMs/Cordova.framework.dSYM/Contents/Resources/Relocations/x86_64/Cordova.yml",
+              "sha256": "07a525da82475312219ac3355d05924d8b00eed9961366b08af0e69e9351199a"
+            }
+          ],
+          "tree_sha256": "10f6b5162f8953a32d8a2285ea6fe885ae8f72955962c003160f51b77e4bf2da"
+        },
+        "archive": {
+          "bytes": 1842451,
+          "embedded_license_notice_files": [],
+          "sha256": "57ff2c8f1e5dcd8d4379ac3cccde1407d81ccd575347dc2aff4f72272b8794a1"
+        },
+        "license_source": "Capacitor npm ios MIT LICENSE; Cordova files additionally retain Apache-2.0 source headers; package metadata alone does not license other binary contents",
+        "name": "Cordova",
+        "published_archive_url": "https://github.com/ionic-team/capacitor-swift-pm/releases/download/8.5.2/Cordova.xcframework.zip",
+        "swift_manifest_checksum": "57ff2c8f1e5dcd8d4379ac3cccde1407d81ccd575347dc2aff4f72272b8794a1"
+      }
+    ],
+    "capacitor_source": {
+      "actual_source_tree": {
+        "bytes": 9594,
+        "file_count": 9,
+        "files": [
+          {
+            "bytes": 2343,
+            "path": ".github/workflows/build-and-release.yaml",
+            "sha256": "3fff3f5d6d5a4a3f5facc60c7e5e0f95be43c789f95c59809464a1564cd6c358"
+          },
+          {
+            "bytes": 506,
+            "path": ".github/workflows/dispatch-release.yaml",
+            "sha256": "76c2f5ac06a91fe220767ecf91a93ba02d3ebedf0d17cf03708cddbf40e86a7b"
+          },
+          {
+            "bytes": 539,
+            "path": ".github/workflows/pre-release.yml",
+            "sha256": "227ac23d67548ca138f7123e0c345cdb2a5b9a697e5a47c6f79ddd4be947c4bd"
+          },
+          {
+            "bytes": 66,
+            "path": ".gitignore",
+            "sha256": "5f4d056e19437f50d942ffcb12092b0cc291a74cf4ed6922978377e27363dc45"
+          },
+          {
+            "bytes": 1386,
+            "path": "LICENSE.md",
+            "sha256": "48f126b6311bd8e86b56bb3d2c5105a7999e9c348c2ceca7e60e397e7b5f41de"
+          },
+          {
+            "bytes": 904,
+            "path": "Package.swift",
+            "sha256": "d438f723a12d16a803aeb0b81d1160a04ead205f74614a2b97aa8965acf95a72"
+          },
+          {
+            "bytes": 382,
+            "path": "README.md",
+            "sha256": "da248c966f5d41d4a36967eaace66fc6c8436f46c4fbad3434df3f54b737d9c4"
+          },
+          {
+            "bytes": 2132,
+            "path": "build-cap",
+            "sha256": "24a4719baeaa62a312fa748adc118d88d18c7605b6f6cff07b13e21382b15c90"
+          },
+          {
+            "bytes": 1336,
+            "path": "package-cap",
+            "sha256": "23acff0e4c79cbd2200aed0f80dd1511e34babeaecc9a34095c469dd73c10271"
+          }
+        ],
+        "tree_sha256": "a9db722c3e4ffbb6bcd049ca844a64dafde4a92d70c70f170779502b09122652"
+      },
+      "checkout_revision": "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+      "identity": "capacitor-swift-pm",
+      "location": "https://github.com/ionic-team/capacitor-swift-pm.git",
+      "manifest_sha256": "d438f723a12d16a803aeb0b81d1160a04ead205f74614a2b97aa8965acf95a72",
+      "release_tag_revision": "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+      "source_archive": {
+        "bytes": 3549,
+        "sha256": "4299321005ae1e8fa981eda92b2bd263eda6008baf249818cd794c2c8f22f667",
+        "url": "https://codeload.github.com/ionic-team/capacitor-swift-pm/tar.gz/refs/tags/8.5.2"
+      },
+      "version": "8.5.2"
+    },
+    "checkout_revision": "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+    "package_resolved_sha256": "a5680c03c8d0e2c29f821fcbd6afd1fce69377941b95f7d2db63d17f4b7c9692",
+    "pins": [
+      {
+        "identity": "capacitor-swift-pm",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/ionic-team/capacitor-swift-pm.git",
+        "state": {
+          "revision": "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+          "version": "8.5.2"
+        }
+      },
+      {
+        "identity": "ion-ios-camera",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/ionic-team/ion-ios-camera.git",
+        "state": {
+          "revision": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
+          "version": "2.0.0"
+        }
+      },
+      {
+        "identity": "ion-ios-filesystem",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/ionic-team/ion-ios-filesystem.git",
+        "state": {
+          "revision": "56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c",
+          "version": "1.1.4"
+        }
+      },
+      {
+        "identity": "ion-ios-geolocation",
+        "kind": "remoteSourceControl",
+        "location": "https://github.com/ionic-team/ion-ios-geolocation.git",
+        "state": {
+          "revision": "db363927d3a954e3ea24d2e72b6e9814769a84be",
+          "version": "2.1.1"
+        }
+      }
+    ],
+    "release_tag_revision": "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+    "remote_source_packages": [
+      {
+        "actual_source_tree": {
+          "bytes": 522080,
+          "file_count": 110,
+          "files": [
+            {
+              "bytes": 1334,
+              "path": ".github/workflows/ci.yml",
+              "sha256": "6b81d4718c192c93593594a6e507cca0abe5207ed0fb9cedfc943bbd8751e92d"
+            },
+            {
+              "bytes": 1677,
+              "path": ".github/workflows/pr-checks.yml",
+              "sha256": "67bc3d8f82b9820cde897f618fbfb37f7bf6be066f4c1fa4a0b21cb4db51f982"
+            },
+            {
+              "bytes": 1803,
+              "path": ".github/workflows/release.yml",
+              "sha256": "8290419a0256efe86dd8c32198dab8d3200be7412c98b666935ba86be28b21ca"
+            },
+            {
+              "bytes": 215,
+              "path": ".gitignore",
+              "sha256": "fe47a22bcd6117ae29e09558ddba7ebff889900378a2c8b35ba494fe2a76e212"
+            },
+            {
+              "bytes": 1079,
+              "path": ".releaserc.json",
+              "sha256": "f08916d4fbbc89632e25339d81aa06347dbbd71fcd2892758bb62d649ded1062"
+            },
+            {
+              "bytes": 1153,
+              "path": ".swiftformat",
+              "sha256": "39b2b11dcd6e79bea8ef08b9d1dc05db76441587a336563d32fc739e28a23800"
+            },
+            {
+              "bytes": 1312,
+              "path": ".swiftlint.yml",
+              "sha256": "6473dad7f7c44b898b2fbc134785852aced6c63038f6fb9cfb40758923fd1e5c"
+            },
+            {
+              "bytes": 2446,
+              "path": "CHANGELOG.md",
+              "sha256": "1b3639acc8bfacea7753aea00010ff95ed2536dbf808557921b875845ec2dd8a"
+            },
+            {
+              "bytes": 862,
+              "path": "IONCameraLib.podspec",
+              "sha256": "8d00b829bfc82d4468f9bac31a9592baed8475441bf11ae873475a34d15b572b"
+            },
+            {
+              "bytes": 1063,
+              "path": "LICENSE",
+              "sha256": "731d2fac39f3d6dc79c04f9a7d2e59c2999caa0dd1dbcf295f9c0e922580dacc"
+            },
+            {
+              "bytes": 781,
+              "path": "Package.swift",
+              "sha256": "9c996d5e3d272926b9ca7375db032769554479b39088f3c6261a9b6db3f0e398"
+            },
+            {
+              "bytes": 9208,
+              "path": "README.md",
+              "sha256": "e19fd046724e4be34948161a86811ad472124dbd8d7a9165f4e2e30d6749dc24"
+            },
+            {
+              "bytes": 792,
+              "path": "Sources/IONCameraLib/Extensions/IONCAMRFlowResultsDelegate+Default.swift",
+              "sha256": "9a4dc64dd10de21c11ce9595007216a9efd1f0eaebfc3eb7974be8912233293e"
+            },
+            {
+              "bytes": 1092,
+              "path": "Sources/IONCameraLib/Extensions/IONCAMRMediaOptions+PickerAdapter.swift",
+              "sha256": "ecd345a918cdc0e1662e19c803d40e37ae384b2a8e691bae572065b6f87b13d6"
+            },
+            {
+              "bytes": 319,
+              "path": "Sources/IONCameraLib/Extensions/UIApplication+Window.swift",
+              "sha256": "a19d3bcadc2865cfecbc1edb7cd95a24dac1600b9c32ed6d84d37dc9df488a71"
+            },
+            {
+              "bytes": 3467,
+              "path": "Sources/IONCameraLib/Extensions/UIImage+MediaOptions.swift",
+              "sha256": "daedc280797abeb0b9f616dc8abe4b102d286f27ae7139cbd4f95ab177f969e1"
+            },
+            {
+              "bytes": 1348,
+              "path": "Sources/IONCameraLib/IONCAMRAssets.swift",
+              "sha256": "7292b436216c7fad89ecd35124e14ed505c9d5ca74b40fad784462f899aaafff"
+            },
+            {
+              "bytes": 1161,
+              "path": "Sources/IONCameraLib/IONCAMRCameraManager.swift",
+              "sha256": "987e426c1dbddc9464b13f2318d82107d84f5826db97480f88495c5e44ce622c"
+            },
+            {
+              "bytes": 2204,
+              "path": "Sources/IONCameraLib/IONCAMRCoordinator.swift",
+              "sha256": "4a51184f30b8fa293671d24fbea724c51ed0d5bc0aa95bc850041a473eaca612"
+            },
+            {
+              "bytes": 1043,
+              "path": "Sources/IONCameraLib/IONCAMREditManager.swift",
+              "sha256": "19572ae7035c87ca863923ad717ae35439bbd64d15d630f85467361cc464e2b3"
+            },
+            {
+              "bytes": 1580,
+              "path": "Sources/IONCameraLib/IONCAMRFactory.swift",
+              "sha256": "eeb6a0315a9dd2eea75b2e655dcb209b28ef28a03902399182d104fc7869019d"
+            },
+            {
+              "bytes": 18686,
+              "path": "Sources/IONCameraLib/IONCAMRFlowBehaviour.swift",
+              "sha256": "5444e8519b40b9798f643ad5043322ec77ec6ce05a9f9f2c6ad9edfcee95d729"
+            },
+            {
+              "bytes": 993,
+              "path": "Sources/IONCameraLib/IONCAMRGalleryManager.swift",
+              "sha256": "b1bbe4edc01c042ac75a8ba4e17f4b2edf23410d51ede3d52f98a090e957a111"
+            },
+            {
+              "bytes": 703,
+              "path": "Sources/IONCameraLib/IONCAMRVideoManager.swift",
+              "sha256": "9e6cbe048f2da9d7a35ad5553b33019e7162c8750e173d5ae4da4772a30baf8f"
+            },
+            {
+              "bytes": 63,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/CameraLocal.xcassets/Contents.json",
+              "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+            },
+            {
+              "bytes": 385,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/CameraLocal.xcassets/flip.imageset/Contents.json",
+              "sha256": "f568260f4859fd8095aa3ec7f3d1d8e8738381de1104461ad8aa3bd0f95bc295"
+            },
+            {
+              "bytes": 471,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/CameraLocal.xcassets/flip.imageset/Flip Icon.png",
+              "sha256": "85be49b34ffef18669611b181d8766ec43bde9d0ac575c84c2a9282c108a7c1e"
+            },
+            {
+              "bytes": 786,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/CameraLocal.xcassets/flip.imageset/Flip Icon@2x.png",
+              "sha256": "e460b1a185ffd984107e4534a2e1bb81c4951ae1dfe132a045caed15793917f6"
+            },
+            {
+              "bytes": 1102,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/CameraLocal.xcassets/flip.imageset/Flip Icon@3x.png",
+              "sha256": "a13110a1c4504a77d20ce374b536286fbff5da3f196a3f33e250ea006de0c763"
+            },
+            {
+              "bytes": 391,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/CameraLocal.xcassets/rotate.imageset/Contents.json",
+              "sha256": "97d38a61292c0b030c0346511078027f3f89b97425e48306e5b910c5561410a9"
+            },
+            {
+              "bytes": 332,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/CameraLocal.xcassets/rotate.imageset/Rotate Icon.png",
+              "sha256": "baf7ddefea9f7e08e93a7196c275f7b84a7cd0cb552153eaab51fb67f353bc5a"
+            },
+            {
+              "bytes": 529,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/CameraLocal.xcassets/rotate.imageset/Rotate Icon@2x.png",
+              "sha256": "03d637fc7b7e06f9cf3840a5b9fa63b62f657d37e03387cc49c291fc80457bdc"
+            },
+            {
+              "bytes": 806,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/CameraLocal.xcassets/rotate.imageset/Rotate Icon@3x.png",
+              "sha256": "b1b7891c4511556aa7b96f42a82c2f38c09e79724f4df5b05aecdbfe1333b9b4"
+            },
+            {
+              "bytes": 1869,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/IONCAMRCropInternalView.swift",
+              "sha256": "e65a389aa8eb12944ef84d7d9de53d8db365db3e350d7d934f904374d436e76f"
+            },
+            {
+              "bytes": 1959,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/IONCAMRCropThickEdgesView.swift",
+              "sha256": "64495f6c720cbe3eb4c9771ffc0e8adba50e1a9fec0a7f1c66389bc922c25f2f"
+            },
+            {
+              "bytes": 3794,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/IONCAMRCropThickView.swift",
+              "sha256": "fe6f0acc7a9d6de5bd0a8728a37e5877fd5e5a1c983800ae11197030f0e6ee3c"
+            },
+            {
+              "bytes": 21037,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/IONCAMRCropView.swift",
+              "sha256": "85c6d201c9c60974144be4ff6761cedb3075b047c36719dd6e643f1f460960de"
+            },
+            {
+              "bytes": 8342,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/IONCAMRImageEditorView.swift",
+              "sha256": "0c9f8b3858e887bbf25850ffd6bd3bc3ded4ced5764627b41c3e591de317cfa8"
+            },
+            {
+              "bytes": 1026,
+              "path": "Sources/IONCameraLib/Interfaces/Editor/Model/IONCAMRSideModel.swift",
+              "sha256": "ebd4a9cc0f32595be2168227aab66941743af877f70d6cbfff5a4f343f395f12"
+            },
+            {
+              "bytes": 692,
+              "path": "Sources/IONCameraLib/Interfaces/Extensions/CGSize+Transformations.swift",
+              "sha256": "ceefe7564fffe2ed2e14777cee229e3d5a5d32c8e24ecccfa323c82d78ea5378"
+            },
+            {
+              "bytes": 1031,
+              "path": "Sources/IONCameraLib/Interfaces/Extensions/Data+Transformations.swift",
+              "sha256": "53940fcee8eb0d0709e7fadd747bee11a8c0e8f72b5cbfeb35d26269c2cf8527"
+            },
+            {
+              "bytes": 4053,
+              "path": "Sources/IONCameraLib/Interfaces/Extensions/UIImage+Transformations.swift",
+              "sha256": "37113e03c026d0fe9ee6c6547ff7ab7579f7c6a6bc613ed3858ef4e4b348a7eb"
+            },
+            {
+              "bytes": 2770,
+              "path": "Sources/IONCameraLib/Interfaces/Extensions/URL+Transformations.swift",
+              "sha256": "4026b77b0196e9843c22648f5d0f12defc07c43826a2ad5b8e7725bff7f84dee"
+            },
+            {
+              "bytes": 1873,
+              "path": "Sources/IONCameraLib/Interfaces/IONCAMREditorBehaviour.swift",
+              "sha256": "2f1b4976886ff67b8f50969ce304d6659d086aeaacfe15b5459472cfe0b73a82"
+            },
+            {
+              "bytes": 3600,
+              "path": "Sources/IONCameraLib/Interfaces/IONCAMRGalleryBehaviour.swift",
+              "sha256": "73a7343f1ede0d60bc860fb4bcd135f29a14d8fc6f38354895073f40115d84e2"
+            },
+            {
+              "bytes": 3611,
+              "path": "Sources/IONCameraLib/Interfaces/IONCAMRMediaResultGenerator.swift",
+              "sha256": "be6674644fced6501a04176e9c712caca29054372e70d8b22ea9bceee075b008"
+            },
+            {
+              "bytes": 3641,
+              "path": "Sources/IONCameraLib/Interfaces/IONCAMRPermissionsBehaviour.swift",
+              "sha256": "a26aa88c9e506bcf1386b07e585ddc8046f6602b20e2c299cccdd8a519b5c5e1"
+            },
+            {
+              "bytes": 3883,
+              "path": "Sources/IONCameraLib/Interfaces/IONCAMRPickerBehaviour.swift",
+              "sha256": "83b0554a4e68670688a5155caaf989aa84b02b9ccd834862566b1abf3fdeab0d"
+            },
+            {
+              "bytes": 2584,
+              "path": "Sources/IONCameraLib/Interfaces/IONCAMRPlayerBehaviour.swift",
+              "sha256": "bebabf3b3b2fc8b902e8738d1bf8dff14cc0a138a21bbde2aea06b9149560194"
+            },
+            {
+              "bytes": 596,
+              "path": "Sources/IONCameraLib/Interfaces/PhotoLibrary/IONCAMRPHFetchResultCollection.swift",
+              "sha256": "9f8291cd8764f9b926a9ed863b35efd3a19a6e33e17eba1a99626f56e570afdf"
+            },
+            {
+              "bytes": 9871,
+              "path": "Sources/IONCameraLib/Interfaces/PhotoLibrary/IONCAMRPhotoLibraryService.swift",
+              "sha256": "5e24208ebfd873abc70a795b15bce1d25f2367c7d967defcd1dd5f31b8b0842f"
+            },
+            {
+              "bytes": 7192,
+              "path": "Sources/IONCameraLib/Interfaces/PhotoLibrary/IONCAMRPhotoLibraryView.swift",
+              "sha256": "afa03741b7a62370b4984705cd42bf5427349741fa7dae387002a4bc796acfb9"
+            },
+            {
+              "bytes": 3475,
+              "path": "Sources/IONCameraLib/Interfaces/PhotoLibrary/IONCAMRPhotoThumbnailView.swift",
+              "sha256": "e474d3fde24c99c74cf7ec33326366fe4d04b41899d12e995abada79b6ff77ea"
+            },
+            {
+              "bytes": 1175,
+              "path": "Sources/IONCameraLib/Models/IONCAMREditOptions.swift",
+              "sha256": "e28b44e0a3095367cb8405ea289802ab5010e2b40039425bb27cd5fb90d26248"
+            },
+            {
+              "bytes": 279,
+              "path": "Sources/IONCameraLib/Models/IONCAMREncodingType.swift",
+              "sha256": "ddd02b7a5edfe66880ad9ed02615a2ab72f6a37b790bbb7596c1d0c2252b5476"
+            },
+            {
+              "bytes": 3080,
+              "path": "Sources/IONCameraLib/Models/IONCAMRError.swift",
+              "sha256": "525b4c4921f33f45dbe16dcb7beeb99fe9d890abc4487f7de42a679dbe3d745b"
+            },
+            {
+              "bytes": 3105,
+              "path": "Sources/IONCameraLib/Models/IONCAMRGalleryOptions.swift",
+              "sha256": "0030f1fcd34fef76c4b530b064c48e6806c7377d33d87508d02ee2c899f2674a"
+            },
+            {
+              "bytes": 1338,
+              "path": "Sources/IONCameraLib/Models/IONCAMRMediaOptions.swift",
+              "sha256": "76a62ac5a9c177f064d01946e13cff9b3511699f43938ce2d644059b8f72647d"
+            },
+            {
+              "bytes": 1664,
+              "path": "Sources/IONCameraLib/Models/IONCAMRMediaResult.swift",
+              "sha256": "9d66285eaffa4e4680df77c3869729c009698a0a57d65cec672dc45d65c5ad8b"
+            },
+            {
+              "bytes": 1413,
+              "path": "Sources/IONCameraLib/Models/IONCAMRMediaType.swift",
+              "sha256": "740c7cb8d32b33adbbd67494ba72464c2b61e53e199c34b04f0f2f524db8dfe8"
+            },
+            {
+              "bytes": 1062,
+              "path": "Sources/IONCameraLib/Models/IONCAMRMetadata.swift",
+              "sha256": "ca43e6a3344c1d36123854e8a5fd10738f0316bf2f04a1748b9a5aa8366377c7"
+            },
+            {
+              "bytes": 581,
+              "path": "Sources/IONCameraLib/Models/IONCAMRPlayVideoOptions.swift",
+              "sha256": "0e7da620179c9442fac6603f78c6716233a359397baccb91f7b6a6909e706f27"
+            },
+            {
+              "bytes": 303,
+              "path": "Sources/IONCameraLib/Models/IONCAMRPresentationStyle.swift",
+              "sha256": "513c87a02098a9fb69e897a6f2f67b8533845b909c6ad1a13b5cc94272dfef79"
+            },
+            {
+              "bytes": 1317,
+              "path": "Sources/IONCameraLib/Models/IONCAMRRecordVideoOptions.swift",
+              "sha256": "5e95b2cbeafe957a258fa36fcbbd7b596a9e3f5d7bbc6245cedb77d27b618d0d"
+            },
+            {
+              "bytes": 858,
+              "path": "Sources/IONCameraLib/Models/IONCAMRSize.swift",
+              "sha256": "97cc1cdb8366b52397c96fb8b8110a8431d5ae8caf8f5f8cec5cb4ec7b43b055"
+            },
+            {
+              "bytes": 4440,
+              "path": "Sources/IONCameraLib/Models/IONCAMRTakePhotoOptions.swift",
+              "sha256": "755f082d149b78a191150a01e08434da8be00ae44af9e6b077a2d468c99dcbd9"
+            },
+            {
+              "bytes": 1087,
+              "path": "Sources/IONCameraLib/PrivacyInfo.xcprivacy",
+              "sha256": "e93dfe50fb9c656ff84fea3ba8657e468f15bb2e7fb715b178041cc9c4f01273"
+            },
+            {
+              "bytes": 246,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRCallbackDelegate.swift",
+              "sha256": "c30cb69fa26fdfe991033e4fe0683e3d114b7b5a33cf7f8f8de38868260fe6ca"
+            },
+            {
+              "bytes": 224,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRCameraActionDelegate.swift",
+              "sha256": "bb4044eee42a7e84d7d1cd8058ff4c173015836a464eb99a842e2c1dd98aae0e"
+            },
+            {
+              "bytes": 166,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMREditActionDelegate.swift",
+              "sha256": "8e491fa7cffe13d2db0d9a4c41d409f5a14b638b20d66ca3ad38aa5af1b6bd9f"
+            },
+            {
+              "bytes": 635,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMREditorDelegate.swift",
+              "sha256": "00e1c9934cd627c1070c0e440d15c528d1acbe4e292aad31452506a3193188ad"
+            },
+            {
+              "bytes": 1015,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRFlowDelegate.swift",
+              "sha256": "df045a9082fd981a29d32be52365bc8239d0c9006b4ece854d09e66d852740d8"
+            },
+            {
+              "bytes": 1006,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRFlowResultsDelegate.swift",
+              "sha256": "656cda00205abbbd18bc25b341ec48d36b1957f9d0e58251f0853e3bae8ab9ce"
+            },
+            {
+              "bytes": 518,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRGalleryActionDelegate.swift",
+              "sha256": "bb739bf29a7bf49d2b0afc69c638d2c2999e9002c7eb5d1d3d56fa6d15158bbb"
+            },
+            {
+              "bytes": 815,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRGalleryDelegate.swift",
+              "sha256": "563278c67246a78bcfe6d12514fe5a17a1e44b9040c7910eb65fc95e7e35747e"
+            },
+            {
+              "bytes": 125,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRImageFetcherDelegate.swift",
+              "sha256": "03d9aa9a52218f018730092df5dc6abda4369186dba3dd2a32c2e77f84072e51"
+            },
+            {
+              "bytes": 228,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRMetadataGetterDelegate.swift",
+              "sha256": "7b517fa2a1eebcd94f052633033e4ce16b144912d7e14c38430599a15fcaa225"
+            },
+            {
+              "bytes": 381,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMROptionsDelegate.swift",
+              "sha256": "b0583b99eb558212991ade438858679313f84e1234e77bd4a615a90b4d8f9933"
+            },
+            {
+              "bytes": 700,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRPermissionsDelegate.swift",
+              "sha256": "080acbb0f6ec5ca1b35ac26d70047bb2b038f024d279090a4462faadea3bf6a9"
+            },
+            {
+              "bytes": 219,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRPhotoLibraryViewDelegate.swift",
+              "sha256": "418e40d4e2097bb52ce3e6ad3bc1465a54f3e910f717fd7c1aa65c6058ff8ece"
+            },
+            {
+              "bytes": 552,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRPickerDelegate.swift",
+              "sha256": "a74a92feeb289dc389b293b6b5d350eef8af40bf4e542c6533e85bbd35e64a3c"
+            },
+            {
+              "bytes": 109,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRPlayerDelegate.swift",
+              "sha256": "38947bd3407bac6aace8f65e27a9a55399041d048fbe964bd51648c3be73c1c6"
+            },
+            {
+              "bytes": 635,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRResultsDelegate.swift",
+              "sha256": "2c88174c3c5acb8c558799f4632b6f062b1c7526fd78c3a925f07061369e1be5"
+            },
+            {
+              "bytes": 255,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRThumbnailGeneratorDelegate.swift",
+              "sha256": "ced212d2d8e7ff037e8ef72d60c22f9aaaf3929b4d8e84dcc57e120ec84b43de"
+            },
+            {
+              "bytes": 166,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRURLGeneratorDelegate.swift",
+              "sha256": "09e4bcd116ded41f97a8666a84fd2e7a30c0d5ea3977d87ecb1630224b6fb3ac"
+            },
+            {
+              "bytes": 116,
+              "path": "Sources/IONCameraLib/Protocols/IONCAMRVideoActionDelegate.swift",
+              "sha256": "d5487bc3a049ef82ce309db4483731c5b5c0edd97e3ed41792740ac4f0d9daef"
+            },
+            {
+              "bytes": 461,
+              "path": "Tests/.swiftlint.yml",
+              "sha256": "3e1611466f4ffc004e04009637e4874534a386be06fde9364688b92773fe9afa"
+            },
+            {
+              "bytes": 662,
+              "path": "Tests/IONCameraLibTests/CGSizeSpec.swift",
+              "sha256": "35dd4230098edaf344a91599d341ae7d1b49865a65fa50ef5cf960a060f9fa82"
+            },
+            {
+              "bytes": 1024,
+              "path": "Tests/IONCameraLibTests/Configurations/IONCAMRFlowResultsDelegateMock.swift",
+              "sha256": "3b4e5a7ed39f53c5152316766dd7d8e7e4a272f7e23375838fbb337d0320ab18"
+            },
+            {
+              "bytes": 1423,
+              "path": "Tests/IONCameraLibTests/Configurations/IONCameraLib+Accelerators.swift",
+              "sha256": "822d39ec4d8c3b484473dd7bbd1f67e2769c2f8a1ad2c5a8c2dbb398d55c1d78"
+            },
+            {
+              "bytes": 25089,
+              "path": "Tests/IONCameraLibTests/Configurations/MockConfigurations.swift",
+              "sha256": "dcb3c3b6a0e5d06ca42ec0bd624ab9f29e3501ecda4f065f4e9758c3bcb57d5e"
+            },
+            {
+              "bytes": 15751,
+              "path": "Tests/IONCameraLibTests/IONCAMRCameraTests.swift",
+              "sha256": "13b69b1f32b88acc36892e34eee9e5939f9ae9f5cb98995e87105ff87180540f"
+            },
+            {
+              "bytes": 2817,
+              "path": "Tests/IONCameraLibTests/IONCAMRCoordinatorTests.swift",
+              "sha256": "40bf0a13bf3fae9d9c5ec718af92ba1a0885941c689c8f5690d39c59e11b59cb"
+            },
+            {
+              "bytes": 557,
+              "path": "Tests/IONCameraLibTests/IONCAMRFactoryTests.swift",
+              "sha256": "f170c067ad36e43b0107b45d956ceb6ab425782a6b15a4f110c174d04dbc9728"
+            },
+            {
+              "bytes": 5897,
+              "path": "Tests/IONCameraLibTests/IONCAMRFlowChooseFromGalleryTests.swift",
+              "sha256": "055715bff347677ef472c593da6befe3659af7333b5f174a546b33b3b408c154"
+            },
+            {
+              "bytes": 4234,
+              "path": "Tests/IONCameraLibTests/IONCAMRFlowEditPictureTests.swift",
+              "sha256": "51d25b851444108fe13c8584ad953e512f5f7d5e291c13ded735f110a8ab498a"
+            },
+            {
+              "bytes": 25234,
+              "path": "Tests/IONCameraLibTests/IONCAMRFlowTests.swift",
+              "sha256": "9b012804401642e315c4d929331cacb1d67977248f707be777bd258b9a82d60c"
+            },
+            {
+              "bytes": 2198,
+              "path": "Tests/IONCameraLibTests/IONCAMRMediaOptionsTests.swift",
+              "sha256": "74f52117dc128318eb75ac8b0e3f9b66443f52534f0731d7501070d0342ba3ff"
+            },
+            {
+              "bytes": 1035,
+              "path": "Tests/IONCameraLibTests/IONCAMRMediaTypeTests.swift",
+              "sha256": "db471e47d2ec20f206d83c34fff551239d4cd466082c816c7e2708043ddeff27"
+            },
+            {
+              "bytes": 63,
+              "path": "Tests/IONCameraLibTests/Media.xcassets/Contents.json",
+              "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b"
+            },
+            {
+              "bytes": 7173,
+              "path": "Tests/IONCameraLibTests/Media.xcassets/outsystems_logo.imageset/2916417.png",
+              "sha256": "7a45eb334e6bd2d48a9d93b4ebb175282effe203d85078c099faa20bf0569f5e"
+            },
+            {
+              "bytes": 305,
+              "path": "Tests/IONCameraLibTests/Media.xcassets/outsystems_logo.imageset/Contents.json",
+              "sha256": "1487eea95fa8212960b78f1d9aa1ed5708eab7a7dfed93a001d8dedf6d21701e"
+            },
+            {
+              "bytes": 320,
+              "path": "Tests/IONCameraLibTests/Media.xcassets/outsystems_logo_blue.imageset/Contents.json",
+              "sha256": "305d81190fd835bdd30d377fe9daa743c426fd9a41e3532aa35b48cf6ff99ecf"
+            },
+            {
+              "bytes": 4110,
+              "path": "Tests/IONCameraLibTests/Media.xcassets/outsystems_logo_blue.imageset/imageedit_2_5594849435.png",
+              "sha256": "434cf9101625161fcb1e4975cb2205995d57861ce158773edfb8cb7a43d7a459"
+            },
+            {
+              "bytes": 313,
+              "path": "Tests/IONCameraLibTests/Media.xcassets/outsystems_logo_rotated.imageset/Contents.json",
+              "sha256": "4964a4dd1386b8b9dcf74387cdf0ff7edbdd10773ee711b349257adc6735211f"
+            },
+            {
+              "bytes": 241701,
+              "path": "Tests/IONCameraLibTests/Media.xcassets/outsystems_logo_rotated.imageset/OutSystems_Logo.png",
+              "sha256": "7050bda08683388d3037bbe06868b1c2dc1212aa0a93d34060bfdf7cf0a7fcbf"
+            },
+            {
+              "bytes": 885,
+              "path": "package.json",
+              "sha256": "34b3838cf1fe3a00883879e4818a5af7e98918ece8cf2d7e331daf5c1a7fd51f"
+            },
+            {
+              "bytes": 914,
+              "path": "scripts/common.sh",
+              "sha256": "7249f04e3ef5b330ed0dacd4852b4141008f509fd0c79e7fbdafb39afb47fecc"
+            },
+            {
+              "bytes": 1251,
+              "path": "scripts/publish_cocoapods.sh",
+              "sha256": "9eb7e2b65adb7d837e28c90fb8207e01a2e7188af02e0b3944dcf6db4b9ad98e"
+            },
+            {
+              "bytes": 765,
+              "path": "scripts/update_readme_version.sh",
+              "sha256": "f7b37926934695462c9542778936060a9d2d0bae641a70acac20d3c9b921f670"
+            }
+          ],
+          "tree_sha256": "ee2d399fea29b2136b17f6183fe7fb4afd528f71f193e40a78b1f34c233fd3bf"
+        },
+        "binary_targets": [],
+        "checkout_revision": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
+        "identity": "ion-ios-camera",
+        "license": {
+          "sha256": "731d2fac39f3d6dc79c04f9a7d2e59c2999caa0dd1dbcf295f9c0e922580dacc",
+          "source": "https://raw.githubusercontent.com/ionic-team/ion-ios-camera/2.0.0/LICENSE",
+          "spdx": "MIT"
+        },
+        "location": "https://github.com/ionic-team/ion-ios-camera.git",
+        "manifest_sha256": "9c996d5e3d272926b9ca7375db032769554479b39088f3c6261a9b6db3f0e398",
+        "release_tag_revision": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
+        "runtime_remote_dependencies": [],
+        "source_archive": {
+          "bytes": 273170,
+          "sha256": "973aa971e499abe35869c939dddb31ebec2c11b1e646cda3c2eb3fe95329b322",
+          "url": "https://codeload.github.com/ionic-team/ion-ios-camera/tar.gz/refs/tags/2.0.0"
+        },
+        "test_only_dependencies": [
+          {
+            "location": "https://github.com/Quick/Nimble.git",
+            "minimum_version": "13.0.0"
+          },
+          {
+            "location": "https://github.com/Quick/Quick.git",
+            "minimum_version": "7.0.0"
+          }
+        ],
+        "version": "2.0.0"
+      },
+      {
+        "actual_source_tree": {
+          "bytes": 150959,
+          "file_count": 36,
+          "files": [
+            {
+              "bytes": 789,
+              "path": ".github/workflows/continuous_integration.yml",
+              "sha256": "5a91f3e1952488fba8135d9f543047b89563c60136d77b615c6c1e0c180c5caa"
+            },
+            {
+              "bytes": 1004,
+              "path": ".github/workflows/release.yml",
+              "sha256": "042e64958a0f4375963292bc52b77a24438b2abb937932e94747c0d565e6e8f3"
+            },
+            {
+              "bytes": 1682,
+              "path": ".gitignore",
+              "sha256": "eefc07106f251d76a19b71c11d112b6cec7eab12fd710fab3f83d3682d1a0453"
+            },
+            {
+              "bytes": 1484,
+              "path": ".releaserc.json",
+              "sha256": "9b34f3030478bae7f53c68471347b93ef0f6aa4c67e9ad78269b1d72bf7f2e99"
+            },
+            {
+              "bytes": 619,
+              "path": ".swiftlint.yml",
+              "sha256": "43e389eebc2674b61a488294790ccba1a2482e96acce8a9248861747399145a1"
+            },
+            {
+              "bytes": 2387,
+              "path": "CHANGELOG.md",
+              "sha256": "1cc51980fd3b9d0b7543a3131dcffad0074206cb44029be304e89697312ddfdb"
+            },
+            {
+              "bytes": 60,
+              "path": "Gemfile",
+              "sha256": "2fc716a257e4db9175db5c4a0cc7e1e17618427aa18fbd6c88bbb4e8d79e5e07"
+            },
+            {
+              "bytes": 8047,
+              "path": "Gemfile.lock",
+              "sha256": "34128fd33cdc6a38080134d1ae65290765417fd11e1cbcc0b404e088b1cbd7fd"
+            },
+            {
+              "bytes": 1108,
+              "path": "IONFilesystemLib.podspec",
+              "sha256": "a0ad1740d69b6b1ab8bb5787dc652d3a21c9400c2b1f954e38d94b0ecf65364a"
+            },
+            {
+              "bytes": 23135,
+              "path": "IONFilesystemLib.xcodeproj/project.pbxproj",
+              "sha256": "48b81579b0b57acbb451ce9f7cdb77df9bd572734ab81b494dc168126bc1201a"
+            },
+            {
+              "bytes": 135,
+              "path": "IONFilesystemLib.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+              "sha256": "7f3b00b5c3fdb45242d7b87e1e5c4e25d1fa8129a16c94295ecc4e8ea2235c5f"
+            },
+            {
+              "bytes": 238,
+              "path": "IONFilesystemLib.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+              "sha256": "dfa0f9bb85b95ccba9c6811adadf8cb407fb5d52088e89db83ebc308ec448542"
+            },
+            {
+              "bytes": 402,
+              "path": "IONFilesystemLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+              "sha256": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767"
+            },
+            {
+              "bytes": 2966,
+              "path": "IONFilesystemLib.xcodeproj/xcshareddata/xcschemes/IONFilesystemLib.xcscheme",
+              "sha256": "cced59d0e6c49f1ad52c97ad40e86a9eba4e709b5ae4c296c6710915ef200428"
+            },
+            {
+              "bytes": 3683,
+              "path": "IONFilesystemLib/IONFILEChunkPublisher.swift",
+              "sha256": "aa58dbac1f8d032e199121e813f659f6feda69d7562090aa7048ba38881662c0"
+            },
+            {
+              "bytes": 1411,
+              "path": "IONFilesystemLib/IONFILEItemAttributeModel.swift",
+              "sha256": "31c43b33293ff7056feb5b6d9ada2906e33d5f5b0d21f55f5be83cee16144092"
+            },
+            {
+              "bytes": 754,
+              "path": "IONFilesystemLib/IONFILEManager+Enums.swift",
+              "sha256": "5c8b443568acf7526ae3b892ad20a878774ecf5f63908618fe60cca6665ea683"
+            },
+            {
+              "bytes": 1726,
+              "path": "IONFilesystemLib/IONFILEManager+Errors.swift",
+              "sha256": "5932e82dac03aef19a54d95d68ce3f16dbf6752b384c35c198a0cb8c185156b2"
+            },
+            {
+              "bytes": 1370,
+              "path": "IONFilesystemLib/IONFILEManager+Protocols.swift",
+              "sha256": "4fc7fab0739ee707402f4e1aa97f3351e1140563d179f73ee562b778269300b1"
+            },
+            {
+              "bytes": 15865,
+              "path": "IONFilesystemLib/IONFILEManager.swift",
+              "sha256": "0d59a711c547b26f9d16b9743142c32087b94b40ee4f530665b1b76434c1a084"
+            },
+            {
+              "bytes": 430,
+              "path": "IONFilesystemLib/URL+Extension.swift",
+              "sha256": "9ce2d35e2ecddedaba10188756be2b5b20d26191e209378e76dda1569fcaf16f"
+            },
+            {
+              "bytes": 7841,
+              "path": "IONFilesystemLibTests/IONFILEDirectoryManagerTests.swift",
+              "sha256": "ebd77cf696febb2065f451630d7e8c6f8ce79e4d88bd86210bdc4f13d9b89c6f"
+            },
+            {
+              "bytes": 50272,
+              "path": "IONFilesystemLibTests/IONFILEFileManagerTests.swift",
+              "sha256": "ced152eafd016284c357ba8f56581214ebe392094d0331421ee5ea50da676ab8"
+            },
+            {
+              "bytes": 4290,
+              "path": "IONFilesystemLibTests/MockFileManager.swift",
+              "sha256": "b4a14e4ff6a518eac88a964f706b3cc61ed1cda79aa7524bad20b758188b1d29"
+            },
+            {
+              "bytes": 14,
+              "path": "IONFilesystemLibTests/file.txt",
+              "sha256": "d9014c4624844aa5bac314773d6b689ad467fa4e1d1a50a1b8a99d5a95f72ff5"
+            },
+            {
+              "bytes": 1062,
+              "path": "LICENSE",
+              "sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d"
+            },
+            {
+              "bytes": 558,
+              "path": "Package.swift",
+              "sha256": "2af20bd56bf4fd79f19e89fcc8bf524c225edece060ea1e08d0970799481d465"
+            },
+            {
+              "bytes": 8110,
+              "path": "README.md",
+              "sha256": "14d9f7ed34636dd7cd67d01cdd835abe068932ae78f57c3d84b4700090f278e2"
+            },
+            {
+              "bytes": 242,
+              "path": "fastlane/Appfile",
+              "sha256": "9b1612b9e354d3224e480e0c9bd3eab582c971672690bdfd16b2a23d0b18588a"
+            },
+            {
+              "bytes": 990,
+              "path": "fastlane/Fastfile",
+              "sha256": "03511c1942ebd81814c68474dd9e530bde0b1c504de2a3745b900fbf9e322c87"
+            },
+            {
+              "bytes": 801,
+              "path": "package.json",
+              "sha256": "e744dfffabe6c91b6bafe3829b2c768d4115531f3091102869cfe8764bdd1203"
+            },
+            {
+              "bytes": 3600,
+              "path": "scripts/build_framework.sh",
+              "sha256": "d6929bf662efb952a9eb54525bb6cb930c8b6f6dfcf5eca51a0d99ef2dad327d"
+            },
+            {
+              "bytes": 914,
+              "path": "scripts/common.sh",
+              "sha256": "7249f04e3ef5b330ed0dacd4852b4141008f509fd0c79e7fbdafb39afb47fecc"
+            },
+            {
+              "bytes": 1216,
+              "path": "scripts/publish_cocoapods.sh",
+              "sha256": "4549c30e944bc3f27c3a6dfde0e3c797133587c15764e1a658504b5e6877f2ca"
+            },
+            {
+              "bytes": 765,
+              "path": "scripts/update_readme_version.sh",
+              "sha256": "f7b37926934695462c9542778936060a9d2d0bae641a70acac20d3c9b921f670"
+            },
+            {
+              "bytes": 989,
+              "path": "scripts/update_xcodeproj_version.sh",
+              "sha256": "9dffd3f67d1c32f1b4f009f41615e9771268a9820337491098a59d6f43cb54fa"
+            }
+          ],
+          "tree_sha256": "e9b94d4a60923891b387d45fe7be988ab21e343ccd705901bbc046acc590b057"
+        },
+        "binary_targets": [],
+        "checkout_revision": "56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c",
+        "identity": "ion-ios-filesystem",
+        "license": {
+          "sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d",
+          "source": "https://raw.githubusercontent.com/ionic-team/ion-ios-filesystem/1.1.4/LICENSE",
+          "spdx": "MIT"
+        },
+        "location": "https://github.com/ionic-team/ion-ios-filesystem.git",
+        "manifest_sha256": "2af20bd56bf4fd79f19e89fcc8bf524c225edece060ea1e08d0970799481d465",
+        "release_tag_revision": "56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c",
+        "runtime_remote_dependencies": [],
+        "source_archive": {
+          "bytes": 31020,
+          "sha256": "8efe6d8d1dd40b6894d5c128e9bb81bc557f8d58d3c4c4f6dc12ab9ac5c891d9",
+          "url": "https://codeload.github.com/ionic-team/ion-ios-filesystem/tar.gz/refs/tags/1.1.4"
+        },
+        "test_only_dependencies": [],
+        "version": "1.1.4"
+      },
+      {
+        "actual_source_tree": {
+          "bytes": 95915,
+          "file_count": 35,
+          "files": [
+            {
+              "bytes": 789,
+              "path": ".github/workflows/continuous_integration.yml",
+              "sha256": "c29acc1d99f2ee0821e23555877fcf8f82a6c17dc9045e94fd0c45984f5bfd11"
+            },
+            {
+              "bytes": 1004,
+              "path": ".github/workflows/release.yml",
+              "sha256": "042e64958a0f4375963292bc52b77a24438b2abb937932e94747c0d565e6e8f3"
+            },
+            {
+              "bytes": 1682,
+              "path": ".gitignore",
+              "sha256": "eefc07106f251d76a19b71c11d112b6cec7eab12fd710fab3f83d3682d1a0453"
+            },
+            {
+              "bytes": 1492,
+              "path": ".releaserc.json",
+              "sha256": "84e17a740662167f505d7645ed8b81edb7e2d966198a7843c8fd30b154d3f7f1"
+            },
+            {
+              "bytes": 619,
+              "path": ".swiftlint.yml",
+              "sha256": "43e389eebc2674b61a488294790ccba1a2482e96acce8a9248861747399145a1"
+            },
+            {
+              "bytes": 1446,
+              "path": "CHANGELOG.md",
+              "sha256": "229d9014fe9c3430bd92e0ab77377ad03b24512c0e39004b026d0b42c077eb89"
+            },
+            {
+              "bytes": 60,
+              "path": "Gemfile",
+              "sha256": "2fc716a257e4db9175db5c4a0cc7e1e17618427aa18fbd6c88bbb4e8d79e5e07"
+            },
+            {
+              "bytes": 7332,
+              "path": "Gemfile.lock",
+              "sha256": "13a7f8f7c1232981679879fe20e4a1528ef36c1621f8c7b666167b3d5582b852"
+            },
+            {
+              "bytes": 1113,
+              "path": "IONGeolocationLib.podspec",
+              "sha256": "678279fccc7259f7b231a7ee332555c9d900b24355d48f986780828940ab506a"
+            },
+            {
+              "bytes": 22427,
+              "path": "IONGeolocationLib.xcodeproj/project.pbxproj",
+              "sha256": "3a2f2cc0e3ed0817aaed24a018e65d10e48b9a4c2e5a44ba395fc2379a8fa80f"
+            },
+            {
+              "bytes": 135,
+              "path": "IONGeolocationLib.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+              "sha256": "7f3b00b5c3fdb45242d7b87e1e5c4e25d1fa8129a16c94295ecc4e8ea2235c5f"
+            },
+            {
+              "bytes": 238,
+              "path": "IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+              "sha256": "dfa0f9bb85b95ccba9c6811adadf8cb407fb5d52088e89db83ebc308ec448542"
+            },
+            {
+              "bytes": 181,
+              "path": "IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+              "sha256": "97704a8960b4facceef54397a08fb5d0a456247c3627359215aa2a27df22656c"
+            },
+            {
+              "bytes": 402,
+              "path": "IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+              "sha256": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767"
+            },
+            {
+              "bytes": 2975,
+              "path": "IONGeolocationLib.xcodeproj/xcshareddata/xcschemes/IONGeolocationLib.xcscheme",
+              "sha256": "553811bd76bc0b22c5bc46e6e87478619bb15c8f440157d379a02d68a77646b5"
+            },
+            {
+              "bytes": 664,
+              "path": "IONGeolocationLib/IONGLOCAuthorisation.swift",
+              "sha256": "afb2954ed27ad18f57cf1e241375f81fbfd97956b12caa68284afb6f3d731912"
+            },
+            {
+              "bytes": 435,
+              "path": "IONGeolocationLib/IONGLOCAuthorisationRequestType.swift",
+              "sha256": "d84acf07d6909b8b0e6d2ef718d120c0922079b52623fcb60b7dc08783cf2e41"
+            },
+            {
+              "bytes": 2513,
+              "path": "IONGeolocationLib/IONGLOCPositionModel.swift",
+              "sha256": "02b2d4c0fd01d41e74327f0e0f4cb5e235153a2ffee400cf2c3e9faa48f3f08e"
+            },
+            {
+              "bytes": 170,
+              "path": "IONGeolocationLib/IONGLOCRequestOptionsModel.swift",
+              "sha256": "ef0ee5b2b62900a7ad70e9639212819bba3f2fad6a60ff196aca871d90ddb3be"
+            },
+            {
+              "bytes": 1601,
+              "path": "IONGeolocationLib/Publishers/IONGLOCManagerProtocols.swift",
+              "sha256": "e061039fc1e70a97e026fbef06cbab985693dbee2de665403f5bbcc07abe1dca"
+            },
+            {
+              "bytes": 6713,
+              "path": "IONGeolocationLib/Publishers/IONGLOCManagerWrapper.swift",
+              "sha256": "2ad481edd226667713344dbb8f1d3b2641f6adafe8455f11de3ada6ab4f6def5"
+            },
+            {
+              "bytes": 16977,
+              "path": "IONGeolocationLibTests/IONGLOCManagerWrapperTests.swift",
+              "sha256": "f536feef490645a2df35e2c09790574ccc0d031558d8241305bac33e42d83f12"
+            },
+            {
+              "bytes": 2027,
+              "path": "IONGeolocationLibTests/MockCLLocationManager.swift",
+              "sha256": "ed47c93854c37dd00b626faf2d6b1765b0ffc2a1bddb0768f61a44ce6f4eeb2a"
+            },
+            {
+              "bytes": 389,
+              "path": "IONGeolocationLibTests/MockServicesChecker.swift",
+              "sha256": "60c7dbfe68ef68c4ef2568ff858cea26edabee539dec6ca09dd7c4b4aaa77c8c"
+            },
+            {
+              "bytes": 1062,
+              "path": "LICENSE",
+              "sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d"
+            },
+            {
+              "bytes": 565,
+              "path": "Package.swift",
+              "sha256": "1afefd99f4747c429c71ccd2823a8623095da3b9a2fa0df7f341f31beb310245"
+            },
+            {
+              "bytes": 11352,
+              "path": "README.md",
+              "sha256": "6bef3d920051f69edd5889655ab1f2f0ed73dfc3d4efc2e0006e8c8216c228f7"
+            },
+            {
+              "bytes": 242,
+              "path": "fastlane/Appfile",
+              "sha256": "9b1612b9e354d3224e480e0c9bd3eab582c971672690bdfd16b2a23d0b18588a"
+            },
+            {
+              "bytes": 994,
+              "path": "fastlane/Fastfile",
+              "sha256": "1c9befcf92e74c13415d0b975a8fce3b201be9d64430484c30f2679bfadc2329"
+            },
+            {
+              "bytes": 832,
+              "path": "package.json",
+              "sha256": "e0804d1cc57c585b9daa41c5592955ac3ee7abfdc43b16103e06ced1669f6c1e"
+            },
+            {
+              "bytes": 3600,
+              "path": "scripts/build_framework.sh",
+              "sha256": "d6929bf662efb952a9eb54525bb6cb930c8b6f6dfcf5eca51a0d99ef2dad327d"
+            },
+            {
+              "bytes": 914,
+              "path": "scripts/common.sh",
+              "sha256": "7249f04e3ef5b330ed0dacd4852b4141008f509fd0c79e7fbdafb39afb47fecc"
+            },
+            {
+              "bytes": 1216,
+              "path": "scripts/publish_cocoapods.sh",
+              "sha256": "4549c30e944bc3f27c3a6dfde0e3c797133587c15764e1a658504b5e6877f2ca"
+            },
+            {
+              "bytes": 765,
+              "path": "scripts/update_readme_version.sh",
+              "sha256": "f7b37926934695462c9542778936060a9d2d0bae641a70acac20d3c9b921f670"
+            },
+            {
+              "bytes": 989,
+              "path": "scripts/update_xcodeproj_version.sh",
+              "sha256": "9dffd3f67d1c32f1b4f009f41615e9771268a9820337491098a59d6f43cb54fa"
+            }
+          ],
+          "tree_sha256": "8d834e023fc57cdcf8cb183d29db71dd089219f802c5baf3aae24b78c7d0476b"
+        },
+        "binary_targets": [],
+        "checkout_revision": "db363927d3a954e3ea24d2e72b6e9814769a84be",
+        "identity": "ion-ios-geolocation",
+        "license": {
+          "sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d",
+          "source": "https://raw.githubusercontent.com/ionic-team/ion-ios-geolocation/2.1.1/LICENSE",
+          "spdx": "MIT"
+        },
+        "location": "https://github.com/ionic-team/ion-ios-geolocation.git",
+        "manifest_sha256": "1afefd99f4747c429c71ccd2823a8623095da3b9a2fa0df7f341f31beb310245",
+        "release_tag_revision": "db363927d3a954e3ea24d2e72b6e9814769a84be",
+        "runtime_remote_dependencies": [],
+        "source_archive": {
+          "bytes": 23644,
+          "sha256": "bbff6b0ab17490d7ef80b18af0f520a83f4eee3c042fa980c0f60c234bff33fb",
+          "url": "https://codeload.github.com/ionic-team/ion-ios-geolocation/tar.gz/refs/tags/2.1.1"
+        },
+        "test_only_dependencies": [],
+        "version": "2.1.1"
+      }
+    ],
+    "resolved_inventory": [
+      {
+        "path": "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+        "pins": [
+          {
+            "identity": "capacitor-swift-pm",
+            "kind": "remoteSourceControl",
+            "location": "https://github.com/ionic-team/capacitor-swift-pm.git",
+            "state": {
+              "revision": "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+              "version": "8.5.2"
+            }
+          },
+          {
+            "identity": "ion-ios-camera",
+            "kind": "remoteSourceControl",
+            "location": "https://github.com/ionic-team/ion-ios-camera.git",
+            "state": {
+              "revision": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
+              "version": "2.0.0"
+            }
+          },
+          {
+            "identity": "ion-ios-filesystem",
+            "kind": "remoteSourceControl",
+            "location": "https://github.com/ionic-team/ion-ios-filesystem.git",
+            "state": {
+              "revision": "56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c",
+              "version": "1.1.4"
+            }
+          },
+          {
+            "identity": "ion-ios-geolocation",
+            "kind": "remoteSourceControl",
+            "location": "https://github.com/ionic-team/ion-ios-geolocation.git",
+            "state": {
+              "revision": "db363927d3a954e3ea24d2e72b6e9814769a84be",
+              "version": "2.1.1"
+            }
+          }
+        ],
+        "scope": "application selected graph",
+        "sha256": "a5680c03c8d0e2c29f821fcbd6afd1fce69377941b95f7d2db63d17f4b7c9692"
+      },
+      {
+        "path": "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-filesystem/IONFilesystemLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+        "pins": [
+          {
+            "identity": "swiftlintplugins",
+            "kind": "remoteSourceControl",
+            "location": "https://github.com/SimplyDanny/SwiftLintPlugins",
+            "state": {
+              "revision": "f9731bef175c3eea3a0ca960f1be78fcc2bc7853",
+              "version": "0.57.1"
+            }
+          }
+        ],
+        "scope": "upstream development project tool lock; not selected in application graph",
+        "sha256": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767"
+      },
+      {
+        "path": "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-geolocation/IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved",
+        "pins": [
+          {
+            "identity": "swiftlintplugins",
+            "kind": "remoteSourceControl",
+            "location": "https://github.com/SimplyDanny/SwiftLintPlugins",
+            "state": {
+              "revision": "f9731bef175c3eea3a0ca960f1be78fcc2bc7853",
+              "version": "0.57.1"
+            }
+          }
+        ],
+        "scope": "upstream development project tool lock; not selected in application graph",
+        "sha256": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767"
+      }
+    ],
+    "selected_manifest_sha256": "d438f723a12d16a803aeb0b81d1160a04ead205f74614a2b97aa8965acf95a72",
+    "upstream_binary_host_description": {
+      "sha256": "da248c966f5d41d4a36967eaace66fc6c8436f46c4fbad3434df3f54b737d9c4",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md"
+    },
+    "upstream_capacitor_source_license": {
+      "sha256": "9c6ebf3e5ab832ba4d5af38f340978e1fedbfee6e3d23662dfdb8917a9d864dd",
+      "spdx": "MIT",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE"
+    }
+  },
+  "system_frameworks": "Apple SDK/toolchain inputs; not claimed open-source plugin dependencies"
+}

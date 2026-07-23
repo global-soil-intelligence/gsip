@@ -1,0 +1,61 @@
+{
+  "artifact": {
+    "bytes": 381,
+    "path": "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_ARTIFACT_DOWNLOAD.json",
+    "sha256": "0759cad05000caac8afe6a5247d90ea141a73d86f34895545811acf98178b519"
+  },
+  "at_utc": "2026-10-14T03:29:11.793612+00:00",
+  "authority": {
+    "GET_only": true,
+    "arbitrary_raw_logs_private_values_printed": false,
+    "build_or_signing_or_device_actions": false,
+    "private_artifacts_retained_only_owned_tmp": true,
+    "shared_source_Git_GH_workflow_or_production_mutations": false
+  },
+  "combined_native_acceptance": false,
+  "four_zip_bounds": {
+    "bytes": 1122,
+    "path": "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_FOUR_ZIP_BOUNDS.json",
+    "sha256": "0c31c13669edd42b7d6f4f7fb4758603493ad2900cbb969aa7d9eae2ac417c9a"
+  },
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "ios_conclusion": "success",
+  "ios_job_id": 115663053189,
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "merge_binding": {
+    "bytes": 1265,
+    "path": "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_MERGE_BINDING.json",
+    "sha256": "83406d4dd095310038c298d0c69c981826eec5a26fd678ea1cd4ee97828dff22"
+  },
+  "native_run_id": 38505847255,
+  "native_run_number": 55,
+  "older_artifacts_or_old_reference_proofs_reused": false,
+  "original_hosted_cause_inferred": false,
+  "outer_tree": {
+    "bytes": 1767,
+    "path": "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_OUTER_ARTIFACT_TREE.json",
+    "sha256": "eaee8ef60b0503a58918045129148a743bec2d4e735e6f0628d38e60ede03776"
+  },
+  "pr": 63,
+  "remaining_gates": [
+    "Independent Android artifact verification",
+    "iOS cloud backup exclusion and physical device gates",
+    "Legal/distribution/store/production/capture gates"
+  ],
+  "run_attempt": 1,
+  "schema": "gsip-independent-exact-faab-ios-artifact-closure-v1",
+  "source_binding": {
+    "path": "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_SOURCE_BINDING.json",
+    "sha256": "e73f8ac7b26d3973437b030f16eee8fd7ccebd407ffda2180532101a8d4d019b"
+  },
+  "status": "FRESH_EXACT_HEAD_IOS_ARTIFACT_VERIFIED",
+  "strict_replay": {
+    "bytes": 1332,
+    "path": "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_STRICT_IOS_REPLAY.json",
+    "sha256": "c9b6a11ec0db39eb0a031682b3fdba36e0236ebed528331b5b134b8ecf49a464"
+  },
+  "terminal_snapshot": {
+    "path": "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/snapshot-20261014T032851Z.json",
+    "sha256": "a3d24ad97fec895032ea2850845fa37f56d3f807e6f2e097b504e883be9a946a"
+  }
+}

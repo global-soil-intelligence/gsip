@@ -1,0 +1,45 @@
+{
+  "total_count": 2,
+  "artifacts": [
+    {
+      "id": 11814486653,
+      "node_id": "MDg6QXJ0aWZhY3QxMTgxNDQ4NjY1Mw==",
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 3385561,
+      "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/11814486653",
+      "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/11814486653/zip",
+      "expired": false,
+      "digest": "sha256:188577353a3d28fd9c04afd6b6f83e5b0ad78ecb76cc43db3ecd6d583a149111",
+      "created_at": "2026-10-13T12:40:12Z",
+      "updated_at": "2026-10-13T12:40:12Z",
+      "expires_at": "2026-10-27T12:40:06Z",
+      "workflow_run": {
+        "id": 38398436463,
+        "repository_id": 1308971325,
+        "head_repository_id": 1308971325,
+        "head_branch": "wp-lib-5a-exchange-contract",
+        "head_sha": "f07a876defbc3ee208996747f3f4b596b7606614"
+      }
+    },
+    {
+      "id": 11812888020,
+      "node_id": "MDg6QXJ0aWZhY3QxMTgxMjg4ODAyMA==",
+      "name": "gsip-capture-android-debug",
+      "size_in_bytes": 7221644,
+      "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/11812888020",
+      "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/11812888020/zip",
+      "expired": false,
+      "digest": "sha256:dd5a6ae25807f3e33e5956debf5c915a7e22ff79f6c4e82797fc070566406872",
+      "created_at": "2026-10-13T12:39:27Z",
+      "updated_at": "2026-10-13T12:39:27Z",
+      "expires_at": "2026-10-27T12:39:26Z",
+      "workflow_run": {
+        "id": 38398436463,
+        "repository_id": 1308971325,
+        "head_repository_id": 1308971325,
+        "head_branch": "wp-lib-5a-exchange-contract",
+        "head_sha": "f07a876defbc3ee208996747f3f4b596b7606614"
+      }
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "schema": "gsip-app2b-complete-author-delivery-v4",
+  "status": "exact-reviewed-23-file-source-candidate-frozen-for-root-integration-and-CI",
+  "source_candidate_ready_for_root_integration": true,
+  "full_wp_ready": false,
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "frozen_full_source": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-full-v4-integration-nqz366vx/frozen-source",
+  "validation_source": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-full-v4-integration-nqz366vx/source",
+  "owned_file_count": 23,
+  "core_file_count": 19,
+  "native_audit_file_count": 4,
+  "original_baseline_file_count": 347,
+  "all_source_file_count": 358,
+  "unchanged_nonowner_file_count": 335,
+  "all_owner_and_nonowner_hashes_verified": true,
+  "owner_reviewed_bytes_changed_during_assembly": false,
+  "core_independent_closure": {
+    "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-core-review-v4-closure.json",
+    "sha256": "f78f2fb3fa8547e4ae4d1f8bb873c84893520c58339aab03d09e1e7896eece60",
+    "status": "independently-closed"
+  },
+  "native_independent_closure": {
+    "path": "/private/tmp/gsip-native-v4-independent-l0s2eoap/independent-closure.json",
+    "sha256": "2e74eec39e21f2bab0bdb5ce62d330121895ec672205e5ed806361baa7ee5360",
+    "status": "independently-closed"
+  },
+  "paths": [
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/app2b-full-v4.patch",
+      "sha256": "3219bec5791a3d4096528f158398ebafc64e5ca88d41488f91c78abe696e54e0"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/app2b-full-v4-manifest.json",
+      "sha256": "a65a896ad0a091c37f8e5ab0ac6270ed80204a343a73bf81f29a67eac1c4edf7"
+    },
+    {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-full-v4-integration-nqz366vx/integration-validation-final.json",
+      "sha256": "9373df08250fd3587d6d7f77c98387e0503a39721af9b80031c7bd290b10b78c"
+    },
+    {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-full-v4-integration-nqz366vx/authored23-gitleaks-receipt.json",
+      "sha256": "1a8e812dd8a1df0abbb2b134d25123962da6038b6893a0c8a7321b030b35bd55"
+    },
+    {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-full-v4-integration-nqz366vx/dependency-install-receipt.json",
+      "sha256": "661a88748fe17b46cddf1c99e62d054493a0d0668ca8e20e378a9a5988e57ce9"
+    },
+    {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-full-v4-integration-nqz366vx/python-runtime-lock-context.json",
+      "sha256": "1f18d2b473d415fd67bd1ef00f971db61a64b0a9c9fc2200cb15881e81bc8f1b"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/APP2B_CORE_V4_DELIVERY.json",
+      "sha256": "b21e06c685520756f2b134b67a858cffeefad21c9f2348113a862bc4744ac518"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-core-review-v4-closure.json",
+      "sha256": "f78f2fb3fa8547e4ae4d1f8bb873c84893520c58339aab03d09e1e7896eece60"
+    },
+    {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v4-frozen-nnsz_tpp/receipt.json",
+      "sha256": "9cc7580eed38a173b40c104e2d0004defeb093298aa8bccafa0032e5e39637b7"
+    },
+    {
+      "path": "/private/tmp/gsip-native-v4-independent-l0s2eoap/independent-closure.json",
+      "sha256": "2e74eec39e21f2bab0bdb5ce62d330121895ec672205e5ed806361baa7ee5360"
+    }
+  ],
+  "actual_source_validation": {
+    "schema_tests": 308,
+    "capture_tests": 246,
+    "map_tests": 15,
+    "site_tests": 28,
+    "javascript_total": 597,
+    "javascript_test_files": 44,
+    "python_passed": 1046,
+    "python_skipped_gdal": 4,
+    "root_lint_language_prettier": "pass",
+    "all_four_workspace_types": "pass",
+    "whole_python_ruff_mypy": "pass",
+    "closed_map_site_capture_app_builds": "pass",
+    "map_budget_bytes": 1663811,
+    "map_budget_limit_bytes": 5242880,
+    "site_budget_bytes": 313574,
+    "site_budget_limit_bytes": 716800
+  },
+  "authored_scan": {
+    "version": "8.21.2",
+    "exact_owned_files": 23,
+    "findings": 0,
+    "suppression_added": false,
+    "full_history_ci_still_required": true
+  },
+  "dependency_limits": [
+    "Fresh pnpm offline installation lacks cached archives; cloned installed Node lock is structurally identical to the exact candidate lock.",
+    "Fresh uv offline sync is unavailable from restricted/default or empty/private cache; 13 installed Python dependency versions differ from uv.lock. Full tests/static checks used the isolated existing-runtime clone.",
+    "No dependency or lockfile bytes were changed to accommodate this environment. Exact frozen CI installs remain required."
+  ],
+  "unverified": [
+    "Exact-head full CI including full-history secret scan, frozen dependency installation, E2E, Deno and PostGIS/pgTAP migration harness.",
+    "Four GDAL CLI cases skipped locally; required GDAL CI still needed.",
+    "Actual Android APK/iOS simulator artifacts, resolved native dependency licence/size/feature comparison receipts.",
+    "Physical notification prompt/delivery/cancellation/reboot/logging and iOS WebKit backup protection.",
+    "Signing/account/store/launch gates. Xcode27.0 was read back, but no native or device build ran."
+  ],
+  "authority": {
+    "shared_source_edited": false,
+    "git_operations": false,
+    "production_actions": false,
+    "deployment_actions": false,
+    "capture_activation": false,
+    "secret_actions": false,
+    "new_dependency_changes_beyond_reviewed_pin": false
+  },
+  "old_receipts_and_fail_before_witnesses_preserved": true,
+  "assumptions": [
+    "Same exact d7 baseline as both reviewed authors; root will resolve any later branch/base integration separately.",
+    "24-hour generic one-shot and inexact OS timing remain existing approved product assumptions.",
+    "Reviewed synthetic native evidence is source validation, not actual native runtime or device proof."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "base": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "branch": "docs/spec-v11",
+  "changed_paths": [
+    "docs/SPEC.md",
+    "docs/BUILD_ORDER.md",
+    "docs/IOS_PRIVATE_STORAGE.md",
+    "tests/test_ios_backup_plan.py"
+  ],
+  "all367_final_declared_source_hashes_verified": true,
+  "unchanged_existing_files": 363,
+  "runtime_dependency_workflow_scanner_changes": false,
+  "production_changes": false
+}

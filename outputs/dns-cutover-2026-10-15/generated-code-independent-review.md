@@ -1,0 +1,1 @@
+Independent reviewer /root/dns_docs_review checked the generated UI evidence. Host, zone suffix and exact 30-character value match. The full domain appears once. No TXT addition, Verify click or traffic change was performed by review.

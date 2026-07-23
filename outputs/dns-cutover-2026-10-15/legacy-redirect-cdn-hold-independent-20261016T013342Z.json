@@ -1,0 +1,43 @@
+{
+  "checked_at_utc": "2026-10-16T01:34:10.216809+00:00",
+  "status": "HOLD_LEGACY_URL_CDN_REDIRECT_DOWNGRADE",
+  "core_verified": {
+    "dns": "42/42",
+    "apex_www_http_and_https_homepage_routes_match_approved_artifact": true,
+    "capture_and_library_intake": {
+      "capture_live": false,
+      "library_intake_live": false
+    },
+    "live_tls_both_hosts_trusted_and_hostname_valid": true,
+    "pages_https_enforced_and_domain_verified": true,
+    "approval_protection_preserved": true
+  },
+  "blocking_evidence": [
+    {
+      "url": "https://global-soil-intelligence.github.io/gsip/",
+      "status_line": "HTTP/2 301 ",
+      "location": "http://globalsoilintelligence.com/",
+      "x_cache": "HIT",
+      "age_seconds": 1470,
+      "date": "Fri, 16 Oct 2026 01:33:42 GMT"
+    },
+    {
+      "url": "https://global-soil-intelligence.github.io/gsip/data/",
+      "status_line": "HTTP/2 301 ",
+      "location": "http://globalsoilintelligence.com/data/",
+      "x_cache": "HIT",
+      "age_seconds": 1471,
+      "date": "Fri, 16 Oct 2026 01:33:42 GMT"
+    }
+  ],
+  "interpretation": "Legacy github.io root and nested redirects are CDN cache HITs with old HTTP destinations. HTTPS canonical itself is enforced, but strict legacy HTTPS redirect checks remain incomplete; cache-age evidence supports stale edge caching as the likely cause, not a confirmed expiry time.",
+  "strict_guard": "Retained; do not accept HTTPS to HTTP downgrade or replace original URL checks with query variants.",
+  "gate_status": "No complete cutover verification claim until original legacy URLs avoid downgrade and remaining browser checks pass.",
+  "recovery": "Recheck original legacy URLs after CDN refresh during authorized active work. Do not remove or rebind domain, redeploy, weaken guard, or create a background monitor without separate authority.",
+  "additional_parent_reported_scope": "Root reports 38/38 HTTPS artifact files match; browser map worker load issue remains under a separate read-only investigation. This independent receipt does not certify that browser result.",
+  "evidence_files": [
+    "cutover-complete-independent-20261016T013317Z.json",
+    "legacy-redirect-independent-20261016T013342Z.json"
+  ],
+  "mutations": "NONE"
+}

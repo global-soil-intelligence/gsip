@@ -1,0 +1,44 @@
+{
+  "observedAt": "2026-10-12T12:21:24.222827+00:00",
+  "branch": "docs/spec-v4",
+  "base": "750b9fc2390149b3d3707a68a39c0af95203cbae",
+  "head": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+  "state": "COMMITTED_LOCALLY_NOT_PUSHED_NO_DEPLOYMENT_AUTHORITY",
+  "file_sha256": {
+    "docs/SPEC.md": "3440c0bd3ec12fc5c9a47d410bbec183bd817b3cf00b7f253c49b7b87261124e",
+    "docs/BUILD_ORDER.md": "d1fd522cce7aa9f61fbd154a0dbf09b0bfe75b06efc0469cebdbda6183be12a6",
+    "docs/PHOTO_PRIVACY_SCREENING.md": "e0a034b2544cca01bc254c9445a5c639879d5ce2177d12359cdbb4d386a4552f",
+    "tests/test_spec_v4.py": "da0dfb89049390e1e5f83af1af4885b4b0ea367d31fa17a4f3c4073f0ff67974"
+  },
+  "fail_before": {
+    "pytest": "tests/test_spec_v4.py: 13 failed, 2 passed against pre-revision policy docs",
+    "exit_code": 1
+  },
+  "pass_after": {
+    "focused_pytest": "15 passed",
+    "full_pytest": "235 passed, 4 skipped",
+    "full_pytest_environment": "HF_HOME and HF_DATASETS_CACHE in a dedicated /private/tmp cache; PYTHONDONTWRITEBYTECODE=1; no pytest cache provider",
+    "skip_reason": "GDAL command-line tools unavailable locally; required CI GDAL checks remain unverified here",
+    "ruff": "All checks passed, repository-wide",
+    "mypy": "Success: no issues found in 36 source files",
+    "prettier": "All 3 policy documents pass",
+    "language_guard": "scripts/check-language.mjs exit 0",
+    "local_links": "7 local documentation file targets resolve",
+    "git_diff_check": "exit 0",
+    "independent_review": "app_ci_review: no blocking findings; independently ran 15 tests and diff check"
+  },
+  "initial_full_pytest_failure": {
+    "result": "23 export tests hit an out-of-sandbox default Hugging Face cache; 212 passed, 4 skipped",
+    "resolution": "reran with dedicated temporary cache; no source change"
+  },
+  "assumptions": [
+    "The photo gate covers every newly built release; immutable older releases are identified honestly rather than claimed erased.",
+    "Capture-opening authority and all existing capture launch gates remain with Justin.",
+    "Existing marker homography may localize a bounded reference-card quadrilateral; unreliable localization screens the full scene-text frame.",
+    "No candidate is selected or installed; exact artifact licenses and measured calibration remain implementation/deployment gates.",
+    "APP-2A comparison requirements remain unchanged; iOS physical-device backup readiness remains unverified."
+  ],
+  "production_mutation": false,
+  "pushed": false,
+  "new_dependencies": []
+}

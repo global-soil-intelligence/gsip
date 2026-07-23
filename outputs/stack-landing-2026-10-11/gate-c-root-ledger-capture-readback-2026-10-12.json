@@ -1,0 +1,142 @@
+{
+  "project": "toxldjgwkxtneoqsazym",
+  "read_at": "2026-10-12T13:40:40.064Z",
+  "ledger": [
+    {
+      "name": "wp1_extensions",
+      "version": "20260722164727",
+      "history_row_sha256": "1a5fc646d6ab0bfbfa30d1d57a43e3bf4411995b31cf1327021f35e07cb9d8cd"
+    },
+    {
+      "name": "wp1_schema",
+      "version": "20260722164749",
+      "history_row_sha256": "fa375576da89ff3d5f70280cb24821faa729b3e06e7383691673462136756b98"
+    },
+    {
+      "name": "wp1_rls",
+      "version": "20260722164806",
+      "history_row_sha256": "62c149ef06ffe973b13022ce5886e6f3910ffc17584586d71d8fd87dd6b7502e"
+    },
+    {
+      "name": "wp1_review_hardening",
+      "version": "20260722170020",
+      "history_row_sha256": "714a4d8d7336b9a4b13e1aa004e8b323125cc0a779baeb2afda341ec4567b528"
+    },
+    {
+      "name": "wp1_v22_privacy_and_grants",
+      "version": "20260722181500",
+      "history_row_sha256": "2af4b0d6d1984d75c04c430bb58b871865e7767e774981f9e330a3a2e9a1af86"
+    },
+    {
+      "name": "wp1_performance_indexes",
+      "version": "20260722183000",
+      "history_row_sha256": "4b26901a525cb64791dbcc428c277cb26564464e97d1af3cf3bbde10d36bdb93"
+    },
+    {
+      "name": "wp4_prior_jobs",
+      "version": "20260722190000",
+      "history_row_sha256": "36044acc2dea448debea57ce377e4c449049265c815d7bbd1e7ad02cab49604d"
+    },
+    {
+      "name": "wp4_prior_jobs_hardening",
+      "version": "20260722190500",
+      "history_row_sha256": "8e4131e15e1a6134fae389eb5fa118120b2b4da3ad8bfa5a0a09a9ab7579c14b"
+    },
+    {
+      "name": "wp4b_photo_qa",
+      "version": "20260722193000",
+      "history_row_sha256": "fbb55d148274027918867d745956d277c64d523a2e652b291b69c342a9b8f09a"
+    },
+    {
+      "name": "wp6_export_guardrails",
+      "version": "20260722200000",
+      "history_row_sha256": "2e88cda9e4cc2f3e3b63b3acb22a07993fa47dabaca5519b93f86a998a61ba49"
+    },
+    {
+      "name": "phase1_actor_hardening",
+      "version": "20260723002255",
+      "history_row_sha256": "7ff5a5a1ff4709aa7e5940651e1e097306694dada9837e705b9c7166e115393f"
+    },
+    {
+      "name": "qa_event_provenance",
+      "version": "20260723004439",
+      "history_row_sha256": "a76009bd8c387178df05bf6b4e7c049ae44343fccec630b2a4f00de8cff99e2d"
+    },
+    {
+      "name": "public_h3_aggregates",
+      "version": "20260723005752",
+      "history_row_sha256": "a07de117b915d476b003899ceaaa12d7e09f7bd203b3154931655e390c4c86b5"
+    },
+    {
+      "name": "atomic_public_h3_refresh",
+      "version": "20260723010313",
+      "history_row_sha256": "ab1451e9f0e5dcaf437318e86a32bd07c437c3387e0f124a108e2a706a98f317"
+    },
+    {
+      "name": "atomic_prior_attempt_claim",
+      "version": "20260723044745",
+      "history_row_sha256": "fda2bbe1bcd8f4d4386667461c44c9a533a0483cac41fd601a816dccb6530b8c"
+    },
+    {
+      "name": "document_authenticated_h3_role",
+      "version": "20260723045317",
+      "history_row_sha256": "63abedd966bc26e7f90ff47bda24caab4a02b129111d5a582dacb5a78d72f710"
+    },
+    {
+      "name": "remove_public_submission_residue",
+      "version": "20260723045606",
+      "history_row_sha256": "05535852c1756309f8f2f90c65c3f0a269e4662c3f9e113fa66e9172cc324ec3"
+    },
+    {
+      "name": "wp6b_capture_gate",
+      "version": "20261010120000",
+      "history_row_sha256": "3c2e1665df6daa3d5a2c08fd5a631e326088b899a306c4a9615339ed8a631719"
+    },
+    {
+      "name": "wp6b_path_binding",
+      "version": "20261010120100",
+      "history_row_sha256": "bce2a738fb8f72fc13d9de68e41e447fe3e5ef9d5213fa1b70358f29a62e1073"
+    },
+    {
+      "name": "wp6b_finalize_and_settle",
+      "version": "20261010120200",
+      "history_row_sha256": "7692a4232a19675ee132fc4eff27cb9577ab113ebb702c29c2779d6dd9c5176a"
+    },
+    {
+      "name": "wp6b_k_anonymous_cells",
+      "version": "20261010120300",
+      "history_row_sha256": "ff12e7bebfb7619d5b8972c07dc0e137cb9ecf46efb115fb744a04efeb085cad"
+    },
+    {
+      "name": "wp6b_attribution_and_metadata",
+      "version": "20261010120400",
+      "history_row_sha256": "30e2d8d8937f9cbbb9221e6f23bbfd2c7797bcc363713e555b2e50b0f63b865f"
+    },
+    {
+      "name": "wp6c_priors",
+      "version": "20261010130000",
+      "history_row_sha256": "7504b7f858a4ed15dd1c599ffb288beaa4585e0134e755711bdc31dca75a0de4"
+    },
+    {
+      "name": "wp6d_contributor_rights",
+      "version": "20261010140000",
+      "history_row_sha256": "844c86243d9126418ff2fdb58deaaa1159739e69cbc6c8867151f5ccf2e60b35"
+    },
+    {
+      "name": "wp6e_provenance",
+      "version": "20261010150000",
+      "history_row_sha256": "d7b1de6965fbdedc7583e9ef003ee5808eb568eaecb593ae94fbb3a2cf42ac03"
+    },
+    {
+      "name": "wp_agent1_releases",
+      "version": "20261011090000",
+      "history_row_sha256": "cd1a1b48c322ab94acc1bc55074a66c131e87517ab47b6642db206b5f856c59e"
+    }
+  ],
+  "capture": {
+    "row_count": 1,
+    "capture_true_count": 0,
+    "capture_false_count": 1
+  },
+  "capture_is_open": false
+}

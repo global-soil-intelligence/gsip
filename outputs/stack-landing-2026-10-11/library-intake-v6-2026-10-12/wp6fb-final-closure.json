@@ -1,0 +1,14 @@
+{
+  "head": "b0f8e0f808629754bc6f4213f9c94e3149adfe55",
+  "manifest_sha256": "15cb82e62de7a4e79bfd370c3d228b6053b0bbb982bf75b440f276d89c931a37",
+  "peer_receipt_sha256": "9dafbdb2d0bab14972447c0fafa339429a8b852026c19109773a98a17c5bafd0",
+  "independent_scoped_tests": 234,
+  "marker_assertions": 6880,
+  "decoder_probes": 47,
+  "root_python_passed": 682,
+  "root_host_GDAL_skipped": 4,
+  "actual_CI_python_with_GDAL": 686,
+  "remaining_blocking_review_findings": false,
+  "prior_intermediate_receipts_preserved": true,
+  "calibration_production_and_publication_held": true
+}

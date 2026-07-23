@@ -1,0 +1,268 @@
+{
+  "files_verified": [
+    {
+      "base_sha256": null,
+      "bytes": 83833,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "f588112af2eb2f51a354a7856a9c0bb916722e3422807b2af223acc9c24b5ab0",
+      "v4_sha256": "bbc96feba3a8e33900ba5d5c78a8e968e1e3d62f8a3b3af90dc3b812572ae54f"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 69749,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "fef70073abf42ec433dc5193be7df7f4a7c6d74d3795c88502d022a329726c8e",
+      "v4_sha256": "df732911e989b4bed5d051dd7c1665c12e312b6d7dfae47561e8aaa6f7427f66"
+    },
+    {
+      "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "bytes": 17825,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "v4_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 12167,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "3278d03081afec2bc5c408eb87afde23268b264acc3c5cfd8ac810aa284907da",
+      "v4_sha256": "7809956ce546f1a389e1d01018f1b5ab71ed41a93f2970b4f99e6c40ba608715"
+    }
+  ],
+  "limits": [
+    "No actual native build, CI acceptance, device proof, real private data, credentials, Git, GitHub, production, UI or network performed.",
+    "Actual Android CI failure root cause remains unconfirmed.",
+    "Entire frozen v5 closure is not claimed; Capacitor source/content proof P2 belongs to parent audit."
+  ],
+  "meaningful_guard_mutations": [
+    {
+      "exit_code": 1,
+      "log": "/private/tmp/gsip-native-v5-diagnostics-independent-gdpobfm0/remove_count_guard.log",
+      "log_sha256": "4f5018a641208a34d84940ea88770d330275d0069147757b4a4119b8a42d2e1e",
+      "mutation": "remove_count_guard",
+      "selection": "invalid_counts",
+      "summary": "9 failed, 34 deselected in 0.07s"
+    },
+    {
+      "exit_code": 1,
+      "log": "/private/tmp/gsip-native-v5-diagnostics-independent-gdpobfm0/remove_cli_stage_reset.log",
+      "log_sha256": "2b43c6142f2ebf8ef6a6018ba9e5ea2b9a1ffd583e6fad76cb312b60f7fedac4",
+      "mutation": "remove_cli_stage_reset",
+      "selection": "next_cli_invocation",
+      "summary": "1 failed, 42 deselected in 0.06s"
+    },
+    {
+      "exit_code": 1,
+      "log": "/private/tmp/gsip-native-v5-diagnostics-independent-gdpobfm0/leak_exception_detail.log",
+      "log_sha256": "cbf168947646ea77b7377d63df08f8060e6358fab5ef2099d175abfaf20c8f21",
+      "mutation": "leak_exception_detail",
+      "selection": "runtime_exception_output",
+      "summary": "16 failed, 27 deselected in 0.39s"
+    },
+    {
+      "exit_code": 1,
+      "log": "/private/tmp/gsip-native-v5-diagnostics-independent-gdpobfm0/erase_failure_source_line.log",
+      "log_sha256": "ef399689ca3c87db7d43df174e1f8a686253b20a68cb7ebfe57de10e661f9408",
+      "mutation": "erase_failure_source_line",
+      "selection": "audit_source_line",
+      "summary": "1 failed, 42 deselected in 0.06s"
+    }
+  ],
+  "notes": "Initial witness expectations for external errors were corrected to allow the audit main caller line; malformed JSON correctly maps to MALFORMED_METADATA. Those were test assumptions, not source findings.",
+  "scope": "independent Android diagnostic and unchanged native workflow slice; no iOS graph/content proof closure",
+  "source_restored_after_mutations": true,
+  "status": "no material blocker found in delegated slice; native v5 overall remains blocked by parent independent Capacitor content-proof P2",
+  "tests": {
+    "combined_frozen_author_suite_and_independent_diagnostic_suite_exit": 0,
+    "frozen_author_suite_cases_from_author_receipt": 211,
+    "independent_suite_scope": "16 caught exception kinds with synthetic private messages/tool output; stale state reset; nine invalid count shapes; exact count limits; source line/privacy; all 13 missing build receipt fields; repeated reference digest binding",
+    "independent_test_cases": 43,
+    "network": "socket construction and connection denied by autouse fixture"
+  },
+  "v4_android_unchanged_except_markers": {
+    "collect_android": true,
+    "feature_comparison": true,
+    "runtime_evidence": true,
+    "source_inputs": true,
+    "validate_android": true
+  },
+  "witness_sha256": "4017b63fe4614833f8ded1b38ac545e1c286367e0422d4857ec07f05d5b6c7a5",
+  "workflow_checks": {
+    "bash_body_count": 28,
+    "capture_flags": "both closed",
+    "checked": [
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "c5ee50af8e68d505bd2f1cf3b5806fa5bd8a4ae2f99b5bd0a2aad1a7571db957",
+        "step": 5
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "242854b87dfdee86ed4bbbfaabde950c1108f613772e7a2f993ccdb7d7949ae9",
+        "step": 6
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "91b750449d924d8af6ce312a6d47660b52121357081e07c252c15c8889aa6e31",
+        "step": 7
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "b8b41e3347bef29daab10d8cbb15a6365d1afecd47f648ec58088a0ad794ca76",
+        "step": 8
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "27fe8b3cca518cdff1149d7dfbc8f845eaa860ae44d8062723e7327868f712bc",
+        "step": 9
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "2974447bc3ae66584f7c5f30062abdab03672afc07ac76a1f41924a479330ebd",
+        "step": 10
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "02129081244148d8af3920072811db81a6e0b7751bfb0f605134e4122686d6aa",
+        "step": 11
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "d84de4924d0ecce51f465446b9f7b62cd3f8696b99112ddefeab7bf39be90306",
+        "step": 12
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "0604c7db7426ff806ec959e4505b6dd9338bf52ff0f61187185a9d7c2572895c",
+        "step": 13
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "237a8b67007536cb56e4c3ed5a6759d91395fb086ca0cd525fc671856f90373b",
+        "step": 14
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "9f504f4f06f87e0c7d07a13141ef7e8c8aded5d633260cd1a26f19c1aaf92304",
+        "step": 15
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "8a1cb7f76142cee1091b12ba711a5cb480383db8d25f314ebb8ee7c014aa7df5",
+        "step": 16
+      },
+      {
+        "exit_code": 0,
+        "job": "android",
+        "sha256": "3a90a16a86faf4aba48e2e627a55c2de7f0c43f78c176604fd9330a6922336fa",
+        "step": 17
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "fe4d7de88d22e0acf553d18c142af65bc51c04b09c5a93c1bc786570bfc40b5e",
+        "step": 4
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "c5ee50af8e68d505bd2f1cf3b5806fa5bd8a4ae2f99b5bd0a2aad1a7571db957",
+        "step": 5
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "242854b87dfdee86ed4bbbfaabde950c1108f613772e7a2f993ccdb7d7949ae9",
+        "step": 6
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "1a1cbd8c8125b9d186520b38059bdf67f89337da129533bcab4667fbcce159fd",
+        "step": 7
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "884de64c4accf1e8fc7dd0c7b466dce6d84c1ebdf164a9a55f0c11dfb261311c",
+        "step": 8
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "251033f77a2b62af2f2d9806f0e633adc2a414aee8e61f87078194af6842f54f",
+        "step": 9
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "202934c5f7c236db80a5691074562f6ad90b107592ac0a7008177f245accba77",
+        "step": 10
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "9481f63e1a5801f149b0aac264741f069aeb88b39d56d3faa2a80b6a95f91331",
+        "step": 11
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "4fb6de4716b479a67b7cb4520b8db4fa100232426932095db65775255a1eca67",
+        "step": 12
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "e56fbd587077b69518b5cd7c13a7b290afe26ecef668334bcb06c5aa7ae6dbd4",
+        "step": 13
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "270cc57cb5f40eb383e2bb67d1a360350d6c23c4ac4680639a87c3d6c514ac0c",
+        "step": 14
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "d79fa6f3d05d833f76a6529ddca6a1c608e343345bb3c5dce5cd85ef931b8625",
+        "step": 15
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "6ad7d459bf7394712763117eaa481e5b9e4ed82ad588a2dce51aa92d27001345",
+        "step": 16
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "e0c352747e4798c7f447d1da560ffa8e40b6f42198ccd719409c75ec3762df7f",
+        "step": 17
+      },
+      {
+        "exit_code": 0,
+        "job": "ios",
+        "sha256": "507bce694877e1e9af41f4315acacd07221c4edee9112384e108281879a7b6a9",
+        "step": 18
+      }
+    ],
+    "comparison_ref_bindings": "exact d7 parent, actual candidate HEAD, both retained repeat references",
+    "permissions": "contents read only",
+    "permissions_and_dependency_steps_preserved": true
+  },
+  "workflow_unchanged_v4": true
+}

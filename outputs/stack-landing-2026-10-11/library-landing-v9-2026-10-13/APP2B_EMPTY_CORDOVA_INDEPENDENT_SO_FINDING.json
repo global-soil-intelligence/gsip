@@ -1,0 +1,41 @@
+{
+  "focused_cases": [
+    {
+      "accepted": true,
+      "case": "empty",
+      "refused": false
+    },
+    {
+      "accepted": true,
+      "case": "jni_so",
+      "refused": false
+    },
+    {
+      "accepted": true,
+      "case": "jni_upper_so",
+      "refused": false
+    },
+    {
+      "accepted": false,
+      "case": "source_jar",
+      "refused": true
+    },
+    {
+      "accepted": false,
+      "case": "source_aar",
+      "refused": true
+    },
+    {
+      "accepted": false,
+      "case": "source_java",
+      "refused": true
+    }
+  ],
+  "frozen_receipt_sha256": "6c5ddc0fda9df74dce6dd31717490c0db53f523d069d64fc74497568ddfbb917",
+  "guard_line": 1085,
+  "material_existing_contract_gap": true,
+  "no_network_build_private_data_or_source_edits": true,
+  "schema": 1,
+  "scope_basis": "Existing npm_evidence rejects.so; same document calls generated compatibility project empty with no third-party source or binary. Android jniLibs native shared libraries are source-bundled runtime input, not a requested broader resource-intermediate proof.",
+  "source_sha256": "327bdee08648e06409fdf64b8002cab29e072924eb8907b7b02b06bfbdc6e74a"
+}

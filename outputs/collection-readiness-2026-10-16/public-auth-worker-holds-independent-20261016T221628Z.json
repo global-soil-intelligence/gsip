@@ -1,0 +1,115 @@
+{
+  "status": "READ_ONLY_PUBLIC_AUTH_AND_WORKER_HOLDS_REFRESHED",
+  "started_at_utc": "2026-10-16T22:16:26.369845+00:00",
+  "completed_at_utc": "2026-10-16T22:16:28.256238+00:00",
+  "project_ref": "toxldjgwkxtneoqsazym",
+  "repository": "global-soil-intelligence/gsip",
+  "auth": {
+    "checked_at_utc": "2026-10-16T22:16:27.486819+00:00",
+    "method": "GET /auth/v1/settings",
+    "status": 200,
+    "trusted_tls": true,
+    "hostname_validation": true,
+    "redirects_allowed": false,
+    "top_level_boolean_settings": {
+      "disable_signup": true,
+      "mailer_autoconfirm": false,
+      "phone_autoconfirm": false,
+      "saml_enabled": false,
+      "saml_private_key_next_configured": true,
+      "passkeys_enabled": false
+    },
+    "provider_enablement": {
+      "anonymous_users": false,
+      "apple": false,
+      "azure": false,
+      "bitbucket": false,
+      "discord": false,
+      "facebook": false,
+      "snapchat": false,
+      "figma": false,
+      "fly": false,
+      "github": false,
+      "gitlab": false,
+      "google": false,
+      "keycloak": false,
+      "kakao": false,
+      "linkedin": false,
+      "linkedin_oidc": false,
+      "notion": false,
+      "spotify": false,
+      "slack": false,
+      "slack_oidc": false,
+      "workos": false,
+      "twitch": false,
+      "twitter": false,
+      "email": true,
+      "phone": false,
+      "zoom": false
+    },
+    "enabled_provider_names": [
+      "email"
+    ],
+    "signup_allowed": false,
+    "anonymous_signins_enabled": false,
+    "publishable_key_handling": "Read only the named repository variable into process memory; value and complete Auth response never printed or saved"
+  },
+  "workers": [
+    {
+      "workflow_file": "prior-enrichment.yml",
+      "workflow_id": 372625971,
+      "workflow_name": "Prior enrichment drain",
+      "workflow_state": "disabled_manually",
+      "schedule_variable": "GSIP_PRIOR_SCHEDULE_ENABLED",
+      "schedule_variable_state": "missing",
+      "schedule_gate_enabled": false,
+      "effective_scheduled_job_enabled": false
+    },
+    {
+      "workflow_file": "photo-qa.yml",
+      "workflow_id": 372626162,
+      "workflow_name": "Private photo QA",
+      "workflow_state": "disabled_manually",
+      "schedule_variable": "GSIP_QA_SCHEDULE_ENABLED",
+      "schedule_variable_state": "missing",
+      "schedule_gate_enabled": false,
+      "effective_scheduled_job_enabled": false
+    },
+    {
+      "workflow_file": "nightly-export.yml",
+      "workflow_id": 372626465,
+      "workflow_name": "Nightly public dataset export",
+      "workflow_state": "disabled_manually",
+      "schedule_variable": "GSIP_EXPORT_SCHEDULE_ENABLED",
+      "schedule_variable_state": "missing",
+      "schedule_gate_enabled": false,
+      "effective_scheduled_job_enabled": false
+    },
+    {
+      "workflow_file": "quarantine-cleanup.yml",
+      "workflow_id": 382665797,
+      "workflow_name": "Quarantine cleanup",
+      "workflow_state": "active",
+      "schedule_variable": "GSIP_CLEANUP_SCHEDULE_ENABLED",
+      "schedule_variable_state": "missing",
+      "schedule_gate_enabled": false,
+      "effective_scheduled_job_enabled": false
+    },
+    {
+      "workflow_file": "rights-worker.yml",
+      "workflow_id": 382667845,
+      "workflow_name": "Contributor rights requests",
+      "workflow_state": "active",
+      "schedule_variable": "GSIP_RIGHTS_SCHEDULE_ENABLED",
+      "schedule_variable_state": "missing",
+      "schedule_gate_enabled": false,
+      "effective_scheduled_job_enabled": false
+    }
+  ],
+  "limitations": [
+    "Public Auth settings do not prove a successful sign-in or upload",
+    "Workflow state and schedule variables do not prove absence of direct/manual/external worker activity",
+    "No service-role key, contributor record, private Auth user, or production content read"
+  ],
+  "mutations": "Requested local filtered receipt only; all remote operations GET; no auth, schema, gate, schedule or workflow changes"
+}

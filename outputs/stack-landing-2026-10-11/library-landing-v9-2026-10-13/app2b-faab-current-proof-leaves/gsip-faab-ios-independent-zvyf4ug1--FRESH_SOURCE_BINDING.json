@@ -1,0 +1,134 @@
+{
+  "at_utc": "2026-10-14T03:23:58.792209+00:00",
+  "both_native_parent_references_verified": true,
+  "exact_helper_sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
+  "get_only": true,
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "head_source": {
+    "commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+    "count": 9,
+    "files": [
+      {
+        "blob": "6ebc171ce1535767da533c21f5adf55eeedf4e62",
+        "bytes": 97,
+        "path": "scripts/__init__.py",
+        "sha256": "892aecd6894b5c07d02afcb4146d30d7fbab2b17493edc31cdf48d975c30f7c4"
+      },
+      {
+        "blob": "f64bacc4f6bdfe149c28f8d4b8776999cd7a3a3e",
+        "bytes": 225620,
+        "path": "pnpm-lock.yaml",
+        "sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19"
+      },
+      {
+        "blob": "ab95b0ba7eaf37b65391ee307fe02ccb63ea33a2",
+        "bytes": 316516,
+        "path": "uv.lock",
+        "sha256": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912"
+      },
+      {
+        "blob": "7908d39eac6911ce9143d853242f57c39c4040e6",
+        "bytes": 1081,
+        "path": "apps/capture-pwa/package.json",
+        "sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115"
+      },
+      {
+        "blob": "c384197c85ba1b073e8f24c68f87a333333c7559",
+        "bytes": 1112,
+        "path": "apps/capture-pwa/capacitor.config.ts",
+        "sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69"
+      },
+      {
+        "blob": "c64d839388c0d9e8fba2d1086239c3fa4031e302",
+        "bytes": 12571,
+        "path": "scripts/app_permissions.py",
+        "sha256": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3"
+      },
+      {
+        "blob": "5388991b5a9f15b0a148009c2f91ab30340e7457",
+        "bytes": 17725,
+        "path": "scripts/app_build.py",
+        "sha256": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4"
+      },
+      {
+        "blob": "e69ae887c45b154bbf731d8ff0efa547281f3217",
+        "bytes": 144888,
+        "path": "scripts/app_notification_audit.py",
+        "sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d"
+      },
+      {
+        "blob": "be1223fad90891c51486e3845a83ca78f8299f02",
+        "bytes": 17919,
+        "path": ".github/workflows/app-build.yml",
+        "sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+      }
+    ],
+    "tree": "88baee8e3e9606b386fa011ac71f2d759cf20e50"
+  },
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "older_artifact_download": false,
+  "parent_source": {
+    "commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+    "count": 6,
+    "files": [
+      {
+        "blob": "8335d43f104b6ba4e0763b5651f55859f883f389",
+        "bytes": 225169,
+        "path": "pnpm-lock.yaml",
+        "sha256": "492c699cb8e0d3ca9302dd8cbd04d882bc749b4b33d8047040eec8376dd34644"
+      },
+      {
+        "blob": "ab95b0ba7eaf37b65391ee307fe02ccb63ea33a2",
+        "bytes": 316516,
+        "path": "uv.lock",
+        "sha256": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912"
+      },
+      {
+        "blob": "df573252c39a257d6d437f8535a2bdb043471293",
+        "bytes": 1034,
+        "path": "apps/capture-pwa/package.json",
+        "sha256": "9c0e7a2b670eddeabfb7ab29347f306a85bfccc66c18e6672f0c8f36284b2e15"
+      },
+      {
+        "blob": "d5234528889aa4fe4605e5c9cd5781f9f5c6030a",
+        "bytes": 1053,
+        "path": "apps/capture-pwa/capacitor.config.ts",
+        "sha256": "705916ffd4b7341091bc44e6010632739d54ce924f342ca46fe19ef7e28b2bb7"
+      },
+      {
+        "blob": "f63129a5769575cb4e74f113e00d55b35a362740",
+        "bytes": 11413,
+        "path": "scripts/app_permissions.py",
+        "sha256": "4a0e78dd1b153217fdcad4ddc94d5ce5ea7b6f6b60d220a9199a0302a8374675"
+      },
+      {
+        "blob": "5388991b5a9f15b0a148009c2f91ab30340e7457",
+        "bytes": 17725,
+        "path": "scripts/app_build.py",
+        "sha256": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4"
+      }
+    ],
+    "tree": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64"
+  },
+  "prior_proof_reuse": false,
+  "response_hashes": {
+    "commits/d7ed716ed0921381da04f542e90902ede36cb462": {
+      "bytes": 43043,
+      "sha256": "1e62af6976f1f991ca60c484e31796c7ac0619769792c3ae15bfbfc5ab342e26"
+    },
+    "commits/faabfeb36eb2f8fbb475a03f5a8994f76dd970bc": {
+      "bytes": 74544,
+      "sha256": "514da816d6b71ff37ec4bf5cbd7a58b3cd0079a143de8e8e8f355194547542fe"
+    },
+    "git/trees/88baee8e3e9606b386fa011ac71f2d759cf20e50?recursive=1": {
+      "bytes": 105159,
+      "sha256": "1389f5847228ca432963292434139871d711f8fe838f8e671f933bc6c530a564"
+    },
+    "git/trees/9e78e72f441501a1bd56a15b07e4c30fe2cc5b64?recursive=1": {
+      "bytes": 100498,
+      "sha256": "d73c09e1b2855a45af097eab8385cdbd5fad90ac3d6b7971f68bc0b91af87230"
+    }
+  },
+  "schema": "gsip-exact-faab-fresh-source-binding-v1",
+  "workflow_parent_sha": "d7ed716ed0921381da04f542e90902ede36cb462"
+}

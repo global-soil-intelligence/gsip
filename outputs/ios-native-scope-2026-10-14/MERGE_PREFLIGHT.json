@@ -1,0 +1,130 @@
+{
+  "pr": {
+    "autoMergeRequest": null,
+    "baseRefName": "main",
+    "headRefOid": "06902edf36810c55e51b169dcb813e81b22206b0",
+    "mergeStateStatus": "CLEAN",
+    "number": 70,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T22:57:38Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38651079336/job/116149738529",
+        "name": "dco",
+        "startedAt": "2026-10-14T22:57:38Z",
+        "status": "COMPLETED",
+        "workflowName": "DCO"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T23:06:12Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38651079315/job/116149736027",
+        "name": "validate",
+        "startedAt": "2026-10-14T22:57:40Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T22:57:45Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38651079464/job/116149736195",
+        "name": "gitleaks",
+        "startedAt": "2026-10-14T22:57:40Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T22:57:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38651043670/job/116149614489",
+        "name": "gitleaks",
+        "startedAt": "2026-10-14T22:57:19Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      }
+    ],
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/70"
+  },
+  "main": {
+    "ref": "refs/heads/main",
+    "node_id": "REF_kwDOTgVRPa9yZWZzL2hlYWRzL21haW4",
+    "url": "https://api.github.com/repos/global-soil-intelligence/gsip/git/refs/heads/main",
+    "object": {
+      "sha": "de9d1221b7c73e9be5c7e25ccaa24dcfa7903934",
+      "type": "commit",
+      "url": "https://api.github.com/repos/global-soil-intelligence/gsip/git/commits/de9d1221b7c73e9be5c7e25ccaa24dcfa7903934"
+    }
+  },
+  "pages": {
+    "id": 18657050755,
+    "node_id": "EN_kwDOTgVRPc8AAAAEWAwAgw",
+    "name": "github-pages",
+    "url": "https://api.github.com/repos/global-soil-intelligence/gsip/environments/github-pages",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/deployments/activity_log?environments_filter=github-pages",
+    "created_at": "2026-07-23T21:35:39Z",
+    "updated_at": "2026-10-12T13:37:08Z",
+    "can_admins_bypass": false,
+    "protection_rules": [
+      {
+        "id": 60751762,
+        "node_id": "GA_kwDOTgVRPc4Dnv-S",
+        "type": "branch_policy"
+      },
+      {
+        "id": 68521163,
+        "node_id": "GA_kwDOTgVRPc4EFYzL",
+        "type": "required_reviewers",
+        "prevent_self_review": false,
+        "reviewers": [
+          {
+            "type": "User",
+            "reviewer": {
+              "login": "jdhart81",
+              "id": 179389866,
+              "node_id": "U_kgDOCrFFqg",
+              "avatar_url": "https://avatars.githubusercontent.com/u/179389866?v=4",
+              "gravatar_id": "",
+              "url": "https://api.github.com/users/jdhart81",
+              "html_url": "https://github.com/jdhart81",
+              "followers_url": "https://api.github.com/users/jdhart81/followers",
+              "following_url": "https://api.github.com/users/jdhart81/following{/other_user}",
+              "gists_url": "https://api.github.com/users/jdhart81/gists{/gist_id}",
+              "starred_url": "https://api.github.com/users/jdhart81/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/jdhart81/subscriptions",
+              "organizations_url": "https://api.github.com/users/jdhart81/orgs",
+              "repos_url": "https://api.github.com/users/jdhart81/repos",
+              "events_url": "https://api.github.com/users/jdhart81/events{/privacy}",
+              "received_events_url": "https://api.github.com/users/jdhart81/received_events",
+              "type": "User",
+              "user_view_type": "public",
+              "site_admin": false
+            }
+          }
+        ]
+      }
+    ],
+    "deployment_branch_policy": {
+      "protected_branches": false,
+      "custom_branch_policies": true
+    }
+  },
+  "variable_names": [
+    {
+      "name": "SUPABASE_URL"
+    },
+    {
+      "name": "VITE_GSIP_PUBLIC_API"
+    },
+    {
+      "name": "VITE_SUPABASE_PUBLISHABLE_KEY"
+    },
+    {
+      "name": "VITE_SUPABASE_URL"
+    }
+  ]
+}

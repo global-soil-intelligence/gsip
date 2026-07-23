@@ -1,0 +1,36 @@
+[
+  {
+    "aggregate_backfill_counts": {
+      "actor_count": 5,
+      "grant_count": 5,
+      "photo_count": 25,
+      "finalized_count": 0,
+      "gold_label_count": 0,
+      "submission_count": 25,
+      "complete_ab_count": 0,
+      "contributor_count": 5,
+      "terms_total_count": 2,
+      "terms_expected_count": 2,
+      "legacy_holdout_true_count": 0,
+      "settlement_mismatch_count": 0,
+      "terms_other_retired_count": 1,
+      "synthetic_submission_count": 25,
+      "finalization_mismatch_count": 0,
+      "nonsynthetic_submission_count": 0,
+      "legacy_grant_terms_missing_count": 0,
+      "photo_qa_backfill_mismatch_count": 0,
+      "legacy_grant_receipt_nonnull_count": 0,
+      "photo_tier_backfill_mismatch_count": 0,
+      "legacy_photo_evidence_nonnull_count": 0,
+      "terms_active_version_mismatch_count": 0,
+      "actor_backfill_status_mismatch_count": 0,
+      "terms_july_published_unretired_count": 1,
+      "unexpected_actor_kind_or_orphan_count": 0,
+      "submission_legacy_claim_mismatch_count": 0,
+      "human_actor_missing_or_duplicated_count": 0,
+      "submission_actor_binding_mismatch_count": 0,
+      "submission_tier_backfill_mismatch_count": 0,
+      "invented_submission_tier_one_or_higher_count": 0
+    }
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "freeze_patch_sha256": "b890dc40f8f554fc3b9cd995ce8d1057fa802cff6e5aecc8b314949166ab57e0",
+  "freeze_author_receipt_sha256": "adadcb01d512290961c51a89d0987e2d9dd79c90642e7eda22842bff9dd3a056",
+  "script_sha256": "34ef744657c183a33f82ac98f429441e7184970f062db9f4170b7bf052691459",
+  "witness_sha256": "7c19b4c339d9a578265fceb7b4a5a864b46a9ceea5e2b3de09ca470ecb81eecc",
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_review_v3_build_receipt.py",
+    "-o",
+    "addopts=",
+    "-q"
+  ],
+  "exit_code": 1,
+  "log_sha256": "ea4e0809c5495c2205f5c61e8c0627dd5edeed94f52a7615f36c60bddaf2e812",
+  "actual": "5 expected-refusal failures and 1 valid positive control pass",
+  "untouched_prior_probes_sha256": "acc9621133f59b36e828f8d29b67ebb7e5d099f88ed5962acb8903a4087bba95",
+  "prior_probe_replay": "7 passed; original probe file and frozen v2 fixture helpers unchanged",
+  "baseline_integration": "165 passed =88 native+71 exact d7 build and permission+6 processor",
+  "remaining_cards": [
+    "independent expanded canonical-root/coordinate refinements",
+    "independent expanded POM ambiguity/open-license refinements",
+    "independent expanded full platform source/graph/npm/POM/binary bindings",
+    "independent expanded actual SPM HEAD/tag/pin positive and failure controls"
+  ],
+  "limits": "No source mutation or network/native SDK/device/Git/PR/production action. No full closure or combined23 readiness."
+}

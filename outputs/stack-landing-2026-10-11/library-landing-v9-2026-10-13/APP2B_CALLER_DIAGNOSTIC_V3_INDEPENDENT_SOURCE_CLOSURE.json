@@ -1,0 +1,123 @@
+{
+  "carried_behavioral_evidence": {
+    "basis": "All application/helper/runtime code and364other files are byte-identical; erasing only the local stdlib Callable import and object-return callback-map annotation restores the entire v2 test file, with every assertion and189650Bprefix exact. The runtime callback values and assertions are unchanged.",
+    "focused_baseline_failed": 7,
+    "focused_baseline_passed": 5,
+    "focused_candidate_passed": 12,
+    "new_behavioral_rerun_in_this_typing_review": false,
+    "old43bank_passed": 43,
+    "own_controls_passed": 28,
+    "own_effective_mutations": 4,
+    "source": "Independent final diagnosticv2 review; these are prior executed results, not newly rerun onv3."
+  },
+  "conclusion": "CLOSED_NO_BLOCKER_TYPING_DELTA_SOURCE_ONLY",
+  "created_at": "2026-10-14T00:59:35.298278+00:00",
+  "final_author_manifest_sha256": "61ed15a246ecc2837955da2fdf64ead60473b982b3fbd575cbd063978bd91a45",
+  "final_author_receipt_sha256": "81714399901bfaea02884263e9003d302552e5f649a5562e41dcf7778a2c3864",
+  "final_files": {
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_bytes": 32861,
+      "base_sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5",
+      "bytes": 33577,
+      "sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_bytes": 126055,
+      "base_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+      "bytes": 126232,
+      "sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_bytes": 189650,
+      "base_sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99",
+      "bytes": 195244,
+      "sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373"
+    }
+  },
+  "fresh_independent_checks": {
+    "full_configured_strict_mypy_checked_files": 75,
+    "full_configured_strict_mypy_errors": 0,
+    "full_configured_strict_mypy_exit_code": 0
+  },
+  "full_typecheck_fail_before": {
+    "checked_source_files": 75,
+    "command": [
+      "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/.venv/bin/python",
+      "-m",
+      "mypy",
+      "--cache-dir",
+      "/private/tmp/gsip-refusal-diagnostic-independent-pztagjdp/caller-review/type-review-v3/cache-v2"
+    ],
+    "exit_code": 1,
+    "issues": [
+      {
+        "error_code": "no-untyped-call",
+        "file": "tests/test_app_notification_audit.py",
+        "line": 4530
+      }
+    ],
+    "raw_logs_persisted": false,
+    "schema": "gsip-independent-v2-whole-mypy-failure-v1",
+    "scope": "Entire configured strict mypy file set, not helper-only check.",
+    "source_files_edited": false,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "28bdc1240c11092d88414f497360d8f7ce1deaa2a0b7563b799860551f72b79f"
+  },
+  "full_typecheck_pass_after": {
+    "checked_source_files": 75,
+    "command": [
+      "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/.venv/bin/python",
+      "-m",
+      "mypy",
+      "--cache-dir",
+      "/private/tmp/gsip-refusal-diagnostic-independent-pztagjdp/caller-review/type-review-v3/cache-v3"
+    ],
+    "exit_code": 0,
+    "raw_logs_persisted": false,
+    "schema": "gsip-independent-v3-whole-mypy-pass-v1",
+    "source_files_edited": false,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 44,
+    "stdout_sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c",
+    "strict_configuration": "pyproject.toml: card,pipeline,ml,scripts,tests; strict=true"
+  },
+  "independent_exact_scope_receipt_sha256": "fb1e4ca636191d55e5b0af1bda0cbe5463a12c2144a7ea49a19c6e81544e4697",
+  "limits": [
+    "This closes only the reviewed diagnostic and its local test typing blocker; root integration/full repo lint and fresh exact-head hosted CI remain required.",
+    "The actual1385 source-bindings missing input remains unidentified. No runtime file-selection remedy is implied.",
+    "No new native/Gradle execution, APK/key read, artifact comparison, device/backup/legal/store/deployment/capture or production acceptance."
+  ],
+  "local_readback_recovery": "Initial v3 snapshot comparison stopped because author v2 directory had4 additional untracked .mypy_cache files. Compared against owned preserved365-file v2 snapshot and independently confirmed all365 author v2 source bytes still match. V3 source is clean365files; no authored source mismatch or maintained edit occurred.",
+  "preserved_previous_review_sha256": "a17188f1f9a5aab9f18e3dc2d5ede0417b792d78bb1e6b43daae6f0799c12f0c",
+  "previous_v2_typecheck_blocker_status": "Independently reproduced1error at testline4530 across75files; final v3 full configured check passes75. Previous v2 closure and failure receipt remain preserved.",
+  "protected_scope": {
+    "GRADLE_TASK_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "doc_sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9",
+    "helper_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+    "no_new_Any_ignore_or_assertion_escape": true,
+    "old189650Bprefix_exact": true,
+    "test_sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373",
+    "workflow_guards_license_schema_limits_permissions_caps_and_runtime_selection_unchanged": true
+  },
+  "raw_private_tool_logs_persisted": false,
+  "schema": "gsip-independent-final-caller-v3-typing-closure-v1",
+  "shared_source_Git_GH_or_production_mutations": false,
+  "source_base": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "typing_delta": {
+    "added_bytes": 75,
+    "all364other_files_byte_exact_v2": true,
+    "changed_path": "tests/test_app_notification_audit.py",
+    "doc_sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9",
+    "erasing_only_exact_two_typing_changes_restores_entire_v2_test_bytes": true,
+    "helper_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+    "later_untracked_mypy_cache_files_seen_in_author_v2_snapshot": 4,
+    "no_Any_or_ignore_escape_or_assertion_change": true,
+    "old189650Bprefix_exact": true,
+    "only_local_Callable_import_and_object_return_callback_map_annotation": true,
+    "schema": "gsip-independent-caller-v3-two-line-typing-scope-v1",
+    "test_sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373",
+    "v2_comparison_source": "Owned preserved365-file final-v2 source copy; all authored v2 bytes still match it."
+  },
+  "v2_to_v3_patch_sha256": "ed9d8919ef8556da26386a6f6b4aeef11bad64e1bbb440fc89adb73a8247ee9e"
+}

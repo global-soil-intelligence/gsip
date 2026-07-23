@@ -1,0 +1,137 @@
+Browser tab: 1234838674, Title: "Pages", URL: "https://github.com/organizations/global-soil-intelligence/settings/pages".
+1 AXWebArea Pages, URL: github.com/organizations/global-soil-intelligence/settings/pages
+	2 container
+		3 link Description: Skip to content, Value: github.com/organizations/global-soil-intelligence/settings/pages#start-of-content
+		4 container Global navigation menu
+			5 pop up button Open menu
+			6 link Description: Homepage ( g then d ), Value: github.com/
+			7 container Breadcrumbs
+				8 content list
+					9 link Description: global-soil-intelligence, Value: github.com/global-soil-intelligence
+			10 button Open quick search dialog, type / to search
+				11 text Type 
+				12 text /
+				13 text  to search
+			14 pop up button (collapsed) Create new..., Secondary Actions: Expand
+			15 link Description: All issues ( g then i ), Value: github.com/issues
+			16 link Description: All pull requests ( g then p ), Value: github.com/pulls
+			17 link Description: All repositories, Value: github.com/repos
+			18 link Description: You have unread notifications ( g then n ), Value: github.com/notifications
+			19 pop up button Open user navigation menu
+				20 image Justin Hart
+			21 heading Organization navigation, Value: 2
+				22 text Organization navigation
+			23 container Organization
+				24 content list
+					25 link Description: Overview, Value: github.com/global-soil-intelligence
+					26 link Description: Repositories  (1), Value: github.com/orgs/global-soil-intelligence/repositories
+					27 link Description: Projects, Value: github.com/orgs/global-soil-intelligence/projects
+					28 link Description: Packages, Value: github.com/orgs/global-soil-intelligence/packages
+					29 link Description: Teams, Value: github.com/orgs/global-soil-intelligence/teams
+					30 link Description: People  (1), Value: github.com/orgs/global-soil-intelligence/people
+					31 link Description: Insights, Value: github.com/orgs/global-soil-intelligence/insights
+					32 link Description: Settings, Value: github.com/organizations/global-soil-intelligence/settings/profile
+	33 container
+		34 container global-soil-intelligence settings
+			35 image @global-soil-intelligence
+			36 heading global-soil-intelligence settings, Value: 1, ID: settings-header
+				37 link Description: global-soil-intelligence, Value: github.com/global-soil-intelligence
+				38 text settings
+			39 text Organization
+			40 pop up button (collapsed) Switch settings context, ID: settings-context-switcher-308053913-button, Secondary Actions: Expand
+				41 text Switch 
+				42 text settings 
+				43 text context
+		44 container Organization settings
+			45 content list
+				46 link Description: General, Value: github.com/organizations/global-soil-intelligence/settings/profile, ID: item-c4cf1b1f-16b9-4322-8824-9d2d85b9382b
+				47 button (collapsed) Policies, ID: policies-item, Secondary Actions: Expand
+				48 container
+					49 heading Access, Value: 2, ID: heading-title-0b74dc15-feb5-4883-8fb0-6959edc001c7
+						50 text Access
+					51 content list  Access , ID: group-e9cd00a8-1862-44d2-bb05-9ad5608eada0
+						52 button (collapsed) Billing and licensing, ID: item-916d4adb-3105-408d-b2d6-5a03a0d24557, Secondary Actions: Expand
+						53 button (collapsed) Organization roles, ID: org-roles-settings-item, Secondary Actions: Expand
+						54 link Description: Repository roles, Value: github.com/organizations/global-soil-intelligence/settings/roles, ID: item-3030176f-03e2-493d-be16-c96f934c15ca
+						55 link Description: Member privileges, Value: github.com/organizations/global-soil-intelligence/settings/member_privileges, ID: item-db748366-7ee2-4f2b-a475-39d58bb9551a
+						56 link Description: Import/Export, Value: github.com/organizations/global-soil-intelligence/settings/import-export, ID: item-1ed63623-14db-4f6d-8fa7-31e05feb30fe
+						57 button (collapsed) Moderation, ID: moderation-settings-item, Secondary Actions: Expand
+				58 container
+					59 heading Code, planning, and automation, Value: 2, ID: heading-title-ad0b52e6-0c2a-4843-b540-ebcef39746c3
+						60 text Code, planning, and automation
+					61 content list  Code, planning, and automation , ID: group-92b71ae4-9eef-4a48-8920-ae111ba36dd1
+						62 button (collapsed) Repository, ID: repository, Secondary Actions: Expand
+						63 button (collapsed) Custom properties, ID: custom-properties, Secondary Actions: Expand
+						64 button (collapsed) Codespaces, ID: item-cfa3d247-665e-4450-bc28-b87fe708fd21, Secondary Actions: Expand
+						65 link Description: Sandboxes Feature Release Label: Preview, Value: github.com/organizations/global-soil-intelligence/settings/sandboxes, ID: item-65ca07c3-9ea2-43df-96e1-48888515a7ea
+						66 button (collapsed) Planning, ID: planning, Secondary Actions: Expand
+						67 button (collapsed) Copilot, ID: item-f4f672b5-440f-4f10-9756-c3ce694fde40, Secondary Actions: Expand
+						68 button (collapsed) Actions, ID: item-d05aa742-ca5e-458b-ae2b-7caa4e37e52b, Secondary Actions: Expand
+						69 link Description: Webhooks, Value: github.com/organizations/global-soil-intelligence/settings/hooks, ID: item-75dabbaa-3d6b-4575-a4e5-e4b9bc63134e
+						70 link Description: Discussions, Value: github.com/organizations/global-soil-intelligence/settings/discussions, ID: item-9f0fc14a-5548-474f-85a8-8ad505d1f400
+						71 link Description: Packages, Value: github.com/organizations/global-soil-intelligence/settings/packages, ID: item-4d89529b-dca3-4ed5-98c9-1c7f1f94ccdd
+						72 link Description: Pages, Value: github.com/organizations/global-soil-intelligence/settings/pages, ID: pages-domain-protection-settings-item
+				73 container
+					74 heading Security and quality, Value: 2, ID: heading-title-f1295cd9-c99e-48c5-8e93-929531adf971
+						75 text Security and quality
+					76 content list  Security and quality , ID: group-8b853f33-1971-43fd-b9a3-78848c0d1b19
+						77 link Description: Authentication security, Value: github.com/organizations/global-soil-intelligence/settings/security, ID: item-bd6f17f4-c8cf-421a-a433-4d7f29893836
+						78 button (collapsed) Advanced Security, ID: item-9766fbed-900e-46c4-a48c-a0260183c391, Secondary Actions: Expand
+						79 link Description: Code quality, Value: github.com/organizations/global-soil-intelligence/settings/code-quality, ID: item-ae01241b-0806-4736-bbc4-33e07edd77a1
+						80 link Description: Deploy keys, Value: github.com/organizations/global-soil-intelligence/settings/deploy_keys, ID: item-408880a2-1972-4744-92d4-ec55fda3d151
+						81 link Description: Compliance, Value: github.com/organizations/global-soil-intelligence/settings/compliance, ID: item-141dba09-1e01-4bb1-bf75-86fd53844e05
+						82 link Description: Verified and approved domains, Value: github.com/organizations/global-soil-intelligence/settings/domains, ID: item-cec9f2b4-f180-4fae-9685-e8be36dc63be
+						83 button (collapsed) Secrets and variables, ID: item-6f0d2d67-7e44-4acc-b9f1-9a9de6b905a6, Secondary Actions: Expand
+				84 container
+					85 heading Third-party Access, Value: 2, ID: heading-title-3526087b-19e3-479c-8772-8d16fe777742
+						86 text Third-party Access
+					87 content list  Third-party Access , ID: group-d6d420cb-ee28-43e1-8f24-510a08d23579
+						88 link Description: GitHub Apps, Value: github.com/organizations/global-soil-intelligence/settings/installations, ID: item-c4c116a5-a7d2-498b-91e6-ecec517ea95e
+						89 link Description: OAuth app policy, Value: github.com/organizations/global-soil-intelligence/settings/oauth_application_policy, ID: item-196c2cf4-30e6-4044-8890-fd6b4861e61f
+						90 button (collapsed) Personal access tokens, ID: item-29ba086f-b159-4f0d-855f-a557ea3d7be3, Secondary Actions: Expand
+				91 container
+					92 heading Integrations, Value: 2, ID: heading-title-b651c1b2-8070-4496-8190-a56c6b9e7f96
+						93 text Integrations
+					94 content list  Integrations , ID: group-a18488a5-2c83-40ec-8d19-a75eef208f30
+						95 link Description: Scheduled reminders, Value: github.com/organizations/global-soil-intelligence/settings/reminders, ID: item-24db59cd-7614-4325-a166-1140cd27772e
+				96 container
+					97 heading Archive, Value: 2, ID: heading-title-52137f54-2234-4756-8ed0-b84e35325fd1
+						98 text Archive
+					99 content list  Archive , ID: group-2dfc3ffc-f3ad-4b3f-baf5-84373ef484f6
+						100 button (collapsed) Logs, ID: item-875a45b5-842f-44d1-b3af-13e29b06fb0b, Secondary Actions: Expand
+						101 link Description: Deleted repositories, Value: github.com/organizations/global-soil-intelligence/settings/deleted_repositories, ID: item-852dfb58-a327-4d62-80ee-c0b44c961794
+				102 button (collapsed) Developer settings, ID: developer-settings-item, Secondary Actions: Expand
+		103 heading Pages, Value: 2, ID: pages_label
+			104 text Pages
+		105 container Verified domains
+			135 container
+				136 button Dismiss this message
+				137 text Successfully verified globalsoilintelligence.com
+			109 heading Verified domains, Value: 3, ID: pages_domain_protection_label
+				110 text Verified domains
+			111 link Description: Add a domain, Value: github.com/organizations/global-soil-intelligence/settings/pages_verified_domains/new
+			112 content list
+				113 container
+					114 text globalsoilintelligence.com
+					115 text Verified
+					116 pop up button (collapsed) More domain options for globalsoilintelligence.com, ID: action-menu-4a53f524-9b87-4df7-a54c-8ac9fb90710c-button, Secondary Actions: Expand
+	117 container
+		118 heading Footer, Value: 2
+			119 text Footer
+		120 link Description: GitHub Homepage, Value: github.com/
+		121 text © 2026 GitHub, Inc.
+		122 container Footer
+			123 heading Footer navigation, Value: 3, ID: sr-footer-heading
+				124 text Footer navigation
+			125 content list Footer navigation
+				126 link Description: Terms, Value: docs.github.com/site-policy/github-terms/github-terms-of-service
+				127 link Description: Privacy, Value: docs.github.com/site-policy/privacy-policies/github-privacy-statement
+				128 link Description: Security, Value: github.com/security
+				129 link Description: Status, Value: githubstatus.com/
+				130 link Description: Community, Value: github.community/
+				131 link Description: Docs, Value: docs.github.com/
+				132 link Description: Contact, Value: support.github.com/?tags=dotcom-footer
+				133 button Manage cookies
+				134 button Do not share my personal information
+
+The focused UI element is 136 button Dismiss this message

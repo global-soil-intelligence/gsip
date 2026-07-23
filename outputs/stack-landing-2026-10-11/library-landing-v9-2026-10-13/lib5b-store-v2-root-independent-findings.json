@@ -1,0 +1,54 @@
+{
+  "at_utc": "2026-10-13T14:10:19.710854+00:00",
+  "reviewer": "Root coordinator, independently replaying author-independent witnesses; not the store author",
+  "source_hashes": {
+    "pipeline/node_exchange_store.py": "74d87bb742f3f466f31f283c9e0ae5b0ab80f56c8473d091e1d2a4cc7e2aa9c9",
+    "tests/test_node_exchange_store.py": "98942224622f28465a0b99ec19a9310eccdbaa7236b5dbfd81fd1d5620aab5a7"
+  },
+  "probe_sha256": "6f19c908edb7d9eaba83bd7bdc7686e1a62046b66044da112b63b71adb04bda4",
+  "source_unchanged": true,
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_store_independent.py",
+    "--tb=short",
+    "--junitxml=independent-probes.xml",
+    "--basetemp=/private/tmp/gsip-lib5b-root-independent-v2-rgm0e88f/private-test-roots"
+  ],
+  "cwd": "/private/tmp/gsip-lib5b-root-independent-v2-rgm0e88f",
+  "exit_code": 1,
+  "tests": 15,
+  "failures": 1,
+  "errors": 0,
+  "passing": 14,
+  "adaptation": "Original v1 shared-put witness adapted to explicitly permitted creator-affinity rejection; owner thread put must succeed and foreign read cannot recover it",
+  "findings": [
+    {
+      "id": "LIB5B-STORE-R2-TEARDOWN",
+      "priority": 2,
+      "title": "Foreign-thread context exit closes the live owner session",
+      "trigger": "Owner enters store.locked(); another thread calls that same manager.__exit__(None,None,None).",
+      "observed": "Accepted exit sets session inactive, closes same-process descriptors and releases owner root lock.",
+      "required": "Refuse foreign-thread teardown before advancement or descriptor closure; preserve owner use and eventual normal owner cleanup. Adding only a raise in a generator finally can lose owner cleanup and is insufficient."
+    }
+  ],
+  "closed_subcases": [
+    "All 9 late directory return races",
+    "Foreign creator-affinity read cannot recover/erase live owner put",
+    "Forked session mutation refused",
+    "Forked context exit preserves parent flock",
+    "Original callback and separate session thread controls"
+  ],
+  "evidence_sha256": {
+    "input-manifest.json": "4fd8b8b4a67d3b59a4e71f8990456779f38d33c7b9f5c878e730e74382444d7a",
+    "tests/test_store_independent.py": "6f19c908edb7d9eaba83bd7bdc7686e1a62046b66044da112b63b71adb04bda4",
+    "independent-probes.log": "8ff8d98b6dc71b25059178fe439bd13c21ce52f50c5e72e89732a34b120d2794",
+    "independent-probes.xml": "48295de28f0dff1428a0a924a2220ddef9a2b59342644d9bf445ae9c1997a4d1"
+  },
+  "scope": "Only owned synthetic temporary storage roots and normal unit APIs; network denied by fixtures; no production, secrets, credentials, real data or shared-source writes",
+  "review_service_limit": "The requested child review turn returned a service content-classification error; root performed the preserved local replay directly. No passing result was inferred from that failed turn.",
+  "verdict": "Not closed; v3 repair and full simulator review pending"
+}

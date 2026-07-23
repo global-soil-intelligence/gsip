@@ -1,0 +1,122 @@
+{
+  "specification": {
+    "pr": 79,
+    "head": "57c5a1033a807855da19507588c259012fcdbd9c",
+    "ci": {
+      "validate": "success",
+      "run": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975170779",
+      "completed_at": "2026-10-16T22:30:30Z",
+      "secret_scans": "success",
+      "dco": "skipped"
+    }
+  },
+  "copy_fix": {
+    "pr": 81,
+    "head": "3d27077277374fcf2f7bc2411401dd16b6186462",
+    "ci": {
+      "validate": "success",
+      "android": "success",
+      "ios": "success",
+      "secret_scans": "success",
+      "dco": "skipped",
+      "validate_run": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975572947",
+      "app_run": "https://github.com/global-soil-intelligence/gsip/actions/runs/38975572671",
+      "android_artifact_id": 12079227079,
+      "ios_artifact_id": 12079041683
+    }
+  },
+  "negative_regression": {
+    "before_ui_fix": {
+      "failed": 2,
+      "passed": 3,
+      "exit_code": 1
+    },
+    "after_ui_fix": {
+      "passed": 5,
+      "exit_code": 0
+    }
+  },
+  "local_checks": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "javascript_tests": {
+      "passed": 604
+    },
+    "workspace_build": "passed",
+    "map_budget": "passed",
+    "site_budget": "passed",
+    "closed_pages_packaging": "passed",
+    "native_web_bundle": "passed",
+    "processor_tests": {
+      "passed": 6,
+      "optional_pytest_cache_write_warning": true
+    }
+  },
+  "production_mutations": false,
+  "merged": false,
+  "deployed": false,
+  "capture_opened": false,
+  "library_opened": false,
+  "evidence": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/production-readonly-preflight.sql",
+      "exists": true,
+      "sha256": "6f86d5dea3629e3f42d366592dd5b88484b48d23c0aa44d3fbe0d70b5418a427"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/production-readonly-preflight-attempt2-output.txt",
+      "exists": true,
+      "sha256": "4b2c9dcb0073696a5e6c56f51f6f66caafcd8a4c46c52c7936026d6e0c4d9af9"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/production-readonly-preflight-attempt2-command.json",
+      "exists": true,
+      "sha256": "7007e53f751a64cdf8ec0d16874489f8ef908af138c5043884abc13a3decb61c"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/production-preflight-independent-audit-20261016T2216Z.json",
+      "exists": true,
+      "sha256": "f09fb5b67d913e23b476785428ec772bf210ac1709a09eedce89f9a3dd9e7f8a"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/public-auth-worker-holds-independent-20261016T221628Z.json",
+      "exists": true,
+      "sha256": "59ace89312967541136131e7abe62124c70665ad7b282d26a5b56b90ce8a97e4"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/closed-capture-browser-proof.json",
+      "exists": true,
+      "sha256": "029813ad3d949b5c1f5338f66c741184ccb1c3a8e9c2d5c0395f4bf61d04d158"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/closed-capture-preview.png",
+      "exists": true,
+      "sha256": "b13cd6458c48b12bf908cb508ef52e59011eee46cd311ebf974cb1c3e200c801"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/site-build-checks.json",
+      "exists": true,
+      "sha256": "45e0106bdd7e71411552939d9fbea7c090bd5c4ab3b861bc87dfda84f0db561d"
+    }
+  ],
+  "security_advisor": {
+    "target": "toxldjgwkxtneoqsazym",
+    "checked_at": "2026-10-16T22:30:33.540147+00:00",
+    "type": "security",
+    "minimum_level": "info",
+    "results": [],
+    "explicit_status": "No issues found",
+    "production_mutation": false
+  },
+  "local_environment": {
+    "gdal_psql_deno_adb_on_PATH": false,
+    "docker_binary_present": true,
+    "docker_daemon_not_tested": true,
+    "xcodebuild_binary_present": true,
+    "xcode_version_not_tested": true,
+    "corresponding_toolchain_checks": "CI"
+  },
+  "followup_issue": "https://github.com/global-soil-intelligence/gsip/issues/82",
+  "remaining_owner_choice": "audience/account flow; invited adult browser pilot recommended, not selected",
+  "ci_evidence": "ci-followup-79-81-final-independent-receipt.json"
+}

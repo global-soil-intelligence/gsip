@@ -1,0 +1,101 @@
+{
+  "AGP813_pinned_internal_metadata_facts": {
+    "AAR_publish_call": "publish(SingleArtifact.AAR, ArtifactType.AAR) is a distinct publication route, not proof a full AAR is selectable on the existing local runtime variant",
+    "classes_JAR_type": "android-classes-jar",
+    "classes_directory_type": "android-classes-directory",
+    "classfile_decode_did_not_execute_or_load_classes": true,
+    "internal_implementation_names_not_supported_AGP_API": true,
+    "jar": "/Users/justinhart/.gradle/caches/modules-2/files-2.1/com.android.tools.build/gradle/8.13.0/a8b3900300f530a0f0378f88b12711d39b142a02/gradle-8.13.0.jar",
+    "jar_sha256": "d0195874497b4ac3eaeb3a8525bf794d3a5b63a9a01084ca9ac330fb63060d01",
+    "library_publishing_lambda_bound_to": "ComponentTypeImpl.LIBRARY",
+    "manifest_output_separate": true,
+    "other_separate_runtime_output_kinds": [
+      "ASSETS",
+      "ANDROID_RES",
+      "JAVA_RES",
+      "JNI"
+    ],
+    "runtime_classes_JAR_source": "InternalArtifactType.RUNTIME_LIBRARY_CLASSES_JAR",
+    "scope_label": "Actual project compiled classpath JARs; not every AGP packaging intermediate. Full source manifests/whole APK checks remain distinct proofs."
+  },
+  "concrete_acceptable_proposal": [
+    "For each exact original debugRuntimeClasspath and releaseRuntimeClasspath, retain full original graph resolution/rethrowFailure/component checks and selected modules/projects.",
+    "Build a strict module-component ArtifactView with no added attributes and no reselection; read its original raw external JAR/AAR results. Do not request jar/android-classes-jar for external AAR modules and do not replace raw records with transformed cache results.",
+    "Build a strict project-component ArtifactView for the pinned actual android-classes-jar secondary artifact type, inheriting original configuration attributes and without reselection. Preserve actual canonical project build-output paths and existing JAR/AAR parser.",
+    "Lazily bind task dependencies to both exact view file collections for both configurations, so selected producer tasks run before inspection without attempting the default ambiguous artifact projection.",
+    "Union results by their original module/project identity, retain duplicate/unknown/missing checks, and let existing parser preserve bounded safe single-link regular reads, exact coordinate/project containment, full npm source/MIT/policy and external POM/notice/bin provenance.",
+    "Keep the existing :app root exclusion and primary validated packaging=pom metadata-only module treatment. Any new exceptional exemption would need primary selected identity/category/metadata evidence; do not exempt arbitrary missing binaries.",
+    "Describe the project evidence precisely as selected compiled classpath JAR inputs while preserving whole APK/permissions/source/repeat/comparison guards. Do not claim classes JAR byte identity proves all AGP resource/native intermediate bytes."
+  ],
+  "constraints": {
+    "no_git_github_gui_ci_or_production_actions": true,
+    "no_network_or_installs": true,
+    "no_new_native_or_primary_card_scope": true,
+    "no_runtime_private_values_or_raw_tool_streams_read_or_retained": true,
+    "no_shared_or_author_source_edits": true,
+    "own_tmp_writes_only": true
+  },
+  "counts": {
+    "AGP_classfiles_constant_pool_Code_decoded": 4,
+    "builds_tests_or_network_executed_by_reviewer": 0,
+    "public_primary_source_files_read": 9
+  },
+  "created_at_utc": "2026-10-13T22:52:25.337646+00:00",
+  "existing_contract": {
+    "Android_document_lines": [
+      35,
+      77
+    ],
+    "meaning": "Selected exact debug/release component graphs and actual JAR/AAR inputs; external binary/coordinate/POM/notice provenance; local installed npm full source/MIT/license hashes and bundled-binary refusal. Whole APK/permission/source/repeat comparison is separate.",
+    "not_a_new_requirement": "No new resource-directory/intermediate-byte identity schema or proof architecture is required by this review. Earlier all-physical-intermediate wording was broader than the actual existing contract and is withdrawn."
+  },
+  "finite_candidate_acceptance_controls": [
+    "Actual minimal secondary-variant ambiguity before/after and actual AGP exact-source before/after if available; component/module/project graph identities remain the same and output is complete in both exact runtime views.",
+    "External raw module artifact hashes/filenames/coordinate-bound physical cache paths and POM/license/notice evidence unchanged relative to an independent no-attribute module view, including an external AAR carrying resources/native entries.",
+    "Strict explicit-attributed missing-project-artifact control must refuse despite Gradle silently omitting it; missing a required binary module must also refuse. Metadata-only platform/POM and exact root do not create false required-binary failures.",
+    "Each runtime view producer dependency removal must fail a meaningful missing/not-built producer witness; wrong build-type/foreign project/unknown component and resolution failures remain failures.",
+    "Unchanged parser/source/license/unsafe-file/bundled-binary/closed-SDK/caps/status/fault/reset and whole APK/repeat/reference/comparison guards remain hashbound; no full native-card reopening is required for unchanged code."
+  ],
+  "governing_source": [
+    {
+      "bytes": 22226,
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f"
+    },
+    {
+      "bytes": 110609,
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/scripts/app_notification_audit.py",
+      "sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a"
+    }
+  ],
+  "kind": "independent-bounded-public-artifact-view-proposal-review",
+  "not_established": [
+    "Candidate patch correctness or execution",
+    "Actual selected component metadata for the failed AGP run; graph output remains absent",
+    "Same hosted underlying cause",
+    "New native success/artifacts/device acceptance"
+  ],
+  "outcome": "NARROW_SPLIT_VIEW_ADAPTER_ACCEPTABLE_IN_PRINCIPLE_UNDER_EXISTING_CONTRACT; NO_CANDIDATE_IMPLEMENTATION_REVIEWED",
+  "primary_evidence": [
+    {
+      "bytes": 10091,
+      "path": "/private/tmp/gsip-artifact-view-design-independent-axp7f2op/PINNED_GRADLE_ARTIFACT_VIEW_SEMANTICS.json",
+      "sha256": "89f836669607672ecdda8da75d8425316bd4f4e1f9581d07260986ff7be005d6"
+    },
+    {
+      "bytes": 274612,
+      "path": "/private/tmp/gsip-artifact-view-design-independent-axp7f2op/AGP813_PRIMARY_CLASS_METADATA.json",
+      "sha256": "5dd39b4eb8ad76bc46ad0750c77167b3da5d6b7e09f676bd03a6114311d8d650"
+    }
+  ],
+  "public_Gradle_facts": [
+    "ArtifactView filters selected artifact results by component identity; filtering does not replace complete dependency graph checks or drop transitive components from the graph.",
+    "Without withVariantReselection, requested view attributes merge onto original configuration attributes. withVariantReselection ignores the original configuration attributes and can select a different graph variant; do not invoke it for this adapter.",
+    "Explicit view attributes set allowNoMatchingVariants=true in pinned implementation even with lenient=false, so absence of an attributed artifact may silently produce zero results. Preserve explicit existing selected-project/module binary coverage checks.",
+    "ArtifactCollection.artifactFiles is public task-input wiring; resolvedArtifacts Provider tracks producer tasks. Producer dependencies must come lazily from the exact views/files being read, not from the former ambiguous default config.buildDependencies.",
+    "ResolvedComponentResult.variants can include more than one selected variant. An implementation must not replace the graph with the artifact view; existing graph evidence remains mandatory.",
+    "Category platform/enforced-platform documents constraint metadata; graph root has no own resolved dependency artifact. Existing exact root exclusion and validated POM packaging metadata-only treatment stay explicit; no broad missing-component exemption."
+  ],
+  "schema": 1,
+  "source_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d"
+}

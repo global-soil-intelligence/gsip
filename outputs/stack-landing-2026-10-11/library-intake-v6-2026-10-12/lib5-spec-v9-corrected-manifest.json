@@ -1,0 +1,14 @@
+{
+  "snapshot": "/private/tmp/gsip-lib5-spec9-draft-j2npfohn",
+  "base": "e03e20457a11456d1cd3842caa224d049b44265f",
+  "files": {
+    "docs/SPEC.md": "f50f56da1fb25c4a15f5496e6455811c82e40fe2e5cb9ed931de28b01df3c0ae",
+    "docs/BUILD_ORDER.md": "eff2434d700ee83669136d03efeaf973426b2452740301bbca357cc75734f0b2"
+  },
+  "patch_sha256": "fe45913a91a2b9fe29031d271c6cc58222828f6c364d5a2b02735f6537e3d204",
+  "changes": [
+    "Explicit stream tuple, immutable slot ownership, contiguous head and independent immediate retirement fence",
+    "Aggregate queue/storage/refusal/cleanup capacities and reserved scope fence on saturation",
+    "Private integrity digest retention separate from payload erasure and owner-held real retention policy"
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "log_sha256": "b9d0cf3abff77e1956daa9ae12225057d842a3ad986cb03a3085ae6f512b671b",
+  "line_start": 6816,
+  "line_end": 6836,
+  "step_lines": [
+    {
+      "line": 6816,
+      "text": "2026-10-13T16:21:32.2877150Z ##[group]Run mkdir -p \"$RUNNER_TEMP/gsip-app2b-evidence/ios\""
+    },
+    {
+      "line": 6817,
+      "text": "2026-10-13T16:21:32.2877820Z \u001b[36;1mmkdir -p \"$RUNNER_TEMP/gsip-app2b-evidence/ios\"\u001b[0m"
+    },
+    {
+      "line": 6818,
+      "text": "2026-10-13T16:21:32.2879220Z \u001b[36;1mpython -m scripts.app_notification_audit ios \"$GITHUB_WORKSPACE\" \"$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-candidate-native-audit.json\" \"$GITHUB_WORKSPACE/gsip-capture-ios-simulator.zip\"\u001b[0m"
+    },
+    {
+      "line": 6819,
+      "text": "2026-10-13T16:21:32.3203000Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}"
+    },
+    {
+      "line": 6820,
+      "text": "2026-10-13T16:21:32.3203350Z env:"
+    },
+    {
+      "line": 6821,
+      "text": "2026-10-13T16:21:32.3203790Z   VITE_SUPABASE_URL: https://toxldjgwkxtneoqsazym.supabase.co"
+    },
+    {
+      "line": 6822,
+      "text": "2026-10-13T16:21:32.3204280Z   VITE_SUPABASE_PUBLISHABLE_KEY: [REDACTED]"
+    },
+    {
+      "line": 6823,
+      "text": "2026-10-13T16:21:32.3204790Z   VITE_CAPTURE_LIVE: false"
+    },
+    {
+      "line": 6824,
+      "text": "2026-10-13T16:21:32.3205070Z   VITE_LIBRARY_INTAKE_LIVE: false"
+    },
+    {
+      "line": 6825,
+      "text": "2026-10-13T16:21:32.3205380Z   VITE_TERMS_URL: "
+    },
+    {
+      "line": 6826,
+      "text": "2026-10-13T16:21:32.3205600Z   VITE_PRIVACY_URL: "
+    },
+    {
+      "line": 6827,
+      "text": "2026-10-13T16:21:32.3205890Z   VITE_SAMPLING_RULES_URL: "
+    },
+    {
+      "line": 6828,
+      "text": "2026-10-13T16:21:32.3206320Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin"
+    },
+    {
+      "line": 6829,
+      "text": "2026-10-13T16:21:32.3206820Z   pythonLocation: /Users/runner/hostedtoolcache/Python/3.12.10/arm64"
+    },
+    {
+      "line": 6830,
+      "text": "2026-10-13T16:21:32.3207290Z   PKG_CONFIG_PATH: /Users/runner/hostedtoolcache/Python/3.12.10/arm64/lib/pkgconfig"
+    },
+    {
+      "line": 6831,
+      "text": "2026-10-13T16:21:32.3207810Z   Python_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.12.10/arm64"
+    },
+    {
+      "line": 6832,
+      "text": "2026-10-13T16:21:32.3208260Z   Python2_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.12.10/arm64"
+    },
+    {
+      "line": 6833,
+      "text": "2026-10-13T16:21:32.3208800Z   Python3_ROOT_DIR: /Users/runner/hostedtoolcache/Python/3.12.10/arm64"
+    },
+    {
+      "line": 6834,
+      "text": "2026-10-13T16:21:32.3209230Z ##[endgroup]"
+    },
+    {
+      "line": 6835,
+      "text": "2026-10-13T16:21:32.7261970Z native-audit: evidence missing, invalid or unreviewed"
+    },
+    {
+      "line": 6836,
+      "text": "2026-10-13T16:21:32.7474580Z ##[error]Process completed with exit code 1."
+    }
+  ]
+}

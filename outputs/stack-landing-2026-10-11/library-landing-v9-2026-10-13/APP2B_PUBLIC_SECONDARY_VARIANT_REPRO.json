@@ -1,0 +1,21 @@
+{
+  "actual_failure_kind": "AMBIGUOUS_ARTIFACT_VARIANTS",
+  "actual_primary_leaf": "org.gradle.internal.component.resolution.failure.exception.ArtifactSelectionException",
+  "artifact_ambiguity_freeze_sha256": "b8981089da436a3a74a1edeb6abf712afcfef530d9e9ee7bcac8fa4038f2685f",
+  "driver_sha256": "d8002a3ec2a543805a510ac41f2d01225b99a6a3d97c67d202ac3455f6cd71f0",
+  "known_fixture_source_hashes": {
+    "app/build.gradle": "10345dc5b6164b86a4b72e318b144ff4b3e7ab56b142037209aad50652297c41",
+    "build.gradle": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "inspection-recorded/inspection.gradle": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+    "inspection/inspection.gradle": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+    "library/build.gradle": "15bada279764e8343b77d6565753054867fcdf0590cfa2050cd8547daafee1fb",
+    "settings.gradle": "e9f101f5d05f5cb8b61b3a4d96c8ca9a8a82e62a154fa6808824f79d9380ef90"
+  },
+  "maintained_changes": false,
+  "original_status": 1,
+  "original_task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+  "producer_files": 0,
+  "result_sha256": "192911713b23f87fb6b2a6007421edbf895a135a1faa6a82157342ecbee8336d",
+  "same_hosted_cause_proven": false,
+  "schema": "gsip-public-secondary-variant-repro-frozen-v1"
+}

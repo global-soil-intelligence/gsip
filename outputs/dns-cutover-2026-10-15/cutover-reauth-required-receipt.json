@@ -1,0 +1,163 @@
+{
+  "status": "CUTOVER_IN_PROGRESS_OWNER_REAUTH_REQUIRED",
+  "checked_at_utc": "2026-10-16T00:45:34.101995+00:00",
+  "pages_binding": "globalsoilintelligence.com",
+  "completed": [
+    "Verified exact preflight with no drift",
+    "Bound Pages to verified domain",
+    "Removed only Squarespace Defaults containing old A and www CNAME"
+  ],
+  "pending": [
+    "Owner enters required Squarespace email verification code directly in browser",
+    "Add nine already approved traffic records",
+    "Verify DNS, certificate, HTTPS enforcement and live artifact"
+  ],
+  "routing_replacements_saved": 0,
+  "owner_go_already_received": true,
+  "additional_approval_needed": false,
+  "security_bypass": "NONE",
+  "kept": [
+    "Ownership TXT",
+    "Domain Connect",
+    "Nameservers",
+    "Closed capture and library flags"
+  ],
+  "dns_readback": [
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "A",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "AAAA",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "www.globalsoilintelligence.com",
+      "type": "CNAME",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "_domainconnect.globalsoilintelligence.com",
+      "type": "CNAME",
+      "answers": [
+        "_domainconnect.globalsoilintelligence.com. 14400 IN CNAME _domainconnect.domains.squarespace.com."
+      ]
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com",
+      "type": "TXT",
+      "answers": [
+        "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com. 3600 IN TXT \"ec9866a89c5b447bc5d09ef7ceb232\""
+      ]
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "A",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "AAAA",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "www.globalsoilintelligence.com",
+      "type": "CNAME",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "_domainconnect.globalsoilintelligence.com",
+      "type": "CNAME",
+      "answers": [
+        "_domainconnect.globalsoilintelligence.com. 14400 IN CNAME _domainconnect.domains.squarespace.com."
+      ]
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com",
+      "type": "TXT",
+      "answers": [
+        "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com. 3600 IN TXT \"ec9866a89c5b447bc5d09ef7ceb232\""
+      ]
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "A",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "AAAA",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "www.globalsoilintelligence.com",
+      "type": "CNAME",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "_domainconnect.globalsoilintelligence.com",
+      "type": "CNAME",
+      "answers": [
+        "_domainconnect.globalsoilintelligence.com. 14400 IN CNAME _domainconnect.domains.squarespace.com."
+      ]
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com",
+      "type": "TXT",
+      "answers": [
+        "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com. 3600 IN TXT \"ec9866a89c5b447bc5d09ef7ceb232\""
+      ]
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "A",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "AAAA",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "www.globalsoilintelligence.com",
+      "type": "CNAME",
+      "answers": []
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "_domainconnect.globalsoilintelligence.com",
+      "type": "CNAME",
+      "answers": [
+        "_domainconnect.globalsoilintelligence.com. 14400 IN CNAME _domainconnect.domains.squarespace.com."
+      ]
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com",
+      "type": "TXT",
+      "answers": [
+        "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com. 3600 IN TXT \"ec9866a89c5b447bc5d09ef7ceb232\""
+      ]
+    }
+  ]
+}

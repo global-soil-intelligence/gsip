@@ -1,0 +1,223 @@
+{
+  "GRADLE_TASK_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "actual_taskgraph_receipt_sha256": "ad75f7562de39abbe37c34dd9df1a540ab0b7c5e62fea77696757aaf68b47eb8",
+  "all_other_existing_tracked_source_files_byte_exact": true,
+  "authority": {
+    "APK_or_signing_read": false,
+    "network_or_SDK_build_in_review": false,
+    "shared_source_Git_GH_production_mutations": false,
+    "source_and_inputs_copied_to_owned_temporary_directory_only": true
+  },
+  "conclusion": "CLOSED_NO_BLOCKER_SOURCE_ONLY",
+  "entire_helper_text_exact_e0_after_only_compile_regex_erasure": true,
+  "evidence_files": [
+    {
+      "bytes": 8056,
+      "path": "INDEPENDENT_PREPARATION_RECEIPT.json",
+      "sha256": "3efa0525efe973a4c314d7aae42734dc36a1b3c414755f145a6b9b0f8b547c18"
+    },
+    {
+      "bytes": 676,
+      "path": "EXACT_SOURCE_PROJECTION.json",
+      "sha256": "4a3fcffba457161c8fb8245b659175ea7f457ea1ca8c18f8e4367e863d2e5646"
+    },
+    {
+      "bytes": 14559,
+      "path": "INDEPENDENT_BEHAVIOR_CONTROLS.json",
+      "sha256": "faf0d0e5ad414d38f6c0bbf37657674ea480b90a356ec16a29b35b6d6888fba3"
+    },
+    {
+      "bytes": 10263,
+      "path": "independent_compile_controls.py",
+      "sha256": "fe62ff12e1be5ce8fe83d1e635a4f6b4ee287205bc54e40db921a87f850dc32b"
+    },
+    {
+      "bytes": 3219,
+      "path": "ACTUAL_APP_TASK_SCOPE_DRY_RUNS.json",
+      "sha256": "ad75f7562de39abbe37c34dd9df1a540ab0b7c5e62fea77696757aaf68b47eb8"
+    },
+    {
+      "bytes": 1006,
+      "path": "manifest.json",
+      "sha256": "538123232d1a01b9029c63aa41f03e60f60e685604d06c63e06bf83e709f7824"
+    },
+    {
+      "bytes": 3604,
+      "path": "FROZEN_CANDIDATE_RECEIPT.json",
+      "sha256": "fa2efcbf53f836bb9177da2b28d60facbda3d41e1721039bb6c8b9a8872db1dd"
+    },
+    {
+      "bytes": 9573,
+      "path": "candidate-from-e0.patch",
+      "sha256": "d4d1c1156d653df2849c639d99d939f8798d1ee9cf973e55154d253f111760c7"
+    },
+    {
+      "bytes": 3268,
+      "path": "candidate-focused.xml",
+      "sha256": "22e18535d38b90e6cff8491fd20a4ab56dcb03ce86a58006fcb0bc15748b7ad7"
+    },
+    {
+      "bytes": 694,
+      "path": "candidate-focused-command.json",
+      "sha256": "49405bc6fca72c2eba5767038c92865d35bde097da41b2c38f7b12652bc36db7"
+    },
+    {
+      "bytes": 8339,
+      "path": "baseline-new-cases.xml",
+      "sha256": "2bb5c961cad0aa3ce7870464a18c7afe384bf1be20cb20baa646fe51c6b55ae5"
+    },
+    {
+      "bytes": 696,
+      "path": "baseline-new-cases-command.json",
+      "sha256": "dacc5a75a3faf44c47038f9c444a29579f345ccc5945454573141ee4cde49bb0"
+    },
+    {
+      "bytes": 9610,
+      "path": "candidate-all-cordova-guards.xml",
+      "sha256": "e8d2e5b58a75a0132c2cc169ee67fd0ad154c366b4b6dc150c8a91c2ead7d5fb"
+    },
+    {
+      "bytes": 692,
+      "path": "candidate-all-cordova-guards-command.json",
+      "sha256": "92b980743a5c1331f498022e079b4415acd214cc79d4f4076d817aff59659df6"
+    },
+    {
+      "bytes": 6542,
+      "path": "freeze_closure.py",
+      "sha256": "3dc8bbb4a8b212abda0ae446539e079c3000a8b3c25d77129aac575b30302156"
+    }
+  ],
+  "exact_files": [
+    {
+      "base_e0_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "bytes": 126055,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8"
+    },
+    {
+      "base_e0_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+      "bytes": 189650,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99"
+    },
+    {
+      "base_e0_sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164",
+      "bytes": 32861,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5"
+    },
+    {
+      "base_e0_sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+      "bytes": 17983,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa"
+    }
+  ],
+  "frozen_author_manifest_sha256": "538123232d1a01b9029c63aa41f03e60f60e685604d06c63e06bf83e709f7824",
+  "frozen_author_receipt_sha256": "fa2efcbf53f836bb9177da2b28d60facbda3d41e1721039bb6c8b9a8872db1dd",
+  "governing_source_readback": [
+    {
+      "path": "AGENTS.md",
+      "previously_fully_read_copy_byte_equal": true,
+      "sha256": "cc5a4ea13e2a389006a0a69c6986f5acc767f9c065131b70f078b8ca1580e180"
+    },
+    {
+      "path": "docs/SPEC.md",
+      "previously_fully_read_copy_byte_equal": true,
+      "sha256": "90642673b06d9d7acbef0736e301a227efb0fa6a0210118a0e2228fec3da7975"
+    },
+    {
+      "path": "docs/BUILD_ORDER.md",
+      "previously_fully_read_copy_byte_equal": true,
+      "sha256": "7f243f4ce91cd2be9ba972fd1086ef02dee6a55bfd03436feca8058a71a4bd0a"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "previously_fully_read_copy_byte_equal": true,
+      "sha256": "7c8cdba11a34dfe71f5ec1376c408f1bb513ee225d855e9c4637ad87cc750fbb"
+    },
+    {
+      "path": "GOVERNANCE.md",
+      "previously_fully_read_copy_byte_equal": true,
+      "sha256": "6c710240437d8fc9f01184d99862a888abacd70c51ac9c0b3a14adcfc5ee18d8"
+    },
+    {
+      "path": "docs/PHASE1_DEPLOYMENT.md",
+      "previously_fully_read_copy_byte_equal": true,
+      "sha256": "cef59e25e1bea9534335d1b3de486f041577085f96ac763f40da6443447d9172"
+    },
+    {
+      "path": "docs/APP_STORE.md",
+      "previously_fully_read_copy_byte_equal": true,
+      "sha256": "bc5be716c7cb6365defafa70db9546741ec0b5e27e6d46b38ff7e33da2e1d411"
+    },
+    {
+      "path": "docs/legal/README.md",
+      "previously_fully_read_copy_byte_equal": true,
+      "sha256": "556293ba6092c522633fe7f586e8e9d1478f6f1f24d75b9338949f9cff6e69ec"
+    },
+    {
+      "path": ".env.example",
+      "previously_fully_read_copy_byte_equal": true,
+      "sha256": "c60d4db146fb0275d3a62e69de18a6f36aef4c7423967c4cf6befe57d3fa63ef"
+    }
+  ],
+  "independent_actual_archive_and_negative_cases_passed": 56,
+  "independent_guard_mutations_effective": 4,
+  "independent_shell_argument_controls_passed": 8,
+  "independent_tests": {
+    "baseline-new-cases": {
+      "cases": 19,
+      "errors": 0,
+      "failed": 3,
+      "failure_names": [
+        "test_generated_cordova_compile_role_accepts_only_proven_R_stub[debug]",
+        "test_generated_cordova_compile_role_accepts_only_proven_R_stub[release]",
+        "test_native_workflow_builds_only_app_targets_and_keeps_repeat_flags"
+      ],
+      "passed": 16,
+      "skipped": 0
+    },
+    "candidate-all-cordova-guards": {
+      "cases": 61,
+      "errors": 0,
+      "failed": 0,
+      "failure_names": [],
+      "passed": 61,
+      "skipped": 0
+    },
+    "candidate-focused": {
+      "cases": 19,
+      "errors": 0,
+      "failed": 0,
+      "failure_names": [],
+      "passed": 19,
+      "skipped": 0
+    }
+  },
+  "license_contexts_and_two_POM_functions_unchanged": true,
+  "limits": [
+    "This review did not rerun the unchanged30 actual Gradle controls; root has separately hash-bound executed e0 evidence.",
+    "Other independent reviewer owns actual both-root collectors; author collector receipts are not substituted for independent probes here.",
+    "Exact corrected-head hosted CI and Android APK/iOS simulator artifacts, repeats and full native source/license/comparison proof remain required.",
+    "No combined native acceptance, physical-device, iOS backup, legal/distribution/store, deployment or production claim."
+  ],
+  "local_harness_recoveries": [
+    "Initial read command used absent python alias; rerun with python3 succeeded without source edits.",
+    "Long pytest orchestration returned before final stdout was surfaced; completion was verified by command receipts and all three XML case results.",
+    "Initial final-scope enumeration included generated local __pycache__ files and stopped its assertion; corrected enumeration uses exact read-only git ls-tree tracked paths. No maintained bytes changed."
+  ],
+  "old_test_prefix_bytes": 185334,
+  "old_test_prefix_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+  "other_source_file_count": 361,
+  "schema": "gsip-independent-compile-role-workflow-closure-v1",
+  "source_base": "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d",
+  "strict_R_class_ZIP_predicate_unchanged": true,
+  "taskgraph_assessment": {
+    "Cordova_aggregate_AAR_task_excluded": true,
+    "both_sources_same43_app_tasks_retained": true,
+    "compile_producer_still_selected": true,
+    "dry_run_only_not_APK_evidence": true
+  },
+  "workflow_exactly_four_literal_target_qualifications_only": true
+}

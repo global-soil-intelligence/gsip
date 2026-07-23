@@ -1,0 +1,198 @@
+{
+  "status": "PASS_LOCAL_WP6D_SOURCE_BOUNDARY",
+  "started_at": "2026-10-12T14:25:30.451705+00:00",
+  "completed_at": "2026-10-12T14:25:33.252098+00:00",
+  "image_id": "sha256:521e67f2812db505fe6d462b1820136394824d7f5c6016a19234b07ac93d6760",
+  "network": "none",
+  "source_mount": "read-only",
+  "host_ports": [],
+  "production_operations": [],
+  "proofs": [
+    {
+      "owner": "wp6d",
+      "baseline_head": "4fcfd955eb119381d703cf07d045bc32e5ebc5b8",
+      "core_proposal_inherited": true,
+      "migration_files": 25,
+      "new_contract_before": {
+        "planned": 21,
+        "passed": 13,
+        "failed": 8,
+        "failures": [
+          "not ok 1 - both rights public entries use caller privileges",
+          "not ok 2 - both rights wrappers use definition-time bound SQL bodies",
+          "not ok 3 - both private rights helpers retain guarded privileged bodies",
+          "not ok 4 - both rights private dispatch grants preserve authenticated and service callers",
+          "not ok 5 - both rights wrappers track their private callee dependencies",
+          "not ok 9 - both private tables have explicit restrictive false policies",
+          "not ok 14 - withdrawals remain hidden under an accidental SELECT grant and permissive policy",
+          "not ok 15 - attribution reviews remain hidden under an accidental SELECT grant and permissive policy"
+        ]
+      },
+      "new_contract_after": {
+        "planned": 21,
+        "passed": 21,
+        "failed": 0,
+        "failures": []
+      },
+      "existing_suites_before": {
+        "prior_attempts.test.sql": {
+          "planned": 30,
+          "passed": 30,
+          "failed": 0,
+          "failures": []
+        },
+        "rls.test.sql": {
+          "planned": 42,
+          "passed": 42,
+          "failed": 0,
+          "failures": []
+        },
+        "wp6b_integrity.test.sql": {
+          "planned": 51,
+          "passed": 51,
+          "failed": 0,
+          "failures": []
+        },
+        "wp6b_invoker_boundary.test.sql": {
+          "planned": 16,
+          "passed": 16,
+          "failed": 0,
+          "failures": []
+        },
+        "wp6d_rights.test.sql": {
+          "planned": 70,
+          "passed": 70,
+          "failed": 0,
+          "failures": []
+        }
+      },
+      "existing_suites_after": {
+        "prior_attempts.test.sql": {
+          "planned": 30,
+          "passed": 30,
+          "failed": 0,
+          "failures": []
+        },
+        "rls.test.sql": {
+          "planned": 42,
+          "passed": 42,
+          "failed": 0,
+          "failures": []
+        },
+        "wp6b_integrity.test.sql": {
+          "planned": 51,
+          "passed": 51,
+          "failed": 0,
+          "failures": []
+        },
+        "wp6b_invoker_boundary.test.sql": {
+          "planned": 16,
+          "passed": 16,
+          "failed": 0,
+          "failures": []
+        },
+        "wp6d_rights.test.sql": {
+          "planned": 70,
+          "passed": 70,
+          "failed": 0,
+          "failures": []
+        }
+      },
+      "official_lints_before": [
+        {
+          "name": "rls_enabled_no_policy",
+          "title": "RLS Enabled No Policy",
+          "level": "INFO",
+          "facing": "EXTERNAL",
+          "categories": [
+            "SECURITY"
+          ],
+          "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+          "detail": "Table \\`public.attribution_reviews\\` has RLS enabled, but no policies exist",
+          "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+          "metadata": {
+            "name": "attribution_reviews",
+            "type": "table",
+            "schema": "public"
+          },
+          "cache_key": "rls_enabled_no_policy_public_attribution_reviews"
+        },
+        {
+          "name": "rls_enabled_no_policy",
+          "title": "RLS Enabled No Policy",
+          "level": "INFO",
+          "facing": "EXTERNAL",
+          "categories": [
+            "SECURITY"
+          ],
+          "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+          "detail": "Table \\`public.grant_withdrawals\\` has RLS enabled, but no policies exist",
+          "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+          "metadata": {
+            "name": "grant_withdrawals",
+            "type": "table",
+            "schema": "public"
+          },
+          "cache_key": "rls_enabled_no_policy_public_grant_withdrawals"
+        },
+        {
+          "name": "authenticated_security_definer_function_executable",
+          "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+          "level": "WARN",
+          "facing": "EXTERNAL",
+          "categories": [
+            "SECURITY"
+          ],
+          "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+          "detail": "Function `public.current_auth_user_exists()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/current_auth_user_exists`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+          "metadata": {
+            "name": "current_auth_user_exists",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "cache_key": "authenticated_security_definer_function_executable_public_current_auth_user_exists_"
+        },
+        {
+          "name": "authenticated_security_definer_function_executable",
+          "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+          "level": "WARN",
+          "facing": "EXTERNAL",
+          "categories": [
+            "SECURITY"
+          ],
+          "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+          "detail": "Function `public.my_submission_accepts_uploads(p_submission text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/my_submission_accepts_uploads`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+          "metadata": {
+            "name": "my_submission_accepts_uploads",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "p_submission text",
+            "security_definer": true
+          },
+          "cache_key": "authenticated_security_definer_function_executable_public_my_submission_accepts_uploads_p_submission text"
+        }
+      ],
+      "official_lints_after": [],
+      "capture_final": {
+        "rows": 1,
+        "open_rows": 0
+      },
+      "source_migration": "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0/supabase/migrations/20261012142348_wp6d_private_rights_boundary.sql",
+      "sql_sha256": "27c0b1ae001351358b6a56490bc1389d1075dd62cbd6ffc4e6250943fa507260",
+      "source_tests": "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0/supabase/tests/database/wp6d_private_rights_boundary.test.sql",
+      "tests_sha256": "9484b701adb0da31f4b5b8fef6db02d851c499bb9664a03679632c2164005b60",
+      "existing_metadata_grants_owners_unchanged": true,
+      "fresh_install_equals_forward_upgrade_primary_and_supplement": true
+    }
+  ],
+  "limits": [
+    "Actual uncommitted source files are hash-bound; root alone owns source commit and propagation.",
+    "Inherited WP6b source migration/test are present in the exact immutable parent tree; no proposal is substituted.",
+    "Scoped official rules are not a production advisor result.",
+    "Only disposable synthetic local tests temporarily open the fixture gate; final capture is false."
+  ]
+}

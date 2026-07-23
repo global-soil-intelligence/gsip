@@ -1,0 +1,82 @@
+{
+  "observed_at": "2026-10-12T14:59:11.787424+00:00",
+  "status": "VERIFIED_SUPERSEDED_CANCELLATIONS_NOT_SUCCESSES",
+  "pr": 39,
+  "head": "d522c770c3a7fa490c6906817a7d3121842c365b",
+  "earlier_run": {
+    "id": 38265399090,
+    "name": "App build",
+    "event": "pull_request",
+    "head_sha": "d522c770c3a7fa490c6906817a7d3121842c365b",
+    "head_branch": "wp-app-2a-build-readiness",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38265399090",
+    "created_at": "2026-10-12T14:46:49Z",
+    "updated_at": "2026-10-12T14:46:51Z",
+    "run_attempt": 1
+  },
+  "later_success_run": {
+    "id": 38265400180,
+    "name": "App build",
+    "event": "pull_request",
+    "head_sha": "d522c770c3a7fa490c6906817a7d3121842c365b",
+    "head_branch": "wp-app-2a-build-readiness",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38265400180",
+    "created_at": "2026-10-12T14:46:50Z",
+    "updated_at": "2026-10-12T14:50:24Z",
+    "run_attempt": 1
+  },
+  "contexts": [
+    {
+      "cancelled": {
+        "__typename": "CheckRun",
+        "name": "android",
+        "status": "COMPLETED",
+        "conclusion": "CANCELLED",
+        "startedAt": "2026-10-12T14:46:50Z",
+        "completedAt": "2026-10-12T14:46:50Z",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38265399090/job/114866171303",
+        "databaseId": 114866171303
+      },
+      "later_success": {
+        "__typename": "CheckRun",
+        "name": "android",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "startedAt": "2026-10-12T14:46:55Z",
+        "completedAt": "2026-10-12T14:49:49Z",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38265400180/job/114866179036",
+        "databaseId": 114866179036
+      }
+    },
+    {
+      "cancelled": {
+        "__typename": "CheckRun",
+        "name": "ios",
+        "status": "COMPLETED",
+        "conclusion": "CANCELLED",
+        "startedAt": "2026-10-12T14:46:50Z",
+        "completedAt": "2026-10-12T14:46:50Z",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38265399090/job/114866171051",
+        "databaseId": 114866171051
+      },
+      "later_success": {
+        "__typename": "CheckRun",
+        "name": "ios",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "startedAt": "2026-10-12T14:47:01Z",
+        "completedAt": "2026-10-12T14:50:23Z",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38265400180/job/114866178660",
+        "databaseId": 114866178660
+      }
+    }
+  ],
+  "cancelled_contexts_count": 2,
+  "source_workflow_cancel_in_progress": true,
+  "cause_inference": "Two pull-request App build runs share this head; checked-in concurrency cancels earlier runs when a later run starts. The earlier run is explicitly cancelled, not successful.",
+  "mutations_performed": false
+}

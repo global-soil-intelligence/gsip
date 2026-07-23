@@ -1,0 +1,62 @@
+{
+  "scope": "Independent source/specification-policy review only; no backend, device or deployment evidence",
+  "base": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "manifest_sha256": "67de0de8f45f45894958275b6683917e15888052274fedfed6f4bb79cc3f7be4",
+  "source_files_verified": 367,
+  "existing_files_unchanged": 363,
+  "invariants_and_launch_and_library_sections_byte_equal": true,
+  "existing_122_acceptance_checkbox_lines_and_states_preserved": true,
+  "results": [
+    {
+      "label": "current",
+      "returncode": 0,
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "62cbb43e8ac1399ec2569ba5eef87b9124b5a481106cc2e1807ff3c303c20498"
+    },
+    {
+      "label": "baseline",
+      "returncode": 1,
+      "tests": 15,
+      "failures": 15,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "35305a354557d9a95380c1a139dd19955b9bc111206bdda260c5fde76b517cb2"
+    },
+    {
+      "label": "remove-exclusion-proof",
+      "returncode": 1,
+      "tests": 15,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "474fcc0ca17f7adcd055f94d48a0b031b8af12e650278eda11f83d3b8f331c01"
+    },
+    {
+      "label": "remove-migration-contract",
+      "returncode": 1,
+      "tests": 15,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "781f4b7a84daef597f2a69941c85e77736afdbbf2de231339da2a68e96c20895"
+    },
+    {
+      "label": "remove-device-proof",
+      "returncode": 1,
+      "tests": 15,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "2f295dd3286a6d9456e3c71774a837cc764a5c31ff8e3a63c565b2cec695f7db"
+    }
+  ],
+  "source_mutated": false,
+  "shared_source_git_gh_production_device_actions": false,
+  "harness_recovery": {
+    "first_run": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-v11-ios-spec-independent-jtdsmws0",
+    "reason": "Private assertion incorrectly expected 39 instead of 30 for selected two modules; all actual cases passed; source unchanged"
+  }
+}

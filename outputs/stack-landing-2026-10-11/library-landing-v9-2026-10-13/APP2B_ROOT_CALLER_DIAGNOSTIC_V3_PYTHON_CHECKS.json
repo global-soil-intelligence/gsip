@@ -1,0 +1,19 @@
+{
+  "utc": "2026-10-14T01:00:09.651018+00:00",
+  "source_helper_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+  "checks": [
+    {
+      "check": "pytest",
+      "exit_code": 0,
+      "seconds": 10.837,
+      "output_file": "app2b-root-caller-diagnostic-v3-pytest.txt",
+      "output_sha256": "8f86ae999fe72bc147cb6d62b79df3bd0d0de6f7f61453fc1accd5ecc89bb223",
+      "output_bytes": 1521
+    }
+  ],
+  "all_pass": true,
+  "unchanged_real_gradle_cases_deselected": true,
+  "real_gradle_task_changed": false,
+  "previous_real_30_execution": "APP2B_ROOT_REVIEWED_NATIVE_V3_PYTHON_CHECKS.json",
+  "production_changes": false
+}

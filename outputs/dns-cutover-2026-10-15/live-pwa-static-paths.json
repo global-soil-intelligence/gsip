@@ -1,0 +1,14 @@
+{
+  "checked_at_utc": "2026-10-16T01:36:44.272387+00:00",
+  "manifest_url": "https://globalsoilintelligence.com/capture/manifest.webmanifest",
+  "start_url": "./",
+  "resolved_start_url": "https://globalsoilintelligence.com/capture/",
+  "scope": "./",
+  "registration_source": "if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('./sw.js', { scope: './' })})}",
+  "registration_relative_worker_and_scope": true,
+  "static_paths_pass": true,
+  "service_worker_bytes": 1565,
+  "service_worker_sha256": "16d61512a42f715c845c000b1201bd5aeb49a5f77c90246554353e43327d7d5a",
+  "scope_limit": "Static deployed manifest/registration/service-worker checks only; no installation, permission request, identity or submission attempted",
+  "verification_correction": "Initial receipt string matcher missed legitimate whitespace after scope colon; this live readback uses exact relative worker and scope patterns allowing syntax whitespace."
+}

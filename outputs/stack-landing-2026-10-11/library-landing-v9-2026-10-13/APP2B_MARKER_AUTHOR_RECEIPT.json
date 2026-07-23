@@ -1,0 +1,74 @@
+{
+  "baseline_head": "d74ba2add9ce9bb5494be60c5f11883d3f5137ef",
+  "author_root": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-gradle-marker-author-b4hws6ny",
+  "owned_files": [
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py",
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+  ],
+  "delta_sha256": "5d67a1c4fa2fe09cf9482bb18bd396b59755de0bade2c85b222727f09aff82b0",
+  "manifest_sha256": "35e90053ad7a0092ba899e4cd38f26b504e5a5a125541f610892dcf573c1b427",
+  "task_before_sha256": "046b625b8801375cf8af24a8fd473dd8cfba199b37b46d72fd8873c700a997b8",
+  "task_candidate_sha256": "b877b5e4e32f46fde5b2102c9b15bb5e913f27aa1fa1cc460754ad4c7844ed73",
+  "audit_tests_pass": 333,
+  "new_tests": 42,
+  "fail_before": 19,
+  "focused_gradle_tests_pass": 94,
+  "python_guard_mutations": 3,
+  "real_gradle_guard_mutations": 3,
+  "real_gradle_controls": "Verified8.14.3/Java21.0.1, owned cache, offline local fixtures; positive graph byte-identical, missing release/unresolved module/output failure statuses and safe markers verified; helper private-input/cycle/depth control verified",
+  "checks": [
+    {
+      "check": "audit-tests",
+      "exit_code": 0,
+      "output_sha256": "14cdeaf75e8dcbcac2cc6e590ce75d4beaf48c3b25070b6f99fcdd015f99f447"
+    },
+    {
+      "check": "ruff",
+      "exit_code": 0,
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "check": "mypy",
+      "exit_code": 0,
+      "output_sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    {
+      "check": "language",
+      "exit_code": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "check": "format",
+      "exit_code": 0,
+      "output_sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    }
+  ],
+  "preserved": [
+    "All prior291 test/fixture prefix bytes",
+    "Every non-diagnostic/non-classifier function/class AST",
+    "All original Gradle resolution/selection/artifact/output operations modulo whitespace",
+    "Original Throwable rethrow/status",
+    "Four-key diagnostic shape",
+    "Workflow, native proofs, licences, permissions, backups, closed-SDK, activation and scanner policy"
+  ],
+  "assumptions": [
+    "Temporary Groovy Gradle diagnostic configuration is emitted only by maintained Python; no shipped native code",
+    "Only fixed phase/cause enums appear in failure markers; unknown/conflicting/cyclic/truncated cause falls back to UNKNOWN",
+    "A phase marker is diagnostic evidence, not native acceptance or a confirmed producer/API fix",
+    "Synthetic real Gradle checks require outside-sandbox Java execution; initial sandbox bootstrap failures retained",
+    "Frozen harnesses replay from the recorded author root or an owned reproduction copy with source/full fixture/cache inputs assembled; do not mutate frozen files"
+  ],
+  "limits": [
+    "No actual Android SDK/product build in this local correction",
+    "Actual Android failing phase/cause remains unknown until next exact-head CI",
+    "No Git, PR, GitHub, CI dispatch, production, signing, account or activation changes",
+    "No raw Gradle streams persisted; hashes/counts/fixed diagnostics only"
+  ],
+  "pinned_scan": {
+    "version": "8.21.2",
+    "scope": "Frozen authored3 files, supplemental only; full-history belongs to root integration",
+    "leaks": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  }
+}

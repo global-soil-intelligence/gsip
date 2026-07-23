@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-14T02:39:15.079168+00:00",
+  "full_native_receipt_or_feature_validation_claimed": false,
+  "helper_sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4",
+  "hosted623_offending_values_identified": false,
+  "key_build_tree_metadata_invented": false,
+  "network_subprocess_native_SDK_key_APK_build_signing_actions": false,
+  "raw_artifact_paths_or_private_values_printed": false,
+  "results": [
+    {
+      "actual_repository_and_cache_files_available": true,
+      "all_parent347_source_files_verified": 347,
+      "allow_fetch": false,
+      "current_normalized_runtime_bytes": 199254,
+      "current_normalized_runtime_sha256": "7cafbca14e533ee280ca4818c29f4ce8162f0b908ceda67d4270b375faccaee4",
+      "fixed_committed_source_inputs_verified": 5,
+      "label": "parent",
+      "npm_evidence_exact_to_retained": true,
+      "npm_source_count": 6,
+      "prior_runtime_sha256": "ac622df9cab41cd2fc06c363d33b8f5870e7159def460d8c305a41e25c408979",
+      "raw_graph_sha256": "400a9c7892c1c0e4eb50bf9684a03c7803ba709bef0648848fbf98db2b74e5b4",
+      "runtime_portion_current_strict_validator": {
+        "guard": "existing runtime binary completeness",
+        "source_line": 2526,
+        "status": "refused"
+      },
+      "trusted_cache_provenance_label": "existing_candidate_gradle_cache",
+      "views": [
+        {
+          "all_POM_and_project_source_evidence_exact": true,
+          "all_nonduplicate_complete_evidence_exact": true,
+          "configuration": "debugRuntimeClasspath",
+          "duplicate_same_file_records_removed": 5,
+          "normalized_binary_records": 73,
+          "old_binary_records": 78,
+          "project_sources": 4,
+          "selected_modules": 75
+        },
+        {
+          "all_POM_and_project_source_evidence_exact": true,
+          "all_nonduplicate_complete_evidence_exact": true,
+          "configuration": "releaseRuntimeClasspath",
+          "duplicate_same_file_records_removed": 5,
+          "normalized_binary_records": 73,
+          "old_binary_records": 78,
+          "project_sources": 4,
+          "selected_modules": 75
+        }
+      ]
+    },
+    {
+      "actual_repository_and_cache_files_available": true,
+      "all_parent347_source_files_verified": null,
+      "allow_fetch": false,
+      "current_normalized_runtime_bytes": 200745,
+      "current_normalized_runtime_sha256": "86aba03e8584841711a98273880a495475d3cc36d2b82ba72549cd556e856300",
+      "fixed_committed_source_inputs_verified": 5,
+      "label": "candidate",
+      "npm_evidence_exact_to_retained": true,
+      "npm_source_count": 7,
+      "prior_runtime_sha256": "70f118a73c5b2c7d90be3cbeb0ef046c40f39b99e7d579a38d32172af5d1db33",
+      "raw_graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+      "runtime_portion_current_strict_validator": {
+        "guard": "existing runtime binary completeness",
+        "source_line": 2526,
+        "status": "refused"
+      },
+      "trusted_cache_provenance_label": "existing_candidate_gradle_cache",
+      "views": [
+        {
+          "all_POM_and_project_source_evidence_exact": true,
+          "all_nonduplicate_complete_evidence_exact": true,
+          "configuration": "debugRuntimeClasspath",
+          "duplicate_same_file_records_removed": 5,
+          "normalized_binary_records": 74,
+          "old_binary_records": 79,
+          "project_sources": 5,
+          "selected_modules": 75
+        },
+        {
+          "all_POM_and_project_source_evidence_exact": true,
+          "all_nonduplicate_complete_evidence_exact": true,
+          "configuration": "releaseRuntimeClasspath",
+          "duplicate_same_file_records_removed": 5,
+          "normalized_binary_records": 74,
+          "old_binary_records": 79,
+          "project_sources": 5,
+          "selected_modules": 75
+        }
+      ]
+    }
+  ],
+  "runtime_validator_body": {
+    "exact_body_sha256": "15700adfcea4665eaa302449f4e2cf7c5c80113164fb4b9ac5ca6c525dfe3dc2",
+    "executed_unchanged_runtime_selection_POM_project_notices_duplicate_and_completeness_body": true,
+    "expected_configuration_names_from_actual_raw_graph": true,
+    "function": "validate_android",
+    "original_lines": [
+      2439,
+      2528
+    ]
+  },
+  "schema": "gsip-independent-normalizer-actual-readonly-graph-replay-v1",
+  "source_binding_receipt_sha256": "51ef19a0cb5aa758d58274cf818d66ad258175540c94f87d59890f3658e7a746",
+  "status": "BOTH_ACTUAL_GRAPHS_NORMALIZED_EXISTING_COVERAGE_REFUSAL_RETAINED"
+}

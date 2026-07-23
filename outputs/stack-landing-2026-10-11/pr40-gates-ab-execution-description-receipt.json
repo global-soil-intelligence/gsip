@@ -1,0 +1,11 @@
+{
+  "pr": 40,
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/40",
+  "head": "cf063aa5865a86eb86250e3a1f8287545e51f037",
+  "updated_at": "2026-10-12T12:49:40.951872+00:00",
+  "original_body_sha256": "04dca677e2f4b42bd87424b96d8101585ca5627a9fdb2261377abef7a1733950",
+  "updated_body_sha256": "1f7fad1ad85b685b3167437a42c1022e9a3e26a84f1f7d10289c15a7599248a0",
+  "original_prefix_preserved": true,
+  "source_head_unchanged": true,
+  "status": "APPEND_VERIFIED"
+}

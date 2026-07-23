@@ -1,0 +1,172 @@
+{
+  "checked_at_utc": "2026-10-16T11:40:40.253503+00:00",
+  "statistics": {
+    "unit_lines": 253,
+    "contains_pass": 8,
+    "contains_test_summary_words": 90
+  },
+  "numeric_summaries": [
+    {
+      "category": "number_before_passed",
+      "counts": [
+        "15"
+      ]
+    },
+    {
+      "category": "summary_token_analysis",
+      "numeric_fields": [
+        "2026",
+        "10",
+        "31",
+        "13",
+        "15"
+      ],
+      "labels": [
+        "Test Files",
+        "passed"
+      ]
+    },
+    {
+      "category": "number_before_passed",
+      "counts": [
+        "308"
+      ]
+    },
+    {
+      "category": "summary_token_analysis",
+      "numeric_fields": [
+        "2026",
+        "10",
+        "31",
+        "13",
+        "308"
+      ],
+      "labels": [
+        "Tests",
+        "passed"
+      ]
+    },
+    {
+      "category": "number_before_passed",
+      "counts": [
+        "2"
+      ]
+    },
+    {
+      "category": "summary_token_analysis",
+      "numeric_fields": [
+        "2026",
+        "10",
+        "31",
+        "13",
+        "2"
+      ],
+      "labels": [
+        "Test Files",
+        "passed"
+      ]
+    },
+    {
+      "category": "number_before_passed",
+      "counts": [
+        "33"
+      ]
+    },
+    {
+      "category": "summary_token_analysis",
+      "numeric_fields": [
+        "2026",
+        "10",
+        "31",
+        "13",
+        "33"
+      ],
+      "labels": [
+        "Tests",
+        "passed"
+      ]
+    },
+    {
+      "category": "number_before_passed",
+      "counts": [
+        "3"
+      ]
+    },
+    {
+      "category": "summary_token_analysis",
+      "numeric_fields": [
+        "2026",
+        "10",
+        "31",
+        "15",
+        "3"
+      ],
+      "labels": [
+        "Test Files",
+        "passed"
+      ]
+    },
+    {
+      "category": "number_before_passed",
+      "counts": [
+        "16"
+      ]
+    },
+    {
+      "category": "summary_token_analysis",
+      "numeric_fields": [
+        "2026",
+        "10",
+        "31",
+        "15",
+        "16"
+      ],
+      "labels": [
+        "Tests",
+        "passed"
+      ]
+    },
+    {
+      "category": "number_before_passed",
+      "counts": [
+        "24"
+      ]
+    },
+    {
+      "category": "summary_token_analysis",
+      "numeric_fields": [
+        "2026",
+        "10",
+        "31",
+        "23",
+        "24"
+      ],
+      "labels": [
+        "Test Files",
+        "passed"
+      ]
+    },
+    {
+      "category": "number_before_passed",
+      "counts": [
+        "246"
+      ]
+    },
+    {
+      "category": "summary_token_analysis",
+      "numeric_fields": [
+        "2026",
+        "10",
+        "31",
+        "23",
+        "246"
+      ],
+      "labels": [
+        "Tests",
+        "passed"
+      ]
+    }
+  ],
+  "raw_logs_saved": false,
+  "command_returncode": 0
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "checks": {
+      "public_cells": 0,
+      "observed_at_utc": "2026-10-12 19:23:02.269103 UTC",
+      "prior_cache_rows": 0,
+      "upstream_bucket_rows": 3,
+      "k_anonymity_violations": 0,
+      "upstream_bucket_config_mismatch": 0,
+      "prior_jobs_nonempty_new_empty_sources": 0
+    }
+  }
+]

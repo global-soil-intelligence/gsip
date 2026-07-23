@@ -1,0 +1,300 @@
+{
+  "candidate_manifest": "/private/tmp/gsip-6fb-final-candidate-manifest.json",
+  "candidate_manifest_sha256": "db3face16158802eeaa9b46e6485618bc63e86bdaf54a277a2ee9b8404d07306",
+  "scope": "32 synthetic in-memory full decoder probes; no HTTP/model loads/image persistence/source edits",
+  "file_hashes": {
+    "pipeline/qa.py": "1f12cffa0471d96742ae9e852f5f0ea840c0f5edb2a0e0d2ce87bfec0dbcbb0c",
+    "pipeline/photo_privacy.py": "f4a288aad937c73ecb64c3415187e669ba67302a63eddcc0e9a7d65bfdcfa30c"
+  },
+  "results": [
+    {
+      "marker": "0xdd",
+      "extra_bytes": 0,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdd",
+      "extra_bytes": 0,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdd",
+      "extra_bytes": 1,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": false,
+      "pixels_identical": null
+    },
+    {
+      "marker": "0xdd",
+      "extra_bytes": 1,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdd",
+      "extra_bytes": 17,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": false,
+      "pixels_identical": null
+    },
+    {
+      "marker": "0xdd",
+      "extra_bytes": 17,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdd",
+      "extra_bytes": 25,
+      "extra_is_private_ascii": true,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": false,
+      "pixels_identical": null
+    },
+    {
+      "marker": "0xdd",
+      "extra_bytes": 25,
+      "extra_is_private_ascii": true,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdc",
+      "extra_bytes": 0,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdc",
+      "extra_bytes": 0,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdc",
+      "extra_bytes": 1,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdc",
+      "extra_bytes": 1,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdc",
+      "extra_bytes": 17,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdc",
+      "extra_bytes": 17,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdc",
+      "extra_bytes": 25,
+      "extra_is_private_ascii": true,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdc",
+      "extra_bytes": 25,
+      "extra_is_private_ascii": true,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdb",
+      "extra_bytes": 0,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdb",
+      "extra_bytes": 0,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdb",
+      "extra_bytes": 1,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": "unreadable",
+      "full_decoder_accepted": false,
+      "pixels_identical": null
+    },
+    {
+      "marker": "0xdb",
+      "extra_bytes": 1,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdb",
+      "extra_bytes": 17,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": "unreadable",
+      "full_decoder_accepted": false,
+      "pixels_identical": null
+    },
+    {
+      "marker": "0xdb",
+      "extra_bytes": 17,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xdb",
+      "extra_bytes": 25,
+      "extra_is_private_ascii": true,
+      "position": "before_frame",
+      "metadata_dirty": "unreadable",
+      "full_decoder_accepted": false,
+      "pixels_identical": null
+    },
+    {
+      "marker": "0xdb",
+      "extra_bytes": 25,
+      "extra_is_private_ascii": true,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xc4",
+      "extra_bytes": 0,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xc4",
+      "extra_bytes": 0,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xc4",
+      "extra_bytes": 1,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": false,
+      "pixels_identical": null
+    },
+    {
+      "marker": "0xc4",
+      "extra_bytes": 1,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xc4",
+      "extra_bytes": 17,
+      "extra_is_private_ascii": false,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xc4",
+      "extra_bytes": 17,
+      "extra_is_private_ascii": false,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "marker": "0xc4",
+      "extra_bytes": 25,
+      "extra_is_private_ascii": true,
+      "position": "before_frame",
+      "metadata_dirty": false,
+      "full_decoder_accepted": false,
+      "pixels_identical": null
+    },
+    {
+      "marker": "0xc4",
+      "extra_bytes": 25,
+      "extra_is_private_ascii": true,
+      "position": "after_scan",
+      "metadata_dirty": false,
+      "full_decoder_accepted": true,
+      "pixels_identical": true
+    }
+  ],
+  "blocking_findings_remain": true
+}

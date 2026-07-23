@@ -1,0 +1,15 @@
+{
+  "synthetic_only": true,
+  "isolated_repo": "/private/tmp/gsip-fingerprint-witness-0fmomq6i",
+  "source_blob_sha256": "6edbacb07a833bb1505e8f308883e081c9f2835e2e27b99a4918dd0612802d04",
+  "new_commit": "37f01bd234eb10ee4b2e53bc16e749c139604fa1",
+  "same_path_and_line": true,
+  "same_original_noncredential_fixture": true,
+  "approved_ignore_file_unchanged": true,
+  "scanner_config_unchanged": true,
+  "scan_exit": 1,
+  "findings": 1,
+  "new_fingerprint_is_not_suppressed": true,
+  "main_repo_history_untouched": true,
+  "pushed": false
+}

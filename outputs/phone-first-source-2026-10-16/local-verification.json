@@ -1,0 +1,66 @@
+{
+  "source_head": "731a30ff6f8f3a90e0df31eb1d977edf1fcaf912",
+  "frozen_install": {
+    "pnpm": true,
+    "uv_all_groups": true
+  },
+  "lint": true,
+  "typecheck": true,
+  "javascript_tests": {
+    "passed": 705,
+    "by_package": {
+      "schema": 310,
+      "site": 41,
+      "capture": 338,
+      "map": 16
+    }
+  },
+  "python": {
+    "passed": 2163,
+    "skipped": 35,
+    "failed": 0,
+    "seconds": 105.6,
+    "gdal_required_mode": "Not run locally; GDAL CLI absent, checked by required CI.",
+    "missing_local_tools": [
+      "gdalinfo",
+      "psql",
+      "deno",
+      "adb"
+    ],
+    "native_sdk_configuration": "Native builds rely on GitHub CI; local xcodebuild binary presence was not treated as a qualified Xcode/SDK build."
+  },
+  "ruff": true,
+  "mypy": {
+    "passed": true,
+    "source_files": 83
+  },
+  "build": {
+    "web": true,
+    "native_web": true,
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "budgets": {
+    "map": {
+      "bytes": 2196657,
+      "limit": 5242880
+    },
+    "site": {
+      "bytes": 320867,
+      "limit": 716800
+    }
+  },
+  "browser": {
+    "desktop_chrome": {
+      "passed": 16
+    },
+    "invited_mobile_chrome_and_webkit": {
+      "passed": 4
+    },
+    "physical_device": false,
+    "synthetic_local_only": true
+  },
+  "review": "independent-review.json",
+  "first_python_failure": "full-python-first-run.json",
+  "fixed_checks": "scope-fix-green.txt"
+}

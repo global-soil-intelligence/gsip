@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-13T17:43:25.253125+00:00",
+  "number": 64,
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/64",
+  "head": "7934aaa8b729e42ce373977cabfd9f18e5784c18",
+  "base": "main",
+  "draft": true,
+  "body_sha256": "9f9fd23a3526d41d1877f47df5a56a615fb907f41b07544c40b17e340c72e192",
+  "regular_push_verified": true,
+  "create_recovered_after_local_terminal_newline_assertion": true,
+  "CI_pending": true,
+  "production_deployment_capture_or_merge": false
+}

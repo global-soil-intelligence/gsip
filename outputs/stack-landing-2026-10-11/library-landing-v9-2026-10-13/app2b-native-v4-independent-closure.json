@@ -1,0 +1,52 @@
+{
+  "status": "independent native4 source and synthetic review CLOSED; no unresolved findings",
+  "freeze_receipt_sha256": "9cc7580eed38a173b40c104e2d0004defeb093298aa8bccafa0032e5e39637b7",
+  "base_patch_sha256": "72f279efc2294f68ddd04e43ee21b6ebdc4e5675845dfde7b300ef063603c81c",
+  "delta_sha256": "2e7ec4f60716e637ea5fee43db21b049f55c481ed01f33949c22fccedb8834f1",
+  "baseline": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "source_files": [
+    {
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "bbc96feba3a8e33900ba5d5c78a8e968e1e3d62f8a3b3af90dc3b812572ae54f"
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "df732911e989b4bed5d051dd7c1665c12e312b6d7dfae47561e8aaa6f7427f66"
+    },
+    {
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+    },
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "7809956ce546f1a389e1d01018f1b5ab71ed41a93f2970b4f99e6c40ba608715"
+    }
+  ],
+  "source_unchanged": true,
+  "counts": {
+    "focused": 159,
+    "baseline_integration_without_probes": 236,
+    "prior_probes": 13,
+    "independent_expanded": 40,
+    "combined_with_all_probes": 289,
+    "workflow_bash_bodies": 28,
+    "scan_findings": 0,
+    "meaningful_runtime_guard_witness_expected_failures": 1
+  },
+  "artifacts": {
+    "REVIEW_NATIVE_V4_CLOSURE.md": "c65fdc29e02975b1bf13688b801349bae94b65af8749e65ade92975a566f711e",
+    "independent-checks.json": "cf98d0a946f08d0ef440b40768a82b7d5df168040e1c2c78801ce00b8e19581b",
+    "workflow-verification.json": "e55e567487e7ac5231013b000cd6d050a24ce0497da7658615952a11aa36f051",
+    "muted-guard-witness.json": "a624074a86850380f3b6cbe64db8b88e5a1c2806458e51aa8fa083d4d690b55e",
+    "muted-guard-witness.log": "fd0b2438e46b7b6c4ea9fac3461153a288fba32e8746e147d2256c199f68abd6",
+    "gitleaks-authored.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "independent_expanded_test_sha256": "29867cde9603421a39f4928288e6c85144d6806d3b981ed4497aa94fda4b0ec3",
+  "unverified": [
+    "Actual native CI/SDK builds and native tool-format/SPM-tag availability",
+    "Real resolved transitive licenses and measured native size/repeat results",
+    "Physical-device notification/logging/backup and store readiness",
+    "Combined current core19/native4 integration and full23 CI"
+  ],
+  "authority": "No Git/PR/source mutations/network/credential/native-device/production action; runtime monkeypatch-only guard witness; root owns integrated CI/merge"
+}

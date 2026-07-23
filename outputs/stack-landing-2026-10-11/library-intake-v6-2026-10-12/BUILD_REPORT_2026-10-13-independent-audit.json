@@ -1,0 +1,114 @@
+{
+  "schema_version": "gsip-independent-build-report-audit-v1",
+  "reviewer": "/root/library_store_review",
+  "reviewed_at_utc": "2026-10-13T06:26:56.678685+00:00",
+  "mode": "Narrow read-only audit of saved report/receipts; no test rerun or live-state verification",
+  "report_path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-intake-v6-2026-10-12/BUILD_REPORT_2026-10-13.md",
+  "report_sha256": "b479d294314c25d3fd68d79f23dbc2575ceab1af715c15c9a7d1c541ad19f3ba",
+  "verdict": "No material misstatement or important open-gate omission identified in this final report revision",
+  "material_findings": [],
+  "checked": {
+    "B_head": "b0f8e0f808629754bc6f4213f9c94e3149adfe55",
+    "C_head": "fd5c44bd9e33ca741fc4ed59b4a362e960f3e30a",
+    "B_review_receipt_sha256": "9dafbdb2d0bab14972447c0fafa339429a8b852026c19109773a98a17c5bafd0",
+    "C_review_receipt_sha256": "ef54ee792cea5508c0d9385b67ec84343283bb36241a6a1ad700813d00d652d8",
+    "B_counts": {
+      "root_passed": 682,
+      "host_GDAL_skips": 4,
+      "independent_scoped": 234,
+      "marker_assertions": 6880,
+      "decoder_probes": 47,
+      "CI_with_GDAL": 686
+    },
+    "C_counts": {
+      "root_passed": 775,
+      "host_GDAL_skips": 4,
+      "independent_scoped": 142,
+      "legacy_unchanged": 49,
+      "hidden_payload_cases": 17,
+      "CI_with_GDAL": 779
+    },
+    "PR56": {
+      "head": "db3a37062008c291b6e8aa491b99eab3e752fe16",
+      "validate": "success",
+      "draft": true,
+      "runtime_architecture_approved": false,
+      "CI_inherited_runtime_tests_not_LIB5_behavior": true
+    },
+    "CI_B_C_spec9": {
+      "TS": 424,
+      "pgTAP": 593,
+      "populated_migration": 45,
+      "library_races": 6,
+      "photo_races": 31,
+      "browser": 12,
+      "saved_log_hashes_match_count_receipts": true
+    },
+    "JPEG_bound": "Structural marker/length/JFIF/table-reference/generation/scan-history validation; no Huffman-bit consumption, complete codec/pixel-steganography detection or trusted-producer attestation claim",
+    "scan_gate": {
+      "local_whole_history_findings": 1,
+      "exact_fingerprint": "bb9bd8a583231ff63ec14a7622532ddb869d7cde:scripts/e2e_server.py:generic-api-key:32",
+      "CI54_55_56_summary_findings": 1,
+      "CI_summary_fingerprint_available": false,
+      "new_suppressions": 0,
+      "explicit_owner_approval_pending": true
+    },
+    "DB_outcomes": "Actual local 593-assertion suite failed legacy RLS25/29/33 and is not called green; all143 photo assertions passed. Isolated and CI593/593 pass are kept separate. Local v2 repair preserved ledger30 and counts/closed gates.",
+    "no_production_claims": "Consistent with saved receipts and explicitly not independently verified against production; historical GateD evidence remains historical"
+  },
+  "gate_omissions_resolved_during_audit": [
+    "Added separate SPEC11 50-photo soil/photo QA threshold field pilot, distinguished from privacy-detector calibration",
+    "Added canonical crawlable domain/DNS/sitemap readiness without claiming new verification"
+  ],
+  "important_open_gates_retained": [
+    "Exact historical fingerprint approval, unchanged scan protections and ordered exact-head source merge conditions",
+    "Owner spec9 approval before LIB5A/B; real sharing/peer/consent/credential/digest-retention LIB5C held",
+    "Exact deployment-runtime model/artifact/license audit, permissioned detector calibration, policy/operator provisioning and publication activation",
+    "Field QA pilot, prior tiles, paid production tier/green workers, counsel/legal/CAPTCHA/accounts/signing, canonical site and real-device backup evidence",
+    "Owner-created HF dataset/token, conditional tile publication and separately authorized production steps"
+  ],
+  "evidence_sha256": {
+    "wp6fb-final-independent-review.json": "9dafbdb2d0bab14972447c0fafa339429a8b852026c19109773a98a17c5bafd0",
+    "wp6fb-final-closure.json": "389e5c59c7743fa285f57d5a81efbce7d29032c43f817b37e98206fa1f6b2534",
+    "wp6fb-final-root-validation.json": "4ce27ee304a6dc8aa9cd0815abe68f7aec7f1f5cf8958f02d9dfac54be7773f2",
+    "pr54-actual-final-ci-counts.json": "b1cc0310b4c691fb8ab1ca37f83966003640a45c16d8f26ef4370ed54900d86e",
+    "pr54-final-validate.json": "2d76bda4f220e8209748c4f50551c483e291f9b6eb7322288afaba9d429d72e7",
+    "pr54-final-validate.log": "532da68e16e3b70568455abf3626901fd69d56f124dfe829d525a408a2f3a8fb",
+    "wp6fc-final-independent-review.json": "ef54ee792cea5508c0d9385b67ec84343283bb36241a6a1ad700813d00d652d8",
+    "wp6fc-final-root-validation.json": "355f2c71170a796e855ddf0182cc81d62e0f3a8cb744de2722c3577dd2041c7a",
+    "pr55-actual-final-ci-counts.json": "396633b520f2b4915923378e28fc5c10c6909b4220d280eb8deb2a2fc9ca22b4",
+    "pr55-final-validate.json": "9aa7b441a4e69c6d0cd5be67738bc993b3870de6024cc94b60f7c87592dd07e6",
+    "pr55-final-validate.log": "7c3cf4fc8c4fddd2c175cc2ca5d9e529fda889976d7c635d8ff88f54fd8fca80",
+    "wp6fa-final-v2-independent-review.json": "e5abab80095921dceaaada2acc481e3dd9114413535627d3914e39b8da68503f",
+    "wp6fa-v2-local-postflight.json": "5481bc09cbc7d2c6bb8fc87c760bc4a813d68c30bedb6ef8cf8cc34ec624f4b1",
+    "wp6fa-actual-local-platform-db-tests-20261013.log": "45f4ef9cdf36c07d989e5445aecfc2b3d67b6c0bacbf95f458e9704c6af9084d",
+    "pr53-actual-ci-counts.json": "ba679b3441924bbb1dba43138284cf0892c87883c677617d8e87c8327dd7fcfd",
+    "stack-gitleaks-final-20261013.json": "d34add6d7ee8781483cdf4c55b5edb846a8fa90c8d2b88838c60e6b155c69426",
+    "final-ci-secret-scan-readback.json": "e7bf1113ec918d4cc0d61ce7418a75957080968867b1fb261c3c5e78e8e15c87",
+    "HARNESS-SYNTHETIC-FINGERPRINT-PROPOSAL.md": "905a55cad7e560d73fc694dd6ea08cca20ce5a5dde99f71777b7e86daf36af4f",
+    "lib5-spec-v9-final-independent-review.json": "66efbe14646a689c62badc6f44970fe68268799bf89dc91e4debde4afc2219dc",
+    "lib5-spec-v9-pr56-final-binding-review.json": "48a9e2fa807f92b187eaea26a6a9154bfdbe3b650851b61221f25e63add3c07e",
+    "pr56-final-validate.json": "0c80998acc23e2cccf20330a414b117052126bbab6d3196e208ac2d8674561f5",
+    "pr56-actual-final-ci-counts.json": "da70e7e235ad28ae1754c1cbcdc9a56a8d16374f18ce1646120acf9050ba04b6",
+    "pr56-final-validate.log": "9411c31025250c74305eee3f5e3e427b1e848d076d0d66246c77b58b719379a0",
+    "open-prs-final-20261013.json": "c83800cf20068df04f7609cbb121f48a70a238a368fded3ba2b6452645506224",
+    "current-library-pr-register.json": "6b67586ec4605ce289c5d23d873aded7648dc191233239e7f6a635eb5cbec281",
+    "wp6fb-final-python.xml": "42fdcd5771b84e521f96a67029bd20403b6859689b3df1250224e3729b189748",
+    "wp6fc-final-python.xml": "d4b5876f83b44ec1e9bb8ea956ef03ecefda4ccb968317ef974c3ba9d761beaf"
+  },
+  "limits": [
+    "Saved receipts are audit inputs, not live remote or production readbacks by this reviewer",
+    "No source implementation was re-reviewed and no broad test suite was rerun",
+    "No source/report edits, network/production calls, Git mutation, approving review, merge or deployment"
+  ],
+  "actions": {
+    "receipt_only_write": true,
+    "source_edits": false,
+    "report_edits": false,
+    "tests_rerun": false,
+    "network_calls": false,
+    "production_access": false,
+    "git_mutations": false,
+    "approval_or_merge": false
+  }
+}

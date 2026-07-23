@@ -1,0 +1,36 @@
+{
+  "lint": "passed full ESLint/language/Prettier",
+  "ruff": "passed full no-cache",
+  "mypy": {
+    "passed": true,
+    "source_files": 78
+  },
+  "policy_tests": {
+    "passed": 77,
+    "skips": 0
+  },
+  "baseline_new_tests": {
+    "expected_failures": 38,
+    "errors": 0,
+    "skips": 0
+  },
+  "review_fixes": [
+    {
+      "displayed_snapshot_row": "one regression failed before correct1233/hash input row; passed after"
+    },
+    {
+      "source_line_range": "one regression failed on159>157; passed after; iOS17 and manualevidence limits clarified"
+    }
+  ],
+  "tool_harness_recoveries": [
+    {
+      "test_instrumentation": "os.open proxy initially absent from os.supports_dir_fd; corrected proxy capabilities, reader not weakened"
+    },
+    {
+      "test_annotation": "mypy initially inferred empty tuple; explicit objecttuple annotation fixed test typing"
+    },
+    {
+      "snapshot_formatting": "Prettier changed whitespace; parsed equality retained; raw and normalized digests explicitly preserved, profile rerun"
+    }
+  ]
+}

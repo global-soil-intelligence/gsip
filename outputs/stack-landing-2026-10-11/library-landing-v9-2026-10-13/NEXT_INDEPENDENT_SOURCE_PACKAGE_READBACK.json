@@ -1,0 +1,103 @@
+{
+  "GET_tree_response_sha256": "1389f5847228ca432963292434139871d711f8fe838f8e671f933bc6c530a564",
+  "at_utc": "2026-10-14T03:36:26.430736+00:00",
+  "completed_source_not_a_new_backlog": [
+    "WP-AGENT-0 coding guide",
+    "WP-3b Web Lock queue drain",
+    "WP-SEC-1 four lock resolutions",
+    "LIB-5A/5B merged local source per current docs",
+    "WP-6fA/B/C merged source per current docs"
+  ],
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "merged_PR_state_or_new_authority_not_inferred": true,
+  "no_APP_2C_spec_found": true,
+  "no_runtime_test_or_build_claim": true,
+  "recommendation": "Prepare WP-DOC-1 status-only refresh in its exact three-file scope; bind any APP-2B merged-source claim to PR63 actually present on main before marking it merged. No new runtime package is fully specified and unblocked in the reviewed sequence.",
+  "references": {
+    "coding_guide_already_present": "AGENTS.md:1; tests/test_coding_guidance.py:1",
+    "existing_sync_implementation": "apps/capture-pwa/src/sync.ts:68-74",
+    "existing_sync_scope": "docs/BUILD_ORDER.md:309-320",
+    "existing_sync_tests": "apps/capture-pwa/tests/sync-lock.test.ts:71-139",
+    "ios_backup_architecture_device_hold": "docs/BUILD_ORDER.md:237; docs/APP_STORE.md:140-151",
+    "phase2_specification_hold": "docs/BUILD_ORDER.md:322-324",
+    "photo_exact_weight_calibration_production_hold": "docs/BUILD_ORDER.md:255,263-265,281-285",
+    "real_peer_owner_policy_and_amendment_hold": "docs/BUILD_ORDER.md:402-411; docs/SPEC.md:582-596",
+    "reminder_device_evidence": "docs/APP_STORE.md:222-226",
+    "scientific_reference_hold": "docs/BUILD_ORDER.md:341,346; docs/SPEC.md:437-443",
+    "security_source_present": "docs/DEPENDENCY_REMEDIATION.md:7-12",
+    "status_only_scope": "docs/BUILD_ORDER.md:291-293",
+    "store_owner_inputs": "docs/APP_STORE.md:237-247"
+  },
+  "schema": "gsip-current-faab-next-package-readonly-v1",
+  "shared_source_Git_PR_production_native_credential_workflow_worker_mutations": false,
+  "source_bindings": [
+    {
+      "bytes": 84087,
+      "git_blob": "4e5f66665bf5c603e2271f155bfc59fed04d2997",
+      "path": "docs/BUILD_ORDER.md",
+      "sha256": "7f243f4ce91cd2be9ba972fd1086ef02dee6a55bfd03436feca8058a71a4bd0a"
+    },
+    {
+      "bytes": 154248,
+      "git_blob": "6092aa9ae23760668123c756714c0ebd0429081a",
+      "path": "docs/SPEC.md",
+      "sha256": "90642673b06d9d7acbef0736e301a227efb0fa6a0210118a0e2228fec3da7975"
+    },
+    {
+      "bytes": 3064,
+      "git_blob": "8bf8037196c45006331d384761e16ab7ec8e571f",
+      "path": "README.md",
+      "sha256": "e730b652306926233acaf0ae68a2c5c03e342d4a09259c28fff357554a73b10a"
+    },
+    {
+      "bytes": 22534,
+      "git_blob": "7c203bdf4e990f289960d4e6badbfad3c7ffc7dc",
+      "path": "docs/APP_STORE.md",
+      "sha256": "bc5be716c7cb6365defafa70db9546741ec0b5e27e6d46b38ff7e33da2e1d411"
+    },
+    {
+      "bytes": 10003,
+      "git_blob": "440a465bb564d0fcafc1dd90648f505965f1b5d8",
+      "path": "docs/APP_SYNC_REMINDERS.md",
+      "sha256": "37f8b6521751cf51658a07b97ed99b14b8e2ee8858e2ccc66345402719ff064a"
+    },
+    {
+      "bytes": 15084,
+      "git_blob": "577468e783075079ca02490a6edd4add403943f5",
+      "path": "docs/PHOTO_PRIVACY_SCREENING.md",
+      "sha256": "e0a034b2544cca01bc254c9445a5c639879d5ce2177d12359cdbb4d386a4552f"
+    },
+    {
+      "bytes": 3466,
+      "git_blob": "70c195d614c4bdd8d55afed379673a7dcde7b41d",
+      "path": "docs/DEPENDENCY_REMEDIATION.md",
+      "sha256": "303861b5a714b3d9189a308f3f10cf1ca80bbd930519a0994903d5e16c6122a5"
+    },
+    {
+      "bytes": 8525,
+      "git_blob": "311ebe77db0376034b6848c029ab2ff721bfe912",
+      "path": "AGENTS.md",
+      "sha256": "cc5a4ea13e2a389006a0a69c6986f5acc767f9c065131b70f078b8ca1580e180"
+    },
+    {
+      "bytes": 2885,
+      "git_blob": "4324681458591573af50912e53517c5d838e29ef",
+      "path": "tests/test_coding_guidance.py",
+      "sha256": "6042244d044b28c0f09f47dbff3fe29630db86b39c56cc8387e6a065350ad990"
+    },
+    {
+      "bytes": 5847,
+      "git_blob": "d849fdeafc5dad2e01f8f04aa2c2e97a0c3b9b01",
+      "path": "apps/capture-pwa/src/sync.ts",
+      "sha256": "8e7bb7a073060c882cda08a04214e1ed69be4b85d0623d00c74d81bf67018c9c"
+    },
+    {
+      "bytes": 4569,
+      "git_blob": "066ee1efb9a83eca7b9680c56fb93814cfa94d68",
+      "path": "apps/capture-pwa/tests/sync-lock.test.ts",
+      "sha256": "2b103b1ca59982edea7550940d81777283e316e5c227681c190ee12d75ce9dee"
+    }
+  ],
+  "tree": "88baee8e3e9606b386fa011ac71f2d759cf20e50",
+  "writes_only_owned_tmp": true
+}

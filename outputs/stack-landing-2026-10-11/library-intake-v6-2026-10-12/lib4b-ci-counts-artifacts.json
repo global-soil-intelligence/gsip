@@ -1,0 +1,48 @@
+{
+  "head": "7d6153a4e4e79cfd809fe34d43c2e7690d2ba906",
+  "validate_run": 38340149585,
+  "counts": [
+    {
+      "check": "browser",
+      "passed": 12
+    },
+    {
+      "check": "python",
+      "passed": 456
+    },
+    {
+      "file": "wp6e_provenance.test.sql",
+      "passed": 13,
+      "total": 13
+    },
+    {
+      "file": "wp_lib4_private_intake.test.sql",
+      "passed": 13,
+      "total": 13
+    },
+    {
+      "concurrency_orders": 6,
+      "all_passed": true,
+      "production_access": false
+    },
+    {
+      "database_files": 10,
+      "database_tests": 450
+    }
+  ],
+  "native_run": 38340149522,
+  "artifacts": [
+    {
+      "name": "gsip-capture-android-debug",
+      "size": 7214354,
+      "expired": false,
+      "id": 11786554123
+    },
+    {
+      "name": "gsip-capture-ios-simulator",
+      "size": 3380520,
+      "expired": false,
+      "id": 11786542688
+    }
+  ]
+}

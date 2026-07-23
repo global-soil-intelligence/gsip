@@ -43,7 +43,7 @@ test('public hub explains the project and connects its core paths', async ({
     }),
   ).toBeVisible()
   await expect(
-    page.getByRole('link', { name: 'Capture opening soon' }).first(),
+    page.getByRole('link', { name: 'Contribute an observation' }).first(),
   ).toBeVisible()
   await page
     .getByRole('navigation', { name: 'Primary navigation' })
@@ -96,6 +96,7 @@ test('map and capture shells are connected', async ({ page }) => {
     'true',
   )
   await page.getByRole('link', { name: /contribute/i }).click()
+  await page.getByRole('button', { name: 'Capture', exact: true }).click()
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'Help map',
   )
@@ -119,6 +120,9 @@ test('airplane-mode capture persists then syncs through the hosted path', async 
         status,
       })
 
+    if (url.pathname === '/rest/v1/rpc/is_intake_open') return json(true)
+    if (url.pathname === '/rest/v1/rpc/complete_submission_upload')
+      return json(null)
     if (url.pathname === '/auth/v1/signup') {
       const timestamp = '2026-07-23T00:00:00Z'
       return json({
@@ -163,6 +167,7 @@ test('airplane-mode capture persists then syncs through the hosted path', async 
       Boolean(navigator.serviceWorker.controller),
     )
   }
+  await page.getByRole('button', { name: 'Capture', exact: true }).click()
   for (const name of ['shot-a', 'shot-b']) {
     await page.locator(`[name="${name}"]`).setInputFiles({
       buffer: jpegFixture,
@@ -225,6 +230,7 @@ test('airplane-mode capture persists then syncs through the hosted path', async 
         'POST /auth/v1/signup',
         'POST /rest/v1/contribution_grants',
         'POST /rest/v1/submissions',
+        'POST /rest/v1/rpc/complete_submission_upload',
       ]),
     )
   await expect(page.getByText(/1 observation synced/i)).toBeVisible()

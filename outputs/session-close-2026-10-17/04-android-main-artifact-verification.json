@@ -1,0 +1,14 @@
+{
+  "main_head": "b7107fe7a06b856a9ac5c137d0370db365009e27",
+  "run": 39038685787,
+  "platform": "android",
+  "payload_sha256": "748842b34f3e3dc816e4fb35f0bc8ef1ae8d6d5227eadacaee85b3ab1b3f3799",
+  "receipt_hash_matches": true,
+  "embedded_activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "repeat_entry_contents_equal": true,
+  "repeat_archive_byte_equal": true,
+  "limits": "Debug APK only; no store signing, actual device or backup qualification"
+}

@@ -1,0 +1,147 @@
+{
+  "status": "Finite exact-head general CI and fresh iOS verification complete; Android failure blocks combined acceptance.",
+  "at": "2026-10-13T20:38:25.411646+00:00",
+  "head": "77582b1269cb27d011b5d217996d8c863123f044",
+  "all_six_checks_terminal": true,
+  "general_ci": {
+    "run_id": 38462590024,
+    "job_id": 115521299950,
+    "conclusion": "success",
+    "success_steps": 34,
+    "javascript_tests": 597,
+    "javascript_files": 44,
+    "browser": [
+      {
+        "passed": 12,
+        "seconds": 16.8
+      }
+    ],
+    "python": [
+      {
+        "passed": 1525,
+        "skipped": 0,
+        "warnings": 37,
+        "seconds": 190.38
+      }
+    ],
+    "pgTAP": [
+      {
+        "files": 11,
+        "tests": 593
+      }
+    ],
+    "deno_checked_entrypoints": 2,
+    "GDAL_required_flag_observed": true,
+    "migration_compatibility": {
+      "step_succeeded": true,
+      "case_total_reported": null
+    }
+  },
+  "secret_scans": [
+    {
+      "event": "pull_request",
+      "run_id": 38462590028,
+      "job_id": 115521299618,
+      "conclusion": "success",
+      "no_leaks_literal_observed": true,
+      "version_8_21_2_token_observed": true,
+      "log_bytes": 21883,
+      "log_sha256": "eadd878c7e0ede9594992e596ca244b008e7f7a0d064e546a1740194c8b6d541",
+      "raw_log_persisted": false
+    },
+    {
+      "event": "push",
+      "run_id": 38462581165,
+      "job_id": 115521269656,
+      "conclusion": "success",
+      "no_leaks_literal_observed": true,
+      "version_8_21_2_token_observed": true,
+      "log_bytes": 20569,
+      "log_sha256": "69e0c8befa8035d3f139b2571c614cb82629784140e805112200a932d3136623",
+      "raw_log_persisted": false
+    }
+  ],
+  "DCO": {
+    "run_id": 38462590328,
+    "job_id": 115521304566,
+    "conclusion": "skipped",
+    "skip_is_not_pass": true
+  },
+  "native": {
+    "run_id": 38462590246,
+    "run_number": 46,
+    "ios_job_id": 115521301727,
+    "ios_conclusion": "success",
+    "ios_successful_steps": 26,
+    "android_job_id": 115521301919,
+    "android_conclusion": "failure",
+    "android_failed_step": 18,
+    "android_diagnosis_owner": "root/native author",
+    "combined_acceptance": false
+  },
+  "fresh_ios_artifact": {
+    "id": 11846746604,
+    "bytes": 13914557,
+    "sha256": "5500e2893e4e8c2d982a0acab29d8013ee4d6397196766d99d30d3d4dff9b174",
+    "required_files": 9,
+    "nested_zips_bounded": 4,
+    "older_artifacts_reused": false
+  },
+  "source_binding": {
+    "head": "77582b1269cb27d011b5d217996d8c863123f044",
+    "merge_checkout": "7dcc630272d9a724211288a0ff0d0646fea209ba",
+    "parents": [
+      "710d144db94097be71989c67b5d3b4bb48135ad8",
+      "77582b1269cb27d011b5d217996d8c863123f044"
+    ],
+    "tree_sha": "9fd1ee8ebc7ebd559014664e103adc903ad6ccda",
+    "source_files_bound": 8,
+    "dco": {
+      "conclusion": "skipped",
+      "head_sha": "77582b1269cb27d011b5d217996d8c863123f044",
+      "id": 115521304566,
+      "run_id": 38462590328,
+      "status": "completed"
+    },
+    "dco_skip_is_not_pass": true,
+    "get_only": true
+  },
+  "ios_replay": {
+    "helper_sha256": "c5057469e93edc5b3d519061bb1478aea3afae547dcfa81b654dcd22cbf36ded",
+    "retained_comparison_json_sha256": "eef44db2c5d081f7e8cc0847ce0dfc646227c6095847e62fd92b662d29d56d08",
+    "dictionary_equal": true,
+    "serialized_bytes_equal": true,
+    "parent_source": "d7ed716ed0921381da04f542e90902ede36cb462",
+    "candidate_merge_checkout": "7dcc630272d9a724211288a0ff0d0646fea209ba",
+    "build_receipts_exact_13_fields": "pass",
+    "four_spm_pins_and_source_license_binary_proof": "pass",
+    "exact_actual_reference_hash_and_repeat_recomputation": "pass",
+    "source_inputs_and_frozen_locks": "pass",
+    "false_activation_receipts": "pass",
+    "same_actual_runner_toolchain_versions_and_run": "pass",
+    "repeat_results": {
+      "parent": {
+        "byte_equal": false,
+        "entry_content_equal": true
+      },
+      "candidate": {
+        "byte_equal": false,
+        "entry_content_equal": true
+      }
+    },
+    "parent_zip_bytes": 3424164,
+    "candidate_zip_bytes": 3593962,
+    "overall_APP2B_zip_delta_bytes": 169798,
+    "isolated_plugin_overhead_claimed": false
+  },
+  "manifest": "/private/tmp/gsip-app77582b-ci-ios-watch-n53f4ac5/exact-head-manifest.json",
+  "manifest_sha256": "a5e5498f59d33c72577e007f735e40e96833fb26510d9f65382fe0d2a7ab1761",
+  "privacy_and_authority": "Only GET GitHub metadata/log/commit/tree/artifact reads and owned temp source/helpers/evidence. Logs parsed in memory; no raw URLs, keys, coordinates, compiled strings, private payloads or full logs persisted/emitted. No source/Git/PR/dispatch/CI/production/signing/device/account mutation.",
+  "limitations": [
+    "Authenticated merge checkout7dcc630... is main710 plus exact77582b;8fixedsource blobs match. Branch and merge identities are distinct.",
+    "Android failed; no combined native acceptance, new Android hypothesis or source fix from this observer.",
+    "Repeated full ZIP bytes differ although all nondirectory entry bytes match; no universal/cross-runner reproducibility or isolated plugin-size claim.",
+    "Migration numeric case count and individual quiet-pytest GDAL names are not separately printed; required GDAL flag and full Python zero skips observed.",
+    "Strict retained native source/license proof replay is not fresh upstream recompilation or device/backup/store/field/production readiness."
+  ]
+}

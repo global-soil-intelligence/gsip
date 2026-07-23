@@ -1,0 +1,8 @@
+{
+  "observed_at": "2026-10-12T14:23:05.871Z",
+  "target_project_ref": "toxldjgwkxtneoqsazym",
+  "scope": "read-only postgres global/private default function grants",
+  "metadata": [],
+  "production_mutations": [],
+  "query_sha256": "fbb548f91cd2532beee1cdf356bd04c790ec272994548687a66d3068f285d4c0"
+}

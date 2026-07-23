@@ -1,0 +1,166 @@
+{
+  "all_artifacts_exact_head_bound": true,
+  "all_checks_exact_head_bound": true,
+  "app_build_artifacts": [
+    {
+      "created_at": "2026-10-12T12:27:44Z",
+      "digest": "sha256:503740d9a052b2229a0b1b636827ed9d9aa2a6e269c29ed17fe277e42e0e61a3",
+      "expired": false,
+      "expires_at": "2026-10-26T12:27:43Z",
+      "id": 11747696114,
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 3324927,
+      "updated_at": "2026-10-12T12:27:44Z",
+      "workflow_run": {
+        "head_branch": "wp-app-2a-build-readiness",
+        "head_repository_id": 1308971325,
+        "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+        "id": 38248853443,
+        "repository_id": 1308971325
+      }
+    },
+    {
+      "created_at": "2026-10-12T12:28:11Z",
+      "digest": "sha256:f165f5a74bf61d0d13743c8a5a4513fae469361e556860d45bf088ce6432b6c1",
+      "expired": false,
+      "expires_at": "2026-10-26T12:28:10Z",
+      "id": 11746791476,
+      "name": "gsip-capture-android-debug",
+      "size_in_bytes": 7147349,
+      "updated_at": "2026-10-12T12:28:11Z",
+      "workflow_run": {
+        "head_branch": "wp-app-2a-build-readiness",
+        "head_repository_id": 1308971325,
+        "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+        "id": 38248853443,
+        "repository_id": 1308971325
+      }
+    }
+  ],
+  "app_build_run": 38248853443,
+  "artifact_contents_downloaded_or_reverified": false,
+  "base": "docs/spec-v4",
+  "branch": "wp-app-2a-build-readiness",
+  "check_count": 6,
+  "checks": [
+    {
+      "completed_at": "2026-10-12T12:24:43Z",
+      "conclusion": "skipped",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853498/job/114809644823",
+      "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "id": 114809644823,
+      "name": "dco",
+      "started_at": "2026-10-12T12:24:52Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-12T12:29:36Z",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853563/job/114809595032",
+      "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "id": 114809595032,
+      "name": "validate",
+      "started_at": "2026-10-12T12:24:45Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-12T12:27:53Z",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853443/job/114809594649",
+      "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "id": 114809594649,
+      "name": "ios",
+      "started_at": "2026-10-12T12:24:49Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-12T12:28:14Z",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853443/job/114809594110",
+      "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "id": 114809594110,
+      "name": "android",
+      "started_at": "2026-10-12T12:24:44Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-12T12:24:50Z",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853422/job/114809593478",
+      "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "id": 114809593478,
+      "name": "gitleaks",
+      "started_at": "2026-10-12T12:24:44Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-12T12:24:42Z",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248841298/job/114809550679",
+      "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "id": 114809550679,
+      "name": "gitleaks",
+      "started_at": "2026-10-12T12:24:37Z",
+      "status": "completed"
+    }
+  ],
+  "dco_skip_is_not_agent_dco_certification": true,
+  "expected_head": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+  "limitations": [
+    "Two optional full workflow metadata reads returned GitHub HTTP502; independently read exact-head completed checks and both native artifact metadata establish the reported status.",
+    "New artifact contents were not downloaded in this monitoring task."
+  ],
+  "mutations_performed": false,
+  "observed_at_utc": "2026-10-12T12:42:14.786665+00:00",
+  "observed_head": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+  "pr": 39,
+  "status": "GREEN",
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/39",
+  "workflow_metadata_readbacks": [
+    {
+      "conclusion": "success",
+      "event": "pull_request",
+      "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "id": 38248853563,
+      "name": "CI",
+      "run_number": 113,
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "event": "pull_request",
+      "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "id": 38248853498,
+      "name": "DCO",
+      "run_number": 54,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "event": "pull_request",
+      "head_sha": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "id": 38248853422,
+      "name": "Secret scan",
+      "run_number": 111,
+      "status": "completed"
+    },
+    {
+      "artifact_head_binding": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "full_workflow_metadata_readback": "UNAVAILABLE_HTTP_502",
+      "id": 38248853443,
+      "native_job_checks": "success"
+    },
+    {
+      "check_result": "success",
+      "full_workflow_metadata_readback": "UNAVAILABLE_HTTP_502",
+      "id": 38248841298
+    }
+  ],
+  "workflow_run_ids_from_exact_head_checks": [
+    38248841298,
+    38248853422,
+    38248853443,
+    38248853498,
+    38248853563
+  ]
+}

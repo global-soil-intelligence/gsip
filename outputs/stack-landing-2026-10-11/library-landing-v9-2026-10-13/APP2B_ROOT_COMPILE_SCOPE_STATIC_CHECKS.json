@@ -1,0 +1,19 @@
+{
+  "utc": "2026-10-14T00:18:27.957272+00:00",
+  "source_helper_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+  "checks": [
+    {
+      "check": "ruff",
+      "exit_code": 2,
+      "seconds": 0.248,
+      "output_file": "app2b-root-compile-scope-ruff.txt",
+      "output_sha256": "2ae7e01e3a6a3e17f922598e4fa5b8ec9dd2f6336d49b8e7fbcaec7e4422efe0",
+      "output_bytes": 198
+    }
+  ],
+  "all_pass": false,
+  "unchanged_real_gradle_cases_deselected": false,
+  "real_gradle_task_changed": false,
+  "previous_real_30_execution": "APP2B_ROOT_REVIEWED_NATIVE_V3_PYTHON_CHECKS.json",
+  "production_changes": false
+}

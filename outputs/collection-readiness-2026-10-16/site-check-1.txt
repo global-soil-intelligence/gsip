@@ -1,0 +1,2 @@
+map initial bundle: 2196657 bytes / 5242880 byte budget
+$ node scripts/check-map-budget.mjs

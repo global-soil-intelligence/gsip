@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "scope": "docs-only source clarification",
+  "baseline": "afadda988cb8619d4f3a98515629909ca761763f",
+  "contracts": [
+    {
+      "behavior": "invoker exposed boundary",
+      "before_pass": false,
+      "after_pass": true
+    },
+    {
+      "behavior": "bound wrapper without schema privilege",
+      "before_pass": false,
+      "after_pass": true
+    },
+    {
+      "behavior": "preserved service upload capability",
+      "before_pass": false,
+      "after_pass": true
+    },
+    {
+      "behavior": "restrictive accidental allowance defense",
+      "before_pass": false,
+      "after_pass": true
+    },
+    {
+      "behavior": "core missing-row failclosed acceptance",
+      "before_pass": false,
+      "after_pass": true
+    },
+    {
+      "behavior": "rights permissive fault injection acceptance",
+      "before_pass": false,
+      "after_pass": true
+    }
+  ],
+  "resolved_markdown_links": [],
+  "production_actions": []
+}

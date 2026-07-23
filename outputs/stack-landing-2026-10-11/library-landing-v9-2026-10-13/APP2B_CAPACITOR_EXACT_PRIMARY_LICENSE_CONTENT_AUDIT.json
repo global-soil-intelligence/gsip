@@ -1,0 +1,92 @@
+{
+  "primary_only": true,
+  "identity": "capacitor-swift-pm",
+  "version": "8.5.2",
+  "revision": "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+  "license_source": "versioned Capacitor source MIT; Cordova retains Apache2source headers, no license inference for unrelated binary contents",
+  "tag_commit_time": "2026-09-11T15:05:16Z",
+  "release_published_at": "2026-09-11T15:05:22Z",
+  "repo_pushed_at": "2026-10-07T14:21:25Z",
+  "files": [
+    {
+      "label": "tag",
+      "url": "https://api.github.com/repos/ionic-team/capacitor-swift-pm/git/ref/tags/8.5.2",
+      "bytes": 356,
+      "sha256": "90743c0894ca271bcaed86da38a7f84faa91ea9887b481d7ae863a7ba2a7b251"
+    },
+    {
+      "label": "repo",
+      "url": "https://api.github.com/repos/ionic-team/capacitor-swift-pm",
+      "bytes": 6665,
+      "sha256": "264823609e9c1e176ac916a7cb6c5d8b77d57a535a35957aa868abceb412d821"
+    },
+    {
+      "label": "release",
+      "url": "https://api.github.com/repos/ionic-team/capacitor-swift-pm/releases/tags/8.5.2",
+      "bytes": 5304,
+      "sha256": "ca4e7c25dc1872dbf9be3588bfdf76afde9d6957204809cef398e0e1f1c33d9d"
+    },
+    {
+      "label": "manifest",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/Package.swift",
+      "bytes": 904,
+      "sha256": "d438f723a12d16a803aeb0b81d1160a04ead205f74614a2b97aa8965acf95a72"
+    },
+    {
+      "label": "readme",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md",
+      "bytes": 382,
+      "sha256": "da248c966f5d41d4a36967eaace66fc6c8436f46c4fbad3434df3f54b737d9c4"
+    },
+    {
+      "label": "license",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE",
+      "bytes": 1075,
+      "sha256": "9c6ebf3e5ab832ba4d5af38f340978e1fedbfee6e3d23662dfdb8917a9d864dd"
+    },
+    {
+      "label": "source",
+      "url": "https://codeload.github.com/ionic-team/capacitor-swift-pm/tar.gz/refs/tags/8.5.2",
+      "bytes": 3549,
+      "sha256": "4299321005ae1e8fa981eda92b2bd263eda6008baf249818cd794c2c8f22f667"
+    },
+    {
+      "label": "Capacitor",
+      "url": "https://github.com/ionic-team/capacitor-swift-pm/releases/download/8.5.2/Capacitor.xcframework.zip",
+      "bytes": 6611661,
+      "sha256": "134c65a8bd30bfaa8ccb158d78142fa7231bf3f472e4a5d808c5fbed90fd4c75"
+    },
+    {
+      "label": "Cordova",
+      "url": "https://github.com/ionic-team/capacitor-swift-pm/releases/download/8.5.2/Cordova.xcframework.zip",
+      "bytes": 1842451,
+      "sha256": "57ff2c8f1e5dcd8d4379ac3cccde1407d81ccd575347dc2aff4f72272b8794a1"
+    },
+    {
+      "label": "commit",
+      "url": "https://api.github.com/repos/ionic-team/capacitor-swift-pm/commits/0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+      "bytes": 5142,
+      "sha256": "6d9e9e60698361698dc5c5151595ede7584ad83c19822fcb2a171b0cc498f20d"
+    }
+  ],
+  "source_tree": {
+    "bytes": 9594,
+    "file_count": 9,
+    "tree_sha256": "a9db722c3e4ffbb6bcd049ca844a64dafde4a92d70c70f170779502b09122652"
+  },
+  "binary_trees": [
+    {
+      "name": "Capacitor",
+      "bytes": 23980848,
+      "file_count": 54,
+      "tree_sha256": "50de18f4b668ee63f13f6def160a3793a0b4c2da64bed3bd6f4364ec7d82f8bc"
+    },
+    {
+      "name": "Cordova",
+      "bytes": 4838267,
+      "file_count": 58,
+      "tree_sha256": "10f6b5162f8953a32d8a2285ea6fe885ae8f72955962c003160f51b77e4bf2da"
+    }
+  ],
+  "limit": "Checksums and provenance verify exact published bytes, not reproducibility of upstream binary compilation."
+}

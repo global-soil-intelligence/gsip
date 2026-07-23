@@ -1,0 +1,2 @@
+[90m9:44PM[0m [32mINF[0m scan completed in 65.5ms
+[90m9:44PM[0m [32mINF[0m no leaks found

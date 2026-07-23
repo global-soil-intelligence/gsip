@@ -1,0 +1,92 @@
+{
+  "project": "toxldjgwkxtneoqsazym",
+  "stage": "stray_retired",
+  "read_at": "2026-10-12T12:42:57.158Z",
+  "records": [
+    {
+      "version": "20260722164727",
+      "name": "wp1_extensions",
+      "history_row_sha256": "1a5fc646d6ab0bfbfa30d1d57a43e3bf4411995b31cf1327021f35e07cb9d8cd"
+    },
+    {
+      "version": "20260722164749",
+      "name": "wp1_schema",
+      "history_row_sha256": "fa375576da89ff3d5f70280cb24821faa729b3e06e7383691673462136756b98"
+    },
+    {
+      "version": "20260722164806",
+      "name": "wp1_rls",
+      "history_row_sha256": "62c149ef06ffe973b13022ce5886e6f3910ffc17584586d71d8fd87dd6b7502e"
+    },
+    {
+      "version": "20260722170020",
+      "name": "wp1_review_hardening",
+      "history_row_sha256": "714a4d8d7336b9a4b13e1aa004e8b323125cc0a779baeb2afda341ec4567b528"
+    },
+    {
+      "version": "20260722181500",
+      "name": "wp1_v22_privacy_and_grants",
+      "history_row_sha256": "2af4b0d6d1984d75c04c430bb58b871865e7767e774981f9e330a3a2e9a1af86"
+    },
+    {
+      "version": "20260722183000",
+      "name": "wp1_performance_indexes",
+      "history_row_sha256": "4b26901a525cb64791dbcc428c277cb26564464e97d1af3cf3bbde10d36bdb93"
+    },
+    {
+      "version": "20260722190000",
+      "name": "wp4_prior_jobs",
+      "history_row_sha256": "36044acc2dea448debea57ce377e4c449049265c815d7bbd1e7ad02cab49604d"
+    },
+    {
+      "version": "20260722190500",
+      "name": "wp4_prior_jobs_hardening",
+      "history_row_sha256": "8e4131e15e1a6134fae389eb5fa118120b2b4da3ad8bfa5a0a09a9ab7579c14b"
+    },
+    {
+      "version": "20260722193000",
+      "name": "wp4b_photo_qa",
+      "history_row_sha256": "fbb55d148274027918867d745956d277c64d523a2e652b291b69c342a9b8f09a"
+    },
+    {
+      "version": "20260722200000",
+      "name": "wp6_export_guardrails",
+      "history_row_sha256": "2e88cda9e4cc2f3e3b63b3acb22a07993fa47dabaca5519b93f86a998a61ba49"
+    },
+    {
+      "version": "20260723002255",
+      "name": "phase1_actor_hardening",
+      "history_row_sha256": "7ff5a5a1ff4709aa7e5940651e1e097306694dada9837e705b9c7166e115393f"
+    },
+    {
+      "version": "20260723004439",
+      "name": "qa_event_provenance",
+      "history_row_sha256": "a76009bd8c387178df05bf6b4e7c049ae44343fccec630b2a4f00de8cff99e2d"
+    },
+    {
+      "version": "20260723005752",
+      "name": "public_h3_aggregates",
+      "history_row_sha256": "a07de117b915d476b003899ceaaa12d7e09f7bd203b3154931655e390c4c86b5"
+    },
+    {
+      "version": "20260723010313",
+      "name": "atomic_public_h3_refresh",
+      "history_row_sha256": "ab1451e9f0e5dcaf437318e86a32bd07c437c3387e0f124a108e2a706a98f317"
+    },
+    {
+      "version": "20260723044745",
+      "name": "atomic_prior_attempt_claim",
+      "history_row_sha256": "fda2bbe1bcd8f4d4386667461c44c9a533a0483cac41fd601a816dccb6530b8c"
+    },
+    {
+      "version": "20260723045317",
+      "name": "document_authenticated_h3_role",
+      "history_row_sha256": "63abedd966bc26e7f90ff47bda24caab4a02b129111d5a582dacb5a78d72f710"
+    },
+    {
+      "version": "20260723045606",
+      "name": "remove_public_submission_residue",
+      "history_row_sha256": "05535852c1756309f8f2f90c65c3f0a269e4662c3f9e113fa66e9172cc324ec3"
+    }
+  ]
+}

@@ -1,0 +1,1484 @@
+{
+  "observedAt": "2026-10-12T01:50:54.828873+00:00",
+  "repository": "global-soil-intelligence/gsip",
+  "pullRequests": [
+    {
+      "headRefName": "wp-agent-0-coding-guidance",
+      "headRefOid": "ca275c4da4cb6641fbe5418ed7135916cc514e16",
+      "number": 36,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:38:45Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685411/job/114628654174",
+          "name": "dco",
+          "startedAt": "2026-10-12T01:38:54Z",
+          "status": "COMPLETED",
+          "workflowName": "DCO"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:43:47Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685396/job/114628627188",
+          "name": "validate",
+          "startedAt": "2026-10-12T01:38:47Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:38:55Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685386/job/114628626935",
+          "name": "gitleaks",
+          "startedAt": "2026-10-12T01:38:47Z",
+          "status": "COMPLETED",
+          "workflowName": "Secret scan"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:38:49Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192682089/job/114628617472",
+          "name": "gitleaks",
+          "startedAt": "2026-10-12T01:38:43Z",
+          "status": "COMPLETED",
+          "workflowName": "Secret scan"
+        }
+      ],
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/36"
+    },
+    {
+      "headRefName": "wp-app-2a-build-readiness",
+      "headRefOid": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+      "number": 39,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:41:01Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835280/job/114629078936",
+          "name": "dco",
+          "startedAt": "2026-10-12T01:41:02Z",
+          "status": "COMPLETED",
+          "workflowName": "DCO"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:49:36Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835277/job/114629077629",
+          "name": "android",
+          "startedAt": "2026-10-12T01:41:03Z",
+          "status": "COMPLETED",
+          "workflowName": "App build"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:46:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835300/job/114629077586",
+          "name": "validate",
+          "startedAt": "2026-10-12T01:41:03Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:41:10Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835278/job/114629077497",
+          "name": "gitleaks",
+          "startedAt": "2026-10-12T01:41:03Z",
+          "status": "COMPLETED",
+          "workflowName": "Secret scan"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:41:07Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192831819/job/114629066456",
+          "name": "gitleaks",
+          "startedAt": "2026-10-12T01:41:00Z",
+          "status": "COMPLETED",
+          "workflowName": "Secret scan"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T01:43:02Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835277/job/114629077803",
+          "name": "ios",
+          "startedAt": "2026-10-12T01:41:06Z",
+          "status": "COMPLETED",
+          "workflowName": "App build"
+        }
+      ],
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/39"
+    }
+  ],
+  "runs": {
+    "38192685411": {
+      "conclusion": "skipped",
+      "createdAt": "2026-10-12T01:38:45Z",
+      "event": "pull_request",
+      "headSha": "ca275c4da4cb6641fbe5418ed7135916cc514e16",
+      "jobs": [
+        {
+          "completedAt": "2026-10-12T01:38:45Z",
+          "conclusion": "skipped",
+          "databaseId": 114628654174,
+          "name": "dco",
+          "startedAt": "2026-10-12T01:38:54Z",
+          "status": "completed",
+          "steps": [],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685411/job/114628654174"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-12T01:38:46Z",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685411",
+      "workflowName": "DCO"
+    },
+    "38192685396": {
+      "conclusion": "success",
+      "createdAt": "2026-10-12T01:38:45Z",
+      "event": "pull_request",
+      "headSha": "ca275c4da4cb6641fbe5418ed7135916cc514e16",
+      "jobs": [
+        {
+          "completedAt": "2026-10-12T01:43:47Z",
+          "conclusion": "success",
+          "databaseId": 114628627188,
+          "name": "validate",
+          "startedAt": "2026-10-12T01:38:47Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-12T01:38:50Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-12T01:38:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:51Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@v7",
+              "number": 2,
+              "startedAt": "2026-10-12T01:38:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:58Z",
+              "conclusion": "success",
+              "name": "Run pnpm/action-setup@v6",
+              "number": 3,
+              "startedAt": "2026-10-12T01:38:51Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:02Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@v7",
+              "number": 4,
+              "startedAt": "2026-10-12T01:38:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:04Z",
+              "conclusion": "success",
+              "name": "Run astral-sh/setup-uv@v7",
+              "number": 5,
+              "startedAt": "2026-10-12T01:39:02Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:04Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v7",
+              "number": 6,
+              "startedAt": "2026-10-12T01:39:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:06Z",
+              "conclusion": "success",
+              "name": "Run denoland/setup-deno@v2",
+              "number": 7,
+              "startedAt": "2026-10-12T01:39:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:19Z",
+              "conclusion": "success",
+              "name": "Install GDAL for the golden-tile tests",
+              "number": 8,
+              "startedAt": "2026-10-12T01:39:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:24Z",
+              "conclusion": "success",
+              "name": "Run pnpm install --frozen-lockfile",
+              "number": 9,
+              "startedAt": "2026-10-12T01:39:19Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:26Z",
+              "conclusion": "success",
+              "name": "Run uv sync --frozen --all-groups",
+              "number": 10,
+              "startedAt": "2026-10-12T01:39:24Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:33Z",
+              "conclusion": "success",
+              "name": "Run pnpm lint",
+              "number": 11,
+              "startedAt": "2026-10-12T01:39:26Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:40Z",
+              "conclusion": "success",
+              "name": "Run pnpm typecheck",
+              "number": 12,
+              "startedAt": "2026-10-12T01:39:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:39:56Z",
+              "conclusion": "success",
+              "name": "Run pnpm test",
+              "number": 13,
+              "startedAt": "2026-10-12T01:39:40Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:40:01Z",
+              "conclusion": "success",
+              "name": "Run pnpm build",
+              "number": 14,
+              "startedAt": "2026-10-12T01:39:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:40:02Z",
+              "conclusion": "success",
+              "name": "Run pnpm check:map-budget",
+              "number": 15,
+              "startedAt": "2026-10-12T01:40:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:40:17Z",
+              "conclusion": "success",
+              "name": "Run pnpm exec playwright install --with-deps chromium",
+              "number": 16,
+              "startedAt": "2026-10-12T01:40:02Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:40:32Z",
+              "conclusion": "success",
+              "name": "Run pnpm exec playwright test --project=desktop-chrome",
+              "number": 17,
+              "startedAt": "2026-10-12T01:40:17Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:40:32Z",
+              "conclusion": "success",
+              "name": "Run uv run ruff check .",
+              "number": 18,
+              "startedAt": "2026-10-12T01:40:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:40:43Z",
+              "conclusion": "success",
+              "name": "Run uv run mypy",
+              "number": 19,
+              "startedAt": "2026-10-12T01:40:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:05Z",
+              "conclusion": "success",
+              "name": "Run uv run pytest",
+              "number": 20,
+              "startedAt": "2026-10-12T01:40:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:07Z",
+              "conclusion": "success",
+              "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+              "number": 21,
+              "startedAt": "2026-10-12T01:41:05Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:10Z",
+              "conclusion": "success",
+              "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+              "number": 22,
+              "startedAt": "2026-10-12T01:41:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:14Z",
+              "conclusion": "success",
+              "name": "Apply migrations to data written before them",
+              "number": 23,
+              "startedAt": "2026-10-12T01:41:10Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:47Z",
+              "conclusion": "success",
+              "name": "Run pnpm db:start",
+              "number": 24,
+              "startedAt": "2026-10-12T01:41:14Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:18Z",
+              "conclusion": "success",
+              "name": "Run pnpm db:reset",
+              "number": 25,
+              "startedAt": "2026-10-12T01:42:47Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:22Z",
+              "conclusion": "success",
+              "name": "Run pnpm db:test",
+              "number": 26,
+              "startedAt": "2026-10-12T01:43:18Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:43Z",
+              "conclusion": "success",
+              "name": "Run pnpm db:stop",
+              "number": 27,
+              "startedAt": "2026-10-12T01:43:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:43Z",
+              "conclusion": "success",
+              "name": "Post Run denoland/setup-deno@v2",
+              "number": 49,
+              "startedAt": "2026-10-12T01:43:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:43Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v7",
+              "number": 50,
+              "startedAt": "2026-10-12T01:43:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:43Z",
+              "conclusion": "success",
+              "name": "Post Run astral-sh/setup-uv@v7",
+              "number": 51,
+              "startedAt": "2026-10-12T01:43:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:43Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@v7",
+              "number": 52,
+              "startedAt": "2026-10-12T01:43:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:43Z",
+              "conclusion": "success",
+              "name": "Post Run pnpm/action-setup@v6",
+              "number": 53,
+              "startedAt": "2026-10-12T01:43:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:44Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v7",
+              "number": 54,
+              "startedAt": "2026-10-12T01:43:43Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:44Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 55,
+              "startedAt": "2026-10-12T01:43:44Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685396/job/114628627188"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-12T01:43:47Z",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685396",
+      "workflowName": "CI"
+    },
+    "38192685386": {
+      "conclusion": "success",
+      "createdAt": "2026-10-12T01:38:44Z",
+      "event": "pull_request",
+      "headSha": "ca275c4da4cb6641fbe5418ed7135916cc514e16",
+      "jobs": [
+        {
+          "completedAt": "2026-10-12T01:38:55Z",
+          "conclusion": "success",
+          "databaseId": 114628626935,
+          "name": "gitleaks",
+          "startedAt": "2026-10-12T01:38:47Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-12T01:38:49Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-12T01:38:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:50Z",
+              "conclusion": "success",
+              "name": "Check out full history",
+              "number": 2,
+              "startedAt": "2026-10-12T01:38:49Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:50Z",
+              "conclusion": "success",
+              "name": "Install gitleaks v8.21.2",
+              "number": 3,
+              "startedAt": "2026-10-12T01:38:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:52Z",
+              "conclusion": "success",
+              "name": "Scan Git history",
+              "number": 4,
+              "startedAt": "2026-10-12T01:38:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:53Z",
+              "conclusion": "success",
+              "name": "Post Check out full history",
+              "number": 8,
+              "startedAt": "2026-10-12T01:38:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:53Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 9,
+              "startedAt": "2026-10-12T01:38:53Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685386/job/114628626935"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-12T01:38:55Z",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685386",
+      "workflowName": "Secret scan"
+    },
+    "38192682089": {
+      "conclusion": "success",
+      "createdAt": "2026-10-12T01:38:41Z",
+      "event": "push",
+      "headSha": "ca275c4da4cb6641fbe5418ed7135916cc514e16",
+      "jobs": [
+        {
+          "completedAt": "2026-10-12T01:38:49Z",
+          "conclusion": "success",
+          "databaseId": 114628617472,
+          "name": "gitleaks",
+          "startedAt": "2026-10-12T01:38:43Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-12T01:38:44Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-12T01:38:44Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:45Z",
+              "conclusion": "success",
+              "name": "Check out full history",
+              "number": 2,
+              "startedAt": "2026-10-12T01:38:44Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:46Z",
+              "conclusion": "success",
+              "name": "Install gitleaks v8.21.2",
+              "number": 3,
+              "startedAt": "2026-10-12T01:38:45Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:48Z",
+              "conclusion": "success",
+              "name": "Scan Git history",
+              "number": 4,
+              "startedAt": "2026-10-12T01:38:46Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:48Z",
+              "conclusion": "success",
+              "name": "Post Check out full history",
+              "number": 8,
+              "startedAt": "2026-10-12T01:38:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:38:48Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 9,
+              "startedAt": "2026-10-12T01:38:48Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192682089/job/114628617472"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-12T01:38:49Z",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192682089",
+      "workflowName": "Secret scan"
+    },
+    "38192835280": {
+      "conclusion": "skipped",
+      "createdAt": "2026-10-12T01:41:01Z",
+      "event": "pull_request",
+      "headSha": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+      "jobs": [
+        {
+          "completedAt": "2026-10-12T01:41:01Z",
+          "conclusion": "skipped",
+          "databaseId": 114629078936,
+          "name": "dco",
+          "startedAt": "2026-10-12T01:41:02Z",
+          "status": "completed",
+          "steps": [],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835280/job/114629078936"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-12T01:41:01Z",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835280",
+      "workflowName": "DCO"
+    },
+    "38192835277": {
+      "conclusion": "success",
+      "createdAt": "2026-10-12T01:41:01Z",
+      "event": "pull_request",
+      "headSha": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+      "jobs": [
+        {
+          "completedAt": "2026-10-12T01:49:36Z",
+          "conclusion": "success",
+          "databaseId": 114629077629,
+          "name": "android",
+          "startedAt": "2026-10-12T01:41:03Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-12T01:41:07Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-12T01:41:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:08Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@v7",
+              "number": 2,
+              "startedAt": "2026-10-12T01:41:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:13Z",
+              "conclusion": "success",
+              "name": "Run pnpm/action-setup@v6",
+              "number": 3,
+              "startedAt": "2026-10-12T01:41:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:15Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@v7",
+              "number": 4,
+              "startedAt": "2026-10-12T01:41:13Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:15Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-java@v6",
+              "number": 5,
+              "startedAt": "2026-10-12T01:41:15Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:15Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v7",
+              "number": 6,
+              "startedAt": "2026-10-12T01:41:15Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:22Z",
+              "conclusion": "success",
+              "name": "Run pnpm install --frozen-lockfile",
+              "number": 7,
+              "startedAt": "2026-10-12T01:41:15Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:23Z",
+              "conclusion": "success",
+              "name": "Run pnpm --filter @gsip/capture-pwa build:app",
+              "number": 8,
+              "startedAt": "2026-10-12T01:41:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:24Z",
+              "conclusion": "success",
+              "name": "Generate the Android project",
+              "number": 9,
+              "startedAt": "2026-10-12T01:41:23Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:24Z",
+              "conclusion": "success",
+              "name": "Apply the app's permissions",
+              "number": 10,
+              "startedAt": "2026-10-12T01:41:24Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:24Z",
+              "conclusion": "success",
+              "name": "Apply CI versions and Android backup rules",
+              "number": 11,
+              "startedAt": "2026-10-12T01:41:24Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:47:17Z",
+              "conclusion": "success",
+              "name": "Check the app ships no closed SDK",
+              "number": 12,
+              "startedAt": "2026-10-12T01:41:24Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:48:50Z",
+              "conclusion": "success",
+              "name": "Build the debug APK",
+              "number": 13,
+              "startedAt": "2026-10-12T01:47:17Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:48:51Z",
+              "conclusion": "success",
+              "name": "Check the APK's permissions",
+              "number": 14,
+              "startedAt": "2026-10-12T01:48:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:48:51Z",
+              "conclusion": "success",
+              "name": "Verify the first APK and preserve the comparison input",
+              "number": 15,
+              "startedAt": "2026-10-12T01:48:51Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:49:28Z",
+              "conclusion": "success",
+              "name": "Repeat the Android build with the same inputs",
+              "number": 16,
+              "startedAt": "2026-10-12T01:48:51Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:49:30Z",
+              "conclusion": "success",
+              "name": "Check repeated APK policy and record build evidence",
+              "number": 17,
+              "startedAt": "2026-10-12T01:49:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:49:32Z",
+              "conclusion": "success",
+              "name": "Run actions/upload-artifact@v7",
+              "number": 18,
+              "startedAt": "2026-10-12T01:49:30Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:49:32Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v7",
+              "number": 32,
+              "startedAt": "2026-10-12T01:49:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:49:32Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-java@v6",
+              "number": 33,
+              "startedAt": "2026-10-12T01:49:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:49:34Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@v7",
+              "number": 34,
+              "startedAt": "2026-10-12T01:49:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:49:34Z",
+              "conclusion": "success",
+              "name": "Post Run pnpm/action-setup@v6",
+              "number": 35,
+              "startedAt": "2026-10-12T01:49:34Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:49:34Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v7",
+              "number": 36,
+              "startedAt": "2026-10-12T01:49:34Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:49:34Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 37,
+              "startedAt": "2026-10-12T01:49:34Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835277/job/114629077629"
+        },
+        {
+          "completedAt": "2026-10-12T01:43:02Z",
+          "conclusion": "success",
+          "databaseId": 114629077803,
+          "name": "ios",
+          "startedAt": "2026-10-12T01:41:06Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-12T01:41:08Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-12T01:41:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:10Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@v7",
+              "number": 2,
+              "startedAt": "2026-10-12T01:41:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:13Z",
+              "conclusion": "success",
+              "name": "Run pnpm/action-setup@v6",
+              "number": 3,
+              "startedAt": "2026-10-12T01:41:10Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:14Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@v7",
+              "number": 4,
+              "startedAt": "2026-10-12T01:41:13Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:14Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v7",
+              "number": 5,
+              "startedAt": "2026-10-12T01:41:14Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:15Z",
+              "conclusion": "success",
+              "name": "Use the newest Xcode on the runner",
+              "number": 6,
+              "startedAt": "2026-10-12T01:41:14Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:22Z",
+              "conclusion": "success",
+              "name": "Run pnpm install --frozen-lockfile",
+              "number": 7,
+              "startedAt": "2026-10-12T01:41:15Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:22Z",
+              "conclusion": "success",
+              "name": "Run pnpm --filter @gsip/capture-pwa build:app",
+              "number": 8,
+              "startedAt": "2026-10-12T01:41:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:23Z",
+              "conclusion": "success",
+              "name": "Generate the iOS project",
+              "number": 9,
+              "startedAt": "2026-10-12T01:41:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:23Z",
+              "conclusion": "success",
+              "name": "Apply the app's permissions",
+              "number": 10,
+              "startedAt": "2026-10-12T01:41:23Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:23Z",
+              "conclusion": "success",
+              "name": "Apply CI versions to iOS",
+              "number": 11,
+              "startedAt": "2026-10-12T01:41:23Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:25Z",
+              "conclusion": "success",
+              "name": "Build for the iOS simulator",
+              "number": 12,
+              "startedAt": "2026-10-12T01:41:23Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:25Z",
+              "conclusion": "success",
+              "name": "Check the built app's permissions",
+              "number": 13,
+              "startedAt": "2026-10-12T01:42:25Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:25Z",
+              "conclusion": "success",
+              "name": "Verify the first iOS build and preserve the comparison input",
+              "number": 14,
+              "startedAt": "2026-10-12T01:42:25Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:45Z",
+              "conclusion": "success",
+              "name": "Repeat the iOS build with the same inputs",
+              "number": 15,
+              "startedAt": "2026-10-12T01:42:25Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:45Z",
+              "conclusion": "success",
+              "name": "Check the repeated iOS build",
+              "number": 16,
+              "startedAt": "2026-10-12T01:42:45Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:46Z",
+              "conclusion": "success",
+              "name": "Package the simulator build",
+              "number": 17,
+              "startedAt": "2026-10-12T01:42:45Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:48Z",
+              "conclusion": "success",
+              "name": "Record iOS build evidence",
+              "number": 18,
+              "startedAt": "2026-10-12T01:42:46Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:49Z",
+              "conclusion": "success",
+              "name": "Run actions/upload-artifact@v7",
+              "number": 19,
+              "startedAt": "2026-10-12T01:42:48Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:50Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v7",
+              "number": 35,
+              "startedAt": "2026-10-12T01:42:49Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:58Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@v7",
+              "number": 36,
+              "startedAt": "2026-10-12T01:42:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:58Z",
+              "conclusion": "success",
+              "name": "Post Run pnpm/action-setup@v6",
+              "number": 37,
+              "startedAt": "2026-10-12T01:42:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:58Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v7",
+              "number": 38,
+              "startedAt": "2026-10-12T01:42:58Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:00Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 39,
+              "startedAt": "2026-10-12T01:42:58Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835277/job/114629077803"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-12T01:49:37Z",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835277",
+      "workflowName": "App build"
+    },
+    "38192835300": {
+      "conclusion": "success",
+      "createdAt": "2026-10-12T01:41:01Z",
+      "event": "pull_request",
+      "headSha": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+      "jobs": [
+        {
+          "completedAt": "2026-10-12T01:46:01Z",
+          "conclusion": "success",
+          "databaseId": 114629077586,
+          "name": "validate",
+          "startedAt": "2026-10-12T01:41:03Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-12T01:41:06Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-12T01:41:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:07Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@v7",
+              "number": 2,
+              "startedAt": "2026-10-12T01:41:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:11Z",
+              "conclusion": "success",
+              "name": "Run pnpm/action-setup@v6",
+              "number": 3,
+              "startedAt": "2026-10-12T01:41:07Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:12Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@v7",
+              "number": 4,
+              "startedAt": "2026-10-12T01:41:11Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:13Z",
+              "conclusion": "success",
+              "name": "Run astral-sh/setup-uv@v7",
+              "number": 5,
+              "startedAt": "2026-10-12T01:41:12Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:13Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-python@v7",
+              "number": 6,
+              "startedAt": "2026-10-12T01:41:13Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:15Z",
+              "conclusion": "success",
+              "name": "Run denoland/setup-deno@v2",
+              "number": 7,
+              "startedAt": "2026-10-12T01:41:13Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:36Z",
+              "conclusion": "success",
+              "name": "Install GDAL for the golden-tile tests",
+              "number": 8,
+              "startedAt": "2026-10-12T01:41:15Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:42Z",
+              "conclusion": "success",
+              "name": "Run pnpm install --frozen-lockfile",
+              "number": 9,
+              "startedAt": "2026-10-12T01:41:36Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:45Z",
+              "conclusion": "success",
+              "name": "Run uv sync --frozen --all-groups",
+              "number": 10,
+              "startedAt": "2026-10-12T01:41:42Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:52Z",
+              "conclusion": "success",
+              "name": "Run pnpm lint",
+              "number": 11,
+              "startedAt": "2026-10-12T01:41:45Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:59Z",
+              "conclusion": "success",
+              "name": "Run pnpm typecheck",
+              "number": 12,
+              "startedAt": "2026-10-12T01:41:52Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:14Z",
+              "conclusion": "success",
+              "name": "Run pnpm test",
+              "number": 13,
+              "startedAt": "2026-10-12T01:41:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:19Z",
+              "conclusion": "success",
+              "name": "Run pnpm build",
+              "number": 14,
+              "startedAt": "2026-10-12T01:42:14Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:19Z",
+              "conclusion": "success",
+              "name": "Run pnpm check:map-budget",
+              "number": 15,
+              "startedAt": "2026-10-12T01:42:19Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:35Z",
+              "conclusion": "success",
+              "name": "Run pnpm exec playwright install --with-deps chromium",
+              "number": 16,
+              "startedAt": "2026-10-12T01:42:19Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:49Z",
+              "conclusion": "success",
+              "name": "Run pnpm exec playwright test --project=desktop-chrome",
+              "number": 17,
+              "startedAt": "2026-10-12T01:42:35Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:49Z",
+              "conclusion": "success",
+              "name": "Run uv run ruff check .",
+              "number": 18,
+              "startedAt": "2026-10-12T01:42:49Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:42:59Z",
+              "conclusion": "success",
+              "name": "Run uv run mypy",
+              "number": 19,
+              "startedAt": "2026-10-12T01:42:49Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:22Z",
+              "conclusion": "success",
+              "name": "Run uv run pytest",
+              "number": 20,
+              "startedAt": "2026-10-12T01:42:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:24Z",
+              "conclusion": "success",
+              "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+              "number": 21,
+              "startedAt": "2026-10-12T01:43:22Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:27Z",
+              "conclusion": "success",
+              "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+              "number": 22,
+              "startedAt": "2026-10-12T01:43:24Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:43:30Z",
+              "conclusion": "success",
+              "name": "Apply migrations to data written before them",
+              "number": 23,
+              "startedAt": "2026-10-12T01:43:27Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:00Z",
+              "conclusion": "success",
+              "name": "Run pnpm db:start",
+              "number": 24,
+              "startedAt": "2026-10-12T01:43:30Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:28Z",
+              "conclusion": "success",
+              "name": "Run pnpm db:reset",
+              "number": 25,
+              "startedAt": "2026-10-12T01:45:00Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:33Z",
+              "conclusion": "success",
+              "name": "Run pnpm db:test",
+              "number": 26,
+              "startedAt": "2026-10-12T01:45:28Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:55Z",
+              "conclusion": "success",
+              "name": "Run pnpm db:stop",
+              "number": 27,
+              "startedAt": "2026-10-12T01:45:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:55Z",
+              "conclusion": "success",
+              "name": "Post Run denoland/setup-deno@v2",
+              "number": 49,
+              "startedAt": "2026-10-12T01:45:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:55Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-python@v7",
+              "number": 50,
+              "startedAt": "2026-10-12T01:45:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:56Z",
+              "conclusion": "success",
+              "name": "Post Run astral-sh/setup-uv@v7",
+              "number": 51,
+              "startedAt": "2026-10-12T01:45:55Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:59Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@v7",
+              "number": 52,
+              "startedAt": "2026-10-12T01:45:56Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:59Z",
+              "conclusion": "success",
+              "name": "Post Run pnpm/action-setup@v6",
+              "number": 53,
+              "startedAt": "2026-10-12T01:45:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:59Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v7",
+              "number": 54,
+              "startedAt": "2026-10-12T01:45:59Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:45:59Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 55,
+              "startedAt": "2026-10-12T01:45:59Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835300/job/114629077586"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-12T01:46:01Z",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835300",
+      "workflowName": "CI"
+    },
+    "38192835278": {
+      "conclusion": "success",
+      "createdAt": "2026-10-12T01:41:01Z",
+      "event": "pull_request",
+      "headSha": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+      "jobs": [
+        {
+          "completedAt": "2026-10-12T01:41:10Z",
+          "conclusion": "success",
+          "databaseId": 114629077497,
+          "name": "gitleaks",
+          "startedAt": "2026-10-12T01:41:03Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-12T01:41:04Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-12T01:41:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:06Z",
+              "conclusion": "success",
+              "name": "Check out full history",
+              "number": 2,
+              "startedAt": "2026-10-12T01:41:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:06Z",
+              "conclusion": "success",
+              "name": "Install gitleaks v8.21.2",
+              "number": 3,
+              "startedAt": "2026-10-12T01:41:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:08Z",
+              "conclusion": "success",
+              "name": "Scan Git history",
+              "number": 4,
+              "startedAt": "2026-10-12T01:41:06Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:08Z",
+              "conclusion": "success",
+              "name": "Post Check out full history",
+              "number": 8,
+              "startedAt": "2026-10-12T01:41:08Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:08Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 9,
+              "startedAt": "2026-10-12T01:41:08Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835278/job/114629077497"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-12T01:41:10Z",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835278",
+      "workflowName": "Secret scan"
+    },
+    "38192831819": {
+      "conclusion": "success",
+      "createdAt": "2026-10-12T01:40:57Z",
+      "event": "push",
+      "headSha": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+      "jobs": [
+        {
+          "completedAt": "2026-10-12T01:41:07Z",
+          "conclusion": "success",
+          "databaseId": 114629066456,
+          "name": "gitleaks",
+          "startedAt": "2026-10-12T01:41:00Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-12T01:41:01Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-12T01:41:00Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:03Z",
+              "conclusion": "success",
+              "name": "Check out full history",
+              "number": 2,
+              "startedAt": "2026-10-12T01:41:01Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:03Z",
+              "conclusion": "success",
+              "name": "Install gitleaks v8.21.2",
+              "number": 3,
+              "startedAt": "2026-10-12T01:41:03Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:04Z",
+              "conclusion": "success",
+              "name": "Scan Git history",
+              "number": 4,
+              "startedAt": "2026-10-12T01:41:03Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:04Z",
+              "conclusion": "success",
+              "name": "Post Check out full history",
+              "number": 8,
+              "startedAt": "2026-10-12T01:41:04Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-12T01:41:04Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 9,
+              "startedAt": "2026-10-12T01:41:04Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192831819/job/114629066456"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-12T01:41:07Z",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192831819",
+      "workflowName": "Secret scan"
+    }
+  },
+  "artifacts": {
+    "38192835277": [
+      {
+        "id": 11722566280,
+        "name": "gsip-capture-ios-simulator",
+        "size_in_bytes": 3324822,
+        "digest": "sha256:857864be0bfd09faee638726a7dd3c61703b9af870293babc58fe5d0e4a8ba24",
+        "expired": false,
+        "created_at": "2026-10-12T01:42:50Z",
+        "expires_at": "2026-10-26T01:42:48Z"
+      },
+      {
+        "id": 11722457181,
+        "name": "gsip-capture-android-debug",
+        "size_in_bytes": 7147388,
+        "digest": "sha256:2d4e07c7ea40843ec9cedc62f434a8692046cf291e11aae430dd670f97c69089",
+        "expired": false,
+        "created_at": "2026-10-12T01:49:32Z",
+        "expires_at": "2026-10-26T01:49:30Z"
+      }
+    ]
+  }
+}

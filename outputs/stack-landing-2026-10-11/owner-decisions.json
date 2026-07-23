@@ -1,0 +1,95 @@
+{
+  "recorded_at": "2026-10-11T20:10:39.439826-04:00",
+  "authority": "Justin Hart direct reply; destinations and policies only; no production go",
+  "production": {
+    "project": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1",
+    "restore_by": "Justin only after deployment authorization",
+    "tier_upgrade": "deferred",
+    "pre_migration": [
+      "exact counts per table, no row contents",
+      "scripts/db-migration-test.sh",
+      "exact target and commands posted",
+      "explicit go"
+    ]
+  },
+  "capture": {
+    "capture_open": false,
+    "VITE_CAPTURE_LIVE": false,
+    "anonymous_sign_in": false,
+    "opening_by": "Justin after all SPEC section11 gates"
+  },
+  "hugging_face": {
+    "destination": "global-soil-intelligence/gsip",
+    "fallback": "viridis-research/gsip",
+    "owner_actions": [
+      "create organization and dataset",
+      "add HF_TOKEN secret",
+      "set HF_DATASET_REPO"
+    ],
+    "dispatch_before_ready": false
+  },
+  "prior_tiles": {
+    "host": "repository GitHub Pages, same origin as map",
+    "publication_requires_go": true,
+    "storage": "palette-versioned release assets; never git history",
+    "target_max_tile_bytes": 700000000,
+    "site_limit_bytes": 1000000000,
+    "required_checks": [
+      "HTTP Range response206",
+      "SoilGrids-derived values only",
+      "privacy map-tile host docs PR",
+      "palette stamps",
+      "total combined site size"
+    ],
+    "oversize_options": [
+      "max zoom7",
+      "fewer properties"
+    ],
+    "fallback": "ISRIC WMS until all checks pass"
+  },
+  "captcha": {
+    "state": "deferred",
+    "closed_provider_requires_approval": [
+      "Turnstile",
+      "hCaptcha"
+    ],
+    "open_alternative_requires": "spec change"
+  },
+  "app": {
+    "accounts": "owner-controlled Viridis LLC organization accounts; deferred",
+    "create_accounts_certificates_keystores": false,
+    "unblocked_later": [
+      "CI version numbers",
+      "reproducible builds",
+      "signing placeholders"
+    ],
+    "cloud_backup_private_storage": "exclude queue/draft photos/session",
+    "android_device_transfer": "allow only if cleanly configurable; otherwise exclude both",
+    "ios": "exclude WebKit storage reliably and verify device build; report options if unproven",
+    "backup_docs": [
+      "APP_STORE.md",
+      "PRIVACY.md"
+    ],
+    "tradeoff": "new phone starts new anonymous account; withdraw old contributions through privacy contact until WP-APP-2 email linking"
+  },
+  "photo_screening": {
+    "policy": "withhold flagged photo for private human review",
+    "scope": "every photo, server QA before any publication",
+    "detectors": "open source only",
+    "priority": "recall",
+    "observation_and_other_photos": "publish normally when eligible",
+    "review_interface": "private CLI like attribution_review",
+    "automatic_blur": false,
+    "implementation_gate": "SPEC amendment first; stop for Justin approval"
+  },
+  "new_paid_or_closed_services": "none",
+  "licenses": [
+    "MIT code",
+    "ODbL1.0 data",
+    "CC BY-SA4.0 photos"
+  ],
+  "merges_and_approvals": "Justin; agent never merges/approves",
+  "new_secret_fixture_exception": "PENDING; separately requested after redacted diagnosis and concrete proof; no scanner change yet"
+}

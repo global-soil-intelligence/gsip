@@ -1,0 +1,14 @@
+{
+  "utc": "2026-10-13T22:02:38.894573+00:00",
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "parents": [
+    "710d144db94097be71989c67b5d3b4bb48135ad8",
+    "a2ad2d80ea288b9e2de8c984dcee56fa4803a1bc"
+  ],
+  "source_tree_equals_reviewed_doc_head": true,
+  "source_manifest_verified": true,
+  "merge_message_conventional_and_codex_trailer": true,
+  "clean": true,
+  "ci_receipt_sha256": "416b0b00d3b1bdf6328d6b5715b3d2c51af3f33d1a1f637ca92ab9dadf63b723",
+  "no_production_changes": true
+}

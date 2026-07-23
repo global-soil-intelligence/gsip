@@ -1,0 +1,62 @@
+{
+  "HOME_deviation_preserved": true,
+  "actual_stderr_bytes": 85706,
+  "corrected_runs_HOME_inherited": true,
+  "files": {
+    "CORRECTED_OFFLINE_RESULT_FROZEN.json": {
+      "bytes": 739,
+      "sha256": "0c4a8c36b42b8b056ca053b3d70287619302f49df7ff6cecc774ea1996618147"
+    },
+    "FIRST_OFFLINE_RESULT_FROZEN.json": {
+      "bytes": 1752,
+      "sha256": "f4fb3e49bb00370c9a8dd941cfcf4932228476ea371ebcf708cc13b6d340028b"
+    },
+    "LITERAL_KOTLIN_BUILD_PIN.json": {
+      "bytes": 991,
+      "sha256": "805e3b9a207f06953c9e33289803721a2ccd53ce8961ea480a00324057bcf530"
+    },
+    "LITERAL_TRANSITIVE_PUBLIC_PINS.json": {
+      "bytes": 1488,
+      "sha256": "73e4bf4328e6f5ea4100afbcac08020a3b25d6418a7121c63bd511358020d392"
+    },
+    "PINNED_PLUGIN_CACHE_PRESENCE.json": {
+      "bytes": 1011,
+      "sha256": "7789fdfa5e42803d262463f17d08559a1ecdc1a660db42dcef46e4d0a6c1f44f"
+    },
+    "existing-build-pin-primary/PRIMARY_RECEIPT.json": {
+      "bytes": 1025,
+      "sha256": "5ea026f8f2aa53ae52d50da2f8ad8faee44f20786ce6775a04fd3e7c4772140b"
+    },
+    "inspection-pinned-match.json": {
+      "bytes": 1640,
+      "sha256": "e9315c7afe3059b018efbe630e8460118319dadcd057098a7044dc5114fc0bb9"
+    },
+    "inspection-public-resolved.json": {
+      "bytes": 1614,
+      "sha256": "5547a57dc72b401f5d4ecd16a0191957c6d779ad2ca9dfb40040ef5a9575fd55"
+    },
+    "offline_pinned_match.py": {
+      "bytes": 5712,
+      "sha256": "e1ebf5b5e7996bc70d52c9e377b279d0c790ce998eddc91eef0b8bcd81aa372a"
+    },
+    "primary-coordinate-allowlist-v2.json": {
+      "bytes": 3728,
+      "sha256": "6b28dba3149011d132e78b2ed064937790023e4eb42a33b1220ee7bb310c7861"
+    },
+    "public_resolution_run.py": {
+      "bytes": 6007,
+      "sha256": "177b1e53985c8a22f425a196b0d772b4c73fc067d74f9c27ae93399c101f9906"
+    }
+  },
+  "fixed_fault": "GSIP_FIXED_FAULT_V1|VALID|BUILD_FAILURE|UNKNOWN",
+  "git_archive_sha256": "af4697bbb701d6e4f2bca8e17ef65c6e984cb88070c1bd72107d519b99a03f66",
+  "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "hosted_same_root_cause_proven": false,
+  "original_stderr_cap": 65536,
+  "raw_capture_persisted": false,
+  "route_source_implemented": false,
+  "schema": "gsip-exact-c1-local-agp-first-reproduction-v1",
+  "shared_source_modified": false,
+  "tracked_file_differences": 0,
+  "tracked_files_compared": 365
+}

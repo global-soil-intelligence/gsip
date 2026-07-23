@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-10-16T01:31:33.849349+00:00",
+  "status": "GITHUB_DNS_CHECK_SUCCESSFUL_CERTIFICATE_PENDING",
+  "observed_source": "Authenticated repository Pages settings in Chrome",
+  "domain": "globalsoilintelligence.com",
+  "certificate": "Certificate Requested: Authorization created (1 of 3)",
+  "https_enforced": false,
+  "screenshot": "cutover-certificate-pending.LATEST.jpg",
+  "next_step": "Await trusted certificates for apex and www, then execute the already approved HTTPS enforcement and verification; no new go required",
+  "mutations": "NONE; UI observation only"
+}

@@ -1,0 +1,111 @@
+{
+  "recorded_at_utc": "2026-10-16T01:39:33.960766+00:00",
+  "status": "DNS_AND_HTTPS_COMPLETE_SITE_ACCEPTANCE_HELD",
+  "files": [
+    {
+      "path": "CUTOVER-STATUS.md",
+      "bytes": 2509,
+      "sha256": "6a07080394a42e727e100497d91300ca18febba5a68fbf1d2904522fb404dcf5"
+    },
+    {
+      "path": "cutover-final-receipt.json",
+      "bytes": 2589,
+      "sha256": "69a0a64fc1340f259db0b5522d4fffaf4cb9c5bc0cf66dafec1be826c846db9e"
+    },
+    {
+      "path": "cutover-traffic-saved.json",
+      "bytes": 1326,
+      "sha256": "a8a1e4b3feb0f351a8f496c36df42ad4eb5ba54aa0734dc5e565aed323815cae"
+    },
+    {
+      "path": "cutover-dns.AFTER.txt",
+      "bytes": 7253,
+      "sha256": "6b2f781e13a20624bd0335ed85dde6131bebd087cffbede5c82bff3a3560410f"
+    },
+    {
+      "path": "cutover-dns.AFTER.jpg",
+      "bytes": 122161,
+      "sha256": "460ea2a9029014a23431f76f5fa3ee020347e5e9517ecdcf9c39a32777b9a8e0"
+    },
+    {
+      "path": "cutover-complete-independent-20261016T013317Z.json",
+      "bytes": 57941,
+      "sha256": "a5c5b30612137bf18b9f7919a344fe99f95ad63434fe19c710434a07e2dd432b"
+    },
+    {
+      "path": "cutover-trusted-certificates.PRE-ENFORCEMENT.json",
+      "bytes": 1648,
+      "sha256": "bc4a0761159e18538e4940033d44df28f5fc5253091f17c0dc082ea984770db2"
+    },
+    {
+      "path": "cutover-https-enforcement-response.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cutover-https-enforcement-readback.json",
+      "bytes": 562,
+      "sha256": "d4f2ac209392d5d47e1ba20fec52ccf68c001e53332eb685a21164d82216a519"
+    },
+    {
+      "path": "cutover-live-verification-20261016T013205Z.json",
+      "bytes": 23544,
+      "sha256": "d91e0066d5e2b8fcd19496152379b8ab1f2603a7c3b2d7d2fc6f4ec0db0c054e"
+    },
+    {
+      "path": "independent-pages-protection-review.json",
+      "bytes": 1702,
+      "sha256": "3658c67c21bdb25ee31aaf1e3d5811729439d4e6920a712847fc39a0899da260"
+    },
+    {
+      "path": "legacy-redirect-cdn-hold-independent-20261016T013342Z.json",
+      "bytes": 2240,
+      "sha256": "448e258e0fc803ca0d727a8100993bb962da2e4c48514340bd840eac99ff1239"
+    },
+    {
+      "path": "map-worker-diagnostic.md",
+      "bytes": 4712,
+      "sha256": "bd3437aecb912da7115d3202482faf2a6a5467f42652ddec3adddaa4ad559bdd"
+    },
+    {
+      "path": "live-browser-navigation.json",
+      "bytes": 1098,
+      "sha256": "cb71a67c1620fec3f6e50f72cb41711bd6cb86ff1c212444a7199ce2b9ca0eca"
+    },
+    {
+      "path": "live-capture-closed-dom.json",
+      "bytes": 191,
+      "sha256": "e5ac2c2040d2009899174ac2e5218421f9c2ff93f9bbc0cc5ef74e85678f1f4b"
+    },
+    {
+      "path": "live-first-party-console.json",
+      "bytes": 1366,
+      "sha256": "9ddf15c821189a6c8b19d26aae9895aafb1bd39eb982c79d398004eceae4395a"
+    },
+    {
+      "path": "live-pwa-static-paths.json",
+      "bytes": 984,
+      "sha256": "5444f7874d63f5eec14bacd337830b91a7119d289aac3e65d7459a4d98e91b64"
+    },
+    {
+      "path": "live-homepage.HTTPS.jpg",
+      "bytes": 56463,
+      "sha256": "5660497960ef6bb5e35c42a0903e545945862df975598c462f274cb897274e33"
+    },
+    {
+      "path": "live-map.HTTPS.jpg",
+      "bytes": 87675,
+      "sha256": "64dc0254eeba34bb96ecaf607015e1c007061af31f9ee827366ed53e0cbebffe"
+    },
+    {
+      "path": "live-capture.CLOSED.HTTPS.jpg",
+      "bytes": 59118,
+      "sha256": "fe88031dce39da9266d133f229a46230e8fd4b6f791133665a5da39eb898a43e"
+    },
+    {
+      "path": "verify-cutover-live.py",
+      "bytes": 6962,
+      "sha256": "4e18bf0dc2a17b98dcaf93f906402fad24bb3791c38786e1e38b1271318e9761"
+    }
+  ]
+}

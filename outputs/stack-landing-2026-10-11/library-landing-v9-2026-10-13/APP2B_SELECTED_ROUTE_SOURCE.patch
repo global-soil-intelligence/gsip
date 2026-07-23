@@ -1,0 +1,1336 @@
+--- a/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
++++ b/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
+@@ -563,3 +563,51 @@
+ version string in the failed hosted run was unavailable, so the local value is
+ not attributed to that runner. This parser correction changes no build, runtime
+ selection, source/licence guard, signing-key proof or native acceptance requirement.
++
++Runtime evidence is normalized within each configuration only after every artifact
++occurrence passes the original identity, containment, descriptor, ZIP and licence
++evidence checks. Repeated references to the same canonical file under the same
++typed module/project identity and filename produce one identical proof row. A
++different canonical file refuses even when its bytes match; changed complete
++evidence for the same file also refuses. No occurrence is skipped before checking,
++and the original bounded input list, both configuration graphs and strict final
++validator duplicate rejection remain unchanged. No path or new receipt field is
++exported. Historical local parent and candidate graphs contained five repeated
++same-file groups per configuration; that observation does not identify the values
++in the failed hosted run.
++
++Selected Gradle Module Metadata redirects add a finite proof for the existing
++non-POM roots `androidx.annotation:annotation:1.8.1`,
++`androidx.collection:collection:1.4.2` and
++`androidx.graphics:graphics-shapes:1.0.1`. Gradle 8.14.3's public selected-variant
++API must report exactly one selected source variant and one external target that
++is also selected. This observes these three pinned roots, not every external
++bridge in the graph. Their six exact public `.module` documents are included as
++bounded raw-byte evidence and rechecked against reviewed SHA-256 and size pins
++offline. The selected source row must name the exact target, and the terminal
++row must bind the actual target binary's logical `files.name`, SHA-256 and size.
++The separately pinned `files.url` is its fetch location. In particular,
++`graphics-shapes-release.aar` is the cache identity;
++`graphics-shapes-android-1.0.1.aar` is its relative transport URL. No alternate
++filename or general backlink/URL fallback is accepted. The target metadata's
++existing root-component backlink is covered by its exact reviewed raw bytes.
++
++Every selected module and POM/licence proof, every actual binary and both runtime
++configurations remain present. The three roots require selected redirect proof
++even if a direct binary row is supplied. Unknown or malformed routes, variants,
++versions, documents, branches, cycles, deeper chains, missing or closed targets
++and mismatched terminal binaries refuse. Other modules retain the original
++complete direct-binary requirement and explicit validated `packaging=pom` rule.
++The latter already covers the existing coroutine root; no new exemption was
++added. An initial general bridge probe found that fourth POM bridge, and its
++failed three-route harness assumption is preserved.
++
++This changes the generated runtime metadata task to SHA-256 `f90e5f896bddf83530e304b315e79694c7992c87e79f3b53288b27067b66c856`; earlier
++`74ad` task references describe the preceding implementation. The one existing
++exact-task test updates its 64-character expected digest while retaining its
++assertion and every other prior test byte. Public build receipts retain their
++thirteen fields, and no workflow, permission, backup, signing-key equality,
++source, licence or scanner gate changes. The new nested selected-module evidence
++is an audit input, not a product API change. No dependency was added. The locked
++Gradle/Capacitor toolchain and controlled CI remain trust assumptions; this does
++not provide compiler attestation or certify device/store/production readiness.
+--- a/scripts/app_notification_audit.py
++++ b/scripts/app_notification_audit.py
+@@ -7,6 +7,7 @@
+ from __future__ import annotations
+ 
+ import argparse
++import base64
+ import hashlib
+ import io
+ import json
+@@ -36,6 +37,56 @@
+ MAX_ITEMS = 2_000
+ TOKEN = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_.+-]{0,127}\Z")
+ REPOSITORIES = ("https://dl.google.com/dl/android/maven2/", "https://repo.maven.apache.org/maven2/")
++# Reviewed Gradle Module Metadata 1.1 contexts, existing selected AndroidX dependencies.
++# Raw bytes are retained and revalidated offline; these are not missing-binary exemptions.
++MAX_GMM_BYTES = 65_536
++GMM_CONTEXTS: dict[tuple[str, str, str], tuple[str, int]] = {
++    ('androidx.annotation', 'annotation', '1.8.1'): (
++        "e6386e85afdd865044e216575e493ed39a63a6325bd925379a21429c3941c8b5",
++        34460,
++    ),
++    ('androidx.annotation', 'annotation-jvm', '1.8.1'): (
++        "c959e3b0cdc75c15efe01605fa56aa79f033e39238e150638b8fabde6aa121a0",
++        3225,
++    ),
++    ('androidx.collection', 'collection', '1.4.2'): (
++        "0326d2cf5adbe592312810ca1f71c6c0cc30f753c43f07c7402361b788a7784c",
++        30696,
++    ),
++    ('androidx.collection', 'collection-jvm', '1.4.2'): (
++        "aad6b3536c0f0e570aa733d5141d70fa6b9b3add370f73a311ca4ca5dee25448",
++        4570,
++    ),
++    ('androidx.graphics', 'graphics-shapes', '1.0.1'): (
++        "2d7f6d55042299f9c4f8478aa094bc4099a346902779ff3091fed1dfc2b62f53",
++        31934,
++    ),
++    ('androidx.graphics', 'graphics-shapes-android', '1.0.1'): (
++        "9a5508caf02d78fcf2729394e97e7b27a43786273e17ccb65bf8e1b00a598324",
++        5754,
++    ),
++}
++GMM_REDIRECTS: dict[
++    tuple[str, str, str], tuple[tuple[str, str, str], str, str, str]
++] = {('androidx.annotation', 'annotation', '1.8.1'): (('androidx.annotation',
++                                                   'annotation-jvm',
++                                                   '1.8.1'),
++                                                  'jvmRuntimeElements-published',
++                                                  'annotation-jvm-1.8.1.jar',
++                                                  'annotation-jvm-1.8.1.jar'),
++ ('androidx.collection', 'collection', '1.4.2'): (('androidx.collection',
++                                                   'collection-jvm',
++                                                   '1.4.2'),
++                                                  'jvmRuntimeElements-published',
++                                                  'collection-jvm-1.4.2.jar',
++                                                  'collection-jvm-1.4.2.jar'),
++ ('androidx.graphics', 'graphics-shapes', '1.0.1'): (('androidx.graphics',
++                                                      'graphics-shapes-android',
++                                                      '1.0.1'),
++                                                     'releaseRuntimeElements-published',
++                                                     'graphics-shapes-release.aar',
++                                                     'graphics-shapes-android-1.0.1.aar')}
++
+ LICENSE_NAMES = {
+     "Apache-2.0": {
+         "apache license, version 2.0",
+@@ -1120,6 +1171,45 @@
+                 }
+             }
+         }
++// GSIP_SELECTED_REDIRECTS_BEGIN
++    def gsipSelectedRedirects = { components ->
++        def roots = ['androidx.annotation:annotation:1.8.1',
++            'androidx.collection:collection:1.4.2',
++            'androidx.graphics:graphics-shapes:1.0.1'] as Set
++        def redirects = []
++        components.each { component ->
++            def id = component.id
++            if (id instanceof ModuleComponentIdentifier
++                && roots.contains([id.group,id.module,id.version].join(':'))) {
++                def variants = component.variants
++                if (variants.any { it.externalVariant.present }) {
++                    if (variants.size() != 1) {
++                        throw new GradleException('Unsupported selected variant branch')
++                    }
++                    def source = variants[0]
++                    def target = source.externalVariant.get()
++                    if (!(target.owner instanceof ModuleComponentIdentifier)
++                        || target.externalVariant.present || source.owner != component.id
++                        || target.owner == component.id) {
++                        throw new GradleException('Unsupported selected variant route')
++                    }
++                    def selectedTarget = components.find { it.id == target.owner }
++                    if (selectedTarget == null || selectedTarget.variants.size() != 1
++                        || selectedTarget.variants[0].owner != target.owner
++                        || selectedTarget.variants[0].displayName != target.displayName) {
++                        throw new GradleException('Unselected variant route target')
++                    }
++                    def destination = target.owner
++                    redirects.add([source:[id.group,id.module,id.version],
++                        variant:source.displayName,
++                        target:[destination.group,destination.module,destination.version],
++                        target_variant:target.displayName])
++                }
++            }
++        }
++        redirects
++    }
++// GSIP_SELECTED_REDIRECTS_END
+         doLast {
+             def phase = 'DEBUG_CONFIGURATION'
+             try {
+@@ -1132,6 +1222,8 @@
+                     def modules = []
+                     def projects = []
+                     phase = variant + '_COMPONENTS'
++                    def components = config.incoming.resolutionResult.allComponents
++                    def redirects = gsipSelectedRedirects(components)
+                     config.incoming.resolutionResult.allComponents.each { component ->
+                         def id = component.id
+                         if (id instanceof ModuleComponentIdentifier) {
+@@ -1171,8 +1263,10 @@
+                         }
+                         artifacts = resolved.collect { artifact -> describeArtifact(artifact) }
+                     }
+-                    [name:name,modules:modules.unique().sort { it.join(':') },
++                    def evidence = [name:name,modules:modules.unique().sort { it.join(':') },
+                      projects:projects.unique().sort(),artifacts:artifacts]
++                    if (!redirects.empty) { evidence.redirects = redirects }
++                    evidence
+                 }
+                 phase = 'OUTPUT'
+                 def output = new File(app.findProperty('gsipEvidenceOutput').toString())
+@@ -1315,6 +1409,146 @@
+                     refuse()
+ 
+ 
++def validate_gmm_document(value: Any) -> tuple[tuple[str, str, str], dict[str, Any]]:
++    proof = record(value, {"coordinate", "sha256", "bytes", "content_base64"})
++    coord = coordinate(proof["coordinate"])
++    expected = GMM_CONTEXTS.get(coord)
++    if expected is None:
++        refuse()
++    encoded = text_value(proof["content_base64"], (MAX_GMM_BYTES + 2) // 3 * 4)
++    raw = base64.b64decode(encoded, validate=True)
++    if (
++        base64.b64encode(raw).decode("ascii") != encoded
++        or not 0 < len(raw) <= MAX_GMM_BYTES
++        or (sha(raw), len(raw)) != expected
++        or evidence_digest(proof["sha256"]) != sha(raw)
++        or count(proof["bytes"], MAX_GMM_BYTES) != len(raw)
++    ):
++        refuse()
++    document = decoded(raw)
++    if document.get("formatVersion") != "1.1":
++        refuse()
++    return coord, document
++
++
++def gmm_document(coord: tuple[str, str, str], cache: Path, allow_fetch: bool) -> dict[str, Any]:
++    if coord not in GMM_CONTEXTS:
++        refuse()
++    group, artifact, version = coord
++    folder = cache / "modules-2/files-2.1" / group / artifact / version
++    matches = sorted(folder.glob(f"*/{artifact}-{version}.module"))
++    if len(matches) > 1:
++        refuse()
++    if matches:
++        raw = read(matches[0], (cache,), MAX_GMM_BYTES)
++    elif allow_fetch:
++        relative = f"{group.replace('.', '/')}/{artifact}/{version}/{artifact}-{version}.module"
++        raw = public_bytes(REPOSITORIES[0] + relative, MAX_GMM_BYTES)
++    else:
++        refuse()
++    proof = {
++        "coordinate": list(coord),
++        "sha256": sha(raw),
++        "bytes": len(raw),
++        "content_base64": base64.b64encode(raw).decode("ascii"),
++    }
++    validate_gmm_document(proof)
++    return proof
++
++
++def validate_gmm_redirect(
++    source: tuple[str, str, str],
++    value: Any,
++    selected: set[tuple[str, str, str]],
++    binaries: list[dict[str, Any]],
++) -> None:
++    expected = GMM_REDIRECTS.get(source)
++    if expected is None:
++        refuse()
++    target, variant, filename, location = expected
++    proof = record(value, {"variant", "target", "target_variant", "module_metadata"})
++    if (
++        proof["variant"] != variant
++        or proof["target_variant"] != variant
++        or coordinate(proof["target"]) != target
++        or source not in selected
++        or target not in selected
++        or source == target
++        or app_permissions.closed_dependencies(":".join(target))
++    ):
++        refuse()
++    documents = [validate_gmm_document(row) for row in items(proof["module_metadata"], 2)]
++    if len(documents) != 2 or [row[0] for row in documents] != [source, target]:
++        refuse()
++    variants = []
++    for _, document in documents:
++        matches = [
++            row for row in items(document.get("variants"), 100) if row.get("name") == variant
++        ]
++        if len(matches) != 1:
++            refuse()
++        variants.append(matches[0])
++    available = variants[0].get("available-at")
++    expected_location = f"../../{target[1]}/{target[2]}/{target[1]}-{target[2]}.module"
++    expected_available = {
++        "url": expected_location, "group": target[0], "module": target[1], "version": target[2]
++    }
++    if (
++        available != expected_available
++        or variants[0].get("files", [])
++        or "available-at" in variants[1]
++    ):
++        refuse()
++    files = items(variants[1].get("files"), 1)
++    if len(files) != 1:
++        refuse()
++    file = files[0]
++    if file.get("name") != filename or file.get("url") != location:
++        refuse()
++    size = count(file.get("size"), MAX_BINARY)
++    digest = evidence_digest(file.get("sha256"))
++    matches = [
++        row for row in binaries
++        if row.get("coordinate") == list(target) and row.get("filename") == filename
++    ]
++    if len(matches) != 1 or matches[0]["sha256"] != digest or matches[0]["bytes"] != size:
++        refuse()
++
++
++def bind_gmm_redirects(
++    value: Any,
++    modules: list[dict[str, Any]],
++    binaries: list[dict[str, Any]],
++    cache: Path,
++    allow_fetch: bool,
++) -> None:
++    selected = {coordinate(row["coordinate"]) for row in modules}
++    expected = selected & GMM_REDIRECTS.keys()
++    if not isinstance(value, list) or len(value) > len(GMM_REDIRECTS):
++        refuse()
++    seen = set()
++    for raw in value:
++        route = record(raw, {"source", "variant", "target", "target_variant"})
++        source = coordinate(route["source"])
++        if source not in expected or source in seen:
++            refuse()
++        target = coordinate(route["target"])
++        proof = {
++            "variant": route["variant"], "target": list(target),
++            "target_variant": route["target_variant"],
++            "module_metadata": [
++                gmm_document(coord, cache, allow_fetch) for coord in (source, target)
++            ],
++        }
++        validate_gmm_redirect(source, proof, selected, binaries)
++        next(row for row in modules if row["coordinate"] == list(source))[
++            "selected_variant_redirect"
++        ] = proof
++        seen.add(source)
++    if seen != expected:
++        refuse()
++
++
+ def runtime_evidence(
+     data: dict[str, Any], repo: Path, cache: Path, allow_fetch: bool
+ ) -> dict[str, Any]:
+@@ -1334,7 +1568,10 @@
+     for view in views:
+         if (
+             not isinstance(view, dict)
+-            or set(view) != {"name", "modules", "projects", "artifacts"}
++            or set(view) not in (
++                {"name", "modules", "projects", "artifacts"},
++                {"name", "modules", "projects", "artifacts", "redirects"},
++            )
+             or not all(
+                 isinstance(view[key], list) and len(view[key]) <= MAX_ITEMS
+                 for key in ("modules", "projects", "artifacts")
+@@ -1389,6 +1626,7 @@
+             project_inputs=len(view["projects"]),
+         )
+         binaries = []
++        seen: dict[tuple[str, str], tuple[Path, dict[str, Any]]] = {}
+         for artifact in view["artifacts"]:
+             if (
+                 not isinstance(artifact, dict)
+@@ -1433,11 +1671,18 @@
+                 identity = {"project": project}
+             if file.suffix not in {".jar", ".aar"}:
+                 refuse()
+-            binaries.append(
+-                {**identity, "filename": file.name, **zip_evidence(file, (repo, cache))}
+-            )
++            binary = {**identity, "filename": file.name, **zip_evidence(file, (repo, cache))}
++            key = (json.dumps(identity, sort_keys=True, separators=(",", ":")), file.name)
++            previous = seen.get(key)
++            if previous is not None:
++                if previous[0] != file or previous[1] != binary:
++                    refuse()
++            else:
++                seen[key] = (file, binary)
++                binaries.append(binary)
+         if not binaries:
+             refuse()
++        bind_gmm_redirects(view.get("redirects", []), selected, binaries, cache, allow_fetch)
+         receipts.append(
+             {
+                 "configuration": view["name"],
+@@ -2440,12 +2685,22 @@
+             refuse()
+         configurations.add(name)
+         modules = {}
++        redirects = {}
+         for module in items(row["selected_modules"], MAX_ITEMS):
+-            selected = record(module, {"coordinate", "pom_license_evidence"})
++            fields = {"coordinate", "pom_license_evidence"}
++            if isinstance(module, dict) and "selected_variant_redirect" in module:
++                fields.add("selected_variant_redirect")
++            selected = record(module, fields)
+             coord = coordinate(selected["coordinate"])
+             if coord in modules or app_permissions.closed_dependencies(":".join(coord)):
+                 refuse()
+             modules[coord] = validate_pom_chain(selected["pom_license_evidence"], coord)
++            if coord in GMM_REDIRECTS:
++                if "selected_variant_redirect" not in selected:
++                    refuse()
++                redirects[coord] = selected["selected_variant_redirect"]
++            elif "selected_variant_redirect" in selected:
++                refuse()
+         projects = {}
+         for project in items(row["project_sources"], MAX_ITEMS):
+             if not isinstance(project, dict) or not isinstance(project.get("project"), str):
+@@ -2508,9 +2763,11 @@
+             if (identity, filename) in identities:
+                 refuse()
+             identities.add((identity, filename))
++        for coord, redirect in redirects.items():
++            validate_gmm_redirect(coord, redirect, set(modules), row["resolved_runtime_inputs"])
+         if (
+             any(
+-                coord not in module_binaries
++                coord not in module_binaries and coord not in redirects
+                 for coord, packaging in modules.items()
+                 if packaging != "pom"
+             )
+--- a/tests/test_app_notification_audit.py
++++ b/tests/test_app_notification_audit.py
+@@ -5121,7 +5121,7 @@
+     assert str(key) not in output.read_text()
+     assert (
+         audit.sha(audit.GRADLE_TASK.encode())
+-        == "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0"
++        == "f90e5f896bddf83530e304b315e79694c7992c87e79f3b53288b27067b66c856"
+     )
+ 
+ 
+@@ -5297,3 +5297,910 @@
+     else:
+         value = audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other)
+         assert value["identical_toolchain"]["aapt2"] == left["toolchain"]["aapt2"]
++
++
++# Collector normalization is lossless only after every occurrence passes the original checks.
++def repeated_runtime_fixture(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    monkeypatch: pytest.MonkeyPatch,
++) -> tuple[dict[str, Any], Path, Path, Path]:
++    data, repo, cache, module_artifact = graph
++    package = repo / "node_modules/@capacitor/camera"
++    project_artifact = package / "android/build/intermediates/classes/debug/classes.jar"
++    zipped(project_artifact)
++    link = repo / "apps/capture-pwa/node_modules/@capacitor/camera"
++    link.parent.mkdir(parents=True)
++    link.symlink_to(package, target_is_directory=True)
++    monkeypatch.setattr(
++        audit,
++        "npm_evidence",
++        lambda *_args: [
++            {"name": "@capacitor/camera", "installed_source_manifest_sha256": "a" * 64}
++        ],
++    )
++    for view in data["views"]:
++        view["projects"].append(":capacitor-camera")
++        project = {"kind": "project", "project": ":capacitor-camera", "file": str(project_artifact)}
++        if kind == "project":
++            view["artifacts"].append(project)
++        else:
++            view["artifacts"].insert(0, project)
++    return data, repo, cache, project_artifact if kind == "project" else module_artifact
++
++
++def runtime_validator_fixture(result: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
++    native = {
++        **result,
++        "resolved_graph_sha256": "a" * 64,
++        "build_only_environment_sha256": "b" * 64,
++        "debug_signing_key_sha256": "c" * 64,
++        "runtime_tree_sha256": {
++            "debugRuntimeClasspath": "d" * 64,
++            "releaseRuntimeClasspath": "e" * 64,
++        },
++    }
++    return native, {row["name"]: row for row in result["npm_sources"]}
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("views", [[0], [1], [0, 1]])
++@pytest.mark.parametrize("copies", [2, 3])
++def test_runtime_duplicate_same_canonical_file_is_reaudited_then_recorded_once(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    views: list[int],
++    copies: int,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    expected = audit.runtime_evidence(data, repo, cache, False)
++    real_zip = audit.zip_evidence
++    seen: list[Path] = []
++
++    def inspected(file: Path, roots: tuple[Path, ...]) -> dict[str, Any]:
++        value = real_zip(file, roots)
++        seen.append(file)
++        return value
++
++    monkeypatch.setattr(audit, "zip_evidence", inspected)
++    for index in views:
++        row = data["views"][index]["artifacts"][-1]
++        data["views"][index]["artifacts"].extend(copy.deepcopy(row) for _ in range(copies - 1))
++    actual = audit.runtime_evidence(data, repo, cache, False)
++    assert actual == expected
++    assert seen.count(artifact.resolve()) == 2 + len(views) * (copies - 1)
++    native, npm = runtime_validator_fixture(actual)
++    audit.validate_android(native, npm)
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("views", [[0], [1], [0, 1]])
++def test_runtime_duplicate_identity_retains_each_distinct_filename(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    views: list[int],
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    second = artifact.with_name("distinct-runtime.jar")
++    second.write_bytes(artifact.read_bytes())
++    for index in views:
++        row = copy.deepcopy(data["views"][index]["artifacts"][-1])
++        row["file"] = str(second)
++        data["views"][index]["artifacts"].append(row)
++    actual = audit.runtime_evidence(data, repo, cache, False)
++    for index in views:
++        assert {artifact.name, second.name} <= {
++            row["filename"] for row in actual["runtime_views"][index]["resolved_runtime_inputs"]
++        }
++    native, npm = runtime_validator_fixture(actual)
++    audit.validate_android(native, npm)
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("defect", ["different_path_same_bytes", "different_path_new_bytes"])
++def test_runtime_duplicate_same_identity_filename_refuses_distinct_canonical_files(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    defect: str,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    second = artifact.parent / "other-producer" / artifact.name
++    second.parent.mkdir()
++    if defect == "different_path_same_bytes":
++        second.write_bytes(artifact.read_bytes())
++    else:
++        zipped(second, b"different synthetic bytes")
++    row = copy.deepcopy(data["views"][0]["artifacts"][-1])
++    row["file"] = str(second)
++    data["views"][0]["artifacts"].append(row)
++    with pytest.raises(audit.AuditError):
++        audit.runtime_evidence(data, repo, cache, False)
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("defect", ["changed_bytes", "changed_notices", "changed_size"])
++def test_runtime_duplicate_same_file_refuses_changed_complete_evidence(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    defect: str,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    data["views"][0]["artifacts"].append(copy.deepcopy(data["views"][0]["artifacts"][-1]))
++    real_zip = audit.zip_evidence
++    hits = 0
++
++    def changing(file: Path, roots: tuple[Path, ...]) -> dict[str, Any]:
++        nonlocal hits
++        value = real_zip(file, roots)
++        if file == artifact.resolve():
++            hits += 1
++            if hits == 1 and defect == "changed_bytes":
++                zipped(file, b"synthetic replacement bytes between observations")
++            elif hits == 2 and defect == "changed_notices":
++                value["embedded_license_notice_files"][0]["sha256"] = "f" * 64
++            elif hits == 2 and defect == "changed_size":
++                value["bytes"] += 1
++        return value
++
++    monkeypatch.setattr(audit, "zip_evidence", changing)
++    with pytest.raises(audit.AuditError):
++        audit.runtime_evidence(data, repo, cache, False)
++    assert hits == 2
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("defect", ["bad_zip", "symlink", "hardlink", "fifo"])
++def test_runtime_duplicate_second_occurrence_cannot_skip_original_safety_checks(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    defect: str,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, artifact = repeated_runtime_fixture(graph, kind, monkeypatch)
++    data["views"][0]["artifacts"].append(copy.deepcopy(data["views"][0]["artifacts"][-1]))
++    real_zip = audit.zip_evidence
++    hits = 0
++
++    def becomes_unsafe(file: Path, roots: tuple[Path, ...]) -> dict[str, Any]:
++        nonlocal hits
++        value = real_zip(file, roots)
++        if file == artifact.resolve():
++            hits += 1
++            if hits == 1:
++                if defect == "bad_zip":
++                    file.write_bytes(b"not a ZIP")
++                else:
++                    saved = file.with_name("synthetic-backup.jar")
++                    saved.write_bytes(file.read_bytes())
++                    if defect == "hardlink":
++                        os.link(file, file.with_name("synthetic-linked.jar"))
++                    else:
++                        file.unlink()
++                        if defect == "symlink":
++                            file.symlink_to(saved)
++                        else:
++                            os.mkfifo(file)
++        return value
++
++    monkeypatch.setattr(audit, "zip_evidence", becomes_unsafe)
++    with pytest.raises((audit.AuditError, zipfile.BadZipFile)):
++        audit.runtime_evidence(data, repo, cache, False)
++    assert hits == 1
++
++
++@pytest.mark.parametrize("kind", ["module", "project"])
++@pytest.mark.parametrize("index", [0, 1])
++def test_runtime_duplicate_final_validator_still_rejects_duplicate_receipt_rows(
++    graph: tuple[dict[str, Any], Path, Path, Path],
++    kind: str,
++    index: int,
++    monkeypatch: pytest.MonkeyPatch,
++) -> None:
++    data, repo, cache, _ = repeated_runtime_fixture(graph, kind, monkeypatch)
++    result = audit.runtime_evidence(data, repo, cache, False)
++    native, npm = runtime_validator_fixture(result)
++    audit.validate_android(native, npm)
++    binaries = native["runtime_views"][index]["resolved_runtime_inputs"]
++    binaries.append(copy.deepcopy(binaries[-1]))
++    with pytest.raises(audit.AuditError):
++        audit.validate_android(native, npm)
++
++
++# Exact public Google Maven .module documents; never contributor or credential data.
++GMM_RAW_FIXTURES_HEX = (
++    "1f8b0800000000000213ed9ddb72e34692865fa5a3af5b729d0fbe1b6feccdc6cc5eec6c4c2862dab1915595"
++    "e5a6add39094069e897ef74df02092220935498182dc697ba6d5025055287ef9e79f0502f8f747b82de3bb51"
++    "692ee1f6f66e0ad3d1dded8fab1f2f7e7dbcf9515e864bf9f1c70f1ffffdf9f6c387cf1febddf806a67fc3f1"
++    "84f6f84c1b3e7f9497f2f3c74ff3cdf9eee6feee166fa7eda6d921ed6f1fc6d7f35d2f2f7fa0ff565dfc306b"
++    "7eed1717b35f5cdedc95876b5cb4dab6f0cbf8eee17edec68e41afedb83c72bee78e1d1e37871e9e06df6e84"
++    "e9743c4a0f539cac8dbfdd7037fee5f29731946bbc9c50930f93f9f163bc46985077f33dbfb67f7c5d4ec518"
++    "618ae5a7df37a662dec8b3d637c6142efdcef61e613c82dbe9ace7bfcfb7af35710b378bb3a64fed4ff7a3ff"
++    "bcc61bfa182617f70fe97a34f982e5e9343b4ef4d9a9663a815feec6bfcf1bbe1ea531b47ff9b467f7c50eb8"
++    "e87a311c18ef3fe26102bf2c870d8f7001f7a31d3bff8a536a78743bb9fced6e7a3dbabdbcbf86690be2e5f4"
++    "f7fbd5592f676d3965f3060adee36dc1db3cc2f5a9db98be2dc676f5ba31b0e7a8cd77b9984c0b4dc2d69e6b"
++    "9fef469f1f6608fde36134c6c912487f29c5ea4c9e2878f6e3cf6b675847d72f9dda8a8ecdf05e84dbf3cf68"
++    "2366bff988c9e85fb34eac93ca3ddff605ac54f306ab70c604934a3412a5f198054699a548a8935135d612b0"
++    "e4a4697b31ca82ce224893952e51474457152623b5b7aee48c4ae65074153e08a34d492255e5a5126d2f802a"
++    "40009ba2d7284b495800b607fe059475f3c14580a495a3b14515848851066bb413909509d5449dd1579fb50c"
++    "dacaa8454c3e40c688ca88eaaadbd5b89c379d024857d12a27a4499ece2ecb820972861ab39556bba84adac6"
++    "e7a6d8790b3a7b3a90a643646fad92d5f9e84c9532a95030c7756e56a82cb4e453b766fccfc3ed747483ef53"
++    "37c6f3c1b376b076b0769c5f3bfe7af730ce38e9413bca5d7e68dbdc74715b073d05eaef97e9e196e2e8f697"
++    "f9f1d84c717c0bd71d87dee5c94a0a26f33379875a7572245f2ccefdf088ee3c7219d9ce6b653a223bd814ac"
++    "c70aca452102445140d500c2d998b5494e1a67095a49e12d5cac42819655c864b5b2164acbb3d24944eb72b5"
++    "48b10ca0644cdac6aa5c0a14ecc94470c6859c3c05ad0902145692014b816e3a239bda2f2e169f52141e0ac5"
++    "61a0beaa49d27a2d408256b96674cefa54137a4cc1d92484a4bd1d85664764eb8035246b4c81688c9021a89a"
++    "3450685b4b6ae5aa71290be33a223b18a72562ab34d59a142a0d33d9e2e878a34bed8cecf60ffaf9ebc74f1f"
++    "5e28075fa714e442ee9b0bb9e5fc3c53d73f9ea6ae29e4f29c2f6e1eaea7a3a5fe5db40dbeaeeccd856bb397"
++    "4305f0d0369ea430daa8ba4c4ec8ada005238d35a5662f6a25698891c21a9373be9509290dd99fa07248c28a"
++    "2ac909f8e27321bd4b3114323c3960342590b2240c9104b414e513298bb1d47fac245c1a8cb6245cda043216"
++    "9e6c908ea15b0a65a9ad73513168a848d625991c6dcaa4d568c9ca90102b1582a4df383218b489c6196b86e2"
++    "5b7dab1d52e8646befbc001fadc4947d4db26ab2633a165502193c50da82d82f85b5a2f73a38342a27ea9024"
++    "3be8ac2b80201706e16893b348fb0bb1fb0b4ea1c014de4128aec5d6e21c2e16227571f37416a707d6fde8cf"
++    "f888d7c4fde4eef680e079dc9cd0dd872fe3460ae74347dc28fa3193b716c115eb08032dbd952658911c811a"
++    "2091f7d64428c54155101410a0963c807418035212a67f1d654fa77336e4e26534de1a04ad55adc553dd0052"
++    "5a502686a82db5eb955034289095927d77dc542a51c885b4e3ab09aaf19e0cbc36ce3ba74b5259a3ad08e467"
++    "34d5025a25998bb0608aa954bc08d5193714599eaa83b64809a1a41c018da63a465b671295210e14859fde1f"
++    "37856c0cc908b685519095ac111d44dd523c0262f447c7cd92b1b515c9fed713d6985fd4d637db017b88e926"
++    "2b73d372c96b0487a4d8e5a41fb850f0f22241505174c800f97eef28ff985902f568b2f5ca59a10319f8e8b2"
++    "d19238f7c945692bfdd64b6da4aab45baa36a410832d543c505d506572850a6641b16e28c902923000e90150"
++    "a85164c43667660fa9248a671750073aa45b06c0a2f3b5b655070852142a2274ccca6b9f8cce3281cb2e7aca"
++    "9aa91820ed094e910645249d50542375c80035469551a940838ad56b2da3c4d01621a1b8540bb60a01a1ee97"
++    "81107d90824e0ba8536c852d21e676fac84e48674f9681efc9ca2e42f6b472bf4b798e8dcbc5c08e2bfabfbd"
++    "e05796aad68e304d54d7da6c4d4e4e45a3914a739bc8357a85aa358c116c1691eaff489939918543539da46a"
++    "598976e52be58c99b230f9cf848576b57494b659a92aa9a036e4453d6d3589b2bca4f0066a577b32af497a43"
++    "695b7586a9170e290593d1a51151ee34a992c76e17025b8709d9b8dafa598bb590b3266f2eaca6b2bd06ef34"
++    "d6aabab2351a495203890e0f50d46c0dce274ba6dfd484d2173a79995447b6f6745268123911d0a893b6ad70"
++    "50e217b1029df9d161baa8befe9b3eea47fcd3f846ab93ae24c2783aaa90a7fffb84f34eec7f7b9ed25e37f7"
++    "7fe335c5dbd9495f4e61fc0b4e37a6e3ffa09d89230378deecee008647185d43bac60b986e4ddede6be6178b"
++    "61cd5b9e8d6dfb32faf63ebbafac1fb428d3b530b3a3c767c7ed5aaf799a95a3e0fc8e969d4fca2b8cf63b43"
++    "db19d6dd399cce0c174e675e86d39973c3b93563af0f27ebee6be82ea33d2cb4af58756768368305b37911cb"
++    "e6cc5036bd23c95a7bb2d632d0c3013a38d6d816c9e0868a64702f2119dc7991dc9aabd7469235f6748d65a0"
++    "df10e8d1dd84570d6812865656d190f61453cb2d7d83b7eca727e058398f564ec6f5fcb82ebf66f4de45f290"
++    "afb3307a6f8dde5f47370f34897763ced12d7993e5740c90c1a7b1ed877173973350b9d961df7872463f29a3"
++    "33dc43869bf33f833a5050afd8190c6ba19e06d4ec81af390b714d4f9871863f29c333a4e780943335037726"
++    "e0f87949af0106b5b74dc5ea991fbd21313b8fd7e6819f85c35cf0734e98c341724813f6d0f052f26c1a86b6"
++    "78311bd49e558bd5b6be995bf5d41b7a5c441e5d4432b86f04ee152b2681d70c0ebb662f74cd99906b7a038e"
++    "75f2449d645ccf81eb0d64fe0ae1621a86969a6783da939a57dbfa066fd5536fe8b1561ead950cee5b82cb17"
++    "2b18c2b784f08ad3f6d0ae93cd86d4ec85ae3913724d6fc071b23e315933aee7c4955334a37766f4a68f5c52"
++    "cf6761689eb01dd31e4bf8b4a96fe89e3aea8b3a4ed047276866f68d98e52ccdfcbd117f7c93de267e83bd3f"
++    "a41ddd4b37886cef730e347bbd45649b514ef0a72578267ce884b31d605a874ceb151b85812d26b5236af611"
++    "d89c07bba62fd638e19f96f099d47391ca899ba93b2375ff8469fe325b42face5f58b29888a1bdd56131ac3d"
++    "ef7358dfda377feb7df5082167eaa33335233c0c843985338e83c1f13bafb3d7201c92995c7df4bb1ce5fad6"
++    "f341d8a3b7e402fc75d23a23fc8608735a671c8781235f70dfa271b0d77816037ce932cfceddce446aaf177b"
++    "7622cb6ee06437c0c0bf27e0d93b30bcef08de2b7615334e9b01b2d97400d99c8dc2a647f4d81d9cec0e18dc"
++    "b70097b33c43d82384ed1f3f7fbefdfaf1d387d508f2ddf535e6b6f11f573fb68f4efc515e9a4b45ed7d9ccd"
++    "d0e78fed1cc3f46f9b1dc9c5383e7fcc7737f777b784eddaa46e4de8aa8b1f66cdaffde262f68be753b77bda"
++    "5647adedb83e653b77783647d4dbdac63d41b541fa843e8587c5f338c7788d3079626c36b95f975331460aa1"
++    "f2d3ef1b53316fe459eb1b630a9776677b8f301ec1e249a07fe7c7297febe34a9fd2f008d7a76e63fa0e0ecd"
++    "fdc1b9b5dbda67bbd1df87193eff78188d71b23360d78276f39cba06be6bba3a47be10ebc9b43ccf06870f5e"
++    "a9fda35ffef8f3ae8fe6f7ffb8bb9d4cdb314f8ff88c7684f9ae335d1399dfa6cd49a73a138d8d337dd61885"
++    "fe6419cfab7e3f8c261f46b71fa8ecba19e50fb353f9b0f32c5e98b73aba7e89e5951c6ceaf9425f9f07e586"
++    "487ff31193d1bf669d786f7d88cf377e012bd5c2f19694aad7b118344188ac8bd4a28498bc892a295d3308d0"
++    "128c42e175ad4267ab7229ce255f54ac32563059e56a840d42db82428315c239adb4ad18bcad3ab9a469c714"
++    "54f680a9682cce58e39d2ddb23ff02cabaf9e0623019632a9e46662d02b5005258c8a0ab95c60547634f3239"
++    "e515669fa9518821a31135fb92ccaec6e5bce9949d48d6ba00ce151a08441a2b2ae76a11d965af3cd276b11d"
++    "7737c52e6a8d2a8bd0c966514374dea502de17af2acae2d1c6ddacf043d6395b70b6f80eb3c5a7814f85be14"
++    "877de89cea38d5bd42aae3f7460c28b5b27e9fd7ed5f2c98395c0a3b8f5c4a22c992f4aa43126310be8684d1"
++    "55e3214b1207f0a011db78afa449befa1a4b9142d9944aaa8015b342955c09a40359d5ac9c114e86e021d954"
++    "48baac3251665f55462513a810ab5650442a318a124355267b43622273b724e692948c8824ecca5869b3a276"
++    "a8ef248c217196b5c8648412213b59a20200524515b42bd190767748a2d451a22a5e23c81c632165d5969414"
++    "a576f4ab9a0bf514a2de2f89d9d208b22435169626c30b8524fb3254e94b2055ee94c46f5fe87b9d453e5ea2"
++    "fbe625bae5fc3c4b4b7fe82b53cb73beb879b89e8e9689e3a26d90f3c510f2c55cf1373f9d4333c7a16d3ce5"
++    "10729f5177e51032cd35b69eb4ba4256997202f9688c9604d4a1315a0895b48a31384bca1cbcd63e21862855"
++    "313e0bca163542b6a8c964939fcc5593d79558da2c523329733481da27910fd469440de4e349f7aba18e9deb"
++    "cc214957a9297308ad4d818064c3bd4d6d0ac964d24585e223756f959750957632a1084180f331e700d09143"
++    "6ab13a8aa8c9452b3ac45a4874464019aa5aca27d68ab600a8627f0e494128974c0d0e4ccd5400046d95f5a0"
++    "aac2942c1c6dab1746739125feb27db56fa81ab6264a8b73b85884f7da354b56a4375224b81ffd191ff19a04"
++    "63b26386f6abcee32688bb0f5f0a8e345a77d7f14a785b92f4493b8735654012110b523ab29c090bc55dae88"
++    "14ee06ab33982165b2b4148f521899834532a6caa06f9b210d90b2643011e8175153046751408277427a0425"
++    "21458a4741a57869cb64df293896aa71070e558dca9b9262152a1b274509860a7641aa538aa022da668d645a"
++    "2b6a6342c8a45032abd055c71b178aaa25922956bab888c95721c97766fa4b4a9936fa6064d92f3840bdb98c"
++    "d15897a9884761a9f427d7ab238ddfb79d1f2938cbe05cbbbad9ff4af569df6bd8511f9379be598f195e7de6"
++    "d567d6feadd35e46d981abb82fafe06aef5497f087528c8e36c8802af808212743be919c524dbe6403e419a1"
++    "64b498a527b3097400b93a473aef485e352507d270d24c92d080985d1139786b65b22a924027508a2435e7d4"
++    "2e7026d4c97b156c6befa494a6760abf220daf41a034944f8cf15240d2501d09becf1084f625ea00c2239a92"
++    "4bca5ad944329c45ccd6c4dc21fcede2499648028fe4168d0c416bb289ce0bf0c5d71a50db08b1c36952564c"
++    "86fea7a56f3345a43317de1b9a0a32aacabb9385ff7b2a970fff22e7b1b98605ed2c82b6f8408f5b913d6435"
++    "56181d3a8d2dd94f11c88c65490a556d3455074b8e945cab444be12fa910a6f82d96cc6e7136875ac9681a9d"
++    "c0a46035f95bacc6d8a0534d6442a5f339791d94369ec42850299e4924436e2f0251d5ed3c15af22d3e12420"
++    "a953df48c15421d32caaf7d21b1a8929d27821da8b6696aa66a553266f19a97e761e8c48c64657a96ab720ac"
++    "8b1dfa166b69f54806193d7a6a0214f5a22592c54f345465a00aefb0a392267d6fafcba12864a4938e5ed074"
++    "592972f105953d5adf46fc8c85d9240ce23e9eb5a81badee047ef62dd5d1ea2ee01d5f573d582df76ae5e89b"
++    "ee00de50c4af0700c7f7481c7d8f04e37a7e5cf9ce0846effce8f1731236c81bd65db79b046cdd71bb0de3d6"
++    "ddb67d5379c89db6a7e3c919fda48cce700f196eceff0cea4041bd626730803b75373ff3660f7ccd59886b7a"
++    "c28c33fc49199e213d07a49ca919b83301c7b7bbbf0618d4de3615ab5ba27a4362761eafcd03dfd8ca5cf05d"
++    "60cce12039a4097b68782979360d435bbc980d6acfaac56a5bdfccad7aea0d3d2e228f2e2219dc3702f78a15"
++    "93c06b06875db317bae64cc835bd01c73a79a24e32aee7c0f506327f8570310d434bcdb341ed49cdab6d7d83"
++    "b7eaa937f4582b8fd64a06f72dc1e58b150ce15b4278c5697b68d7c966436af642d79c09b9a637e038599f98"
++    "ac19d773e2ca299ad13b337ad3472ea9e7b330344fd88e698f257cdad437744f1df5451d27e8a3133433fb46"
++    "cc729666fede883fbe496f13bfc1de1fd28eeea51b44b6f739079abdde22b2cd2827f8d3123c133e74c2d90e"
++    "30ad43a6f58a8dc2c01693da1135fb086cce835dd3176b9cf04f4bf84ceab948e5c4cdd49d91bac5eb8cc933"
++    "6af55d27e4e52bafa19d89e150b718d66c54dbe8ad6fed9bbff5be7a849033f5d1999a111e06c29cc219c7c1"
++    "e0f89dd7d96b100ec94cae3efa5d8e727debf920ecd15b7201fe3a699d117e438439ad338ec3c0912fb86fd1"
++    "38d86b3c8b01be749967e76e6722b5d78b3d3b91653770b21b60e0df13f0ec1d18de7704ef15bb8a19a7cd00"
++    "d96c3a806cce4661d3237aec0e4e76070cee5b80cb599e21ec11c2f68f9f3fdf7efdf8e9c36a04f421de7f19"
++    "e5c98fcb1f2e265fe01e27178b3d7e9497e25252b31f6713f5f9633bd530fddb667f72319cd96b2befef6e89"
++    "deb5b9dd9ad7677dfd30ebe3f96f2f66bf7d3e97bbe77179e8da6eeb33f8ace5b5bd9ecd9b783a938e40dba0"
++    "7f42c9e061f18cce315e234c9eb89b4df8d7e5bc8c91c2aafcf4fbc6bccc1b79d6fac698c265d8d9de238c47"
++    "b0f9d6cf9deab218d31b3d66f9f51e9abcf8a8ff6bdfb3490f7ab5e773d2169374095daff4dc13200b4ca1e3"
++    "bd9ea17db96fd76b3dab44a324e620da77c22b9bbca8a6e40c2a6112e83d845a41a928dabf545164f43124f4"
++    "45159392008d11a5c1625cf1b29450b4d52a16ef043893abae5205e585b1dea5ac52a47e006c885a49a1a0f3"
++    "b59e5e7aa95c042395aa08d41bfdc68552a92f2992760a8d87ec6d2d02209494a182acc6542793115daf2d2e"
++    "58340647638654018dcdd55893b4b44a25ed4d0a3ad0dcc8fdaff53450b47234114e05902ed21c6859924c55"
++    "2757311ffd5acf05116ff834ead77da6ef4be1f3bedf5effac316cf2f543d93a91ad9339e6adf62fbcd9fee2"
++    "f96b9b778db0cf611084d3610c62f5694ff60d68fdaf3faf45eaa77ee9bbc0e61ec7a35925777de2fbac1945"
++    "46f18437aaf7fb3675a6ef3ba36f8c2f7037c68bdfa6cd49d4497129183bc6ee1b06d8f1419de800152bdf1f"
++    "1bc1a7628d6b7caef17badf1ff38978b2afc8617837fbd50af2b791b01bb9c8bcb5f8f8ef9ce2696b16f8255"
++    "a623f6852ada555355d514951441c217702a05c8c950f89be855d05298a44230b1b4519b6295c166a3630ea9"
++    "ba9ca4340133868cba561f302a1bbd8cce798a43073250b056972c1d44914abb25103928a763ed8c7d406f5c"
++    "d6e0420d8e028b869514b56080a20d6dd45649a928847510a9c436928dccae18ace0e8878ed85796e25d65d2"
++    "272562c99863b6d5249f6acec16b402820b316fb633f25e3653626d998a158c0483340f29834fd455bd319fb"
++    "075def789deb1c7c6de2906b13cb297aa6c07fe8cbf4cb73beb879b89e8e96f278d136d8831cce356cb3aba3"
++    "44f1d08696d26885885dd2a835245f2dd8926af2b26a433227548d29299daa7449a762a38d0595af955c4d41"
++    "63b4b5cec912632985744421e957ce5e67e96d0a596492a94a320b854c4aab61d21b5d93284192d09163b226"
++    "937c29109dd24822072e9788426493c971f940ca630dc852854587114ab69e5c59cc1e48d91209798ca292ba"
++    "17324f1dd24836ad060ba224db5a3a3025920c63f028daff8bc525439649ed9746697dd0355411a4156d0e40"
++    "b44e64342258634238da162dfcc142f9feb27d2d7fa841b916658b73b858c8d5da37124e0e31b81ffd191ff1"
++    "9ab89fec58bf7b21821e376775771bcbe09122f8aee049882240a2044b184a28c653aad64522657e9f6d2e22"
++    "d12f734e22d5aab4d26d060ed62b6f81a883980d65544af621f820a83a31d2c948c141386a0531465b107356"
++    "40e99f70532967321fb6fdc7d1f66e5f01a85d0ca6044ad7b2042335f97fa4b0450b51b68c675da060ad5564"
++    "49c640503c50c942ee4808513a822702155189ec54a562a00a911c6248058595816a171943b4d562474d0154"
++    "4f795722d56c2e7b1122b4ff502912c9de90073b3a7896a0ad5d6f3feba5c223be81b3c3a23fafd5ff38570a"
++    "dfedcafefb5e9deb736167c9fa6291e6705bd36960a4532e76687054c1ba6c039a603454d2222f1c1563948d"
++    "adf454a725a50cf91040b21c58650a42636d578234792347fe47912f49496bd24641f24346831c8fa1169d40"
++    "7201540b525a17857e8d4148ab2bc977b424af10c176afeb88ea35696fa17d7d8822644b3f6a09a1a02ede79"
++    "efd1065d2835a4145ca6dda84c45516216555189d9a1c195ea392a3b63d1342c3ac1689d158a9a55810a56e5"
++    "a9ec4332747abf067be34355c252b15a512a1a6056e882f4949b62d278b2067f4f65c5e1dffe3d50f64f0ad1"
++    "c5e84e5894396031c607d315b03ec62a3479911ada4020bb23854bed322a3a62178c2143408e4afb9234815d"
++    "4c953e2b270a858a4f25672a3b8857b20b52d1d1b50855c0b71109143a908b45b2258a7c38855ecd5a507f0a"
++    "5c2497aee40ba689c421c4e413e98131f447004dad294c1184c94279727c9ec25355130590187812100aec60"
++    "2ca232b22360db855ae7ab8e921c529089ac604e85e40dedacf2080a41d2c83b0296ca302ab18ca498cda40f"
++    "c16907b65d9e22bf48d371ea42ec1ffe3b8a877cf578cfaae49eafca6e5ea7f8e6af1f6f2d4dbdb83cb5eca9"
++    "fbebc762dd777de5afdb31098792c017658675518681dd076cc1c96fd3bbfb374a5ea773737cbafbb50f5816"
++    "d3b90796c5d633c0b2e8a91f58de30cfbdb5d03034c742f31dddd6ca90be3b4847fcb4c0d9240ce28914cf3f"
++    "f2d1eac156bbd81bad9e6cd5377ca36f7ab0d5d1f4f1adff47dffacfecbe31bb7cf73f73f8c61cf283013730"
++    "1cd663a67660b0f59ca93d646e3d68ea0c881ef29ca9d359e5c47f52e267d2df0de96c1398daf740ed151b88"
++    "013cc16ac707df7491d89c0bbfa627e6d8089c640498d8b313cb099de97b0bfa68261f1a2ef467d330480339"
++    "1b5997735ced700606579df5c621e7eea37337533c048aaf584b89c266980c36dd0436e7e3afe98d3e56d013"
++    "1594d93d3bbb3790f9bb238b691864069f8dac2b83af76380385abce7ae39055f46815658a074331af2b3191"
++    "8321f28ab3fb20d73767e36aba096ccec75fd31b7d9cd34fcce9ccee9bb1cb999c397c4b0ea78f5ca0cf6761"
++    "903eb21d58978d7cda7e06029ffaea0b41cee347e7710678080073326718870023dfebb1c9e2b0bf4cdc0ef1"
++    "9bbe4dbcbde39938edf5fbc4dbc0b20f38cd0730eeef0a77760d8ceebb41f78afdc410d7a9da61359d383667"
++    "63b0e90b3cf605a7f902c6f64db0e5fcce08be1582ff8469fe325b9dd2eabbcedb8b89686da55603437031b6"
++    "d9d0f670b8becb19605cefae472239a11f9dd099e701f2cc999ed91c269bdf79d5be46e4e00ce8eaf3dfeb42"
++    "d777392b913dfa512ee75f27fb33cf43e199b33fb3394036f9cb005b680efb2ad36294df74a169e7bee7c3b6"
++    "d7cb4d3bf965d370b26960fadf2dfd6c3198e4f74af2159b8f19b4cd50416d5ea2b33927924d8f1cb28938d9"
++    "4430c56f4e319b0126f25c44b67ffcfcf9f6ebc7afff0f344841d21ddd0100"
++)
++
++GMM_TEST_ROUTES = {
++    ("androidx.annotation", "annotation", "1.8.1"): (
++        ("androidx.annotation", "annotation-jvm", "1.8.1"),
++        "jvmRuntimeElements-published",
++        "annotation-jvm-1.8.1.jar",
++        "annotation-jvm-1.8.1.jar",
++    ),
++    ("androidx.collection", "collection", "1.4.2"): (
++        ("androidx.collection", "collection-jvm", "1.4.2"),
++        "jvmRuntimeElements-published",
++        "collection-jvm-1.4.2.jar",
++        "collection-jvm-1.4.2.jar",
++    ),
++    ("androidx.graphics", "graphics-shapes", "1.0.1"): (
++        ("androidx.graphics", "graphics-shapes-android", "1.0.1"),
++        "releaseRuntimeElements-published",
++        "graphics-shapes-release.aar",
++        "graphics-shapes-android-1.0.1.aar",
++    ),
++}
++
++
++def primary_gmm_documents() -> dict[str, str]:
++    return cast(dict[str, str], json.loads(gzip.decompress(bytes.fromhex(GMM_RAW_FIXTURES_HEX))))
++
++
++def test_gmm_exact_six_primary_contexts_and_logical_filename_roles() -> None:
++    docs = primary_gmm_documents()
++    assert len(docs) == len(audit.GMM_CONTEXTS) == 6
++    assert audit.GMM_REDIRECTS == GMM_TEST_ROUTES
++    for key, raw in docs.items():
++        assert (audit.sha(raw.encode()), len(raw.encode())) == audit.GMM_CONTEXTS[
++            audit.coordinate(key.split(":"))
++        ]
++    graphic = json.loads(docs["androidx.graphics:graphics-shapes-android:1.0.1"])
++    row = next(v for v in graphic["variants"] if v["name"] == "releaseRuntimeElements-published")
++    assert row["files"][0]["name"] == "graphics-shapes-release.aar"
++    assert row["files"][0]["url"] == "graphics-shapes-android-1.0.1.aar"
++
++
++@pytest.fixture
++def gmm_graph(
++    graph: tuple[dict[str, Any], Path, Path, Path], monkeypatch: pytest.MonkeyPatch
++) -> tuple[dict[str, Any], Path, Path]:
++    data, repo, cache, _ = repeated_runtime_fixture(graph, "module", monkeypatch)
++    docs = primary_gmm_documents()
++    contexts = dict(
++        getattr(
++            audit,
++            "GMM_CONTEXTS",
++            {
++                audit.coordinate(key.split(":")): (audit.sha(text.encode()), len(text.encode()))
++                for key, text in docs.items()
++            },
++        )
++    )
++    redirects = []
++    for source, (target, variant, filename, _location) in GMM_TEST_ROUTES.items():
++        binary = (
++            cache
++            / "modules-2/files-2.1"
++            / target[0]
++            / target[1]
++            / target[2]
++            / "synthetic-binary"
++            / filename
++        )
++        zipped(binary, b"synthetic routed binary fixture")
++        document = json.loads(docs[":".join(target)])
++        terminal = next(v for v in document["variants"] if v["name"] == variant)["files"][0]
++        terminal["sha256"], terminal["size"] = audit.sha(binary.read_bytes()), binary.stat().st_size
++        docs[":".join(target)] = json.dumps(document, sort_keys=True)
++        raw = docs[":".join(target)].encode()
++        contexts[target] = (audit.sha(raw), len(raw))
++        for coord in (source, target):
++            cached(cache, coord, pom(coord))
++        for view in data["views"]:
++            view["modules"].extend([list(source), list(target)])
++            view["artifacts"].append(
++                {"kind": "module", "coordinate": list(target), "file": str(binary)}
++            )
++        redirects.append(
++            {
++                "source": list(source),
++                "variant": variant,
++                "target": list(target),
++                "target_variant": variant,
++            }
++        )
++    for key, text in docs.items():
++        group, module, version = key.split(":")
++        path = cache / "modules-2/files-2.1" / group / module / version / "synthetic-metadata"
++        path.mkdir(parents=True, exist_ok=True)
++        (path / f"{module}-{version}.module").write_text(text)
++    monkeypatch.setattr(audit, "GMM_CONTEXTS", contexts, raising=False)
++    for view in data["views"]:
++        view["redirects"] = copy.deepcopy(redirects)
++    return data, repo, cache
++
++
++def test_gmm_selected_routes_retain_all_poms_binaries_and_validate_offline(
++    gmm_graph: tuple[dict[str, Any], Path, Path],
++) -> None:
++    data, repo, cache = gmm_graph
++    result = audit.runtime_evidence(data, repo, cache, False)
++    native, npm = runtime_validator_fixture(result)
++    audit.validate_android(native, npm)
++    for index, view in enumerate(result["runtime_views"]):
++        assert len(view["selected_modules"]) == 7
++        assert len(view["resolved_runtime_inputs"]) == 5
++        assert len(data["views"][index]["artifacts"]) == 5
++        routed = [v for v in view["selected_modules"] if "selected_variant_redirect" in v]
++        assert len(routed) == 3
++        for row in routed:
++            assert row["pom_license_evidence"]
++            proof = row["selected_variant_redirect"]
++            assert len(proof["module_metadata"]) == 2
++            assert proof["module_metadata"][0]["coordinate"] == row["coordinate"]
++            assert proof["module_metadata"][1]["coordinate"] == proof["target"]
++    assert "synthetic-metadata" not in json.dumps(result)
++    assert str(cache) not in json.dumps(result)
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "missing",
++        "empty",
++        "duplicate",
++        "unknown_source",
++        "wrong_variant",
++        "wrong_target_variant",
++        "cycle",
++        "closed_target",
++        "unselected_target",
++        "source_missing",
++        "private_extra",
++        "metadata_missing",
++        "metadata_ambiguous",
++        "metadata_symlink",
++        "metadata_hardlink",
++        "metadata_fifo",
++        "metadata_oversize",
++        "metadata_corrupt",
++        "pretend_direct_root_binary",
++    ],
++)
++def test_gmm_producer_refuses_unverified_route_or_metadata(
++    gmm_graph: tuple[dict[str, Any], Path, Path], defect: str
++) -> None:
++    data, repo, cache = gmm_graph
++    view = data["views"][0]
++    route = view["redirects"][0]
++    source, target = audit.coordinate(route["source"]), audit.coordinate(route["target"])
++    metadata = next(
++        (cache / "modules-2/files-2.1" / source[0] / source[1] / source[2]).glob("*/*.module")
++    )
++    if defect in {"missing", "pretend_direct_root_binary"}:
++        view["redirects"].pop(0)
++        if defect == "pretend_direct_root_binary":
++            file = metadata.parent / "pretend-direct.jar"
++            zipped(file)
++            view["artifacts"].append(
++                {"kind": "module", "coordinate": list(source), "file": str(file)}
++            )
++    elif defect == "empty":
++        view["redirects"] = []
++    elif defect == "duplicate":
++        view["redirects"][1] = copy.deepcopy(route)
++    elif defect == "unknown_source":
++        route["source"] = list(COORD)
++    elif defect == "wrong_variant":
++        route["variant"] = "jvmApiElements-published"
++    elif defect == "wrong_target_variant":
++        route["target_variant"] = "jvmApiElements-published"
++    elif defect == "cycle":
++        route["target"] = list(source)
++    elif defect == "closed_target":
++        route["target"] = ["com.google.android.gms", "play-services-location", "1.0"]
++    elif defect in {"source_missing", "unselected_target"}:
++        absent = list(source if defect == "source_missing" else target)
++        view["modules"].remove(absent)
++        view["artifacts"] = [a for a in view["artifacts"] if a.get("coordinate") != absent]
++    elif defect == "private_extra":
++        route["private"] = "synthetic private sentinel"
++    elif defect == "metadata_missing":
++        metadata.unlink()
++    elif defect == "metadata_ambiguous":
++        second = metadata.parent.parent / "another" / metadata.name
++        second.parent.mkdir()
++        second.write_bytes(metadata.read_bytes())
++    elif defect in {"metadata_symlink", "metadata_hardlink", "metadata_fifo"}:
++        saved = metadata.with_name("saved.module")
++        saved.write_bytes(metadata.read_bytes())
++        metadata.unlink()
++        if defect == "metadata_symlink":
++            metadata.symlink_to(saved)
++        elif defect == "metadata_hardlink":
++            os.link(saved, metadata)
++        else:
++            os.mkfifo(metadata)
++    elif defect == "metadata_oversize":
++        metadata.write_bytes(b" " * (audit.MAX_GMM_BYTES + 1))
++    else:
++        metadata.write_bytes(metadata.read_bytes() + b" ")
++    with pytest.raises(audit.AuditError):
++        audit.runtime_evidence(data, repo, cache, False)
++
++
++@pytest.mark.parametrize(
++    "defect",
++    [
++        "proof_missing",
++        "proof_empty",
++        "target_unknown",
++        "variant",
++        "target_variant",
++        "doc_missing",
++        "doc_extra",
++        "doc_order",
++        "raw_private",
++        "base64",
++        "base64_oversize",
++        "doc_size_bool",
++        "doc_size_wrong",
++        "doc_sha",
++        "doc_coordinate",
++        "doc_extra_field",
++        "proof_extra",
++        "target_binary_missing",
++        "target_binary_digest",
++        "target_binary_size",
++        "target_binary_name",
++        "pretend_direct_root_binary",
++    ],
++)
++def test_gmm_offline_validator_refuses_missing_tampered_or_unbound_route(
++    gmm_graph: tuple[dict[str, Any], Path, Path], defect: str
++) -> None:
++    data, repo, cache = gmm_graph
++    result = audit.runtime_evidence(data, repo, cache, False)
++    native, npm = runtime_validator_fixture(result)
++    audit.validate_android(native, npm)
++    view = native["runtime_views"][0]
++    # JSON coordinates are lists, not tuples.
++    row = next(
++        v for v in view["selected_modules"] if tuple(v["coordinate"]) == list(GMM_TEST_ROUTES)[0]
++    )
++    proof = row["selected_variant_redirect"]
++    doc = proof["module_metadata"][0]
++    target_binary = next(
++        v for v in view["resolved_runtime_inputs"] if v.get("coordinate") == proof["target"]
++    )
++    if defect in {"proof_missing", "pretend_direct_root_binary"}:
++        del row["selected_variant_redirect"]
++        if defect == "pretend_direct_root_binary":
++            extra = copy.deepcopy(target_binary)
++            extra["coordinate"] = row["coordinate"]
++            extra["filename"] = "pretend-direct.jar"
++            view["resolved_runtime_inputs"].append(extra)
++    elif defect == "proof_empty":
++        row["selected_variant_redirect"] = {}
++    elif defect == "target_unknown":
++        proof["target"] = list(COORD)
++    elif defect in {"variant", "target_variant"}:
++        proof[defect] = "synthetic-private-variant"
++    elif defect == "doc_missing":
++        proof["module_metadata"].pop()
++    elif defect == "doc_extra":
++        proof["module_metadata"].append(copy.deepcopy(doc))
++    elif defect == "doc_order":
++        proof["module_metadata"].reverse()
++    elif defect == "raw_private":
++        doc["content_base64"] = "synthetic private sentinel"
++    elif defect == "base64":
++        doc["content_base64"] = "%%"
++    elif defect == "base64_oversize":
++        doc["content_base64"] = "A" * (audit.MAX_GMM_BYTES * 2)
++    elif defect == "doc_size_bool":
++        doc["bytes"] = True
++    elif defect == "doc_size_wrong":
++        doc["bytes"] += 1
++    elif defect == "doc_sha":
++        doc["sha256"] = "f" * 64
++    elif defect == "doc_coordinate":
++        doc["coordinate"] = list(COORD)
++    elif defect == "doc_extra_field":
++        doc["private"] = "synthetic private sentinel"
++    elif defect == "proof_extra":
++        proof["private"] = "synthetic private sentinel"
++    elif defect == "target_binary_missing":
++        view["resolved_runtime_inputs"].remove(target_binary)
++    elif defect == "target_binary_digest":
++        target_binary["sha256"] = "f" * 64
++    elif defect == "target_binary_size":
++        target_binary["bytes"] += 1
++    else:
++        target_binary["filename"] = "wrong-logical-name.jar"
++    with pytest.raises((audit.AuditError, ValueError)):
++        audit.validate_android(native, npm)
++
++
++@pytest.mark.parametrize("role", ["source_url", "logical_name", "transport_url"])
++def test_gmm_exact_name_and_url_roles_are_independent_even_with_rebound_test_pin(
++    gmm_graph: tuple[dict[str, Any], Path, Path], role: str, monkeypatch: pytest.MonkeyPatch
++) -> None:
++    import base64
++
++    data, repo, cache = gmm_graph
++    result = audit.runtime_evidence(data, repo, cache, False)
++    view = result["runtime_views"][0]
++    row = next(
++        v
++        for v in view["selected_modules"]
++        if v["coordinate"] == ["androidx.graphics", "graphics-shapes", "1.0.1"]
++    )
++    proof = row["selected_variant_redirect"]
++    node = proof["module_metadata"][0 if role == "source_url" else 1]
++    raw = base64.b64decode(node["content_base64"])
++    document = json.loads(raw)
++    selected = next(
++        v for v in document["variants"] if v["name"] == "releaseRuntimeElements-published"
++    )
++    if role == "source_url":
++        selected["available-at"]["url"] = "https://synthetic.invalid/private"
++    else:
++        selected["files"][0]["name" if role == "logical_name" else "url"] = "incorrect.aar"
++    raw = json.dumps(document, sort_keys=True).encode()
++    node.update(
++        {
++            "content_base64": base64.b64encode(raw).decode(),
++            "bytes": len(raw),
++            "sha256": audit.sha(raw),
++        }
++    )
++    contexts = dict(audit.GMM_CONTEXTS)
++    contexts[tuple(node["coordinate"])] = (audit.sha(raw), len(raw))
++    monkeypatch.setattr(audit, "GMM_CONTEXTS", contexts)
++    with pytest.raises(audit.AuditError):
++        audit.validate_gmm_redirect(
++            tuple(row["coordinate"]),
++            proof,
++            {tuple(v["coordinate"]) for v in view["selected_modules"]},
++            view["resolved_runtime_inputs"],
++        )
++
++
++def test_gmm_public_fetch_is_fixed_and_missing_unknown_or_redirected_context_refuses(
++    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
++) -> None:
++    docs = primary_gmm_documents()
++    coord = ("androidx.annotation", "annotation", "1.8.1")
++    calls: list[tuple[str, int]] = []
++
++    def fetch(url: str, limit: int) -> bytes:
++        calls.append((url, limit))
++        return docs[":".join(coord)].encode()
++
++    monkeypatch.setattr(audit, "public_bytes", fetch)
++    value = audit.gmm_document(coord, tmp_path, True)
++    audit.validate_gmm_document(value)
++    assert calls == [
++        (
++            "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.8.1/annotation-1.8.1.module",
++            audit.MAX_GMM_BYTES,
++        )
++    ]
++    with pytest.raises(audit.AuditError):
++        audit.gmm_document(COORD, tmp_path, True)
++    assert len(calls) == 1
++    with pytest.raises(audit.AuditError):
++        audit.gmm_document(coord, tmp_path, False)
++
++
++def test_real_gradle_gmm_available_at_emits_actual_selected_singleton_bridge(
++    tmp_path: Path,
++) -> None:
++    import subprocess
++
++    selected = os.environ.get("GSIP_TEST_GRADLE_HOME")
++    if not selected:
++        pytest.skip("actual GMM bridge control requires explicit verified Gradle tool home")
++    home = Path(selected)
++    if not home.is_absolute() or ".." in home.parts or not (home / "bin/gradle").is_file():
++        pytest.fail("invalid explicit verified Gradle tool home")
++    project = tmp_path / "gmm-bridge"
++    gradle_producer_fixture(project, "success")
++    root_build = project / "build.gradle"
++    root_build.write_text(
++        root_build.read_text().replace(
++            "url=uri(rootProject.file('local-maven'))",
++            "url=uri(rootProject.file('local-maven')); "
++            "metadataSources { gradleMetadata(); mavenPom() }",
++        )
++    )
++    source_coord = ("androidx.annotation", "annotation", "1.8.1")
++    target = ("androidx.annotation", "annotation-jvm", "1.8.1")
++    app_build_file = project / "app/build.gradle"
++    app_build_file.write_text(
++        app_build_file.read_text().replace(":".join(COORD), ":".join(source_coord))
++    )
++    for coord in (source_coord, target):
++        folder = project / "local-maven" / coord[0].replace(".", "/") / coord[1] / coord[2]
++        folder.mkdir(parents=True, exist_ok=True)
++        (folder / f"{coord[1]}-{coord[2]}.pom").write_bytes(pom(coord))
++        variant: dict[str, Any] = {
++            "name": "jvmRuntimeElements-published",
++            "attributes": {"org.gradle.usage": "java-runtime"},
++        }
++        if coord == source_coord:
++            variant["available-at"] = {
++                "url": "../../annotation-jvm/1.8.1/annotation-jvm-1.8.1.module",
++                "group": target[0],
++                "module": target[1],
++                "version": target[2],
++            }
++        else:
++            file = folder / "annotation-jvm-1.8.1.jar"
++            zipped(file)
++            variant["files"] = [{"name": file.name, "url": file.name}]
++        document = {
++            "formatVersion": "1.1",
++            "component": {"group": coord[0], "module": coord[1], "version": coord[2]},
++            "variants": [variant],
++        }
++        (folder / f"{coord[1]}-{coord[2]}.module").write_text(json.dumps(document))
++    init = tmp_path / "inspection.gradle"
++    init.write_text(audit.GRADLE_TASK)
++    output = tmp_path / "actual.json"
++    environment = dict(os.environ, GRADLE_USER_HOME=str(tmp_path / "gradle-user-home"))
++    completed = subprocess.run(  # noqa: S603 - explicit verified tool, bounded offline fixture
++        [
++            str(home / "bin/gradle"),
++            "--no-daemon",
++            "--console=plain",
++            "-I",
++            str(init),
++            ":app:gsipRuntimeEvidence",
++            "-PgsipEvidenceOutput=" + str(output),
++        ],
++        cwd=project,
++        env=environment,
++        capture_output=True,
++        timeout=120,
++        check=False,
++    )
++    if len(completed.stdout) + len(completed.stderr) > 2_000_000:
++        pytest.fail("synthetic Gradle bridge control exceeded output bound")
++    if completed.returncode != 0:
++        pytest.fail("actual Gradle selected bridge control failed")
++    result = audit.decoded(output.read_bytes())
++    expected = [
++        {
++            "source": list(source_coord),
++            "variant": "jvmRuntimeElements-published",
++            "target": list(target),
++            "target_variant": "jvmRuntimeElements-published",
++        }
++    ]
++    assert all(v["redirects"] == expected for v in result["views"])
++    assert all(
++        list(source_coord) in v["modules"] and list(target) in v["modules"] for v in result["views"]
++    )
++    assert all(
++        any(a.get("coordinate") == list(target) for a in v["artifacts"]) for v in result["views"]
++    )
++    (tmp_path / "actual-control.json").write_text(
++        json.dumps(
++            {
++                "task_sha256": audit.sha(audit.GRADLE_TASK.encode()),
++                "exit": completed.returncode,
++                "stdout_sha256": audit.sha(completed.stdout),
++                "stderr_sha256": audit.sha(completed.stderr),
++                "raw_streams_persisted": False,
++                "actual_selected_bridge_in_both_configurations": True,
++            },
++            sort_keys=True,
++        )
++    )
++
++
++@pytest.mark.parametrize("packaging", ["pom", "jar"])
++def test_gmm_keeps_existing_pom_only_rule_and_unknown_nonpom_completeness(
++    gmm_graph: tuple[dict[str, Any], Path, Path], packaging: str
++) -> None:
++    data, repo, cache = gmm_graph
++    coord = ("org.synthetic", "metadata-platform", "1.0")
++    raw = pom(coord).replace(
++        b"<licenses>", f"<packaging>{packaging}</packaging><licenses>".encode()
++    )
++    cached(cache, coord, raw)
++    for view in data["views"]:
++        view["modules"].append(list(coord))
++    result = audit.runtime_evidence(data, repo, cache, False)
++    native, npm = runtime_validator_fixture(result)
++    if packaging == "pom":
++        audit.validate_android(native, npm)
++        assert all(
++            any(row["coordinate"] == list(coord) for row in view["selected_modules"])
++            for view in result["runtime_views"]
++        )
++    else:
++        with pytest.raises(audit.AuditError):
++            audit.validate_android(native, npm)
++
++
++def test_gmm_known_roots_cannot_replace_selected_proof_with_forged_direct_rows(
++    gmm_graph: tuple[dict[str, Any], Path, Path],
++) -> None:
++    data, repo, cache = gmm_graph
++    result = audit.runtime_evidence(data, repo, cache, False)
++    native, npm = runtime_validator_fixture(result)
++    for view in native["runtime_views"]:
++        for row in view["selected_modules"]:
++            proof = row.pop("selected_variant_redirect", None)
++            if proof is not None:
++                target = next(
++                    v
++                    for v in view["resolved_runtime_inputs"]
++                    if v.get("coordinate") == proof["target"]
++                )
++                forged = copy.deepcopy(target)
++                forged["coordinate"] = row["coordinate"]
++                forged["filename"] = "pretend-root.jar"
++                view["resolved_runtime_inputs"].append(forged)
++    with pytest.raises(audit.AuditError):
++        audit.validate_android(native, npm)

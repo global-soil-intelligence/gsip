@@ -1,0 +1,376 @@
+{
+  "Deno_checked_sources": [
+    "supabase/functions/gsip-public/index.ts",
+    "supabase/functions/prior-attach/index.ts"
+  ],
+  "GSIP_REQUIRE_GDAL_1_seen": true,
+  "absent_metric_is_unavailable_not_zero": true,
+  "browser_summaries": [
+    {
+      "passed": 12,
+      "seconds": 14.8
+    }
+  ],
+  "conclusion": "success",
+  "fixed_check_steps": [
+    {
+      "conclusion": "success",
+      "label": "Install GDAL for the golden-tile tests",
+      "number": 8
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm install --frozen-lockfile",
+      "number": 9
+    },
+    {
+      "conclusion": "success",
+      "label": "Run uv sync --frozen --all-groups",
+      "number": 10
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm lint",
+      "number": 11
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm typecheck",
+      "number": 12
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm test",
+      "number": 13
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm build",
+      "number": 14
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm check:map-budget",
+      "number": 15
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm exec playwright test --project=desktop-chrome",
+      "number": 17
+    },
+    {
+      "conclusion": "success",
+      "label": "Run uv run ruff check .",
+      "number": 18
+    },
+    {
+      "conclusion": "success",
+      "label": "Run uv run mypy",
+      "number": 19
+    },
+    {
+      "conclusion": "success",
+      "label": "Run uv run pytest",
+      "number": 20
+    },
+    {
+      "conclusion": "success",
+      "label": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+      "number": 21
+    },
+    {
+      "conclusion": "success",
+      "label": "Apply migrations to data written before them",
+      "number": 23
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm db:start",
+      "number": 24
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm db:reset",
+      "number": 25
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm db:test",
+      "number": 26
+    },
+    {
+      "conclusion": "success",
+      "label": "Run pnpm db:stop",
+      "number": 27
+    }
+  ],
+  "head": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "job_id": 115666719046,
+  "js_passed_total": 597,
+  "js_workspace_summaries": [
+    {
+      "passed": 28,
+      "total": 28,
+      "workspace": "apps/site-web"
+    },
+    {
+      "passed": 308,
+      "total": 308,
+      "workspace": "packages/schema"
+    },
+    {
+      "passed": 15,
+      "total": 15,
+      "workspace": "apps/map-web"
+    },
+    {
+      "passed": 246,
+      "total": 246,
+      "workspace": "apps/capture-pwa"
+    }
+  ],
+  "map_budget_summaries": [
+    {
+      "bytes": 1663811,
+      "limit_bytes": 5242880
+    }
+  ],
+  "migration_fixture_summaries": [
+    {
+      "fixture": "wp6e_provenance.test.sql",
+      "ok": 13,
+      "total": 13
+    },
+    {
+      "fixture": "wp6fa_photo_privacy.test.sql",
+      "ok": 19,
+      "total": 19
+    },
+    {
+      "fixture": "wp_lib4_private_intake.test.sql",
+      "ok": 13,
+      "total": 13
+    }
+  ],
+  "mypy_source_file_summaries": [
+    75
+  ],
+  "pgtap_PASS_marker": true,
+  "pgtap_summaries": [
+    {
+      "assertions": 593,
+      "files": 11
+    }
+  ],
+  "pytest_summaries": [
+    {
+      "other_counts": {
+        "skipped": 31,
+        "warnings": 37
+      },
+      "passed": 1953,
+      "seconds": 160.49
+    }
+  ],
+  "raw_log_bytes": 222901,
+  "raw_log_sha256": "20d00b0cfc7096d219abf27f49fddd0be67b7e5977ae7eb2938829c898e7144c",
+  "rawlogs_persisted": false,
+  "run_id": 38507012733,
+  "site_budget_summaries": [],
+  "steps": [
+    {
+      "conclusion": "success",
+      "number": 1,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 2,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 3,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 4,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 5,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 6,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 7,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 8,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 9,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 10,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 11,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 12,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 13,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 14,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 15,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 16,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 17,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 18,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 19,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 20,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 21,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 22,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 23,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 24,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 25,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 26,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 27,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 49,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 50,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 51,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 52,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 53,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 54,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "number": 55,
+      "status": "completed"
+    }
+  ],
+  "workspace_build_markers": [
+    {
+      "build_completed_markers": 1,
+      "transformed_module_counts": [
+        201
+      ],
+      "workspace": "apps/capture-pwa"
+    },
+    {
+      "build_completed_markers": 1,
+      "transformed_module_counts": [
+        169
+      ],
+      "workspace": "apps/map-web"
+    },
+    {
+      "build_completed_markers": 2,
+      "transformed_module_counts": [
+        20,
+        3
+      ],
+      "workspace": "apps/site-web"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "checked_at_utc": "2026-10-16T00:29:47.311368+00:00",
+  "pages": {
+    "url": "https://api.github.com/repos/global-soil-intelligence/gsip/pages",
+    "status": "built",
+    "cname": null,
+    "custom_404": false,
+    "html_url": "https://global-soil-intelligence.github.io/gsip/",
+    "build_type": "workflow",
+    "source": {
+      "branch": "gh-pages",
+      "path": "/"
+    },
+    "public": true,
+    "protected_domain_state": null,
+    "pending_domain_unverified_at": null,
+    "https_enforced": true
+  },
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "result": "PAGES_BINDING_UNCHANGED_BOTH_UPLOAD_GATES_CLOSED"
+}

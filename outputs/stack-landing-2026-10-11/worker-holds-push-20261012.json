@@ -1,0 +1,70 @@
+{
+  "at": "2026-10-12T23:48:57.776588+00:00",
+  "prs": [
+    {
+      "pr": 28,
+      "branch": "docs/spec-v3",
+      "head": "5f1397de787323c0095fdc7d43d714be465c4095"
+    },
+    {
+      "pr": 29,
+      "branch": "wp-6b-launch-hardening",
+      "head": "bca7b67682a19b1873b7957a1c6f64200ab6a9a3"
+    },
+    {
+      "pr": 30,
+      "branch": "wp-6c-priors-and-tiles",
+      "head": "2ce4894a5292a499259d95d1d4567b8a6eb58078"
+    },
+    {
+      "pr": 31,
+      "branch": "wp-6d-contributor-rights",
+      "head": "0bd51b8068e4bb5cab738bd222d4a350b6f4e7a1"
+    },
+    {
+      "pr": 32,
+      "branch": "wp-6e-provenance",
+      "head": "45f62490df740eac5daa38ff8d97c8c30edb1c15"
+    },
+    {
+      "pr": 33,
+      "branch": "wp-agent-1-read-api",
+      "head": "d0416ca8714c745441c2284b4eb9e38b63bddf2d"
+    },
+    {
+      "pr": 34,
+      "branch": "wp-app-1-phone-app",
+      "head": "e77b784b51b704be5cef2ae915d5cf8face41f8c"
+    },
+    {
+      "pr": 35,
+      "branch": "wp-3b-sync-lock",
+      "head": "bfba2bf23f85ec5babf252bed244758d1cf5376f"
+    },
+    {
+      "pr": 36,
+      "branch": "wp-agent-0-coding-guidance",
+      "head": "5165898b1ee8f600472677da4e76e7d0d74da508"
+    },
+    {
+      "pr": 37,
+      "branch": "wp-site-1e-tile-host-policy",
+      "head": "64bc8ed3433c93ed159ae6c1bbe4564e5904c371"
+    },
+    {
+      "pr": 38,
+      "branch": "docs/spec-v4",
+      "head": "33b0999eea5b892383e3755cbd711c37a614b7e7"
+    },
+    {
+      "pr": 39,
+      "branch": "wp-app-2a-build-readiness",
+      "head": "765d1424c54d6fe1e189148fcacc44f5a2ba3090"
+    },
+    {
+      "pr": 40,
+      "branch": "wp-ops-2-production-reconciliation",
+      "head": "a00b7758d8084c2f96e79f852070682ad109f096"
+    }
+  ]
+}

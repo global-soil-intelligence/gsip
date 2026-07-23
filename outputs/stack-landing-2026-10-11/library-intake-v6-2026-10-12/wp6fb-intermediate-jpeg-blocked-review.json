@@ -1,0 +1,136 @@
+{
+  "reviewer": "library_store_review",
+  "mode": "read-only independent adversarial review",
+  "manifest_path": "/private/tmp/gsip-6fb-corrected-candidate-manifest.json",
+  "manifest_sha256": "1d06d19398209c45cb8e29fdb182a5402ddf0625b81e032a38093ff555dc049a",
+  "patch_sha256": "be77b7b0fa0489ac3f253a456b4184a1d9343cc6537ef4d6f0d298ca9988ad4e",
+  "files": [
+    {
+      "path": "pipeline/privacy_contract.py",
+      "bytes": 8734,
+      "sha256": "7d7615322afd8e1603ac63f7927dae3efa02ef8aa65b3d93febafe3071f6b92c"
+    },
+    {
+      "path": "pipeline/privacy_io.py",
+      "bytes": 3420,
+      "sha256": "35416d792cc5e8a558a71ad9fb3ffbe118fe9055119c36d2aa05d30426c4ed33"
+    },
+    {
+      "path": "pipeline/photo_privacy.py",
+      "bytes": 18249,
+      "sha256": "f4a288aad937c73ecb64c3415187e669ba67302a63eddcc0e9a7d65bfdcfa30c"
+    },
+    {
+      "path": "pipeline/privacy_transport.py",
+      "bytes": 4936,
+      "sha256": "c2fde87e887dac9706bccff8bd56ba25c6306a065b4c199d9768aff3fe3377ad"
+    },
+    {
+      "path": "pipeline/privacy_worker.py",
+      "bytes": 13143,
+      "sha256": "8e1a20b9edc1e4eba99cf661575c4fff79a76c9d2c5c55f37270373c6b7b1659"
+    },
+    {
+      "path": "pipeline/privacy_review.py",
+      "bytes": 7825,
+      "sha256": "5f2ef916558137491cc0d34b36494814dd8cbf60c85aaeeb5595c3ed17073f40"
+    },
+    {
+      "path": "pipeline/photo_privacy_calibrate.py",
+      "bytes": 10939,
+      "sha256": "6b88f0dfc31c95693fa41e1214c806b72b1656336296448371a35c8b60804a62"
+    },
+    {
+      "path": "tests/test_photo_privacy.py",
+      "bytes": 4878,
+      "sha256": "435fd486058a7f4cd0b135b558afe9fcc6d17d44a30c4e24caa01644b96a8b35"
+    },
+    {
+      "path": "tests/test_privacy_worker_review.py",
+      "bytes": 13773,
+      "sha256": "007583ed8244ccf6bfd464fda097bdbf3bb8e485e6cac87f195a66ad20ee777a"
+    },
+    {
+      "path": "tests/test_privacy_contract_calibration.py",
+      "bytes": 11280,
+      "sha256": "e4acbbace561959a0f6537d9b25b7b343dc18c5750b3cf4650c5a6cb181121cd"
+    },
+    {
+      "path": "docs/PHOTO_PRIVACY_WORKER.md",
+      "bytes": 10633,
+      "sha256": "838ff3dfc7c39dde6c7a75cae1f897a09b564b63cdff2393687795b670ddad82"
+    }
+  ],
+  "independent_snapshot": "/private/tmp/gsip-6fb-corrected-independent-5cx9g_u9",
+  "blocking_findings_remain": true,
+  "findings": [
+    {
+      "priority": "P1",
+      "file": "pipeline/photo_privacy.py",
+      "line_start": 178,
+      "line_end": 185,
+      "problem": "A successful pixel decode does not prove exact-byte canonical metadata-free JPEG. Trailers, concatenated streams, excess JFIF payload and post-SOS COM are accepted and become trusted content identities while not entering detection.",
+      "related_file": "pipeline/qa.py",
+      "related_line": 207,
+      "fix_needed": "Validate the complete JPEG marker/entropy stream to its sole final EOI, reject metadata at all positions, and constrain permitted JFIF fields/length/no thumbnails without re-encoding. Ensure the exporter shared guard rejects the same channels.",
+      "evidence": "/private/tmp/gsip-6fb-jpeg-byte-witness-receipt.json"
+    }
+  ],
+  "closed_findings": [
+    {
+      "problem": "Marker-only card exclusion hides unrelated scene text",
+      "fix": "No optional exclusions; face and text see every pixel",
+      "fail_before_cases": 3
+    },
+    {
+      "problem": "Human decision could submit a different viewing copy digest",
+      "fix": "Bounded no-follow decode/hash after decision before intent/RPC",
+      "fail_before_cases": 6
+    }
+  ],
+  "independent_checks": {
+    "scoped": {
+      "passed": 56,
+      "log": "/private/tmp/gsip-6fb-corrected-independent-scoped.log",
+      "live_HTTP_transport_blocked": true
+    },
+    "fail_before": {
+      "expected_failed": 9,
+      "deselected": 40,
+      "log": "/private/tmp/gsip-6fb-corrected-independent-failbefore.log",
+      "live_HTTP_transport_blocked": true
+    },
+    "ruff": "10 files pass",
+    "mypy": "10 source files pass"
+  },
+  "author_evidence_read": [
+    "/private/tmp/gsip-6fb-corrected-native-smoke-receipt.json",
+    "/private/tmp/gsip-wp6f-model-audit-biveip52/audit-receipt.json"
+  ],
+  "boundaries_audited": [
+    "strict bounded duplicate-key/non-finite JSON and generic CLI failures",
+    "lease/content identity CAS and durable exact receipt replay",
+    "personal token separate from durable intent, server-derived identity",
+    "private file permissions/no-follow/proxy/redirect/log boundaries",
+    "pinned same model bytes/config source digests and child timeout cleanup",
+    "full frame face/text coverage; no OCR/box/image persistence",
+    "unapproved/unknown calibration semantics and no service gate setters"
+  ],
+  "residual_risks": [
+    "SQL concurrency and actual platform RPC integration owned by separate reviews",
+    "Darwin synthetic smoke does not qualify real face-positive/global-script recall",
+    "Target Linux runtime/licensing artifact audit remains separate",
+    "Personal operator provisioning, policy/calibration approval and production/publication gates remain closed",
+    "No distributed atomicity claim at external publication boundary"
+  ],
+  "actions": {
+    "source_edits": false,
+    "commits": false,
+    "pushes": false,
+    "merges": false,
+    "production_calls": false,
+    "real_contributor_data": false,
+    "actual_model_downloads": false,
+    "actual_model_inference_by_reviewer": false
+  }
+}

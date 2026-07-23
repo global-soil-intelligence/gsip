@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "functions",
+    "deploy",
+    "prior-attach",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+    "--import-map",
+    "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0/supabase/functions/deno.json",
+    "--use-api"
+  ],
+  "started_at": "2026-10-12T20:04:32.372220+00:00",
+  "completed_at": "2026-10-12T20:04:35.028550+00:00",
+  "exit_code": 0,
+  "stdout_sha256": "52b70109ec7ab83f67d29de4e73050c1816aa5a37d19551a3e82ac6aee397df9",
+  "stderr_sha256": "70701792c032257a90400448c5f941bbd0ac0f256e0d2891b8a29c070afbf074",
+  "safe_output": [
+    "Uploading asset (prior-attach): supabase/functions/deno.json",
+    "Uploading asset (prior-attach): supabase/functions/prior-attach/index.ts",
+    "Uploading asset (prior-attach): packages/schema/src/database.types.ts",
+    "Uploading asset (prior-attach): packages/schema/src/priorJob.ts",
+    "Uploading asset (prior-attach): packages/schema/src/prior.ts"
+  ]
+}

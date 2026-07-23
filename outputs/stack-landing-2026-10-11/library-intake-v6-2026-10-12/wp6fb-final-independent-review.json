@@ -1,0 +1,183 @@
+{
+  "reviewer": "library_store_review",
+  "mode": "independent read-only adversarial review; not an approving GitHub review",
+  "commit": "b0f8e0f808629754bc6f4213f9c94e3149adfe55",
+  "all_13_committed_files_match": true,
+  "manifest": "/private/tmp/gsip-6fb-final-v3-candidate-manifest.json",
+  "manifest_sha256": "15cb82e62de7a4e79bfd370c3d228b6053b0bbb982bf75b440f276d89c931a37",
+  "independent_snapshot": "/private/tmp/gsip-6fb-v3-final-independent-immrs4jo",
+  "files": [
+    {
+      "path": "pipeline/privacy_contract.py",
+      "bytes": 8734,
+      "sha256": "7d7615322afd8e1603ac63f7927dae3efa02ef8aa65b3d93febafe3071f6b92c"
+    },
+    {
+      "path": "pipeline/privacy_io.py",
+      "bytes": 3420,
+      "sha256": "35416d792cc5e8a558a71ad9fb3ffbe118fe9055119c36d2aa05d30426c4ed33"
+    },
+    {
+      "path": "pipeline/photo_privacy.py",
+      "bytes": 18249,
+      "sha256": "f4a288aad937c73ecb64c3415187e669ba67302a63eddcc0e9a7d65bfdcfa30c"
+    },
+    {
+      "path": "pipeline/privacy_transport.py",
+      "bytes": 4936,
+      "sha256": "c2fde87e887dac9706bccff8bd56ba25c6306a065b4c199d9768aff3fe3377ad"
+    },
+    {
+      "path": "pipeline/privacy_worker.py",
+      "bytes": 13143,
+      "sha256": "8e1a20b9edc1e4eba99cf661575c4fff79a76c9d2c5c55f37270373c6b7b1659"
+    },
+    {
+      "path": "pipeline/privacy_review.py",
+      "bytes": 7825,
+      "sha256": "5f2ef916558137491cc0d34b36494814dd8cbf60c85aaeeb5595c3ed17073f40"
+    },
+    {
+      "path": "pipeline/photo_privacy_calibrate.py",
+      "bytes": 10939,
+      "sha256": "6b88f0dfc31c95693fa41e1214c806b72b1656336296448371a35c8b60804a62"
+    },
+    {
+      "path": "tests/test_photo_privacy.py",
+      "bytes": 5880,
+      "sha256": "417187076bc6e2f1ba5a3da95e6abe3b266a11874d39cb07e58194aa49a7f807"
+    },
+    {
+      "path": "tests/test_privacy_worker_review.py",
+      "bytes": 13773,
+      "sha256": "007583ed8244ccf6bfd464fda097bdbf3bb8e485e6cac87f195a66ad20ee777a"
+    },
+    {
+      "path": "tests/test_privacy_contract_calibration.py",
+      "bytes": 11280,
+      "sha256": "e4acbbace561959a0f6537d9b25b7b343dc18c5750b3cf4650c5a6cb181121cd"
+    },
+    {
+      "path": "docs/PHOTO_PRIVACY_WORKER.md",
+      "bytes": 11684,
+      "sha256": "5149f8bb8015a0a3482bb664878ecd804ba311ac391f317cda7840a22fa35b0b"
+    },
+    {
+      "path": "pipeline/qa.py",
+      "bytes": 24707,
+      "sha256": "bac8fe0b1ad179e999f7ec2b0d6718fd516fd0ee76f03c5b9f26723b3ca7c575"
+    },
+    {
+      "path": "tests/test_qa.py",
+      "bytes": 36768,
+      "sha256": "52113eab3b455455d33a82fd6602362798a46552a82cb7d70cecd3bd6355b2a7"
+    }
+  ],
+  "outcome": "No blocking findings remain within the reviewed WP-6fB preparation and structural metadata scope",
+  "blocking_findings_remain": false,
+  "independent_validation": {
+    "scoped_tests": {
+      "collected": 234,
+      "passed": 234,
+      "failed": 0,
+      "errors": 0,
+      "HTTP_live_transport_blocked": true
+    },
+    "marker_corpus": {
+      "assertions": 6880,
+      "passed": 6880,
+      "referenced_DQT_FFD9_positive": true,
+      "all_JFIF_bytes_mutated": true
+    },
+    "full_decoder_counterexample_recheck": {
+      "cases": 47,
+      "expected_refusals": 46,
+      "expected_positive_controls": 1,
+      "failures": 0
+    },
+    "fail_before": {
+      "v2_guard_final_QA_corpus": {
+        "collected": 173,
+        "failed": 10,
+        "passed": 163,
+        "errors": 0
+      },
+      "original_B14_regressions": {
+        "collected": 14,
+        "failed": 14,
+        "passed": 0,
+        "errors": 0
+      }
+    },
+    "ruff": "12 files pass",
+    "mypy": "12 source files pass"
+  },
+  "evidence": {
+    "gsip-6fb-v3-independent-scoped.log": {
+      "path": "/private/tmp/gsip-6fb-v3-independent-scoped.log",
+      "sha256": "149600eab06473a5f34de78924662272ecaab63ef99581cb7a718390b89b757e"
+    },
+    "gsip-6fb-v3-independent-marker-probe.json": {
+      "path": "/private/tmp/gsip-6fb-v3-independent-marker-probe.json",
+      "sha256": "9c2010f0400ee8a9653016786b7b48d472059238a504a90993d350264bdfb38d"
+    },
+    "gsip-6fb-v3-independent-counterexample-recheck.json": {
+      "path": "/private/tmp/gsip-6fb-v3-independent-counterexample-recheck.json",
+      "sha256": "421f2862a8cb627f10ffa0579821fb13ecd3747e73d66c49aa9118df41491bac"
+    },
+    "gsip-6fb-v3-independent-v2-failbefore.log": {
+      "path": "/private/tmp/gsip-6fb-v3-independent-v2-failbefore.log",
+      "sha256": "8860bc4c9f3748e05ec7cfef0c1bcfde861fa90b3b7bfd9e270568ced109dd02"
+    },
+    "gsip-6fb-v3-independent-original-b-failbefore.log": {
+      "path": "/private/tmp/gsip-6fb-v3-independent-original-b-failbefore.log",
+      "sha256": "fb57d1afef67eeb09bbbb7b32eae600629dd0a2a43f8c4c29e0117074c685123"
+    }
+  },
+  "closed_findings": [
+    "Marker-only card exemption disabled; every pixel enters face and text views",
+    "Changed/symlinked/missing human viewing copy refused after decision before intent/RPC",
+    "EOI trailers, concatenated streams, excess/variable/duplicate JFIF, JFXX thumbnails and late COM/APP refused",
+    "Ignored control/table padding and unsupported DNL/DAC modes refused",
+    "Unused/overwritten definition generations and pending definitions without a valid later scan refused",
+    "Actual structural Huffman selection distinguishes initial DC, AC and DC refinement; inactive selectors fixed zero",
+    "Duplicate sequential scans, invalid progressive coefficient history and empty scans refused"
+  ],
+  "other_boundaries_audited": [
+    "Strict bounded duplicate-key/non-finite wire JSON and generic errors",
+    "Immutable outbox UUID/bytes, lost completion/review replies, stale/withdrawn/conflict handling",
+    "Personal operator token supplied separately from durable intent; SQL identity derived by server",
+    "No service setter for policy/calibration/gate/operator provisioning in worker contract",
+    "Private permissions/no-follow, proxy/redirect/log boundaries and bounded response/download sizes",
+    "Same pinned model bytes and exact source/config/calibration digests before inference",
+    "Bounded view/CPU child termination/kill/join and no persisted images/crops/OCR/boxes",
+    "Calibration always unapproved or unknown; no QA or settlement writes"
+  ],
+  "limitations": [
+    "Guard validates marker lengths, canonical JFIF, table payloads/generations and scan history. Structural table reference does not prove each Huffman symbol or entropy bit is consumed, prevent all codec/pixel steganography, or attest a trusted producer. QA still reencodes source; sanitizer output bytes are unchanged.",
+    "The reviewer used synthetic in-memory images and blocked live HTTP; no real person/contributor data, model downloads, model inference, Hub upload or production access.",
+    "Exact target Linux runtime/artifact/license audit, permissioned face/script/plate calibration and operator/policy provisioning remain separate.",
+    "SQL role/rights/concurrency and actual RPC integration are subject to separate independent review; this receipt does not clear that package.",
+    "Publication, capture, deployment and production remain held; no model selection or calibrated recall claim."
+  ],
+  "parent_reported_validation_not_repeated": {
+    "full_python_passed": 682,
+    "GDAL_skipped": 4,
+    "root_static_files": 64,
+    "13_authored_file_gitleaks_findings": 0,
+    "synthetic_CPU_frames": 7,
+    "remaining_children_after_hard_timeout": 0
+  },
+  "actions": {
+    "shared_source_edits": false,
+    "author_source_edits": false,
+    "commits": false,
+    "pushes": false,
+    "merges": false,
+    "GitHub_approval": false,
+    "production_calls": false,
+    "real_contributor_data": false,
+    "external_model_or_image_download": false,
+    "actual_model_inference_by_reviewer": false
+  }
+}

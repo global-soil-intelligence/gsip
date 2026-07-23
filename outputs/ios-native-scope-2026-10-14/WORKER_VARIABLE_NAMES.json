@@ -1,0 +1,14 @@
+[
+  {
+    "name": "SUPABASE_URL"
+  },
+  {
+    "name": "VITE_GSIP_PUBLIC_API"
+  },
+  {
+    "name": "VITE_SUPABASE_PUBLISHABLE_KEY"
+  },
+  {
+    "name": "VITE_SUPABASE_URL"
+  }
+]

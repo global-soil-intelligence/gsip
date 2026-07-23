@@ -1,0 +1,30 @@
+{
+  "head": "9b5331569602db7f2a54b0748e03325f591ffa9d",
+  "previous_head": "d379490209a61b4dc3caac7c5b17d84bcaa96322",
+  "delta": "Test assertion performance only; no runtime, timeout, rule, suppression or workflow change",
+  "local_lint": "passed",
+  "local_typecheck": "passed",
+  "local_unit_tests": {
+    "capture": 444,
+    "schema": 310,
+    "site": 41,
+    "map": 16,
+    "total": 811
+  },
+  "independent_review": "Exact new head, clean worktree, no outstanding findings; 42/42 focused queue tests passed",
+  "ci_run": 38994200164,
+  "app_run": 38994200223,
+  "ci_result": "pending",
+  "app_result": "pending",
+  "pages_protection": {
+    "sole_reviewer": "jdhart81",
+    "can_admins_bypass": false
+  },
+  "live_manifest": {
+    "url": "https://globalsoilintelligence.com/capture/gsip-activation.json",
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "production_changes": [],
+  "merged": false
+}

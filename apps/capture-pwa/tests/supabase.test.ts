@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { drainQueue } from '../src/sync'
 import {
   type GsipClient,
@@ -6,6 +6,8 @@ import {
   submitQueued,
 } from '../src/supabase'
 import type { QueueRecord } from '../src/types'
+
+beforeEach(() => vi.stubEnv('VITE_CAPTURE_LIVE', 'true'))
 
 type QueryResult = { data: unknown; error: Error | null }
 
@@ -88,6 +90,11 @@ class FakeQuery implements PromiseLike<QueryResult> {
 
 function fakeClient(state: FakeState): GsipClient {
   return {
+    rpc: async (name: string) => {
+      if (name === 'complete_submission_upload')
+        state.log.push('complete:upload')
+      return { data: name === 'is_intake_open' ? true : null, error: null }
+    },
     auth: {
       getSession: async () => ({
         data: { session: { user: { id: 'user-id' } } },
@@ -122,6 +129,7 @@ function fakeClient(state: FakeState): GsipClient {
 
 function queuedRecord(): QueueRecord {
   return {
+    ownerId: 'user-id',
     accuracyM: 8,
     attributionName: 'Field contributor',
     capturedAt: '2026-07-23T00:00:00Z',
@@ -132,6 +140,12 @@ function queuedRecord(): QueueRecord {
     latitude: 40.446,
     longitude: -79.982,
     photos: [
+      {
+        bytes: new Uint8Array([255, 216]),
+        mimeType: 'image/jpeg',
+        objectId: 'photo-b',
+        shotType: 'B',
+      },
       {
         bytes: new TextEncoder().encode('jpeg'),
         mimeType: 'image/jpeg',
@@ -179,7 +193,9 @@ describe('hosted submission paths', () => {
       'insert:submissions',
       'upload:photo',
       'insert:photos',
-      'invoke:prior-attach',
+      'upload:photo',
+      'insert:photos',
+      'complete:upload',
     ])
     expect(state.submissions.get(record.submissionId)).toMatchObject({
       device_model: 'Macintosh',
@@ -206,7 +222,9 @@ describe('hosted submission paths', () => {
     expect(
       state.log.filter((event) => event === 'insert:contribution_grants'),
     ).toHaveLength(1)
-    expect(state.photos).toEqual(new Set(['submission-id:A']))
+    expect(state.photos).toEqual(
+      new Set(['submission-id:A', 'submission-id:B']),
+    )
   })
 
   it('removes a queue record only after the complete hosted path succeeds', async () => {

@@ -1,0 +1,43 @@
+{
+  "qa_sha256": "1f12cffa0471d96742ae9e852f5f0ea840c0f5edb2a0e0d2ce87bfec0dbcbb0c",
+  "decoder_sha256": "f4a288aad937c73ecb64c3415187e669ba67302a63eddcc0e9a7d65bfdcfa30c",
+  "scope": "synthetic in-memory bytes, complete trailing definitions with no future scan; no network/models/image persistence",
+  "results": [
+    {
+      "case": "valid_DQT_8bit_table3_with_private_ascii_values",
+      "position": "after_final_scan_no_subsequent_SOS",
+      "metadata_dirty": false,
+      "decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "case": "valid_DHT_AC_table3_four_3bit_codes",
+      "position": "after_final_scan_no_subsequent_SOS",
+      "metadata_dirty": false,
+      "decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "case": "valid_DRI_interval_0x1337",
+      "position": "after_final_scan_no_subsequent_SOS",
+      "metadata_dirty": false,
+      "decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "case": "valid_DNL_49_lines",
+      "position": "after_final_scan_no_subsequent_SOS",
+      "metadata_dirty": false,
+      "decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "case": "valid_DAC_AC_table3_K63",
+      "position": "after_final_scan_no_subsequent_SOS",
+      "metadata_dirty": false,
+      "decoder_accepted": true,
+      "pixels_identical": true
+    }
+  ],
+  "blocking_findings_remain": true
+}

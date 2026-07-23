@@ -1,0 +1,27 @@
+{
+  "Android_artifact_present": false,
+  "GET_only": true,
+  "diagnostics": [
+    {
+      "counts": {},
+      "error_class": "MISSING_FILE",
+      "source_line": 663,
+      "stage": "android-source-bindings"
+    }
+  ],
+  "failed_step": 18,
+  "fixed_context_lines": [],
+  "fixed_fault_lines": [],
+  "head_sha": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "job_conclusion": "failure",
+  "job_id": 115611486990,
+  "malformed_fixed_metadata_count": 0,
+  "native_acceptance": false,
+  "production_changes": false,
+  "raw_log_bytes": 103678,
+  "raw_log_sha256": "c740938440c996585d2b130d52c8d5253a493ffa24f2d07b309e13387ab2a032",
+  "raw_logs_persisted": false,
+  "run_id": 38489625406,
+  "run_number": 51,
+  "schema": "gsip-pr63-1385-android-safe-terminal-v1"
+}

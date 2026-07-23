@@ -1,0 +1,2359 @@
+diff --git a/docs/NODE_EXCHANGE_CONTRACT.md b/docs/NODE_EXCHANGE_CONTRACT.md
+new file mode 100644
+--- /dev/null
++++ b/docs/NODE_EXCHANGE_CONTRACT.md
+@@ -0,0 +1,74 @@
++# Private node exchange contract (LIB-5A)
++
++LIB-5A implements pure validation and supplied synthetic integrity facts under
++[SPEC §16.9–16.13](SPEC.md#169-lib-5-boundary-and-invariants). It performs no I/O,
++reads no credential or environment variable, authenticates no peer and grants no
++use, sharing, training or publication permission. LIB-5B owns the separately
++reviewed synthetic filesystem simulator; real authority, transport and retention
++remain held for LIB-5C. Existing LIB-1/4 contracts are unchanged.
++
++`parseNodeExchangeEvent(bytes)` in `@gsip/schema` and
++`parse_node_exchange_event(bytes)` in Python accept only byte buffers and return
++normalized immutable declarations or retirements. The input must be strict UTF-8
++JSON, at most 2,000,000 bytes inclusive. Size is checked before copying/decoding;
++the actual size and snapshot use intrinsic byte-buffer operations so subclass
++accessor/conversion overrides cannot evade the bound or replace retry bytes.
++bounded preflight refuses more than 12 simultaneous object/array containers before
++full JSON parsing. The root container counts as one; primitives add none. BOM,
++malformed UTF-8, duplicate decoded keys and unpaired Unicode surrogates are
++refused. Valid escaped surrogate pairs pass syntax preflight; they do not bypass
++the contract's exact fields and ASCII vocabularies. Unicode is never normalized.
++
++UUIDs use case-insensitive canonical 36-character hexadecimal text and normalize
++to lowercase for comparison, with no version/variant claim. Digests are lowercase
++64-hex text. `stream_sequence` and camera `pixel_count` require unsigned decimal
++integer JSON tokens within their bounds, checked before conversion. Spellings
++such as `1.0`, `1e0` and `-0`, strings and booleans are refused for those fields.
++Other scientific numbers retain LIB-1's finite-value bounds. The exported
++`NodeExchangeEventSchema` and Python `node_exchange_schema()` describe semantic
++validation; already-decoded values/JSON Schema cannot establish raw byte, duplicate
++key, nesting or integer spelling compliance. Use the byte parser at intake.
++
++`prepareNodeExchangeEvent` uses built-in WebCrypto and snapshots input before its
++hashing await. It returns a frozen event, the original-byte SHA-256 and
++`originalBytes()`, which returns a fresh copy. Python's
++`prepare_node_exchange_event` returns immutable original bytes, SHA-256 and frozen
++typed models. No retained event is reserialized for retry identity. Whitespace,
++escape spelling, UUID case and numeric spelling changes conflict when an event
++identity or sequence slot already exists, even when validated fields are equal.
++This convention supplies neither a signature nor cross-language canonical JSON.
++
++The remaining helpers consume supplied synthetic facts only:
++
++- `nodeExchangeStream` / `node_exchange_stream`: normalized source, destination
++  and scope tuple, distinct from LIB-1/4 library namespaces.
++- `nodeExchangeSlot` / `node_exchange_slot` and `checkNodeExchangeIdentity` /
++  `check_node_exchange_identity`: immutable stream/slot/event ownership and exact
++  digest retry/conflict checks. These fact helpers cannot authenticate their inputs.
++- `bindNodeExchangeMeasurement` / `bind_node_exchange_measurement`: immutable
++  stream/sample/measurement ownership and protocol/context/scientific field-value
++  equality. Returned scientific values are independent immutable snapshots. A
++  synthetic restriction can grow and cannot be cleared by a false claim; a repeat
++  supplies no independent evidence or field verification.
++- `advanceNodeExchangeHead` / `advance_node_exchange_head`: only consecutive
++  supplied slots with matching predecessor digests advance a committed head.
++  Missing predecessors hold the gap; a conflicting predecessor raises a generic
++  conflict. No reset or fabricated predecessor is supplied.
++- `nodeExchangeRetirementAliases` / `node_exchange_retirement_aliases` and
++  `nodeExchangeDeclarationCovered` / `node_exchange_declaration_covered`: minimal
++  alias coverage independent of chain commitment. The sample refusal is sample-wide;
++  additional measurement aliases never limit that coverage. Parsing/classification
++  alone does not apply or authenticate a retirement. Durable refusals, erasure and
++  authenticated synthetic/real admission remain later-package responsibilities.
++
++Byte and helper boundary errors are generic and attach no input-bearing cause.
++Decoded semantic validation also refuses throwing getters/proxies with only a
++generic custom schema issue; prepared values and supplied fact collections are
++accessed inside the same generic helper-error boundary. Fact collections must be
++arrays, and this error containment does not replace their strict validation.
++Python internal model classes are typed values, not a replacement raw intake
++boundary. The shared fictional corpus exercises both languages, including strict
++integer spellings, forbidden authority/private fields, malformed/deep/oversized
++inputs, digest conflicts, immutable bindings, gaps and retirement-first coverage.
++All fixtures are synthetic. Passing these checks establishes software behavior
++only; capture, photo-publication, field-training and production gates stay closed.
+diff --git a/packages/schema/src/index.ts b/packages/schema/src/index.ts
+--- a/packages/schema/src/index.ts
++++ b/packages/schema/src/index.ts
+@@ -6,3 +6,4 @@
+ export * from './prior'
+ export * from './priorJob'
+ export * from './libraryIntake'
++export * from './nodeExchange'
+diff --git a/packages/schema/src/nodeExchange.ts b/packages/schema/src/nodeExchange.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/schema/src/nodeExchange.ts
+@@ -0,0 +1,541 @@
++import { z } from 'zod'
++
++/** Pure synthetic contract helpers; validation never supplies peer/use authority. */
++export const MAX_NODE_EXCHANGE_BYTES = 2_000_000
++export const MAX_NODE_EXCHANGE_DEPTH = 12
++export const MAX_NODE_EXCHANGE_SEQUENCE = 9_007_199_254_740_991
++const invalidMessage = 'Invalid node exchange event'
++const conflictMessage = 'Node exchange conflict'
++const uuid = z
++  .string()
++  .length(36)
++  .regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)
++  .transform((value) => value.toLowerCase())
++const digest = z.string().regex(/^[a-f0-9]{64}$/)
++const sequence = z.number().int().min(0).max(MAX_NODE_EXCHANGE_SEQUENCE)
++const fraction = z.number().finite().min(0).max(1)
++const context = z
++  .strictObject({
++    depth_top_cm: z.number().finite().min(0).max(200),
++    depth_bottom_cm: z.number().finite().min(0).max(200),
++    condition: z.enum(['dry', 'moist', 'wet', 'unknown']),
++  })
++  .refine((value) => value.depth_top_cm < value.depth_bottom_cm)
++const camera = z.strictObject({
++  kind: z.literal('camera_rgb'),
++  source_sha256: digest,
++  device_id: uuid,
++  extractor_version: z.literal('rgb-summary-v1'),
++  mean_rgb: z.tuple([fraction, fraction, fraction]),
++  std_rgb: z.tuple([fraction, fraction, fraction]),
++  pixel_count: z.number().int().min(1).max(40_000_000),
++  card_present: z.boolean(),
++  calibration_status: z.literal('uncalibrated'),
++})
++const instrument = z
++  .strictObject({
++    kind: z.literal('instrument_reflectance'),
++    source_sha256: digest,
++    instrument_id: uuid,
++    calibration_id: uuid,
++    wavelength_nm: z
++      .array(z.number().finite().min(200).max(25_000))
++      .min(3)
++      .max(10_000),
++    reflectance: z.array(fraction).min(3).max(10_000),
++    uncertainty: z.array(fraction).min(3).max(10_000),
++  })
++  .refine(
++    (value) =>
++      value.wavelength_nm.length === value.reflectance.length &&
++      value.reflectance.length === value.uncertainty.length &&
++      value.wavelength_nm.every(
++        (band, index, bands) => index === 0 || band > bands[index - 1],
++      ),
++  )
++const measurement = z.discriminatedUnion('kind', [camera, instrument])
++const scientificTuple = {
++  protocol_version: z.literal('gsip-capture-v1'),
++  context,
++  measurement,
++}
++const declaration = z.strictObject({
++  sample_handle: uuid,
++  measurement_handle: uuid,
++  ...scientificTuple,
++  synthetic_claim: z.boolean(),
++})
++const retirement = z.strictObject({
++  sample_handle: uuid,
++  measurement_handles: z
++    .array(uuid)
++    .max(100)
++    .refine((values) => new Set(values).size === values.length),
++})
++const common = {
++  schema_version: z.literal('gsip-node-exchange-v1'),
++  event_id: uuid,
++  source_peer_id: uuid,
++  destination_peer_id: uuid,
++  scope_id: uuid,
++  stream_sequence: sequence,
++  previous_event_sha256: digest.nullable(),
++}
++const eventSchema = z
++  .discriminatedUnion('kind', [
++    z.strictObject({
++      ...common,
++      kind: z.literal('declare'),
++      payload: declaration,
++    }),
++    z.strictObject({
++      ...common,
++      kind: z.literal('retire'),
++      payload: retirement,
++    }),
++  ])
++  .refine(
++    (event) =>
++      (event.stream_sequence === 0) === (event.previous_event_sha256 === null),
++  )
++
++function freeze<Value>(value: Value): Value {
++  if (value !== null && typeof value === 'object') {
++    for (const child of Object.values(value)) freeze(child)
++    Object.freeze(value)
++  }
++  return value
++}
++
++/** Decoded values cannot prove original bytes, duplicate keys or integer token spelling. */
++export const NodeExchangeEventSchema = z.unknown().transform((value, ctx) => {
++  try {
++    const result = eventSchema.safeParse(value)
++    if (result.success) return freeze(result.data)
++  } catch {
++    // Decoded objects can contain input-bearing throwing getters/proxies.
++  }
++  ctx.addIssue({ code: 'custom', message: invalidMessage })
++  return z.NEVER
++})
++export type NodeExchangeEvent = z.infer<typeof NodeExchangeEventSchema>
++export type NodeExchangeDeclaration = Extract<
++  NodeExchangeEvent,
++  { kind: 'declare' }
++>
++export type NodeExchangeStream = readonly [string, string, string]
++
++function fail(): never {
++  throw new Error(invalidMessage)
++}
++
++function validUnicode(value: string): void {
++  for (let index = 0; index < value.length; index += 1) {
++    const code = value.charCodeAt(index)
++    if (code >= 0xd800 && code <= 0xdbff) {
++      const next = value.charCodeAt(++index)
++      if (!(next >= 0xdc00 && next <= 0xdfff)) fail()
++    } else if (code >= 0xdc00 && code <= 0xdfff) fail()
++  }
++}
++
++/** Bounded preflight before full parsing; depth counts object/array containers only. */
++function preflight(raw: string): void {
++  let position = 0
++  const whitespace = () => {
++    while (' \t\r\n'.includes(raw[position] ?? '\0')) position += 1
++  }
++  const string = (): string => {
++    if (raw[position++] !== '"') fail()
++    const start = position - 1
++    while (position < raw.length) {
++      if (raw[position] === '\\') {
++        position += 2
++        continue
++      }
++      if (raw[position++] === '"') {
++        const decoded: unknown = JSON.parse(raw.slice(start, position))
++        if (typeof decoded !== 'string') fail()
++        validUnicode(decoded)
++        return decoded
++      }
++    }
++    return fail()
++  }
++  const value = (path: readonly string[], depth: number): void => {
++    whitespace()
++    const token = raw[position]
++    if (token === '{' || token === '[') {
++      if (++depth > MAX_NODE_EXCHANGE_DEPTH) fail()
++      position += 1
++      const object = token === '{'
++      const end = object ? '}' : ']'
++      const keys = new Set<string>()
++      whitespace()
++      if (raw[position] === end) {
++        position += 1
++        return
++      }
++      while (position < raw.length) {
++        let childPath = path
++        if (object) {
++          whitespace()
++          const key = string()
++          if (keys.has(key)) fail()
++          keys.add(key)
++          childPath = [...path, key]
++          whitespace()
++          if (raw[position++] !== ':') fail()
++        }
++        value(childPath, depth)
++        whitespace()
++        if (raw[position] === end) {
++          position += 1
++          return
++        }
++        if (raw[position++] !== ',') fail()
++      }
++      fail()
++    }
++    if (token === '"') {
++      string()
++      return
++    }
++    const start = position
++    while (position < raw.length && !' \t\r\n,]}'.includes(raw[position]))
++      position += 1
++    const literal = raw.slice(start, position)
++    const field = path.join('/')
++    const bound =
++      field === 'stream_sequence'
++        ? '9007199254740991'
++        : field === 'payload/measurement/pixel_count'
++          ? '40000000'
++          : null
++    if (bound !== null) {
++      if (
++        !/^(0|[1-9][0-9]*)$/.test(literal) ||
++        literal.length > bound.length ||
++        (literal.length === bound.length && literal > bound) ||
++        (field === 'payload/measurement/pixel_count' && literal === '0')
++      )
++        fail()
++      return
++    }
++    if (['true', 'false', 'null'].includes(literal)) return
++    if (
++      !/^-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?$/.test(literal) ||
++      !Number.isFinite(Number(literal))
++    )
++      fail()
++  }
++  whitespace()
++  if (raw[position] !== '{') fail()
++  value([], 0)
++  whitespace()
++  if (position !== raw.length) fail()
++}
++
++function snapshot(data: Uint8Array): Uint8Array<ArrayBuffer> {
++  if (!(data instanceof Uint8Array)) fail()
++  // The intrinsic accessor ignores subclass overrides and refuses proxy wrappers.
++  const byteLength: unknown = Reflect.get(
++    Uint8Array.prototype,
++    'byteLength',
++    data,
++  )
++  if (typeof byteLength !== 'number' || byteLength > MAX_NODE_EXCHANGE_BYTES)
++    fail()
++  return new Uint8Array(data)
++}
++
++function parseSnapshot(data: Uint8Array): NodeExchangeEvent {
++  if (data[0] === 0xef && data[1] === 0xbb && data[2] === 0xbf) fail()
++  const raw = new globalThis.TextDecoder('utf-8', { fatal: true }).decode(data)
++  preflight(raw)
++  return NodeExchangeEventSchema.parse(JSON.parse(raw))
++}
++
++export function parseNodeExchangeEvent(data: Uint8Array): NodeExchangeEvent {
++  try {
++    return parseSnapshot(snapshot(data))
++  } catch {
++    throw new Error(invalidMessage)
++  }
++}
++
++export interface PreparedNodeExchangeEvent {
++  readonly event: NodeExchangeEvent
++  readonly sha256: string
++  /** A new copy on each call: callers cannot change the retained retry bytes. */
++  originalBytes(): Uint8Array
++}
++
++export async function prepareNodeExchangeEvent(
++  data: Uint8Array,
++): Promise<PreparedNodeExchangeEvent> {
++  try {
++    const bytes = snapshot(data)
++    const event = parseSnapshot(bytes)
++    const hash = await globalThis.crypto.subtle.digest('SHA-256', bytes)
++    const sha256 = Array.from(new Uint8Array(hash), (byte) =>
++      byte.toString(16).padStart(2, '0'),
++    ).join('')
++    return Object.freeze({ event, sha256, originalBytes: () => bytes.slice() })
++  } catch {
++    throw new Error(invalidMessage)
++  }
++}
++
++export function nodeExchangeStream(
++  event: NodeExchangeEvent,
++): NodeExchangeStream {
++  return privateBoundary(() => {
++    const parsed = NodeExchangeEventSchema.parse(event)
++    return Object.freeze([
++      parsed.source_peer_id,
++      parsed.destination_peer_id,
++      parsed.scope_id,
++    ])
++  })
++}
++
++const streamSchema = z.tuple([uuid, uuid, uuid])
++const slotSchema = z
++  .strictObject({
++    stream: streamSchema,
++    event_id: uuid,
++    stream_sequence: sequence,
++    previous_event_sha256: digest.nullable(),
++    sha256: digest,
++  })
++  .refine(
++    (slot) =>
++      (slot.stream_sequence === 0) === (slot.previous_event_sha256 === null),
++  )
++export type NodeExchangeSlot = z.infer<typeof slotSchema>
++const bindingSchema = z.strictObject({
++  stream: streamSchema,
++  sample_handle: uuid,
++  measurement_handle: uuid,
++  ...scientificTuple,
++  synthetic_restricted: z.boolean(),
++})
++export type NodeExchangeBinding = z.infer<typeof bindingSchema>
++const aliasesSchema = z.strictObject({
++  stream: streamSchema,
++  ...retirement.shape,
++})
++export type NodeExchangeRetirementAliases = z.infer<typeof aliasesSchema>
++const headSchema = z.strictObject({ stream_sequence: sequence, sha256: digest })
++export type NodeExchangeHead = z.infer<typeof headSchema>
++
++function equal(a: unknown, b: unknown): boolean {
++  if (a === b) return true
++  if (
++    a === null ||
++    b === null ||
++    typeof a !== 'object' ||
++    typeof b !== 'object'
++  )
++    return false
++  const left = Object.entries(a)
++  const right = Object.entries(b)
++  return (
++    left.length === right.length &&
++    left.every(
++      ([key, value]) =>
++        Object.hasOwn(b, key) &&
++        equal(value, (b as Record<string, unknown>)[key]),
++    )
++  )
++}
++
++function checked<Schema extends z.ZodType>(
++  schema: Schema,
++  value: unknown,
++): z.output<Schema> {
++  const result = schema.safeParse(value)
++  if (!result.success) throw new Error(conflictMessage)
++  return freeze(result.data)
++}
++
++function privateBoundary<Value>(operation: () => Value): Value {
++  try {
++    return operation()
++  } catch {
++    // Never retain a validator, accessor, iterator or proxy exception as a cause.
++    throw new Error(conflictMessage)
++  }
++}
++
++function factArray(value: unknown): void {
++  if (!Array.isArray(value)) throw new Error(conflictMessage)
++}
++
++export function nodeExchangeSlot(
++  prepared: PreparedNodeExchangeEvent,
++): NodeExchangeSlot {
++  return privateBoundary(() => {
++    const event = NodeExchangeEventSchema.parse(prepared.event)
++    return checked(slotSchema, {
++      stream: nodeExchangeStream(event),
++      event_id: event.event_id,
++      stream_sequence: event.stream_sequence,
++      previous_event_sha256: event.previous_event_sha256,
++      sha256: prepared.sha256,
++    })
++  })
++}
++
++/** These are supplied synthetic integrity facts, never an authenticated ledger. */
++function checkedSlots(slots: readonly NodeExchangeSlot[]): NodeExchangeSlot[] {
++  factArray(slots)
++  const identities = new Map<string, NodeExchangeSlot>()
++  const positions = new Map<string, NodeExchangeSlot>()
++  return slots.map((value) => {
++    const slot = checked(slotSchema, value)
++    const key = `${slot.stream.join('/')}/${slot.stream_sequence}`
++    for (const prior of [identities.get(slot.event_id), positions.get(key)])
++      if (prior && !equal(prior, slot)) throw new Error(conflictMessage)
++    identities.set(slot.event_id, slot)
++    positions.set(key, slot)
++    return slot
++  })
++}
++
++export function checkNodeExchangeIdentity(
++  candidate: NodeExchangeSlot,
++  slots: readonly NodeExchangeSlot[],
++): 'new' | 'retry' {
++  return privateBoundary(() => {
++    factArray(slots)
++    const normalized = checked(slotSchema, candidate)
++    const all = checkedSlots([...slots, normalized])
++    return all
++      .slice(0, -1)
++      .some((slot) => slot.event_id === normalized.event_id)
++      ? 'retry'
++      : 'new'
++  })
++}
++
++/** Field-value comparison, not a canonical JSON hash; synthetic restrictions only grow. */
++export function bindNodeExchangeMeasurement(
++  event: NodeExchangeDeclaration,
++  bindings: readonly NodeExchangeBinding[],
++): NodeExchangeBinding {
++  return privateBoundary(() => {
++    factArray(bindings)
++    const parsed = NodeExchangeEventSchema.parse(event)
++    if (parsed.kind !== 'declare') throw new Error(conflictMessage)
++    const candidate = checked(bindingSchema, {
++      stream: nodeExchangeStream(parsed),
++      sample_handle: parsed.payload.sample_handle,
++      measurement_handle: parsed.payload.measurement_handle,
++      protocol_version: parsed.payload.protocol_version,
++      context: parsed.payload.context,
++      measurement: parsed.payload.measurement,
++      synthetic_restricted: parsed.payload.synthetic_claim,
++    })
++    let restricted = candidate.synthetic_restricted
++    for (const fact of bindings) {
++      const prior = checked(bindingSchema, fact)
++      if (
++        !equal(prior.stream, candidate.stream) ||
++        prior.measurement_handle !== candidate.measurement_handle
++      )
++        continue
++      if (
++        !equal(
++          { ...prior, synthetic_restricted: false },
++          { ...candidate, synthetic_restricted: false },
++        )
++      )
++        throw new Error(conflictMessage)
++      restricted ||= prior.synthetic_restricted
++    }
++    return freeze({ ...candidate, synthetic_restricted: restricted })
++  })
++}
++
++/** Returns aliases to restrict only in an authorized synthetic simulator; does not authenticate. */
++export function nodeExchangeRetirementAliases(
++  event: NodeExchangeEvent,
++): NodeExchangeRetirementAliases | null {
++  return privateBoundary(() => {
++    const parsed = NodeExchangeEventSchema.parse(event)
++    return parsed.kind === 'retire'
++      ? checked(aliasesSchema, {
++          stream: nodeExchangeStream(parsed),
++          ...parsed.payload,
++        })
++      : null
++  })
++}
++
++export function nodeExchangeDeclarationCovered(
++  event: NodeExchangeDeclaration,
++  refusals: readonly NodeExchangeRetirementAliases[],
++): boolean {
++  return privateBoundary(() => {
++    factArray(refusals)
++    const parsed = NodeExchangeEventSchema.parse(event)
++    if (parsed.kind !== 'declare') throw new Error(conflictMessage)
++    const stream = nodeExchangeStream(parsed)
++    return refusals
++      .map((value) => checked(aliasesSchema, value))
++      .some(
++        (refusal) =>
++          equal(refusal.stream, stream) &&
++          (refusal.sample_handle === parsed.payload.sample_handle ||
++            refusal.measurement_handles.includes(
++              parsed.payload.measurement_handle,
++            )),
++      )
++  })
++}
++
++/** Only contiguous supplied slots advance a head; gaps and retirement aliases are independent. */
++export function advanceNodeExchangeHead(
++  stream: NodeExchangeStream,
++  head: NodeExchangeHead | null,
++  slots: readonly NodeExchangeSlot[],
++): { head: NodeExchangeHead | null; advanced: number; gap: boolean } {
++  return privateBoundary(() => {
++    const normalizedStream = checked(streamSchema, stream)
++    let current = head === null ? null : checked(headSchema, head)
++    const selected = checkedSlots(slots).filter((slot) =>
++      equal(slot.stream, normalizedStream),
++    )
++    const bySequence = new Map(
++      selected.map((slot) => [slot.stream_sequence, slot]),
++    )
++    if (
++      current &&
++      bySequence.has(current.stream_sequence) &&
++      bySequence.get(current.stream_sequence)?.sha256 !== current.sha256
++    )
++      throw new Error(conflictMessage)
++    let advanced = 0
++    while (
++      current === null ||
++      current.stream_sequence < MAX_NODE_EXCHANGE_SEQUENCE
++    ) {
++      const next = current === null ? 0 : current.stream_sequence + 1
++      const slot = bySequence.get(next)
++      if (!slot) break
++      if (slot.previous_event_sha256 !== (current?.sha256 ?? null))
++        throw new Error(conflictMessage)
++      current = freeze({ stream_sequence: next, sha256: slot.sha256 })
++      advanced += 1
++    }
++    return freeze({
++      head: current,
++      advanced,
++      gap: selected.some(
++        (slot) => slot.stream_sequence > (current?.stream_sequence ?? -1),
++      ),
++    })
++  })
++}
+diff --git a/packages/schema/tests/fixtures/node-exchange-conformance.json b/packages/schema/tests/fixtures/node-exchange-conformance.json
+new file mode 100644
+--- /dev/null
++++ b/packages/schema/tests/fixtures/node-exchange-conformance.json
+@@ -0,0 +1,463 @@
++{
++  "synthetic_only": true,
++  "event_cases": [
++    {
++      "name": "camera",
++      "valid": true,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "instrument",
++      "valid": true,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "retire-zero-handles",
++      "valid": true,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"retire\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handles\":[]}}"
++    },
++    {
++      "name": "retire-100-handles",
++      "valid": true,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"retire\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handles\":[\"00000000-0000-0000-0000-000000000064\",\"00000000-0000-0000-0000-000000000065\",\"00000000-0000-0000-0000-000000000066\",\"00000000-0000-0000-0000-000000000067\",\"00000000-0000-0000-0000-000000000068\",\"00000000-0000-0000-0000-000000000069\",\"00000000-0000-0000-0000-00000000006a\",\"00000000-0000-0000-0000-00000000006b\",\"00000000-0000-0000-0000-00000000006c\",\"00000000-0000-0000-0000-00000000006d\",\"00000000-0000-0000-0000-00000000006e\",\"00000000-0000-0000-0000-00000000006f\",\"00000000-0000-0000-0000-000000000070\",\"00000000-0000-0000-0000-000000000071\",\"00000000-0000-0000-0000-000000000072\",\"00000000-0000-0000-0000-000000000073\",\"00000000-0000-0000-0000-000000000074\",\"00000000-0000-0000-0000-000000000075\",\"00000000-0000-0000-0000-000000000076\",\"00000000-0000-0000-0000-000000000077\",\"00000000-0000-0000-0000-000000000078\",\"00000000-0000-0000-0000-000000000079\",\"00000000-0000-0000-0000-00000000007a\",\"00000000-0000-0000-0000-00000000007b\",\"00000000-0000-0000-0000-00000000007c\",\"00000000-0000-0000-0000-00000000007d\",\"00000000-0000-0000-0000-00000000007e\",\"00000000-0000-0000-0000-00000000007f\",\"00000000-0000-0000-0000-000000000080\",\"00000000-0000-0000-0000-000000000081\",\"00000000-0000-0000-0000-000000000082\",\"00000000-0000-0000-0000-000000000083\",\"00000000-0000-0000-0000-000000000084\",\"00000000-0000-0000-0000-000000000085\",\"00000000-0000-0000-0000-000000000086\",\"00000000-0000-0000-0000-000000000087\",\"00000000-0000-0000-0000-000000000088\",\"00000000-0000-0000-0000-000000000089\",\"00000000-0000-0000-0000-00000000008a\",\"00000000-0000-0000-0000-00000000008b\",\"00000000-0000-0000-0000-00000000008c\",\"00000000-0000-0000-0000-00000000008d\",\"00000000-0000-0000-0000-00000000008e\",\"00000000-0000-0000-0000-00000000008f\",\"00000000-0000-0000-0000-000000000090\",\"00000000-0000-0000-0000-000000000091\",\"00000000-0000-0000-0000-000000000092\",\"00000000-0000-0000-0000-000000000093\",\"00000000-0000-0000-0000-000000000094\",\"00000000-0000-0000-0000-000000000095\",\"00000000-0000-0000-0000-000000000096\",\"00000000-0000-0000-0000-000000000097\",\"00000000-0000-0000-0000-000000000098\",\"00000000-0000-0000-0000-000000000099\",\"00000000-0000-0000-0000-00000000009a\",\"00000000-0000-0000-0000-00000000009b\",\"00000000-0000-0000-0000-00000000009c\",\"00000000-0000-0000-0000-00000000009d\",\"00000000-0000-0000-0000-00000000009e\",\"00000000-0000-0000-0000-00000000009f\",\"00000000-0000-0000-0000-0000000000a0\",\"00000000-0000-0000-0000-0000000000a1\",\"00000000-0000-0000-0000-0000000000a2\",\"00000000-0000-0000-0000-0000000000a3\",\"00000000-0000-0000-0000-0000000000a4\",\"00000000-0000-0000-0000-0000000000a5\",\"00000000-0000-0000-0000-0000000000a6\",\"00000000-0000-0000-0000-0000000000a7\",\"00000000-0000-0000-0000-0000000000a8\",\"00000000-0000-0000-0000-0000000000a9\",\"00000000-0000-0000-0000-0000000000aa\",\"00000000-0000-0000-0000-0000000000ab\",\"00000000-0000-0000-0000-0000000000ac\",\"00000000-0000-0000-0000-0000000000ad\",\"00000000-0000-0000-0000-0000000000ae\",\"00000000-0000-0000-0000-0000000000af\",\"00000000-0000-0000-0000-0000000000b0\",\"00000000-0000-0000-0000-0000000000b1\",\"00000000-0000-0000-0000-0000000000b2\",\"00000000-0000-0000-0000-0000000000b3\",\"00000000-0000-0000-0000-0000000000b4\",\"00000000-0000-0000-0000-0000000000b5\",\"00000000-0000-0000-0000-0000000000b6\",\"00000000-0000-0000-0000-0000000000b7\",\"00000000-0000-0000-0000-0000000000b8\",\"00000000-0000-0000-0000-0000000000b9\",\"00000000-0000-0000-0000-0000000000ba\",\"00000000-0000-0000-0000-0000000000bb\",\"00000000-0000-0000-0000-0000000000bc\",\"00000000-0000-0000-0000-0000000000bd\",\"00000000-0000-0000-0000-0000000000be\",\"00000000-0000-0000-0000-0000000000bf\",\"00000000-0000-0000-0000-0000000000c0\",\"00000000-0000-0000-0000-0000000000c1\",\"00000000-0000-0000-0000-0000000000c2\",\"00000000-0000-0000-0000-0000000000c3\",\"00000000-0000-0000-0000-0000000000c4\",\"00000000-0000-0000-0000-0000000000c5\",\"00000000-0000-0000-0000-0000000000c6\",\"00000000-0000-0000-0000-0000000000c7\"]}}"
++    },
++    {
++      "name": "semantic-numeric-spelling",
++      "valid": true,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":-0.0,\"depth_bottom_cm\":5e0,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "uppercase-uuid",
++      "valid": true,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"ABCDEFAB-CDEF-ABCD-EFAB-CDEFABCDEFAB\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"ABCDEFAB-CDEF-ABCD-EFAB-CDEFABCDEFAB\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "escaped-known-keys",
++      "valid": true,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event\\u005fid\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "maximum-sequence",
++      "valid": true,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":9007199254740991,\"previous_event_sha256\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "forbidden-grant_id",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"grant_id\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-actor_id",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"actor_id\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-contributor_id",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"contributor_id\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-consent_verified",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"consent_verified\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-pairing_verified",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"pairing_verified\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-withdrawn",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"withdrawn\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-holdout",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"holdout\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-qa_status",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"qa_status\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-provenance_tier",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"provenance_tier\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-labels",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"labels\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-credential",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"credential\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-storage_path",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"storage_path\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-url",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"url\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-timestamp",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"timestamp\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-location",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"location\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-source_file",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"source_file\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "forbidden-node_id",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"node_id\":\"fictional-private-only\"}}"
++    },
++    {
++      "name": "invalid-schema_version-25",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-library-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-kind-26",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"unknown\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-event_id-27",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000000000000000000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-event_id-28",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\\n\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-event_id-29",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":1,\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-previous_event_sha256-30",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":\"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\",\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-stream_sequence-31",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":-1,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-stream_sequence-32",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":9007199254740992,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "zero-with-predecessor",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "nonzero-null-predecessor",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":1,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "sequence-token-0.0",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0.0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "sequence-token-0e0",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0e0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "sequence-token--0",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":-0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "sequence-token-true",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":true,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "sequence-token-false",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":false,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "sequence-token-\"0\"",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":\"0\",\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "sequence-token-null",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":null,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "pixel-token-100.0",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100.0,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "pixel-token-1e2",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":1e2,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "pixel-token--0",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":-0,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "pixel-token-0",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":0,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "pixel-token-true",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":true,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "pixel-token-\"100\"",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":\"100\",\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "pixel-token-40000001",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":40000001,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-context-depth_top_cm",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":true,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-context-depth_bottom_cm",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":201,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-context-depth_top_cm",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":5,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-context-condition",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"frozen\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-measurement-mean_rgb",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-measurement-std_rgb",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,1.1,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-measurement-calibration_status",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"calibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-measurement-device_id",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000000000000000000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-measurement-card_present",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":1,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-instrument-wavelength_nm",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,450,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-instrument-wavelength_nm",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[199,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-instrument-reflectance",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-instrument-reflectance",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,40,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-instrument-uncertainty",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,-0.1,0.01]},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-instrument-instrument_id",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000000000000000000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "invalid-instrument-unit",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"unit\":\"percent\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "retire-101-handles",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"retire\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handles\":[\"00000000-0000-0000-0000-000000000064\",\"00000000-0000-0000-0000-000000000065\",\"00000000-0000-0000-0000-000000000066\",\"00000000-0000-0000-0000-000000000067\",\"00000000-0000-0000-0000-000000000068\",\"00000000-0000-0000-0000-000000000069\",\"00000000-0000-0000-0000-00000000006a\",\"00000000-0000-0000-0000-00000000006b\",\"00000000-0000-0000-0000-00000000006c\",\"00000000-0000-0000-0000-00000000006d\",\"00000000-0000-0000-0000-00000000006e\",\"00000000-0000-0000-0000-00000000006f\",\"00000000-0000-0000-0000-000000000070\",\"00000000-0000-0000-0000-000000000071\",\"00000000-0000-0000-0000-000000000072\",\"00000000-0000-0000-0000-000000000073\",\"00000000-0000-0000-0000-000000000074\",\"00000000-0000-0000-0000-000000000075\",\"00000000-0000-0000-0000-000000000076\",\"00000000-0000-0000-0000-000000000077\",\"00000000-0000-0000-0000-000000000078\",\"00000000-0000-0000-0000-000000000079\",\"00000000-0000-0000-0000-00000000007a\",\"00000000-0000-0000-0000-00000000007b\",\"00000000-0000-0000-0000-00000000007c\",\"00000000-0000-0000-0000-00000000007d\",\"00000000-0000-0000-0000-00000000007e\",\"00000000-0000-0000-0000-00000000007f\",\"00000000-0000-0000-0000-000000000080\",\"00000000-0000-0000-0000-000000000081\",\"00000000-0000-0000-0000-000000000082\",\"00000000-0000-0000-0000-000000000083\",\"00000000-0000-0000-0000-000000000084\",\"00000000-0000-0000-0000-000000000085\",\"00000000-0000-0000-0000-000000000086\",\"00000000-0000-0000-0000-000000000087\",\"00000000-0000-0000-0000-000000000088\",\"00000000-0000-0000-0000-000000000089\",\"00000000-0000-0000-0000-00000000008a\",\"00000000-0000-0000-0000-00000000008b\",\"00000000-0000-0000-0000-00000000008c\",\"00000000-0000-0000-0000-00000000008d\",\"00000000-0000-0000-0000-00000000008e\",\"00000000-0000-0000-0000-00000000008f\",\"00000000-0000-0000-0000-000000000090\",\"00000000-0000-0000-0000-000000000091\",\"00000000-0000-0000-0000-000000000092\",\"00000000-0000-0000-0000-000000000093\",\"00000000-0000-0000-0000-000000000094\",\"00000000-0000-0000-0000-000000000095\",\"00000000-0000-0000-0000-000000000096\",\"00000000-0000-0000-0000-000000000097\",\"00000000-0000-0000-0000-000000000098\",\"00000000-0000-0000-0000-000000000099\",\"00000000-0000-0000-0000-00000000009a\",\"00000000-0000-0000-0000-00000000009b\",\"00000000-0000-0000-0000-00000000009c\",\"00000000-0000-0000-0000-00000000009d\",\"00000000-0000-0000-0000-00000000009e\",\"00000000-0000-0000-0000-00000000009f\",\"00000000-0000-0000-0000-0000000000a0\",\"00000000-0000-0000-0000-0000000000a1\",\"00000000-0000-0000-0000-0000000000a2\",\"00000000-0000-0000-0000-0000000000a3\",\"00000000-0000-0000-0000-0000000000a4\",\"00000000-0000-0000-0000-0000000000a5\",\"00000000-0000-0000-0000-0000000000a6\",\"00000000-0000-0000-0000-0000000000a7\",\"00000000-0000-0000-0000-0000000000a8\",\"00000000-0000-0000-0000-0000000000a9\",\"00000000-0000-0000-0000-0000000000aa\",\"00000000-0000-0000-0000-0000000000ab\",\"00000000-0000-0000-0000-0000000000ac\",\"00000000-0000-0000-0000-0000000000ad\",\"00000000-0000-0000-0000-0000000000ae\",\"00000000-0000-0000-0000-0000000000af\",\"00000000-0000-0000-0000-0000000000b0\",\"00000000-0000-0000-0000-0000000000b1\",\"00000000-0000-0000-0000-0000000000b2\",\"00000000-0000-0000-0000-0000000000b3\",\"00000000-0000-0000-0000-0000000000b4\",\"00000000-0000-0000-0000-0000000000b5\",\"00000000-0000-0000-0000-0000000000b6\",\"00000000-0000-0000-0000-0000000000b7\",\"00000000-0000-0000-0000-0000000000b8\",\"00000000-0000-0000-0000-0000000000b9\",\"00000000-0000-0000-0000-0000000000ba\",\"00000000-0000-0000-0000-0000000000bb\",\"00000000-0000-0000-0000-0000000000bc\",\"00000000-0000-0000-0000-0000000000bd\",\"00000000-0000-0000-0000-0000000000be\",\"00000000-0000-0000-0000-0000000000bf\",\"00000000-0000-0000-0000-0000000000c0\",\"00000000-0000-0000-0000-0000000000c1\",\"00000000-0000-0000-0000-0000000000c2\",\"00000000-0000-0000-0000-0000000000c3\",\"00000000-0000-0000-0000-0000000000c4\",\"00000000-0000-0000-0000-0000000000c5\",\"00000000-0000-0000-0000-0000000000c6\",\"00000000-0000-0000-0000-0000000000c7\",\"00000000-0000-0000-0000-0000000000c8\"]}}"
++    },
++    {
++      "name": "retire-duplicate-handles",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"retire\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handles\":[\"00000000-0000-0000-0000-000000000009\",\"00000000-0000-0000-0000-000000000009\"]}}"
++    },
++    {
++      "name": "duplicate-escaped-root",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"event\\u005fid\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "duplicate-context",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "duplicate-measurement",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "nonfinite-NaN",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":NaN,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "nonfinite-Infinity",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":Infinity,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "nonfinite--Infinity",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":-Infinity,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "nonfinite-1e999",
++      "valid": false,
++      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":1e999,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
++    },
++    {
++      "name": "malformed-74",
++      "valid": false,
++      "raw": ""
++    },
++    {
++      "name": "malformed-75",
++      "valid": false,
++      "raw": "{} {}"
++    },
++    {
++      "name": "malformed-76",
++      "valid": false,
++      "raw": "[]"
++    },
++    {
++      "name": "malformed-77",
++      "valid": false,
++      "raw": "null"
++    },
++    {
++      "name": "malformed-78",
++      "valid": false,
++      "raw": "false"
++    },
++    {
++      "name": "malformed-79",
++      "valid": false,
++      "raw": "["
++    },
++    {
++      "name": "malformed-80",
++      "valid": false,
++      "raw": "{\"x\":"
++    },
++    {
++      "name": "malformed-81",
++      "valid": false,
++      "raw": "{\"x\":01}"
++    },
++    {
++      "name": "malformed-82",
++      "valid": false,
++      "raw": "{\"x\":1,}"
++    },
++    {
++      "name": "malformed-83",
++      "valid": false,
++      "raw": "{\"x\":\"\\ud800\"}"
++    },
++    {
++      "name": "malformed-84",
++      "valid": false,
++      "raw": "{\"\\udfff\":0}"
++    }
++  ],
++  "byte_cases": [
++    {
++      "name": "BOM",
++      "hex": "efbbbf7b22736368656d615f76657273696f6e223a22677369702d6e6f64652d65786368616e67652d7631222c226576656e745f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303031222c22736f757263655f706565725f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303032222c2264657374696e6174696f6e5f706565725f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303033222c2273636f70655f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303034222c2273747265616d5f73657175656e6365223a302c2270726576696f75735f6576656e745f736861323536223a6e756c6c2c226b696e64223a226465636c617265222c227061796c6f6164223a7b2273616d706c655f68616e646c65223a2230303030303030302d303030302d303030302d303030302d303030303030303030303035222c226d6561737572656d656e745f68616e646c65223a2230303030303030302d303030302d303030302d303030302d303030303030303030303039222c2270726f746f636f6c5f76657273696f6e223a22677369702d636170747572652d7631222c22636f6e74657874223a7b2264657074685f746f705f636d223a302c2264657074685f626f74746f6d5f636d223a352c22636f6e646974696f6e223a22647279227d2c226d6561737572656d656e74223a7b226b696e64223a2263616d6572615f726762222c22736f757263655f736861323536223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030222c226465766963655f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303036222c22657874726163746f725f76657273696f6e223a227267622d73756d6d6172792d7631222c226d65616e5f726762223a5b302e322c302e332c302e345d2c227374645f726762223a5b302e30312c302e30322c302e30335d2c22706978656c5f636f756e74223a3130302c22636172645f70726573656e74223a66616c73652c2263616c6962726174696f6e5f737461747573223a22756e63616c69627261746564227d2c2273796e7468657469635f636c61696d223a747275657d7d"
++    },
++    {
++      "name": "malformed-UTF8",
++      "hex": "7b22ff223a307d"
++    },
++    {
++      "name": "overlong-UTF8",
++      "hex": "7b2278223a22c080227d"
++    }
++  ],
++  "band_count_cases": [
++    {
++      "count": 2,
++      "valid": false
++    },
++    {
++      "count": 3,
++      "valid": true
++    },
++    {
++      "count": 10000,
++      "valid": true
++    },
++    {
++      "count": 10001,
++      "valid": false
++    }
++  ],
++  "camera_sha256": "3837eba2c357e4bf06bc219336c497d859efdabba402b2077abf7b9b65d0d35f"
++}
+diff --git a/packages/schema/tests/node-exchange.test.ts b/packages/schema/tests/node-exchange.test.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/schema/tests/node-exchange.test.ts
+@@ -0,0 +1,498 @@
++import { describe, expect, it, vi } from 'vitest'
++import * as contracts from '../src/index'
++import corpus from './fixtures/node-exchange-conformance.json'
++
++it('supplies the LIB-5A byte parser without changing existing contracts', () => {
++  expect(contracts).toHaveProperty('parseNodeExchangeEvent')
++})
++
++const {
++  parseNodeExchangeEvent: parse,
++  prepareNodeExchangeEvent: prepare,
++  nodeExchangeStream: stream,
++  nodeExchangeSlot: slot,
++  checkNodeExchangeIdentity: identity,
++  bindNodeExchangeMeasurement: bind,
++  advanceNodeExchangeHead: advance,
++  nodeExchangeRetirementAliases: aliases,
++  nodeExchangeDeclarationCovered: covered,
++  NodeExchangeEventSchema,
++  MAX_NODE_EXCHANGE_BYTES,
++} = contracts
++const bytes = (raw: string) => new globalThis.TextEncoder().encode(raw)
++const raw = corpus.event_cases[0].raw
++const decoded = () => JSON.parse(raw)
++const uuid = (n: number) =>
++  `00000000-0000-0000-0000-${n.toString(16).padStart(12, '0')}`
++const declare = (changes = {}) => {
++  const value = parse(bytes(JSON.stringify({ ...decoded(), ...changes })))
++  if (value.kind !== 'declare')
++    throw new Error('Expected synthetic declaration')
++  return value
++}
++
++describe('decoded boundary errors cannot expose hostile getters or proxies', () => {
++  const sentinel = 'PROBE_PRIVATE_VALUE_73541'
++  const rejectAccess = (): never => {
++    throw new Error(sentinel)
++  }
++  const proxy = <Value extends object>(value: Value): Value =>
++    new Proxy(value, {
++      get: rejectAccess,
++      ownKeys: rejectAccess,
++      getOwnPropertyDescriptor: rejectAccess,
++    })
++  const generic = (operation: () => unknown) => {
++    let failure: unknown
++    try {
++      operation()
++    } catch (error) {
++      failure = error
++    }
++    expect(failure).toBeInstanceOf(Error)
++    expect((failure as Error).message).toMatch(
++      /^(Invalid node exchange event|Node exchange conflict)$/,
++    )
++    expect(String(failure)).not.toContain(sentinel)
++    expect(failure).not.toHaveProperty('cause')
++  }
++  it('safeParse and parse report only a generic custom issue for getter/proxy access', async () => {
++    const getter = Object.defineProperty(decoded(), 'kind', {
++      get: rejectAccess,
++    })
++    for (const value of [
++      getter,
++      proxy(decoded()),
++      { ...decoded(), payload: proxy(decoded().payload) },
++    ]) {
++      const result = NodeExchangeEventSchema.safeParse(value)
++      expect(result.success).toBe(false)
++      if (!result.success) {
++        expect(result.error.issues).toEqual([
++          { code: 'custom', message: 'Invalid node exchange event', path: [] },
++        ])
++        expect(JSON.stringify(result.error)).not.toContain(sentinel)
++      }
++      const asyncResult = await NodeExchangeEventSchema.safeParseAsync(value)
++      expect(asyncResult.success).toBe(false)
++      expect(() => NodeExchangeEventSchema.parse(value)).toThrow(
++        'Invalid node exchange event',
++      )
++    }
++  })
++  it('guards every semantic helper and prepared/slot/binding/refusal/head access', async () => {
++    const valid = declare()
++    const prepared = await prepare(bytes(raw))
++    const stored = slot(prepared)
++    const binding = bind(valid, [])
++    const retire = parse(
++      bytes(
++        JSON.stringify({
++          ...decoded(),
++          kind: 'retire',
++          payload: { sample_handle: uuid(5), measurement_handles: [] },
++        }),
++      ),
++    )
++    const refusal = aliases(retire)!
++    const badEvent = proxy(valid)
++    const operations = [
++      () => stream(badEvent),
++      () => bind(badEvent, []),
++      () => aliases(badEvent),
++      () => covered(badEvent, []),
++      () => slot(proxy(prepared)),
++      () =>
++        slot(
++          Object.defineProperty({ ...prepared }, 'sha256', {
++            get: rejectAccess,
++          }),
++        ),
++      () => identity(proxy(stored), []),
++      () => identity(stored, [proxy(stored)]),
++      () => identity(stored, proxy([stored])),
++      () => bind(valid, [proxy(binding)]),
++      () => bind(valid, proxy([binding])),
++      () => covered(valid, [proxy(refusal)]),
++      () => covered(valid, proxy([refusal])),
++      () => advance(proxy(stream(valid)), null, []),
++      () =>
++        advance(
++          stream(valid),
++          proxy({ stream_sequence: 0, sha256: prepared.sha256 }),
++          [],
++        ),
++      () => advance(stream(valid), null, proxy([stored])),
++      () => advance(stream(valid), null, [proxy(stored)]),
++    ]
++    for (const operation of operations) generic(operation)
++  })
++  it('refuses malformed/nonarray supplied fact collections generically', async () => {
++    const valid = declare()
++    const stored = slot(await prepare(bytes(raw)))
++    for (const value of [null, {}, new Set(), '', proxy({})]) {
++      generic(() =>
++        identity(stored, value as unknown as contracts.NodeExchangeSlot[]),
++      )
++      generic(() =>
++        bind(valid, value as unknown as contracts.NodeExchangeBinding[]),
++      )
++      generic(() =>
++        covered(
++          valid,
++          value as unknown as contracts.NodeExchangeRetirementAliases[],
++        ),
++      )
++      generic(() =>
++        advance(
++          stream(valid),
++          null,
++          value as unknown as contracts.NodeExchangeSlot[],
++        ),
++      )
++    }
++  })
++})
++
++describe('shared synthetic byte contract', () => {
++  it.each(corpus.event_cases)('$name accepts=$valid', ({ raw, valid }) => {
++    if (valid)
++      expect(parse(bytes(raw)).schema_version).toBe('gsip-node-exchange-v1')
++    else expect(() => parse(bytes(raw))).toThrow('Invalid node exchange event')
++  })
++  it.each(corpus.byte_cases)('$name is refused', ({ hex }) => {
++    const data = new Uint8Array(
++      hex.match(/../g)!.map((value) => Number.parseInt(value, 16)),
++    )
++    expect(() => parse(data)).toThrow('Invalid node exchange event')
++  })
++  it.each(corpus.band_count_cases)(
++    '$count bands accepts=$valid',
++    ({ count, valid }) => {
++      const value = JSON.parse(corpus.event_cases[1].raw)
++      value.payload.measurement.wavelength_nm = Array.from(
++        { length: count },
++        (_, index) => 200 + index,
++      )
++      value.payload.measurement.reflectance = Array.from(
++        { length: count },
++        () => 0.4,
++      )
++      value.payload.measurement.uncertainty = Array.from(
++        { length: count },
++        () => 0.01,
++      )
++      if (valid) expect(() => parse(bytes(JSON.stringify(value)))).not.toThrow()
++      else expect(() => parse(bytes(JSON.stringify(value)))).toThrow()
++    },
++  )
++  it('checks the inclusive byte bound before decode/parse and accepts bytes only', () => {
++    expect(
++      parse(
++        bytes(raw + ' '.repeat(MAX_NODE_EXCHANGE_BYTES - bytes(raw).length)),
++      ).kind,
++    ).toBe('declare')
++    const decoder = vi.spyOn(globalThis.TextDecoder.prototype, 'decode')
++    const parser = vi.spyOn(JSON, 'parse')
++    for (const value of [
++      new Uint8Array(MAX_NODE_EXCHANGE_BYTES + 1),
++      raw,
++      [],
++      new ArrayBuffer(1),
++      null,
++    ])
++      expect(() => parse(value as Uint8Array)).toThrow(
++        'Invalid node exchange event',
++      )
++    expect(decoder).not.toHaveBeenCalled()
++    expect(parser).not.toHaveBeenCalled()
++    vi.restoreAllMocks()
++  })
++  it('uses the intrinsic typed-array byte length before copying subclass buffers', () => {
++    class SpoofedLength extends Uint8Array {
++      get byteLength() {
++        return 0
++      }
++    }
++    const data = new SpoofedLength(MAX_NODE_EXCHANGE_BYTES + 1)
++    data.fill(32)
++    data.set(bytes(raw), data.length - bytes(raw).length)
++    let copies = 0
++    const watched = new Proxy(globalThis.Uint8Array, {
++      construct(target, argumentsList, newTarget) {
++        copies += 1
++        return Reflect.construct(target, argumentsList, newTarget)
++      },
++    })
++    vi.stubGlobal('Uint8Array', watched)
++    const decoder = vi.spyOn(globalThis.TextDecoder.prototype, 'decode')
++    try {
++      expect(() => parse(data)).toThrow('Invalid node exchange event')
++      expect(copies).toBe(0)
++      expect(decoder).not.toHaveBeenCalled()
++    } finally {
++      decoder.mockRestore()
++      vi.unstubAllGlobals()
++    }
++  })
++  it('counts containers and distinguishes valid surrogate pairs from unpaired ones before full parse', () => {
++    const candidates = [
++      ['{"x":' + '['.repeat(11) + '0' + ']'.repeat(11) + '}', true],
++      ['{"x":' + '['.repeat(12) + '0' + ']'.repeat(12) + '}', false],
++      ['{"x":"\\ud83d\\ude00"}', true],
++      ['{"x":"\\ud83d"}', false],
++      ['{"\\ude00":0}', false],
++    ] as const
++    for (const [candidate, fullParse] of candidates) {
++      const spy = vi.spyOn(JSON, 'parse')
++      expect(() => parse(bytes(candidate))).toThrow(
++        'Invalid node exchange event',
++      )
++      expect(spy.mock.calls.some(([value]) => value === candidate)).toBe(
++        fullParse,
++      )
++      spy.mockRestore()
++    }
++  })
++  it('exposes generic errors without values, arbitrary field names or causes', async () => {
++    const sentinel = 'fictional-private-value-must-not-be-echoed'
++    for (const data of [
++      bytes(`{"${sentinel}":"${sentinel}"`),
++      bytes(JSON.stringify({ ...decoded(), [sentinel]: sentinel })),
++    ]) {
++      for (const operation of [() => parse(data), () => prepare(data)]) {
++        try {
++          await operation()
++          expect.fail('Expected invalid bytes')
++        } catch (error) {
++          expect(String(error)).not.toContain(sentinel)
++          expect(error).not.toHaveProperty('cause')
++        }
++      }
++    }
++    const result = NodeExchangeEventSchema.safeParse({
++      ...decoded(),
++      [sentinel]: sentinel,
++    })
++    expect(result.success).toBe(false)
++    if (!result.success)
++      expect(JSON.stringify(result.error)).not.toContain(sentinel)
++  })
++})
++
++describe('exact bytes and immutable supplied facts', () => {
++  it('normalizes actual UUID letter case while retaining distinct original retry bytes', async () => {
++    const id = 'abcdefab-cdef-abcd-efab-cdefabcdefab'
++    const value = {
++      ...decoded(),
++      event_id: id,
++      source_peer_id: id,
++      destination_peer_id: id,
++      scope_id: id,
++    }
++    const lower = await prepare(bytes(JSON.stringify(value)))
++    const upper = await prepare(
++      bytes(
++        JSON.stringify({
++          ...value,
++          event_id: id.toUpperCase(),
++          source_peer_id: id.toUpperCase(),
++        }),
++      ),
++    )
++    expect(upper.event).toEqual(lower.event)
++    expect(() => identity(slot(upper), [slot(lower)])).toThrow(
++      'Node exchange conflict',
++    )
++    expect(
++      identity(
++        {
++          ...slot(lower),
++          event_id: id.toUpperCase(),
++          stream: [id.toUpperCase(), id.toUpperCase(), id.toUpperCase()],
++        },
++        [slot(lower)],
++      ),
++    ).toBe('retry')
++    const original = declare({
++      payload: {
++        ...decoded().payload,
++        sample_handle: id,
++        measurement_handle: id,
++        measurement: { ...decoded().payload.measurement, device_id: id },
++      },
++    })
++    const binding = bind(original, [])
++    const repeated = declare({
++      payload: {
++        ...original.payload,
++        sample_handle: id.toUpperCase(),
++        measurement_handle: id.toUpperCase(),
++        measurement: {
++          ...original.payload.measurement,
++          device_id: id.toUpperCase(),
++        },
++      },
++    })
++    expect(bind(repeated, [binding])).toEqual(binding)
++  })
++  it('retains bytes before hash await and prevents caller/returned buffer or nested-value mutation', async () => {
++    const input = bytes(raw)
++    const pending = prepare(input)
++    input.fill(0)
++    const first = await pending
++    first.originalBytes().fill(0)
++    expect(first.originalBytes()).toEqual(bytes(raw))
++    expect(first.sha256).toBe(corpus.camera_sha256)
++    expect(identity(slot(first), [])).toBe('new')
++    expect(identity(slot(first), [slot(first)])).toBe('retry')
++    expect(Object.isFrozen(first.event.payload)).toBe(true)
++    if (
++      first.event.kind === 'declare' &&
++      first.event.payload.measurement.kind === 'camera_rgb'
++    ) {
++      const measurement = first.event.payload.measurement
++      expect(Object.isFrozen(measurement.mean_rgb)).toBe(true)
++      expect(() => {
++        measurement.mean_rgb[0] = 1
++      }).toThrow()
++    }
++    for (const alternate of [
++      raw + '\n',
++      raw.replace('"depth_top_cm":0', '"depth_top_cm":0.0'),
++      raw.replace('"event_id"', '"event\\u005fid"'),
++    ]) {
++      const changed = await prepare(bytes(alternate))
++      expect(changed.event).toEqual(first.event)
++      expect(() => identity(slot(changed), [slot(first)])).toThrow(
++        'Node exchange conflict',
++      )
++    }
++  })
++  it('keeps event identity and sequence-slot ownership across normalized streams', async () => {
++    const first = slot(await prepare(bytes(raw)))
++    for (const change of [
++      { event_id: uuid(50) },
++      { scope_id: uuid(51) },
++      { source_peer_id: uuid(52) },
++      { destination_peer_id: uuid(53) },
++      { stream_sequence: 1, previous_event_sha256: first.sha256 },
++    ]) {
++      const candidate = slot(
++        await prepare(bytes(JSON.stringify({ ...decoded(), ...change }))),
++      )
++      expect(() => identity(candidate, [first])).toThrow(
++        'Node exchange conflict',
++      )
++    }
++    expect(
++      identity(
++        {
++          ...first,
++          event_id: first.event_id.toUpperCase(),
++          stream: first.stream.map((id) => id.toUpperCase()) as [
++            string,
++            string,
++            string,
++          ],
++        },
++        [first],
++      ),
++    ).toBe('retry')
++  })
++  it('keeps scientific bindings immutable and synthetic restriction monotonic', () => {
++    const original = declare()
++    const binding = bind(original, [])
++    const repeated = declare({
++      event_id: uuid(55),
++      payload: { ...original.payload, synthetic_claim: false },
++    })
++    expect(bind(repeated, [binding]).synthetic_restricted).toBe(true)
++    const equalFields = JSON.parse(
++      raw.replace('"depth_top_cm":0', '"depth_top_cm":0.0'),
++    )
++    equalFields.event_id = uuid(56)
++    expect(bind(declare(equalFields), [binding])).toEqual(binding)
++    for (const payload of [
++      { ...original.payload, sample_handle: uuid(57) },
++      {
++        ...original.payload,
++        context: { ...original.payload.context, depth_bottom_cm: 6 },
++      },
++      {
++        ...original.payload,
++        measurement: {
++          ...original.payload.measurement,
++          source_sha256: 'f'.repeat(64),
++        },
++      },
++    ])
++      expect(() =>
++        bind(declare({ event_id: uuid(58), payload }), [binding]),
++      ).toThrow('Node exchange conflict')
++    const supplied = structuredClone(binding)
++    const copied = bind(repeated, [supplied])
++    supplied.context.depth_bottom_cm = 20
++    expect(copied.context.depth_bottom_cm).toBe(5)
++    expect(Object.isFrozen(copied.context)).toBe(true)
++  })
++})
++
++it('advances contiguous predecessors, holds gaps and independently classifies retirement aliases', async () => {
++  const first = await prepare(bytes(raw))
++  const second = await prepare(
++    bytes(
++      JSON.stringify({
++        ...decoded(),
++        event_id: uuid(60),
++        stream_sequence: 1,
++        previous_event_sha256: first.sha256,
++      }),
++    ),
++  )
++  const third = await prepare(
++    bytes(
++      JSON.stringify({
++        ...decoded(),
++        kind: 'retire',
++        event_id: uuid(61),
++        stream_sequence: 2,
++        previous_event_sha256: second.sha256,
++        payload: { sample_handle: uuid(5), measurement_handles: [] },
++      }),
++    ),
++  )
++  const key = stream(first.event)
++  expect(advance(key, null, [slot(third)])).toEqual({
++    head: null,
++    advanced: 0,
++    gap: true,
++  })
++  const refusal = aliases(third.event)!
++  expect(Object.keys(refusal).sort()).toEqual([
++    'measurement_handles',
++    'sample_handle',
++    'stream',
++  ])
++  expect(covered(declare(), [refusal])).toBe(true)
++  expect(covered(declare({ scope_id: uuid(70) }), [refusal])).toBe(false)
++  const partial = advance(key, null, [slot(first), slot(third)])
++  expect(partial).toEqual({
++    head: { stream_sequence: 0, sha256: first.sha256 },
++    advanced: 1,
++    gap: true,
++  })
++  expect(advance(key, partial.head, [slot(third), slot(second)])).toEqual({
++    head: { stream_sequence: 2, sha256: third.sha256 },
++    advanced: 2,
++    gap: false,
++  })
++  expect(() =>
++    advance(key, partial.head, [
++      { ...slot(second), previous_event_sha256: 'f'.repeat(64) },
++    ]),
++  ).toThrow('Node exchange conflict')
++  expect(() =>
++    advance(key, partial.head, [{ ...slot(first), sha256: 'f'.repeat(64) }]),
++  ).toThrow('Node exchange conflict')
++})
+diff --git a/pipeline/node_exchange.py b/pipeline/node_exchange.py
+new file mode 100644
+--- /dev/null
++++ b/pipeline/node_exchange.py
+@@ -0,0 +1,457 @@
++"""Pure synthetic exchange contracts. No I/O, credentials, authority or scientific verification."""
++
++from __future__ import annotations
++
++import hashlib
++import json
++import math
++import re
++from collections.abc import Callable, Sequence
++from dataclasses import dataclass
++from typing import Annotated, Any, Literal, TypeVar
++from uuid import UUID
++
++from pydantic import BeforeValidator, Field, TypeAdapter, model_validator
++
++from pipeline.library import CameraRgb, Context, Digest, InstrumentReflectance, StrictRecord
++
++MAX_NODE_EXCHANGE_BYTES = 2_000_000
++MAX_NODE_EXCHANGE_DEPTH = 12
++MAX_NODE_EXCHANGE_SEQUENCE = 9_007_199_254_740_991
++_INVALID = "Invalid node exchange event"
++_CONFLICT = "Node exchange conflict"
++_UUID = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", re.I)
++T = TypeVar("T")
++
++
++def _guard(operation: Callable[[], T], message: str = _INVALID) -> T:
++    try:
++        return operation()
++    except Exception:
++        failure_message = message
++    # Outside the exception handler: no retained input-bearing cause/context.
++    raise ValueError(failure_message)
++
++
++def _uuid(value: object) -> UUID:
++    if isinstance(value, UUID):
++        return value
++    if not isinstance(value, str) or _UUID.fullmatch(value) is None:
++        raise ValueError(_INVALID)
++    return UUID(value)
++
++
++OpaqueUuid = Annotated[UUID, BeforeValidator(_uuid)]
++SequenceNumber = Annotated[int, Field(strict=True, ge=0, le=MAX_NODE_EXCHANGE_SEQUENCE)]
++Stream = tuple[OpaqueUuid, OpaqueUuid, OpaqueUuid]
++
++
++class _Camera(CameraRgb):
++    device_id: OpaqueUuid
++
++
++class _Instrument(InstrumentReflectance):
++    instrument_id: OpaqueUuid
++    calibration_id: OpaqueUuid
++
++
++Measurement = Annotated[_Camera | _Instrument, Field(discriminator="kind")]
++
++
++class _Declaration(StrictRecord):
++    sample_handle: OpaqueUuid
++    measurement_handle: OpaqueUuid
++    protocol_version: Literal["gsip-capture-v1"]
++    context: Context
++    measurement: Measurement
++    synthetic_claim: Annotated[bool, Field(strict=True)]
++
++
++class _Retirement(StrictRecord):
++    sample_handle: OpaqueUuid
++    measurement_handles: Annotated[tuple[OpaqueUuid, ...], Field(max_length=100)]
++
++    @model_validator(mode="after")
++    def unique_handles(self) -> _Retirement:
++        if len(set(self.measurement_handles)) != len(self.measurement_handles):
++            raise ValueError(_INVALID)
++        return self
++
++
++class _Common(StrictRecord):
++    schema_version: Literal["gsip-node-exchange-v1"]
++    event_id: OpaqueUuid
++    source_peer_id: OpaqueUuid
++    destination_peer_id: OpaqueUuid
++    scope_id: OpaqueUuid
++    stream_sequence: SequenceNumber
++    previous_event_sha256: Digest | None
++
++    @model_validator(mode="after")
++    def initial_predecessor(self) -> _Common:
++        if (self.stream_sequence == 0) != (self.previous_event_sha256 is None):
++            raise ValueError(_INVALID)
++        return self
++
++
++class NodeExchangeDeclaration(_Common):
++    kind: Literal["declare"]
++    payload: _Declaration
++
++
++class NodeExchangeRetirement(_Common):
++    kind: Literal["retire"]
++    payload: _Retirement
++
++
++NodeExchangeEvent = NodeExchangeDeclaration | NodeExchangeRetirement
++_EVENT: TypeAdapter[NodeExchangeEvent] = TypeAdapter(
++    Annotated[NodeExchangeEvent, Field(discriminator="kind")]
++)
++
++
++def _unicode(value: str) -> None:
++    if any(0xD800 <= ord(character) <= 0xDFFF for character in value):
++        raise ValueError(_INVALID)
++
++
++def _preflight(raw: str) -> None:
++    position = 0
++
++    def whitespace() -> None:
++        nonlocal position
++        while position < len(raw) and raw[position] in " \t\r\n":
++            position += 1
++
++    def string() -> str:
++        nonlocal position
++        if position >= len(raw) or raw[position] != '"':
++            raise ValueError(_INVALID)
++        start = position
++        position += 1
++        while position < len(raw):
++            if raw[position] == "\\":
++                position += 2
++                continue
++            position += 1
++            if raw[position - 1] == '"':
++                decoded = json.loads(raw[start:position])
++                if not isinstance(decoded, str):
++                    raise ValueError(_INVALID)
++                _unicode(decoded)
++                return decoded
++        raise ValueError(_INVALID)
++
++    def value(path: tuple[str, ...], depth: int) -> None:
++        nonlocal position
++        whitespace()
++        lead = raw[position] if position < len(raw) else ""
++        if lead in ("{", "["):
++            depth += 1
++            if depth > MAX_NODE_EXCHANGE_DEPTH:
++                raise ValueError(_INVALID)
++            position += 1
++            is_object = lead == "{"
++            end = "}" if is_object else "]"
++            keys: set[str] = set()
++            whitespace()
++            if position < len(raw) and raw[position] == end:
++                position += 1
++                return
++            while position < len(raw):
++                child_path = path
++                if is_object:
++                    whitespace()
++                    key = string()
++                    if key in keys:
++                        raise ValueError(_INVALID)
++                    keys.add(key)
++                    child_path = (*path, key)
++                    whitespace()
++                    if position >= len(raw) or raw[position] != ":":
++                        raise ValueError(_INVALID)
++                    position += 1
++                value(child_path, depth)
++                whitespace()
++                if position < len(raw) and raw[position] == end:
++                    position += 1
++                    return
++                if position >= len(raw) or raw[position] != ",":
++                    raise ValueError(_INVALID)
++                position += 1
++            raise ValueError(_INVALID)
++        if lead == '"':
++            string()
++            return
++        start = position
++        while position < len(raw) and raw[position] not in " \t\r\n,]}":
++            position += 1
++        literal = raw[start:position]
++        field = "/".join(path)
++        bound = {
++            "stream_sequence": "9007199254740991",
++            "payload/measurement/pixel_count": "40000000",
++        }.get(field)
++        if bound is not None:
++            if (
++                re.fullmatch(r"0|[1-9][0-9]*", literal) is None
++                or len(literal) > len(bound)
++                or (len(literal) == len(bound) and literal > bound)
++                or (field == "payload/measurement/pixel_count" and literal == "0")
++            ):
++                raise ValueError(_INVALID)
++            return
++        if literal in ("true", "false", "null"):
++            return
++        if re.fullmatch(
++            r"-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?", literal
++        ) is None or not math.isfinite(float(literal)):
++            raise ValueError(_INVALID)
++
++    whitespace()
++    if position >= len(raw) or raw[position] != "{":
++        raise ValueError(_INVALID)
++    value((), 0)
++    whitespace()
++    if position != len(raw):
++        raise ValueError(_INVALID)
++
++
++def _snapshot(data: bytes) -> bytes:
++    if not isinstance(data, bytes) or bytes.__len__(data) > MAX_NODE_EXCHANGE_BYTES:
++        raise ValueError(_INVALID)
++    # Bypass subclass __len__/__bytes__/__getitem__ overrides before retaining bytes.
++    return bytes.__getitem__(data, slice(None))
++
++
++def _parse(data: bytes) -> NodeExchangeEvent:
++    if data.startswith(b"\xef\xbb\xbf"):
++        raise ValueError(_INVALID)
++    raw = data.decode("utf-8", errors="strict")
++    _preflight(raw)
++    return _EVENT.validate_python(json.loads(raw))
++
++
++def parse_node_exchange_event(data: bytes) -> NodeExchangeEvent:
++    return _guard(lambda: _parse(_snapshot(data)))
++
++
++@dataclass(frozen=True)
++class PreparedNodeExchangeEvent:
++    event: NodeExchangeEvent
++    sha256: str
++    original_bytes: bytes
++
++
++def prepare_node_exchange_event(data: bytes) -> PreparedNodeExchangeEvent:
++    def prepare() -> PreparedNodeExchangeEvent:
++        original = _snapshot(data)
++        event = _parse(original)
++        return PreparedNodeExchangeEvent(event, hashlib.sha256(original).hexdigest(), original)
++
++    return _guard(prepare)
++
++
++def node_exchange_schema() -> dict[str, Any]:
++    """Semantic JSON Schema; raw byte/lexical rules still require the byte parser."""
++    return _EVENT.json_schema()
++
++
++def node_exchange_stream(event: NodeExchangeEvent) -> Stream:
++    return _guard(lambda: _stream(_EVENT.validate_python(event)))
++
++
++def _stream(event: NodeExchangeEvent) -> Stream:
++    return event.source_peer_id, event.destination_peer_id, event.scope_id
++
++
++class NodeExchangeSlot(StrictRecord):
++    stream: Stream
++    event_id: OpaqueUuid
++    stream_sequence: SequenceNumber
++    previous_event_sha256: Digest | None
++    sha256: Digest
++
++    @model_validator(mode="after")
++    def initial_predecessor(self) -> NodeExchangeSlot:
++        if (self.stream_sequence == 0) != (self.previous_event_sha256 is None):
++            raise ValueError(_CONFLICT)
++        return self
++
++
++class NodeExchangeBinding(StrictRecord):
++    stream: Stream
++    sample_handle: OpaqueUuid
++    measurement_handle: OpaqueUuid
++    protocol_version: Literal["gsip-capture-v1"]
++    context: Context
++    measurement: Measurement
++    synthetic_restricted: Annotated[bool, Field(strict=True)]
++
++
++class NodeExchangeRetirementAliases(_Retirement):
++    stream: Stream
++
++
++class NodeExchangeHead(StrictRecord):
++    stream_sequence: SequenceNumber
++    sha256: Digest
++
++
++@dataclass(frozen=True)
++class NodeExchangeChainResult:
++    head: NodeExchangeHead | None
++    advanced: int
++    gap: bool
++
++
++def node_exchange_slot(prepared: PreparedNodeExchangeEvent) -> NodeExchangeSlot:
++    def slot() -> NodeExchangeSlot:
++        event = _EVENT.validate_python(prepared.event)
++        return NodeExchangeSlot(
++            stream=_stream(event),
++            event_id=event.event_id,
++            stream_sequence=event.stream_sequence,
++            previous_event_sha256=event.previous_event_sha256,
++            sha256=prepared.sha256,
++        )
++
++    return _guard(slot, _CONFLICT)
++
++
++def _slots(slots: Sequence[NodeExchangeSlot]) -> list[NodeExchangeSlot]:
++    identities: dict[UUID, NodeExchangeSlot] = {}
++    positions: dict[tuple[Stream, int], NodeExchangeSlot] = {}
++    result = []
++    for value in slots:
++        slot = NodeExchangeSlot.model_validate(value)
++        key = slot.stream, slot.stream_sequence
++        for prior in (identities.get(slot.event_id), positions.get(key)):
++            if prior is not None and prior != slot:
++                raise ValueError(_CONFLICT)
++        identities[slot.event_id] = slot
++        positions[key] = slot
++        result.append(slot)
++    return result
++
++
++def check_node_exchange_identity(
++    candidate: NodeExchangeSlot, slots: Sequence[NodeExchangeSlot]
++) -> Literal["new", "retry"]:
++    def check() -> Literal["new", "retry"]:
++        normalized = NodeExchangeSlot.model_validate(candidate)
++        facts = _slots([*slots, normalized])
++        return (
++            "retry" if any(slot.event_id == normalized.event_id for slot in facts[:-1]) else "new"
++        )
++
++    return _guard(check, _CONFLICT)
++
++
++def bind_node_exchange_measurement(
++    event: NodeExchangeDeclaration, bindings: Sequence[NodeExchangeBinding]
++) -> NodeExchangeBinding:
++    def bind() -> NodeExchangeBinding:
++        parsed = _EVENT.validate_python(event)
++        if not isinstance(parsed, NodeExchangeDeclaration):
++            raise ValueError(_CONFLICT)
++        payload = parsed.payload
++        candidate = NodeExchangeBinding(
++            stream=_stream(parsed),
++            sample_handle=payload.sample_handle,
++            measurement_handle=payload.measurement_handle,
++            protocol_version=payload.protocol_version,
++            context=payload.context,
++            measurement=payload.measurement,
++            synthetic_restricted=payload.synthetic_claim,
++        )
++        restricted = candidate.synthetic_restricted
++        for value in bindings:
++            prior = NodeExchangeBinding.model_validate(value)
++            if (
++                prior.stream != candidate.stream
++                or prior.measurement_handle != candidate.measurement_handle
++            ):
++                continue
++            if (
++                prior.sample_handle != candidate.sample_handle
++                or prior.protocol_version != candidate.protocol_version
++                or prior.context != candidate.context
++                or prior.measurement != candidate.measurement
++            ):
++                raise ValueError(_CONFLICT)
++            restricted = restricted or prior.synthetic_restricted
++        return NodeExchangeBinding.model_validate(
++            candidate.model_copy(update={"synthetic_restricted": restricted})
++        )
++
++    return _guard(bind, _CONFLICT)
++
++
++def node_exchange_retirement_aliases(
++    event: NodeExchangeEvent,
++) -> NodeExchangeRetirementAliases | None:
++    """Aliases only: the caller must separately establish synthetic/real cleanup authority."""
++
++    def aliases() -> NodeExchangeRetirementAliases | None:
++        parsed = _EVENT.validate_python(event)
++        if not isinstance(parsed, NodeExchangeRetirement):
++            return None
++        return NodeExchangeRetirementAliases(
++            stream=_stream(parsed),
++            sample_handle=parsed.payload.sample_handle,
++            measurement_handles=parsed.payload.measurement_handles,
++        )
++
++    return _guard(aliases, _CONFLICT)
++
++
++def node_exchange_declaration_covered(
++    event: NodeExchangeDeclaration, refusals: Sequence[NodeExchangeRetirementAliases]
++) -> bool:
++    def covered() -> bool:
++        parsed = _EVENT.validate_python(event)
++        if not isinstance(parsed, NodeExchangeDeclaration):
++            raise ValueError(_CONFLICT)
++        for value in refusals:
++            refusal = NodeExchangeRetirementAliases.model_validate(value)
++            if refusal.stream == _stream(parsed) and (
++                refusal.sample_handle == parsed.payload.sample_handle
++                or parsed.payload.measurement_handle in refusal.measurement_handles
++            ):
++                return True
++        return False
++
++    return _guard(covered, _CONFLICT)
++
++
++def advance_node_exchange_head(
++    stream: Stream, head: NodeExchangeHead | None, slots: Sequence[NodeExchangeSlot]
++) -> NodeExchangeChainResult:
++    def advance() -> NodeExchangeChainResult:
++        normalized: Stream = TypeAdapter(Stream).validate_python(stream)
++        current = None if head is None else NodeExchangeHead.model_validate(head)
++        selected = [slot for slot in _slots(slots) if slot.stream == normalized]
++        by_sequence = {slot.stream_sequence: slot for slot in selected}
++        if (
++            current is not None
++            and current.stream_sequence in by_sequence
++            and by_sequence[current.stream_sequence].sha256 != current.sha256
++        ):
++            raise ValueError(_CONFLICT)
++        advanced = 0
++        while current is None or current.stream_sequence < MAX_NODE_EXCHANGE_SEQUENCE:
++            next_sequence = 0 if current is None else current.stream_sequence + 1
++            slot = by_sequence.get(next_sequence)
++            if slot is None:
++                break
++            if slot.previous_event_sha256 != (None if current is None else current.sha256):
++                raise ValueError(_CONFLICT)
++            current = NodeExchangeHead(stream_sequence=next_sequence, sha256=slot.sha256)
++            advanced += 1
++        sequence = -1 if current is None else current.stream_sequence
++        return NodeExchangeChainResult(
++            current, advanced, any(slot.stream_sequence > sequence for slot in selected)
++        )
++
++    return _guard(advance, _CONFLICT)
+diff --git a/tests/test_node_exchange_contract.py b/tests/test_node_exchange_contract.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_node_exchange_contract.py
+@@ -0,0 +1,288 @@
++import copy
++import importlib.util
++import json
++from pathlib import Path
++from typing import Any
++from unittest.mock import patch
++
++import pytest
++
++from pipeline.node_exchange import (
++    MAX_NODE_EXCHANGE_BYTES,
++    NodeExchangeDeclaration,
++    NodeExchangeSlot,
++    node_exchange_schema,
++)
++from pipeline.node_exchange import (
++    advance_node_exchange_head as advance,
++)
++from pipeline.node_exchange import (
++    bind_node_exchange_measurement as bind,
++)
++from pipeline.node_exchange import (
++    check_node_exchange_identity as identity,
++)
++from pipeline.node_exchange import (
++    node_exchange_declaration_covered as covered,
++)
++from pipeline.node_exchange import (
++    node_exchange_retirement_aliases as aliases,
++)
++from pipeline.node_exchange import (
++    node_exchange_slot as slot,
++)
++from pipeline.node_exchange import (
++    node_exchange_stream as stream,
++)
++from pipeline.node_exchange import (
++    parse_node_exchange_event as parse,
++)
++from pipeline.node_exchange import (
++    prepare_node_exchange_event as prepare,
++)
++
++CORPUS = json.loads(
++    (
++        Path(__file__).parents[1] / "packages/schema/tests/fixtures/node-exchange-conformance.json"
++    ).read_text()
++)
++RAW: str = CORPUS["event_cases"][0]["raw"]
++
++
++def uuid(number: int) -> str:
++    return f"00000000-0000-0000-0000-{number:012x}"
++
++
++def candidate(**changes: Any) -> bytes:
++    return json.dumps(json.loads(RAW) | changes, separators=(",", ":")).encode()
++
++
++def declare(**changes: Any) -> NodeExchangeDeclaration:
++    event = parse(candidate(**changes))
++    assert isinstance(event, NodeExchangeDeclaration)
++    return event
++
++
++def test_node_exchange_contract_exists() -> None:
++    assert importlib.util.find_spec("pipeline.node_exchange") is not None
++
++
++@pytest.mark.parametrize("case", CORPUS["event_cases"], ids=lambda case: case["name"])
++def test_shared_synthetic_event_corpus(case: dict[str, Any]) -> None:
++    if case["valid"]:
++        assert parse(case["raw"].encode()).schema_version == "gsip-node-exchange-v1"
++    else:
++        with pytest.raises(ValueError, match="^Invalid node exchange event$"):
++            parse(case["raw"].encode())
++
++
++@pytest.mark.parametrize("case", CORPUS["byte_cases"], ids=lambda case: case["name"])
++def test_shared_synthetic_byte_corpus(case: dict[str, Any]) -> None:
++    with pytest.raises(ValueError, match="^Invalid node exchange event$"):
++        parse(bytes.fromhex(case["hex"]))
++
++
++@pytest.mark.parametrize("case", CORPUS["band_count_cases"])
++def test_band_count_bounds(case: dict[str, Any]) -> None:
++    value = json.loads(CORPUS["event_cases"][1]["raw"])
++    count = case["count"]
++    value["payload"]["measurement"].update(
++        wavelength_nm=[200 + i for i in range(count)],
++        reflectance=[0.4] * count,
++        uncertainty=[0.01] * count,
++    )
++    if case["valid"]:
++        parse(json.dumps(value).encode())
++    else:
++        with pytest.raises(ValueError):
++            parse(json.dumps(value).encode())
++
++
++def test_byte_bound_before_decode_parse_and_bytes_only() -> None:
++    raw = RAW.encode()
++    assert parse(raw + b" " * (MAX_NODE_EXCHANGE_BYTES - len(raw))).kind == "declare"
++    with patch("pipeline.node_exchange.json.loads") as loads:
++        values: list[Any] = [b" " * (MAX_NODE_EXCHANGE_BYTES + 1), RAW, bytearray(raw), [], None]
++        for value in values:
++            with pytest.raises(ValueError, match="^Invalid node exchange event$"):
++                parse(value)
++        loads.assert_not_called()
++
++
++def test_intrinsic_bytes_length_and_snapshot_ignore_subclass_overrides() -> None:
++    copy_calls = 0
++
++    class SpoofedBytes(bytes):
++        def __len__(self) -> int:
++            return 0
++
++        def __bytes__(self) -> bytes:
++            nonlocal copy_calls
++            copy_calls += 1
++            return b" " * (MAX_NODE_EXCHANGE_BYTES + 1 - len(RAW)) + RAW.encode()
++
++    oversized = SpoofedBytes(b" " * (MAX_NODE_EXCHANGE_BYTES + 1 - len(RAW)) + RAW.encode())
++    with patch("pipeline.node_exchange.json.loads") as loads:
++        with pytest.raises(ValueError, match="^Invalid node exchange event$"):
++            parse(oversized)
++        loads.assert_not_called()
++    assert copy_calls == 0
++    supplied = SpoofedBytes(RAW.encode())
++    assert prepare(supplied).original_bytes == RAW.encode()
++    assert copy_calls == 0
++
++
++def test_container_depth_and_surrogates_before_full_parse() -> None:
++    candidates = [
++        ('{"x":' + "[" * 11 + "0" + "]" * 11 + "}", True),
++        ('{"x":' + "[" * 12 + "0" + "]" * 12 + "}", False),
++        ('{"x":"\\ud83d\\ude00"}', True),
++        ('{"x":"\\ud83d"}', False),
++        ('{"\\ude00":0}', False),
++    ]
++    original = json.loads
++    for text, full_parse in candidates:
++        with patch("pipeline.node_exchange.json.loads", wraps=original) as loads:
++            with pytest.raises(ValueError, match="^Invalid node exchange event$"):
++                parse(text.encode())
++            assert any(call.args[0] == text for call in loads.call_args_list) == full_parse
++
++
++def test_generic_errors_have_no_private_values_cause_or_context() -> None:
++    sentinel = "fictional-private-value-must-not-be-echoed"
++    for value in [f'{{"{sentinel}":"{sentinel}"'.encode(), candidate(**{sentinel: sentinel})]:
++        for operation in (parse, prepare):
++            with pytest.raises(ValueError) as raised:
++                operation(value)
++            assert str(raised.value) == "Invalid node exchange event"
++            assert raised.value.__cause__ is None
++            assert raised.value.__context__ is None
++    assert node_exchange_schema()["discriminator"]["propertyName"] == "kind"
++
++
++def test_exact_bytes_digest_and_immutable_snapshots() -> None:
++    first = prepare(RAW.encode())
++    assert first.sha256 == CORPUS["camera_sha256"]
++    assert first.original_bytes == RAW.encode()
++    assert identity(slot(first), []) == "new"
++    assert identity(slot(first), [slot(first)]) == "retry"
++    for alternate in [
++        RAW + "\n",
++        RAW.replace('"depth_top_cm":0', '"depth_top_cm":0.0'),
++        RAW.replace('"event_id"', '"event\\u005fid"'),
++    ]:
++        changed = prepare(alternate.encode())
++        assert changed.event == first.event
++        with pytest.raises(ValueError, match="^Node exchange conflict$"):
++            identity(slot(changed), [slot(first)])
++    assert isinstance(first.event, NodeExchangeDeclaration)
++    with pytest.raises(ValueError):
++        first.event.payload.context.depth_bottom_cm = 20
++    if first.event.payload.measurement.kind == "camera_rgb":
++        assert isinstance(first.event.payload.measurement.mean_rgb, tuple)
++
++
++def test_uuid_letter_case_normalization_and_distinct_retry_bytes() -> None:
++    identifier = "abcdefab-cdef-abcd-efab-cdefabcdefab"
++    fields = dict(
++        event_id=identifier,
++        source_peer_id=identifier,
++        destination_peer_id=identifier,
++        scope_id=identifier,
++    )
++    lower = prepare(candidate(**fields))
++    upper = prepare(
++        candidate(
++            **(fields | {"event_id": identifier.upper(), "source_peer_id": identifier.upper()})
++        )
++    )
++    assert upper.event == lower.event
++    with pytest.raises(ValueError, match="^Node exchange conflict$"):
++        identity(slot(upper), [slot(lower)])
++    normalized = slot(lower).model_dump(mode="json")
++    normalized.update(event_id=identifier.upper(), stream=[identifier.upper()] * 3)
++    assert identity(NodeExchangeSlot.model_validate(normalized), [slot(lower)]) == "retry"
++    payload = json.loads(RAW)["payload"]
++    payload.update(sample_handle=identifier, measurement_handle=identifier)
++    payload["measurement"]["device_id"] = identifier
++    binding = bind(declare(payload=payload), [])
++    payload.update(sample_handle=identifier.upper(), measurement_handle=identifier.upper())
++    payload["measurement"]["device_id"] = identifier.upper()
++    assert bind(declare(payload=payload), [binding]) == binding
++
++
++def test_immutable_event_and_slot_ownership() -> None:
++    first = slot(prepare(RAW.encode()))
++    changes: list[dict[str, Any]] = [
++        dict(event_id=uuid(50)),
++        dict(scope_id=uuid(51)),
++        dict(source_peer_id=uuid(52)),
++        dict(destination_peer_id=uuid(53)),
++        dict(stream_sequence=1, previous_event_sha256=first.sha256),
++    ]
++    for change in changes:
++        with pytest.raises(ValueError, match="^Node exchange conflict$"):
++            identity(slot(prepare(candidate(**change))), [first])
++    upper = first.model_dump(mode="json")
++    upper["event_id"] = upper["event_id"].upper()
++    upper["stream"] = [value.upper() for value in upper["stream"]]
++    assert identity(NodeExchangeSlot.model_validate(upper), [first]) == "retry"
++
++
++def test_binding_tuple_and_monotonic_synthetic_restriction() -> None:
++    original = declare()
++    binding = bind(original, [])
++    payload = original.payload.model_dump(mode="json")
++    repeated = declare(event_id=uuid(55), payload=payload | {"synthetic_claim": False})
++    assert bind(repeated, [binding]).synthetic_restricted
++    equivalent = json.loads(RAW.replace('"depth_top_cm":0', '"depth_top_cm":0.0'))
++    equivalent["event_id"] = uuid(56)
++    assert bind(declare(**equivalent), [binding]) == binding
++    for changed in [
++        payload | {"sample_handle": uuid(57)},
++        payload | {"context": payload["context"] | {"depth_bottom_cm": 6}},
++        payload | {"measurement": payload["measurement"] | {"source_sha256": "f" * 64}},
++    ]:
++        with pytest.raises(ValueError, match="^Node exchange conflict$"):
++            bind(declare(event_id=uuid(58), payload=changed), [binding])
++    supplied = copy.deepcopy(binding)
++    copied = bind(repeated, [supplied])
++    assert copied.context is not supplied.context
++    assert copied.measurement is not supplied.measurement
++    assert copied.context.depth_bottom_cm == 5
++
++
++def test_chain_gaps_and_independent_retirement_aliases() -> None:
++    first = prepare(RAW.encode())
++    second = prepare(
++        candidate(event_id=uuid(60), stream_sequence=1, previous_event_sha256=first.sha256)
++    )
++    third = prepare(
++        candidate(
++            kind="retire",
++            event_id=uuid(61),
++            stream_sequence=2,
++            previous_event_sha256=second.sha256,
++            payload={"sample_handle": uuid(5), "measurement_handles": []},
++        )
++    )
++    key = stream(first.event)
++    gapped = advance(key, None, [slot(third)])
++    assert gapped.head is None and gapped.advanced == 0 and gapped.gap
++    refusal = aliases(third.event)
++    assert refusal is not None
++    assert set(refusal.model_dump()) == {"stream", "sample_handle", "measurement_handles"}
++    assert covered(declare(), [refusal])
++    assert not covered(declare(scope_id=uuid(70)), [refusal])
++    partial = advance(key, None, [slot(first), slot(third)])
++    assert partial.head is not None and partial.head.stream_sequence == 0
++    assert partial.advanced == 1 and partial.gap
++    complete = advance(key, partial.head, [slot(third), slot(second)])
++    assert complete.head is not None and complete.head.stream_sequence == 2
++    assert complete.head.sha256 == third.sha256 and complete.advanced == 2 and not complete.gap
++    for conflict in [
++        slot(second).model_copy(update={"previous_event_sha256": "f" * 64}),
++        slot(first).model_copy(update={"sha256": "f" * 64}),
++    ]:
++        with pytest.raises(ValueError, match="^Node exchange conflict$"):
++            advance(key, partial.head, [conflict])

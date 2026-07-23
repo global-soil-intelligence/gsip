@@ -1,0 +1,89 @@
+{
+  "status": "DNS_COMPLETE_ARTIFACT_VERIFIED_OVER_HTTP_WAITING_FOR_GITHUB_CERTIFICATE",
+  "checked_at_utc": "2026-10-16T01:15:07.779853+00:00",
+  "authority": "Existing explicit full DNS-cutover go, including HTTPS verification and closed capture/library gates",
+  "traffic_records_saved": [
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.108.153",
+      "ttl": 3600,
+      "index": 1
+    },
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.109.153",
+      "ttl": 3600,
+      "index": 2
+    },
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.110.153",
+      "ttl": 3600,
+      "index": 3
+    },
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.111.153",
+      "ttl": 3600,
+      "index": 4
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8000::153",
+      "ttl": 3600,
+      "index": 5
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8001::153",
+      "ttl": 3600,
+      "index": 6
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8002::153",
+      "ttl": 3600,
+      "index": 7
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8003::153",
+      "ttl": 3600,
+      "index": 8
+    },
+    {
+      "index": 9,
+      "type": "CNAME",
+      "name": "www",
+      "value": "global-soil-intelligence.github.io.",
+      "ttl": 3600
+    }
+  ],
+  "dns_evidence": "cutover-final-dns-independent-20261016T011210Z.json",
+  "http_files_matching": 38,
+  "http_files_expected": 38,
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "https_verified": false,
+  "https_enforced": false,
+  "owner_auth_blocker": "RESOLVED",
+  "next_step": "Wait for certificate then enforce HTTPS, compare approved artifact over HTTPS and run browser checks",
+  "new_go_required": false,
+  "do_not": [
+    "Change DNS away from reviewed plan",
+    "Remove ownership TXT",
+    "Disable TLS validation",
+    "Merge or dispatch another deployment",
+    "Open capture or library uploads"
+  ]
+}

@@ -1,0 +1,5 @@
+docs(spec): propose native iOS private-storage design
+
+Define a conditional excluded SQLite/anchor/owned-host candidate and held APP-2C2A/B/C sequence. Preserve current runtime, all existing acceptance states and every owner/device/production gate.
+
+Co-Authored-By: Codex <codex@openai.com>

@@ -1,0 +1,11 @@
+{
+  "pytest_exit": 0,
+  "tests": 142,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "real_HTTPTransport_and_socket_connect_blocked": true,
+  "HF_offline": true,
+  "real_upload_not_run": true,
+  "production_access": false
+}

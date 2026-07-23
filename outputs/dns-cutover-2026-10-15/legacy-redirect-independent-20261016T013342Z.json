@@ -1,0 +1,18 @@
+{
+  "checked_at_utc": "2026-10-16T01:33:42.235184+00:00",
+  "scope": "Read-only HEAD of legacy Pages redirect targets; no following or mutations",
+  "responses": [
+    {
+      "url": "https://global-soil-intelligence.github.io/gsip/",
+      "returncode": 0,
+      "headers": "HTTP/2 301 \nserver: GitHub.com\ncontent-type: text/html\nlocation: http://globalsoilintelligence.com/\nx-github-request-id: 71E0:35672A:BD81:D0A2:6AD17937\nx-github-edge-region: iad\naccept-ranges: bytes\ndate: Fri, 16 Oct 2026 01:33:42 GMT\nvia: 1.1 varnish\nage: 1470\nx-served-by: cache-lga-kjfk8660078-LGA\nx-cache: HIT\nx-cache-hits: 2\nx-timer: S1792114422.444272,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: 6f3c3fb861185421f9f54414c824d7d3c91f98c6\ncontent-length: 162\n\n",
+      "stderr": ""
+    },
+    {
+      "url": "https://global-soil-intelligence.github.io/gsip/data/",
+      "returncode": 0,
+      "headers": "HTTP/2 301 \nserver: GitHub.com\ncontent-type: text/html\nlocation: http://globalsoilintelligence.com/data/\nx-github-request-id: B554:29D2B7:AB0D:BD94:6AD17937\nx-github-edge-region: iad\naccept-ranges: bytes\nage: 1471\ndate: Fri, 16 Oct 2026 01:33:42 GMT\nvia: 1.1 varnish\nx-served-by: cache-lga-kjfk8660064-LGA\nx-cache: HIT\nx-cache-hits: 0\nx-timer: S1792114422.443540,VS0,VE1\nvary: Accept-Encoding\nx-fastly-request-id: c238b82f0ae54ad6d7f80d3d1a2f43bc51f764c0\ncontent-length: 162\n\n",
+      "stderr": ""
+    }
+  ]
+}

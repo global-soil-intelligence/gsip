@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-14T03:16:31.501104+00:00",
+  "build_receipt_13_field_schema_unchanged": true,
+  "clarification": "The nested Android audit evidence schema changed by adding selected_variant_redirect to the selected-module evidence for the three pinned non-POM roots. The 13-field build receipt schema and product API schemas remain unchanged. The combined original boolean must not be read as a claim that every audit evidence schema was unchanged.",
+  "clarified_field": "no_new_dependency_workflow_schema_permission_backup_scanner_policy_change",
+  "nested_android_audit_evidence_schema_changed": true,
+  "original_receipt": {
+    "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/AUTHOR_FINAL_VERIFICATION.json",
+    "preserved_unchanged": true,
+    "sha256": "0e9bca3cc82a433ebcf21f685a70ec2d0e8fce95afc6adc9ad4eac420def0ed9"
+  },
+  "original_test_results_repeated": false,
+  "product_API_schemas_unchanged": true,
+  "schema": "gsip-author-schema-wording-clarification-v1",
+  "source_or_test_change": false
+}

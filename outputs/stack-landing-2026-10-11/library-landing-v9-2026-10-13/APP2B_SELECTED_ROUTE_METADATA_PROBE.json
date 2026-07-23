@@ -1,0 +1,217 @@
+{
+  "HOME_inherited_unchanged": true,
+  "input_sha256": "2c4d2f8a25c79cb154e970ba41da92074876375f1d2f598a4a548b27a3d17856",
+  "metadata_bytes": 2009,
+  "metadata_sha256": "ced7ffa6e2c67a1b4c30671ddb80efbe38f2a99fe923bdb0a04c58e0a65e2229",
+  "native_build_sign_key_APK_operation": false,
+  "no_key_APK_files_created_under_private_preferences": true,
+  "observations": [
+    {
+      "dry_run_task_count": 1,
+      "exit": 0,
+      "fixed_failure_marker_indices": [],
+      "only_probe_task_in_dry_run": true,
+      "phase": "dry_run",
+      "raw_streams_persisted": false,
+      "seconds": 14.25,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 880,
+      "stdout_sha256": "1cb2fd9949ec32311bdc3fefb806481b185c2450d144d192afb03bbc26580c09"
+    },
+    {
+      "dry_run_task_count": 0,
+      "exit": 0,
+      "fixed_failure_marker_indices": [],
+      "only_probe_task_in_dry_run": null,
+      "phase": "metadata_only",
+      "raw_streams_persisted": false,
+      "seconds": 4.614,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 638,
+      "stdout_sha256": "abd721508bd694fdde5e3366017ea21e4728e88ac87d23a1150de3a29f1d1587"
+    }
+  ],
+  "offline": true,
+  "primary_API_sha256": "3fee875370367c160c00c81730578f993ebc581b43efbbeef9b77203b44e1147",
+  "private_SDK_cache_source_preferences": true,
+  "schema": "gsip-actual-selected-variant-probe-v1",
+  "selected_routes": [
+    {
+      "configuration": "debugRuntimeClasspath",
+      "routes": [
+        {
+          "selected_variant_chains": [
+            [
+              {
+                "coordinate": [
+                  "androidx.annotation",
+                  "annotation",
+                  "1.8.1"
+                ],
+                "variant": "jvmRuntimeElements-published"
+              },
+              {
+                "coordinate": [
+                  "androidx.annotation",
+                  "annotation-jvm",
+                  "1.8.1"
+                ],
+                "variant": "jvmRuntimeElements-published"
+              }
+            ]
+          ],
+          "source": [
+            "androidx.annotation",
+            "annotation",
+            "1.8.1"
+          ]
+        },
+        {
+          "selected_variant_chains": [
+            [
+              {
+                "coordinate": [
+                  "androidx.collection",
+                  "collection",
+                  "1.4.2"
+                ],
+                "variant": "jvmRuntimeElements-published"
+              },
+              {
+                "coordinate": [
+                  "androidx.collection",
+                  "collection-jvm",
+                  "1.4.2"
+                ],
+                "variant": "jvmRuntimeElements-published"
+              }
+            ]
+          ],
+          "source": [
+            "androidx.collection",
+            "collection",
+            "1.4.2"
+          ]
+        },
+        {
+          "selected_variant_chains": [
+            [
+              {
+                "coordinate": [
+                  "androidx.graphics",
+                  "graphics-shapes",
+                  "1.0.1"
+                ],
+                "variant": "releaseRuntimeElements-published"
+              },
+              {
+                "coordinate": [
+                  "androidx.graphics",
+                  "graphics-shapes-android",
+                  "1.0.1"
+                ],
+                "variant": "releaseRuntimeElements-published"
+              }
+            ]
+          ],
+          "source": [
+            "androidx.graphics",
+            "graphics-shapes",
+            "1.0.1"
+          ]
+        }
+      ],
+      "selected_module_count": 75
+    },
+    {
+      "configuration": "releaseRuntimeClasspath",
+      "routes": [
+        {
+          "selected_variant_chains": [
+            [
+              {
+                "coordinate": [
+                  "androidx.annotation",
+                  "annotation",
+                  "1.8.1"
+                ],
+                "variant": "jvmRuntimeElements-published"
+              },
+              {
+                "coordinate": [
+                  "androidx.annotation",
+                  "annotation-jvm",
+                  "1.8.1"
+                ],
+                "variant": "jvmRuntimeElements-published"
+              }
+            ]
+          ],
+          "source": [
+            "androidx.annotation",
+            "annotation",
+            "1.8.1"
+          ]
+        },
+        {
+          "selected_variant_chains": [
+            [
+              {
+                "coordinate": [
+                  "androidx.collection",
+                  "collection",
+                  "1.4.2"
+                ],
+                "variant": "jvmRuntimeElements-published"
+              },
+              {
+                "coordinate": [
+                  "androidx.collection",
+                  "collection-jvm",
+                  "1.4.2"
+                ],
+                "variant": "jvmRuntimeElements-published"
+              }
+            ]
+          ],
+          "source": [
+            "androidx.collection",
+            "collection",
+            "1.4.2"
+          ]
+        },
+        {
+          "selected_variant_chains": [
+            [
+              {
+                "coordinate": [
+                  "androidx.graphics",
+                  "graphics-shapes",
+                  "1.0.1"
+                ],
+                "variant": "releaseRuntimeElements-published"
+              },
+              {
+                "coordinate": [
+                  "androidx.graphics",
+                  "graphics-shapes-android",
+                  "1.0.1"
+                ],
+                "variant": "releaseRuntimeElements-published"
+              }
+            ]
+          ],
+          "source": [
+            "androidx.graphics",
+            "graphics-shapes",
+            "1.0.1"
+          ]
+        }
+      ],
+      "selected_module_count": 75
+    }
+  ],
+  "task_sha256": "1708fed4dd233befb0cecc566b774283ebae89ef1cee1564f897eba62343bfeb"
+}

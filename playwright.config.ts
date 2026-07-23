@@ -9,8 +9,9 @@ export default defineConfig({
     env: {
       VITE_SUPABASE_PUBLISHABLE_KEY: 'e2e-publishable-key',
       VITE_SUPABASE_URL: 'https://supabase.test',
+      VITE_CAPTURE_LIVE: 'true',
     },
-    reuseExistingServer: true,
+    reuseExistingServer: false,
     url: 'http://127.0.0.1:4173/gsip/',
   },
   projects: [

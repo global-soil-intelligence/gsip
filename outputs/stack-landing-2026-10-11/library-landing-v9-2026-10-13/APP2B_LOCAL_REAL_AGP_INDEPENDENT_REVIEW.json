@@ -1,0 +1,1136 @@
+{
+  "ALWAYS_diagnostic_local_failure": {
+    "command_argv_count": 7,
+    "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|BYTES_VALID|SIZE_REJECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED",
+    "coordinate_allowlist_sha256": "6b28dba3149011d132e78b2ed064937790023e4eb42a33b1220ee7bb310c7861",
+    "coordinate_classification_within_original_65536_cap": false,
+    "diagnostic": {
+      "counts": {},
+      "error_class": "BUILD_TOOL",
+      "source_line": 0,
+      "stage": "android-gradle-inspection"
+    },
+    "elapsed_seconds": 5.624,
+    "environment": {
+      "ANDROID_HOME": "TASK_PRIVATE_SDK_COPY",
+      "ANDROID_SDK_ROOT": "TASK_PRIVATE_SDK_COPY",
+      "ANDROID_USER_HOME": "TASK_PRIVATE_DIRECTORY",
+      "GRADLE_USER_HOME": "TASK_PRIVATE_COPY",
+      "HOME": "INHERITED_UNCHANGED"
+    },
+    "fault_file_count": 1,
+    "fixed_fault": "GSIP_FIXED_FAULT_V1|VALID|BUILD_FAILURE|UNKNOWN",
+    "fixed_operation_counts": {
+      "TASK_DEPENDENCY": 2
+    },
+    "graph_exists": false,
+    "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+    "missing_allowed_public_coordinates": [],
+    "missing_unlisted_coordinate_count": 0,
+    "offline_enforced": false,
+    "public_fixed_token_counts": {
+      "BUILD_FAILED": 1,
+      "DEPENDENCY_RESOLUTION": 2,
+      "TASK_DEPENDENCY": 2,
+      "TASK_DEPENDENCY_RESOLVE_TYPE": 1,
+      "TYPED_RESOLVE_TYPE": 1
+    },
+    "raw_streams_persisted": false,
+    "returncode": 1,
+    "schema": "gsip-c1-offline-inspection-v1",
+    "sdk_download_disabled": true,
+    "shared_inputs_read_only": true,
+    "showstacktrace": "ALWAYS",
+    "stderr_bytes": 120161,
+    "stderr_sha256": "7b6965640cb325643c7e15718e96a294842e12785fdb84e126ec6b9eff2d92af",
+    "stdout_bytes": 718,
+    "stdout_sha256": "a42b8081668ba3301016637a9452f6efda4033b63e28563526c0abcd7531f135",
+    "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+    "type_allowlist_sha256": "f564db07e4cc390d8705eb8750da16bca6050b096c8705da34c7a1c89c4d9f55",
+    "verified_fixed_exception_name_counts": {
+      "TASK_DEPENDENCY_RESOLVE": 1,
+      "TYPED_RESOLVE": 1
+    }
+  },
+  "authority": {
+    "no_git_github_ci_or_production_actions": true,
+    "no_new_native_or_primary_cards": true,
+    "no_shared_author_source_changes": true,
+    "own_tmp_writes_only": true
+  },
+  "baseline_local_failure": {
+    "command_argv_count": 7,
+    "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|BYTES_VALID|SIZE_REJECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED",
+    "coordinate_allowlist_sha256": "6b28dba3149011d132e78b2ed064937790023e4eb42a33b1220ee7bb310c7861",
+    "coordinate_classification_within_original_65536_cap": false,
+    "diagnostic": {
+      "counts": {},
+      "error_class": "BUILD_TOOL",
+      "source_line": 0,
+      "stage": "android-gradle-inspection"
+    },
+    "elapsed_seconds": 14.409,
+    "environment": {
+      "ANDROID_HOME": "TASK_PRIVATE_SDK_COPY",
+      "ANDROID_SDK_ROOT": "TASK_PRIVATE_SDK_COPY",
+      "ANDROID_USER_HOME": "TASK_PRIVATE_DIRECTORY",
+      "GRADLE_USER_HOME": "TASK_PRIVATE_COPY",
+      "HOME": "INHERITED_UNCHANGED"
+    },
+    "fault_file_count": 1,
+    "fixed_fault": "GSIP_FIXED_FAULT_V1|VALID|BUILD_FAILURE|UNKNOWN",
+    "graph_exists": false,
+    "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+    "missing_allowed_public_coordinates": [],
+    "missing_unlisted_coordinate_count": 0,
+    "offline_enforced": false,
+    "public_fixed_token_counts": {
+      "BUILD_FAILED": 1,
+      "DEPENDENCY_RESOLUTION": 1,
+      "TASK_DEPENDENCY": 1
+    },
+    "raw_streams_persisted": false,
+    "returncode": 1,
+    "schema": "gsip-c1-offline-inspection-v1",
+    "sdk_download_disabled": true,
+    "shared_inputs_read_only": true,
+    "stderr_bytes": 85706,
+    "stderr_sha256": "ec58f8841b70816f11ea74c48ad3019c99addfc38373b08d55c4161b54d17033",
+    "stdout_bytes": 718,
+    "stdout_sha256": "a42b8081668ba3301016637a9452f6efda4033b63e28563526c0abcd7531f135",
+    "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+  },
+  "completion": "Finite task complete; next investigation or actual patch requires separate followup/frozen candidate. No source fix accepted from wrapper-name evidence alone.",
+  "configuration_review": {
+    "ALWAYS_FULL_not_used": true,
+    "ALWAYS_is_official_stacktrace_option": true,
+    "actual_exit1_and_no_graph_preserved": true,
+    "env_and_command_AST_unchanged": true,
+    "old_three_field_fault_and_four_key_diagnostic_preserved": true,
+    "only_private_init_addition": "public ShowStacktrace import and ALWAYS setter; removing them gives exact previous repository-guard init SHAa311bda6b8c4dafcb46de0e02d195fe3c124ca0fdd5411482474f0a997f04469",
+    "original_65536_stream_refusal_preserved": true,
+    "private_local_fixed_scan_has_separate_8MiB_read_bound": "Local diagnostic observer only, not maintained acceptance parser, stderr cap increase or route source implementation",
+    "public_API_evidence": {
+      "bytes": 6552,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/PINNED_SHOWSTACKTRACE_API_EVIDENCE.json",
+      "sha256": "75954c655f8d645d73ad030e3df825f96d7b48663bb2a81581227f55e866cec0"
+    },
+    "same_stack_sanitizing_analyser_as_default": true,
+    "task_and_argument_count_unchanged": true,
+    "type_and_config_checks": {
+      "bytes": 17423,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/INDEPENDENT_TYPE_AND_CONFIG_CHECKS.json",
+      "sha256": "ffab75a6e5d2cdd85e671ff6d1386eb47c3d5321e49089915bf11fb42205713b"
+    }
+  },
+  "created_at_utc": "2026-10-13T22:43:23.972505+00:00",
+  "finite_type_evidence": {
+    "fixed_name_matches": {
+      "TASK_DEPENDENCY_RESOLVE": 1,
+      "TYPED_RESOLVE": 1
+    },
+    "leaf_cause_established": false,
+    "primary_inventory_type_rows_verified": 29,
+    "specific_fix_proposed_or_approved": false,
+    "type_provenance": "Both matched wrappers are pinned Gradle internal implementation names, not public supported API or authenticated loaded class identity",
+    "unknown_unlisted_type_absence_established": false
+  },
+  "independent_primary_Kotlin_verification": {
+    "component": [
+      "org.jetbrains.kotlin",
+      "kotlin-gradle-plugin",
+      "2.0.21"
+    ],
+    "download_status_is_author_recorded_not_reviewer_network": true,
+    "license": "Apache-2.0",
+    "licenses": [
+      {
+        "name": "The Apache License, Version 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+      }
+    ],
+    "npm_plugin_MIT_is_separate": true,
+    "primary_POM_matches_private_cached_POM": true,
+    "primary_module_matches_private_cached_module": true,
+    "private_resolved_plugin_files": [
+      {
+        "bytes": 13199,
+        "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin/2.0.21/6130ad788351dc0155256434a40f3f116af428b2/kotlin-gradle-plugin-2.0.21.pom",
+        "sha256": "45e9ccece33e4d8dfa9941cc912f35458201a9d3f043720c3247adde57f47ff6"
+      },
+      {
+        "bytes": 179869,
+        "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin/2.0.21/dd384600a60737fd7e80daef0fffa31fdf2efb00/kotlin-gradle-plugin-2.0.21.module",
+        "sha256": "0f9897a06c07a3e87d647131cc3490a1f72d1ae54c107f13f72269d5344b087a"
+      },
+      {
+        "bytes": 14904556,
+        "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin/2.0.21/ea69d8de091115a98ce7f3901994b2fb3432480b/kotlin-gradle-plugin-2.0.21-gradle85.jar",
+        "sha256": "9df5c7ff13b1fc68ac9450ca63c53111891d6f647bddec0f4398b3e7225bf6d9"
+      }
+    ]
+  },
+  "input_manifest_validation": {
+    "all_eight_match": true,
+    "artifact_rows": [
+      {
+        "artifact_name": "databinding-common-8.13.0.jar",
+        "coordinate": "androidx.databinding:databinding-common:8.13.0",
+        "sha256": "66cab82639dac0f6c2433464c093b074d608c4bb887ec38a9b8bc4ac98126732",
+        "verified": true
+      },
+      {
+        "artifact_name": "databinding-common-8.13.0.pom",
+        "coordinate": "androidx.databinding:databinding-common:8.13.0",
+        "sha256": "0bc18f912af02b790efa39ac56edb0e5bfc89eafe0997680a5acd65c98a7194e",
+        "verified": true
+      },
+      {
+        "artifact_name": "databinding-compiler-common-8.13.0.jar",
+        "coordinate": "androidx.databinding:databinding-compiler-common:8.13.0",
+        "sha256": "8e90060d411d20419f9ef5ce69893cfc4a323f61134030789c0bb2db1a3df47c",
+        "verified": true
+      },
+      {
+        "artifact_name": "databinding-compiler-common-8.13.0.pom",
+        "coordinate": "androidx.databinding:databinding-compiler-common:8.13.0",
+        "sha256": "2450b2b68a8e6d6f7aad00a856545b3cdfac484a6b1f0af62168404c32326d34",
+        "verified": true
+      },
+      {
+        "artifact_name": "baseLibrary-8.13.0.jar",
+        "coordinate": "com.android.databinding:baseLibrary:8.13.0",
+        "sha256": "794113709dab21b06c262b3795e73cb708fbacae61715f34361e1af6237a1870",
+        "verified": true
+      },
+      {
+        "artifact_name": "baseLibrary-8.13.0.pom",
+        "coordinate": "com.android.databinding:baseLibrary:8.13.0",
+        "sha256": "3d92df9f731666a5651783380ed32e035cbf29330aaabcc78ab5ae63351103fa",
+        "verified": true
+      },
+      {
+        "artifact_name": "crash-31.13.0.pom",
+        "coordinate": "com.android.tools.analytics-library:crash:31.13.0",
+        "sha256": "af239423d3ced93e2ff3c3e43b57aea36bfc87973321926cd8ca2a2159eb6646",
+        "verified": true
+      },
+      {
+        "artifact_name": "crash-31.13.0.jar",
+        "coordinate": "com.android.tools.analytics-library:crash:31.13.0",
+        "sha256": "cca97ac29a1329bd310a3e832b6e57f46227e501aa529c00a63df217c5d7df41",
+        "verified": true
+      },
+      {
+        "artifact_name": "shared-31.13.0.pom",
+        "coordinate": "com.android.tools.analytics-library:shared:31.13.0",
+        "sha256": "b46f327e2b0d7dfef21acac495538c52ec3a53fa1b1644fa697be5e7c895bc76",
+        "verified": true
+      },
+      {
+        "artifact_name": "shared-31.13.0.jar",
+        "coordinate": "com.android.tools.analytics-library:shared:31.13.0",
+        "sha256": "75435816f202b7a3c84d9caf312a895625a244991f8fc52d0446239e3ae29a9c",
+        "verified": true
+      },
+      {
+        "artifact_name": "jetifier-core-1.0.0-beta10.jar",
+        "coordinate": "com.android.tools.build.jetifier:jetifier-core:1.0.0-beta10",
+        "sha256": "26abb4a13927d9062169c504c9e94fe80e9ae3a4f7b5ab8875ab007536a91f5e",
+        "verified": true
+      },
+      {
+        "artifact_name": "jetifier-core-1.0.0-beta10.pom",
+        "coordinate": "com.android.tools.build.jetifier:jetifier-core:1.0.0-beta10",
+        "sha256": "5c9d42e6b7e35d4d8d02e0a322cf26693b3ec3642b107c8f0be5a721d45a0c6d",
+        "verified": true
+      },
+      {
+        "artifact_name": "jetifier-core-1.0.0-beta10.module",
+        "coordinate": "com.android.tools.build.jetifier:jetifier-core:1.0.0-beta10",
+        "sha256": "f0917589a42d276163f10040ab5842e91883dcbdb1d48bfd1f1fcaa72c1ca7b7",
+        "verified": true
+      },
+      {
+        "artifact_name": "jetifier-processor-1.0.0-beta10.jar",
+        "coordinate": "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta10",
+        "sha256": "c5067a7b928237a1271a5e9cb5710e9f80b4973293945bc51e3a4c864ea4bfed",
+        "verified": true
+      },
+      {
+        "artifact_name": "jetifier-processor-1.0.0-beta10.module",
+        "coordinate": "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta10",
+        "sha256": "36c25576b19993df360170528cc62b7246c37776d6158154a67cdf8fc2d58e13",
+        "verified": true
+      },
+      {
+        "artifact_name": "jetifier-processor-1.0.0-beta10.pom",
+        "coordinate": "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta10",
+        "sha256": "33b17f396989404a49174748569bc8edf4e39a62a42a35ce93dca5c0e4ba0842",
+        "verified": true
+      },
+      {
+        "artifact_name": "aapt2-proto-8.13.0-13719691.module",
+        "coordinate": "com.android.tools.build:aapt2-proto:8.13.0-13719691",
+        "sha256": "70be18f06040e93b7996be05ae8446062ba26aa411d85e73c9dcd71e5e6edf04",
+        "verified": true
+      },
+      {
+        "artifact_name": "aapt2-proto-8.13.0-13719691.pom",
+        "coordinate": "com.android.tools.build:aapt2-proto:8.13.0-13719691",
+        "sha256": "dbd11e3c11f4f47ab208ad94de2a5bf09d3fbb4b0a84fdcf59cd02141d558f1c",
+        "verified": true
+      },
+      {
+        "artifact_name": "aapt2-proto-8.13.0-13719691.jar",
+        "coordinate": "com.android.tools.build:aapt2-proto:8.13.0-13719691",
+        "sha256": "6acec63c16c58667f7bb2ab31bc1e84465b113a8347b03fb8955b7eabee1eb69",
+        "verified": true
+      },
+      {
+        "artifact_name": "aaptcompiler-8.13.0.pom",
+        "coordinate": "com.android.tools.build:aaptcompiler:8.13.0",
+        "sha256": "a3b77986f214acde1efdd1fefea939bb51cef547a444e0c03da69cf5dcb456c2",
+        "verified": true
+      },
+      {
+        "artifact_name": "aaptcompiler-8.13.0.jar",
+        "coordinate": "com.android.tools.build:aaptcompiler:8.13.0",
+        "sha256": "f5e93ada4a2902a5d818168b4072d081f7cfa042ea6d00656da42173bca7fe7f",
+        "verified": true
+      },
+      {
+        "artifact_name": "aaptcompiler-8.13.0.module",
+        "coordinate": "com.android.tools.build:aaptcompiler:8.13.0",
+        "sha256": "32c313ed01a6e006ee3eac717c17c1e5d218a9df2567528d34b17a5a6742de09",
+        "verified": true
+      },
+      {
+        "artifact_name": "builder-model-8.13.0.pom",
+        "coordinate": "com.android.tools.build:builder-model:8.13.0",
+        "sha256": "555f48b9a9d0994a80cb5c94590a7da36acb9c5526e76f093a207490a2149255",
+        "verified": true
+      },
+      {
+        "artifact_name": "builder-model-8.13.0.jar",
+        "coordinate": "com.android.tools.build:builder-model:8.13.0",
+        "sha256": "1a19049980056b7b1321e2c1e0cff6e9f31362bdd833ea7b3f25ea87afb77f50",
+        "verified": true
+      },
+      {
+        "artifact_name": "builder-model-8.13.0.module",
+        "coordinate": "com.android.tools.build:builder-model:8.13.0",
+        "sha256": "17ce93ca75630240705eb8334e1e79ef6f63c6c6e7acd5d0a01a5aa16bddffe2",
+        "verified": true
+      },
+      {
+        "artifact_name": "builder-test-api-8.13.0.pom",
+        "coordinate": "com.android.tools.build:builder-test-api:8.13.0",
+        "sha256": "675435b6732f4c57b09dc0efe1c4045b9de36055553605afc9ad3af668bf8b32",
+        "verified": true
+      },
+      {
+        "artifact_name": "builder-test-api-8.13.0.jar",
+        "coordinate": "com.android.tools.build:builder-test-api:8.13.0",
+        "sha256": "ab7341dea24e46b229c78b066b3766d965aa92d75c2deb7d55cdbdace3f19d1e",
+        "verified": true
+      },
+      {
+        "artifact_name": "builder-test-api-8.13.0.module",
+        "coordinate": "com.android.tools.build:builder-test-api:8.13.0",
+        "sha256": "43ec9b81ed259b500697ecde242ada206d048892d1650f0487d731fce32bcde6",
+        "verified": true
+      },
+      {
+        "artifact_name": "builder-8.13.0.module",
+        "coordinate": "com.android.tools.build:builder:8.13.0",
+        "sha256": "0fdb20c12f6592d808da6d0075ed34520f61c71936868b4bde39278bb1b7b59d",
+        "verified": true
+      },
+      {
+        "artifact_name": "builder-8.13.0.pom",
+        "coordinate": "com.android.tools.build:builder:8.13.0",
+        "sha256": "9f24359de3865896adb453928853572f52bfc664f3692df2a487e79f0d5c8a13",
+        "verified": true
+      },
+      {
+        "artifact_name": "builder-8.13.0.jar",
+        "coordinate": "com.android.tools.build:builder:8.13.0",
+        "sha256": "464aea9ccbf200ded6597d2848254d95229e9782779ea67f972588340812a4a9",
+        "verified": true
+      },
+      {
+        "artifact_name": "bundletool-1.18.1.jar",
+        "coordinate": "com.android.tools.build:bundletool:1.18.1",
+        "sha256": "a73341a7945abcb0e6b8971c7b1b2801bd765006447ca0d2437a4260d572ceac",
+        "verified": true
+      },
+      {
+        "artifact_name": "bundletool-1.18.1.pom",
+        "coordinate": "com.android.tools.build:bundletool:1.18.1",
+        "sha256": "5c4df7b2e31f17f20e4b8dbd62a2b7865a09a49a1fd2931a359fd394ecb9b5a5",
+        "verified": true
+      },
+      {
+        "artifact_name": "gradle-api-8.13.0.pom",
+        "coordinate": "com.android.tools.build:gradle-api:8.13.0",
+        "sha256": "4bab029e73f2a0e8a038af850886b72d0fa5c6819781d80241a66f4a51be4c5a",
+        "verified": true
+      },
+      {
+        "artifact_name": "gradle-api-8.13.0.module",
+        "coordinate": "com.android.tools.build:gradle-api:8.13.0",
+        "sha256": "5cffd4c58b703981d8e32488f854552baf8c8eb71e5e2bfbc734a1f374bdc842",
+        "verified": true
+      },
+      {
+        "artifact_name": "gradle-api-8.13.0.jar",
+        "coordinate": "com.android.tools.build:gradle-api:8.13.0",
+        "sha256": "3fec7962a3109f0a6b0b6e27c89ffcee75c88096263f1910d475f2e3b515757e",
+        "verified": true
+      },
+      {
+        "artifact_name": "gradle-settings-api-8.13.0.pom",
+        "coordinate": "com.android.tools.build:gradle-settings-api:8.13.0",
+        "sha256": "c2fbd8b6ef110534f50649f8b330c6d4e97960d8d5b72b7e68908c056d2a5e71",
+        "verified": true
+      },
+      {
+        "artifact_name": "gradle-settings-api-8.13.0.module",
+        "coordinate": "com.android.tools.build:gradle-settings-api:8.13.0",
+        "sha256": "3fc735534221f27aaae9ae418e1b40aed7906a2d97fbb427be0f0db03decfd97",
+        "verified": true
+      },
+      {
+        "artifact_name": "gradle-settings-api-8.13.0.jar",
+        "coordinate": "com.android.tools.build:gradle-settings-api:8.13.0",
+        "sha256": "0bb43c883d33719252e942b2a0a711e480a254237cfdf313e5343aa8ad2d2a5d",
+        "verified": true
+      },
+      {
+        "artifact_name": "gradle-8.13.0.module",
+        "coordinate": "com.android.tools.build:gradle:8.13.0",
+        "sha256": "1ffebc2634d322d5ff1646fb54aa9cdaaa00ab5eb3900a193fa561b23e031a77",
+        "verified": true
+      },
+      {
+        "artifact_name": "gradle-8.13.0.pom",
+        "coordinate": "com.android.tools.build:gradle:8.13.0",
+        "sha256": "ee4182f4b5cb6544f36d23db5d159674ca9ea3db05a8e474295afcfc6cf510da",
+        "verified": true
+      },
+      {
+        "artifact_name": "gradle-8.13.0.jar",
+        "coordinate": "com.android.tools.build:gradle:8.13.0",
+        "sha256": "d0195874497b4ac3eaeb3a8525bf794d3a5b63a9a01084ca9ac330fb63060d01",
+        "verified": true
+      },
+      {
+        "artifact_name": "transform-api-2.0.0-deprecated-use-gradle-api.jar",
+        "coordinate": "com.android.tools.build:transform-api:2.0.0-deprecated-use-gradle-api",
+        "sha256": "4de4a3d05e1c534c2db9e4588bf34082bb2bd232d8abb9727c430290ce225740",
+        "verified": true
+      },
+      {
+        "artifact_name": "transform-api-2.0.0-deprecated-use-gradle-api.pom",
+        "coordinate": "com.android.tools.build:transform-api:2.0.0-deprecated-use-gradle-api",
+        "sha256": "7c62f3856e8abca1d79257925f26c12668693f5d95904056bbac88605cfd8575",
+        "verified": true
+      },
+      {
+        "artifact_name": "ddmlib-31.13.0.jar",
+        "coordinate": "com.android.tools.ddms:ddmlib:31.13.0",
+        "sha256": "839957f961100713ea0eed628a8684cc39aa479631c36249793e6df7e0cd63d8",
+        "verified": true
+      },
+      {
+        "artifact_name": "ddmlib-31.13.0.pom",
+        "coordinate": "com.android.tools.ddms:ddmlib:31.13.0",
+        "sha256": "f68d19d3c1de32a0e8fa254de2cf9ec9bf43e681541358d55d12b36b5b115f8d",
+        "verified": true
+      },
+      {
+        "artifact_name": "layoutlib-api-31.13.0.jar",
+        "coordinate": "com.android.tools.layoutlib:layoutlib-api:31.13.0",
+        "sha256": "d06bc650247632a4a4e6596b87312019f45e900267c5476c47a5bfa6e3fd3132",
+        "verified": true
+      },
+      {
+        "artifact_name": "layoutlib-api-31.13.0.pom",
+        "coordinate": "com.android.tools.layoutlib:layoutlib-api:31.13.0",
+        "sha256": "898fd13752b13d6390cb0983c7bd23f1c8a2c50b7591e0abad14681d09eaffc3",
+        "verified": true
+      },
+      {
+        "artifact_name": "lint-model-31.13.0.jar",
+        "coordinate": "com.android.tools.lint:lint-model:31.13.0",
+        "sha256": "9ee55d8fd002736ed95ee97fb05f4df7ae01f4f976f738fbf37ecab795e59319",
+        "verified": true
+      },
+      {
+        "artifact_name": "lint-model-31.13.0.pom",
+        "coordinate": "com.android.tools.lint:lint-model:31.13.0",
+        "sha256": "4bb6e67b868b72c25b1614b61d750982e0414cd6716172be3155ad2aa7d6fb80",
+        "verified": true
+      },
+      {
+        "artifact_name": "lint-typedef-remover-31.13.0.pom",
+        "coordinate": "com.android.tools.lint:lint-typedef-remover:31.13.0",
+        "sha256": "f97d2b218a1bfa78c8b53c827884efabae3adf8e129791cf7dff2ff4b346f3d9",
+        "verified": true
+      },
+      {
+        "artifact_name": "lint-typedef-remover-31.13.0.jar",
+        "coordinate": "com.android.tools.lint:lint-typedef-remover:31.13.0",
+        "sha256": "4a3ba3babfd79e6fc67bcef647fb4ecfeaf59b481b108f7c2eba4d1c5c6dea8e",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-device-provider-ddmlib-proto-31.13.0.jar",
+        "coordinate": "com.android.tools.utp:android-device-provider-ddmlib-proto:31.13.0",
+        "sha256": "047aecdd66e106137f77a52c442f1b83db7d6e8496899800251f206c7f39de65",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-device-provider-ddmlib-proto-31.13.0.pom",
+        "coordinate": "com.android.tools.utp:android-device-provider-ddmlib-proto:31.13.0",
+        "sha256": "a90567cc8f6a68af29dce7bcb6458b61486e10d246d784c221df35a87b133f93",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-device-provider-profile-proto-31.13.0.jar",
+        "coordinate": "com.android.tools.utp:android-device-provider-profile-proto:31.13.0",
+        "sha256": "3e7b098f6e3ecae31b6f7909c343b4ec09aa18d8a89f41bf92077ba4b056f453",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-device-provider-profile-proto-31.13.0.pom",
+        "coordinate": "com.android.tools.utp:android-device-provider-profile-proto:31.13.0",
+        "sha256": "bc4d233e67353d0afed7e88ca8c437e0c6b8f748b7b04456db5002124eaddd16",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-additional-test-output-proto-31.13.0.pom",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-additional-test-output-proto:31.13.0",
+        "sha256": "89b7605d0ecd9d15559a56d037af631f40b24a296b18e2cda9140d188771b588",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-additional-test-output-proto-31.13.0.jar",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-additional-test-output-proto:31.13.0",
+        "sha256": "6ba7e6ac2208d74c1bb5f1d1464abafc6a45d8710b20455a2dc02adf8726bc83",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-apk-installer-proto-31.13.0.pom",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-apk-installer-proto:31.13.0",
+        "sha256": "7d8f83513acde16ff5aff48c09d17c87a4bfec9fd9d59b0d188866a0f68699c5",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-apk-installer-proto-31.13.0.jar",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-apk-installer-proto:31.13.0",
+        "sha256": "4f2b610542e91a35a396b04368a784036e42b8787021460550b9a3495bb8245b",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-coverage-proto-31.13.0.jar",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-coverage-proto:31.13.0",
+        "sha256": "fa86719a3dc5de465f7e0c023184414c27f8fd53a34fd557289c0bf6df340244",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-coverage-proto-31.13.0.pom",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-coverage-proto:31.13.0",
+        "sha256": "fd88cbcc00ad48ad200731b0654449148bf72bece66e912be3631bdd9db29c9b",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-emulator-control-proto-31.13.0.jar",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-emulator-control-proto:31.13.0",
+        "sha256": "a4f34aae0f9ffa026dbf7151436dd7ae53becb72622b40f2c479cac8943d9319",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-emulator-control-proto-31.13.0.pom",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-emulator-control-proto:31.13.0",
+        "sha256": "51497d3920aa7a7eee7312602853b74771d57f44d6fc0c3f18af0f6868618e00",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-logcat-proto-31.13.0.jar",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-logcat-proto:31.13.0",
+        "sha256": "c1f6ebbacdad559b6efe4eaa29561552b33156395f069cd9703fda09c462dea6",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-host-logcat-proto-31.13.0.pom",
+        "coordinate": "com.android.tools.utp:android-test-plugin-host-logcat-proto:31.13.0",
+        "sha256": "2e203c6ade1aa5d87086cb208c2d6b39193d78d81ff80c9a1e17c592b9f651ea",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-result-listener-gradle-proto-31.13.0.pom",
+        "coordinate": "com.android.tools.utp:android-test-plugin-result-listener-gradle-proto:31.13.0",
+        "sha256": "41d9b13dd7b1eefd8960bab44b5fd088deef16e78d56be8b95575cf14563ae09",
+        "verified": true
+      },
+      {
+        "artifact_name": "android-test-plugin-result-listener-gradle-proto-31.13.0.jar",
+        "coordinate": "com.android.tools.utp:android-test-plugin-result-listener-gradle-proto:31.13.0",
+        "sha256": "d429b9312dffa0503381d1ee1b18a999bd901e7456612b2fb48c6a5d5a2caf88",
+        "verified": true
+      },
+      {
+        "artifact_name": "repository-31.13.0.jar",
+        "coordinate": "com.android.tools:repository:31.13.0",
+        "sha256": "e9509b30d088e899948f8cb0d73293c1efd2e1f121fccbbe25d533b648b93fa1",
+        "verified": true
+      },
+      {
+        "artifact_name": "repository-31.13.0.pom",
+        "coordinate": "com.android.tools:repository:31.13.0",
+        "sha256": "b94058e842c1b654c01dd27cf22ff88173faf3a2388eeab4407f282c62c7bb2f",
+        "verified": true
+      },
+      {
+        "artifact_name": "sdk-common-31.13.0.jar",
+        "coordinate": "com.android.tools:sdk-common:31.13.0",
+        "sha256": "8cfdf99d6f17689e7dd3bcf1834d734f6dd1c64d8c43904632c65d5469565934",
+        "verified": true
+      },
+      {
+        "artifact_name": "sdk-common-31.13.0.pom",
+        "coordinate": "com.android.tools:sdk-common:31.13.0",
+        "sha256": "7eaa2b537986f6c8876917eed8fc17f64b6f6704e4e27b8d4732f5f29365abb0",
+        "verified": true
+      },
+      {
+        "artifact_name": "sdklib-31.13.0.jar",
+        "coordinate": "com.android.tools:sdklib:31.13.0",
+        "sha256": "def9b0e7f44e54add385cac1715483724f827f166511ebc0c10319742aa80865",
+        "verified": true
+      },
+      {
+        "artifact_name": "sdklib-31.13.0.pom",
+        "coordinate": "com.android.tools:sdklib:31.13.0",
+        "sha256": "d4883e61311ace1029c4fa0eb9f29c98cdfcfab4273cd9a070430369000068f9",
+        "verified": true
+      },
+      {
+        "artifact_name": "strict-version-matcher-plugin-1.2.4.jar",
+        "coordinate": "com.google.android.gms:strict-version-matcher-plugin:1.2.4",
+        "sha256": "df1b48b67a3c5fea7267e9e51d20de4757818b6e8ed576484c74c96ea2951200",
+        "verified": true
+      },
+      {
+        "artifact_name": "strict-version-matcher-plugin-1.2.4.pom",
+        "coordinate": "com.google.android.gms:strict-version-matcher-plugin:1.2.4",
+        "sha256": "221cbb4cda6aa91073c3bc62df5a0da605c0fe7179a8b74f095582d1c29c94cc",
+        "verified": true
+      },
+      {
+        "artifact_name": "strict-version-matcher-plugin-1.2.4.module",
+        "coordinate": "com.google.android.gms:strict-version-matcher-plugin:1.2.4",
+        "sha256": "5bf4e13eaa96fa8f1e5b1c46e9ea5dbdd38e45653247b449d63be49f567792ac",
+        "verified": true
+      },
+      {
+        "artifact_name": "jsr305-3.0.2.jar",
+        "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+        "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7",
+        "verified": true
+      },
+      {
+        "artifact_name": "jsr305-3.0.2.pom",
+        "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+        "sha256": "19889dbdf1b254b2601a5ee645b8147a974644882297684c798afe5d63d78dfe",
+        "verified": true
+      },
+      {
+        "artifact_name": "gson-2.11.0.jar",
+        "coordinate": "com.google.code.gson:gson:2.11.0",
+        "sha256": "57928d6e5a6edeb2abd3770a8f95ba44dce45f3b23b7a9dc2b309c581552a78b",
+        "verified": true
+      },
+      {
+        "artifact_name": "gson-2.11.0.pom",
+        "coordinate": "com.google.code.gson:gson:2.11.0",
+        "sha256": "c0e547bea998888e6e25c5886a90e762272bc88b5275343dd2c05ded6ca2e360",
+        "verified": true
+      },
+      {
+        "artifact_name": "tink-1.7.0.jar",
+        "coordinate": "com.google.crypto.tink:tink:1.7.0",
+        "sha256": "88970a456a08ba4c66b01b23e5846ca1095cc14e54cb48363e5d2e15a1307308",
+        "verified": true
+      },
+      {
+        "artifact_name": "tink-1.7.0.pom",
+        "coordinate": "com.google.crypto.tink:tink:1.7.0",
+        "sha256": "2aee3523715f8f2cd10b2603c8d19e561ac758310b7e2c9853946d2c5e7b4bf7",
+        "verified": true
+      },
+      {
+        "artifact_name": "flatbuffers-java-1.12.0.jar",
+        "coordinate": "com.google.flatbuffers:flatbuffers-java:1.12.0",
+        "sha256": "3f8c088b4dd04a9858721f2e162508c94db0dd86f961e306ee63ef2eda871bf7",
+        "verified": true
+      },
+      {
+        "artifact_name": "flatbuffers-java-1.12.0.pom",
+        "coordinate": "com.google.flatbuffers:flatbuffers-java:1.12.0",
+        "sha256": "cb226baf546260770f21e8152a6aa88ba15230d739f750df480f2a668d43e0eb",
+        "verified": true
+      },
+      {
+        "artifact_name": "google-services-4.4.4.jar",
+        "coordinate": "com.google.gms:google-services:4.4.4",
+        "sha256": "7a6579dfee3aa1bd0564d72f9c91d75bde715b44bc484eefc984841c642540cd",
+        "verified": true
+      },
+      {
+        "artifact_name": "google-services-4.4.4.pom",
+        "coordinate": "com.google.gms:google-services:4.4.4",
+        "sha256": "2d83f74b5f51f488a5545313b1b76e25d3610fceb04b10f3b91825d6ddc95bfd",
+        "verified": true
+      },
+      {
+        "artifact_name": "google-services-4.4.4.module",
+        "coordinate": "com.google.gms:google-services:4.4.4",
+        "sha256": "35eb3f788d6a079134bdaf315d514fd0852b6d360c31b8216b6dd98067b741ed",
+        "verified": true
+      },
+      {
+        "artifact_name": "protobuf-java-util-3.25.5.pom",
+        "coordinate": "com.google.protobuf:protobuf-java-util:3.25.5",
+        "sha256": "a09d190eaa6a79616bc5f4b5404e94b0cab559803a98c8a090c4099962f41f92",
+        "verified": true
+      },
+      {
+        "artifact_name": "protobuf-java-util-3.25.5.jar",
+        "coordinate": "com.google.protobuf:protobuf-java-util:3.25.5",
+        "sha256": "dacc58b2c3d2fa8d4bddc1acb881e78d6cf7c137dd78bc1d67f6aca732436a8d",
+        "verified": true
+      },
+      {
+        "artifact_name": "protobuf-java-3.25.5.pom",
+        "coordinate": "com.google.protobuf:protobuf-java:3.25.5",
+        "sha256": "e752032157a7a39be9be3786684075452a46cd586b2865abd33e707568a4c8af",
+        "verified": true
+      },
+      {
+        "artifact_name": "protobuf-java-3.25.5.jar",
+        "coordinate": "com.google.protobuf:protobuf-java:3.25.5",
+        "sha256": "8540247fad9e06baefa8fb45eb313802d019f485f14300e0f9d6b556ed88e753",
+        "verified": true
+      },
+      {
+        "artifact_name": "core-proto-0.0.9-alpha03.pom",
+        "coordinate": "com.google.testing.platform:core-proto:0.0.9-alpha03",
+        "sha256": "3bb45280df1dd1c96b9a01724a614566b7d60d33453fcd52c2c741f9999c3a4e",
+        "verified": true
+      },
+      {
+        "artifact_name": "core-proto-0.0.9-alpha03.jar",
+        "coordinate": "com.google.testing.platform:core-proto:0.0.9-alpha03",
+        "sha256": "d001eb0ccbbfc8cb9eaa193a358e63712974639775647be949ab232c2b29b407",
+        "verified": true
+      },
+      {
+        "artifact_name": "javapoet-1.10.0.pom",
+        "coordinate": "com.squareup:javapoet:1.10.0",
+        "sha256": "1690340a222279f2cbadf373e88826fa20f7f3cc3ec0252f36818fed32701ab1",
+        "verified": true
+      },
+      {
+        "artifact_name": "javapoet-1.10.0.jar",
+        "coordinate": "com.squareup:javapoet:1.10.0",
+        "sha256": "20ef4b82e43ff7c652281a21313cf3b941092467add3fa73509c26f6969efdab",
+        "verified": true
+      },
+      {
+        "artifact_name": "commons-io-2.16.1.jar",
+        "coordinate": "commons-io:commons-io:2.16.1",
+        "sha256": "f41f7baacd716896447ace9758621f62c1c6b0a91d89acee488da26fc477c84f",
+        "verified": true
+      },
+      {
+        "artifact_name": "commons-io-2.16.1.pom",
+        "coordinate": "commons-io:commons-io:2.16.1",
+        "sha256": "5777d292251c7895c04a4c57015683ec3b353a12486c9b3e7178e9b0b3c38fff",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-core-1.69.1.jar",
+        "coordinate": "io.grpc:grpc-core:1.69.1",
+        "sha256": "51352cadaecbf9a4a4aa42d93f6f1fc728f1fd01b051680383ed09e5631ffbd0",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-core-1.69.1.pom",
+        "coordinate": "io.grpc:grpc-core:1.69.1",
+        "sha256": "968098f4a8451bbcd3d7b88c6a8ab5b7a74ef80dfdee7a6052f352fff783b2c5",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-inprocess-1.69.1.pom",
+        "coordinate": "io.grpc:grpc-inprocess:1.69.1",
+        "sha256": "febb30a5cf238237d075a3923e893992183daf171a1eb434acf132114a5f7f8a",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-inprocess-1.69.1.jar",
+        "coordinate": "io.grpc:grpc-inprocess:1.69.1",
+        "sha256": "b7c6ac0e3abf4b8d582610d632d79417bc3da81254e1a4bcf7f01e8db7bd55ef",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-netty-1.69.1.jar",
+        "coordinate": "io.grpc:grpc-netty:1.69.1",
+        "sha256": "52a86ed66f78933e83d1a3fb7162ad1667489564c4556366b7a3579c7024a447",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-netty-1.69.1.pom",
+        "coordinate": "io.grpc:grpc-netty:1.69.1",
+        "sha256": "8f06650cc91428cc513111bfebbeabf79994185d72444b02e5dfaca38be43714",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-protobuf-1.69.1.jar",
+        "coordinate": "io.grpc:grpc-protobuf:1.69.1",
+        "sha256": "4c52ef948fb8987a3baa7d46ba362b7bf307dd3c51f29241cd5c598398a010df",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-protobuf-1.69.1.pom",
+        "coordinate": "io.grpc:grpc-protobuf:1.69.1",
+        "sha256": "bf4ca76d2ace44d9694714fbcf3fd729c98ef2e5863ab920a483c052a22f4423",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-stub-1.69.1.pom",
+        "coordinate": "io.grpc:grpc-stub:1.69.1",
+        "sha256": "f5ad8157ec40d8a2347632965d6a03d18a48ad4625f32eb64b37a7a470ce53bb",
+        "verified": true
+      },
+      {
+        "artifact_name": "grpc-stub-1.69.1.jar",
+        "coordinate": "io.grpc:grpc-stub:1.69.1",
+        "sha256": "e39c63273d53052ebe9f638d8ae98176735ec567328d9a17092cddb6f239b8c2",
+        "verified": true
+      },
+      {
+        "artifact_name": "jopt-simple-4.9.pom",
+        "coordinate": "net.sf.jopt-simple:jopt-simple:4.9",
+        "sha256": "7af7e2d8b24b4798f04c2b7da24c9fbd1b7557b4e017c2054481565916079092",
+        "verified": true
+      },
+      {
+        "artifact_name": "jopt-simple-4.9.jar",
+        "coordinate": "net.sf.jopt-simple:jopt-simple:4.9",
+        "sha256": "26c5856e954b5f864db76f13b86919b59c6eecf9fd930b96baa8884626baf2f5",
+        "verified": true
+      },
+      {
+        "artifact_name": "httpmime-4.5.6.jar",
+        "coordinate": "org.apache.httpcomponents:httpmime:4.5.6",
+        "sha256": "0b2b1102c18d3c7e05a77214b9b7501a6f6056174ae5604e0e256776eda7553e",
+        "verified": true
+      },
+      {
+        "artifact_name": "httpmime-4.5.6.pom",
+        "coordinate": "org.apache.httpcomponents:httpmime:4.5.6",
+        "sha256": "dfbfd6ffe2a784ca9817c46365aa7f8a578320b805bde39d6f55a0b09d8aa8ca",
+        "verified": true
+      },
+      {
+        "artifact_name": "bcpkix-jdk18on-1.79.jar",
+        "coordinate": "org.bouncycastle:bcpkix-jdk18on:1.79",
+        "sha256": "3639a24ddf9ba4b7eba0659b44770e91eba816421888e571f285aadefe532cd6",
+        "verified": true
+      },
+      {
+        "artifact_name": "bcpkix-jdk18on-1.79.pom",
+        "coordinate": "org.bouncycastle:bcpkix-jdk18on:1.79",
+        "sha256": "35e49f4134de2ac326c3a50a25762cbb4db56f3802fa3f730cc85b653ad0987b",
+        "verified": true
+      },
+      {
+        "artifact_name": "jaxb-runtime-2.3.2.jar",
+        "coordinate": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+        "sha256": "e6e0a1e89fb6ff786279e6a0082d5cef52dc2ebe67053d041800737652b4fd1b",
+        "verified": true
+      },
+      {
+        "artifact_name": "jaxb-runtime-2.3.2.pom",
+        "coordinate": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+        "sha256": "9448a5ad7fa68a6083dfbe4f42c8c83e082b9202a105401fc68e944c26548b34",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-gradle-plugin-2.0.21.pom",
+        "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21",
+        "sha256": "45e9ccece33e4d8dfa9941cc912f35458201a9d3f043720c3247adde57f47ff6",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-gradle-plugin-2.0.21.module",
+        "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21",
+        "sha256": "0f9897a06c07a3e87d647131cc3490a1f72d1ae54c107f13f72269d5344b087a",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-gradle-plugin-2.0.21-gradle85.jar",
+        "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21",
+        "sha256": "9df5c7ff13b1fc68ac9450ca63c53111891d6f647bddec0f4398b3e7225bf6d9",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-gradle-plugin-2.2.20.pom",
+        "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20",
+        "sha256": "b9c3fd2ebd5484d60c5fe0db7aa10878303eeddfc93f942f735c07ba998187cc",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-gradle-plugin-2.2.20-gradle813.jar",
+        "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20",
+        "sha256": "5d325b5c2c5d4bc8bf44145d24eb4d4beb060d13d11ebe48898936ed5cd1564e",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-gradle-plugin-2.2.20.module",
+        "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20",
+        "sha256": "dc24bfa47e0442283290e21f069a056141d1f088d6cb9ecaa2eaace1b47b6b8c",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-stdlib-jdk8-1.7.10.pom",
+        "coordinate": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
+        "sha256": "592b5252f018e3dbefeca1a535fd2315dda7cb9e7bde5a06d6b419cf3643d47d",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-stdlib-jdk8-1.8.0.pom",
+        "coordinate": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0",
+        "sha256": "2bb6c7551b97c7ba029f9866582e7aa19d63abfd4cd53da3fc0c462f3ab5fc26",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-stdlib-2.2.0.module",
+        "coordinate": "org.jetbrains.kotlin:kotlin-stdlib:2.2.0",
+        "sha256": "a5b98fdcd9db017d542e197225dcee18d658a56de1db2cc41e13196d6b1769a4",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-stdlib-2.2.0.pom",
+        "coordinate": "org.jetbrains.kotlin:kotlin-stdlib:2.2.0",
+        "sha256": "8c3c821007c13411558739b9f3d5382eb81551db3895cffb89561e56c0f4dc16",
+        "verified": true
+      },
+      {
+        "artifact_name": "kotlin-stdlib-2.2.0.jar",
+        "coordinate": "org.jetbrains.kotlin:kotlin-stdlib:2.2.0",
+        "sha256": "65d12d85a3b865c160db9147851712a64b10dadd68b22eea22a95bf8a8670dca",
+        "verified": true
+      },
+      {
+        "artifact_name": "annotations-13.0.jar",
+        "coordinate": "org.jetbrains:annotations:13.0",
+        "sha256": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478",
+        "verified": true
+      },
+      {
+        "artifact_name": "annotations-13.0.pom",
+        "coordinate": "org.jetbrains:annotations:13.0",
+        "sha256": "965aeb2bedff369819bdde1bf7a0b3b89b8247dd69c88b86375d76163bb8c397",
+        "verified": true
+      },
+      {
+        "artifact_name": "asm-analysis-9.8.pom",
+        "coordinate": "org.ow2.asm:asm-analysis:9.8",
+        "sha256": "c5747e25c72e1b07d5263c75c78ad61a626dd2458fafcafc23f81d3253ee42ed",
+        "verified": true
+      },
+      {
+        "artifact_name": "asm-analysis-9.8.jar",
+        "coordinate": "org.ow2.asm:asm-analysis:9.8",
+        "sha256": "e640732fbcd3c6271925a504f125e38384688f4dfbbf92c8622dfcee0d09edb9",
+        "verified": true
+      },
+      {
+        "artifact_name": "asm-commons-9.8.jar",
+        "coordinate": "org.ow2.asm:asm-commons:9.8",
+        "sha256": "3301a1c1cb4c59fcc5292648dac1d7c5aed4c0f067dfbe88873b8cdfe77404f4",
+        "verified": true
+      },
+      {
+        "artifact_name": "asm-commons-9.8.pom",
+        "coordinate": "org.ow2.asm:asm-commons:9.8",
+        "sha256": "f793e78f01f703717d09472e56cdf212fe298970c882e2116e8e549fb6d140c2",
+        "verified": true
+      },
+      {
+        "artifact_name": "asm-util-9.8.jar",
+        "coordinate": "org.ow2.asm:asm-util:9.8",
+        "sha256": "8ba0460ecb28fd0e2980e5f3ef3433a513a457bc077f81a53bdc75b587a08d15",
+        "verified": true
+      },
+      {
+        "artifact_name": "asm-util-9.8.pom",
+        "coordinate": "org.ow2.asm:asm-util:9.8",
+        "sha256": "24d0970e171e2917b83a8f0f05d50a1cdb5c82e508555b52dbcc9d3361c4f0ec",
+        "verified": true
+      },
+      {
+        "artifact_name": "asm-9.8.pom",
+        "coordinate": "org.ow2.asm:asm:9.8",
+        "sha256": "c1367c3bb383d7619e7f797e38df7513885f2eef04ae7b5908f68222657b5baa",
+        "verified": true
+      },
+      {
+        "artifact_name": "asm-9.8.jar",
+        "coordinate": "org.ow2.asm:asm:9.8",
+        "sha256": "876eab6a83daecad5ca67eb9fcabb063c97b5aeb8cf1fca7a989ecde17522051",
+        "verified": true
+      },
+      {
+        "artifact_name": "tensorflow-lite-metadata-0.2.0.pom",
+        "coordinate": "org.tensorflow:tensorflow-lite-metadata:0.2.0",
+        "sha256": "0fe31326e83b7622cbcd9c75d467b291f01ffe3cc6e3e76651ac05a1c1c7a360",
+        "verified": true
+      },
+      {
+        "artifact_name": "tensorflow-lite-metadata-0.2.0.jar",
+        "coordinate": "org.tensorflow:tensorflow-lite-metadata:0.2.0",
+        "sha256": "e9f18b8a41f017e9033cb0ed85c8a2ba2307292cdfe25eae365923e7a31d2a70",
+        "verified": true
+      }
+    ],
+    "author365_tracked_match_claim": "Recorded in author freeze; reviewer independently compared eight relevant maintained-source inputs in prior closure and these eight declared reproduction inputs, not365new files",
+    "claim_is_enumerated_allowlisted_subset_not_all_transitive_files": true,
+    "eight_declared_source_hashes": [
+      {
+        "relative_path": "apps/capture-pwa/android/build.gradle",
+        "sha256": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
+        "verified": true
+      },
+      {
+        "relative_path": "apps/capture-pwa/android/capacitor.settings.gradle",
+        "sha256": "38174855e3d1b05152c745e730081f34d17e18520f3f51c7aaa20f9abc1c7acf",
+        "verified": true
+      },
+      {
+        "relative_path": "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.jar",
+        "sha256": "7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172",
+        "verified": true
+      },
+      {
+        "relative_path": "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties",
+        "sha256": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435",
+        "verified": true
+      },
+      {
+        "relative_path": "apps/capture-pwa/android/variables.gradle",
+        "sha256": "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88",
+        "verified": true
+      },
+      {
+        "relative_path": "apps/capture-pwa/capacitor.config.ts",
+        "sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69",
+        "verified": true
+      },
+      {
+        "relative_path": "pnpm-lock.yaml",
+        "sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+        "verified": true
+      },
+      {
+        "relative_path": "scripts/app_notification_audit.py",
+        "sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+        "verified": true
+      }
+    ],
+    "enumerated_artifacts": 139,
+    "exact_matches": 139
+  },
+  "kind": "independent-real-agp-result-and-diagnostic-configuration-review",
+  "limits": [
+    "No reviewer Gradle run or network request",
+    "Only frozen safe receipts/primary source and fixed scripts read, no raw runtime streams read or retained",
+    "Local failure shape matches hosted fixed-fault/cap pattern; identical underlying hosted cause not established",
+    "No SDK/install/signing/key/account actions, maintained-source mutation or route implementation",
+    "No success graph, native artifact, CI acceptance or device acceptance",
+    "Historical zero global-write claim not independently syscall audited; prior static owned-path/inode/link isolation carried forward"
+  ],
+  "outcome": "FROZEN_LOCAL_FAILURE_INPUT_BINDING_AND_ALWAYS_ONLY_DIAGNOSTIC_CONFIGURATION_CLOSED; LEAF_AND_HOSTED_CAUSE_UNESTABLISHED; NO_NATIVE_ACCEPTANCE",
+  "own_frozen_evidence": [
+    {
+      "bytes": 1983,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/FIRST_ACTUAL_AGP_TYPE_EVIDENCE_FROZEN.json",
+      "sha256": "e8d2d7a0853468e297dfdcafa2a79fdac410db0f30b61e8b4b294a0726f5ece1"
+    },
+    {
+      "bytes": 17423,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/INDEPENDENT_TYPE_AND_CONFIG_CHECKS.json",
+      "sha256": "ffab75a6e5d2cdd85e671ff6d1386eb47c3d5321e49089915bf11fb42205713b"
+    },
+    {
+      "bytes": 2333,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/LOCAL_AGP_FIRST_REPRODUCTION_FROZEN.json",
+      "sha256": "d3b6ce40d3cd4bb279c4295c12b41fe3901d719b1d1f2547cceabe6a2e146aa3"
+    },
+    {
+      "bytes": 6552,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/PINNED_SHOWSTACKTRACE_API_EVIDENCE.json",
+      "sha256": "75954c655f8d645d73ad030e3df825f96d7b48663bb2a81581227f55e866cec0"
+    },
+    {
+      "bytes": 475,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/PRE_STACKTRACE_INPUT_FREEZE.json",
+      "sha256": "0eef4a7a518f68fa4b754c14088be9ea0caf07e4271400064c0dba01ad8ad730"
+    },
+    {
+      "bytes": 35284,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/RESOLVED_PUBLIC_INPUT_MANIFEST.json",
+      "sha256": "97be8766fa99dedc4a67590bdc491d282f9856f657a5be1e1177778cdcfb5bb0"
+    },
+    {
+      "bytes": 1000,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/SHOWSTACKTRACE_ALWAYS_INIT.gradle.txt",
+      "sha256": "c2546fa5c6a14189b33bf165a6eaa30560987aa81e0fa25d0262f61620d8b04e"
+    },
+    {
+      "bytes": 7600,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/VERIFIED_STACKTRACE_TYPE_ALLOWLIST.json",
+      "sha256": "f564db07e4cc390d8705eb8750da16bca6050b096c8705da34c7a1c89c4d9f55"
+    },
+    {
+      "bytes": 1614,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/inspection-public-resolved.json",
+      "sha256": "5547a57dc72b401f5d4ecd16a0191957c6d779ad2ca9dfb40040ef5a9575fd55"
+    },
+    {
+      "bytes": 1973,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/inspection-stacktrace.json",
+      "sha256": "21ab99c0c89ba10b673524de9c5100cd709c6669fd6ec9cc2a488d79d190a621"
+    },
+    {
+      "bytes": 6007,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/public_resolution_run.py",
+      "sha256": "177b1e53985c8a22f425a196b0d772b4c73fc067d74f9c27ae93399c101f9906"
+    },
+    {
+      "bytes": 7293,
+      "path": "/private/tmp/gsip-c1-agp-result-review-erhfrpwz/stacktrace_run.py",
+      "sha256": "1ea7a3c77e04887df664b5bd47aeec101eed4915c4bc15e6938b823c8cf06a44"
+    }
+  ],
+  "prior_input_env_closure": {
+    "path": "/private/tmp/gsip-c1-offline-input-review-ls6zidkx/INDEPENDENT_CURRENT_REPRO_INPUT_CLOSURE.json",
+    "sha256": "770ea81672485a73a0c71d383b47a7c7c37f5c2a589c7fdfd71d0f961a21ed82"
+  },
+  "schema": 1,
+  "source_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d"
+}

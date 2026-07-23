@@ -1,0 +1,10 @@
+{
+  "pr": 36,
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/36",
+  "head": "ca275c4da4cb6641fbe5418ed7135916cc514e16",
+  "body_file": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/pr-36-body-after-i5-regression.md",
+  "original_body_preserved_as_prefix": true,
+  "exact_readback_matches": true,
+  "before_sha256": "7c1dae30281219f3f6587d01c4ee2367c9440ea5cca53fac956f7a008449be88",
+  "after_sha256": "edc6e9c6376ce6f583d28db08f7e26c74b701be3f0bdec46310a484ffe010501"
+}

@@ -1,0 +1,120 @@
+{
+  "scope": "Finite GET-only exact-head Android watch",
+  "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "run_id": 38476447070,
+  "run_number": 49,
+  "source_helper_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+  "android": {
+    "time_utc": "2026-10-13T22:20:09.653631+00:00",
+    "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+    "run_id": 38476447070,
+    "job_id": 115568199562,
+    "status": "completed",
+    "conclusion": "failure",
+    "completed_steps": [],
+    "active_step_numbers": []
+  },
+  "history": [
+    {
+      "time_utc": "2026-10-13T22:17:08.773694+00:00",
+      "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+      "run_id": 38476447070,
+      "job_id": 115568199562,
+      "status": "in_progress",
+      "conclusion": null,
+      "completed_steps": [],
+      "active_step_numbers": []
+    },
+    {
+      "time_utc": "2026-10-13T22:17:34.543141+00:00",
+      "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+      "run_id": 38476447070,
+      "job_id": 115568199562,
+      "status": "in_progress",
+      "conclusion": null,
+      "completed_steps": [],
+      "active_step_numbers": []
+    },
+    {
+      "time_utc": "2026-10-13T22:18:00.390626+00:00",
+      "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+      "run_id": 38476447070,
+      "job_id": 115568199562,
+      "status": "in_progress",
+      "conclusion": null,
+      "completed_steps": [],
+      "active_step_numbers": []
+    },
+    {
+      "time_utc": "2026-10-13T22:18:26.323937+00:00",
+      "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+      "run_id": 38476447070,
+      "job_id": 115568199562,
+      "status": "in_progress",
+      "conclusion": null,
+      "completed_steps": [],
+      "active_step_numbers": []
+    },
+    {
+      "time_utc": "2026-10-13T22:18:52.198737+00:00",
+      "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+      "run_id": 38476447070,
+      "job_id": 115568199562,
+      "status": "in_progress",
+      "conclusion": null,
+      "completed_steps": [],
+      "active_step_numbers": []
+    },
+    {
+      "time_utc": "2026-10-13T22:19:17.948115+00:00",
+      "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+      "run_id": 38476447070,
+      "job_id": 115568199562,
+      "status": "in_progress",
+      "conclusion": null,
+      "completed_steps": [],
+      "active_step_numbers": []
+    },
+    {
+      "time_utc": "2026-10-13T22:19:43.748562+00:00",
+      "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+      "run_id": 38476447070,
+      "job_id": 115568199562,
+      "status": "in_progress",
+      "conclusion": null,
+      "completed_steps": [],
+      "active_step_numbers": []
+    },
+    {
+      "time_utc": "2026-10-13T22:20:09.653631+00:00",
+      "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+      "run_id": 38476447070,
+      "job_id": 115568199562,
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_steps": [],
+      "active_step_numbers": []
+    }
+  ],
+  "no_mutations": true,
+  "log_evidence": {
+    "raw_log_sha256": "4a828cd92663cddb4c40904bffbcebda3ec3e87e45f5f57470e0da4ebfcb2f57",
+    "raw_log_bytes": 115427,
+    "raw_logs_persisted": false,
+    "fixed_fault_count": 1,
+    "fixed_fault_state": "VALID",
+    "fixed_fault": "GSIP_FIXED_FAULT_V1|VALID|BUILD_FAILURE|UNKNOWN",
+    "context_count": 1,
+    "context_state": "VALID",
+    "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|TEXT_VALID|SIZE_REJECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED",
+    "diagnostic_count": 1,
+    "diagnostic_state": "VALID",
+    "diagnostic": {
+      "counts": {},
+      "error_class": "BUILD_TOOL",
+      "source_line": 608,
+      "stage": "android-gradle-inspection"
+    }
+  },
+  "nonempty_exact_head_artifacts": []
+}

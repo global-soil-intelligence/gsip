@@ -1,0 +1,45 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "status": "PASS_GATES_A_B",
+  "completed_at": "2026-10-12T12:48:31.792598+00:00",
+  "ledger_counts": [
+    18,
+    31,
+    18,
+    17
+  ],
+  "dry_run_pending_files": [
+    "20261010120000_wp6b_capture_gate.sql",
+    "20261010120100_wp6b_path_binding.sql",
+    "20261010120200_wp6b_finalize_and_settle.sql",
+    "20261010120300_wp6b_k_anonymous_cells.sql",
+    "20261010120400_wp6b_attribution_and_metadata.sql",
+    "20261010130000_wp6c_priors.sql",
+    "20261010140000_wp6d_contributor_rights.sql",
+    "20261010150000_wp6e_provenance.sql",
+    "20261011090000_wp_agent1_releases.sql"
+  ],
+  "application_counts_and_catalog_unchanged": true,
+  "security_findings": 0,
+  "remaining_function_full_selected_metadata_equals_pre_delete": true,
+  "signup_disabled_separate_authorization": true,
+  "anonymous_signin_disabled": true,
+  "gate_c": "NOT_AUTHORIZED_NOT_EXECUTED",
+  "receipt_sha256": {
+    "production-preflight-resume-2026-10-12.json": "82b2436d62764f450dc5d6b9d16a7e963cd8ea109c33da73fed71ee624c06d04",
+    "gate-a-01-applied-command-2026-10-12.json": "0d111ab495395b7c41714bed3a06b1c3ec523578f653d9d34a1c824b86311931",
+    "gate-a-01-added-ledger-2026-10-12.json": "8c8860a45bb94682d1afd6cb81e9e6b721e46be6a230b1d2ad59433787b490b2",
+    "gate-a-02-retired-command-2026-10-12.json": "fdfb8de9179e7c125b06df669fff571984b43c8dff56403d070774f7fa7edbbe",
+    "gate-a-02-retired-ledger-2026-10-12.json": "fb541dd67d5f1b9fc4e38128f2a11e4d97c5205cdb2981c593292e74272a14f8",
+    "gate-a-03-stray-retired-command-2026-10-12.json": "b8c74ede729374da2565dbed37277a4d58cc341fabd28b5ab29f1d65d44941c0",
+    "gate-a-03-final-ledger-2026-10-12.json": "0fc203968deff91e10f2e8a0999104485038cf3f0619767bc077b873cf901367",
+    "gate-a-04-migration-list-2026-10-12.json": "0409e187a9d24bc6938da1468873b565348f56480eb73d0517aae322363320d2",
+    "gate-a-05-dry-run-verified-2026-10-12.json": "9a39dcbf2f2cafdb89b93d1f1ed03f2beb3335748574c1e5ce4c9d183809daf7",
+    "production-post-gate-a-verification-2026-10-12.json": "77a91551ad9e04f11ade62478a23149c9dec74bbb8d7fb5f424655c7fc86f4bb",
+    "gate-b-01-function-delete-command-2026-10-12.json": "42fa22a9059d9ddf3bfe49c1a33db3f42fb0f0633624084350090fee27b88301",
+    "gate-b-02-function-inventory-2026-10-12.json": "13146990b66c66345c78c1e1f7e5cb7be1ca8c255fe75c523ac2d486c768eeb4",
+    "production-signup-closure-action-readback-2026-10-12.json": "bfec01a0ac075bffaf33f9d143a36f9481638a24ace17d59d9a4e5a0c1fc2554",
+    "gateab-migration-test-2026-10-12.json": "d336e4e84164b60418cb8465cf2c654579638ceddca7b4d60972e65c026636a8",
+    "gateab-rehearsal-2026-10-12.json": "c0736221cbf9ffaba5a60602df1f532a0768fab7c14230480a38c465760eb94f"
+  }
+}

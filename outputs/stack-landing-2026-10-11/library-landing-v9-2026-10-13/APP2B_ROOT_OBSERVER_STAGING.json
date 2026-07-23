@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-13T22:07:11.469746+00:00",
+  "base_head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+  "files": [
+    {
+      "path": "scripts/app_notification_audit.py",
+      "base_sha256": "fba437191cd7bfe38a9a79d6adccd42ed10d71a9f16774e5a5de4bb07c6241f3",
+      "candidate_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "base_bytes": 110031,
+      "candidate_bytes": 110609
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "base_sha256": "ed80d0d9cfd9318a470652922b0a80f534abb8d6f5e27c3768b94d91728bd166",
+      "candidate_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "base_bytes": 127882,
+      "candidate_bytes": 136378
+    },
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "base_sha256": "a353247b42f0285934c89bef3e53c09d35a8f2aeb464f231ce8f78a9b9c57f35",
+      "candidate_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "base_bytes": 20361,
+      "candidate_bytes": 22226
+    }
+  ],
+  "unchanged_other_tracked": 362,
+  "invariants": "diagnostic-only failed-build observer and two exact Java error labels; old task operations, bounded cause walk, producers, native proof, original failure/status/caps and four-field diagnostic preserved; private phase validator gains BUILD_FAILURE only",
+  "independent_closure": "pending; required before commit/push",
+  "tool_launcher_and_java_hash_verified": true,
+  "snapshot": "/private/tmp/gsip-app2b-root-observer-three",
+  "commit_push": false
+}

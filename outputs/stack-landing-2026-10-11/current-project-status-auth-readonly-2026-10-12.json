@@ -1,0 +1,21 @@
+{
+  "observed_at_utc": "2026-10-12T18:59:43.521Z",
+  "project_ref": "toxldjgwkxtneoqsazym",
+  "project_name": "gsip",
+  "branch": "main",
+  "environment": "PRODUCTION",
+  "url": "https://supabase.com/dashboard/project/toxldjgwkxtneoqsazym/auth/providers",
+  "allow_new_users_signup": false,
+  "allow_anonymous_signins": false,
+  "allow_manual_linking": false,
+  "confirm_email": true,
+  "email_provider": "ENABLED",
+  "save_enabled": false,
+  "read_only": true,
+  "setting_toggles": 0,
+  "save_actions": 0,
+  "secret_fields_read": false,
+  "authentication_actions": false,
+  "database_or_capture_actions": false,
+  "source": "Fresh navigation in existing authenticated Chrome session; visible persisted controls and disabled Save. No login or settings edit."
+}

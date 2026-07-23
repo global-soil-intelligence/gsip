@@ -1,0 +1,111 @@
+{
+  "checked_at_utc": "2026-10-16T11:39:48.470253+00:00",
+  "rules": {
+    "effective_main": {
+      "returncode": 0,
+      "data": [
+        {
+          "type": "deletion",
+          "ruleset_source_type": "Repository",
+          "ruleset_source": "global-soil-intelligence/gsip",
+          "ruleset_id": 19564478
+        },
+        {
+          "type": "non_fast_forward",
+          "ruleset_source_type": "Repository",
+          "ruleset_source": "global-soil-intelligence/gsip",
+          "ruleset_id": 19564478
+        },
+        {
+          "type": "pull_request",
+          "parameters": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge",
+              "squash",
+              "rebase"
+            ]
+          },
+          "ruleset_source_type": "Repository",
+          "ruleset_source": "global-soil-intelligence/gsip",
+          "ruleset_id": 19564478
+        }
+      ],
+      "stderr": ""
+    },
+    "rulesets": {
+      "returncode": 0,
+      "data": [
+        {
+          "id": 19564478,
+          "name": "main-protection",
+          "target": "branch",
+          "source_type": "Repository",
+          "source": "global-soil-intelligence/gsip",
+          "enforcement": "active",
+          "node_id": "RRS_lACqUmVwb3NpdG9yec5OBVE9zgEqh74",
+          "_links": {
+            "self": {
+              "href": "https://api.github.com/repos/global-soil-intelligence/gsip/rulesets/19564478"
+            },
+            "html": {
+              "href": "https://github.com/global-soil-intelligence/gsip/rules/19564478"
+            }
+          },
+          "created_at": "2026-07-22T11:36:38.636-04:00",
+          "updated_at": "2026-10-12T19:49:38.606-04:00"
+        }
+      ],
+      "stderr": ""
+    },
+    "legacy_protection": {
+      "returncode": 1,
+      "data": {
+        "message": "Branch not protected",
+        "documentation_url": "https://docs.github.com/rest/branches/branch-protection#get-branch-protection",
+        "status": "404"
+      },
+      "stderr": "gh: Branch not protected (HTTP 404)\n"
+    }
+  },
+  "unit_numeric_summaries": [],
+  "migration_numeric_summaries": [
+    {
+      "step": "Apply migrations to data written before them",
+      "captures": [
+        "13",
+        "13"
+      ],
+      "pattern": "\\b(\\d+)/(\\d+)\\b"
+    },
+    {
+      "step": "Apply migrations to data written before them",
+      "captures": [
+        "19",
+        "19"
+      ],
+      "pattern": "\\b(\\d+)/(\\d+)\\b"
+    },
+    {
+      "step": "Apply migrations to data written before them",
+      "captures": [
+        "13",
+        "13"
+      ],
+      "pattern": "\\b(\\d+)/(\\d+)\\b"
+    }
+  ],
+  "log_command_returncode": 0,
+  "raw_logs_saved": false,
+  "mutations": "NONE"
+}

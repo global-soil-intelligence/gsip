@@ -1,0 +1,126 @@
+{
+  "all122_acceptance_boxes_bytes_and_states_unchanged": true,
+  "all362_other_files_match_exact_git_main_objects": true,
+  "all365_declared_source_hashes_and_modes_verified": true,
+  "all_normative_bytes_preserved_by_exact_inverse_status_diff": true,
+  "at": "2026-10-14T03:52:09.587286+00:00",
+  "base_commit": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "changed_files": [
+    {
+      "bytes": 3285,
+      "mode": "100644",
+      "path": "README.md",
+      "sha256": "08953a8cda9056f3f791eb9606b476ef6799ad6d6f92379437c8aa7c8a178804",
+      "unchanged_from_base": false
+    },
+    {
+      "bytes": 84201,
+      "mode": "100644",
+      "path": "docs/BUILD_ORDER.md",
+      "sha256": "bb7d34c6e0ce08c74bd53f4ac92116f60efe09aad83111e565fcdc8d1ac2c970",
+      "unchanged_from_base": false
+    },
+    {
+      "bytes": 154642,
+      "mode": "100644",
+      "path": "docs/SPEC.md",
+      "sha256": "a48e6276134fd610b254784ee7e5dc555d3263d83bfbe588c2ab3b2541e3182b",
+      "unchanged_from_base": false
+    }
+  ],
+  "checks": {
+    "acceptance_witness_baseline": {
+      "expected_exit": 1,
+      "failed_new_source_status_checks": 3,
+      "preservation_checks_passed": 12,
+      "report": {
+        "bytes": 1353,
+        "path": "/private/tmp/gsip-doc1-a638-preflight/baseline-witness.json",
+        "sha256": "3bad900a8ad5674b40058bb4c95c87060ac157e6692e9f8966fe6e9fa905eecb"
+      }
+    },
+    "acceptance_witness_candidate": {
+      "exit": 0,
+      "failed": 0,
+      "passed": 15,
+      "report": {
+        "bytes": 1252,
+        "path": "/private/tmp/gsip-doc1-a638-preflight/candidate-witness.json",
+        "sha256": "130d68f25c0e70cc5da17f55497ec8d4ae20d64f01a9f9535752d258be4c023b"
+      }
+    },
+    "existing_doc_policy_tests": {
+      "XML": {
+        "bytes": 2826,
+        "path": "/private/tmp/gsip-doc1-a638-preflight/doc-tests.xml",
+        "sha256": "9c0c4c5210d1e47eefc318c2eb2295a0947ea10581909b9b9cd7f80ee9edb5b6"
+      },
+      "failed": 0,
+      "passed": 18,
+      "skipped": 0
+    },
+    "language_check": {
+      "exit": 0,
+      "output": {
+        "bytes": 0,
+        "path": "/private/tmp/gsip-doc1-a638-preflight/language.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pinned_node_prettier_three_doc_check": {
+      "exit": 0,
+      "output": {
+        "bytes": 66,
+        "path": "/private/tmp/gsip-doc1-a638-preflight/format.txt",
+        "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    },
+    "relative_targets": {
+      "includes_existing_archive_directory": true,
+      "new_relative_targets": 2,
+      "valid": 23
+    }
+  },
+  "findings": [],
+  "harness_recoveries": [
+    "Private review harness syntax typo corrected before any execution.",
+    "Existing README docs/archive/ is a legitimate directory target; own initial file-only link assertion corrected to existing-target check. No candidate edit."
+  ],
+  "manifest": {
+    "bytes": 83344,
+    "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/MANIFEST.json",
+    "sha256": "24ca03aeb649a1f496e8576c791b60e9a5fc12bf62997bec2cf6cf46cd4b1eff"
+  },
+  "merged_PR63_GET_evidence": {
+    "bytes": 444,
+    "path": "/private/tmp/gsip-doc1-a638-preflight/MERGED_PR_63_EVIDENCE.json",
+    "sha256": "4163641fcd715f9f9a8bfc2906ee0d11683505f2e083b51ac712a2c0ee19b469"
+  },
+  "native_build_key_APK_device_or_external_readiness_acceptance_claimed": false,
+  "patch": {
+    "bytes": 5690,
+    "path": "/private/tmp/gsip-doc1-reminder-status-author-orh_4k8o/reminder-source-status.patch",
+    "sha256": "a3c53c4d709bd57e9cb8ed6441f7959733b7810812cf5cbaf53ebdd941cd942e"
+  },
+  "preserved_boundaries": [
+    "I1-I15/B1-B8, MIT/ODbL/CC-BY-SA and no new dependencies.",
+    "SPEC\u00a711 capture and separate photo publication/deployment/calibration gate.",
+    "All normative\u00a715.3 reminder/privacy/permission/denial/cancellation/device requirements.",
+    "iOS WebKit backup blocked/unverified and separate physical-device/backup/store/legal readiness.",
+    "Photo model licensing/operator/calibration and production/Pages/worker/capture authority.",
+    "Spectra vs RGB distinction, physical pairing, field model/science/soil-biome claims and gated real peer exchange."
+  ],
+  "schema": "gsip-independent-final-doc1-reminder-status-review-v1",
+  "scope_review": {
+    "bytes": 74148,
+    "path": "/private/tmp/gsip-doc1-a638-preflight/INDEPENDENT_SCOPE_REVIEW.json",
+    "sha256": "6be55543581703dc7433c9b11faa6907f57fbe51cddc70a7d3f9971ff4843423"
+  },
+  "shared_source_Git_GitHub_production_changes": false,
+  "stale_status_scope": [
+    "BUILD_ORDER intro no longer claims \u00a715 unapproved/unimplemented or APP-2B architecture still only proposed.",
+    "APP-2B heading records merged source with device gates remaining.",
+    "README and SPEC add source-only #63 links; SPEC additionally links existing implementation/audit docs."
+  ],
+  "status": "CLOSED_NO_BLOCKER_DOCUMENTATION_SOURCE_ONLY"
+}

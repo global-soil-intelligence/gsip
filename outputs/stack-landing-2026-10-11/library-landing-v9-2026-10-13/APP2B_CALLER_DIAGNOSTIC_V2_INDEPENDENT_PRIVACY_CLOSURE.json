@@ -1,0 +1,167 @@
+{
+  "authority": {
+    "SDK_cache_Gradle_native_APK_key_or_real_data_activity": false,
+    "network": false,
+    "owned_tmp_writes_only": true,
+    "raw_runtime_or_test_streams_printed_or_persisted": false,
+    "shared_source_Git_GH_CI_or_production_mutations": false
+  },
+  "base_commit": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "combined_native_acceptance": false,
+  "created_at_utc": "2026-10-14T00:52:56.980568+00:00",
+  "exact_source_scope": {
+    "all_IO_file_safety_proof_selection_license_task_and_runtime_operations_byte_exact": true,
+    "entire_source_exact_after_restoring_only_the_one_trace_selector_branch": true,
+    "identity_not_structural_equality_or_names": true,
+    "no_path_message_name_input_value_or_dynamic_string_channel": true,
+    "only_exact_code_objects_excluded": [
+      "refuse.__code__",
+      "contained.__code__",
+      "read.__code__"
+    ],
+    "original43_bank_sha256": "4017b63fe4614833f8ded1b38ac545e1c286367e0422d4857ec07f05d5b6c7a5",
+    "other_tracked_files_byte_exact": 362,
+    "prefix_bytes": 189650,
+    "prefix_sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99",
+    "projection": {
+      "bytes": 656,
+      "path": "/private/tmp/gsip-caller-line-v2-independent-ntc5j0sk/EXACT_SCOPE_PROJECTION.json",
+      "sha256": "75320633979c10e014eb687e239d79712e005b2042e891eb602ef1ab32e14d5e"
+    },
+    "same_four_fields": [
+      "stage",
+      "error_class",
+      "source_line",
+      "counts"
+    ],
+    "source_line_remains_integer_and_zero_fallback": true,
+    "stages_error_labels_counts_bounds_and_failure_status_unchanged": true,
+    "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "workflow_sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa"
+  },
+  "files": {
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_bytes": 32861,
+      "base_sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5",
+      "bytes": 33577,
+      "sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_bytes": 126055,
+      "base_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+      "bytes": 126232,
+      "sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_bytes": 189650,
+      "base_sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99",
+      "bytes": 195169,
+      "sha256": "a5ac8205344fa71f455e756fa232b54f7f5472244118ee12cc42b89e7872c3d7"
+    }
+  },
+  "findings": [],
+  "format_recovery": {
+    "earlier_author_3_9_6_format_success_claim_superseded": true,
+    "exact_one_LF_removed_before_appended_diagnostic_paragraph": true,
+    "helper_and_tests_byte_exact_v1": true,
+    "independent_pinned_prettier_version": "3.9.9",
+    "receipt": {
+      "bytes": 1202,
+      "path": "/private/tmp/gsip-caller-line-v2-independent-ntc5j0sk/INDEPENDENT_PINNED_FORMAT_RECOVERY.json",
+      "sha256": "151af27862426eafc7ff48693297e817222b2ac712dd9381539437db4254dad5"
+    },
+    "v1_actual_exit": 1,
+    "v1_not_approved_clean": true,
+    "v1_receipt_preserved": {
+      "bytes": 1480,
+      "path": "/private/tmp/gsip-caller-line-frozen-oyjitvkc/FROZEN_CANDIDATE_RECEIPT.json",
+      "sha256": "62142ecd365ed49c01e984e936dc68854930a185076cfe4c4722f8e85b67e873"
+    },
+    "v1_to_v2_correction": {
+      "bytes": 2389,
+      "path": "/private/tmp/gsip-caller-line-v2-frozen-aoynzdf9/DOC_FORMAT_CORRECTION.json",
+      "sha256": "e860afb486f10fb95e27194740bdb977c7a858115a5ef0302f9e24d442e91aa7"
+    },
+    "v2_actual_exit": 0
+  },
+  "fresh_current_tests": {
+    "author_v1_behavioral_evidence_not_needed_to_claim_these_fresh_v2_cases": true,
+    "collected": 55,
+    "composition": {
+      "new_caller_line": 12,
+      "unchanged_original_diagnostic_bank": 43
+    },
+    "failed": 0,
+    "passed": 55,
+    "process": {
+      "bytes": 297,
+      "path": "/private/tmp/gsip-caller-line-v2-independent-ntc5j0sk/finite-current-process.json",
+      "sha256": "2a664a5a6c63aced1f016a790787d27334d4a76918fbbcdd64e8bee161d616f4"
+    },
+    "report": {
+      "bytes": 37716,
+      "path": "/private/tmp/gsip-caller-line-v2-independent-ntc5j0sk/finite-current.json",
+      "sha256": "29885d5db502ccc0fa75610241daf4243e9f27c2ee32cb92863443d571f270ca"
+    },
+    "skipped": 0
+  },
+  "fresh_native_CI_required": true,
+  "frozen_directory": "/private/tmp/gsip-caller-line-v2-frozen-aoynzdf9",
+  "frozen_receipt": {
+    "bytes": 1489,
+    "path": "/private/tmp/gsip-caller-line-v2-frozen-aoynzdf9/FROZEN_CANDIDATE_RECEIPT.json",
+    "sha256": "c4ad0a9b03cb0cd1d3c0f2347abe8f95d16e9454922614b449d6d4841eaf4401"
+  },
+  "harness_recovery": "The initial preparation assertion guessed the removed LF was at EOF and failed before tests or any source mutation. Exact byte diff established the sole LF was before the appended paragraph; final projection records that location.",
+  "independent_baseline_and_mutations": {
+    "baseline_new12": {
+      "failed": 7,
+      "passed": 5
+    },
+    "failed_cases_by_mutation": {
+      "contained": 5,
+      "read": 3,
+      "refuse": 2,
+      "structural_equality": 1
+    },
+    "four_meaningful_mutations_effective": true,
+    "receipt": {
+      "bytes": 4657,
+      "path": "/private/tmp/gsip-caller-line-v2-independent-ntc5j0sk/INDEPENDENT_BASELINE_AND_MUTATIONS.json",
+      "sha256": "b8fd7a27b9b89cd0b434fe83aaff43026a7adcace73c1189007d814714541d20"
+    }
+  },
+  "manifest": {
+    "bytes": 791,
+    "path": "/private/tmp/gsip-caller-line-v2-frozen-aoynzdf9/MANIFEST.json",
+    "sha256": "fd61e4a4d7fd3f44dec7273ad08791246c1378effebb71e95e38ec88f8722a62"
+  },
+  "not_claimed": [
+    "Identification or repair of the actual missing file",
+    "Current corrected-head native CI/artifact acceptance",
+    "Any source guard weakening or policy exemption",
+    "New SDK/build/key/signing behavior",
+    "Legal/device/store/production or capture acceptance"
+  ],
+  "patch": {
+    "bytes": 7536,
+    "path": "/private/tmp/gsip-caller-line-v2-frozen-aoynzdf9/candidate.patch",
+    "sha256": "9d965abb9c21efb67ac51aa9fd67d870d69a32bc6c7342357e71f0c072b8743f"
+  },
+  "prior_readpath_limit_preserved": {
+    "bytes": 4604,
+    "path": "/private/tmp/gsip-1385-sourcebinding-read-review-oev_fog9/INDEPENDENT_SOURCE_BINDING_READPATH_REVIEW.json",
+    "sha256": "c4ec142e32cb92649e1b1807534c999d2dea5fb9c28257f0a7cc47c40bc019bb"
+  },
+  "reviewed_behavior": [
+    "The deepest eligible owned caller survives the three shared wrappers.",
+    "Unrelated owned functions with wrapper names remain eligible.",
+    "A structurally equal but distinct code object remains eligible.",
+    "Wrapper-only, external-only and tracebackless failures retain zero fallback.",
+    "The actual main failure path retains status1 and only the same fixed diagnostic fields; synthetic private paths/messages/URLs remain absent."
+  ],
+  "schema": "gsip-independent-diagnostic-caller-v2-closure-v1",
+  "scope": "Existing four-field failure diagnostic source_line selection only; exclude the exact refuse/contained/read code objects by identity, retain last other owned frame or zero. No file-location correction or cause identification.",
+  "status": "CLOSED_NO_BLOCKER",
+  "underlying_1385_missing_path": "unknown"
+}

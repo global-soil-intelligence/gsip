@@ -1,0 +1,40 @@
+{
+  "archives": [
+    {
+      "bounds_CRC": "pass",
+      "bytes": 8537416,
+      "entries": 988,
+      "label": "parent",
+      "sha256": "e6d144885fbc2c122a41a6e4099a23a9ca01915940caada5f1ab5c3d8ab301be",
+      "uncompressed_bytes": 18166646
+    },
+    {
+      "bounds_CRC": "pass",
+      "bytes": 8594135,
+      "entries": 993,
+      "label": "candidate",
+      "sha256": "946e800de9826eabf5587c1544d35dd8049cde91f7a086a6adc003b1300f0c8c",
+      "uncompressed_bytes": 18278101
+    },
+    {
+      "bounds_CRC": "pass",
+      "bytes": 8537416,
+      "entries": 988,
+      "label": "parent_reference",
+      "sha256": "e6d144885fbc2c122a41a6e4099a23a9ca01915940caada5f1ab5c3d8ab301be",
+      "uncompressed_bytes": 18166646
+    },
+    {
+      "bounds_CRC": "pass",
+      "bytes": 8594135,
+      "entries": 993,
+      "label": "candidate_reference",
+      "sha256": "946e800de9826eabf5587c1544d35dd8049cde91f7a086a6adc003b1300f0c8c",
+      "uncompressed_bytes": 18278101
+    }
+  ],
+  "compiled_paths_or_strings_printed": false,
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "run_id": 38505847255,
+  "run_number": 55
+}

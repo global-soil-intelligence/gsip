@@ -1,0 +1,398 @@
+{
+  "assumptions": [
+    "Temporary Python-emitted Gradle task is non-shipped generated build configuration, per root approval; exact task digest retained.",
+    "Tool-output adapters are bounded selected-CI-format validation; actual hosted native output/checkout tag availability still unverified.",
+    "Both full repeat-reference artifacts are mandatory on compare CLI and uploaded, outside source tree.",
+    "Fixed exact d7 parent is full APP-2B feature baseline; no dependency-only impact or universal reproducibility claim.",
+    "Synthetic complete controls use real app_build receipt/hash/comparison producer; only native/tool/environment inputs are fixed fixtures.",
+    "Authored-only gitleaks is additional evidence; it does not replace required full-history scan."
+  ],
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "bash_pipe_first_failure_exit": 1,
+  "checks": [
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_app_notification_audit.py",
+        "tests/test_app_build.py",
+        "tests/test_app_permissions.py",
+        "tests/test_processors.py",
+        "-q",
+        "--disable-warnings"
+      ],
+      "exit_code": 0,
+      "log": "check-00.log",
+      "log_sha256": "df626e9ee6f2bfda10b9890cddcb1ad919aafeded545fef619fb7d8f602a4004"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "--collect-only",
+        "-q",
+        "tests/test_app_notification_audit.py",
+        "tests/test_app_build.py",
+        "tests/test_app_permissions.py",
+        "tests/test_processors.py"
+      ],
+      "exit_code": 0,
+      "log": "check-01.log",
+      "log_sha256": "227485fee3633ca4000a54191bb51e1001dc497a8cb24584d71397f09efcadb7"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "scripts/app_notification_audit.py",
+        "tests/test_app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "log": "check-02.log",
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "scripts/app_notification_audit.py",
+        "tests/test_app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "log": "check-03.log",
+      "log_sha256": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "mypy",
+        "scripts/app_notification_audit.py",
+        "tests/test_app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "log": "check-04.log",
+      "log_sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    {
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "node_modules/.pnpm/prettier@3.9.9/node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        ".github/workflows/app-build.yml",
+        "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+      ],
+      "exit_code": 0,
+      "log": "check-05.log",
+      "log_sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    },
+    {
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/check-language.mjs"
+      ],
+      "exit_code": 0,
+      "log": "check-06.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/tools/gitleaks-8.21.2/gitleaks",
+        "dir",
+        "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v4-frozen-nnsz_tpp/authored",
+        "--config",
+        "/private/tmp/gsip-app2b-author-lhe_vi2z/source/.gitleaks.toml",
+        "--ignore-gitleaks-allow",
+        "--redact",
+        "--no-banner",
+        "--report-format",
+        "json",
+        "--report-path",
+        "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v4-frozen-nnsz_tpp/gitleaks-authored.json"
+      ],
+      "exit_code": 0,
+      "findings": 0,
+      "log": "gitleaks.log",
+      "log_sha256": "44907a8eb6db8b39711b10ca90666e2b56b93c8ffbd5e9340213aa979f478169",
+      "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "scanner_version": "8.21.2",
+      "scope": "only these four authored files; existing full-history CI scan untouched and still required",
+      "suppression_added": false
+    }
+  ],
+  "counts": {
+    "app_build_current_core": 53,
+    "app_permissions": 28,
+    "audit_focused": 159,
+    "baseline_build_permission_total": 71,
+    "current_combined": 246,
+    "current_core_extra_cases": 10,
+    "meaningful_guard_mutations": 18,
+    "new_probes": 6,
+    "original_probes": 7,
+    "processors": 6
+  },
+  "external_evidence": [
+    {
+      "name": "v3_independent_review",
+      "path": "/private/tmp/gsip-native-v3-independent-4cpg3qcd/REVIEW_NATIVE_V3_P2.md",
+      "sha256": "8e9001df6d2644bca6a687a2d0f081ccb9bedf321aa6b7f2af5326293dfffd04"
+    },
+    {
+      "name": "v3_independent_receipt",
+      "path": "/private/tmp/gsip-native-v3-independent-4cpg3qcd/v3-P2-receipt.json",
+      "sha256": "c4f0ee8a5cccb0728039c76373b9352cfaa85600a2b5073a5ca64c960aa9eaf4"
+    },
+    {
+      "name": "original5_fail_before",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v4-fail-before-m3we7t15/receipt.json",
+      "sha256": "c5aa2477b893d8f8f1492f68887f2398af194907e24d79d6a09b7922d800fbb4"
+    },
+    {
+      "name": "reviewer_7_and_6_replays_and_parser_fail_before",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v4-review-replay-ibk_pt73/receipt.json",
+      "sha256": "81618d8aac65ccfe617781d9bb247eb8e6da6b63737db743d2973e0fed0e920b"
+    },
+    {
+      "name": "meaningful_guard_mutations18",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v4-mutations-bybcw9gx/receipt.json",
+      "sha256": "f4ca5d84ce79e230f2ab57679e6ad4a177f1a47cb7443635931b1ff31a9ccca9"
+    },
+    {
+      "name": "v3_preserved_freeze",
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v3-frozen-1fswagfi/receipt.json",
+      "sha256": "adadcb01d512290961c51a89d0987e2d9dd79c90642e7eda22842bff9dd3a056"
+    }
+  ],
+  "files": [
+    {
+      "base_sha256": null,
+      "bytes": 66012,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "bbc96feba3a8e33900ba5d5c78a8e968e1e3d62f8a3b3af90dc3b812572ae54f",
+      "v3_sha256": "34ef744657c183a33f82ac98f429441e7184970f062db9f4170b7bf052691459"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 52011,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "df732911e989b4bed5d051dd7c1665c12e312b6d7dfae47561e8aaa6f7427f66",
+      "v3_sha256": "bb79f1e64bbf6406a7ab9244595eed0e425f938145d676a22f0a3029aaa100ca"
+    },
+    {
+      "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "bytes": 17825,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "v3_sha256": "c0c4f4e7503106af28a258beb6e5078659cff44818ea3eeaa003565c28a57206"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 9327,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "7809956ce546f1a389e1d01018f1b5ab71ed41a93f2970b4f99e6c40ba608715",
+      "v3_sha256": "9707b4b623090c8e3ca1bedfcf783e43a3876d662b4b8d21e12f3e045d6ff6d6"
+    }
+  ],
+  "native_tools": {
+    "adb": null,
+    "sdkmanager": null,
+    "xcodebuild": "/usr/bin/xcodebuild"
+  },
+  "no_changes": [
+    "Git/history/scanner policy/suppressions/production/deployments/capture/signing/accounts/core-owned files"
+  ],
+  "patches": [
+    {
+      "path": "base-to-v4.patch",
+      "sha256": "72f279efc2294f68ddd04e43ee21b6ebdc4e5675845dfde7b300ef063603c81c"
+    },
+    {
+      "path": "v3-to-v4.patch",
+      "sha256": "2e7ec4f60716e637ea5fee43db21b049f55c481ed01f33949c22fccedb8834f1"
+    }
+  ],
+  "source_freeze_unchanged": true,
+  "unverified": [
+    "Actual native CI APK/simulator builds/runtime graph sizes/licence metadata/tool output/SPM tag availability",
+    "Real-device Android/iOS notification prompt/delivery/cancellation/reboot/logging and iOS WebKit backup",
+    "Signing/accounts/store gates"
+  ],
+  "workflow_bash_syntax": [
+    {
+      "body_sha256": "c5ee50af8e68d505bd2f1cf3b5806fa5bd8a4ae2f99b5bd0a2aad1a7571db957",
+      "exit_code": 0,
+      "job": "android",
+      "step": 5
+    },
+    {
+      "body_sha256": "242854b87dfdee86ed4bbbfaabde950c1108f613772e7a2f993ccdb7d7949ae9",
+      "exit_code": 0,
+      "job": "android",
+      "step": 6
+    },
+    {
+      "body_sha256": "91b750449d924d8af6ce312a6d47660b52121357081e07c252c15c8889aa6e31",
+      "exit_code": 0,
+      "job": "android",
+      "step": 7
+    },
+    {
+      "body_sha256": "b8b41e3347bef29daab10d8cbb15a6365d1afecd47f648ec58088a0ad794ca76",
+      "exit_code": 0,
+      "job": "android",
+      "step": 8
+    },
+    {
+      "body_sha256": "27fe8b3cca518cdff1149d7dfbc8f845eaa860ae44d8062723e7327868f712bc",
+      "exit_code": 0,
+      "job": "android",
+      "step": 9
+    },
+    {
+      "body_sha256": "2974447bc3ae66584f7c5f30062abdab03672afc07ac76a1f41924a479330ebd",
+      "exit_code": 0,
+      "job": "android",
+      "step": 10
+    },
+    {
+      "body_sha256": "02129081244148d8af3920072811db81a6e0b7751bfb0f605134e4122686d6aa",
+      "exit_code": 0,
+      "job": "android",
+      "step": 11
+    },
+    {
+      "body_sha256": "d84de4924d0ecce51f465446b9f7b62cd3f8696b99112ddefeab7bf39be90306",
+      "exit_code": 0,
+      "job": "android",
+      "step": 12
+    },
+    {
+      "body_sha256": "0604c7db7426ff806ec959e4505b6dd9338bf52ff0f61187185a9d7c2572895c",
+      "exit_code": 0,
+      "job": "android",
+      "step": 13
+    },
+    {
+      "body_sha256": "237a8b67007536cb56e4c3ed5a6759d91395fb086ca0cd525fc671856f90373b",
+      "exit_code": 0,
+      "job": "android",
+      "step": 14
+    },
+    {
+      "body_sha256": "9f504f4f06f87e0c7d07a13141ef7e8c8aded5d633260cd1a26f19c1aaf92304",
+      "exit_code": 0,
+      "job": "android",
+      "step": 15
+    },
+    {
+      "body_sha256": "8a1cb7f76142cee1091b12ba711a5cb480383db8d25f314ebb8ee7c014aa7df5",
+      "exit_code": 0,
+      "job": "android",
+      "step": 16
+    },
+    {
+      "body_sha256": "3a90a16a86faf4aba48e2e627a55c2de7f0c43f78c176604fd9330a6922336fa",
+      "exit_code": 0,
+      "job": "android",
+      "step": 17
+    },
+    {
+      "body_sha256": "fe4d7de88d22e0acf553d18c142af65bc51c04b09c5a93c1bc786570bfc40b5e",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 4
+    },
+    {
+      "body_sha256": "c5ee50af8e68d505bd2f1cf3b5806fa5bd8a4ae2f99b5bd0a2aad1a7571db957",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 5
+    },
+    {
+      "body_sha256": "242854b87dfdee86ed4bbbfaabde950c1108f613772e7a2f993ccdb7d7949ae9",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 6
+    },
+    {
+      "body_sha256": "1a1cbd8c8125b9d186520b38059bdf67f89337da129533bcab4667fbcce159fd",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 7
+    },
+    {
+      "body_sha256": "884de64c4accf1e8fc7dd0c7b466dce6d84c1ebdf164a9a55f0c11dfb261311c",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 8
+    },
+    {
+      "body_sha256": "251033f77a2b62af2f2d9806f0e633adc2a414aee8e61f87078194af6842f54f",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 9
+    },
+    {
+      "body_sha256": "202934c5f7c236db80a5691074562f6ad90b107592ac0a7008177f245accba77",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 10
+    },
+    {
+      "body_sha256": "9481f63e1a5801f149b0aac264741f069aeb88b39d56d3faa2a80b6a95f91331",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 11
+    },
+    {
+      "body_sha256": "4fb6de4716b479a67b7cb4520b8db4fa100232426932095db65775255a1eca67",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 12
+    },
+    {
+      "body_sha256": "e56fbd587077b69518b5cd7c13a7b290afe26ecef668334bcb06c5aa7ae6dbd4",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 13
+    },
+    {
+      "body_sha256": "270cc57cb5f40eb383e2bb67d1a360350d6c23c4ac4680639a87c3d6c514ac0c",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 14
+    },
+    {
+      "body_sha256": "d79fa6f3d05d833f76a6529ddca6a1c608e343345bb3c5dce5cd85ef931b8625",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 15
+    },
+    {
+      "body_sha256": "6ad7d459bf7394712763117eaa481e5b9e4ed82ad588a2dce51aa92d27001345",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 16
+    },
+    {
+      "body_sha256": "e0c352747e4798c7f447d1da560ffa8e40b6f42198ccd719409c75ec3762df7f",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 17
+    },
+    {
+      "body_sha256": "507bce694877e1e9af41f4315acacd07221c4edee9112384e108281879a7b6a9",
+      "exit_code": 0,
+      "job": "ios",
+      "step": 18
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "artifacts": {
+    "bounded-classifier.log": "cd0c0170c4692dd093174f5a091e3e8afac577ddaa6ce4163dd03a89d87e8fe9",
+    "bounded-classifier.xml": "ead38aa5d3bf325d0947588a9b9b4ba6dc3419c5e0dffb66b625f90585e10119",
+    "bounded-command.json": "e970ba732c1f32a9e2016a3a3cbb5e5af227217e145c79e70edb5f72bef3c06a",
+    "causal-controls.json": "a0a13ab9e75644c4ba8fbdcbde6634e679a3cb69f735fcbfad716cea3a45bff8",
+    "gitleaks-authored.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "gitleaks.log": "62b8352fc65aa0174f9377012d4932714762bc92e7c9a7e4b814341f0d0f2a0b",
+    "integrity.json": "b60287d801f324fc175444c81862241cde28f112a2c78c54fdfdf9a1cdafe8f7",
+    "language.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "author_ineffective_probe": "Original task_context removal probe is preserved and explicitly excluded from author meaningful mutation count; no claim it was killed independently.",
+  "authority": "Own temporary copies/reports only; no shared or author edits, managed Git/GitHub/network/CI, native project build/signing/device/UI, real contributor data/credentials or production actions.",
+  "baseline_head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "causal_controls": {
+    "fail_before": {
+      "cases": 5,
+      "errors": 0,
+      "exit_code": 1,
+      "failures": 5,
+      "label": "five_fail_before",
+      "log": "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc/classifier-review/causal-controls/five_fail_before/result.log",
+      "log_sha256": "461cec5dcc0700598c10326f1104d17e47ae2d0c91a16c9af50ec99514f2707e"
+    },
+    "main_source_unchanged": true,
+    "meaningful_mutations": [
+      {
+        "cases": 38,
+        "errors": 0,
+        "exit_code": 1,
+        "failures": 12,
+        "label": "command_guard_removed",
+        "log": "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc/classifier-review/causal-controls/command_guard_removed/result.log",
+        "log_sha256": "3ad0e2bea193efd93f39d64394c06b5f3beb1e63a150654d8fd1150f327a64a4"
+      },
+      {
+        "cases": 38,
+        "errors": 0,
+        "exit_code": 1,
+        "failures": 1,
+        "label": "combined_byte_bound_removed",
+        "log": "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc/classifier-review/causal-controls/combined_byte_bound_removed/result.log",
+        "log_sha256": "a87e00d3d3532b94fda74bc5c9001e0bd5be723a8ff8b7f1c35c94c879a3968d"
+      },
+      {
+        "cases": 38,
+        "errors": 0,
+        "exit_code": 1,
+        "failures": 4,
+        "label": "structured_marker_guard_removed",
+        "log": "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc/classifier-review/causal-controls/structured_marker_guard_removed/result.log",
+        "log_sha256": "f9856a0937d597c7708cbb6746b19686a60a2489b3b7da75d8fde3aef76eaacf"
+      },
+      {
+        "cases": 38,
+        "errors": 0,
+        "exit_code": 1,
+        "failures": 1,
+        "label": "ambiguity_guard_removed",
+        "log": "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc/classifier-review/causal-controls/ambiguity_guard_removed/result.log",
+        "log_sha256": "ea84875ad841d458a8b8b8c4e97123045efd0c4e5f6e9099e1a5738567456aeb"
+      }
+    ]
+  },
+  "counts": {
+    "errors": 0,
+    "existing_diagnostic_runtime_view_controls": 7,
+    "fail_before_cases": 5,
+    "failures": 0,
+    "meaningful_guard_mutations": 4,
+    "new_classifier_cases": 50,
+    "pinned_authored_scan_findings": 0,
+    "preserved_independent_diagnostics": 43,
+    "skipped": 0,
+    "tests": 100
+  },
+  "delta_sha256": "cf9a31046f1c6c0924bf554c99969f3712464166abf592656aedd65f10786d3d",
+  "files": [
+    {
+      "base_sha256": "5ce1e7e646dc2e14ccc5b9e3a67efd3945172ab527ea8723e7ca8493b58bbe81",
+      "candidate_bytes": 95184,
+      "candidate_sha256": "0a24bd44e461c8ac72504bb73e0be7de1f03cc7df22951e093c283bd6d2e8715",
+      "path": "scripts/app_notification_audit.py"
+    },
+    {
+      "base_sha256": "650e6b074dbca902c1827ed7af97c83bacd2868473ee9ec504cf0f1b4b7091f1",
+      "candidate_bytes": 91706,
+      "candidate_sha256": "8b155bb057521a152519319915c6354fb6cb92417f4ac21f07e70dac58613ce2",
+      "path": "tests/test_app_notification_audit.py"
+    },
+    {
+      "base_sha256": "9df5e3eac966064ec6d47b00f637c8356c74a5028dacbf1b8f72e66cbae26c88",
+      "candidate_bytes": 14147,
+      "candidate_sha256": "e3f70e544d8a4504bd74e9927c827141ec04212db65257a40eb2a1744930eaa0",
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+    }
+  ],
+  "freeze": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-gradle-diagnostic-frozen-ce557bgv",
+  "freeze_receipt_sha256": "1f129f940bab7754dfc6fba9a136bd6336a52c4a3a56a0074b5b32e7b268a94c",
+  "integrity": {
+    "all_nondiagnostic_AST_identical": true,
+    "all_other_parent_review_source_bytes_unchanged": true,
+    "existing43_bank_sha256": "4017b63fe4614833f8ded1b38ac545e1c286367e0422d4857ec07f05d5b6c7a5",
+    "files": [
+      {
+        "base_sha256": "5ce1e7e646dc2e14ccc5b9e3a67efd3945172ab527ea8723e7ca8493b58bbe81",
+        "candidate_bytes": 95184,
+        "candidate_sha256": "0a24bd44e461c8ac72504bb73e0be7de1f03cc7df22951e093c283bd6d2e8715",
+        "path": "scripts/app_notification_audit.py"
+      },
+      {
+        "base_sha256": "650e6b074dbca902c1827ed7af97c83bacd2868473ee9ec504cf0f1b4b7091f1",
+        "candidate_bytes": 91706,
+        "candidate_sha256": "8b155bb057521a152519319915c6354fb6cb92417f4ac21f07e70dac58613ce2",
+        "path": "tests/test_app_notification_audit.py"
+      },
+      {
+        "base_sha256": "9df5e3eac966064ec6d47b00f637c8356c74a5028dacbf1b8f72e66cbae26c88",
+        "candidate_bytes": 14147,
+        "candidate_sha256": "e3f70e544d8a4504bd74e9927c827141ec04212db65257a40eb2a1744930eaa0",
+        "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+      }
+    ],
+    "harness_schema_correction": "Manifest uses candidate_sha256/candidate_bytes; corrected local readback key lookup before any execution",
+    "previous_test_and_fixture_bytes_prefix_identical": true,
+    "workflow_parent_fix_unchanged": true
+  },
+  "limits": [
+    "Actual Android toolfailure cause remains unknown until next CI diagnostic; a fixed label supplies no producer/API correction.",
+    "Hosted exact-head rerun, final complete parent/candidate artifacts, actual native/device/logging/backup/iOS exclusion/signing/store/production acceptance remain unverified."
+  ],
+  "manifest_sha256": "84ee79269099b347f0bab6b11b0ffe5a2d303cf8421fd92b4865843b152f08ef",
+  "native_v7_closure": {
+    "carry_forward": "All non-diagnostic function/class AST, GRADLE_TASK and every previous test/fixture byte unchanged; no new full primary/native acceptance asserted.",
+    "path": "/private/tmp/gsip-native-v7-independent-_vi1v9_e/independent-v7-closure.json",
+    "sha256": "5297ce5e3be9853b059204941e333629ad91d66fd0b7904b3d768179a9fb1783"
+  },
+  "parent_delta_closure": {
+    "path": "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc/parent-review/independent-parent-delta-closure.json",
+    "sha256": "c50cdae9a0d21593062ee1c633cfa73db5bc54cc47726af5daea89e7c93bbfb1",
+    "workflow_hash_in_combined_copy": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d"
+  },
+  "privacy_review": "No raw command path/URL/argument, tool stdout/stderr, error value, environment, credential or arbitrary message is copied. Diagnostic remains exactly stage,error_class,source_line,counts. Prior fixed stage/count validation and source-line logic are preserved.",
+  "scope": "Fixed bounded Gradle toolreason classes only; not a native/runtime/producer/API repair or new native495 source audit",
+  "selector_review": "Selection requires android-gradle-inspection plus CalledProcessError, nonzero strict integer return code, exact seven-part inspection command shape and bounded arguments, bounded UTF-8 stream types/aggregate bytes, one ordered failure/what/try/footer context and task-specific prefixed reasons. A single recognized fixed class replaces BUILD_TOOL; unrecognized, malformed, oversized or multiple recognized classes remain generic.",
+  "source_freeze_unchanged": true,
+  "static_checks": {
+    "language": "pass",
+    "mypy": "pass two authored Python files",
+    "pinned_scan": "8.21.2 supplemental three authored files, zero findings; full-history protections/suppressions unchanged",
+    "prettier": "pass updated audit doc",
+    "ruff": "pass",
+    "ruff_format": "pass"
+  },
+  "status": "CLOSED: bounded diagnostic-classifier source delta review; no material finding"
+}

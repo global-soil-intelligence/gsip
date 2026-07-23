@@ -1,0 +1,18 @@
+HTTP/2 301 
+server: GitHub.com
+content-type: text/html
+x-github-request-id: 71E0:35672A:BD81:D0A2:6AD17937
+x-github-edge-region: iad
+accept-ranges: bytes
+date: Fri, 16 Oct 2026 01:33:10 GMT
+via: 1.1 varnish
+age: 1439
+x-served-by: cache-lga-kjfk8660024-LGA
+x-cache: HIT
+x-cache-hits: 1
+x-timer: S1792114391.833319,VS0,VE1
+vary: Accept-Encoding
+x-fastly-request-id: 77c4ddf4d1ff5d52dba9b4391cd75b4982b420f0
+location: http://globalsoilintelligence.com/?gsip-cutover-check=20261016T0133
+content-length: 162
+

@@ -1,0 +1,1766 @@
+{
+  "observed_at_utc": "2026-10-12T13:47:28.808968+00:00",
+  "query_started_at_utc": "2026-10-12T13:47:27.672293+00:00",
+  "prior_receipt": "current-all-pr-readback-2026-10-12.json",
+  "prior_receipt_sha256": "dc625e897f0c964530061cceb1ef172a158b47ef0f77fd447a256690fb9e13df",
+  "all_prs_open": true,
+  "all_validation_and_secret_checks_green": true,
+  "all_exact_heads_unchanged": true,
+  "coverage": {
+    "expected_prs": [
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40
+    ],
+    "returned_count": 13,
+    "complete": true,
+    "all_check_context_connections_exhausted": true,
+    "checked_commit_matches_current_pr_head": true
+  },
+  "dco_skips_are_not_agent_certification": true,
+  "mutations_performed": false,
+  "changes_since_prior_receipt": [],
+  "prs": [
+    {
+      "number": 28,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/28",
+      "title": "docs: GSIP spec v3.0 for humans and agents",
+      "state": "OPEN",
+      "head": "afadda988cb8619d4f3a98515629909ca761763f",
+      "branch": "docs/spec-v3",
+      "base": "main",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "afadda988cb8619d4f3a98515629909ca761763f",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 4,
+        "returned_count": 4,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:49:04Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449916/job/114618873978",
+          "databaseId": 114618873978
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:30Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449874/job/114618845556",
+          "databaseId": 114618845556
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:02Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449872/job/114618845718",
+          "databaseId": 114618845718
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:48:59Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445684/job/114618832728",
+          "databaseId": 114618832728
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:49:04Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449916/job/114618873978",
+          "databaseId": 114618873978
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:30Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449874/job/114618845556",
+          "databaseId": 114618845556
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:02Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449872/job/114618845718",
+          "databaseId": 114618845718
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:48:59Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445684/job/114618832728",
+          "databaseId": 114618832728
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/29",
+      "title": "feat(wp-6b): harden ingest, QA and release integrity for launch",
+      "state": "OPEN",
+      "head": "273e76889dccc7ff2e17ba3a689f8b2d4d6a396a",
+      "branch": "wp-6b-launch-hardening",
+      "base": "docs/spec-v3",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "273e76889dccc7ff2e17ba3a689f8b2d4d6a396a",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 7,
+        "returned_count": 7,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450525/job/114618848039",
+          "databaseId": 114618848039
+        },
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450980/job/114618849585",
+          "databaseId": 114618849585
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:52:29Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450579/job/114618847518",
+          "databaseId": 114618847518
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:00Z",
+          "completedAt": "2026-10-12T00:53:20Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450978/job/114618848447",
+          "databaseId": 114618848447
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:00Z",
+          "completedAt": "2026-10-12T00:49:07Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450563/job/114618848155",
+          "databaseId": 114618848155
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:04Z",
+          "completedAt": "2026-10-12T00:49:09Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450968/job/114618848472",
+          "databaseId": 114618848472
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:54Z",
+          "completedAt": "2026-10-12T00:49:01Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189446381/job/114618834823",
+          "databaseId": 114618834823
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450980/job/114618849585",
+          "databaseId": 114618849585
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:00Z",
+          "completedAt": "2026-10-12T00:53:20Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450978/job/114618848447",
+          "databaseId": 114618848447
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:04Z",
+          "completedAt": "2026-10-12T00:49:09Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450968/job/114618848472",
+          "databaseId": 114618848472
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450525/job/114618848039",
+          "databaseId": 114618848039
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:52:29Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450579/job/114618847518",
+          "databaseId": 114618847518
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:00Z",
+          "completedAt": "2026-10-12T00:49:07Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450563/job/114618848155",
+          "databaseId": 114618848155
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:54Z",
+          "completedAt": "2026-10-12T00:49:01Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189446381/job/114618834823",
+          "databaseId": 114618834823
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/30",
+      "title": "feat(wp-6c): fair-use priors at cell centres and palette-driven tiles",
+      "state": "OPEN",
+      "head": "a66c4f201008b59d802f1ceef1d24205258f944d",
+      "branch": "wp-6c-priors-and-tiles",
+      "base": "wp-6b-launch-hardening",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "a66c4f201008b59d802f1ceef1d24205258f944d",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 7,
+        "returned_count": 7,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450861/job/114618848789",
+          "databaseId": 114618848789
+        },
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:49:06Z",
+          "completedAt": "2026-10-12T00:48:57Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451563/job/114618880404",
+          "databaseId": 114618880404
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:01Z",
+          "completedAt": "2026-10-12T00:53:23Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450875/job/114618848368",
+          "databaseId": 114618848368
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:05Z",
+          "completedAt": "2026-10-12T00:53:27Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451564/job/114618850617",
+          "databaseId": 114618850617
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:04Z",
+          "completedAt": "2026-10-12T00:49:12Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450845/job/114618848240",
+          "databaseId": 114618848240
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:05Z",
+          "completedAt": "2026-10-12T00:49:12Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451583/job/114618850557",
+          "databaseId": 114618850557
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:54Z",
+          "completedAt": "2026-10-12T00:49:00Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189446143/job/114618834577",
+          "databaseId": 114618834577
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:49:06Z",
+          "completedAt": "2026-10-12T00:48:57Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451563/job/114618880404",
+          "databaseId": 114618880404
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:05Z",
+          "completedAt": "2026-10-12T00:53:27Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451564/job/114618850617",
+          "databaseId": 114618850617
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:05Z",
+          "completedAt": "2026-10-12T00:49:12Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451583/job/114618850557",
+          "databaseId": 114618850557
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450861/job/114618848789",
+          "databaseId": 114618848789
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:01Z",
+          "completedAt": "2026-10-12T00:53:23Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450875/job/114618848368",
+          "databaseId": 114618848368
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:04Z",
+          "completedAt": "2026-10-12T00:49:12Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450845/job/114618848240",
+          "databaseId": 114618848240
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:54Z",
+          "completedAt": "2026-10-12T00:49:00Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189446143/job/114618834577",
+          "databaseId": 114618834577
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/31",
+      "title": "feat(wp-6d): contributor rights, attribution review and legal pack drafts",
+      "state": "OPEN",
+      "head": "f3c7043d4bb91f0d2a8d49da3b3971be42f58429",
+      "branch": "wp-6d-contributor-rights",
+      "base": "wp-6c-priors-and-tiles",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "f3c7043d4bb91f0d2a8d49da3b3971be42f58429",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 7,
+        "returned_count": 7,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:49:03Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449913/job/114618869111",
+          "databaseId": 114618869111
+        },
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:49:02Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451001/job/114618866709",
+          "databaseId": 114618866709
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:27Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449882/job/114618845328",
+          "databaseId": 114618845328
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:05Z",
+          "completedAt": "2026-10-12T00:54:14Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451025/job/114618848956",
+          "databaseId": 114618848956
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:03Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449869/job/114618845142",
+          "databaseId": 114618845142
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:02Z",
+          "completedAt": "2026-10-12T00:49:09Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450991/job/114618848610",
+          "databaseId": 114618848610
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:49:00Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445761/job/114618833495",
+          "databaseId": 114618833495
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:49:02Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451001/job/114618866709",
+          "databaseId": 114618866709
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:05Z",
+          "completedAt": "2026-10-12T00:54:14Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189451025/job/114618848956",
+          "databaseId": 114618848956
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:02Z",
+          "completedAt": "2026-10-12T00:49:09Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450991/job/114618848610",
+          "databaseId": 114618848610
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:49:03Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449913/job/114618869111",
+          "databaseId": 114618869111
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:27Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449882/job/114618845328",
+          "databaseId": 114618845328
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:03Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449869/job/114618845142",
+          "databaseId": 114618845142
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:49:00Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445761/job/114618833495",
+          "databaseId": 114618833495
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/32",
+      "title": "feat(wp-6e): provenance foundation, actors, terms versions and holdout",
+      "state": "OPEN",
+      "head": "4f76145149c0350c5d07b305ac78c6d561aab933",
+      "branch": "wp-6e-provenance",
+      "base": "wp-6d-contributor-rights",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "4f76145149c0350c5d07b305ac78c6d561aab933",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 4,
+        "returned_count": 4,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449753/job/114618845571",
+          "databaseId": 114618845571
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:36Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449798/job/114618844971",
+          "databaseId": 114618844971
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:04Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449759/job/114618844724",
+          "databaseId": 114618844724
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:48:59Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445841/job/114618833630",
+          "databaseId": 114618833630
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449753/job/114618845571",
+          "databaseId": 114618845571
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:36Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449798/job/114618844971",
+          "databaseId": 114618844971
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:04Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449759/job/114618844724",
+          "databaseId": 114618844724
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:48:59Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445841/job/114618833630",
+          "databaseId": 114618833630
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/33",
+      "title": "feat(wp-agent-1): public read API, MCP server and an agent-readable site",
+      "state": "OPEN",
+      "head": "5e500287b2caa8990d2d658c8c8e100cccae0e21",
+      "branch": "wp-agent-1-read-api",
+      "base": "wp-6e-provenance",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "5e500287b2caa8990d2d658c8c8e100cccae0e21",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 7,
+        "returned_count": 7,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450087/job/114618847091",
+          "databaseId": 114618847091
+        },
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450843/job/114618848921",
+          "databaseId": 114618848921
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:35Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450137/job/114618846168",
+          "databaseId": 114618846168
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:03Z",
+          "completedAt": "2026-10-12T00:54:01Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450932/job/114618848348",
+          "databaseId": 114618848348
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:03Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450082/job/114618845744",
+          "databaseId": 114618845744
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:01Z",
+          "completedAt": "2026-10-12T00:49:06Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450894/job/114618848363",
+          "databaseId": 114618848363
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:48:58Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445752/job/114618833486",
+          "databaseId": 114618833486
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450843/job/114618848921",
+          "databaseId": 114618848921
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:03Z",
+          "completedAt": "2026-10-12T00:54:01Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450932/job/114618848348",
+          "databaseId": 114618848348
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:01Z",
+          "completedAt": "2026-10-12T00:49:06Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450894/job/114618848363",
+          "databaseId": 114618848363
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450087/job/114618847091",
+          "databaseId": 114618847091
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:35Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450137/job/114618846168",
+          "databaseId": 114618846168
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:03Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450082/job/114618845744",
+          "databaseId": 114618845744
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:48:58Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445752/job/114618833486",
+          "databaseId": 114618833486
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/34",
+      "title": "feat(wp-app-1): GSIP phone app with native camera, location and My Soil",
+      "state": "OPEN",
+      "head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+      "branch": "wp-app-1-phone-app",
+      "base": "wp-agent-1-read-api",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "android",
+        "gitleaks",
+        "ios",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 11,
+        "returned_count": 11,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "android",
+          "status": "COMPLETED",
+          "conclusion": "CANCELLED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449773/job/114618845324",
+          "databaseId": 114618845324
+        },
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449644/job/114618845634",
+          "databaseId": 114618845634
+        },
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449966/job/114618846447",
+          "databaseId": 114618846447
+        },
+        {
+          "name": "android",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:05Z",
+          "completedAt": "2026-10-12T00:52:11Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449982/job/114618848852",
+          "databaseId": 114618848852
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:54Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449769/job/114618844931",
+          "databaseId": 114618844931
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:53Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450008/job/114618845593",
+          "databaseId": 114618845593
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:49:02Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449695/job/114618844471",
+          "databaseId": 114618844471
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:04Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449952/job/114618845389",
+          "databaseId": 114618845389
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:48:59Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445519/job/114618832112",
+          "databaseId": 114618832112
+        },
+        {
+          "name": "ios",
+          "status": "COMPLETED",
+          "conclusion": "CANCELLED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449773/job/114618845168",
+          "databaseId": 114618845168
+        },
+        {
+          "name": "ios",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:08Z",
+          "completedAt": "2026-10-12T00:51:15Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449982/job/114618848698",
+          "databaseId": 114618848698
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "android",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:05Z",
+          "completedAt": "2026-10-12T00:52:11Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449982/job/114618848852",
+          "databaseId": 114618848852
+        },
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449966/job/114618846447",
+          "databaseId": 114618846447
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:53Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189450008/job/114618845593",
+          "databaseId": 114618845593
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:49:04Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449952/job/114618845389",
+          "databaseId": 114618845389
+        },
+        {
+          "name": "ios",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:49:08Z",
+          "completedAt": "2026-10-12T00:51:15Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449982/job/114618848698",
+          "databaseId": 114618848698
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "android",
+          "status": "COMPLETED",
+          "conclusion": "CANCELLED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449773/job/114618845324",
+          "databaseId": 114618845324
+        },
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449644/job/114618845634",
+          "databaseId": 114618845634
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:57Z",
+          "completedAt": "2026-10-12T00:53:54Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449769/job/114618844931",
+          "databaseId": 114618844931
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:56Z",
+          "completedAt": "2026-10-12T00:49:02Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449695/job/114618844471",
+          "databaseId": 114618844471
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T00:48:53Z",
+          "completedAt": "2026-10-12T00:48:59Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189445519/job/114618832112",
+          "databaseId": 114618832112
+        },
+        {
+          "name": "ios",
+          "status": "COMPLETED",
+          "conclusion": "CANCELLED",
+          "startedAt": "2026-10-12T00:48:55Z",
+          "completedAt": "2026-10-12T00:48:56Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449773/job/114618845168",
+          "databaseId": 114618845168
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/35",
+      "title": "fix(wp-3b): coordinate queue drains across browser tabs",
+      "state": "OPEN",
+      "head": "afbd74400abf35151127ab85897084dab60a4fcb",
+      "branch": "wp-3b-sync-lock",
+      "base": "wp-app-1-phone-app",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "afbd74400abf35151127ab85897084dab60a4fcb",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 6,
+        "returned_count": 6,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T01:10:17Z",
+          "completedAt": "2026-10-12T01:10:16Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842850/job/114623072733",
+          "databaseId": 114623072733
+        },
+        {
+          "name": "android",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:20Z",
+          "completedAt": "2026-10-12T01:13:03Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842933/job/114623076197",
+          "databaseId": 114623076197
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:18Z",
+          "completedAt": "2026-10-12T01:15:02Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842891/job/114623071704",
+          "databaseId": 114623071704
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:18Z",
+          "completedAt": "2026-10-12T01:10:25Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842867/job/114623071641",
+          "databaseId": 114623071641
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:09:40Z",
+          "completedAt": "2026-10-12T01:09:46Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190798915/job/114622944293",
+          "databaseId": 114622944293
+        },
+        {
+          "name": "ios",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:26Z",
+          "completedAt": "2026-10-12T01:12:21Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842933/job/114623076165",
+          "databaseId": 114623076165
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T01:10:17Z",
+          "completedAt": "2026-10-12T01:10:16Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842850/job/114623072733",
+          "databaseId": 114623072733
+        },
+        {
+          "name": "android",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:20Z",
+          "completedAt": "2026-10-12T01:13:03Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842933/job/114623076197",
+          "databaseId": 114623076197
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:18Z",
+          "completedAt": "2026-10-12T01:15:02Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842891/job/114623071704",
+          "databaseId": 114623071704
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:18Z",
+          "completedAt": "2026-10-12T01:10:25Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842867/job/114623071641",
+          "databaseId": 114623071641
+        },
+        {
+          "name": "ios",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:26Z",
+          "completedAt": "2026-10-12T01:12:21Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190842933/job/114623076165",
+          "databaseId": 114623076165
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:09:40Z",
+          "completedAt": "2026-10-12T01:09:46Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190798915/job/114622944293",
+          "databaseId": 114622944293
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/36",
+      "title": "docs(wp-agent-0): add root guidance for coding agents",
+      "state": "OPEN",
+      "head": "ca275c4da4cb6641fbe5418ed7135916cc514e16",
+      "branch": "wp-agent-0-coding-guidance",
+      "base": "wp-app-1-phone-app",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "ca275c4da4cb6641fbe5418ed7135916cc514e16",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 4,
+        "returned_count": 4,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T01:38:54Z",
+          "completedAt": "2026-10-12T01:38:45Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685411/job/114628654174",
+          "databaseId": 114628654174
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:38:47Z",
+          "completedAt": "2026-10-12T01:43:47Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685396/job/114628627188",
+          "databaseId": 114628627188
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:38:47Z",
+          "completedAt": "2026-10-12T01:38:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685386/job/114628626935",
+          "databaseId": 114628626935
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:38:43Z",
+          "completedAt": "2026-10-12T01:38:49Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192682089/job/114628617472",
+          "databaseId": 114628617472
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T01:38:54Z",
+          "completedAt": "2026-10-12T01:38:45Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685411/job/114628654174",
+          "databaseId": 114628654174
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:38:47Z",
+          "completedAt": "2026-10-12T01:43:47Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685396/job/114628627188",
+          "databaseId": 114628627188
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:38:47Z",
+          "completedAt": "2026-10-12T01:38:55Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192685386/job/114628626935",
+          "databaseId": 114628626935
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:38:43Z",
+          "completedAt": "2026-10-12T01:38:49Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192682089/job/114628617472",
+          "databaseId": 114628617472
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/37",
+      "title": "docs(wp-site-1e): record conditional same-origin tile hosting",
+      "state": "OPEN",
+      "head": "1bf4323e5528cc30f5a8c2119287cd1abf032f41",
+      "branch": "wp-site-1e-tile-host-policy",
+      "base": "wp-app-1-phone-app",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "1bf4323e5528cc30f5a8c2119287cd1abf032f41",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 4,
+        "returned_count": 4,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T01:10:24Z",
+          "completedAt": "2026-10-12T01:10:24Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190851897/job/114623097542",
+          "databaseId": 114623097542
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:26Z",
+          "completedAt": "2026-10-12T01:15:46Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190851918/job/114623096716",
+          "databaseId": 114623096716
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:26Z",
+          "completedAt": "2026-10-12T01:10:33Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190851940/job/114623096649",
+          "databaseId": 114623096649
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:09:40Z",
+          "completedAt": "2026-10-12T01:09:46Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190799116/job/114622944878",
+          "databaseId": 114622944878
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T01:10:24Z",
+          "completedAt": "2026-10-12T01:10:24Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190851897/job/114623097542",
+          "databaseId": 114623097542
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:26Z",
+          "completedAt": "2026-10-12T01:15:46Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190851918/job/114623096716",
+          "databaseId": 114623096716
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:10:26Z",
+          "completedAt": "2026-10-12T01:10:33Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190851940/job/114623096649",
+          "databaseId": 114623096649
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T01:09:40Z",
+          "completedAt": "2026-10-12T01:09:46Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38190799116/job/114622944878",
+          "databaseId": 114622944878
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/38",
+      "title": "docs: propose GSIP spec v4 app readiness and photo privacy",
+      "state": "OPEN",
+      "head": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "branch": "docs/spec-v4",
+      "base": "wp-app-1-phone-app",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 4,
+        "returned_count": 4,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T12:23:22Z",
+          "completedAt": "2026-10-12T12:23:21Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716399/job/114809119250",
+          "databaseId": 114809119250
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:23:23Z",
+          "completedAt": "2026-10-12T12:27:27Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716454/job/114809117255",
+          "databaseId": 114809117255
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:23:23Z",
+          "completedAt": "2026-10-12T12:23:30Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716442/job/114809117297",
+          "databaseId": 114809117297
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:23:22Z",
+          "completedAt": "2026-10-12T12:23:29Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248712971/job/114809109751",
+          "databaseId": 114809109751
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T12:23:22Z",
+          "completedAt": "2026-10-12T12:23:21Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716399/job/114809119250",
+          "databaseId": 114809119250
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:23:23Z",
+          "completedAt": "2026-10-12T12:27:27Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716454/job/114809117255",
+          "databaseId": 114809117255
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:23:23Z",
+          "completedAt": "2026-10-12T12:23:30Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716442/job/114809117297",
+          "databaseId": 114809117297
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:23:22Z",
+          "completedAt": "2026-10-12T12:23:29Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248712971/job/114809109751",
+          "databaseId": 114809109751
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/39",
+      "title": "feat(wp-app-2a): verify CI versions, private backups and repeated builds",
+      "state": "OPEN",
+      "head": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "branch": "wp-app-2a-build-readiness",
+      "base": "docs/spec-v4",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "82880d5863cb44d3ff9b3bc9ee5d61b9d122b341",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "android",
+        "gitleaks",
+        "ios",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 6,
+        "returned_count": 6,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T12:24:52Z",
+          "completedAt": "2026-10-12T12:24:43Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853498/job/114809644823",
+          "databaseId": 114809644823
+        },
+        {
+          "name": "android",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:44Z",
+          "completedAt": "2026-10-12T12:28:14Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853443/job/114809594110",
+          "databaseId": 114809594110
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:45Z",
+          "completedAt": "2026-10-12T12:29:36Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853563/job/114809595032",
+          "databaseId": 114809595032
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:44Z",
+          "completedAt": "2026-10-12T12:24:50Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853422/job/114809593478",
+          "databaseId": 114809593478
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:37Z",
+          "completedAt": "2026-10-12T12:24:42Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248841298/job/114809550679",
+          "databaseId": 114809550679
+        },
+        {
+          "name": "ios",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:49Z",
+          "completedAt": "2026-10-12T12:27:53Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853443/job/114809594649",
+          "databaseId": 114809594649
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T12:24:52Z",
+          "completedAt": "2026-10-12T12:24:43Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853498/job/114809644823",
+          "databaseId": 114809644823
+        },
+        {
+          "name": "android",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:44Z",
+          "completedAt": "2026-10-12T12:28:14Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853443/job/114809594110",
+          "databaseId": 114809594110
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:45Z",
+          "completedAt": "2026-10-12T12:29:36Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853563/job/114809595032",
+          "databaseId": 114809595032
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:44Z",
+          "completedAt": "2026-10-12T12:24:50Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853422/job/114809593478",
+          "databaseId": 114809593478
+        },
+        {
+          "name": "ios",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:49Z",
+          "completedAt": "2026-10-12T12:27:53Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248853443/job/114809594649",
+          "databaseId": 114809594649
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T12:24:37Z",
+          "completedAt": "2026-10-12T12:24:42Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248841298/job/114809550679",
+          "databaseId": 114809550679
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/40",
+      "title": "chore(wp-ops-2): prepare gated production history reconciliation",
+      "state": "OPEN",
+      "head": "cf063aa5865a86eb86250e3a1f8287545e51f037",
+      "branch": "wp-ops-2-production-reconciliation",
+      "base": "wp-app-1-phone-app",
+      "merged_at": null,
+      "is_draft": false,
+      "checked_commit_oid": "cf063aa5865a86eb86250e3a1f8287545e51f037",
+      "check_status": "GREEN",
+      "required_validation_contexts": [
+        "gitleaks",
+        "validate"
+      ],
+      "dco": "SKIPPED",
+      "check_context_coverage": {
+        "total_count": 4,
+        "returned_count": 4,
+        "has_next_page": false
+      },
+      "checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T02:25:53Z",
+          "completedAt": "2026-10-12T02:25:44Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38195739764/job/114637878379",
+          "databaseId": 114637878379
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T02:25:46Z",
+          "completedAt": "2026-10-12T02:31:03Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38195739800/job/114637846468",
+          "databaseId": 114637846468
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T02:25:46Z",
+          "completedAt": "2026-10-12T02:25:52Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38195739765/job/114637846279",
+          "databaseId": 114637846279
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T02:25:42Z",
+          "completedAt": "2026-10-12T02:25:49Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38195734864/job/114637832096",
+          "databaseId": 114637832096
+        }
+      ],
+      "effective_checks": [
+        {
+          "name": "dco",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "startedAt": "2026-10-12T02:25:53Z",
+          "completedAt": "2026-10-12T02:25:44Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38195739764/job/114637878379",
+          "databaseId": 114637878379
+        },
+        {
+          "name": "validate",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T02:25:46Z",
+          "completedAt": "2026-10-12T02:31:03Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38195739800/job/114637846468",
+          "databaseId": 114637846468
+        },
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T02:25:46Z",
+          "completedAt": "2026-10-12T02:25:52Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38195739765/job/114637846279",
+          "databaseId": 114637846279
+        }
+      ],
+      "superseded_checks": [
+        {
+          "name": "gitleaks",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "startedAt": "2026-10-12T02:25:42Z",
+          "completedAt": "2026-10-12T02:25:49Z",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38195734864/job/114637832096",
+          "databaseId": 114637832096
+        }
+      ]
+    }
+  ]
+}

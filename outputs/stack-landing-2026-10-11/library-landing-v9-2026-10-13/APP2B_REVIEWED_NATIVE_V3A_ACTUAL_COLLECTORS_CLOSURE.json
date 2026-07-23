@@ -1,0 +1,88 @@
+{
+  "APK_or_signing_key_read": false,
+  "actual_final_v3a_collectors_rerun": [
+    {
+      "allow_fetch": false,
+      "binary_counts": [
+        78,
+        78
+      ],
+      "elapsed_seconds": 0.344,
+      "exactly_equal_to_actual_v3_replay_bytes": true,
+      "graph_sha256": "400a9c7892c1c0e4eb50bf9684a03c7803ba709bef0648848fbf98db2b74e5b4",
+      "module_counts": [
+        75,
+        75
+      ],
+      "project_counts": [
+        4,
+        4
+      ],
+      "root": "parent",
+      "runtime_evidence_sha256": "ac622df9cab41cd2fc06c363d33b8f5870e7159def460d8c305a41e25c408979",
+      "runtime_views": 2,
+      "strict_NPM_source_count": 6,
+      "strict_POM_chain_count": 150
+    },
+    {
+      "allow_fetch": false,
+      "binary_counts": [
+        79,
+        79
+      ],
+      "elapsed_seconds": 0.373,
+      "exactly_equal_to_actual_v3_replay_bytes": true,
+      "graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+      "module_counts": [
+        75,
+        75
+      ],
+      "project_counts": [
+        5,
+        5
+      ],
+      "root": "candidate",
+      "runtime_evidence_sha256": "70f118a73c5b2c7d90be3cbeb0ef046c40f39b99e7d579a38d32172af5d1db33",
+      "runtime_views": 2,
+      "strict_NPM_source_count": 7,
+      "strict_POM_chain_count": 150
+    }
+  ],
+  "buildenv_or_key_digest_fabricated": false,
+  "entire_script_AST_exact_to_reviewed_v3": true,
+  "final_script_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+  "final_source_receipt_sha256": "fcf51ced814ebc766a2438c31bbec44db662bc8c5fd349c8afd05f6abca5d5eb",
+  "full_validate_android_run": false,
+  "hosted_cause_identity_or_native_acceptance": false,
+  "legal_compatibility_or_distribution_approval": false,
+  "only_three_nonsemantic_format_restorations": true,
+  "production_changes": false,
+  "raw_gradle_logs_persisted": false,
+  "real30_tool_cases_not_rerun_by_this_reviewer": true,
+  "schema": "gsip-native-license-v3a-independent-closure-v1",
+  "shared_repository_writes": false,
+  "source_review": "Exact six complete publisher POM contexts plus primary license/source hashes; no generic alias, dependency, task, schema, guard, exclusion, permission or project-license changes. Old helper functions/guards unchanged except scoped producer and offline-validator classification.",
+  "status": "CLOSED_NO_BLOCKER_SOURCE_ONLY",
+  "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "tests_and_doc_bytes_exact_to_v3": true,
+  "v3_actual_source_review_receipt_sha256": "fb822541d33b17e8d6d28d9f2b387c9d71b248e3307fb1713b411b9c059bfa3d",
+  "v3_full_source_tests_carried_via_AST_and_identical_tests": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 528,
+    "path": "/private/tmp/gsip-license-v3-independent-h9x84_i7/full-v3.xml",
+    "sha256": "c13c9132635de1ec93921d286cc16d169ca018ba4dd2e1a0ad2ebd815f936f62",
+    "skipped": 30,
+    "tests": 558
+  },
+  "v3_old43_carried_via_AST": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 43,
+    "path": "/private/tmp/gsip-license-v3-independent-h9x84_i7/old43-v3.xml",
+    "sha256": "9696370c8ff562b24c73131f1eb295b67f5d3a2b1c3994186207d33251918f8e",
+    "skipped": 0,
+    "tests": 43
+  },
+  "v3_six_context_and_36_boundary_mutations_and_four_generic_refusals_receipt_sha256": "54c34c48d1c6021c50b44bf69c4537af27fa581ab021beb495cd72a16397eba7"
+}

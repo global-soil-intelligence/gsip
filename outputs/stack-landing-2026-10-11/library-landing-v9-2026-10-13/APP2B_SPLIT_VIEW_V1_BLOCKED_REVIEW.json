@@ -1,0 +1,187 @@
+{
+  "actual_author_AGP_binding": {
+    "candidate_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "complete_runtime_audit_or_native_acceptance": false,
+    "corrected_graph_binding": {
+      "bytes": 1115,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/author-actual-agp-graph-binding-corrected.json",
+      "sha256": "f7e72fbffeb8b708c20870f4bd162f3b8d18d3fb046c7734876cc15aff44f647"
+    },
+    "execution_receipt": {
+      "bytes": 2027,
+      "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/inspection-final-candidate.json",
+      "sha256": "81bd439945473c17d4da725f0118de5fe8d09fb09e97178aec372eaa6e892285"
+    },
+    "graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+    "task_succeeded": true
+  },
+  "authored_files": [
+    {
+      "base_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 114131,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071"
+    },
+    {
+      "base_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 151583,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "de89652a0f0bb814ee68c7cc25f5bcf44db35e3440e7805e39c8a427b3c10450"
+    },
+    {
+      "base_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 24194,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "fdd8ddf980f2a1f565ff8c658809bf31c6620deebbd90272fb6605690435fb79"
+    }
+  ],
+  "automatic_owned_logs_cleanup": {
+    "bytes": 8806,
+    "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/removed-owned-daemon-logs.json",
+    "sha256": "c863463b1d5409736b11f87028093fc8a791a06b48d65ea00bcac6b240ded716"
+  },
+  "base_commit": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "created_at_utc": "2026-10-13T23:16:23.140252+00:00",
+  "findings": [
+    {
+      "actual_evidence": "Exact graph24a5 contains this fifth nonroot project in both views; actual compatibility directory contains four generated build JARs, zero source Java/Kotlin. Two selected runtime JARs are zero-entry ZIPs; two other build JARs contain one fixed generated R.class each.",
+      "candidate_file": "/private/tmp/gsip-split-view-independent-xj46t6p7/repo/scripts/app_notification_audit.py",
+      "candidate_sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071",
+      "effect": "The normal post-inspection audit refuses android-project-sources even when compatibility source contains no third-party Java/Kotlin or prebundled source archive. Successful task graph alone does not close the full audit.",
+      "file": "scripts/app_notification_audit.py",
+      "focused_branch_witness": {
+        "bytes": 2874,
+        "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/FOCUSED_CORDOVA_GENERATED_OUTPUT_REFUSAL.json",
+        "sha256": "7fadaf587819745b2ef4b62ba33a7d30b813540f73c9d26c57a676b5c468a78e"
+      },
+      "line": 1073,
+      "priority": "P2",
+      "recovery": "Source owner should narrowly validate legitimate generated empty/runtime and generated-resource-symbol outputs while retaining all third-party source/libs/JAR/AAR/unsafe-file refusals. No blanket build-directory exemption; unchanged adapter/task may remain. Frozen repair plus meaningful source-bundling negatives and actual post-task collector evidence required before closure.",
+      "title": "Generated Cordova output JARs are rejected as prebundled source inputs",
+      "trigger": "Successful exact frozen Gradle adapter schedules the selected :capacitor-cordova-android-plugins producer and emits its actual runtime JAR for both configurations. The later source branch scans generated.rglob(*.jar) across the entire compatibility project, including build outputs."
+    }
+  ],
+  "focused_finding_witnesses": {
+    "actual_generated_tree_refuses": true,
+    "empty_source_with_only_generated_build_JAR_refuses": true,
+    "empty_source_without_build_passes": true,
+    "exact_branch_calls": 3,
+    "not_full_collector": true
+  },
+  "frozen_directory": "/private/tmp/gsip-native-split-view-frozen-5pnusjis",
+  "frozen_receipt_sha256": "1e1fceada3b41a067522e1331e43aa99cc935dded7cecc23a76ecc02bd101e2e",
+  "full_collector_probe": {
+    "allow_fetch": false,
+    "later_Cordova_refusal_proven_by_exact_focused_branch_after_licenses": true,
+    "not_classified_as_new_source_or_hosted_finding": true,
+    "observed_earlier_refusal": "android-runtime-licenses; local POM proof incomplete",
+    "receipt": {
+      "bytes": 523,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/actual-post-task-runtime-collector.json",
+      "sha256": "a7c34cd6dedc15e8b1ee10d83503b99fb984baedc6648365d844c506abffaf5a"
+    }
+  },
+  "independent_tests": {
+    "actual_real": {
+      "collected": 30,
+      "exitstatus": 0,
+      "failed_report_count": 0,
+      "passed": 30,
+      "skipped": 0
+    },
+    "new_actual_real_cases": 11,
+    "new_unique_cases": 15,
+    "pure": {
+      "collected": 213,
+      "exitstatus": 0,
+      "failed_report_count": 0,
+      "passed": 213,
+      "skipped": 0
+    },
+    "pure_report": {
+      "bytes": 152059,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/retained-and-pure.json",
+      "sha256": "a0664d67220ba49e9e3ccf78176ec157306df09814dea463cd4431bb31da9092"
+    },
+    "real_report": {
+      "bytes": 20683,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/real.json",
+      "sha256": "b87c9493d99c99e913ddc17dd53f4ba60e1d62c1ebc4194ec875a6f808b0c5ac"
+    },
+    "retained_actual_real_cases": 19,
+    "retained_previous_unique_cases": 228,
+    "total_unique_passed": 243,
+    "unchanged43_bank_included_once": 43,
+    "unchanged43_bank_sha256": "4017b63fe4614833f8ded1b38ac545e1c286367e0422d4857ec07f05d5b6c7a5"
+  },
+  "independent_witness": {
+    "all_expected_oracles_passed": true,
+    "baseline_ambiguity_failure_before": true,
+    "candidate_complete_graph_raw_external_bytes_and_both_variant_JARs": true,
+    "commands": 6,
+    "effective_guard_mutations": 4,
+    "mutation_types": [
+      "project coverage",
+      "unknown AGP version",
+      "release producer",
+      "external raw artifact type"
+    ],
+    "receipt": {
+      "bytes": 8981,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/independent-split-witness.json",
+      "sha256": "633d5acae9b818ddcb048ee29f0fdda950a7c4a1a509d8b473e7386a7027db2f"
+    }
+  },
+  "limits": [
+    "Source acceptance blocked despite243 passing tests",
+    "Same hosted underlying cause unestablished",
+    "No complete native/APK/device acceptance",
+    "No reviewer build of app/SDK, network, keys, Git/GitHub/CI/production actions",
+    "Only own temporary source copies mutated for witnesses; all frozen/shared source unchanged",
+    "No raw captured tool streams printed or persisted as receipts; underlying Gradle-owned private daemon logs removed only within this reviewer snapshot"
+  ],
+  "manifest_sha256": "62dcf8b5cc05f62369bd9977b2dcd99f42f41fb673da3e3dc578d16312b1636e",
+  "next_action": "Root has acknowledged blocker and reactivated source author for narrow generated-output proof repair. Preserve this immutable blocked receipt and all banks for exact frozen followup.",
+  "patch_sha256": "361d1ddb0558c2051a09914a5342f2d53986f0bea5ce7bd6279499fce1f4aa21",
+  "schema": 1,
+  "scope": "Independent finite split-artifact-view delta review only; no reopened native/core cards",
+  "source_integrity": {
+    "all61_function_ASTs_exact_after_only_scope_label_normalization": true,
+    "old_test_prefix_bytes": 136378,
+    "old_test_prefix_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+    "other_c1_files_independently_byte_matched": 362,
+    "snapshot": {
+      "bytes": 69265,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/snapshot.json",
+      "sha256": "0a47379f485f3555f11295e48c49fc40db93a8de0e4c4dd3880dddb9f8c04de9"
+    },
+    "source_edits_by_reviewer": false,
+    "strict_writer_validator_and_existing_global_guard_code_unchanged_except_exact_scope_label": true,
+    "whole_python_module_AST_projection": {
+      "bytes": 500,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/full-source-projection.json",
+      "sha256": "ca206d5f48bf306c75478fc9d8007b7a50d1b1032332def32caf27d565760a61"
+    }
+  },
+  "startup_recovery": {
+    "HOME_unchanged": true,
+    "corrected_execution": "Explicit verified Java21/Gradle8.14.3, protected execution allowing local Gradle IPC, same owned synthetic fixtures and source; actual30pass/no skip",
+    "failure": "SOCKET_EXCEPTION plus OPERATION_NOT_PERMITTED before graph",
+    "first_sandbox_counts": {
+      "all30_excluded_as_build_evidence": true,
+      "apparent_passes": 8,
+      "failures": 22
+    },
+    "first_sandbox_run": {
+      "bytes": 20691,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/sandbox-blocked-real.json",
+      "sha256": "a84a270ec801fbb2b05c531e43aec46287e89a69c73f3779d4fc7f75a54a3685"
+    },
+    "fixed_startup_probe": {
+      "bytes": 391,
+      "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/tool-startup-probe.json",
+      "sha256": "67a05a0b17fca30ecd92e732b286cca81e18d669e5b4c6a437d1c486075ebf66"
+    }
+  },
+  "status": "BLOCKED_MATERIAL_FINDING"
+}

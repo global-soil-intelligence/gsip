@@ -1,0 +1,19 @@
+{
+  "state": "PASS_READONLY_ACTIVITY_PRE",
+  "target": "toxldjgwkxtneoqsazym",
+  "observed_at_utc": "2026-10-12 19:24:07 UTC",
+  "query": "counts-only activity, cron relation, ledger and capture preflight",
+  "result": {
+    "server_version": "17.6",
+    "other_nonselect_active_client_count": 0,
+    "cron_job_relation_count": 0,
+    "other_idle_transaction_count": 0,
+    "migration_count": 26,
+    "capture_open_count": 0
+  },
+  "limits": [
+    "Snapshot cannot exclude a future externally initiated writer.",
+    "No full query text, private rows, coordinates, keys or logs retrieved."
+  ],
+  "production_mutations": []
+}

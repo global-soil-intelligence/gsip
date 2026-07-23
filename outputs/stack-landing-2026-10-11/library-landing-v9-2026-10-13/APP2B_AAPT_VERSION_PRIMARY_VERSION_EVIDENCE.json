@@ -1,0 +1,39 @@
+{
+  "acceptance_inferred": false,
+  "actual_failed_hosted_version_unknown": true,
+  "current_failure_evidence": {
+    "caller_line": 2980,
+    "class": "AUDIT_REFUSAL",
+    "head": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+    "parent_toolchain_validation": true,
+    "stage": "feature-comparison"
+  },
+  "first_version_probe_harness_observation": {
+    "no_implementation_failure_claim": true,
+    "return_code": 0,
+    "stderr_bytes": 50,
+    "stdout_bytes": 0,
+    "wrong_stdout_only_expectation": true
+  },
+  "local_version_only_invocation": {
+    "arguments": [
+      "version"
+    ],
+    "no_APK_key_build_operation": true,
+    "official_archive_attestation_not_established_by_presence_receipt": true,
+    "return_code": 0,
+    "stderr_bytes": 50,
+    "stdout_bytes": 0,
+    "tool_bytes": 10469248,
+    "tool_sha256": "729a6a8deba828992c50cb448d4ef3947003ec5a0d1deead7534897c8fc3486f",
+    "version": "Android Asset Packaging Tool (aapt) 2.19-11948202"
+  },
+  "new_dependency": false,
+  "official_example": "Android Asset Packaging Tool (aapt) 2.19-8678579",
+  "official_live_browser_lines": [
+    358,
+    363
+  ],
+  "official_url": "https://developer.android.com/tools/aapt2#version",
+  "schema": "gsip-aapt-format-primary-and-local-metadata-v1"
+}

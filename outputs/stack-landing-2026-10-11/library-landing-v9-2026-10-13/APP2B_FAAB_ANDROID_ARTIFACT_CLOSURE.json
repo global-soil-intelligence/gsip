@@ -1,0 +1,243 @@
+{
+  "APK_metadata_policy": {
+    "APK_execution_or_key_build_signing_actions": false,
+    "additional_current_exact_alarm_and_WAKE_LOCK_bans_checked_on_all_four": true,
+    "compiled_manifest_permission_resource_or_payload_strings_printed_or_persisted": false,
+    "four_APKs_pass": true,
+    "metadata_only_dump_operations": 24,
+    "permission_counts_by_label": [
+      {
+        "count": 4,
+        "label": "parent"
+      },
+      {
+        "count": 6,
+        "label": "candidate"
+      },
+      {
+        "count": 4,
+        "label": "parent_reference"
+      },
+      {
+        "count": 6,
+        "label": "candidate_reference"
+      }
+    ],
+    "public_tool_version": "Android Asset Packaging Tool (aapt) 2.19-11948202",
+    "receipt": {
+      "bytes": 7882,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_FOUR_APK_METADATA_POLICY_REPLAY.json",
+      "sha256": "97431dec1276a314b6c849ddade5a12034c23533543a5ee6c2c37ee42b110662"
+    },
+    "respective_exact_source_permission_version_cloudbackup_devicetransfer_and_closed_activation_rules": "pass",
+    "tool_provenance_limit": "Existing installed public macOS SDK tool bytes/presence bound; original official distribution archive attestation unavailable. This is an independent metadata parser replay with that stated tool limit.",
+    "tool_sha256": "729a6a8deba828992c50cb448d4ef3947003ec5a0d1deead7534897c8fc3486f"
+  },
+  "Android_job_conclusion": "success",
+  "actual_checkout": "5d974ed24977e44026666ba8d3b2158b4a22dd06",
+  "actual_checkout_binding": {
+    "bytes": 1330,
+    "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_ACTUAL_MERGE_BINDING.json",
+    "sha256": "a2c2c8ccd4518f2166aff93b02704f53cef5acf760ad8e8efd6cf5c039b9e48a"
+  },
+  "all26_job_steps_success": true,
+  "android_job_id": 115663053505,
+  "android_job_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38505847255/job/115663053505",
+  "archive_bounds": {
+    "four_APKs": {
+      "bytes": 1126,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_FOUR_APK_BOUNDS.json",
+      "sha256": "d12701c1c7a29fbda9df9b46590ad94d19e37eaf8d63b57aa9e5000f3d14c80a"
+    },
+    "four_fresh_APKs": "all_path_type_size_duplicate_CRC_bounds_pass",
+    "outer_expected_files": 15,
+    "outer_tree": {
+      "bytes": 3342,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_OUTER_ARTIFACT_TREE.json",
+      "sha256": "17e271f70e050741926238cac3f7e7379c1a6c314648c2d67cd9faf96ba3b817"
+    },
+    "raw_runtime_textfiles_not_extracted_or_printed": true
+  },
+  "artifact": {
+    "GitHub_API_digest_equals_download": true,
+    "archive_path": "/private/tmp/gsip-faab-android-independent-099db2ry/android-artifact.zip",
+    "bytes": 29120989,
+    "download_receipt": {
+      "bytes": 344,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_ARTIFACT_DOWNLOAD.json",
+      "sha256": "60d02a9ee94911c63d39f2a1d5cfd986d78fc1f13f37a3a9d06d414e49f8b02c"
+    },
+    "id": 11866754580,
+    "name": "gsip-capture-android-debug",
+    "old_artifact_or_old_proof_substituted": false,
+    "sha256": "e419071b02ccc8c469f9b00991d721535abcebf09fde36a64985597a97762d13",
+    "single_fresh_download": true
+  },
+  "at": "2026-10-14T03:33:36.568245+00:00",
+  "authority": {
+    "GET_only_network": true,
+    "no_older_artifact_download": true,
+    "owned_temporary_artifact_source_tool_and_receipt_files_only": true,
+    "shared_source_Git_GH_CI_dispatch_build_signing_key_production_mutations": false
+  },
+  "current_exact_source_inputs": 9,
+  "current_helper_sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
+  "current_task_sha256": "f90e5f896bddf83530e304b315e79694c7992c87e79f3b53288b27067b66c856",
+  "current_workflow_sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5",
+  "entire_checkout_tree_equals_exact_head": true,
+  "evidence_manifest": {
+    "bytes": 5130,
+    "path": "/private/tmp/gsip-faab-android-independent-099db2ry/EVIDENCE_MANIFEST.json",
+    "sha256": "329489c137ab648b386c7998719b0a4e1fc6713416c7877396ca29872255c962"
+  },
+  "exact_d7_parent_committed_inputs": 6,
+  "harness_recoveries_and_precision": [
+    "Initialdefault-sandboxGHGETexited1beforeJSONmetadata;authorizedGET-onlyretrycompleted. No rawerror stream or log persisted.",
+    "Source/artifactreviewdriverscopiedandadaptedonlyinnewownedtemporarydirectory. Publicreviewedsource9copiedfromexactfreeze;APIfetchedbytescomparedanddiscarded.",
+    "Initialsourcebindingreceiptretainsitsat-the-timependingcheckoutlabel;terminallogandartifactmergeproofnowresolveitwithoutoverwritingthatreceipt.",
+    "Freshfaabsuccessdoesnotidentifyunknownvaluesorproveaspecificcauseinearlier800/623failedruns."
+  ],
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "native_source_inputs_per_side": [
+    8,
+    8
+  ],
+  "pinned_generated_android_inputs_per_side": 3,
+  "run_attempt": 1,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "safe_log": {
+    "actual_checkout_matches_source_and_artifacts": true,
+    "fixed_diagnostics": [],
+    "fixed_fault_or_context": [],
+    "raw_log": {
+      "bytes": 156421,
+      "persisted": false,
+      "sha256": "c43052632239054d40ea309cdb3ff5772991f083d0c7217788c6427b0c53c072"
+    },
+    "raw_log_discarded": true,
+    "receipt": {
+      "bytes": 807,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/SAFE_ANDROID_TERMINAL_LOG.json",
+      "sha256": "fa9dfbc4cc8c2cd257244985cc610a64ba24070554df92644344d8829830c857"
+    },
+    "success_marker_counts": {
+      "Gradle_success_messages": 4,
+      "native_audit_success_messages": 3
+    }
+  },
+  "schema": "gsip-independent-exact-faab-android-CI-artifact-closure-v1",
+  "separate_owner_gates": {
+    "combined_Android_iOS_acceptance": "rootonly_notclaimedhere",
+    "generalCI_scans_DCO": "separateverification_notcertifiedhere",
+    "iOS_proof": "separateindependentreviewer_notreplayedhere",
+    "merge_ready_review_approval": "notperformed",
+    "physical_device_behavior_and_actual_backup_restore_store_legal_distribution_counsel": "remainseparateunverifiedgates",
+    "production_health_deployment_capture_activation": "notclaimed_or_changed"
+  },
+  "source_binding": {
+    "bytes": 6449,
+    "path": "/private/tmp/gsip-faab-android-independent-099db2ry/EXACT_SOURCE_PARENT_BINDING.json",
+    "sha256": "802ad13740196761bbb0185728168bf9d3037f29028b5d2577c1bac7eca288df"
+  },
+  "status": "FRESH_EXACT_HEAD_ANDROID_CI_AND_ARTIFACT_PROOF_VERIFIED",
+  "strict_current_helper_replay": {
+    "GMM_POM_binary_counts": [
+      {
+        "label": "parent",
+        "views": [
+          {
+            "POM_chain_records": 79,
+            "POM_chains": 75,
+            "all_six_exact_reviewed_primary_contexts": true,
+            "configuration": "debugRuntimeClasspath",
+            "raw_GMM_documents": 6,
+            "runtime_binary_records": 73,
+            "selected_GMM_routes": 3,
+            "selected_modules": 75
+          },
+          {
+            "POM_chain_records": 79,
+            "POM_chains": 75,
+            "all_six_exact_reviewed_primary_contexts": true,
+            "configuration": "releaseRuntimeClasspath",
+            "raw_GMM_documents": 6,
+            "runtime_binary_records": 73,
+            "selected_GMM_routes": 3,
+            "selected_modules": 75
+          }
+        ]
+      },
+      {
+        "label": "candidate",
+        "views": [
+          {
+            "POM_chain_records": 79,
+            "POM_chains": 75,
+            "all_six_exact_reviewed_primary_contexts": true,
+            "configuration": "debugRuntimeClasspath",
+            "raw_GMM_documents": 6,
+            "runtime_binary_records": 74,
+            "selected_GMM_routes": 3,
+            "selected_modules": 75
+          },
+          {
+            "POM_chain_records": 79,
+            "POM_chains": 75,
+            "all_six_exact_reviewed_primary_contexts": true,
+            "configuration": "releaseRuntimeClasspath",
+            "raw_GMM_documents": 6,
+            "runtime_binary_records": 74,
+            "selected_GMM_routes": 3,
+            "selected_modules": 75
+          }
+        ]
+      }
+    ],
+    "NPM_sources_per_side": [
+      6,
+      7
+    ],
+    "actual_repeats": {
+      "candidate": {
+        "byte_equal": true,
+        "entry_content_equal": true
+      },
+      "parent": {
+        "byte_equal": true,
+        "entry_content_equal": true
+      }
+    },
+    "archive_byte_delta": 56719,
+    "build_receipt_fields_per_side": [
+      13,
+      13
+    ],
+    "comparison_sha256": "1791d22af995ea4f3b98f56eae1ab6417108752b91248f2acba0b58de2c5c56f",
+    "current_and_d7_locks_and_source": "pass",
+    "feature_difference_counts": {
+      "changed_entries": 38,
+      "first_only": 4,
+      "second_only": 9
+    },
+    "native_receipt_fields_per_side": [
+      13,
+      13
+    ],
+    "no_network_or_build_in_pure_replay": true,
+    "receipt": {
+      "bytes": 2959,
+      "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_STRICT_ANDROID_REPLAY.json",
+      "sha256": "18472d96067caa49a7b9bc508150e5bafd4047ec63571bd5df01e5331885cbb4"
+    },
+    "regenerated_comparison_dict_and_exact_JSON_bytes_equal": true,
+    "shared_disposable_key_digest_equality_verified_without_key_access": true,
+    "source_license_POM_GMM_NPM_graph_binary_and_closed_dependency_guards": "pass"
+  },
+  "tree_sha": "88baee8e3e9606b386fa011ac71f2d759cf20e50",
+  "virtual_merge_parents": [
+    "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+    "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc"
+  ]
+}

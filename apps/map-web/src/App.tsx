@@ -20,7 +20,10 @@ function registerPmtiles() {
   protocolRegistered = true
 }
 
-export function App() {
+export function App({
+  embedded = false,
+  onCapture,
+}: { embedded?: boolean; onCapture?: () => void } = {}) {
   const container = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapLibreMap | null>(null)
   const [activeLayer, setActiveLayer] = useState<PriorLayerId>('soc')
@@ -29,25 +32,37 @@ export function App() {
   useEffect(() => {
     if (!container.current) return
     registerPmtiles()
-    const map = new maplibregl.Map({
-      attributionControl: false,
-      center: [8, 12],
-      container: container.current,
-      maxZoom: 12,
-      minZoom: 1,
-      style: {
-        layers: [
-          {
-            id: 'background',
-            paint: { 'background-color': '#132822' },
-            type: 'background',
-          },
-        ],
-        sources: {},
-        version: 8,
-      },
-      zoom: 1.7,
-    })
+    let map: MapLibreMap
+    try {
+      map = new maplibregl.Map({
+        attributionControl: false,
+        center: [8, 12],
+        container: container.current,
+        maxZoom: 12,
+        minZoom: 1,
+        style: {
+          layers: [
+            {
+              id: 'background',
+              paint: { 'background-color': '#132822' },
+              type: 'background',
+            },
+          ],
+          sources: {},
+          version: 8,
+        },
+        zoom: 1.7,
+      })
+    } catch {
+      setMapStatus('The interactive map is unavailable on this device.')
+      return
+    }
+    let disposed = false
+    map.on('error', () =>
+      setMapStatus(
+        'Some map layers are unavailable. Check your connection and try again.',
+      ),
+    )
     mapRef.current = map
     map.addControl(
       new maplibregl.NavigationControl({ showCompass: false }),
@@ -117,6 +132,7 @@ export function App() {
       })
       void loadContributionCells()
         .then((cells) => {
+          if (disposed) return
           const source = map.getSource(
             'contributions',
           ) as maplibregl.GeoJSONSource
@@ -134,6 +150,7 @@ export function App() {
         })
     })
     return () => {
+      disposed = true
       map.remove()
       mapRef.current = null
     }
@@ -153,36 +170,53 @@ export function App() {
 
   const selected = PRIOR_LAYERS.find((layer) => layer.id === activeLayer)!
   return (
-    <main className="map-shell">
+    <main className={embedded ? 'map-shell embedded-map' : 'map-shell'}>
       <div
         ref={container}
         className="map-canvas"
         aria-label="Interactive global soil map"
       />
-      <header className="map-header">
-        <a
-          className="brand"
-          href="../"
-          aria-label="Global Soil Intelligence home"
-        >
-          <span className="brand-mark">G</span>
-          <span>Global Soil Intelligence</span>
-        </a>
-        <a className="contribute" href="../capture/">
-          Contribute an observation
-        </a>
-      </header>
+      {!embedded && (
+        <header className="map-header">
+          <a
+            className="brand"
+            href="../"
+            aria-label="Global Soil Intelligence home"
+          >
+            <span className="brand-mark">G</span>
+            <span>Global Soil Intelligence</span>
+          </a>
+          <a
+            className="contribute"
+            href={
+              import.meta.env.VITE_CAPTURE_LIVE === 'true'
+                ? '../capture/'
+                : '../about/#launch-status'
+            }
+          >
+            {import.meta.env.VITE_CAPTURE_LIVE === 'true'
+              ? 'Contribute an observation'
+              : 'Capture opening soon'}
+          </a>
+        </header>
+      )}
 
-      <section className="map-intro" aria-labelledby="map-title">
-        <p className="eyebrow">Open soil context</p>
-        <h1 id="map-title">Read the ground globally.</h1>
-        <p>
-          Explore SoilGrids priors alongside privacy-preserving community
-          coverage. Zooming past level 8 overzooms the same native soil tiles—no
-          false precision is introduced.
-        </p>
-      </section>
-
+      {!embedded && (
+        <section className="map-intro" aria-labelledby="map-title">
+          <p className="eyebrow">Open soil context</p>
+          <h1 id="map-title">Read the ground globally.</h1>
+          <p>
+            Explore SoilGrids priors alongside privacy-preserving community
+            coverage. Zooming past level 8 overzooms the same native soil
+            tiles—no false precision is introduced.
+          </p>
+        </section>
+      )}
+      {embedded && onCapture && (
+        <button className="map-capture" onClick={onCapture}>
+          Add an observation ↗
+        </button>
+      )}
       <section className="layer-panel" aria-label="Map layers">
         <p className="panel-label">Soil property</p>
         <div className="layer-buttons">

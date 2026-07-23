@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-10-12T13:55:20.383Z",
+  "target_project_ref": "toxldjgwkxtneoqsazym",
+  "scope": "Authorized production read-only metadata SELECT. Only pgrst.db_schemas was returned; no other settings, secrets, or table rows read.",
+  "query": "SELECT\n  current_setting('pgrst.db_schemas', true) AS session_pgrst_db_schemas,\n  COALESCE((\n    SELECT jsonb_agg(jsonb_build_object(\n      'database', CASE WHEN s.setdatabase = 0 THEN '*' ELSE d.datname END,\n      'role', r.rolname,\n      'setting', cfg.setting\n    ) ORDER BY s.setdatabase, cfg.setting)\n    FROM pg_catalog.pg_db_role_setting s\n    JOIN pg_catalog.pg_roles r ON r.oid = s.setrole\n    LEFT JOIN pg_catalog.pg_database d ON d.oid = s.setdatabase\n    CROSS JOIN LATERAL unnest(s.setconfig) AS cfg(setting)\n    WHERE r.rolname = 'authenticator'\n      AND cfg.setting LIKE 'pgrst.db_schemas=%'\n  ), '[]'::jsonb) AS authenticator_database_db_schemas,\n  COALESCE((\n    SELECT jsonb_agg(cfg.setting ORDER BY cfg.setting)\n    FROM pg_catalog.pg_roles r\n    CROSS JOIN LATERAL unnest(r.rolconfig) AS cfg(setting)\n    WHERE r.rolname = 'authenticator'\n      AND cfg.setting LIKE 'pgrst.db_schemas=%'\n  ), '[]'::jsonb) AS authenticator_role_db_schemas;",
+  "result": [
+    {
+      "session_pgrst_db_schemas": null,
+      "authenticator_database_db_schemas": [],
+      "authenticator_role_db_schemas": []
+    }
+  ],
+  "interpretation": "No inspected DB/role override; this query session uses official Splinter fallback public. Private is outside that fallback list.",
+  "limitation": "This is not a complete proof of live PostgREST API server config from other configuration sources. Check explicit runtime exposed-schema configuration before treating private as definitively unexposed.",
+  "mutations_executed": []
+}

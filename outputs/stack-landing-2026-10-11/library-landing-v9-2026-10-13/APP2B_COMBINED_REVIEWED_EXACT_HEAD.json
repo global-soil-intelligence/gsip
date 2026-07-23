@@ -1,0 +1,51 @@
+{
+  "utc": "2026-10-13T18:17:27.808209+00:00",
+  "head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "fix_commit": "51ec94711692964fd7a0cf5fd487db69de2ed0eb",
+  "main_forward_parent": "710d144db94097be71989c67b5d3b4bb48135ad8",
+  "exact23": {
+    "apps/capture-pwa/package.json": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115",
+    "pnpm-lock.yaml": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+    "apps/capture-pwa/capacitor.config.ts": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69",
+    "apps/capture-pwa/src/App.tsx": "efe1015dc54392a105767b4e8955d370047ac880aa005bffbdcc7a8c6ba6907c",
+    "apps/capture-pwa/src/YourData.tsx": "f3085983a3ebcb28796adf6c738f5b1ebfb468708aaa0966476bb53e538f76c8",
+    "apps/capture-pwa/src/queue.ts": "ce389c528acdfce3cb75acab1bfd55d615f3cf5ba8104130a8813ec6cd889f31",
+    "apps/capture-pwa/src/platform/notifications.ts": "696c89be417cc8dfac6466f6f163b7aaff7eb84143c43200c1a793e8ed05787f",
+    "apps/capture-pwa/src/syncReminder.ts": "f118a3ff7cfdcb2489b4cda1df0e33a029d63bab778b45a68926c883972259d3",
+    "apps/capture-pwa/tests/notifications.test.ts": "ada3f36d6db6bc3a7b0100d66b0a771d913d09521a51044b13f7b9ab030e5d22",
+    "apps/capture-pwa/tests/sync-reminder.test.ts": "0b9ffb103f9126c488006faa8cd339c22e331af7a0040f5d1cbb7f6a05baa901",
+    "apps/capture-pwa/tests/reminder-queue.test.ts": "1022b1f169467ea09aac7a18e0109f698054ca8873346930feb16e962db4fe21",
+    "apps/capture-pwa/tests/reminder-rights.test.tsx": "952bf872c7bdac266ad1eec7ac31477c4afff2a0893400e907d124062a929b4d",
+    "apps/capture-pwa/tests/reminder-app.test.tsx": "e7a90f1fe2f26060f5611472415102763700f3ea9745b58cfe5d5b5a9d44691f",
+    "scripts/app_permissions.py": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3",
+    "tests/test_app_permissions.py": "511addd80ca24b30bf8a6f7291917dd56b5bcf305b0ed0f003d7a209139ecfda",
+    "tests/test_app_build.py": "5b1df866e578c3c78b301c94e1a6f136347194907c75ed71de3aee240c126757",
+    "docs/APP_SYNC_REMINDERS.md": "37f8b6521751cf51658a07b97ed99b14b8e2ee8858e2ccc66345402719ff064a",
+    "docs/APP_STORE.md": "bc5be716c7cb6365defafa70db9546741ec0b5e27e6d46b38ff7e33da2e1d411",
+    "docs/legal/PRIVACY.md": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+    "scripts/app_notification_audit.py": "5ce1e7e646dc2e14ccc5b9e3a67efd3945172ab527ea8723e7ca8493b58bbe81",
+    "tests/test_app_notification_audit.py": "650e6b074dbca902c1827ed7af97c83bacd2868473ee9ec504cf0f1b4b7091f1",
+    ".github/workflows/app-build.yml": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": "9df5e3eac966064ec6d47b00f637c8356c74a5028dacbf1b8f72e66cbae26c88"
+  },
+  "main_only_introduced": [
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+    "pipeline/node_exchange_simulator.py",
+    "pipeline/node_exchange_store.py",
+    "tests/test_node_exchange_simulator.py",
+    "tests/test_node_exchange_store.py"
+  ],
+  "fixed_native_parent_app_inputs_unchanged": true,
+  "python": {
+    "passed": 1383,
+    "skipped_GDAL": 4,
+    "failures": 0,
+    "errors": 0
+  },
+  "ruff": "passed",
+  "mypy_source_files": 74,
+  "pinned_8_21_2_full_history_findings": 0,
+  "full_history_commits": 142,
+  "source_only": true,
+  "local_native_or_device_build": false
+}

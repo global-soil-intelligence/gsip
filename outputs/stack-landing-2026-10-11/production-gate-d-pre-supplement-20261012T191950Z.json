@@ -1,0 +1,587 @@
+{
+  "views": [
+    {
+      "kind": "v",
+      "name": "attribution_review_queue",
+      "options": [
+        "security_invoker=true"
+      ],
+      "definition_sha256": "2c2c0bd6110c078b610d40460c489c4df2dd1f250e65351f74b0e5b6879b72bc"
+    }
+  ],
+  "schema_grants": [
+    {
+      "role": "anon",
+      "schema": "extensions",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "authenticated",
+      "schema": "extensions",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "dashboard_user",
+      "schema": "extensions",
+      "grantable": false,
+      "privilege": "CREATE"
+    },
+    {
+      "role": "dashboard_user",
+      "schema": "extensions",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "postgres",
+      "schema": "extensions",
+      "grantable": false,
+      "privilege": "CREATE"
+    },
+    {
+      "role": "postgres",
+      "schema": "extensions",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "service_role",
+      "schema": "extensions",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "postgres",
+      "schema": "private",
+      "grantable": false,
+      "privilege": "CREATE"
+    },
+    {
+      "role": "postgres",
+      "schema": "private",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "PUBLIC",
+      "schema": "public",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "anon",
+      "schema": "public",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "authenticated",
+      "schema": "public",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "pg_database_owner",
+      "schema": "public",
+      "grantable": false,
+      "privilege": "CREATE"
+    },
+    {
+      "role": "pg_database_owner",
+      "schema": "public",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "postgres",
+      "schema": "public",
+      "grantable": false,
+      "privilege": "USAGE"
+    },
+    {
+      "role": "service_role",
+      "schema": "public",
+      "grantable": false,
+      "privilege": "USAGE"
+    }
+  ],
+  "storage_policies": [
+    {
+      "name": "incoming_photos_delete_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": "((bucket_id = 'incoming-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))",
+      "command": "d",
+      "permissive": true
+    },
+    {
+      "name": "incoming_photos_insert_own",
+      "check": "((bucket_id = 'incoming-photos'::text) AND (name ~ ((('^'::text || (( SELECT auth.uid() AS uid))::text) || '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/[ABC]/'::text) || '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.jpg$'::text)) AND public.my_submission_accepts_uploads((storage.foldername(name))[2]) AND public.capture_is_open())",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": null,
+      "command": "a",
+      "permissive": true
+    },
+    {
+      "name": "incoming_photos_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": "((bucket_id = 'incoming-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))",
+      "command": "r",
+      "permissive": true
+    },
+    {
+      "name": "incoming_photos_update_own",
+      "check": "((bucket_id = 'incoming-photos'::text) AND (name ~ ((('^'::text || (( SELECT auth.uid() AS uid))::text) || '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/[ABC]/'::text) || '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.jpg$'::text)))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": "((bucket_id = 'incoming-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))",
+      "command": "w",
+      "permissive": true
+    },
+    {
+      "name": "submission_photos_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "objects",
+      "using": "((bucket_id = 'submission-photos'::text) AND ((storage.foldername(name))[1] = (( SELECT auth.uid() AS uid))::text))",
+      "command": "r",
+      "permissive": true
+    }
+  ],
+  "private_functions": [
+    {
+      "name": "bind_photo_storage_path",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "9723ec40882ed885eadb3933d30d80817a306df8223edd78e57a16f6ffc9a1d2"
+    },
+    {
+      "name": "clear_untrusted_submission_h3",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": false,
+      "definition_sha256": "7c79d75fe309f47dd71cb5d7de579a47516c3352ff3e1491c94db998aa38aa51"
+    },
+    {
+      "name": "complete_empty_withdrawal",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "b2811141dd1550f9e0f815a8f66b65f1ef084dae763bbf0a45c48ad8db560a25"
+    },
+    {
+      "name": "create_human_actor",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "3d61995ba729d91227ccb60dc1523c2b0bdaf0a8a2e3b0155021cf2919041048"
+    },
+    {
+      "name": "derive_photo_tier",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "d653f1b048768b879ddcf0521a1ac6327ef35bcca070000269221a5fd58be91e"
+    },
+    {
+      "name": "derived_submission_tier",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "smallint",
+      "arguments": "p_submission_id uuid, p_synthetic boolean",
+      "volatility": "v",
+      "security_definer": false,
+      "definition_sha256": "10d988c67e72a7a52e2a884ccd35934e810683b3c0f154e30f7df8678491b58c"
+    },
+    {
+      "name": "guard_actor",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "c1089fcfc40433fcfa2b8ba24266a71b72fef3031e0a0262a713da2505f5d202"
+    },
+    {
+      "name": "photo_tier_from_evidence",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "smallint",
+      "arguments": "evidence jsonb",
+      "volatility": "i",
+      "security_definer": false,
+      "definition_sha256": "a3c9e5ee1b4d3b68ad5ba1769752219c5796520f0ef33895a1aa25d10d109d9b"
+    },
+    {
+      "name": "quarantine_synthetic_photos",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "da536b999a1fe8eb21b5d1a72a0779b99463d186d572e8abbdf70914c141710a"
+    },
+    {
+      "name": "record_grant_receipt",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "afcd8c65d1664ec206361fc7d258ada34562e84d7332e9b8f9f354f84a1cfb8e"
+    },
+    {
+      "name": "refresh_submission_tier",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "ccd99dbf23d1cc7c472db2064ede36a1085bf8138f9aa781e1ff548006dbeb72"
+    },
+    {
+      "name": "refuse_photo_for_withdrawn_grant",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "cc609d48b63756a7bfe187a62848454018a387977f9112c1238d57c0933c3c11"
+    },
+    {
+      "name": "refuse_withdrawn_grant",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "4da536731c8a1b228341872564b93f999a931d522ac59d32c965e98c710467dd"
+    },
+    {
+      "name": "refuse_withdrawn_grant_insert",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "b528de8d7ed6883bcb250a1adc674b6e66e39af8aa0f88b9798aa0748f6ee80a"
+    },
+    {
+      "name": "reject_contribution_grant_mutation",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": false,
+      "definition_sha256": "b1769d811ace6505c15a9e1438d651d93bc9593468bce8e848db6da3ca9204f7"
+    },
+    {
+      "name": "reject_grant_withdrawal_mutation",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": false,
+      "definition_sha256": "59c4393455f2b8ed40e64cd7b3aabadbf839e41f1bf72249b0f9e346ab811cb9"
+    },
+    {
+      "name": "reject_truncate",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": false,
+      "definition_sha256": "973cc2124b9eadb5df68535512471991536e8b0919ef99ab4c432168eac2fced"
+    },
+    {
+      "name": "resettle_all_submissions",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "integer",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": false,
+      "definition_sha256": "dea225ca474cf2afc92c508c7cdf72e23720efec0fe935dc7c5dc508dc7f2c58"
+    },
+    {
+      "name": "revoke_operated_actors",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "672ab24d9ea9f0cf33799703b6042497709f67f959275be1da1fff7a0272764b"
+    },
+    {
+      "name": "revoke_unlinked_contributor",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "1ae4d5ed04f06b94e960363eaeb15a890df9fb4f781a8f580ce26a9bff8f36a6"
+    },
+    {
+      "name": "set_submission_provenance",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "ccb26adc58c23cb4226b5c6f04f3c59e8e2aca842bae3818e11519d3ee846a94"
+    },
+    {
+      "name": "withdraw_grants_on_request",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "cd3d775ec5810f3d41b9054ec2d0d1e340861923b444bfcf3d5d75088b001ccb"
+    }
+  ]
+}

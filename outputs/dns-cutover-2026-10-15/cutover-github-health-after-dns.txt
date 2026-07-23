@@ -1,0 +1,29 @@
+HTTP/2.0 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning
+Cache-Control: private, max-age=60, s-maxage=60
+Content-Security-Policy: default-src 'none'
+Content-Type: application/json; charset=utf-8
+Date: Fri, 16 Oct 2026 01:12:49 GMT
+Etag: W/"63e3ab1ade3d8e3eabd0109fcd77279d414d32b61fc51179485c4fdbdc9defe3"
+Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+Server: github.com
+Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+Vary: Accept, Authorization, Cookie, X-GitHub-OTP,Accept-Encoding, Accept, X-Requested-With
+X-Accepted-Oauth-Scopes: 
+X-Content-Type-Options: nosniff
+X-Frame-Options: deny
+X-Github-Api-Version-Selected: 2022-11-28
+X-Github-Edge-Region: iad
+X-Github-Media-Type: github.v3; format=json
+X-Github-Request-Id: 580E:221C34:5C4C36:12C5F61:6AD17A11
+X-Oauth-Client-Id: 178c6fc778ccc68e1d6a
+X-Oauth-Scopes: gist, read:org, repo, workflow
+X-Ratelimit-Limit: 5000
+X-Ratelimit-Remaining: 4942
+X-Ratelimit-Reset: 1792114637
+X-Ratelimit-Resource: core
+X-Ratelimit-Used: 58
+X-Xss-Protection: 0
+
+{"domain":{"host":"globalsoilintelligence.com","uri":"http://globalsoilintelligence.com/","nameservers":"default","dns_resolves":true,"is_proxied":true,"is_cloudflare_ip":false,"is_fastly_ip":false,"is_old_ip_address":false,"is_a_record":true,"has_cname_record":false,"has_mx_records_present":false,"is_valid_domain":true,"is_apex_domain":true,"should_be_a_record":true,"is_cname_to_github_user_domain":false,"is_cname_to_pages_dot_github_dot_com":false,"is_cname_to_fastly":false,"is_pointed_to_github_pages_ip":false,"is_non_github_pages_ip_present":true,"is_pages_domain":false,"is_served_by_pages":true,"is_valid":true,"reason":null,"responds_to_https":false,"enforces_https":false,"https_error":"peer_failed_verification","is_https_eligible":false,"caa_error":null},"alt_domain":{"host":"www.globalsoilintelligence.com","uri":"http://www.globalsoilintelligence.com/","nameservers":"default","dns_resolves":false,"is_proxied":null,"is_cloudflare_ip":null,"is_fastly_ip":null,"is_old_ip_address":null,"is_a_record":null,"has_cname_record":null,"has_mx_records_present":null,"is_valid_domain":true,"is_apex_domain":false,"should_be_a_record":null,"is_cname_to_github_user_domain":null,"is_cname_to_pages_dot_github_dot_com":null,"is_cname_to_fastly":null,"is_pointed_to_github_pages_ip":false,"is_non_github_pages_ip_present":null,"is_pages_domain":false,"is_served_by_pages":null,"is_valid":false,"reason":"Domain's DNS record could not be retrieved. For more information, see <a href=\"https://docs.github.com/articles/setting-up-a-custom-domain-with-github-pages/\">documentation</a> (InvalidDNSError).","responds_to_https":false,"enforces_https":false,"https_error":"peer_failed_verification","is_https_eligible":false,"caa_error":"Dnsruby::NXDomain"}}

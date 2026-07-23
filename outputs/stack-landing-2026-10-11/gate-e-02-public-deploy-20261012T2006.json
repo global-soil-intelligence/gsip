@@ -1,0 +1,40 @@
+{
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "functions",
+    "deploy",
+    "gsip-public",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+    "--import-map",
+    "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0/supabase/functions/deno.json",
+    "--use-api",
+    "--no-verify-jwt"
+  ],
+  "started_at": "2026-10-12T20:05:51.700864+00:00",
+  "completed_at": "2026-10-12T20:05:54.111421+00:00",
+  "exit_code": 0,
+  "stdout_sha256": "da6b66172f4ed6b908e4a5ed517777f0a825a770bb7c2e0ddc365abfcf3a0b62",
+  "stderr_sha256": "b52e856a9bc88fc29b66a6deeff4d1ea79438107eced0773e83a93f8429b6eb8",
+  "safe_output": [
+    "Uploading asset (gsip-public): supabase/functions/deno.json",
+    "Uploading asset (gsip-public): supabase/functions/gsip-public/index.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/reader.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/schemas.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/keys.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/h3.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/handler.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/rest.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/openapi.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/envelope.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/http.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/api.ts",
+    "Uploading asset (gsip-public): packages/schema/src/protocol.ts",
+    "Uploading asset (gsip-public): packages/schema/src/prior.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/rateLimit.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/mcp.ts",
+    "Uploading asset (gsip-public): packages/schema/src/agent/config.ts"
+  ]
+}

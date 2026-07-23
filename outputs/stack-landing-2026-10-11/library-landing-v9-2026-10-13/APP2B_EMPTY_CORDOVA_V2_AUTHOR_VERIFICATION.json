@@ -1,0 +1,79 @@
+{
+  "actual_generated_archives": [
+    {
+      "bytes": 330,
+      "path": "build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar",
+      "sha256": "8f8440ab7c76027736349da5c25413f6fb2abf61698d21d31f4968a418c62aec"
+    },
+    {
+      "bytes": 330,
+      "path": "build/intermediates/compile_r_class_jar/release/generateReleaseRFile/R.jar",
+      "sha256": "8f8440ab7c76027736349da5c25413f6fb2abf61698d21d31f4968a418c62aec"
+    },
+    {
+      "bytes": 22,
+      "path": "build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar",
+      "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+    },
+    {
+      "bytes": 22,
+      "path": "build/intermediates/runtime_library_classes_jar/release/bundleLibRuntimeToJarRelease/classes.jar",
+      "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+    }
+  ],
+  "actual_generated_guard_passed": true,
+  "all_existing_function_ASTs_unchanged_after_only_replacing_the_Cordova_guard": true,
+  "baseline_and_four_effective_mutations": {
+    "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/CORDOVA_BASELINE_AND_GUARD_CONTROLS.json",
+    "sha256": "ad032762c1906d89edde5a7c50b0dd3941a2f434d0c1739f2a8b7abd0fb0fcb1"
+  },
+  "doc_prettier_exit": 0,
+  "frozen_candidate_receipt": "/private/tmp/gsip-native-cordova-v2-frozen-8cak2w90/FROZEN_CANDIDATE_RECEIPT.json",
+  "frozen_candidate_receipt_sha256": "04e5a4a41756086eca2f09aca2727c736f1283d9a914d69ddc901d9b0d4336fc",
+  "frozen_source_hashes_unchanged": true,
+  "full_actual_runtime_collector_passed": false,
+  "full_history_scan_run_by_author": false,
+  "full_native_script_default": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 434,
+    "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/cordova-v2-full-source.xml",
+    "sha256": "c4b0f9d68395192d0da6a978e4001341a8d6fef94f9e8f0d7bc08da19c38171a",
+    "skipped": 30,
+    "tests": 464
+  },
+  "gitleaks_authored_exit": 0,
+  "gitleaks_authored_leaks": 0,
+  "gitleaks_authored_version": "8.21.2",
+  "license_rules_changed": false,
+  "maintained_source_edited_after_freeze": false,
+  "mypy_exit": 0,
+  "native_product_or_hosted_cause_acceptance": false,
+  "new_focused": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 31,
+    "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/cordova-new-final.xml",
+    "sha256": "c9da4c21ae7ddd60b8b914a1e779fbcb6ed0fc2c2cc2bb99a79a41a87faa59bf",
+    "skipped": 0,
+    "tests": 31
+  },
+  "old_43_diagnostic_bank": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 43,
+    "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/cordova-v2-old43.xml",
+    "sha256": "dc4933c08ac872418cd47e09e1fa3637052c767e2d5c5e8f845a99568ffcb635",
+    "skipped": 0,
+    "tests": 43
+  },
+  "production_changes": false,
+  "raw_gradle_streams_persisted": false,
+  "real_gradle_controls_rerun_by_author_for_v2": false,
+  "real_gradle_controls_skip_count": 30,
+  "ruff_check_exit": 0,
+  "schema": "gsip-native-cordova-v2-author-verification-v1",
+  "separate_license_blocker_receipt_sha256": "28e838d2615d7f72ec1e74bd2990f9155a8a862bf6ec591f51b1074ffdd2f025",
+  "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "task_unchanged_from_v1": true
+}

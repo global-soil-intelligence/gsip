@@ -1,0 +1,27 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "gate": "A",
+  "step": 3,
+  "started_at": "2026-10-12T12:42:25.147812+00:00",
+  "completed_at": "2026-10-12T12:42:26.812466+00:00",
+  "argv": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "migration",
+    "repair",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+    "--status",
+    "reverted",
+    "20260730174047"
+  ],
+  "exit_code": 0,
+  "output_sha256": "bc6fb72a4b7bcc71b19ec094c66636cbabaaacb9ae7be025cf9a4b63a9e02767",
+  "safe_output_lines": [
+    "Initialising login role...",
+    "Connecting to remote database...",
+    "Repaired migration history: [20260730174047] => reverted"
+  ],
+  "status": "COMMAND_COMPLETED_READBACK_REQUIRED"
+}

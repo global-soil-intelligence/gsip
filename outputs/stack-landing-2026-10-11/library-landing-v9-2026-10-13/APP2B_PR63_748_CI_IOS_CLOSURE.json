@@ -1,0 +1,238 @@
+{
+  "status": "finite_exact_head_general_ci_and_ios_artifact_verification_complete",
+  "at": "2026-10-13T21:51:17.829235+00:00",
+  "source_head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+  "canonical_repository": "global-soil-intelligence/gsip",
+  "pull_request": 63,
+  "terminal_check_snapshot": {
+    "path": "snapshot-4.json",
+    "sha256": "e40e02f02f9c22b1138e2ea3eea5e7d14a6057505b0583e4e3c119609db9ab8e",
+    "checks": [
+      {
+        "id": 115553123313,
+        "label": "android",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 115553122987,
+        "label": "ios",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115553122837,
+        "label": "dco",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 115553120718,
+        "label": "validate",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115553120300,
+        "label": "gitleaks",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115553098377,
+        "label": "gitleaks",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "general_ci": {
+    "run_id": 38471987275,
+    "job_id": 115553120718,
+    "conclusion": "success",
+    "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38471987275",
+    "actual_executed_totals": {
+      "javascript_tests_passed": 597,
+      "javascript_files_passed": 44,
+      "browser": {
+        "passed": 12,
+        "seconds": 13.1
+      },
+      "python": {
+        "passed": 1550,
+        "skipped": 7,
+        "warnings": 37,
+        "seconds": 143.5
+      },
+      "pgTAP": {
+        "files": 11,
+        "tests": 593
+      },
+      "Deno_check_entrypoints_observed": 2,
+      "GDAL_required_flag_observed": true,
+      "migration_compatibility": {
+        "step_succeeded": true,
+        "case_total_reported": null
+      }
+    },
+    "sanitized_log_receipt_path": "safe-ci-executed-totals.json",
+    "sanitized_log_receipt_sha256": "fc0af78ea7367beab3082613681c71857dd780526d4d348e3b5c7ddebb59a55d",
+    "job_step_details": "not collected; executed numeric totals obtained from actual completed job log in memory"
+  },
+  "secret_scans": [
+    {
+      "event": "pull_request",
+      "run_id": 38471987256,
+      "job_id": 115553120300,
+      "conclusion": "success",
+      "no_leaks_literal_observed": true,
+      "version_8_21_2_token_observed": true,
+      "log_bytes": 21877,
+      "log_sha256": "da8760030ba631e7365f323ea5a76f3b42376959c565da4f2189dccb07a1db72",
+      "raw_log_persisted": false
+    },
+    {
+      "event": "push",
+      "run_id": 38471981347,
+      "job_id": 115553098377,
+      "conclusion": "success",
+      "no_leaks_literal_observed": true,
+      "version_8_21_2_token_observed": true,
+      "log_bytes": 20569,
+      "log_sha256": "07402aec06e9d3d7a1336fb86d68795d5d11231d40ef233de1d7b1a9ae561c51",
+      "raw_log_persisted": false
+    }
+  ],
+  "dco": {
+    "run_id": 38471987379,
+    "job_id": 115553122837,
+    "conclusion": "skipped",
+    "is_pass": false
+  },
+  "ios": {
+    "run_id": 38471987452,
+    "job_id": 115553122987,
+    "conclusion": "success",
+    "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38471987452",
+    "artifact": {
+      "head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+      "run_id": 38471987452,
+      "ios_job_id": 115553122987,
+      "artifact_id": 11852231660,
+      "bytes": 13914793,
+      "sha256": "033a629b46c3348936b46f8a97c1daa9f2c238d7f95aca9b0e89a693d095a2c2",
+      "get_only": true,
+      "older_artifacts_reused": false
+    },
+    "merge_checkout": "1592f645562fb417d40cf5e22a372187f1c407c8",
+    "exact_merge_parents": [
+      "710d144db94097be71989c67b5d3b4bb48135ad8",
+      "748146da663e692f6637a5a11a43ad063c49cd4f"
+    ],
+    "source_tree_sha": "97dd20a6773296ee706cb90e92d96e91d620ac5c",
+    "exact_source_blobs_verified": 8,
+    "source_binding_receipt_sha256": "566c33d9e94b1f824d81236b51d57ccd3c433c09bc7d4d368c1fd51e78bb2f35",
+    "outer_required_files": 9,
+    "nested_bounds_receipt_sha256": "d5b8ca844acce6e7c3c0eb7830945228e4d13ffa68841203b18a3a015a0c33ec",
+    "actual_comparison_replay": {
+      "status": "actual_ios_feature_comparison_replay_pass",
+      "comparison_dictionary_equal": true,
+      "comparison_serialized_bytes_equal": true,
+      "retained_and_regenerated_json_sha256": "320a7f3b2d2a5cc51372df7238f18a7ed86832916401dee89464a9e972dce851",
+      "exact_helper_sha256": "fba437191cd7bfe38a9a79d6adccd42ed10d71a9f16774e5a5de4bb07c6241f3",
+      "candidate_checkout_commit": "1592f645562fb417d40cf5e22a372187f1c407c8",
+      "parent_checkout_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "run_number": 48,
+      "build_receipt_fields": {
+        "parent": 13,
+        "candidate": 13
+      },
+      "candidate_and_parent_source_inputs_verified": true,
+      "frozen_source_lock_hashes_verified": true,
+      "native_sidecars_strict_validation": "pass",
+      "reference_hash_binding_and_repeat_recomputation": "pass",
+      "closed_activation_receipts": "pass",
+      "parent_archive_bytes": 3424156,
+      "candidate_archive_bytes": 3593956,
+      "overall_feature_archive_byte_delta": 169800,
+      "feature_zip_difference_counts": {
+        "changed_entries": 5,
+        "first_only": 4,
+        "second_only": 6
+      },
+      "actual_repeat_results": {
+        "parent": {
+          "byte_equal": false,
+          "entry_content_equal": true
+        },
+        "candidate": {
+          "byte_equal": false,
+          "entry_content_equal": true
+        }
+      },
+      "counts": {
+        "parent_spm_application_packages": 4,
+        "candidate_spm_application_packages": 4
+      },
+      "platform_tools_or_device_required": false,
+      "network_used_for_replay": false,
+      "compiled_strings_payload_paths_printed": false
+    },
+    "replay_receipt_sha256": "ba0f19db40c991c680fb1d48741f0182c0c52d914e60249c4354dcd170fc3f02",
+    "source_and_license_native_proof": "strict current helper validation passed on actual parent and candidate sidecars, application graph and source bindings",
+    "job_step_details": "unavailable in jobs-list response; no per-step execution count is inferred"
+  },
+  "android": {
+    "run_id": 38471987452,
+    "job_id": 115553123313,
+    "conclusion": "failure",
+    "artifact_count": 0,
+    "diagnosis_owner": "root or separately assigned native diagnostics; no diagnosis inferred in this receipt",
+    "job_step_details": "unavailable in jobs-list response; no per-step execution count is inferred"
+  },
+  "combined_app_acceptance": false,
+  "hosted_python_skip_interpretation": {
+    "count": 7,
+    "case_identities_classified": false,
+    "skips_are_not_passes_or_executed_real_Gradle_controls": true,
+    "separate_local_controls_do_not_substitute_for_hosted_execution": true
+  },
+  "workflow_parent_binding": {
+    "path": "workflow-baseline-binding.json",
+    "sha256": "02cecf16329867e23ef000a5b2958fd5d04997d752b77a7c653ec395adfd1dae",
+    "actual_parent_and_candidate_receipts_verified_run_number": 48,
+    "parent_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+    "previous_run47_artifact_or_reference_reused": false
+  },
+  "local_harness_recovery": {
+    "first_layout_correction_receipt": "first-download-harness-recovery.json",
+    "first_layout_correction_sha256": "68656b754a2f5beda0bc03a99cc85b4094a663d9aab67444885ece5bb7424210",
+    "second_empty_directory_precondition_receipt": "second-owned-harness-precondition-recovery.json",
+    "second_precondition_sha256": "55a338fff0cbde7e35775336d623a487e75716cd82f6d1003e25fb592cbf9f4b",
+    "final_retained_archive_driver": "verify-retained-fresh-ios-v2.py",
+    "final_driver_sha256": "487c4c6b63f9552343c95b234eab245386ec582e39649bbf135d421cbec1aea9",
+    "same_fresh_download_used": true,
+    "source_helper_native_guards_and_archive_bounds_changed": false,
+    "failed_early_replays_with_missing_extracted_inputs_supply_no_artifact_result": true
+  },
+  "repeat_interpretation": "actual parent and candidate archive bytes differ between repeats; both entry contents match; overall feature byte delta is not isolated plugin overhead or universal reproducibility",
+  "limitations": [
+    "Android failure blocks combined native acceptance",
+    "Device behavior, iOS backup exclusion, store/field readiness, production and capture activation remain unverified",
+    "Migration compatibility succeeded with validate, but no numeric case total was reported",
+    "No new build, platform tool, device or signing operation was performed for artifact replay"
+  ],
+  "authority": {
+    "get_only": true,
+    "source_git_pr_ci_production_mutations": false,
+    "older_artifact_downloads_or_reuse": false,
+    "raw_full_logs_signed_urls_credentials_coordinates_printed_or_persisted": false,
+    "compiled_binary_contents_or_strings_printed": false,
+    "downloaded_actual_build_archives_retained_in_owned_tmp_as_authorized": true
+  },
+  "manifest": {
+    "path": "finite-evidence-manifest.json",
+    "sha256": "c15e399f5e994d80303c357f7e315b5fbf20fa4f305a9a45635bfbdac0f948d5",
+    "file_count": 45
+  }
+}

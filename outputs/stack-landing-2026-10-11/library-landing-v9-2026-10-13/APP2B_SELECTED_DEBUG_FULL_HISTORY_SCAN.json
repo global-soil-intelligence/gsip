@@ -1,0 +1,18 @@
+{
+  "utc": "2026-10-14T01:48:11.404999+00:00",
+  "head": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+  "version": "8.21.2",
+  "nonshallow": true,
+  "all_refs_full_history": true,
+  "log_opts": "--all",
+  "redaction": true,
+  "ignorefile_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5",
+  "ignorefile_lines": 5,
+  "new_suppression": false,
+  "exit_code": 0,
+  "findings": 0,
+  "reported_commits": 153,
+  "output_sha256": "26fb952e043466fe98391251e5ca6d103181f3fabf83f80480e5742bb07ba5ee",
+  "output_bytes": 147,
+  "production_changes": false
+}

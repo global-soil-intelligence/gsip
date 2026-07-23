@@ -2,6 +2,9 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@gsip/schema'
 import { fuzzLocation } from './geo'
 import type { QueueRecord } from './types'
+import { enqueue } from './queue'
+import { authRedirect } from './platform'
+import { captureEnabled } from './config'
 
 export type GsipClient = SupabaseClient<Database>
 
@@ -29,6 +32,7 @@ export function createGsipClient(): GsipClient {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
+      flowType: 'pkce',
     },
   })
 }
@@ -77,7 +81,24 @@ export async function submitQueued(
   client: GsipClient,
   record: QueueRecord,
 ): Promise<void> {
+  if (!captureEnabled()) throw new Error('Contribution intake is closed.')
+  const intake = await client.rpc('is_intake_open')
+  if (intake.error || intake.data !== true)
+    throw new Error(
+      'Contribution intake is unavailable or closed. Your observation stays on this device.',
+    )
+  if (
+    !record.photos.some((p) => p.shotType === 'A') ||
+    !record.photos.some((p) => p.shotType === 'B')
+  )
+    throw new Error('Both required photos are needed.')
   const uid = await userId(client)
+  if (record.ownerId && record.ownerId !== uid)
+    throw new Error('Sign in with the account that started this upload.')
+  if (!record.ownerId) {
+    record.ownerId = uid
+    await enqueue(record)
+  }
   const contributor = await contributorId(client, uid)
   const grant = await client
     .from('contribution_grants')
@@ -99,13 +120,14 @@ export async function submitQueued(
   const location = fuzzLocation(record.latitude, record.longitude)
   const existingSubmission = await client
     .from('submissions')
-    .select('id')
+    .select('id,upload_completed_at')
     .eq('id', record.submissionId)
     .maybeSingle()
   if (existingSubmission.error) throw existingSubmission.error
   if (!existingSubmission.data) {
     const created = await client.from('submissions').insert({
       captured_at: record.capturedAt,
+      expected_shots: record.photos.map((p) => p.shotType).sort(),
       contributor_id: contributor,
       disturbed: record.disturbed,
       device_model: record.deviceModel,
@@ -122,16 +144,10 @@ export async function submitQueued(
     if (created.error) throw created.error
   }
 
+  if (existingSubmission.data?.upload_completed_at) return
+
   for (const photo of record.photos) {
     const path = photoStoragePath(uid, record, photo)
-    const uploaded = await client.storage
-      .from('incoming-photos')
-      .upload(path, photo.bytes, {
-        contentType: photo.mimeType,
-        upsert: false,
-      })
-    if (uploaded.error && !duplicateUpload(uploaded.error)) throw uploaded.error
-
     const existingPhoto = await client
       .from('photos')
       .select('id')
@@ -140,6 +156,15 @@ export async function submitQueued(
       .maybeSingle()
     if (existingPhoto.error) throw existingPhoto.error
     if (!existingPhoto.data) {
+      const uploaded = await client.storage
+        .from('incoming-photos')
+        .upload(path, photo.bytes, {
+          contentType: photo.mimeType,
+          upsert: false,
+        })
+      if (uploaded.error && !duplicateUpload(uploaded.error))
+        throw uploaded.error
+
       const created = await client.from('photos').insert({
         shot_type: photo.shotType,
         storage_path: path,
@@ -149,10 +174,55 @@ export async function submitQueued(
     }
   }
 
-  // The durable prior_jobs row is created by the submission trigger. This
-  // best-effort invocation starts enrichment immediately; an upstream outage
-  // must not retain private capture data in the device queue after upload.
-  await client.functions.invoke('prior-attach', {
-    body: { submissionId: record.submissionId },
+  const completed = await client.rpc('complete_submission_upload', {
+    p_submission_id: record.submissionId,
   })
+  if (completed.error) throw completed.error
+  // Enrichment is handled by the durable scheduled queue. Local data cleanup
+  // must not wait for the external sources to respond.
 }
+
+export async function connectEmail(
+  client: GsipClient,
+  email: string,
+): Promise<'email_change' | 'email'> {
+  const { data, error: sessionError } = await client.auth.getSession()
+  if (sessionError) throw sessionError
+  if (data.session?.user.is_anonymous) {
+    const { error } = await client.auth.updateUser(
+      { email },
+      { emailRedirectTo: authRedirect() },
+    )
+    if (error)
+      throw new Error(
+        'Could not link this email. If it belongs to another account, finish current uploads before switching accounts.',
+      )
+    return 'email_change'
+  }
+  const { error } = await client.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: authRedirect() },
+  })
+  if (error) throw error
+  return 'email'
+}
+
+export async function observationHistory(client: GsipClient) {
+  const { data: session } = await client.auth.getSession()
+  if (!session.session) return []
+  const { data, error } = await client
+    .from('submissions')
+    .select(
+      'id,captured_at,status,h3_r8,land_cover,upload_completed_at,priors(source,property,value,unit,uncertainty_lo,uncertainty_hi,depth_top_cm,depth_bottom_cm),qa_events(check_name,passed)',
+    )
+    .order('captured_at', { ascending: false })
+    .limit(100)
+  if (error)
+    throw new Error(
+      'Could not refresh your observations. Local drafts are still available.',
+    )
+  return data ?? []
+}
+export type RemoteObservation = Awaited<
+  ReturnType<typeof observationHistory>
+>[number]

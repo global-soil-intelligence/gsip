@@ -1,0 +1,84 @@
+{
+  "status": "MERGED_GREEN_CI_AND_PAGES_BUILT_AWAITING_SEPARATE_DEPLOYMENT_GO",
+  "recorded_at_utc": "2026-10-16T11:53:50.929931+00:00",
+  "pull_request": 77,
+  "source": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+  "main_ci": {
+    "id": 38895620789,
+    "conclusion": "success"
+  },
+  "pages": {
+    "id": 38895620835,
+    "build": "success",
+    "deploy": "waiting",
+    "deployment_authorized": false,
+    "artifact_zip_sha256": "d818ff8663588d7eb12bdf691b92127ee6ca61495c4e6ab9c08eae1c596fbc0b"
+  },
+  "capture_live": false,
+  "library_intake_live": false,
+  "supabase_changes": "NONE",
+  "dns_changes": "NONE",
+  "further_merge_or_approval": "NONE",
+  "files": [
+    {
+      "path": "REPORT-20261016.md",
+      "bytes": 5602,
+      "sha256": "a3c2c5f36e1217f387dece9f11149d8700e3b2345fd9ae24082ae88d3db0d2c3"
+    },
+    {
+      "path": "PAGES-RUN-38895620835-GATE.md",
+      "bytes": 4903,
+      "sha256": "2ce7eb682aab063e8e4e04bce4bded70c51438ac7e8b936a9a54005166084602"
+    },
+    {
+      "path": "pages-approval-request.PROPOSED.json",
+      "bytes": 353,
+      "sha256": "55471e3f6bb511d4e91b2df72ec0f19e070e3c4a5c32f52fc7db974131e2abef"
+    },
+    {
+      "path": "merge-readback.json",
+      "bytes": 327,
+      "sha256": "669f15b1f2a89dc342474fb349817e86180ee81bd6ece01b152d22afc60e8eac"
+    },
+    {
+      "path": "pages-run-artifacts.json",
+      "bytes": 731,
+      "sha256": "38d052423d6ad5aaf152055fcf86300404c5c76dd41ce6cd414fcbda39c2cdcc"
+    },
+    {
+      "path": "pages-run-38895620835-artifact-verification.json",
+      "bytes": 7996,
+      "sha256": "406c45b59328844d692a23cf262897d42990a702e139510c765fad6e0336f825"
+    },
+    {
+      "path": "pages-run-38895620835-independent-review.md",
+      "bytes": 2986,
+      "sha256": "6538104f6e2efbab555f5819f892e392c67846a1ebbd7393519ce35c53637d3c"
+    },
+    {
+      "path": "pages-run-38895620835-independent-review-receipt.json",
+      "bytes": 4954,
+      "sha256": "c0149280ab81747ef702f3e7c6fac4b8e5499d45b352974824d5f0a16a393791"
+    },
+    {
+      "path": "pages-hold-watch-independent-20261016T115322Z.json",
+      "bytes": 11846,
+      "sha256": "f4711c7afdf53d01beaa1667d7681e1a3f899292a431000507556421b894cc72"
+    },
+    {
+      "path": "redirect-recheck-independent.json",
+      "bytes": 13302,
+      "sha256": "f03b159519734f5bce86d9b3d4188a320b37332707a3d53c46032b20ed16c663"
+    },
+    {
+      "path": "ci-final-independent-receipt.json",
+      "bytes": 3396,
+      "sha256": "272c8a666316be76eb51a1760296e93705887cc125b7b59c66dd1b74e229d19c"
+    },
+    {
+      "path": "pages-run-38895620835-waiting.jpg",
+      "bytes": 60025,
+      "sha256": "5138d21718d8dc1504d8e2f6abf5d6ddab954fa83a806e29d5b52286d7cc0058"
+    }
+  ]
+}

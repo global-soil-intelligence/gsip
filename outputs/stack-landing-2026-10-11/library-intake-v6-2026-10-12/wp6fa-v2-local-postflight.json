@@ -1,0 +1,30 @@
+{
+  "scope": "local Docker development only",
+  "repair_sha256": "98141eaa943a5f10c592ce8cddf149e3f8edeff1eb72706317d30a1dc5b61587",
+  "before": {
+    "database": "postgres",
+    "ledger": 30,
+    "capture_open": false,
+    "photo_publication_open": false,
+    "photo_deployed": false,
+    "photo_policy_selected": false,
+    "contributors": 5,
+    "submissions": 25,
+    "photos": 50,
+    "auth_users": 0
+  },
+  "after": {
+    "database": "postgres",
+    "ledger": 30,
+    "capture_open": false,
+    "photo_publication_open": false,
+    "photo_deployed": false,
+    "photo_policy_selected": false,
+    "contributors": 5,
+    "submissions": 25,
+    "photos": 50,
+    "auth_users": 0
+  },
+  "unchanged": true,
+  "production_access": false
+}

@@ -1,0 +1,3 @@
+Merge the independently reviewed specification-only proposal after exact-head CI and scanner success, under Justin Hart's explicit2026-10-14 go. No backend, native-language exception, production or capture authority is selected.
+
+Co-Authored-By: Codex <codex@openai.com>

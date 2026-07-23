@@ -1,0 +1,17 @@
+{
+  "utc": "2026-10-14T04:09:13.499700+00:00",
+  "commands_available_on_current_PATH": {
+    "docker": true,
+    "gdalinfo": false,
+    "psql": false,
+    "pg_prove": false,
+    "deno": false,
+    "adb": false,
+    "xcodebuild": true
+  },
+  "known_android_SDK_present": true,
+  "known_android_adb_present_off_PATH": true,
+  "local_database_or_Docker_daemon_not_probed": true,
+  "local_native_build_or_device_action": false,
+  "no_production_query": true
+}

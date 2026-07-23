@@ -1,0 +1,108 @@
+{
+  "base_boolean_readback": {
+    "ancestor_safe": true,
+    "backup_excluded": true,
+    "exclusion_available": true,
+    "exclusion_query_ok": true,
+    "expected_kind": true,
+    "identity_stable": true,
+    "link_policy": true,
+    "owned": true,
+    "part": "base",
+    "present": true,
+    "private_mode": true,
+    "protection_available": true,
+    "protection_complete": false,
+    "protection_query_ok": true,
+    "size_bounded": true,
+    "volume_protection_available": true,
+    "volume_query_ok": true,
+    "volume_supports_protection": false
+  },
+  "cleanup_final_error_still_original_core_timeout": true,
+  "conclusion": "The hosted base metadata readback fails the existing exact.complete protection predicate while backup exclusion and observed ownership/type/mode/link/size checks pass. The source fails closed at base validation before creating the per-fixture nonce root or SQLite database. This is a held environment, not a passing storage proof.",
+  "core_build_completed_before_core_test_in_sequential_source": true,
+  "database_boolean_readback": {
+    "ancestor_safe": false,
+    "backup_excluded": false,
+    "exclusion_available": false,
+    "exclusion_query_ok": false,
+    "expected_kind": false,
+    "identity_stable": false,
+    "link_policy": false,
+    "owned": false,
+    "part": "database",
+    "present": false,
+    "private_mode": false,
+    "protection_available": false,
+    "protection_complete": false,
+    "protection_query_ok": false,
+    "size_bounded": false,
+    "volume_protection_available": false,
+    "volume_query_ok": false,
+    "volume_supports_protection": false
+  },
+  "failed_identities_match_all15_authored_SQLite_cases": true,
+  "head_verified": "ac70c8d17d0568e555c9422635ff1791f1c70ded",
+  "limits": [
+    "The database observer was not inspected because ancestor_safe is false; its false fields are unavailable, not independent proof of database absence. The before-creation conclusion follows source ordering plus base readback.",
+    "This snapshot does not reveal the alternative protection class, prove which setter/runtime behavior caused it, or establish a claim about every hosted runner or hardware.",
+    "All42 known cases have observed final statuses, but the xcodebuild command still timed out at300seconds. The reason it remained alive after cases finished is not established.",
+    "Shutdown/delete command stages completed without a later cleanup failure; original core timeout remained final. No independent post-delete runner inventory was requested or polled.",
+    "Host native tests and ordinary closure were not reached in this hosted run.",
+    "Parent reports same-head local75native tests and ordinary closures passed; those local receipts were not reopened by this reviewer."
+  ],
+  "observed_case_progress": {
+    "available": true,
+    "observed_failed": 15,
+    "observed_passed": 27,
+    "observed_started": 42,
+    "unfinished_test_identities": []
+  },
+  "observed_cleanup_stages": [
+    "simulator-shutdown",
+    "simulator-delete"
+  ],
+  "observed_failure_categories": [
+    "storage-hold-boundary",
+    "timeout",
+    "xctest-suite-started"
+  ],
+  "policy_recommendation": "Retain exact.complete, backup and all existing checks. Prepare a separate concrete hardware-capable lane proposal only; no new hardware/account/runner execution or deployment inferred.",
+  "review_role": "independent read-only evidence/source reviewer",
+  "reviewer_actions": "Read sanitized local log and exact source only; wrote private receipt. No new tests/native execution/runner polling/source edit/production/capture/merge.",
+  "root_boolean_readback": {
+    "ancestor_safe": true,
+    "backup_excluded": false,
+    "exclusion_available": false,
+    "exclusion_query_ok": false,
+    "expected_kind": false,
+    "identity_stable": false,
+    "link_policy": false,
+    "owned": false,
+    "part": "root",
+    "present": false,
+    "private_mode": false,
+    "protection_available": false,
+    "protection_complete": false,
+    "protection_query_ok": false,
+    "size_bounded": false,
+    "volume_protection_available": false,
+    "volume_query_ok": false,
+    "volume_supports_protection": false
+  },
+  "run_id_provided_by_parent": 38669675164,
+  "runtime_observed": {
+    "build": "24A434",
+    "version": "27.0"
+  },
+  "sanitized_log": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/ios-storage-prototype-2026-10-14/native-ac70c8d-failed.log",
+  "sanitized_log_sha256": "770ce76f0e13f0ac0527a13139d4e081b2eee4d1b2ccea1ed6d83cadd8ac2219",
+  "source_evidence": {
+    "base_checked_before_nonce_root_creation_and_database_open_create": true,
+    "exact_complete_and_backup_check_throws_boundary": true,
+    "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/ExcludedSQLiteStore.swift",
+    "sha256": "14b7c4036295152e2081971ea9877956624c9d69eb5bd580205ffd9f65a41ba2",
+    "volume_support_is_diagnostic_only_not_the_rejecting_guard": true
+  }
+}

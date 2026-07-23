@@ -1,0 +1,9 @@
+{
+  "version": "8.21.2",
+  "scope": "exact frozen three authored files; no inline allow annotations",
+  "exit_code": 0,
+  "leaks": 0,
+  "output_sha256": "2d5e98e2e380fb6692aab7a4aa23e7cdffd420dc8695965b8c5ba8c500e6e879",
+  "snapshot": "/private/tmp/gsip-app2b-root-split-view-three",
+  "suppression_changes": 0
+}

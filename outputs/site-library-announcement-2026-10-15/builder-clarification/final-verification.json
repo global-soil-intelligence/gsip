@@ -1,0 +1,434 @@
+{
+  "source_commit": "d13abfb1bace8ba84e6091ce0033f104b53edf78",
+  "pr_url": "https://github.com/global-soil-intelligence/gsip/pull/75",
+  "pr_state": "open",
+  "merged": false,
+  "ci": {
+    "conclusion": "success",
+    "headSha": "d13abfb1bace8ba84e6091ce0033f104b53edf78",
+    "jobs": [
+      {
+        "completedAt": "2026-10-15T22:56:21Z",
+        "conclusion": "success",
+        "databaseId": 116712860816,
+        "name": "validate",
+        "startedAt": "2026-10-15T22:49:12Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-15T22:49:16Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-15T22:49:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:49:17Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-10-15T22:49:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:49:22Z",
+            "conclusion": "success",
+            "name": "Run pnpm/action-setup@v6",
+            "number": 3,
+            "startedAt": "2026-10-15T22:49:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:49:29Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v7",
+            "number": 4,
+            "startedAt": "2026-10-15T22:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:49:31Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v7",
+            "number": 5,
+            "startedAt": "2026-10-15T22:49:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:49:31Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v7",
+            "number": 6,
+            "startedAt": "2026-10-15T22:49:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:49:33Z",
+            "conclusion": "success",
+            "name": "Run denoland/setup-deno@v2",
+            "number": 7,
+            "startedAt": "2026-10-15T22:49:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:49:50Z",
+            "conclusion": "success",
+            "name": "Install GDAL for the golden-tile tests",
+            "number": 8,
+            "startedAt": "2026-10-15T22:49:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:49:54Z",
+            "conclusion": "success",
+            "name": "Run pnpm install --frozen-lockfile",
+            "number": 9,
+            "startedAt": "2026-10-15T22:49:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:49:56Z",
+            "conclusion": "success",
+            "name": "Run uv sync --frozen --all-groups",
+            "number": 10,
+            "startedAt": "2026-10-15T22:49:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:50:00Z",
+            "conclusion": "success",
+            "name": "Run pnpm lint",
+            "number": 11,
+            "startedAt": "2026-10-15T22:49:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:50:06Z",
+            "conclusion": "success",
+            "name": "Run pnpm typecheck",
+            "number": 12,
+            "startedAt": "2026-10-15T22:50:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:50:18Z",
+            "conclusion": "success",
+            "name": "Run pnpm test",
+            "number": 13,
+            "startedAt": "2026-10-15T22:50:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:50:22Z",
+            "conclusion": "success",
+            "name": "Run pnpm build",
+            "number": 14,
+            "startedAt": "2026-10-15T22:50:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:50:22Z",
+            "conclusion": "success",
+            "name": "Run pnpm check:map-budget",
+            "number": 15,
+            "startedAt": "2026-10-15T22:50:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:50:34Z",
+            "conclusion": "success",
+            "name": "Run pnpm exec playwright install --with-deps chromium",
+            "number": 16,
+            "startedAt": "2026-10-15T22:50:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:50:47Z",
+            "conclusion": "success",
+            "name": "Run pnpm exec playwright test --project=desktop-chrome",
+            "number": 17,
+            "startedAt": "2026-10-15T22:50:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:50:47Z",
+            "conclusion": "success",
+            "name": "Run uv run ruff check .",
+            "number": 18,
+            "startedAt": "2026-10-15T22:50:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:50:54Z",
+            "conclusion": "success",
+            "name": "Run uv run mypy",
+            "number": 19,
+            "startedAt": "2026-10-15T22:50:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:52:50Z",
+            "conclusion": "success",
+            "name": "Run uv run pytest",
+            "number": 20,
+            "startedAt": "2026-10-15T22:50:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:52:51Z",
+            "conclusion": "success",
+            "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+            "number": 21,
+            "startedAt": "2026-10-15T22:52:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:52:54Z",
+            "conclusion": "success",
+            "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+            "number": 22,
+            "startedAt": "2026-10-15T22:52:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:53:39Z",
+            "conclusion": "success",
+            "name": "Apply migrations to data written before them",
+            "number": 23,
+            "startedAt": "2026-10-15T22:52:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:55:13Z",
+            "conclusion": "success",
+            "name": "Run pnpm db:start",
+            "number": 24,
+            "startedAt": "2026-10-15T22:53:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:55:40Z",
+            "conclusion": "success",
+            "name": "Run pnpm db:reset",
+            "number": 25,
+            "startedAt": "2026-10-15T22:55:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:55:58Z",
+            "conclusion": "success",
+            "name": "Run pnpm db:test",
+            "number": 26,
+            "startedAt": "2026-10-15T22:55:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:56:17Z",
+            "conclusion": "success",
+            "name": "Run pnpm db:stop",
+            "number": 27,
+            "startedAt": "2026-10-15T22:55:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:56:18Z",
+            "conclusion": "success",
+            "name": "Post Run denoland/setup-deno@v2",
+            "number": 49,
+            "startedAt": "2026-10-15T22:56:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:56:18Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v7",
+            "number": 50,
+            "startedAt": "2026-10-15T22:56:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:56:18Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v7",
+            "number": 51,
+            "startedAt": "2026-10-15T22:56:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:56:18Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v7",
+            "number": 52,
+            "startedAt": "2026-10-15T22:56:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:56:18Z",
+            "conclusion": "success",
+            "name": "Post Run pnpm/action-setup@v6",
+            "number": 53,
+            "startedAt": "2026-10-15T22:56:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:56:18Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 54,
+            "startedAt": "2026-10-15T22:56:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T22:56:18Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 55,
+            "startedAt": "2026-10-15T22:56:18Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819661058/job/116712860816"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819661058"
+  },
+  "checks": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-15T22:49:10Z",
+      "conclusion": "SKIPPED",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819661121/job/116712863413",
+      "name": "dco",
+      "startedAt": "2026-10-15T22:49:11Z",
+      "status": "COMPLETED",
+      "workflowName": "DCO"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-15T22:56:21Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819661058/job/116712860816",
+      "name": "validate",
+      "startedAt": "2026-10-15T22:49:12Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-15T22:49:19Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819661096/job/116712861064",
+      "name": "gitleaks",
+      "startedAt": "2026-10-15T22:49:12Z",
+      "status": "COMPLETED",
+      "workflowName": "Secret scan"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-15T22:49:18Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38819655881/job/116712843495",
+      "name": "gitleaks",
+      "startedAt": "2026-10-15T22:49:09Z",
+      "status": "COMPLETED",
+      "workflowName": "Secret scan"
+    }
+  ],
+  "local": {
+    "unit_tests": 602,
+    "site_tests": 33,
+    "desktop_browser_tests": 12,
+    "lint": "passed",
+    "typecheck": "passed",
+    "build_pages": "passed",
+    "site_initial_bytes": 320065,
+    "map_initial_bytes": 1879934
+  },
+  "builder_demo": {
+    "commands": [
+      {
+        "command": "UV_CACHE_DIR=/private/tmp/gsip-builder-entry-20261015-ptogxo9_/uv-cache /opt/homebrew/bin/uv run --frozen --offline --no-sync python -m pipeline.library_demo --output /private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-demo",
+        "exit_status": 0,
+        "stderr_empty": true,
+        "step": 1,
+        "summary": {
+          "development_samples": 5,
+          "mode": "synthetic-demo-only",
+          "paired_samples": 12,
+          "sample_overlap": 0,
+          "scientific_validation": false,
+          "train_samples": 7
+        }
+      },
+      {
+        "command": "UV_CACHE_DIR=/private/tmp/gsip-builder-entry-20261015-ptogxo9_/uv-cache /opt/homebrew/bin/uv run --frozen --offline --no-sync python -m ml.library_baseline --store /private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-demo/records --output /private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-baseline-repeat --demo",
+        "exit_status": 0,
+        "stderr_empty": true,
+        "step": 2,
+        "summary": {
+          "development_samples": 5,
+          "mode": "synthetic-demo-only",
+          "sample_overlap": 0,
+          "scientific_validation": false,
+          "train_samples": 7
+        }
+      }
+    ],
+    "environment": {
+      "credential_environment_variables_passed": false,
+      "environment_sync_disabled": true,
+      "frozen": true,
+      "offline": true,
+      "production_credentials_used": false,
+      "python": "Python 3.12.7",
+      "uv": "uv 0.5.5 (Homebrew 2024-11-27)",
+      "uv_cache": "/private/tmp/gsip-builder-entry-20261015-ptogxo9_/uv-cache"
+    },
+    "fictional_paired_sample_count": 12,
+    "lockfile_sha256": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912",
+    "prior_attempt": {
+      "exit_status": 2,
+      "reason": "Default uv cache was outside sandbox writable roots; Python never started and zero records were created.",
+      "report_path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/site-library-announcement-2026-10-15/builder-clarification/builder-demo-verification-attempt-1.json",
+      "sha256": "07a6f51f4accd854a9dc49edc6291dba618d640f6180e2698333cad67fe41251"
+    },
+    "private_synthetic_root": "/private/tmp/gsip-builder-entry-20261015-ptogxo9_",
+    "receipts": [
+      {
+        "development_samples": 5,
+        "label": "demo_internal_baseline",
+        "mode": "synthetic-demo-only",
+        "path": "/private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-demo/baseline/receipt.json",
+        "sample_overlap": 0,
+        "scientific_validation": false,
+        "sha256": "b9af09e17e06ec68894b5f80af34a67c7a3b89f53a637674dd02e1691a4154cf",
+        "train_samples": 7
+      },
+      {
+        "development_samples": 5,
+        "label": "separate_baseline",
+        "mode": "synthetic-demo-only",
+        "path": "/private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-baseline-repeat/receipt.json",
+        "sample_overlap": 0,
+        "scientific_validation": false,
+        "sha256": "b9af09e17e06ec68894b5f80af34a67c7a3b89f53a637674dd02e1691a4154cf",
+        "train_samples": 7
+      }
+    ],
+    "schema_version": "gsip-builder-demo-verification-v1",
+    "scientific_validation": false,
+    "scope": "Synthetic local software verification only; no accounts, production access, real data, source or Git mutation. No field accuracy or scientific validity claim.",
+    "source_commit": "d13abfb1bace8ba84e6091ce0033f104b53edf78",
+    "status": "passed",
+    "synthetic_record_count": 24,
+    "verified_at_utc": "2026-10-15T22:52:41.462133+00:00",
+    "working_directory": "/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0"
+  },
+  "pages_status": "PREPARED_NOT_DEPLOYED",
+  "capture_live": false,
+  "library_intake_live": false,
+  "licence_changes": false,
+  "source_availability": "all implemented GSIP software source public; unfinished work explicitly identified"
+}

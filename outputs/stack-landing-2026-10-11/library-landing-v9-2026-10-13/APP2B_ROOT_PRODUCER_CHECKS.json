@@ -1,0 +1,30 @@
+{
+  "utc": "2026-10-13T21:31:01.414866+00:00",
+  "actual_gradle_opt_in": true,
+  "results": [
+    {
+      "check": "ruff",
+      "exit_code": 0,
+      "seconds": 0.231,
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "check": "mypy",
+      "exit_code": 0,
+      "seconds": 0.941,
+      "output_sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c"
+    },
+    {
+      "check": "lint",
+      "exit_code": 0,
+      "seconds": 3.727,
+      "output_sha256": "8185ff7bbf60b066e20260e56c4a3fd10de339d2124fc13559b612a19578a977"
+    },
+    {
+      "check": "python",
+      "exit_code": 0,
+      "seconds": 106.693,
+      "output_sha256": "521a66340e0dade347efa6dd9334fd83391b9d945aa37963e3de4f1f745a3670"
+    }
+  ]
+}

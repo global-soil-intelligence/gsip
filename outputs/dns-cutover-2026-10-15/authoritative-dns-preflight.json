@@ -1,0 +1,562 @@
+{
+  "checked_at_utc": "2026-10-16T00:04:11.347978+00:00",
+  "scope": "Named public lookups only, not a full zone export",
+  "queries": [
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "NS",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com globalsoilintelligence.com NS +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 55216\n;; flags: qr aa; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "SOA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 21600 IN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com globalsoilintelligence.com SOA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 56386\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 4, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 21600 IN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "A",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 14400 IN\tA\t198.49.23.144"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com globalsoilintelligence.com A +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 59616\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 14400 IN\tA\t198.49.23.144\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "AAAA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com globalsoilintelligence.com AAAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 59860\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "MX",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com globalsoilintelligence.com MX +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 16216\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 54376\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "CAA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com globalsoilintelligence.com CAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 38901\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "www.globalsoilintelligence.com",
+      "type": "CNAME",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "www.globalsoilintelligence.com.\t14400 IN CNAME\text-sq.squarespace.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com www.globalsoilintelligence.com CNAME +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 63612\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nwww.globalsoilintelligence.com.\t14400 IN CNAME\text-sq.squarespace.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com _github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 54187\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "_dmarc.globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com _dmarc.globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 46247\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "gsip-cutover-probe-20261015.globalsoilintelligence.com",
+      "type": "A",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com gsip-cutover-probe-20261015.globalsoilintelligence.com A +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 6956\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d1.googledomains.com",
+      "name": "gsip-cutover-probe-20261015.globalsoilintelligence.com",
+      "type": "AAAA",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d1.googledomains.com gsip-cutover-probe-20261015.globalsoilintelligence.com AAAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 12302\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "NS",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com globalsoilintelligence.com NS +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 8375\n;; flags: qr aa; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "SOA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 21600 IN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com globalsoilintelligence.com SOA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40224\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 4, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 21600 IN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "A",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 14400 IN\tA\t198.49.23.144"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com globalsoilintelligence.com A +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 4483\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 14400 IN\tA\t198.49.23.144\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "AAAA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com globalsoilintelligence.com AAAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 37542\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "MX",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com globalsoilintelligence.com MX +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 9159\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 5928\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "CAA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com globalsoilintelligence.com CAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 10849\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "www.globalsoilintelligence.com",
+      "type": "CNAME",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "www.globalsoilintelligence.com.\t14400 IN CNAME\text-sq.squarespace.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com www.globalsoilintelligence.com CNAME +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49608\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nwww.globalsoilintelligence.com.\t14400 IN CNAME\text-sq.squarespace.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com _github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 30359\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "_dmarc.globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com _dmarc.globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 38923\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "gsip-cutover-probe-20261015.globalsoilintelligence.com",
+      "type": "A",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com gsip-cutover-probe-20261015.globalsoilintelligence.com A +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 45564\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d2.googledomains.com",
+      "name": "gsip-cutover-probe-20261015.globalsoilintelligence.com",
+      "type": "AAAA",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d2.googledomains.com gsip-cutover-probe-20261015.globalsoilintelligence.com AAAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 23060\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "NS",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com globalsoilintelligence.com NS +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 11953\n;; flags: qr aa; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "SOA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 21600 IN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com globalsoilintelligence.com SOA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 54791\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 4, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 21600 IN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "A",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 14400 IN\tA\t198.49.23.144"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com globalsoilintelligence.com A +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 27780\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 14400 IN\tA\t198.49.23.144\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "AAAA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com globalsoilintelligence.com AAAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 7409\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "MX",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com globalsoilintelligence.com MX +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 47691\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49306\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "CAA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com globalsoilintelligence.com CAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 45078\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "www.globalsoilintelligence.com",
+      "type": "CNAME",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "www.globalsoilintelligence.com.\t14400 IN CNAME\text-sq.squarespace.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com www.globalsoilintelligence.com CNAME +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 9002\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nwww.globalsoilintelligence.com.\t14400 IN CNAME\text-sq.squarespace.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com _github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 22931\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "_dmarc.globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com _dmarc.globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 9771\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "gsip-cutover-probe-20261015.globalsoilintelligence.com",
+      "type": "A",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com gsip-cutover-probe-20261015.globalsoilintelligence.com A +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 37546\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d3.googledomains.com",
+      "name": "gsip-cutover-probe-20261015.globalsoilintelligence.com",
+      "type": "AAAA",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d3.googledomains.com gsip-cutover-probe-20261015.globalsoilintelligence.com AAAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 22825\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "NS",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com globalsoilintelligence.com NS +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 57853\n;; flags: qr aa; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "SOA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 21600 IN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.",
+        "globalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com globalsoilintelligence.com SOA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 39011\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 4, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 21600 IN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d3.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d2.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d1.googledomains.com.\nglobalsoilintelligence.com. 21600 IN\tNS\tns-cloud-d4.googledomains.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "A",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 14400 IN\tA\t198.49.23.144"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com globalsoilintelligence.com A +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40476\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nglobalsoilintelligence.com. 14400 IN\tA\t198.49.23.144\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "AAAA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com globalsoilintelligence.com AAAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 31713\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "MX",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com globalsoilintelligence.com MX +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19707\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 63889\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "globalsoilintelligence.com",
+      "type": "CAA",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com globalsoilintelligence.com CAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 59016\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "www.globalsoilintelligence.com",
+      "type": "CNAME",
+      "returncode": 0,
+      "status": "NOERROR",
+      "records": [
+        "www.globalsoilintelligence.com.\t14400 IN CNAME\text-sq.squarespace.com."
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com www.globalsoilintelligence.com CNAME +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 2015\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; ANSWER SECTION:\nwww.globalsoilintelligence.com.\t14400 IN CNAME\text-sq.squarespace.com.\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com _github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 38890\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "_dmarc.globalsoilintelligence.com",
+      "type": "TXT",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com _dmarc.globalsoilintelligence.com TXT +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 25479\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "gsip-cutover-probe-20261015.globalsoilintelligence.com",
+      "type": "A",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com gsip-cutover-probe-20261015.globalsoilintelligence.com A +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 11452\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    },
+    {
+      "server": "ns-cloud-d4.googledomains.com",
+      "name": "gsip-cutover-probe-20261015.globalsoilintelligence.com",
+      "type": "AAAA",
+      "returncode": 0,
+      "status": "NXDOMAIN",
+      "records": [
+        "globalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "raw": "\n; <<>> DiG 9.10.6 <<>> @ns-cloud-d4.googledomains.com gsip-cutover-probe-20261015.globalsoilintelligence.com AAAA +norecurse +noall +comments +answer +authority\n; (2 servers found)\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 659\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 512\n;; AUTHORITY SECTION:\nglobalsoilintelligence.com. 300\tIN\tSOA\tns-cloud-d1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300\n\n"
+    }
+  ]
+}

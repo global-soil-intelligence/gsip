@@ -1,0 +1,80 @@
+{
+  "commands": [
+    {
+      "command": "UV_CACHE_DIR=/private/tmp/gsip-builder-entry-20261015-ptogxo9_/uv-cache /opt/homebrew/bin/uv run --frozen --offline --no-sync python -m pipeline.library_demo --output /private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-demo",
+      "exit_status": 0,
+      "stderr_empty": true,
+      "step": 1,
+      "summary": {
+        "development_samples": 5,
+        "mode": "synthetic-demo-only",
+        "paired_samples": 12,
+        "sample_overlap": 0,
+        "scientific_validation": false,
+        "train_samples": 7
+      }
+    },
+    {
+      "command": "UV_CACHE_DIR=/private/tmp/gsip-builder-entry-20261015-ptogxo9_/uv-cache /opt/homebrew/bin/uv run --frozen --offline --no-sync python -m ml.library_baseline --store /private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-demo/records --output /private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-baseline-repeat --demo",
+      "exit_status": 0,
+      "stderr_empty": true,
+      "step": 2,
+      "summary": {
+        "development_samples": 5,
+        "mode": "synthetic-demo-only",
+        "sample_overlap": 0,
+        "scientific_validation": false,
+        "train_samples": 7
+      }
+    }
+  ],
+  "environment": {
+    "credential_environment_variables_passed": false,
+    "environment_sync_disabled": true,
+    "frozen": true,
+    "offline": true,
+    "production_credentials_used": false,
+    "python": "Python 3.12.7",
+    "uv": "uv 0.5.5 (Homebrew 2024-11-27)",
+    "uv_cache": "/private/tmp/gsip-builder-entry-20261015-ptogxo9_/uv-cache"
+  },
+  "fictional_paired_sample_count": 12,
+  "lockfile_sha256": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912",
+  "prior_attempt": {
+    "exit_status": 2,
+    "reason": "Default uv cache was outside sandbox writable roots; Python never started and zero records were created.",
+    "report_path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/site-library-announcement-2026-10-15/builder-clarification/builder-demo-verification-attempt-1.json",
+    "sha256": "07a6f51f4accd854a9dc49edc6291dba618d640f6180e2698333cad67fe41251"
+  },
+  "private_synthetic_root": "/private/tmp/gsip-builder-entry-20261015-ptogxo9_",
+  "receipts": [
+    {
+      "development_samples": 5,
+      "label": "demo_internal_baseline",
+      "mode": "synthetic-demo-only",
+      "path": "/private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-demo/baseline/receipt.json",
+      "sample_overlap": 0,
+      "scientific_validation": false,
+      "sha256": "b9af09e17e06ec68894b5f80af34a67c7a3b89f53a637674dd02e1691a4154cf",
+      "train_samples": 7
+    },
+    {
+      "development_samples": 5,
+      "label": "separate_baseline",
+      "mode": "synthetic-demo-only",
+      "path": "/private/tmp/gsip-builder-entry-20261015-ptogxo9_/synthetic-baseline-repeat/receipt.json",
+      "sample_overlap": 0,
+      "scientific_validation": false,
+      "sha256": "b9af09e17e06ec68894b5f80af34a67c7a3b89f53a637674dd02e1691a4154cf",
+      "train_samples": 7
+    }
+  ],
+  "schema_version": "gsip-builder-demo-verification-v1",
+  "scientific_validation": false,
+  "scope": "Synthetic local software verification only; no accounts, production access, real data, source or Git mutation. No field accuracy or scientific validity claim.",
+  "source_commit": "d13abfb1bace8ba84e6091ce0033f104b53edf78",
+  "status": "passed",
+  "synthetic_record_count": 24,
+  "verified_at_utc": "2026-10-15T22:52:41.462133+00:00",
+  "working_directory": "/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0"
+}

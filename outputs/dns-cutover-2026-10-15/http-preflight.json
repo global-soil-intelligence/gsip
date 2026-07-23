@@ -1,0 +1,26 @@
+{
+  "checked_at_utc": "2026-10-16T00:04:13.077720+00:00",
+  "canonical": {
+    "status": 200,
+    "url": "https://globalsoilintelligence.com/",
+    "sha256": "9eea597a49e357ac1e2c8e4e98876e1c28454257df4e9a5116346f904001c462",
+    "content_type": "text/html;charset=utf-8",
+    "title": [
+      "Coming Soon"
+    ],
+    "h1": [
+      "globalsoilintelligence.com"
+    ]
+  },
+  "deployed_activation": {
+    "status": 200,
+    "url": "https://global-soil-intelligence.github.io/gsip/capture/gsip-activation.json",
+    "sha256": "e79c9ca28c243929e0252ffd0b42c868560e17d293c225532d09410b92d04bdc",
+    "content_type": "application/json; charset=utf-8",
+    "values": {
+      "capture_live": false,
+      "library_intake_live": false
+    }
+  },
+  "requests": "Read-only GET, no sign-in, no submission"
+}

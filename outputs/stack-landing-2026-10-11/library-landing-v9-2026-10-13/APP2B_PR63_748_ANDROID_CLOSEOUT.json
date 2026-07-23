@@ -1,0 +1,70 @@
+{
+  "scope": "Finite GET-only exact-head Android watch",
+  "head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+  "run_id": 38471987452,
+  "run_number": 48,
+  "source_helper_sha256": "fba437191cd7bfe38a9a79d6adccd42ed10d71a9f16774e5a5de4bb07c6241f3",
+  "android": {
+    "time_utc": "2026-10-13T21:41:33.048162+00:00",
+    "head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+    "run_id": 38471987452,
+    "job_id": 115553123313,
+    "status": "completed",
+    "conclusion": "failure",
+    "completed_steps": [],
+    "active_step_numbers": []
+  },
+  "history": [
+    {
+      "time_utc": "2026-10-13T21:40:41.301047+00:00",
+      "head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+      "run_id": 38471987452,
+      "job_id": 115553123313,
+      "status": "in_progress",
+      "conclusion": null,
+      "completed_steps": [],
+      "active_step_numbers": []
+    },
+    {
+      "time_utc": "2026-10-13T21:41:07.173207+00:00",
+      "head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+      "run_id": 38471987452,
+      "job_id": 115553123313,
+      "status": "in_progress",
+      "conclusion": null,
+      "completed_steps": [],
+      "active_step_numbers": []
+    },
+    {
+      "time_utc": "2026-10-13T21:41:33.048162+00:00",
+      "head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+      "run_id": 38471987452,
+      "job_id": 115553123313,
+      "status": "completed",
+      "conclusion": "failure",
+      "completed_steps": [],
+      "active_step_numbers": []
+    }
+  ],
+  "no_mutations": true,
+  "log_evidence": {
+    "raw_log_sha256": "f1ef04ee42fcd2bc77613df8d4af968b112da4eb28395f5454940315de80dd36",
+    "raw_log_bytes": 114889,
+    "raw_logs_persisted": false,
+    "fixed_fault_count": 1,
+    "fixed_fault_state": "VALID",
+    "fixed_fault": "GSIP_FIXED_FAULT_V1|UNKNOWN",
+    "context_count": 1,
+    "context_state": "VALID",
+    "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|TEXT_VALID|SIZE_REJECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED|UNINSPECTED",
+    "diagnostic_count": 1,
+    "diagnostic_state": "VALID",
+    "diagnostic": {
+      "counts": {},
+      "error_class": "BUILD_TOOL",
+      "source_line": 606,
+      "stage": "android-gradle-inspection"
+    }
+  },
+  "nonempty_exact_head_artifacts": []
+}

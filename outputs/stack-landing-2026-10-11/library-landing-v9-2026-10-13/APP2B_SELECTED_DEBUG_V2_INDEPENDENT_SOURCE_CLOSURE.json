@@ -1,0 +1,165 @@
+{
+  "author_final_receipt_sha256": "df7aeb4658eee28382de388a5fcb2920c1f11ab44f680b029e4bce39a6aab7ba",
+  "base_head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "carried_evidence": {
+    "author_metadata_probe": "Not independently executed or substituted; metadata task cad326 unchanged. New source pins verified read-only against actual generated shapes.",
+    "basis": "Whole helper text projection and task identity; current106+43 rerun also performed, so current focused counts are fresh.",
+    "prior_v1_independent_review_sha256": "a8cb68490755d0c2beee34198772371becc2c9a0dc083956f4f5a19af9808bb4"
+  },
+  "evidence": {
+    "EXACT_V2_SCOPE.json": {
+      "bytes": 3632,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/EXACT_V2_SCOPE.json",
+      "sha256": "5aa9c09aa10e496504a34110c87b119269f0045ddc09e04cb6c18aa3f0820c33"
+    },
+    "FOCUSED_BASELINE_MUTATION_RESULTS.json": {
+      "bytes": 6277,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/FOCUSED_BASELINE_MUTATION_RESULTS.json",
+      "sha256": "ae59b6998b2d5efd7da3e43c2de5b79a65c7fda437f41bfc493a20b74e1d212e"
+    },
+    "INDEPENDENT_PRIMARY_BINDING.json": {
+      "bytes": 1488,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/INDEPENDENT_PRIMARY_BINDING.json",
+      "sha256": "585f0258cbed6c2beac603451c4102d479fd12c72b58e0f2c21dc1a4cedc18b0"
+    },
+    "OWN_TWO_WITNESS_RESULTS.json": {
+      "bytes": 1850,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/OWN_TWO_WITNESS_RESULTS.json",
+      "sha256": "cc2526c2f72b7d2c225d0457e25ef6d00e61581a2a311a8b8e1512b58945c1d0"
+    },
+    "baseline-v1-new28.xml": {
+      "bytes": 56175,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/baseline-v1-new28.xml",
+      "sha256": "2d8d7166556f600b60c6adad05bc7311221b0516778562fbd67e4e15c6f9bf88"
+    },
+    "current-old43.xml": {
+      "bytes": 7135,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/current-old43.xml",
+      "sha256": "ecab721b0f6611227bcea10f765ee28e17be7111363933853edd14bce8732a66"
+    },
+    "current106.xml": {
+      "bytes": 18513,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/current106.xml",
+      "sha256": "8b20454af174df3cc13887dd491806238f2c9bcdf60b9d11c0c3cfc7fb5fb8ec"
+    },
+    "mutation-omit-cordova.xml": {
+      "bytes": 31276,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/mutation-omit-cordova.xml",
+      "sha256": "65ef209a618e3641069ef2100eb76d6eb4ce83fa53c391c615504ee255bef5c3"
+    },
+    "mutation-omit-settings.xml": {
+      "bytes": 31048,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/mutation-omit-settings.xml",
+      "sha256": "ab8a1e1ff76115137dbb89c4fb10022b069ede58fbe6b584c8bcd091ce45e440"
+    },
+    "prior_direct_script_inventory": {
+      "bytes": 5587,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v1/DIRECT_GENERATED_SCRIPT_INVENTORY.json",
+      "sha256": "164401d544740ef2c796f123aeac0d66c00ed49c36d157f85c68ca7b59878050"
+    },
+    "prior_settings_witness": {
+      "bytes": 1645,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v1/INCLUDED_SETTINGS_GUARD_WITNESS.json",
+      "sha256": "1f630b5db9476ec68b1e66056ec6f84d2aab893997ed1bfa38e610a4ef9d33a3"
+    },
+    "replay_two_own_witnesses.py": {
+      "bytes": 3665,
+      "path": "/private/tmp/gsip-selected-debug-key-review-prep-3uk0gi1g/review-v2/replay_two_own_witnesses.py",
+      "sha256": "99c3dcc4f5ce082d5dcc004e8d7d2208d33e52c1194eda2709b3ac5b72be605a"
+    }
+  },
+  "finding_closure": {
+    "generated_cordova_descriptor": "Exact primary generated descriptor passes both roots; inert callback accepted by v1 scope/old empty-Cordova guard and refused by v2 scope.",
+    "included_capacitor_settings": "Both genuine parent/candidate inputs pass; both preserved synthetic callback changes accepted by v1 and refused by v2.",
+    "new_material_findings": [],
+    "primary_binding": "Pinned CLI8.5.2 generator/archive read directly; exact deterministic template construction matches both actual generated settings and Cordova descriptor bytes."
+  },
+  "frozen_source": "/private/tmp/gsip-selected-debug-v2-frozen-tyo1wgnx/source",
+  "independently_executed": {
+    "actual_v1_fail_before": {
+      "errors": 0,
+      "failures": 24,
+      "skipped": 0,
+      "tests": 28
+    },
+    "current_focused": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 106
+    },
+    "omit_cordova_mutation": {
+      "errors": 0,
+      "failures": 12,
+      "skipped": 0,
+      "tests": 28
+    },
+    "omit_settings_mutation": {
+      "errors": 0,
+      "failures": 12,
+      "skipped": 0,
+      "tests": 28
+    },
+    "own_witness_changed_input_checks": 8,
+    "own_witness_scope_baseline_checks": 8,
+    "unchanged_diagnostic_bank": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 43
+    }
+  },
+  "limitations": [
+    "No Gradle/metadata task/hook/key/APK/signing/build execution performed by this reviewer.",
+    "No claim that synthetic callback executed or identified hosted failure cause.",
+    "Fresh exact-head hosted Android/iOS/general CI and actual artifact proof remain required.",
+    "No physical-device/iOS backup/store/legal-distribution/production/deployment readiness implied.",
+    "Full static/repository suites executed by root remain separate root evidence, not claimed as this independent execution."
+  ],
+  "recoveries": [
+    "Initial fixture AST extractor used Call.value; corrected to Call.args literal before receipt creation.",
+    "Initial tar-member search assumed /build.gradle; primary archive member is exactly build.gradle; explicit member read then matched.",
+    "Author source directory gained15 untracked tool caches after initial clean365-file copy; all365 source bytes rechecked exact and cache files excluded from source boundary."
+  ],
+  "schema": "gsip-independent-selected-debug-v2-closure-v1",
+  "source_files": {
+    ".github/workflows/app-build.yml": {
+      "base_e195_sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa",
+      "bytes": 17919,
+      "sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5",
+      "v1_sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+    },
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_e195_sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9",
+      "bytes": 39765,
+      "sha256": "b9cf2cc25a934ad5c072bc27d26252025b5759f8db7bb92e02d3fb557d2e515a",
+      "v1_sha256": "5b0019aa3f0f7ff22fd16309721abd9f51aabf67a2328e4a1c6059797a74bdf6"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_e195_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+      "bytes": 133557,
+      "sha256": "c4df1700e0efce6ca014f9a8bca0e0e7bdcdde11496a50900e88b47024474da6",
+      "v1_sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_e195_sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373",
+      "bytes": 219529,
+      "sha256": "a804fb87a6bf162f3ce513e2894047345dde7e8d97c75a10a9629c932d467c71",
+      "v1_sha256": "fa9a702513b7adf5a56701d26a0fe042e6ffe49383bedfebf83df4a5fde4b6d8"
+    }
+  },
+  "source_freeze_receipt_sha256": "bd10038e657e704c2b722c560eebfc30d7b7a940e37206f378ac3f4c8cfc0acc",
+  "source_manifest_sha256": "6137d9fdef02f2a317514f15f0570b3623639ea09b4d8bcd8b03338d83ab0060",
+  "status": "CLOSED_NO_BLOCKER_SOURCE_ONLY",
+  "unauthorized_actions": false,
+  "v1_delta_sha256": "c07745e773bad9ddfb5a30a8876eb2e7db2ffa9fdd55f3d45c69a4dca2ce6b73",
+  "verified_invariants": [
+    "Exactly two DEBUG_SIGNING_SCOPE entries added: two known Capacitor settings shapes and one exact generated Cordova descriptor.",
+    "All remaining helper text exact v1; original runtime task74ad and metadata taskcad326 unchanged.",
+    "All365 tracked source files verified;361 outside four-file package exact e195; workflow exact v1 and retains only two hardcoded-key argument removals against e195.",
+    "Original195244B test prefix exact v1 with authorized sole old Android argv8-to7 exception; all v1 assertion text exact after compressed fixture literal restoration.",
+    "Decoded fixture extends v1 by exactly two primary generated inputs.",
+    "All eight direct local generated scripts accounted for; no locked-plugin/global-init sandbox claim.",
+    "No native receipt/schema/license/permission/backup/core or strict read/key equality behavior changed by v2."
+  ]
+}

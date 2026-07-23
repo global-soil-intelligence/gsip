@@ -1,0 +1,30 @@
+[
+  {
+    "label": "data",
+    "canonical": "https://globalsoilintelligence.com/data/",
+    "heading": "A dataset designed to be used—and scrutinized.",
+    "title": "Soil library and open data — Global Soil Intelligence",
+    "url": "https://globalsoilintelligence.com/data/"
+  },
+  {
+    "label": "methods",
+    "canonical": "https://globalsoilintelligence.com/methods/",
+    "heading": "Scientific honesty is part of the architecture.",
+    "title": "Methods — Global Soil Intelligence",
+    "url": "https://globalsoilintelligence.com/methods/"
+  },
+  {
+    "label": "card",
+    "canonical": "https://globalsoilintelligence.com/card/",
+    "heading": "Give every phone camera a reference point.",
+    "title": "Print the reference card — Global Soil Intelligence",
+    "url": "https://globalsoilintelligence.com/card/"
+  },
+  {
+    "label": "about",
+    "canonical": "https://globalsoilintelligence.com/about/",
+    "heading": "A shared library for the ground we depend on.",
+    "title": "About — Global Soil Intelligence",
+    "url": "https://globalsoilintelligence.com/about/"
+  }
+]

@@ -1,0 +1,1 @@
+Before notice packaging: apps/map-web/dist/THIRD_PARTY_LICENSES.md is absent. Existing worker headers link to upstream terms but do not reproduce the required full notices. Independent review finding P2.

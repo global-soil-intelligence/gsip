@@ -1,0 +1,93 @@
+{
+  "base": "883c7ee51dcb6c58cb7f309b78a590ea684ba8c7",
+  "manifest_sha256": "43b5870a17db467e2391a1828a80bc92512f3769dfd1008342b500d6dca08ff3",
+  "all_372_source_files_verified": true,
+  "364_existing_files_unchanged": true,
+  "results": [
+    {
+      "name": "current",
+      "code": 0,
+      "tests": 76,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "50fcafb0652cc387646376785421ac055a902880d1ded2a47f8b04069c143cfc"
+    },
+    {
+      "name": "baseline",
+      "code": 1,
+      "tests": 37,
+      "failed": 37,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "5649474718d724782806e6a9c5e57d5d3eb72397b9ceefea12038bc05da48664"
+    },
+    {
+      "name": "bypass-hash",
+      "code": 1,
+      "tests": 37,
+      "failed": 2,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "adb76dbcde5cb4d3f27ac32971f2d88ed25e37f1c4b858738b3adc78efe87ea9"
+    },
+    {
+      "name": "bypass-inventory",
+      "code": 1,
+      "tests": 37,
+      "failed": 4,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "54666eba86de1cf54511926c78f407f3fa680a185c1cc53b674f02641c537ad6"
+    },
+    {
+      "name": "false-ready",
+      "code": 1,
+      "tests": 37,
+      "failed": 6,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "7182f9b6a77301e744cdaf178159db86147fbb851c2596ea57986e994aa661d7"
+    },
+    {
+      "name": "follow-links",
+      "code": 1,
+      "tests": 37,
+      "failed": 4,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "a517c03e580f355e7b8385ca38b1a041879451b0bc3c770e0c4a66016fc8cf90"
+    },
+    {
+      "name": "echo-diagnostic",
+      "code": 1,
+      "tests": 37,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "e2679ffb04c3bf1dc2333bdf2c4feb87c519c3787bb8f861d425562f72db6af0"
+    }
+  ],
+  "actual_public_profile": {
+    "backend_selected": false,
+    "device_verified": false,
+    "migration_implemented": false,
+    "next_gate": "app2c2-held",
+    "profile_id": "gsip-app2c1-2026-10-14",
+    "repo_count": 13,
+    "resolution_scope": "observed-generated-not-a-lock",
+    "source_count": 19,
+    "source_review_valid": true,
+    "status": "blocked",
+    "storage_feasible": false
+  },
+  "source_and_synthetic_evidence_only": true,
+  "candidate_or_shared_state_changed": false,
+  "finding_closed": "V1 exact-input table mismatch corrected in V2; new regression verifies actual copy input profile",
+  "v1_snapshot_read_stopped_before_copy": "Candidate was changed to V2 by authorized root while verifying V1; original hash failure preserved; no mixed snapshot accepted",
+  "private_count_recovery": {
+    "path": "/private/tmp/gsip-app2c1-independent-w9kw7n55/current.xml",
+    "actual_passed": 70,
+    "reason": "Four selected modules exclude six processor cases; corrected five-module slice is76; source unchanged"
+  }
+}

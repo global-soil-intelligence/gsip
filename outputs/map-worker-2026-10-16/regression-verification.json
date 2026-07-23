@@ -1,0 +1,95 @@
+{
+  "created_utc": "2026-10-16T11:28:45.514914+00:00",
+  "scope": "Synthetic loopback map-worker regression and map-only canonical-route alias",
+  "source_head_before_uncommitted_fixes": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "owned_files": {
+    "tests/e2e/map-worker.spec.ts": "8decacd28a1f2e5e93f1ac5cc754d95e50d25cd9687545a850fbb940ecde62ee",
+    "tests/e2e_server.py": "328db8ed95d11905ab19aec1a59002504e78850b1e650476c24e77dc5eba066a",
+    "tests/test_e2e_server.py": "6bd528460634721696922bbd42c1faac3bf4456aced7f6470db42fa58737b799"
+  },
+  "log_sha256": {
+    "handler-before-fix.log": "04801f2fc925dcad2608a42adcd43d570ac9f3284231b23d177ab98959a931c8",
+    "handler-after-fix.log": "33c930eade6286ef5ddd39f98dab7b7067892f96d99a96cffb302925675837f3",
+    "browser-before-fix.log": "7d0e08ee06a90315fae26301731ba26263524120aa9ab303e744316b005d6949",
+    "browser-after-fix.log": "c89d3448bee528c42bd50882ffa89e794bfe790ca0c9758b9537e12c56081cda",
+    "browser-index-diagnostics.log": "0af6ee793ce8fe7b93430ef4d223fcf5bdc68bc74dc65d9ebccc79a642d79cf1",
+    "browser-semantic-after-fix.log": "861c14e7f46c52c5c721d58d5eaa9b3fc33f860b228cd6d15aa0b36d6dcb165b",
+    "browser-with-notice-after-fix.log": "28380c48924682af06fb18e15280133db531c2e6f375579b4b94210e7617f167",
+    "browser-final.log": "f377443a9fd52aa68c33c92f89bd3ad69db3cc0dcd2388048179d0d8d87eac20"
+  },
+  "negative_baselines": {
+    "handler": {
+      "exit_status": 1,
+      "passed": 13,
+      "failed": 1,
+      "failure": "Root map alias mapped to .not-found"
+    },
+    "browser_unchanged_app": {
+      "exit_status": 1,
+      "passed": 0,
+      "failed": 2,
+      "failure": "Real worker URL HTTP 404 instead of 200 in both canonical layouts"
+    }
+  },
+  "final_results": {
+    "handler": {
+      "exit_status": 0,
+      "passed": 14,
+      "failed": 0
+    },
+    "browser": {
+      "exit_status": 0,
+      "passed": 2,
+      "failed": 0,
+      "project": "desktop-chrome",
+      "elapsed_seconds": 4.8
+    },
+    "scoped_eslint": {
+      "exit_status": 0
+    },
+    "scoped_prettier": {
+      "exit_status": 0
+    },
+    "scoped_ruff_no_cache": {
+      "exit_status": 0
+    },
+    "scoped_mypy": {
+      "exit_status": 0,
+      "files": 2
+    }
+  },
+  "commands": {
+    "browser": "PATH='/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin' UV_OFFLINE=1 UV_NO_SYNC=1 UV_CACHE_DIR='/private/tmp/gsip-map-worker-uv-cache-20261016' pnpm exec playwright test tests/e2e/map-worker.spec.ts --project=desktop-chrome",
+    "handler": ".venv/bin/pytest tests/test_e2e_server.py",
+    "eslint": "pnpm exec eslint tests/e2e/map-worker.spec.ts",
+    "prettier": "pnpm exec prettier --check tests/e2e/map-worker.spec.ts",
+    "ruff": ".venv/bin/ruff check --no-cache tests/e2e_server.py tests/test_e2e_server.py",
+    "mypy": ".venv/bin/mypy --cache-dir '/private/tmp/gsip-map-worker-mypy-cache-20261016' tests/e2e_server.py tests/test_e2e_server.py"
+  },
+  "browser_assertions": [
+    "Both /gsip/map/ and /map/ use real browser Workers from the built assets under the matching canonical prefix",
+    "Every observed worker URL returns HTTP 200, JavaScript MIME and non-HTML content",
+    "A real locked MapLibre worker completes source processing; cached source tags match exactly the two distinct synthetic aggregate cells and every allowlisted fixture field",
+    "No page errors, console errors, failed local resources or unexpected external origins",
+    "Built notice is HTTP 200 and includes the complete installed MapLibre LICENSE.txt verbatim"
+  ],
+  "observer_details": "Reads worker-owned cached index and pending-request state only; no worker mocks, message interception, getTile invocation or production test hooks",
+  "diagnostic_corrections": [
+    "Raw world-tile feature count was not a distinct-cell count; final check compares exact distinct processed tags",
+    "Locked tiler clears a parent source after drilldown; final check reads retained cached child-source tags",
+    "Existing CommonJS test runner requires the documented repository-root licence path rather than import.meta.url"
+  ],
+  "deployable_capture_activation_readback": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "real_contributor_data_used": false,
+  "external_api_or_raster_requests_sent": false,
+  "source_or_git_changes_outside_owned_files": false,
+  "production_changes_deployments_merges": false,
+  "assumptions": [
+    "Browser test is invoked from the documented repository root, matching existing Playwright fixtures",
+    "Read-only index introspection is coupled to the already pinned MapLibre and geojson-vt implementation; dependency upgrades should review this observer",
+    "Synthetic browser success verifies packaging and software behavior only, not live data availability or scientific validity"
+  ]
+}

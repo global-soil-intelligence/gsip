@@ -1,0 +1,41 @@
+{
+  "state": "LOCAL_VERIFIED_PENDING_FINAL_INDEPENDENT_REVIEW",
+  "scope": "Four WP-6fC files only; no production, storage, Hub or deployment actions",
+  "files": {
+    "pipeline/export.py": "f7623ae4f7cd603058f2471688bdd6fcfba4f1184d9d56000352fe44dc276dc2",
+    "pipeline/photo_export_privacy.py": "53655a2ccc8f89c942ea4630ff827c9e0d10ded7755c9d684c85672fc60e621e",
+    "tests/test_export.py": "402d9767fef1fa31e96d532cd324646f94087150e5722875cce9d9fef3e0217e",
+    "tests/test_photo_export_privacy.py": "6869ba33857629030ee7da24c9445783c9f41e49acb90387c141494dc1958d6a"
+  },
+  "patch_sha256": "f16135a8e6731865f3fadc11489f19444aea70bc37472fa430f72e980f76a254",
+  "scoped_tests": 115,
+  "full_python_tests": {
+    "passed": 529,
+    "skipped": 4,
+    "skip_reason": "Host GDAL absent; required GDAL remains CI only",
+    "exit_code": 0,
+    "log_sha256": "17f4ef21749e9fe765f9320cae486fc4303e0b170600eba3b5d9970f0a32a790"
+  },
+  "ruff": "PASS",
+  "mypy": {
+    "status": "PASS",
+    "files": 55
+  },
+  "new_file_gitleaks": {
+    "version": "8.21.2",
+    "status": "PASS",
+    "separate_from_historical_stack_scan": true
+  },
+  "review_fixes": [
+    "Zero-row cached artifacts must strip orphan media",
+    "Withdrawals arriving during final photo RPC force rebuild and k-anonymity recalculation",
+    "Post-RPC digest validation rejects altered photo bytes",
+    "Private mode-0700 system staging with same-filesystem promotion",
+    "Deep JSON decoder failure withholds photos and preserves eligible structured rows"
+  ],
+  "limitations": [
+    "Distributed SQL/filesystem/Hub publication is not atomic",
+    "No production publication policy/calibration approval",
+    "No models or images downloaded in these export checks"
+  ]
+}

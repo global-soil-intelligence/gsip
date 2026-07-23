@@ -1,0 +1,200 @@
+{
+  "bugs": {
+    "url": "https://github.com/ionic-team/capacitor-local-notifications/issues"
+  },
+  "dist": {
+    "shasum": "16b1387c5fb1dad0e136da4154f17f50180d2cbb",
+    "tarball": "https://registry.npmjs.org/@capacitor/local-notifications/-/local-notifications-8.3.1.tgz",
+    "fileCount": 42,
+    "integrity": "sha512-F7zu/+p/mIR958YP4axOkeI5hBKRaXDyYjbNPrAil2wWfd7OxScPSTvP9t85NpQ0eULVRu0/sntoxOg6ck477A==",
+    "signatures": [
+      {
+        "sig": "MEYCIQCC+cPoDZBsveEeb1tPAEYFCObP7uhL8o+kigu3H6M4xQIhALHVvVZHujAn4F9q55563yTPvAUdtZwcmr4O1u7ImCeU",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "attestations": {
+      "url": "https://registry.npmjs.org/-/npm/v1/attestations/@capacitor%2flocal-notifications@8.3.1",
+      "provenance": {
+        "predicateType": "https://slsa.dev/provenance/v1"
+      }
+    },
+    "unpackedSize": 506577
+  },
+  "main": "dist/plugin.cjs.js",
+  "name": "@capacitor/local-notifications",
+  "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
+  "author": {
+    "name": "Ionic",
+    "email": "hi@ionicframework.com"
+  },
+  "module": "dist/esm/index.js",
+  "gitHead": "0fbde4878e97e9947d5413737252012befbab139",
+  "license": "MIT",
+  "scripts": {
+    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
+    "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
+    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.mjs",
+    "clean": "rimraf ./dist",
+    "watch": "tsc --watch",
+    "docgen": "docgen --api LocalNotificationsPlugin --output-readme README.md --output-json dist/docs.json",
+    "eslint": "eslint . --ext ts",
+    "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
+    "prepare": "npm run build",
+    "prettier": "prettier \"**/*.{css,html,ts,js,java}\" --plugin=prettier-plugin-java",
+    "swiftlint": "node-swiftlint",
+    "verify:ios": "xcodebuild build -scheme CapacitorLocalNotifications -destination generic/platform=iOS",
+    "verify:web": "npm run build",
+    "prepublishOnly": "npm run build",
+    "verify:android": "cd android && ./gradlew clean build test && cd ..",
+    "publish:cocoapod": "pod trunk push ./CapacitorLocalNotifications.podspec --allow-warnings"
+  },
+  "_npmUser": {
+    "name": "GitHub Actions",
+    "email": "npm-oidc-no-reply@github.com",
+    "trustedPublisher": {
+      "id": "github",
+      "oidcConfigId": "oidc:346324bf-8aa5-4d78-a75e-720457d3f249"
+    }
+  },
+  "homepage": "https://github.com/ionic-team/capacitor-local-notifications#readme",
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "native"
+  ],
+  "prettier": "@ionic/prettier-config",
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    },
+    "android": {
+      "src": "android"
+    }
+  },
+  "overrides": {
+    "@types/node": "^22.0.0"
+  },
+  "swiftlint": "@ionic/swiftlint-config",
+  "repository": {
+    "url": "git+https://github.com/ionic-team/capacitor-local-notifications.git",
+    "type": "git"
+  },
+  "_npmVersion": "11.19.0",
+  "description": "The Local Notifications API provides a way to schedule device notifications locally (i.e. without a server sending push notifications).",
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "itschaced",
+      "email": "chace.daniels@outsystems.com"
+    },
+    {
+      "name": "ionicjs",
+      "email": "hi@ionic.io"
+    },
+    {
+      "name": "jcesarmobile",
+      "email": "jcesarmobile@gmail.com"
+    },
+    {
+      "name": "vmfo",
+      "email": "vitor.oliveira@outsystems.com"
+    },
+    {
+      "name": "jpender",
+      "email": "joey@ionic.io"
+    },
+    {
+      "name": "mark-ionic",
+      "email": "mark@ionic.io"
+    },
+    {
+      "name": "chuckytuh",
+      "email": "chuckynes@gmail.com"
+    },
+    {
+      "name": "alexgerardojacinto",
+      "email": "agerardojacinto@gmail.com"
+    },
+    {
+      "name": "os-pedrobilro",
+      "email": "pedro.gustavo.bilro@outsystems.com"
+    },
+    {
+      "name": "harvdoggy",
+      "email": "eric.harvey@outsystems.com"
+    },
+    {
+      "name": "jpender-os",
+      "email": "joey.pender@outsystems.com"
+    },
+    {
+      "name": "ndr",
+      "email": "andre.destro@outsystems.com"
+    },
+    {
+      "name": "kepatoto",
+      "email": "kepa.baum.totorica@outsystems.com"
+    },
+    {
+      "name": "rui.mendes",
+      "email": "rui.moreira.mendes@outsystems.com"
+    },
+    {
+      "name": "markemer",
+      "email": "emer@emer.net"
+    },
+    {
+      "name": "capacitor-plugin-bot",
+      "email": "ossplugins@outsystems.com"
+    },
+    {
+      "name": "eric-ionic",
+      "email": "horodyski@ionic.io"
+    },
+    {
+      "name": "os-ruialves",
+      "email": "rui.alves@outsystems.com"
+    }
+  ],
+  "_nodeVersion": "22.23.2",
+  "eslintConfig": {
+    "extends": "@ionic/eslint-config/recommended"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "_hasShrinkwrap": false,
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "rimraf": "^6.1.0",
+    "rollup": "^4.53.2",
+    "prettier": "^3.6.2",
+    "swiftlint": "^2.0.0",
+    "typescript": "^5.9.3",
+    "@capacitor/cli": "^8.0.0",
+    "@capacitor/ios": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "semantic-release": "^25.0.2",
+    "@capacitor/docgen": "0.3.0",
+    "@capacitor/android": "^8.0.0",
+    "@ionic/eslint-config": "^0.4.0",
+    "prettier-plugin-java": "^2.7.7",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^13.1.2",
+    "@ionic/prettier-config": "^4.0.0",
+    "@ionic/swiftlint-config": "^2.0.0",
+    "@semantic-release/github": "^12.0.2",
+    "@semantic-release/changelog": "^6.0.3"
+  },
+  "peerDependencies": {
+    "@capacitor/core": ">=8.0.0"
+  },
+  "_npmOperationalInternal": {
+    "tmp": "tmp/local-notifications_8.3.1_1787155120957_0.30952293210142345",
+    "host": "s3://npm-registry-packages-npm-production"
+  },
+  "_id": "@capacitor/local-notifications@8.3.1",
+  "version": "8.3.1"
+}

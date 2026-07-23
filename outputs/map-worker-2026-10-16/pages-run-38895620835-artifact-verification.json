@@ -1,0 +1,239 @@
+{
+  "status": "ACTUAL_MAIN_PAGES_ARTIFACT_VERIFIED_NOT_DEPLOYED",
+  "checked_at_utc": "2026-10-16T11:46:28.768955+00:00",
+  "run_id": 38895620835,
+  "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835",
+  "source_commit": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+  "reviewed_tree": "d49fa2ef6b31a0042db64d74e78b8a12df5b758b",
+  "artifact_id": 12043617713,
+  "zip_sha256": "d818ff8663588d7eb12bdf691b92127ee6ca61495c4e6ab9c08eae1c596fbc0b",
+  "zip_bytes": 3901961,
+  "tar_sha256": "bc5ab24a2ff6ca54c92cf09db589ac98a5233c7c101013fc1886c09e1605d769",
+  "files_count": 40,
+  "files_bytes": 6623136,
+  "map_bytes": 2422310,
+  "map_budget_bytes": 5242880,
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "worker": {
+    "path": "map/assets/maplibre-gl-worker-CRiIRpYb.js",
+    "bytes": 509702,
+    "sha256": "096f3b4deeeaa7ed1372a96978bea3495b78250041df835fada34f12320e11d2"
+  },
+  "license_notice": {
+    "path": "map/THIRD_PARTY_LICENSES.md",
+    "bytes": 32566,
+    "sha256": "9aa4807394e33c6a38be8c590001a791203e703d9afefa0e7c2f47b1655a1dce"
+  },
+  "files_matching_premerge_reviewed_preview": 33,
+  "files": [
+    {
+      "path": "about/index.html",
+      "bytes": 6439,
+      "sha256": "e8da342605531cb4f9ac3fb0cfbcb25436360a899aa09a585944f86af443408d"
+    },
+    {
+      "path": "assets/main-CQunBpw7.js",
+      "bytes": 251852,
+      "sha256": "dc820ba75169e46200e1fbbeced3c807f4fca709341a630d8fd7dc4968c3bf6b"
+    },
+    {
+      "path": "assets/main-CdU0pfZy.css",
+      "bytes": 17223,
+      "sha256": "b1a3e832a29a6f2d40376eadc93db588ff419fe7d105b54b39118ec46168b898"
+    },
+    {
+      "path": "capture/assets/dist-DrwtsX7j.js",
+      "bytes": 7754,
+      "sha256": "3fb5ed5a936995d89004aa9688ea992482ec8320274d50feff3833f057740f11"
+    },
+    {
+      "path": "capture/assets/esm-BzIFO2Az.js",
+      "bytes": 819,
+      "sha256": "815544f8be18d8fd5b9ed75121a9f793b2804d345ff9e3567f70f5027df2fc76"
+    },
+    {
+      "path": "capture/assets/esm-CPvYVprq.js",
+      "bytes": 587,
+      "sha256": "36fbdf7c90f3ec61c052fce90059a26dd78a79f2ce9a6ad3d5c31854d9f68d03"
+    },
+    {
+      "path": "capture/assets/esm-Ca0FzJ8M.js",
+      "bytes": 406,
+      "sha256": "475b2879d4eba9d6feecc1a84ae60fb0e9ff4e8ce2193803b2d68c1d6fecc3db"
+    },
+    {
+      "path": "capture/assets/esm-YcB-ubya.js",
+      "bytes": 9834,
+      "sha256": "03dc21355112032d88a5be7f34462b9a29a69513e2779e5ba020f4e96fabfb8b"
+    },
+    {
+      "path": "capture/assets/index-DEdswBKo.js",
+      "bytes": 806826,
+      "sha256": "430173178cbd8d97c3befe1ea843c7c260b7413d6fa0bf478f65b0debdbe960f"
+    },
+    {
+      "path": "capture/assets/index-DZ_h-Mw_.css",
+      "bytes": 7334,
+      "sha256": "359571ceba7714336ebbfcfec093e6001c5ae65f381084a27c1f7e8775b78e56"
+    },
+    {
+      "path": "capture/assets/synapse-D5y-aojA.js",
+      "bytes": 624,
+      "sha256": "db56839eb35756ad0bfa4aee4a008a1fe40b116ef3de989b872282682baa9653"
+    },
+    {
+      "path": "capture/assets/web-ClVSmdgs.js",
+      "bytes": 4439,
+      "sha256": "c7cb85c6e43daadbb6f3dffeb100ca91b6f5f9b4f7abfed57252a2dd7e781434"
+    },
+    {
+      "path": "capture/assets/web-D_gpHZ_X.js",
+      "bytes": 8475,
+      "sha256": "71782eb5e35adf55da572334608f8fd4069ed128230712a75a244404c62850d0"
+    },
+    {
+      "path": "capture/assets/web-Z7Um3E4a.js",
+      "bytes": 2086,
+      "sha256": "f6f6c0067308a0d40aa744d6d9267fb1ca7e1c58f78ec042dbb81547edd511b7"
+    },
+    {
+      "path": "capture/gsip-activation.json",
+      "bytes": 50,
+      "sha256": "e79c9ca28c243929e0252ffd0b42c868560e17d293c225532d09410b92d04bdc"
+    },
+    {
+      "path": "capture/icon.svg",
+      "bytes": 370,
+      "sha256": "7bc121f182dfb271605723fd9e08db8be552b6aa1ba03d5ac249357dfd1c4e91"
+    },
+    {
+      "path": "capture/index.html",
+      "bytes": 577,
+      "sha256": "1ea22095112f69ad24c4d12b88bbbc4de4e1039a8cfab1da7a5c00cb383fa214"
+    },
+    {
+      "path": "capture/manifest.webmanifest",
+      "bytes": 325,
+      "sha256": "a3b1be7a5206677834f623191f7c4ae3daffdcf7fa38644498d1917cafabe0d8"
+    },
+    {
+      "path": "capture/registerSW.js",
+      "bytes": 136,
+      "sha256": "e12c8db54e3cc247034427f2b661b305a78fea7e7cdec1eac179fecec3da0fc7"
+    },
+    {
+      "path": "capture/sw.js",
+      "bytes": 1565,
+      "sha256": "3c4fe100984993337d5f223eeae7adf7492f7166e45efe62aff9a6159f55fb0a"
+    },
+    {
+      "path": "capture/workbox-9c191d2f.js",
+      "bytes": 15112,
+      "sha256": "04b086f1b2f4215ee4b659a7bc9c76162894abdb43fa876247bc7c0bd6fd1c37"
+    },
+    {
+      "path": "card-bw-preview.png",
+      "bytes": 37508,
+      "sha256": "e3c1a24795628a17438686056e61b98df0dd368485bde0f06ec3613308ad5383"
+    },
+    {
+      "path": "card-color-preview.png",
+      "bytes": 37527,
+      "sha256": "cdbb6289d3d7ae6ad88dbb2ff3037698f3a729b4308a8567242e823e8f3c9534"
+    },
+    {
+      "path": "card/index.html",
+      "bytes": 6147,
+      "sha256": "a2c51a4ca4896aff80e77fda49d7cbcb01c6d72dec108f2af46602fb971148f2"
+    },
+    {
+      "path": "data/index.html",
+      "bytes": 9469,
+      "sha256": "81b85b0325047f66324696d002cc86a12e322aafad3453d5ee9e7422e6354fc3"
+    },
+    {
+      "path": "favicon.svg",
+      "bytes": 370,
+      "sha256": "7bc121f182dfb271605723fd9e08db8be552b6aa1ba03d5ac249357dfd1c4e91"
+    },
+    {
+      "path": "index.html",
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b"
+    },
+    {
+      "path": "llms.txt",
+      "bytes": 2389,
+      "sha256": "66a407dd647ae9fc22234d4469d01b76de459999491b6c23058a551c3ebcb6ee"
+    },
+    {
+      "path": "map/THIRD_PARTY_LICENSES.md",
+      "bytes": 32566,
+      "sha256": "9aa4807394e33c6a38be8c590001a791203e703d9afefa0e7c2f47b1655a1dce"
+    },
+    {
+      "path": "map/assets/index-DsfUbt9T.js",
+      "bytes": 1793772,
+      "sha256": "a98e81e669f7ee893c95c5f0a1e6cbfc1f28d108b8fe778ef4f646bda5da0649"
+    },
+    {
+      "path": "map/assets/index-gHsDz2RA.css",
+      "bytes": 85863,
+      "sha256": "2448caa8f5f478b0d524a632501bfc45a8c6f6ec8336ae39e7f8a72e3ff918cd"
+    },
+    {
+      "path": "map/assets/maplibre-gl-worker-CRiIRpYb.js",
+      "bytes": 509702,
+      "sha256": "096f3b4deeeaa7ed1372a96978bea3495b78250041df835fada34f12320e11d2"
+    },
+    {
+      "path": "map/index.html",
+      "bytes": 407,
+      "sha256": "96e6e0f5c3565440f1f540dedb53e52472428c77d2a7279b5747d790c0a5ff9a"
+    },
+    {
+      "path": "methods/index.html",
+      "bytes": 8184,
+      "sha256": "d4cb407020c1fc8c159e8277f029542a51f3e0d09ff07ef6195eb96eb7878d43"
+    },
+    {
+      "path": "og-library.png",
+      "bytes": 1965996,
+      "sha256": "07c99fc8d617edf3142267acf75ff9c39fcb88a5ad0f0fc06fb3824dad3785e0"
+    },
+    {
+      "path": "og.png",
+      "bytes": 965367,
+      "sha256": "66bd15c9c969bdfc21658ed9c5a7383eba5b4a7e73d135687109678cf112b81f"
+    },
+    {
+      "path": "reference-card/gsip-reference-card-v1-bw.pdf",
+      "bytes": 5851,
+      "sha256": "deb4a5db3aae33a03dc561a740b9924f6ad821113f85ca61012499f64021db42"
+    },
+    {
+      "path": "reference-card/gsip-reference-card-v1-color.pdf",
+      "bytes": 5898,
+      "sha256": "92e35f4cd226ed1d04c4d587ddfd5e07093735c748455ef8d92546bd608d0167"
+    },
+    {
+      "path": "robots.txt",
+      "bytes": 80,
+      "sha256": "e19486f8f74a744bdfe502c686b5ac8a28ec3d2f1a018d717a3fda76f7aba297"
+    },
+    {
+      "path": "sitemap.xml",
+      "bytes": 498,
+      "sha256": "01ee464f47f03ab941362bdb78a488721724c96a96c66dd3752b1197d8268842"
+    }
+  ],
+  "deployment_authorized": false,
+  "verification_correction": "Initial script stopped on an incorrectly transcribed worker hash. Compared the actual bytes to the previously independently audited local manifest instead; the worker and full notice match exactly. No artifact mismatch or weakened guard.",
+  "limitations": [
+    "Actual pending run artifact, not a completed deployment",
+    "Final production readback waits for Justin's separate Pages go"
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "Capacitor_CLI_template_namespace": {
+    "archive_sha256": "c9fa746751c74e786878e40b073fd3854c772b26716663cabbd8ebb874e39ba9",
+    "build_gradle_member_sha256": "b05a25c58e19bb0874313f4b81421db5fced6ef3eae6a9db48f8fbc0f5b828ca",
+    "line19_exact_namespace_literal": true,
+    "manifest_sha256": "bad0fbf5d81a6e677cc98d64bc5c59872e8a77f6966d13e38392ffedda345504",
+    "package_license": "MIT",
+    "package_version": "8.5.2"
+  },
+  "Gradle_task_sha256_unchanged": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "actual_generated_archive_semantics": [
+    {
+      "archive_bytes": 330,
+      "archive_entries": 1,
+      "archive_sha256": "8f8440ab7c76027736349da5c25413f6fb2abf61698d21d31f4968a418c62aec",
+      "fixed_R_structure": {
+        "all_semantic_checks": true,
+        "bytes": 150,
+        "checks": {
+          "CP_count9_no_other_payload": true,
+          "CP_exact_5_UTF8_literals": true,
+          "CP_exact_one_Object_constructor_Methodref": true,
+          "CP_exact_one_void_init_NameAndType": true,
+          "CP_exact_two_Class_relations": true,
+          "class_attrs_empty": true,
+          "code_nested_attrs_empty": true,
+          "constructor_only_Code_attribute": true,
+          "exactly_one_private_void_constructor": true,
+          "exception_table_empty": true,
+          "fields_zero": true,
+          "interfaces_zero": true,
+          "magic_and_version": true,
+          "no_trailing_bytes": true,
+          "public_final_super_access": true,
+          "super_Object": true,
+          "this_exact_fixed_namespace": true,
+          "trivial_constructor_instructions": true,
+          "trivial_constructor_max_stack_locals": true
+        },
+        "sha256": "3bcff37a8da344d813483fecde266705db27eb75c73f85f6de2c85449064a077",
+        "symbolic_constructor": [
+          "ALOAD_0",
+          "INVOKESPECIAL java/lang/Object.<init>()V",
+          "RETURN"
+        ]
+      },
+      "safe_ZIP_metadata": {
+        "archive_comment_bytes": 0,
+        "compressed_size": 150,
+        "entry_comment_bytes": 0,
+        "extra_bytes": 0,
+        "file_size": 150,
+        "fixed_only_entry": true,
+        "not_encrypted": true,
+        "stored": true
+      },
+      "under_generated_build": true
+    },
+    {
+      "archive_bytes": 330,
+      "archive_entries": 1,
+      "archive_sha256": "8f8440ab7c76027736349da5c25413f6fb2abf61698d21d31f4968a418c62aec",
+      "fixed_R_structure": {
+        "all_semantic_checks": true,
+        "bytes": 150,
+        "checks": {
+          "CP_count9_no_other_payload": true,
+          "CP_exact_5_UTF8_literals": true,
+          "CP_exact_one_Object_constructor_Methodref": true,
+          "CP_exact_one_void_init_NameAndType": true,
+          "CP_exact_two_Class_relations": true,
+          "class_attrs_empty": true,
+          "code_nested_attrs_empty": true,
+          "constructor_only_Code_attribute": true,
+          "exactly_one_private_void_constructor": true,
+          "exception_table_empty": true,
+          "fields_zero": true,
+          "interfaces_zero": true,
+          "magic_and_version": true,
+          "no_trailing_bytes": true,
+          "public_final_super_access": true,
+          "super_Object": true,
+          "this_exact_fixed_namespace": true,
+          "trivial_constructor_instructions": true,
+          "trivial_constructor_max_stack_locals": true
+        },
+        "sha256": "3bcff37a8da344d813483fecde266705db27eb75c73f85f6de2c85449064a077",
+        "symbolic_constructor": [
+          "ALOAD_0",
+          "INVOKESPECIAL java/lang/Object.<init>()V",
+          "RETURN"
+        ]
+      },
+      "safe_ZIP_metadata": {
+        "archive_comment_bytes": 0,
+        "compressed_size": 150,
+        "entry_comment_bytes": 0,
+        "extra_bytes": 0,
+        "file_size": 150,
+        "fixed_only_entry": true,
+        "not_encrypted": true,
+        "stored": true
+      },
+      "under_generated_build": true
+    },
+    {
+      "archive_bytes": 22,
+      "archive_entries": 0,
+      "archive_sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85",
+      "canonical_empty_ZIP22": true,
+      "under_generated_build": true
+    },
+    {
+      "archive_bytes": 22,
+      "archive_entries": 0,
+      "archive_sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85",
+      "canonical_empty_ZIP22": true,
+      "under_generated_build": true
+    }
+  ],
+  "blocked_source_receipt": {
+    "path": "/private/tmp/gsip-split-view-independent-xj46t6p7/INDEPENDENT_SPLIT_VIEW_BLOCKED_RECEIPT.json",
+    "sha256": "a01f751975ab22eedbca15cfb5cfed9ac2b9e6c30ed1ee384aa6d894bbd18766"
+  },
+  "design_limit": "Do not require methods0, which genuine pinned output violates. A semantic resource-empty stub allowance can require exactly the fixed namespace/class/CP relations and trivial private constructor above, no fields/other methods/class/code attrs/handlers/trailing payload. This is source-owner implementation work; no filename/hash-only allowance or blanket build-directory ignore is endorsed.",
+  "no_build_classloading_network_or_private_value_emission": true,
+  "pinned_generator": {
+    "emits_known_shape": "ClassWriter COMPUTE_MAXS,major52/access49/Object; no field creation in outer; optional inner-class metadata from resource types; private<init>()V using ALOAD0,Object.<init>(),RETURN; end/toByteArray",
+    "metadata_receipt_sha256": "993fbcb35016159d73cafca27ba3ee84f8bc7195ca5cefe79d07eb3d4f427d71",
+    "method": "generateOuterRClass",
+    "method_descriptor": "(Ljava/util/EnumSet;Ljava/lang/String;)[B",
+    "method_static_instruction_projection_sha256": "c86f18c943f9b51621069419f7c50fd258043402f1f092fec5100ee22438d7ff",
+    "no_resources_bound_by_actual_fields_or_inner_class_metadata": "Actual output has fields0/classattrs0 and no inner classfiles. No arbitrary code/payload required.",
+    "provenance": "Published pinned AGP/builder8.13 implementation, not supported public generator API",
+    "writer_class_sha256": "650dd0508723e0eb6be807f756bfc4f1dbe63c9f154b0b3ed4cc25da2b9c8ac6",
+    "writer_jar_sha256": "464aea9ccbf200ded6597d2848254d95229e9782779ea67f972588340812a4a9"
+  },
+  "safety_gates_carried": "All archives remain descriptor-safe bounded regular/singlelink; ZIP strict singleton/fixed member or canonical emptyZIP; reject source/libs prebundled JAR/AAR/Java/Kotlin, extra archives/entries/symlinks/constructor changes/CP payload. Existing graph/actual Cordova output containment and other source/proof guards retained.",
+  "schema": 1,
+  "source_or_task_changes": false,
+  "status": "PRIMARY_PROVENANCE_AND_STRUCTURAL_RULE_SUPPORTED_IN_PRINCIPLE; NO_REPAIR_IMPLEMENTATION_REVIEWED"
+}

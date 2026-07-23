@@ -1,0 +1,43 @@
+{
+  "utc": "2026-10-13T17:21:12.618294+00:00",
+  "invariants": "whole selected Capacitor release tree/revision/manifest/binaries/license/description bound to independent exact primary bytes; all existing native guards preserved; no guessed Android producer correction",
+  "source_head": "bb3910164cc47eae72958ad521b2186684584978",
+  "changed_v5_to_v6": [
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py",
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+  ],
+  "exact4": [
+    {
+      "base_sha256": null,
+      "bytes": 90648,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "b9af11f753ab9630ecca1fdd9262796f7996c7fad4709d69f61f3ddc3a78d762",
+      "v5_sha256": "f588112af2eb2f51a354a7856a9c0bb916722e3422807b2af223acc9c24b5ab0"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 78316,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "2868d1721ce606a5d210143c242ebe59084e37f379424490acf0aa8b3d5dcd58",
+      "v5_sha256": "fef70073abf42ec433dc5193be7df7f4a7c6d74d3795c88502d022a329726c8e"
+    },
+    {
+      "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "bytes": 17825,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "v5_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 13303,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "75747b73ceda9e507bdfc7d40d57aa7daa55379625dc12a61af0fc67e45e31bc",
+      "v5_sha256": "3278d03081afec2bc5c408eb87afde23268b264acc3c5cfd8ac810aa284907da"
+    }
+  ],
+  "core19_and_workflow_unchanged_v5": true,
+  "full_native_independent_review_pending": true,
+  "commit_push_production_changes": false
+}

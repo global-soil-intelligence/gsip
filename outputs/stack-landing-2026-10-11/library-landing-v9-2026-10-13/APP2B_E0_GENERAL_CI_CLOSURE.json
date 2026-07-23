@@ -1,0 +1,574 @@
+{
+  "DCO": "skipped; not certified or represented as pass",
+  "GET_only": true,
+  "Git_GH_source_dispatch_or_production_mutations": false,
+  "actual_general_totals": {
+    "Deno_checked_entrypoint_count": 2,
+    "Deno_checked_entrypoints": [
+      "gsip-public/index.ts",
+      "prior-attach/index.ts"
+    ],
+    "GDAL_required_flag_observed": true,
+    "browser_summary_rows": [
+      {
+        "passed": 12,
+        "seconds": 13.3
+      }
+    ],
+    "checkout_commits": [
+      "d29d322867de7dafdd8b862194cc8325e80021ba"
+    ],
+    "javascript": {
+      "passed_files": 44,
+      "passed_tests": 597,
+      "summary_rows": [
+        {
+          "kind": "files",
+          "passed": 2,
+          "reported_total": 2
+        },
+        {
+          "kind": "tests",
+          "passed": 28,
+          "reported_total": 28
+        },
+        {
+          "kind": "files",
+          "passed": 15,
+          "reported_total": 15
+        },
+        {
+          "kind": "tests",
+          "passed": 308,
+          "reported_total": 308
+        },
+        {
+          "kind": "files",
+          "passed": 3,
+          "reported_total": 3
+        },
+        {
+          "kind": "tests",
+          "passed": 15,
+          "reported_total": 15
+        },
+        {
+          "kind": "files",
+          "passed": 24,
+          "reported_total": 24
+        },
+        {
+          "kind": "tests",
+          "passed": 246,
+          "reported_total": 246
+        }
+      ]
+    },
+    "map_budget_records": [
+      {
+        "budget_bytes": 5242880,
+        "bytes": 1663811
+      }
+    ],
+    "migration_compatibility": {
+      "command_group_observed": true,
+      "numeric_case_total_reported": null
+    },
+    "mypy_source_file_counts": [
+      75
+    ],
+    "observed_command_groups": [
+      "browser",
+      "build",
+      "db_reset",
+      "db_start",
+      "db_stop",
+      "deno",
+      "javascript",
+      "lint",
+      "map_budget",
+      "migration",
+      "mypy",
+      "other",
+      "pgTAP",
+      "python",
+      "ruff",
+      "typecheck"
+    ],
+    "pgTAP_summary_rows": [
+      {
+        "files": 11,
+        "tests": 593
+      }
+    ],
+    "python_summary_rows": [
+      {
+        "passed": 1682,
+        "skipped": 30,
+        "warnings": 37
+      }
+    ],
+    "site_budget_not_observed_is_not_a_pass": true,
+    "site_budget_records": [],
+    "skip_scope_note": "Only the actual aggregate skip total is claimed unless individual skip reasons are present; default general CI has no real-Gradle opt-in."
+  },
+  "all_requested_contexts_terminal": true,
+  "both_secret_scans_success": true,
+  "created_at": "2026-10-14T00:08:31.781073+00:00",
+  "general_raw_log": {
+    "raw_log_bytes": 223810,
+    "raw_log_persisted": false,
+    "raw_log_sha256": "01a1c8628de9af2847c2d40afa8429e9865084882929a3c35205cf3e3df6cede"
+  },
+  "general_workflow_scope": {
+    "GDAL_required_env_present": true,
+    "explicit_site_budget_command_present": false,
+    "real_Gradle_optin_env_mentioned": false
+  },
+  "head": "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d",
+  "limits": [
+    "This is historical exact-e0 general/source-check evidence. A separately identified Cordova compile-role source correction requires a new head and fresh CI/native proof; no e0 acceptance is inferred.",
+    "Actual Python summary reports30 skipped. General workflow has no real-Gradle opt-in and did require GDAL; no hosted actual-Gradle execution is claimed and no individual skip-reason count is invented.",
+    "A site budget check is not an explicit command in this CI workflow and no site budget numeric record is present; it is not claimed passed.",
+    "Native artifacts/repeats/license-comparison proof are owned by other reviewers and are not established by this receipt. No production health, deployment, capture opening, counsel, device or store readiness claim."
+  ],
+  "only_metadata_hashes_counts_persisted": true,
+  "pr_readback": {
+    "base_ref": "main",
+    "base_sha": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+    "draft": true,
+    "head_sha": "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d",
+    "number": 63,
+    "state": "open"
+  },
+  "raw_logs_or_credentials_persisted": false,
+  "requested_check_contexts": [
+    {
+      "conclusion": "skipped",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487570885/job/115604812911",
+      "id": 115604812911,
+      "name": "dco",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487570740/job/115604811034",
+      "id": 115604811034,
+      "name": "validate",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487570698/job/115604810602",
+      "id": 115604810602,
+      "name": "gitleaks",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487563868/job/115604789287",
+      "id": 115604789287,
+      "name": "gitleaks",
+      "status": "completed"
+    }
+  ],
+  "requested_runs": [
+    {
+      "attempt": 1,
+      "conclusion": "success",
+      "created_at": "2026-10-13T23:59:54Z",
+      "event": "pull_request",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487570740",
+      "jobs": [
+        {
+          "completed_at": "2026-10-14T00:06:51Z",
+          "conclusion": "success",
+          "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487570740/job/115604811034",
+          "id": 115604811034,
+          "name": "validate",
+          "started_at": "2026-10-13T23:59:57Z",
+          "status": "completed",
+          "steps": [
+            {
+              "conclusion": "success",
+              "number": 1,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 2,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 3,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 4,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 5,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 6,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 7,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 8,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 9,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 10,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 11,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 12,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 13,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 14,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 15,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 16,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 17,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 18,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 19,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 20,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 21,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 22,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 23,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 24,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 25,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 26,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 27,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 49,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 50,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 51,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 52,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 53,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 54,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 55,
+              "status": "completed"
+            }
+          ]
+        }
+      ],
+      "label": "general",
+      "run_id": 38487570740,
+      "run_number": 251,
+      "status": "completed",
+      "updated_at": "2026-10-14T00:06:52Z"
+    },
+    {
+      "attempt": 1,
+      "conclusion": "success",
+      "created_at": "2026-10-13T23:59:54Z",
+      "event": "pull_request",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487570698",
+      "jobs": [
+        {
+          "completed_at": "2026-10-14T00:00:06Z",
+          "conclusion": "success",
+          "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487570698/job/115604810602",
+          "id": 115604810602,
+          "name": "gitleaks",
+          "started_at": "2026-10-13T23:59:57Z",
+          "status": "completed",
+          "steps": [
+            {
+              "conclusion": "success",
+              "number": 1,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 2,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 3,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 4,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 8,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 9,
+              "status": "completed"
+            }
+          ]
+        }
+      ],
+      "label": "scan_pull_request",
+      "run_id": 38487570698,
+      "run_number": 351,
+      "status": "completed",
+      "updated_at": "2026-10-14T00:00:07Z"
+    },
+    {
+      "attempt": 1,
+      "conclusion": "success",
+      "created_at": "2026-10-13T23:59:50Z",
+      "event": "push",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487563868",
+      "jobs": [
+        {
+          "completed_at": "2026-10-14T00:00:00Z",
+          "conclusion": "success",
+          "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487563868/job/115604789287",
+          "id": 115604789287,
+          "name": "gitleaks",
+          "started_at": "2026-10-13T23:59:53Z",
+          "status": "completed",
+          "steps": [
+            {
+              "conclusion": "success",
+              "number": 1,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 2,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 3,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 4,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 8,
+              "status": "completed"
+            },
+            {
+              "conclusion": "success",
+              "number": 9,
+              "status": "completed"
+            }
+          ]
+        }
+      ],
+      "label": "scan_push",
+      "run_id": 38487563868,
+      "run_number": 350,
+      "status": "completed",
+      "updated_at": "2026-10-14T00:00:01Z"
+    },
+    {
+      "attempt": 1,
+      "conclusion": "skipped",
+      "created_at": "2026-10-13T23:59:54Z",
+      "event": "pull_request",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487570885",
+      "jobs": [
+        {
+          "completed_at": "2026-10-13T23:59:55Z",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38487570885/job/115604812911",
+          "id": 115604812911,
+          "name": "dco",
+          "started_at": "2026-10-13T23:59:55Z",
+          "status": "completed",
+          "steps": []
+        }
+      ],
+      "label": "dco",
+      "run_id": 38487570885,
+      "run_number": 160,
+      "status": "completed",
+      "updated_at": "2026-10-13T23:59:55Z"
+    }
+  ],
+  "schema": "gsip-exact-e0ce-general-ci-historical-closure-v1",
+  "scope": "GET-only general CI, both secret scans and DCO; native artifact/acceptance outside this verification",
+  "secret_scan_evidence": [
+    {
+      "attempt": 1,
+      "conclusion": "success",
+      "event": "pull_request",
+      "job_id": 115604810602,
+      "log": {
+        "raw_log_bytes": 22004,
+        "raw_log_persisted": false,
+        "raw_log_sha256": "5c27b658c8ce0a5abdfd6c50e5daef037857abad661cf338b650b8df60f9e183"
+      },
+      "no_leaks_literal_observed": true,
+      "pinned_version8_21_2_observed": true,
+      "reported_commits_scanned": [
+        150
+      ],
+      "run_id": 38487570698
+    },
+    {
+      "attempt": 1,
+      "conclusion": "success",
+      "event": "push",
+      "job_id": 115604789287,
+      "log": {
+        "raw_log_bytes": 20676,
+        "raw_log_persisted": false,
+        "raw_log_sha256": "4c82d381373b14121c259fe76b2c912376de4833f4c6babe19cf60593c3a024e"
+      },
+      "no_leaks_literal_observed": true,
+      "pinned_version8_21_2_observed": true,
+      "reported_commits_scanned": [
+        150
+      ],
+      "run_id": 38487563868
+    }
+  ],
+  "snapshot_sha256": "b2218ce235e113b23ec6f18d1d285bf57ed8a158559616178e28168452b751e0",
+  "source_binding": {
+    "actual_checkout": {
+      "expected_head_and_main_parents_exact": true,
+      "helper_blob_sha": "fad7572c9b0845c121cd5b54035cc4596985cf6c",
+      "helper_bytes": 125844,
+      "helper_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "merge_commit": "d29d322867de7dafdd8b862194cc8325e80021ba",
+      "parents": [
+        "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+        "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d"
+      ]
+    },
+    "actual_merge_checkout_tree": "37f4a896984d7f9652e947f88e5d3128a4e9a98e",
+    "branch_tree": "37f4a896984d7f9652e947f88e5d3128a4e9a98e",
+    "entire_tree_exact_branch_head": true,
+    "helper_content_verified_at_head_and_actual_merge_checkout": true,
+    "helper_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+    "helper_source_binding_receipt_sha256": "faf4b549b44f3d3c087a5912cb863f0a19351a25211fca311520699ceac3a670",
+    "privacy_blob_sha": "c76ab3de7c022f9f34fba80a9155e35a622f4f9d",
+    "privacy_sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a"
+  },
+  "static_build_and_db_steps": {
+    "all_general_job_steps_success": true,
+    "lint_typecheck_build_ruff_mypy_deno_migration_db_start_reset_test_stop_command_groups_observed": true,
+    "migration_numeric_case_count_not_reported": true,
+    "site_budget_step_not_present_in_workflow_and_no_numeric_output_observed": true
+  },
+  "terminal_totals_receipt_sha256": "ea04de33412500e9b0337405e1021c0d2b2633129ce9547ec5fc3a906c54151b",
+  "validate_success": true
+}

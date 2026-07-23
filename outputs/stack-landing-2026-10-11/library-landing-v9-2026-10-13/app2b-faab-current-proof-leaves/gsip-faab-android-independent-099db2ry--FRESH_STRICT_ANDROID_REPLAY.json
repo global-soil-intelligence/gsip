@@ -1,0 +1,107 @@
+{
+  "actual_GMM_POM_binary_counts": [
+    {
+      "label": "parent",
+      "views": [
+        {
+          "POM_chain_records": 79,
+          "POM_chains": 75,
+          "all_six_exact_reviewed_primary_contexts": true,
+          "configuration": "debugRuntimeClasspath",
+          "raw_GMM_documents": 6,
+          "runtime_binary_records": 73,
+          "selected_GMM_routes": 3,
+          "selected_modules": 75
+        },
+        {
+          "POM_chain_records": 79,
+          "POM_chains": 75,
+          "all_six_exact_reviewed_primary_contexts": true,
+          "configuration": "releaseRuntimeClasspath",
+          "raw_GMM_documents": 6,
+          "runtime_binary_records": 73,
+          "selected_GMM_routes": 3,
+          "selected_modules": 75
+        }
+      ]
+    },
+    {
+      "label": "candidate",
+      "views": [
+        {
+          "POM_chain_records": 79,
+          "POM_chains": 75,
+          "all_six_exact_reviewed_primary_contexts": true,
+          "configuration": "debugRuntimeClasspath",
+          "raw_GMM_documents": 6,
+          "runtime_binary_records": 74,
+          "selected_GMM_routes": 3,
+          "selected_modules": 75
+        },
+        {
+          "POM_chain_records": 79,
+          "POM_chains": 75,
+          "all_six_exact_reviewed_primary_contexts": true,
+          "configuration": "releaseRuntimeClasspath",
+          "raw_GMM_documents": 6,
+          "runtime_binary_records": 74,
+          "selected_GMM_routes": 3,
+          "selected_modules": 75
+        }
+      ]
+    }
+  ],
+  "actual_repeats": {
+    "candidate": {
+      "byte_equal": true,
+      "entry_content_equal": true
+    },
+    "parent": {
+      "byte_equal": true,
+      "entry_content_equal": true
+    }
+  },
+  "android_job_id": 115663053505,
+  "archive_byte_delta": 56719,
+  "build_receipt_fields_per_side": [
+    13,
+    13
+  ],
+  "candidate_checkout": "5d974ed24977e44026666ba8d3b2158b4a22dd06",
+  "closed_capture_library_flags": "pass",
+  "comparison_dictionary_equal": true,
+  "comparison_sha256": "1791d22af995ea4f3b98f56eae1ab6417108752b91248f2acba0b58de2c5c56f",
+  "compiled_contents_printed": false,
+  "current_source_and_parent_locks": "pass",
+  "feature_difference_counts": {
+    "changed_entries": 38,
+    "first_only": 4,
+    "second_only": 9
+  },
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "helper_sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
+  "native_receipt_fields_per_side": [
+    13,
+    13
+  ],
+  "native_source_inputs_per_side": [
+    8,
+    8
+  ],
+  "npm_sources_per_side": [
+    6,
+    7
+  ],
+  "parent_checkout": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "regenerated_comparison_bytes_equal": true,
+  "run_attempt": 1,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "runtime_configurations_per_side": [
+    2,
+    2
+  ],
+  "shared_disposable_key_digest_equal": true,
+  "strict_native_source_license_graph_proof": "pass",
+  "strict_replay_network_or_build_execution": false
+}

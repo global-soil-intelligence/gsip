@@ -1,0 +1,32 @@
+{
+  "acceptance_checkbox_count": 122,
+  "base_commit": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "changed_paths": [
+    "README.md",
+    "docs/BUILD_ORDER.md",
+    "docs/SPEC.md"
+  ],
+  "checked_source_files": 365,
+  "checks": {
+    "BUILD_ORDER_records_merged_source_without_stale_proposal_claim": true,
+    "README_records_merged_APP2B_source_only": true,
+    "SPEC_I1_I15_invariant_bytes_exact": true,
+    "SPEC_backup_activation_and_owner_gate_bytes_exact": true,
+    "SPEC_launch_photo_publication_gate_bytes_exact": true,
+    "SPEC_photo_privacy_science_federation_bytes_exact": true,
+    "SPEC_records_merged_APP2B_source_only": true,
+    "all_362_other_tracked_files_byte_exact": true,
+    "all_365_source_modes_unchanged": true,
+    "all_nonstatus_bytes_exact_README.md": true,
+    "all_nonstatus_bytes_exact_docs/BUILD_ORDER.md": true,
+    "all_nonstatus_bytes_exact_docs/SPEC.md": true,
+    "every_acceptance_checkbox_line_and_state_exact": true,
+    "only_three_allowed_document_paths_changed": true,
+    "source_claim_has_authenticated_merged_PR63_main_baseline": true
+  },
+  "failed": 0,
+  "failed_checks": [],
+  "network_or_native_or_production_action": false,
+  "passed": 15,
+  "schema": "gsip-doc1-private-acceptance-witness-v1"
+}

@@ -1,0 +1,19 @@
+{
+  "version": "8.21.2",
+  "command": [
+    "/private/tmp/gsip-gitleaks-8212-gj2csfbo/gitleaks",
+    "git",
+    ".",
+    "--no-banner",
+    "--redact",
+    "--log-opts=--all",
+    "--report-format=json",
+    "--report-path",
+    "/private/tmp/gsip-whole-stack-final-leaks.json"
+  ],
+  "exit_code": 0,
+  "redacted_output": "\u001b[90m10:29PM\u001b[0m \u001b[32mINF\u001b[0m 79 commits scanned.\n\u001b[90m10:29PM\u001b[0m \u001b[32mINF\u001b[0m scan completed in 814ms\n\u001b[90m10:29PM\u001b[0m \u001b[32mINF\u001b[0m no leaks found\n",
+  "ignore_exact": true,
+  "ignore_sha256": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+  "findings": []
+}

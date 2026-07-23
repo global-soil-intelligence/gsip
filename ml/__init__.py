@@ -1,1 +1,1 @@
-"""GSIP future machine-learning interfaces."""
+"""GSIP local, laboratory-linked soil-carbon prediction experiments."""

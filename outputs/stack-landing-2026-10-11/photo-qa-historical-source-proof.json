@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "historical_source_commit": "969076a394aef4af8c65b55a664001b68fc2bfa6",
+  "reviewed_target_commit": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "path": "supabase/migrations/20260722193000_wp4b_photo_qa.sql",
+  "recorded_remote_version": "20260722191802",
+  "historical_statement_sha256": "4d79aaa6fdc1a7401a1314deacac61550a7c1656f9450a3be5d86eb6bc0b2148",
+  "historical_repository_blob_sha256": "4d79aaa6fdc1a7401a1314deacac61550a7c1656f9450a3be5d86eb6bc0b2148",
+  "current_repository_blob_sha256": "7dad54be4ec8354fccacd652143ec4f26449d76a6fdf7da107adda6aa7c23ded",
+  "digest_readback_receipt_sha256": "7b8429f2e00f19f495cd439ae98d7465637c5fcde1d8c8d9a4a1053025f10eee",
+  "delta": "Exactly one insertion of IF NOT EXISTS in ADD COLUMN gps_accuracy_m REAL; no other byte changes",
+  "column_semantics": "submissions.gps_accuracy_m nullable REAL with nonnegative check; not boolean or metadata-stripping flag",
+  "proof_assertions": 3,
+  "scope": "Historical statement digest matches public repository source; no remote statement body or contributor rows were retrieved",
+  "production_mutations_performed": []
+}

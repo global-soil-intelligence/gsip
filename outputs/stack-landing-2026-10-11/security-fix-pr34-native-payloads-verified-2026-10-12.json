@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-10-12T14:58:37.429742+00:00",
+  "status": "PASS",
+  "pr": 34,
+  "head": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "run_id": 38265397710,
+  "artifacts_downloaded": true,
+  "android_package_id_verified": "com.globalsoilintelligence.app",
+  "ios_bundle_id_verified": "com.globalsoilintelligence.app",
+  "payload_hashes": {
+    "security-fix-pr34-native-38265397710/gsip-capture-android-debug/app-debug.apk": "3f48e7781d451729098d00b69e485edc2a6c42c6471d36135563ad2a16b4540f",
+    "security-fix-pr34-native-38265397710/gsip-capture-ios-simulator/gsip-capture-ios-simulator.zip": "93510d96a5c19c43be42991e8f8f2910e1d522026c85f940876e48a2607280a6"
+  },
+  "limits": [
+    "WPAPP1 predates APP2A version and backup receipts; no APP2A receipt claim is made for PR34.",
+    "First local presence check assumed the wrong bundle identifier; the corrected check uses the exact-head capacitor.config.ts identifier and passes."
+  ],
+  "production_mutations": []
+}

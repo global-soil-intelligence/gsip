@@ -1,0 +1,233 @@
+{
+  "status": "PREPARED_NOT_DEPLOYED",
+  "source_branch": "wp-site-1f-spectral-library",
+  "base_commit": "ccbe716caf8406dda7ffd58ecb9cab62ea0702bf",
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "repository_variables_configured": {
+    "SUPABASE_URL": true,
+    "VITE_SUPABASE_PUBLISHABLE_KEY": true,
+    "VITE_PRIOR_TILES_BASE": false,
+    "VITE_DATASET_URL": false,
+    "VITE_GSIP_PUBLIC_API": true,
+    "VITE_TERMS_URL": false,
+    "VITE_PRIVACY_URL": false,
+    "VITE_SAMPLING_RULES_URL": false
+  },
+  "commands": [
+    [
+      "pnpm",
+      "build:pages"
+    ],
+    [
+      "pnpm",
+      "check:map-budget"
+    ],
+    [
+      "pnpm",
+      "check:prior-tiles"
+    ],
+    [
+      "pnpm",
+      "check:site-budget"
+    ]
+  ],
+  "file_count": 38,
+  "total_bytes": 6080752,
+  "files": [
+    {
+      "path": "about/index.html",
+      "bytes": 6439,
+      "sha256": "e8da342605531cb4f9ac3fb0cfbcb25436360a899aa09a585944f86af443408d"
+    },
+    {
+      "path": "assets/main-CQunBpw7.js",
+      "bytes": 251852,
+      "sha256": "dc820ba75169e46200e1fbbeced3c807f4fca709341a630d8fd7dc4968c3bf6b"
+    },
+    {
+      "path": "assets/main-CdU0pfZy.css",
+      "bytes": 17223,
+      "sha256": "b1a3e832a29a6f2d40376eadc93db588ff419fe7d105b54b39118ec46168b898"
+    },
+    {
+      "path": "capture/assets/dist-DrwtsX7j.js",
+      "bytes": 7754,
+      "sha256": "3fb5ed5a936995d89004aa9688ea992482ec8320274d50feff3833f057740f11"
+    },
+    {
+      "path": "capture/assets/esm-BWhgVwNs.js",
+      "bytes": 406,
+      "sha256": "7e48a239b0dd11579db22ae456d9a37b432e2e0d86dfb050e38b2c01950f0103"
+    },
+    {
+      "path": "capture/assets/esm-BrAszanm.js",
+      "bytes": 819,
+      "sha256": "a7b665d4ef17f1b1dc9c73dcae0d9a513b7d84d39158e31bf8946dc69c15175f"
+    },
+    {
+      "path": "capture/assets/esm-CHVXGPPW.js",
+      "bytes": 587,
+      "sha256": "60289b6cec93264dbef06889d402f74744ca801659061da20271e98cb8efc46d"
+    },
+    {
+      "path": "capture/assets/esm-YcB-ubya.js",
+      "bytes": 9834,
+      "sha256": "03dc21355112032d88a5be7f34462b9a29a69513e2779e5ba020f4e96fabfb8b"
+    },
+    {
+      "path": "capture/assets/index-CMcpQaOK.js",
+      "bytes": 806818,
+      "sha256": "eb72eae5c440ac174c34be052a7776bc817dc5a8fb6e331be4937305427be0e5"
+    },
+    {
+      "path": "capture/assets/index-DZ_h-Mw_.css",
+      "bytes": 7334,
+      "sha256": "359571ceba7714336ebbfcfec093e6001c5ae65f381084a27c1f7e8775b78e56"
+    },
+    {
+      "path": "capture/assets/synapse-D5y-aojA.js",
+      "bytes": 624,
+      "sha256": "db56839eb35756ad0bfa4aee4a008a1fe40b116ef3de989b872282682baa9653"
+    },
+    {
+      "path": "capture/assets/web-CfRXg3vD.js",
+      "bytes": 8475,
+      "sha256": "32a072afaa8ab07f9c71df7126a42606518e317c2dbd4d55bbce509dc901ca94"
+    },
+    {
+      "path": "capture/assets/web-ClVSmdgs.js",
+      "bytes": 4439,
+      "sha256": "c7cb85c6e43daadbb6f3dffeb100ca91b6f5f9b4f7abfed57252a2dd7e781434"
+    },
+    {
+      "path": "capture/assets/web-Z7Um3E4a.js",
+      "bytes": 2086,
+      "sha256": "f6f6c0067308a0d40aa744d6d9267fb1ca7e1c58f78ec042dbb81547edd511b7"
+    },
+    {
+      "path": "capture/gsip-activation.json",
+      "bytes": 50,
+      "sha256": "e79c9ca28c243929e0252ffd0b42c868560e17d293c225532d09410b92d04bdc"
+    },
+    {
+      "path": "capture/icon.svg",
+      "bytes": 370,
+      "sha256": "7bc121f182dfb271605723fd9e08db8be552b6aa1ba03d5ac249357dfd1c4e91"
+    },
+    {
+      "path": "capture/index.html",
+      "bytes": 577,
+      "sha256": "8b7ee7facfc1960e5df107ba08f9dbf7697d3c583f3b779b5475a6a0fe064586"
+    },
+    {
+      "path": "capture/manifest.webmanifest",
+      "bytes": 325,
+      "sha256": "a3b1be7a5206677834f623191f7c4ae3daffdcf7fa38644498d1917cafabe0d8"
+    },
+    {
+      "path": "capture/registerSW.js",
+      "bytes": 136,
+      "sha256": "e12c8db54e3cc247034427f2b661b305a78fea7e7cdec1eac179fecec3da0fc7"
+    },
+    {
+      "path": "capture/sw.js",
+      "bytes": 1565,
+      "sha256": "5e04c5b57fd693b4c5338a28305e98c44679a46d51babf7e29eae95a9ccdc24c"
+    },
+    {
+      "path": "capture/workbox-9c191d2f.js",
+      "bytes": 15112,
+      "sha256": "04b086f1b2f4215ee4b659a7bc9c76162894abdb43fa876247bc7c0bd6fd1c37"
+    },
+    {
+      "path": "card/index.html",
+      "bytes": 6147,
+      "sha256": "a2c51a4ca4896aff80e77fda49d7cbcb01c6d72dec108f2af46602fb971148f2"
+    },
+    {
+      "path": "card-bw-preview.png",
+      "bytes": 37508,
+      "sha256": "e3c1a24795628a17438686056e61b98df0dd368485bde0f06ec3613308ad5383"
+    },
+    {
+      "path": "card-color-preview.png",
+      "bytes": 37527,
+      "sha256": "cdbb6289d3d7ae6ad88dbb2ff3037698f3a729b4308a8567242e823e8f3c9534"
+    },
+    {
+      "path": "data/index.html",
+      "bytes": 9469,
+      "sha256": "81b85b0325047f66324696d002cc86a12e322aafad3453d5ee9e7422e6354fc3"
+    },
+    {
+      "path": "favicon.svg",
+      "bytes": 370,
+      "sha256": "7bc121f182dfb271605723fd9e08db8be552b6aa1ba03d5ac249357dfd1c4e91"
+    },
+    {
+      "path": "index.html",
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b"
+    },
+    {
+      "path": "llms.txt",
+      "bytes": 2389,
+      "sha256": "66a407dd647ae9fc22234d4469d01b76de459999491b6c23058a551c3ebcb6ee"
+    },
+    {
+      "path": "map/assets/index-BvpiT6QS.js",
+      "bytes": 1793664,
+      "sha256": "8f3c777c959b2a700d299dcd14c30b7d71c93edcff4d3339c5bb40010f44d7ca"
+    },
+    {
+      "path": "map/assets/index-gHsDz2RA.css",
+      "bytes": 85863,
+      "sha256": "2448caa8f5f478b0d524a632501bfc45a8c6f6ec8336ae39e7f8a72e3ff918cd"
+    },
+    {
+      "path": "map/index.html",
+      "bytes": 407,
+      "sha256": "d2520e23662ac7cfd0e0935cd5a52f47a8f849d28479e8a5cbd1e4df3b7762fd"
+    },
+    {
+      "path": "methods/index.html",
+      "bytes": 8184,
+      "sha256": "d4cb407020c1fc8c159e8277f029542a51f3e0d09ff07ef6195eb96eb7878d43"
+    },
+    {
+      "path": "og-library.png",
+      "bytes": 1965996,
+      "sha256": "07c99fc8d617edf3142267acf75ff9c39fcb88a5ad0f0fc06fb3824dad3785e0"
+    },
+    {
+      "path": "og.png",
+      "bytes": 965367,
+      "sha256": "66bd15c9c969bdfc21658ed9c5a7383eba5b4a7e73d135687109678cf112b81f"
+    },
+    {
+      "path": "reference-card/gsip-reference-card-v1-bw.pdf",
+      "bytes": 5851,
+      "sha256": "deb4a5db3aae33a03dc561a740b9924f6ad821113f85ca61012499f64021db42"
+    },
+    {
+      "path": "reference-card/gsip-reference-card-v1-color.pdf",
+      "bytes": 5898,
+      "sha256": "92e35f4cd226ed1d04c4d587ddfd5e07093735c748455ef8d92546bd608d0167"
+    },
+    {
+      "path": "robots.txt",
+      "bytes": 80,
+      "sha256": "e19486f8f74a744bdfe502c686b5ac8a28ec3d2f1a018d717a3fda76f7aba297"
+    },
+    {
+      "path": "sitemap.xml",
+      "bytes": 498,
+      "sha256": "01ee464f47f03ab941362bdb78a488721724c96a96c66dd3752b1197d8268842"
+    }
+  ],
+  "source_commit": "d13abfb1bace8ba84e6091ce0033f104b53edf78",
+  "pull_request": "https://github.com/global-soil-intelligence/gsip/pull/75"
+}

@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-10-12T14:09:09.131Z",
+  "target_project_ref": "toxldjgwkxtneoqsazym",
+  "project_name": "gsip",
+  "branch": "main",
+  "environment": "Production",
+  "url": "https://supabase.com/dashboard/project/toxldjgwkxtneoqsazym/integrations/data_api/settings",
+  "exposed_schemas": [
+    "graphql_public",
+    "public"
+  ],
+  "unexposed_schemas": [
+    "private"
+  ],
+  "private_excluded": true,
+  "selection_evidence": "Rendered checkmark SVG present beside graphql_public and public; absent beside private. aria-selected is active option highlight and was not used as membership proof.",
+  "save_disabled": true,
+  "scope": "Fresh authenticated settings page read only. Opened schema-selection menu; no schema option clicked, no toggle, save, authentication, API or project mutation.",
+  "mutations_executed": []
+}

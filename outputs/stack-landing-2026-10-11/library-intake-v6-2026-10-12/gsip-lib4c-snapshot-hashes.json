@@ -1,0 +1,29 @@
+{
+  "base": "598d1acfc5e7fab6876b2f109cfac72452d91e74",
+  "files": {
+    ".env.example": "c60d4db146fb0275d3a62e69de18a6f36aef4c7423967c4cf6befe57d3fa63ef",
+    ".github/workflows/app-build.yml": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+    ".github/workflows/pages.yml": "56ea0a0db5ab0ebb843a40e8dc471734f01ac26d64ab682c792a7bac7117a982",
+    "docs/APP_STORE.md": "d4a54fea2633f053bc676f936b50c9ef1be86e8ca3edfc0c5ee35ff807f4890f",
+    "scripts/app_build.py": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4",
+    "scripts/build-pages.mjs": "8afb1a3a56d0de7fda14956ba3046215fc2617531799ada6498252f658099a68",
+    "tests/test_app_build.py": "b3461e625b4942b00f108cc9c00d847ae47a8d2c7f464d9040edeb3ce62496b1",
+    "apps/capture-pwa/src/App.tsx": "97e38f91065c77d07a26cc7f98bd6ad96aa593501a672efb813e847c6965b5b0",
+    "apps/capture-pwa/src/YourData.tsx": "4d6e1daebe001c557d00502837e517e77915584ddae40121b1671670d5c403a4",
+    "apps/capture-pwa/src/LibrarySection.tsx": "6b896e14deb6b01789ea5d3818c8ced1c1116e5d6fa252fe7eb674d607f0d8c5",
+    "apps/capture-pwa/src/library.ts": "d9ab1c2c46656e1325ee44b645fb9160d95b9b10773870cf73180fe19f184f16",
+    "apps/capture-pwa/src/errors.ts": "be3d0ee923dac46a987ae6441d2a55a0f11ad997cbc9747bec7b67a785b5515e",
+    "apps/capture-pwa/src/queue.ts": "74f0ccba9eeaff7a0ac44c7332a208cbe3e4a02e9d56ceb7778ff9acafe89319",
+    "apps/capture-pwa/src/sync.ts": "8e7bb7a073060c882cda08a04214e1ed69be4b85d0623d00c74d81bf67018c9c",
+    "apps/capture-pwa/src/supabase.ts": "ab953f710703d675d9d3138227dcf840f3c6c51eec0c65d360932630340d3197",
+    "apps/capture-pwa/src/types.ts": "15ab78d37d2d7edb8703553b825344cc2a2f6cbf193bbbd1af671a0fd2db7ebb",
+    "apps/capture-pwa/src/vite-env.d.ts": "d9e26e242bed6505be639b8708b51fa33f8599055b66cdb75d9ce05af2790b9a",
+    "apps/capture-pwa/vite.config.ts": "4b0e5761f3893ac616be19fdaa8bd899fa1c2943416b708f51a2901ef6ff241c",
+    "apps/capture-pwa/tests/library-app.test.tsx": "05f6090a27155e612d91b98263d7b27304b85160462e5965ac7d24ece5eb373e",
+    "apps/capture-pwa/tests/library-drafts.test.ts": "b321da26be93bec90f4e80ed7b0ec692f03bf7ae206d8276d9186162e0a4acd6",
+    "apps/capture-pwa/tests/library-sync.test.ts": "1b2886794b874727953dc24e9314a7d4834c094230223fd3424364a4057b8f26",
+    "apps/capture-pwa/tests/libraryFixtures.ts": "095f13a5613131766b923bb4b48570467cced38455ab3c74c74b3e2693aa9f25",
+    "apps/capture-pwa/tests/native-app.test.tsx": "1d2327d9f6aaa711bd8753e35c1971e7e27d6b91625610605fc2521d3ecd78ac",
+    "apps/capture-pwa/tests/your-data.test.tsx": "21a638de5bffe406ec1e26214f7eda0b6db45bd6bff8071b89b115557bf93558"
+  }
+}

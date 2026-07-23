@@ -1,0 +1,17 @@
+{
+  "actual_remote_e0_Android_job": 115604811427,
+  "actual_remote_e0_result": "FAILURE_STEP18_SOURCE_GUARD_NO_ANDROID_ARTIFACT",
+  "actual_remote_e0_run": 38487570722,
+  "authored_gitleaks_exit": 0,
+  "authored_gitleaks_leaks": 0,
+  "authored_gitleaks_version": "8.21.2",
+  "frozen_receipt_sha256": "fa2efcbf53f836bb9177da2b28d60facbda3d41e1721039bb6c8b9a8872db1dd",
+  "full_history_scan_by_author": false,
+  "legal_or_device_acceptance": false,
+  "native_acceptance_pending_new_hosted_run_and_artifacts": true,
+  "production_changes": false,
+  "remote_failure_safe_receipt_sha256": "d9ee21d173cdeeb95250b9e8a62c6ed7070e3d40f4781f3c8536ec9caf8402d2",
+  "schema": "gsip-cordova-compile-role-final-author-verification-v1",
+  "source_or_GitHub_mutations_after_freeze": false,
+  "source_unchanged_since_freeze": true
+}

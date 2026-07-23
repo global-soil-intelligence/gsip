@@ -1,0 +1,198 @@
+{
+  "all_variant_metadata_is_not_selection_proof": true,
+  "at": "2026-10-14T02:50:13.241165+00:00",
+  "driver_sha256": "21ff0e9e4bdfd1f80cfd610b3bbe1ec8f9d42148023737dcbe053a300399cb8c",
+  "graphs": [
+    {
+      "label": "parent",
+      "sha256": "400a9c7892c1c0e4eb50bf9684a03c7803ba709bef0648848fbf98db2b74e5b4"
+    },
+    {
+      "label": "candidate",
+      "sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832"
+    }
+  ],
+  "maintained_source_build_key_APK_or_cache_mutations": false,
+  "own_selected_external_variant_edges_executed": false,
+  "primary_receipt_sha256": "50b6ef461fc51470379fe6247cd8e6f5c12dad1af0cf9fc1794bcc4962de0afb",
+  "primary_spec_section": "files value, lines143-152; name gives cache identity, url gives relative repository location",
+  "primary_spec_url": "https://raw.githubusercontent.com/gradle/gradle/v8.14.3/platforms/documentation/docs/src/docs/design/gradle-module-metadata-latest-specification.md",
+  "recoveries": [
+    "Initial default-sandbox public GET failed DNS before any bytes. Original driver/attempt directory preserved. Authorized fixed-six-URL retry succeeded without authentication.",
+    "Initial terminal basename-equals-URL assertion failed on genuine graphics metadata. No maintained guard changed. Primary8.14.3 specification establishes files.name as cache identity; corrected finite probe checks exact name and exact URL distinct roles, not an alternative-name fallback."
+  ],
+  "required_selected_route_proof": "Both actual roots/configurations must bind selected owner and variant external edge to exactly this source available-at tuple and target known variant. Raw GMM alone is insufficient.",
+  "rows": [
+    {
+      "actual_target_observations": [
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "debugRuntimeClasspath",
+          "graph": "parent",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        },
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "releaseRuntimeClasspath",
+          "graph": "parent",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        },
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "debugRuntimeClasspath",
+          "graph": "candidate",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        },
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "releaseRuntimeClasspath",
+          "graph": "candidate",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        }
+      ],
+      "exact_available_at": {
+        "group": "androidx.annotation",
+        "module": "annotation-jvm",
+        "url": "../../annotation-jvm/1.8.1/annotation-jvm-1.8.1.module",
+        "version": "1.8.1"
+      },
+      "known_runtime_variant": "jvmRuntimeElements-published",
+      "root_coordinate": [
+        "androidx.annotation",
+        "annotation",
+        "1.8.1"
+      ],
+      "source_GMM_sha256": "e6386e85afdd865044e216575e493ed39a63a6325bd925379a21429c3941c8b5",
+      "target_GMM_sha256": "c959e3b0cdc75c15efe01605fa56aa79f033e39238e150638b8fabde6aa121a0",
+      "target_backlink_context_exact": true,
+      "target_coordinate": [
+        "androidx.annotation",
+        "annotation-jvm",
+        "1.8.1"
+      ],
+      "terminal_file_bytes": 56126,
+      "terminal_file_name": "annotation-jvm-1.8.1.jar",
+      "terminal_file_sha256": "9aab326d9492800991854360ac248f493ce7f7c3183519309b78ace9e240f6f6",
+      "terminal_file_url": "annotation-jvm-1.8.1.jar"
+    },
+    {
+      "actual_target_observations": [
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "debugRuntimeClasspath",
+          "graph": "parent",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        },
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "releaseRuntimeClasspath",
+          "graph": "parent",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        },
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "debugRuntimeClasspath",
+          "graph": "candidate",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        },
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "releaseRuntimeClasspath",
+          "graph": "candidate",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        }
+      ],
+      "exact_available_at": {
+        "group": "androidx.collection",
+        "module": "collection-jvm",
+        "url": "../../collection-jvm/1.4.2/collection-jvm-1.4.2.module",
+        "version": "1.4.2"
+      },
+      "known_runtime_variant": "jvmRuntimeElements-published",
+      "root_coordinate": [
+        "androidx.collection",
+        "collection",
+        "1.4.2"
+      ],
+      "source_GMM_sha256": "0326d2cf5adbe592312810ca1f71c6c0cc30f753c43f07c7402361b788a7784c",
+      "target_GMM_sha256": "aad6b3536c0f0e570aa733d5141d70fa6b9b3add370f73a311ca4ca5dee25448",
+      "target_backlink_context_exact": true,
+      "target_coordinate": [
+        "androidx.collection",
+        "collection-jvm",
+        "1.4.2"
+      ],
+      "terminal_file_bytes": 775789,
+      "terminal_file_name": "collection-jvm-1.4.2.jar",
+      "terminal_file_sha256": "984ce9bd780055eafb8a105aca3f514686bf7b1b6272ec7c645a98ce40fc7db4",
+      "terminal_file_url": "collection-jvm-1.4.2.jar"
+    },
+    {
+      "actual_target_observations": [
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "debugRuntimeClasspath",
+          "graph": "parent",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        },
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "releaseRuntimeClasspath",
+          "graph": "parent",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        },
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "debugRuntimeClasspath",
+          "graph": "candidate",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        },
+        {
+          "canonical_name_size_SHA256_exact": true,
+          "configuration": "releaseRuntimeClasspath",
+          "graph": "candidate",
+          "selected_target_component_present": true,
+          "terminal_artifact_records": 1
+        }
+      ],
+      "exact_available_at": {
+        "group": "androidx.graphics",
+        "module": "graphics-shapes-android",
+        "url": "../../graphics-shapes-android/1.0.1/graphics-shapes-android-1.0.1.module",
+        "version": "1.0.1"
+      },
+      "known_runtime_variant": "releaseRuntimeElements-published",
+      "root_coordinate": [
+        "androidx.graphics",
+        "graphics-shapes",
+        "1.0.1"
+      ],
+      "source_GMM_sha256": "2d7f6d55042299f9c4f8478aa094bc4099a346902779ff3091fed1dfc2b62f53",
+      "target_GMM_sha256": "9a5508caf02d78fcf2729394e97e7b27a43786273e17ccb65bf8e1b00a598324",
+      "target_backlink_context_exact": true,
+      "target_coordinate": [
+        "androidx.graphics",
+        "graphics-shapes-android",
+        "1.0.1"
+      ],
+      "terminal_file_bytes": 88037,
+      "terminal_file_name": "graphics-shapes-release.aar",
+      "terminal_file_sha256": "7171269a4122feabb071768df46d10b362e47ac75fd0aa8dbcafa1f44f61b40c",
+      "terminal_file_url": "graphics-shapes-android-1.0.1.aar"
+    }
+  ],
+  "schema": "gsip-independent-finite-selected-route-design-evidence-v1",
+  "scope_recommendation": "Only3exactrootcoordinates and6exactrawdocuments; retain every POM, actual binary and source/licence/closed-dependency proof. Directlegacy completeness unchanged. Unknown branch/version/doc, missing/unselected target, multihop/cycle, changed terminal name/url/size/hash refuses.",
+  "status": "SIX_PRIMARY_PINS_AND_TERMINAL_BINDINGS_VERIFIED_SELECTED_EDGE_STILL_REQUIRED"
+}

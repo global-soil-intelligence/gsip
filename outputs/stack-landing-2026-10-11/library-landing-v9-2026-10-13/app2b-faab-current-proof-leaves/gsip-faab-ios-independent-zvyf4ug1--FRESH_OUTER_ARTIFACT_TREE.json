@@ -1,0 +1,56 @@
+{
+  "arbitrary_values_printed": false,
+  "files": [
+    {
+      "bytes": 3593959,
+      "name": "gsip-capture-ios-simulator.zip",
+      "sha256": "2484e85ac43a358c5a25c781bdcd7eba1724188df2c6ebc73b76a62c2b17a9e5"
+    },
+    {
+      "bytes": 2156,
+      "name": "gsip-ios-build-receipt.json",
+      "sha256": "675c93d2e2b50584940cdbbe9621f9189226908775fdd690da72c52128a55a81"
+    },
+    {
+      "bytes": 85281,
+      "name": "gsip-ios-candidate-native-audit.json",
+      "sha256": "586f9cca733d45e0d44c4eb5986236d3dc34aa80b08e38274f2a35416691f45d"
+    },
+    {
+      "bytes": 3593959,
+      "name": "gsip-ios-candidate-repeat-reference.zip",
+      "sha256": "8804a9e9a0fc0b19d7a0024cc1bc134fd5aa8fb20466bd9d40984f1506dc0d15"
+    },
+    {
+      "bytes": 7431,
+      "name": "gsip-ios-feature-comparison.json",
+      "sha256": "07bd7156888f5f8748a55dbd752571712d8868a87f0e6f5ccc2a70dc7fdc8c53"
+    },
+    {
+      "bytes": 2156,
+      "name": "gsip-ios-parent-build-receipt.json",
+      "sha256": "0d40563d3847ecb60f838ecd5162a26667049fed21e53406a370ff6049f17a56"
+    },
+    {
+      "bytes": 84798,
+      "name": "gsip-ios-parent-native-audit.json",
+      "sha256": "a85de30abaa3d08405c7bb2fc8d1aede9869610433925f1f961b9439cdeb79ac"
+    },
+    {
+      "bytes": 3424164,
+      "name": "gsip-ios-parent-repeat-reference.zip",
+      "sha256": "f7835fa59d77c591880ba27ccae76f052bccfb1cdff6cb394b7c8b8f4aa26111"
+    },
+    {
+      "bytes": 3424164,
+      "name": "gsip-ios-parent.zip",
+      "sha256": "a49e97692da7505bee9e2b9e2f4a8543e31f49e296c6c92d71754625ed21912f"
+    }
+  ],
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "path_type_size_crc_bounds": "pass",
+  "required_files": 9,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "uncompressed_bytes": 14218068
+}

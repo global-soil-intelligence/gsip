@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-14T02:08:49.700888+00:00",
+  "version": "8.21.2",
+  "source_helper_sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee",
+  "files": [
+    {
+      "base_sha256": "c4df1700e0efce6ca014f9a8bca0e0e7bdcdde11496a50900e88b47024474da6",
+      "bytes": 133574,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee"
+    },
+    {
+      "base_sha256": "a804fb87a6bf162f3ce513e2894047345dde7e8d97c75a10a9629c932d467c71",
+      "bytes": 224140,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "5e2db7a77923d6110ce2abcdfe6fc74fdb1abeb264c9d05c2d9fb4262cd12b27"
+    },
+    {
+      "base_sha256": "b9cf2cc25a934ad5c072bc27d26252025b5759f8db7bb92e02d3fb557d2e515a",
+      "bytes": 40648,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "90be661ac7e140806378f701ce33052aab37a69199e1ea61e47c9502005a6136"
+    }
+  ],
+  "exit_code": 0,
+  "findings": 0,
+  "inline_allow_ignored": true,
+  "new_suppression": false,
+  "redaction": true,
+  "output_sha256": "f93dee4ad63b4f37c241c0cd54d66e3f0c3b2ed8488719e6ebdbdc41005ab886",
+  "output_bytes": 100,
+  "production_changes": false
+}

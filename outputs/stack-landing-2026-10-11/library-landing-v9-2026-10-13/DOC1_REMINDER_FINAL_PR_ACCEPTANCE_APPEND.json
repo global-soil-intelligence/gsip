@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-14T04:04:06.208962+00:00",
+  "pr": 66,
+  "head": "8b8cc24841d58c231743ff69472d3354f612dcf3",
+  "prior_body_exact_prefix": true,
+  "prior_body_sha256": "9c9ee568098fcb72ea7b6b5f2f491e8f371e1f53a3ed6620f9423edbd4ba7b5b",
+  "new_body_sha256": "d15a048cfe4f45539c3fd88cfdca8fcf341a9dc59e23e2ec44f4283c7e92c611",
+  "CI_closure_sha256": "ab3565209f938c2481a0ccda0433530d344f1e7358b8f0e9b90c05a5ca394e56",
+  "copied_CI_leaf_receipts": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_PR66_METRICS.json",
+      "sha256": "8a048629d5fc91e093da01a4536c8bdbe542e1ddeeef7c30983456a5b8999780"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_PR66_SCANS.json",
+      "sha256": "e3215374e8899d88998fc0248185be82689ea5d1b5e4ae826b1fb3dbe45ea308"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_PR66_SOURCE_BINDING.json",
+      "sha256": "43cf491c55bfc50a71dbf53187bbf93279328c6ad69a6f8cb82cb5715c184ea0"
+    }
+  ],
+  "independent_review_sha256": "587c9679224cf60598a7fe2ccdb0263fbfacdcaf8ae0fa6da36ebe420f637246",
+  "production_changes": false
+}

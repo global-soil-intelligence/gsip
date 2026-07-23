@@ -1,6 +1,6 @@
 # Global Soil Intelligence Project
 
-GSIP is an open-source citizen-science project for building a living global soil map. A phone-friendly PWA guides contributors through privacy-safe soil photography with a printable reference card. GSIP combines those observations with public soil-map priors and later open models to produce probabilistic soil estimates with explicit uncertainty.
+GSIP is an open-source citizen-science project for building a living global soil map. A shared web, iPhone, and Android app guides contributors through privacy-safe soil photography with a printable reference card. GSIP combines those observations with public soil-map priors and later open models to produce probabilistic soil estimates with explicit uncertainty.
 
 GSIP is not a laboratory-test replacement. Public outputs use H3-resolution locations, never precise contributor coordinates. Photos are sanitized before canonical storage and checked again before public release.
 
@@ -19,6 +19,14 @@ uv run pytest
 
 Run `pnpm --filter @gsip/capture-pwa dev` for capture or
 `pnpm --filter @gsip/map-web dev` for the map.
+
+## Mobile app
+
+The app combines Explore, Capture, My observations, Learn, and Account. Field capture supports native camera and location access, saved drafts, and queued uploads. See [mobile build and test notes](docs/MOBILE_BUILD_AND_TEST.md) for local previews, platform builds, backend setup, and release limitations.
+
+## Soil prediction research
+
+Run `uv run python -m ml status` to see pilot readiness. The [prediction pilot guide](docs/PREDICTION_PILOT.md) explains how to link reviewed photos to laboratory results, train and compare soil-carbon baselines, and evaluate uncertainty. Research models stay on hold until evidence gates pass; the phone app does not yet display image-derived soil properties.
 
 ## Governing documents
 

@@ -1,0 +1,208 @@
+{
+  "author_verification_sha256": "a9f67235514c7c397de626ce29918b7f0fda601d71db74079f41b55de936eb0d",
+  "authority": {
+    "owned_temporary_source_and_synthetic_fixtures_only": true,
+    "shared_source_Git_GH_CI_production_mutation": false
+  },
+  "base_head": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+  "carried_facts": {
+    "basis": "Whole-helper erasure outside exactly one regex string constant plus unchanged task/workflow/pins/old-test text; no source/device/CI readiness expanded.",
+    "selected_debug_v2_independent_closure_sha256": "5d809da2735d4b2518407eabbf536e71cfa2f2229db3cd0e30ea6b5d1e936173"
+  },
+  "evidence": {
+    "BASELINE_OWN_BANK.json": {
+      "bytes": 952,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/BASELINE_OWN_BANK.json",
+      "sha256": "12103fe0abf326170ac2a947ae7d9813a68a2ded6ebcba310343128d52d09eaf"
+    },
+    "EXACT_SOURCE_SCOPE.json": {
+      "bytes": 2334,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/EXACT_SOURCE_SCOPE.json",
+      "sha256": "4c7214666dc52ed10b78dff1992b5be2eded52d11abe4339bf87b929b8857a1f"
+    },
+    "FOCUSED_AND_MUTATION_RESULTS.json": {
+      "bytes": 7056,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/FOCUSED_AND_MUTATION_RESULTS.json",
+      "sha256": "324f56a64ac8964263d45c41aadb76fc105e712f368d832241ca5a23b67dff2e"
+    },
+    "PRIMARY_DOC_FORMAT_PROOF.json": {
+      "bytes": 708,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/PRIMARY_DOC_FORMAT_PROOF.json",
+      "sha256": "2fa6b16f5ff967ed097582dfe60e4d8fb3397d61e35f27d298c19407cace014c"
+    },
+    "baseline-own.xml": {
+      "bytes": 15817,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/baseline-own.xml",
+      "sha256": "bf49937a4fac23a54b1f3b8d20f4499139a639345e8f1a192667e3dd3c53f208"
+    },
+    "baseline800-new44.xml": {
+      "bytes": 17093,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/baseline800-new44.xml",
+      "sha256": "ea748cb73a5ecaf79c7394738cfa79dc89f90908bd4545f4439ea7a734d17bfa"
+    },
+    "current-new44-and-own50.xml": {
+      "bytes": 17569,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/current-new44-and-own50.xml",
+      "sha256": "3134de0dca6b1217f85915c92e52a5e4bfbabd0a9993d741095fa55ec0246f49"
+    },
+    "current-unchanged43.xml": {
+      "bytes": 7135,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/current-unchanged43.xml",
+      "sha256": "44d95e6e24ff5b0640fa47018e8f2ce890599d1c527fff688d958eee4cdc9444"
+    },
+    "mutant-build-bound17": {
+      "bytes": 133565,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/mutant-build-bound17/scripts/app_notification_audit.py",
+      "sha256": "ee07783ff33c64fbc8bdb4ae1da84d5ea0d11200e4653f804119f4691a41e799"
+    },
+    "mutant-build-bound17.xml": {
+      "bytes": 21498,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/mutant-build-bound17.xml",
+      "sha256": "14b3b4683fe2c0d409635192a3bec716c0877e619ac200ad0564aacff568856d"
+    },
+    "mutant-drop-toolchain-equality": {
+      "bytes": 133553,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/mutant-drop-toolchain-equality/scripts/app_notification_audit.py",
+      "sha256": "9815faa039fb0d20075d0766992acadb72c6218e2a933e7373f14364fa103729"
+    },
+    "mutant-drop-toolchain-equality.xml": {
+      "bytes": 26315,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/mutant-drop-toolchain-equality.xml",
+      "sha256": "49f6f66e634e3938a8a7460f307922b025eb999fad99b758dd7b946272bb9836"
+    },
+    "mutant-prefix-match": {
+      "bytes": 133570,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/mutant-prefix-match/scripts/app_notification_audit.py",
+      "sha256": "c683bf0aa3569cb78323cf5a01e7dedb465e027469432b853ac503c5e6e953c0"
+    },
+    "mutant-prefix-match.xml": {
+      "bytes": 30693,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/mutant-prefix-match.xml",
+      "sha256": "d161959de36916d5de7c725a264b6558dc78272609e028560b835a02c0d3518f"
+    },
+    "test_independent_aapt2_format.py": {
+      "bytes": 3563,
+      "path": "/private/tmp/gsip-aapt2-format-independent-bv5so0zf/test_independent_aapt2_format.py",
+      "sha256": "9d1fc6ece471c33d4039a0b668c2b9515c79c37dcd551bd30e38873a72682e9e"
+    }
+  },
+  "findings": [],
+  "frozen_source": "/private/tmp/gsip-aapt-version-frozen-fmtonhwr/source",
+  "independent_execution": {
+    "assertions_use_actual_validate_toolchain_validate_build_receipt_and_feature_comparison": true,
+    "baseline800_authored44": {
+      "errors": 0,
+      "failures": 5,
+      "skipped": 0,
+      "tests": 44
+    },
+    "baseline800_own50": {
+      "errors": 0,
+      "failures": 5,
+      "skipped": 0,
+      "tests": 50
+    },
+    "current_authored44_plus_own50": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 94
+    },
+    "current_unchanged43": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 43
+    },
+    "mutations": [
+      {
+        "counts": {
+          "errors": 0,
+          "failures": 2,
+          "skipped": 0,
+          "tests": 94
+        },
+        "name": "mutant-build-bound17"
+      },
+      {
+        "counts": {
+          "errors": 0,
+          "failures": 6,
+          "skipped": 0,
+          "tests": 94
+        },
+        "name": "mutant-drop-toolchain-equality"
+      },
+      {
+        "counts": {
+          "errors": 0,
+          "failures": 7,
+          "skipped": 0,
+          "tests": 94
+        },
+        "name": "mutant-prefix-match"
+      }
+    ],
+    "original_native_or_Gradle_controls_reexecuted": false
+  },
+  "limitations": [
+    "Actual failed800 captured aapt2 string unavailable; no claim that this valid-format correction establishes its exact hosted value.",
+    "No local native/Gradle/aapt2/key/real-APK/build/signing action executed by independent reviewer; tests use synthetic disposable artifacts only.",
+    "Fresh exact corrected-head general/scans/Android+iOS CI and current artifact/source/reference/repeat/native/license/permission proof remain required.",
+    "No merge, production, capture, physical-device, iOS backup, legal/distribution or store approval inferred.",
+    "Author/root whole-module/static results remain separate evidence and are not counted as independent execution."
+  ],
+  "manifest_sha256": "199c97413bb14b8da187670bc1e58febd78545dbc2f6249b73212cd796278e6b",
+  "patch_sha256": "c8ba54ccc7159882ff1ef4f197fe9dbc9c05d995afaaab6c2beee3551ef2440f",
+  "primary_evidence": {
+    "actual_failed800_CI_string_available": false,
+    "author_existing_SDK_version_only_probe": "author evidence bound by PRIMARY_VERSION_EVIDENCE SHA4db1c25279370486b5cfa22437d81b9db0a48a68c2b233cebd730268bc8b6714; not independently executed or used as hosted-value substitute.",
+    "current800guard_rejection_of_valid_shape_reproduced": true,
+    "documented_example_has_two_numeric_components": true,
+    "hosted_rootcause_claimed": false,
+    "official_documentation_independently_read": "https://developer.android.com/tools/aapt2#version"
+  },
+  "recoveries": [
+    "Initial verifier assumed previous path-keyed manifest; actual shape base_commit/files list adapted before source copy.",
+    "Initial textual regex matcher expected one source line; formatter wraps the same constant into two adjacent raw strings. Restoring the single AST Constant source span reproduces entire800 helper text exactly."
+  ],
+  "reviewed_at": "2026-10-14T02:09:32.527092+00:00",
+  "schema": "gsip-independent-aapt2-format-source-closure-v1",
+  "scope": {
+    "219529B_prior_test_prefix_exact": true,
+    "362otherfiles_exact800": true,
+    "all365tracked_source_bytes_bound": true,
+    "all_runtime_locator_permission_license_source_receipt_signing_and_equality_code_unchanged": true,
+    "entire_helper_exact_after_one_regex_constant_restoration": true,
+    "exact_prefix_ascii_type_cap_numeric_bounds_and_fullmatch_retained": true,
+    "formatter_only_literal_wrap": "same single AST string constant split into two adjacent raw strings",
+    "optional_third_numeric_component_only": true,
+    "tasks": {
+      "DEBUG_SIGNING_TASK": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf",
+      "GRADLE_TASK": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0"
+    },
+    "workflow_sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+  },
+  "source_files": {
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_sha256": "b9cf2cc25a934ad5c072bc27d26252025b5759f8db7bb92e02d3fb557d2e515a",
+      "bytes": 40648,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "90be661ac7e140806378f701ce33052aab37a69199e1ea61e47c9502005a6136"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_sha256": "c4df1700e0efce6ca014f9a8bca0e0e7bdcdde11496a50900e88b47024474da6",
+      "bytes": 133574,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_sha256": "a804fb87a6bf162f3ce513e2894047345dde7e8d97c75a10a9629c932d467c71",
+      "bytes": 224140,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "5e2db7a77923d6110ce2abcdfe6fc74fdb1abeb264c9d05c2d9fb4262cd12b27"
+    }
+  },
+  "source_freeze_sha256": "797935d4d05f5c157f793efa7329712bcce3c44919f47e371fe5fa0f9f885e4b",
+  "status": "CLOSED_NO_BLOCKER_SOURCE_ONLY"
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "id": "be4b0424-e6a2-4ddf-9533-b9625f4be235",
+    "slug": "prior-attach",
+    "name": "prior-attach",
+    "status": "ACTIVE",
+    "version": 3,
+    "created_at": 1784747428489,
+    "updated_at": 1784783397734,
+    "verify_jwt": true,
+    "ezbr_sha256": "25d45a61e1032e4f6d47b695b2501bd434511f5a275b8a797907bb5c75c48499"
+  }
+]

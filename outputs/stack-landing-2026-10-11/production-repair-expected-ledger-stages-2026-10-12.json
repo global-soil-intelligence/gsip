@@ -1,0 +1,704 @@
+{
+  "assertions": [
+    "Exact version/name identity set and expected count, with no duplicate rows or unknown versions.",
+    "All original rows surviving each stage must match their original full six-field JSON SHA-256.",
+    "After the added stage passes, capture the thirteen new full-row hashes and require them unchanged in both later stages.",
+    "New canonical row hashes are not guessed from raw file hashes; Supabase CLI SQL parsing can change statement-array serialization.",
+    "No October identities may appear during this repair.",
+    "Application counts, schema, RLS, owners, grants, functions and Storage policies remain governed by separate unchanged receipts; this plan does not read or hash application-row contents."
+  ],
+  "bound_operational_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "foreign_version_to_retire": "20260730174047",
+  "new_canonical_records": [
+    {
+      "name": "wp1_v22_privacy_and_grants",
+      "reviewed_sql_file_sha256": "86213d751d8df64404a5aaea332f7ea93d996716f569bfa036aca9f8812e34ff",
+      "version": "20260722181500"
+    },
+    {
+      "name": "wp1_performance_indexes",
+      "reviewed_sql_file_sha256": "2efb4383f8629154a031342e0494e04c3105b979353911e3d9415e4fba93880a",
+      "version": "20260722183000"
+    },
+    {
+      "name": "wp4_prior_jobs",
+      "reviewed_sql_file_sha256": "430b0c9064e6d075197d755d661bf00e345faff49b4e8e9db59de13253fa2358",
+      "version": "20260722190000"
+    },
+    {
+      "name": "wp4_prior_jobs_hardening",
+      "reviewed_sql_file_sha256": "8160abac06009fdf3eab8d9f38b1e4add8330995dd274014a85182eb8e44249c",
+      "version": "20260722190500"
+    },
+    {
+      "name": "wp4b_photo_qa",
+      "reviewed_sql_file_sha256": "7dad54be4ec8354fccacd652143ec4f26449d76a6fdf7da107adda6aa7c23ded",
+      "version": "20260722193000"
+    },
+    {
+      "name": "wp6_export_guardrails",
+      "reviewed_sql_file_sha256": "c6d491d01686ee2e293b98ccd84e074e96603d4b9d0a8ceaef239e1cb004233f",
+      "version": "20260722200000"
+    },
+    {
+      "name": "phase1_actor_hardening",
+      "reviewed_sql_file_sha256": "a3b0a00dc2878a4b1d7b1f9e289d6e1970ef7499105e14bc764c92f69dc1678d",
+      "version": "20260723002255"
+    },
+    {
+      "name": "qa_event_provenance",
+      "reviewed_sql_file_sha256": "f2ef7ab587c72fd008383edee716761c908a71f94c82dfb0daedc2dcc3e7698d",
+      "version": "20260723004439"
+    },
+    {
+      "name": "public_h3_aggregates",
+      "reviewed_sql_file_sha256": "4ac1f12cb35e1d9a4c5ce4d5c81c9d962a1ec54b60ff99cca87debed4fdce81b",
+      "version": "20260723005752"
+    },
+    {
+      "name": "atomic_public_h3_refresh",
+      "reviewed_sql_file_sha256": "e8a80e13b2dfcef185bdb6b84de054cd90bb5656449b095842fb152bfc7bba62",
+      "version": "20260723010313"
+    },
+    {
+      "name": "atomic_prior_attempt_claim",
+      "reviewed_sql_file_sha256": "695520093d1332c38563fd83cdefbf726b4c3cde5be360ed851e52580f6a42c4",
+      "version": "20260723044745"
+    },
+    {
+      "name": "document_authenticated_h3_role",
+      "reviewed_sql_file_sha256": "fac47eb129ae5e913c973d063f19380b48eede88cd023326a543cc6e769b9220",
+      "version": "20260723045317"
+    },
+    {
+      "name": "remove_public_submission_residue",
+      "reviewed_sql_file_sha256": "1f133d48265e25fcdfd7d7b7714697ad4db774fbb8d87fcc8d84683ac5f1a634",
+      "version": "20260723045606"
+    }
+  ],
+  "production_mutations_performed": false,
+  "remote_versions_to_retire": [
+    "20260722182403",
+    "20260722182446",
+    "20260722190912",
+    "20260722191140",
+    "20260722191802",
+    "20260722194033",
+    "20260723011122",
+    "20260723011144",
+    "20260723011159",
+    "20260723011219",
+    "20260723050851",
+    "20260723050903",
+    "20260723050918"
+  ],
+  "source_sha256": {
+    "canonical-migration-timestamp-map.json": "e2c5756b62a73298aaaa18ef8b0c0a6398d2cb37fcecc885555cef2799d9fcf0",
+    "production-history-repair-mapping.json": "29efac77ddfda6946d87cb88928862ebdd529b603e4f5ef8de747e1c54192eba",
+    "production-history-whole-row-digests.json": "f00f00d7344b1929626af555b3099f379874614aaa67d61727735b8bbcaef05c"
+  },
+  "stages": {
+    "added": {
+      "expected_count": 31,
+      "identities": [
+        {
+          "name": "wp1_extensions",
+          "version": "20260722164727"
+        },
+        {
+          "name": "wp1_schema",
+          "version": "20260722164749"
+        },
+        {
+          "name": "wp1_rls",
+          "version": "20260722164806"
+        },
+        {
+          "name": "wp1_review_hardening",
+          "version": "20260722170020"
+        },
+        {
+          "name": "wp1_v22_privacy_and_grants",
+          "version": "20260722181500"
+        },
+        {
+          "name": "wp1_v22_privacy_and_grants",
+          "version": "20260722182403"
+        },
+        {
+          "name": "wp1_performance_indexes",
+          "version": "20260722182446"
+        },
+        {
+          "name": "wp1_performance_indexes",
+          "version": "20260722183000"
+        },
+        {
+          "name": "wp4_prior_jobs",
+          "version": "20260722190000"
+        },
+        {
+          "name": "wp4_prior_jobs_hardening",
+          "version": "20260722190500"
+        },
+        {
+          "name": "wp4_prior_jobs",
+          "version": "20260722190912"
+        },
+        {
+          "name": "wp4_prior_jobs_hardening",
+          "version": "20260722191140"
+        },
+        {
+          "name": "wp4b_photo_qa",
+          "version": "20260722191802"
+        },
+        {
+          "name": "wp4b_photo_qa",
+          "version": "20260722193000"
+        },
+        {
+          "name": "wp6_export_guardrails",
+          "version": "20260722194033"
+        },
+        {
+          "name": "wp6_export_guardrails",
+          "version": "20260722200000"
+        },
+        {
+          "name": "phase1_actor_hardening",
+          "version": "20260723002255"
+        },
+        {
+          "name": "qa_event_provenance",
+          "version": "20260723004439"
+        },
+        {
+          "name": "public_h3_aggregates",
+          "version": "20260723005752"
+        },
+        {
+          "name": "atomic_public_h3_refresh",
+          "version": "20260723010313"
+        },
+        {
+          "name": "phase1_actor_hardening",
+          "version": "20260723011122"
+        },
+        {
+          "name": "qa_event_provenance",
+          "version": "20260723011144"
+        },
+        {
+          "name": "public_h3_aggregates",
+          "version": "20260723011159"
+        },
+        {
+          "name": "atomic_public_h3_refresh",
+          "version": "20260723011219"
+        },
+        {
+          "name": "atomic_prior_attempt_claim",
+          "version": "20260723044745"
+        },
+        {
+          "name": "document_authenticated_h3_role",
+          "version": "20260723045317"
+        },
+        {
+          "name": "remove_public_submission_residue",
+          "version": "20260723045606"
+        },
+        {
+          "name": "atomic_prior_attempt_claim",
+          "version": "20260723050851"
+        },
+        {
+          "name": "document_authenticated_h3_role",
+          "version": "20260723050903"
+        },
+        {
+          "name": "remove_public_submission_residue",
+          "version": "20260723050918"
+        },
+        {
+          "name": "wavefunction_beta_schema",
+          "version": "20260730174047"
+        }
+      ],
+      "preserve_added_stage_hashes": false,
+      "protected_original_rows": [
+        {
+          "history_row_sha256": "1a5fc646d6ab0bfbfa30d1d57a43e3bf4411995b31cf1327021f35e07cb9d8cd",
+          "name": "wp1_extensions",
+          "version": "20260722164727"
+        },
+        {
+          "history_row_sha256": "fa375576da89ff3d5f70280cb24821faa729b3e06e7383691673462136756b98",
+          "name": "wp1_schema",
+          "version": "20260722164749"
+        },
+        {
+          "history_row_sha256": "62c149ef06ffe973b13022ce5886e6f3910ffc17584586d71d8fd87dd6b7502e",
+          "name": "wp1_rls",
+          "version": "20260722164806"
+        },
+        {
+          "history_row_sha256": "714a4d8d7336b9a4b13e1aa004e8b323125cc0a779baeb2afda341ec4567b528",
+          "name": "wp1_review_hardening",
+          "version": "20260722170020"
+        },
+        {
+          "history_row_sha256": "17a8f4d9bd6468fe4eedde8e8240bef4a1dad2e4d1ae16a5de7e7aacfe7b1adf",
+          "name": "wp1_v22_privacy_and_grants",
+          "version": "20260722182403"
+        },
+        {
+          "history_row_sha256": "003a39323960ba09331bd841771afa83f56a098c09956cce2fd6c58374f81eb4",
+          "name": "wp1_performance_indexes",
+          "version": "20260722182446"
+        },
+        {
+          "history_row_sha256": "d6c65f00e2a4c388019e6620450f91ae9acbc5a504a89437f948c283f319ded4",
+          "name": "wp4_prior_jobs",
+          "version": "20260722190912"
+        },
+        {
+          "history_row_sha256": "f93e9aa679b3312d2227bef8d21d49e5b8c65c3a7534008cc10214c973e069b5",
+          "name": "wp4_prior_jobs_hardening",
+          "version": "20260722191140"
+        },
+        {
+          "history_row_sha256": "e27f897f0fa6001cdf2c75eeb1df3e653f8962d2d0c3700df413b0ea5528e86d",
+          "name": "wp4b_photo_qa",
+          "version": "20260722191802"
+        },
+        {
+          "history_row_sha256": "1c924985720c5b95bd70f8af78d303a4b34e59730183431666b0f194c43f918f",
+          "name": "wp6_export_guardrails",
+          "version": "20260722194033"
+        },
+        {
+          "history_row_sha256": "c13c69037e91cd7740b7e28244f759333afc220c377a6264fc53fbdda407fbe3",
+          "name": "phase1_actor_hardening",
+          "version": "20260723011122"
+        },
+        {
+          "history_row_sha256": "a4e5586df3c0fd5bd8b2c5d33be86abaeefd0d44e9963be3786fff4ead08975c",
+          "name": "qa_event_provenance",
+          "version": "20260723011144"
+        },
+        {
+          "history_row_sha256": "ff83a4d172d71ef33f65f21da24efb07a1c734acb859dea816739cd4ddbeae0e",
+          "name": "public_h3_aggregates",
+          "version": "20260723011159"
+        },
+        {
+          "history_row_sha256": "bbbc40283421aae0b4527176cd4b8ff2798a9cc21083d57da85ad15ab483f1c6",
+          "name": "atomic_public_h3_refresh",
+          "version": "20260723011219"
+        },
+        {
+          "history_row_sha256": "cf7aa67d5d8b2c7093fe24e206318e38fdf74774a7a103a1db542f14679f576d",
+          "name": "atomic_prior_attempt_claim",
+          "version": "20260723050851"
+        },
+        {
+          "history_row_sha256": "3d13a4ab768cdbdc9633de6efa9a68dbdd80bf5ef7c8d4ce696c17b863ff5dbf",
+          "name": "document_authenticated_h3_role",
+          "version": "20260723050903"
+        },
+        {
+          "history_row_sha256": "67ef2ce2bc23d91f39ea696e1cb3dce31cded97ca0e5c8cf0031f9aa344a4898",
+          "name": "remove_public_submission_residue",
+          "version": "20260723050918"
+        },
+        {
+          "history_row_sha256": "a2a70343791eb1b3266c82c96c83d49429b691c63a64c5b919f7fa2a7d38cb8d",
+          "name": "wavefunction_beta_schema",
+          "version": "20260730174047"
+        }
+      ]
+    },
+    "before": {
+      "expected_count": 18,
+      "identities": [
+        {
+          "name": "wp1_extensions",
+          "version": "20260722164727"
+        },
+        {
+          "name": "wp1_schema",
+          "version": "20260722164749"
+        },
+        {
+          "name": "wp1_rls",
+          "version": "20260722164806"
+        },
+        {
+          "name": "wp1_review_hardening",
+          "version": "20260722170020"
+        },
+        {
+          "name": "wp1_v22_privacy_and_grants",
+          "version": "20260722182403"
+        },
+        {
+          "name": "wp1_performance_indexes",
+          "version": "20260722182446"
+        },
+        {
+          "name": "wp4_prior_jobs",
+          "version": "20260722190912"
+        },
+        {
+          "name": "wp4_prior_jobs_hardening",
+          "version": "20260722191140"
+        },
+        {
+          "name": "wp4b_photo_qa",
+          "version": "20260722191802"
+        },
+        {
+          "name": "wp6_export_guardrails",
+          "version": "20260722194033"
+        },
+        {
+          "name": "phase1_actor_hardening",
+          "version": "20260723011122"
+        },
+        {
+          "name": "qa_event_provenance",
+          "version": "20260723011144"
+        },
+        {
+          "name": "public_h3_aggregates",
+          "version": "20260723011159"
+        },
+        {
+          "name": "atomic_public_h3_refresh",
+          "version": "20260723011219"
+        },
+        {
+          "name": "atomic_prior_attempt_claim",
+          "version": "20260723050851"
+        },
+        {
+          "name": "document_authenticated_h3_role",
+          "version": "20260723050903"
+        },
+        {
+          "name": "remove_public_submission_residue",
+          "version": "20260723050918"
+        },
+        {
+          "name": "wavefunction_beta_schema",
+          "version": "20260730174047"
+        }
+      ],
+      "preserve_added_stage_hashes": false,
+      "protected_original_rows": [
+        {
+          "history_row_sha256": "1a5fc646d6ab0bfbfa30d1d57a43e3bf4411995b31cf1327021f35e07cb9d8cd",
+          "name": "wp1_extensions",
+          "version": "20260722164727"
+        },
+        {
+          "history_row_sha256": "fa375576da89ff3d5f70280cb24821faa729b3e06e7383691673462136756b98",
+          "name": "wp1_schema",
+          "version": "20260722164749"
+        },
+        {
+          "history_row_sha256": "62c149ef06ffe973b13022ce5886e6f3910ffc17584586d71d8fd87dd6b7502e",
+          "name": "wp1_rls",
+          "version": "20260722164806"
+        },
+        {
+          "history_row_sha256": "714a4d8d7336b9a4b13e1aa004e8b323125cc0a779baeb2afda341ec4567b528",
+          "name": "wp1_review_hardening",
+          "version": "20260722170020"
+        },
+        {
+          "history_row_sha256": "17a8f4d9bd6468fe4eedde8e8240bef4a1dad2e4d1ae16a5de7e7aacfe7b1adf",
+          "name": "wp1_v22_privacy_and_grants",
+          "version": "20260722182403"
+        },
+        {
+          "history_row_sha256": "003a39323960ba09331bd841771afa83f56a098c09956cce2fd6c58374f81eb4",
+          "name": "wp1_performance_indexes",
+          "version": "20260722182446"
+        },
+        {
+          "history_row_sha256": "d6c65f00e2a4c388019e6620450f91ae9acbc5a504a89437f948c283f319ded4",
+          "name": "wp4_prior_jobs",
+          "version": "20260722190912"
+        },
+        {
+          "history_row_sha256": "f93e9aa679b3312d2227bef8d21d49e5b8c65c3a7534008cc10214c973e069b5",
+          "name": "wp4_prior_jobs_hardening",
+          "version": "20260722191140"
+        },
+        {
+          "history_row_sha256": "e27f897f0fa6001cdf2c75eeb1df3e653f8962d2d0c3700df413b0ea5528e86d",
+          "name": "wp4b_photo_qa",
+          "version": "20260722191802"
+        },
+        {
+          "history_row_sha256": "1c924985720c5b95bd70f8af78d303a4b34e59730183431666b0f194c43f918f",
+          "name": "wp6_export_guardrails",
+          "version": "20260722194033"
+        },
+        {
+          "history_row_sha256": "c13c69037e91cd7740b7e28244f759333afc220c377a6264fc53fbdda407fbe3",
+          "name": "phase1_actor_hardening",
+          "version": "20260723011122"
+        },
+        {
+          "history_row_sha256": "a4e5586df3c0fd5bd8b2c5d33be86abaeefd0d44e9963be3786fff4ead08975c",
+          "name": "qa_event_provenance",
+          "version": "20260723011144"
+        },
+        {
+          "history_row_sha256": "ff83a4d172d71ef33f65f21da24efb07a1c734acb859dea816739cd4ddbeae0e",
+          "name": "public_h3_aggregates",
+          "version": "20260723011159"
+        },
+        {
+          "history_row_sha256": "bbbc40283421aae0b4527176cd4b8ff2798a9cc21083d57da85ad15ab483f1c6",
+          "name": "atomic_public_h3_refresh",
+          "version": "20260723011219"
+        },
+        {
+          "history_row_sha256": "cf7aa67d5d8b2c7093fe24e206318e38fdf74774a7a103a1db542f14679f576d",
+          "name": "atomic_prior_attempt_claim",
+          "version": "20260723050851"
+        },
+        {
+          "history_row_sha256": "3d13a4ab768cdbdc9633de6efa9a68dbdd80bf5ef7c8d4ce696c17b863ff5dbf",
+          "name": "document_authenticated_h3_role",
+          "version": "20260723050903"
+        },
+        {
+          "history_row_sha256": "67ef2ce2bc23d91f39ea696e1cb3dce31cded97ca0e5c8cf0031f9aa344a4898",
+          "name": "remove_public_submission_residue",
+          "version": "20260723050918"
+        },
+        {
+          "history_row_sha256": "a2a70343791eb1b3266c82c96c83d49429b691c63a64c5b919f7fa2a7d38cb8d",
+          "name": "wavefunction_beta_schema",
+          "version": "20260730174047"
+        }
+      ]
+    },
+    "retired": {
+      "expected_count": 18,
+      "identities": [
+        {
+          "name": "wp1_extensions",
+          "version": "20260722164727"
+        },
+        {
+          "name": "wp1_schema",
+          "version": "20260722164749"
+        },
+        {
+          "name": "wp1_rls",
+          "version": "20260722164806"
+        },
+        {
+          "name": "wp1_review_hardening",
+          "version": "20260722170020"
+        },
+        {
+          "name": "wp1_v22_privacy_and_grants",
+          "version": "20260722181500"
+        },
+        {
+          "name": "wp1_performance_indexes",
+          "version": "20260722183000"
+        },
+        {
+          "name": "wp4_prior_jobs",
+          "version": "20260722190000"
+        },
+        {
+          "name": "wp4_prior_jobs_hardening",
+          "version": "20260722190500"
+        },
+        {
+          "name": "wp4b_photo_qa",
+          "version": "20260722193000"
+        },
+        {
+          "name": "wp6_export_guardrails",
+          "version": "20260722200000"
+        },
+        {
+          "name": "phase1_actor_hardening",
+          "version": "20260723002255"
+        },
+        {
+          "name": "qa_event_provenance",
+          "version": "20260723004439"
+        },
+        {
+          "name": "public_h3_aggregates",
+          "version": "20260723005752"
+        },
+        {
+          "name": "atomic_public_h3_refresh",
+          "version": "20260723010313"
+        },
+        {
+          "name": "atomic_prior_attempt_claim",
+          "version": "20260723044745"
+        },
+        {
+          "name": "document_authenticated_h3_role",
+          "version": "20260723045317"
+        },
+        {
+          "name": "remove_public_submission_residue",
+          "version": "20260723045606"
+        },
+        {
+          "name": "wavefunction_beta_schema",
+          "version": "20260730174047"
+        }
+      ],
+      "preserve_added_stage_hashes": true,
+      "protected_original_rows": [
+        {
+          "history_row_sha256": "1a5fc646d6ab0bfbfa30d1d57a43e3bf4411995b31cf1327021f35e07cb9d8cd",
+          "name": "wp1_extensions",
+          "version": "20260722164727"
+        },
+        {
+          "history_row_sha256": "fa375576da89ff3d5f70280cb24821faa729b3e06e7383691673462136756b98",
+          "name": "wp1_schema",
+          "version": "20260722164749"
+        },
+        {
+          "history_row_sha256": "62c149ef06ffe973b13022ce5886e6f3910ffc17584586d71d8fd87dd6b7502e",
+          "name": "wp1_rls",
+          "version": "20260722164806"
+        },
+        {
+          "history_row_sha256": "714a4d8d7336b9a4b13e1aa004e8b323125cc0a779baeb2afda341ec4567b528",
+          "name": "wp1_review_hardening",
+          "version": "20260722170020"
+        },
+        {
+          "history_row_sha256": "a2a70343791eb1b3266c82c96c83d49429b691c63a64c5b919f7fa2a7d38cb8d",
+          "name": "wavefunction_beta_schema",
+          "version": "20260730174047"
+        }
+      ]
+    },
+    "stray_retired": {
+      "expected_count": 17,
+      "identities": [
+        {
+          "name": "wp1_extensions",
+          "version": "20260722164727"
+        },
+        {
+          "name": "wp1_schema",
+          "version": "20260722164749"
+        },
+        {
+          "name": "wp1_rls",
+          "version": "20260722164806"
+        },
+        {
+          "name": "wp1_review_hardening",
+          "version": "20260722170020"
+        },
+        {
+          "name": "wp1_v22_privacy_and_grants",
+          "version": "20260722181500"
+        },
+        {
+          "name": "wp1_performance_indexes",
+          "version": "20260722183000"
+        },
+        {
+          "name": "wp4_prior_jobs",
+          "version": "20260722190000"
+        },
+        {
+          "name": "wp4_prior_jobs_hardening",
+          "version": "20260722190500"
+        },
+        {
+          "name": "wp4b_photo_qa",
+          "version": "20260722193000"
+        },
+        {
+          "name": "wp6_export_guardrails",
+          "version": "20260722200000"
+        },
+        {
+          "name": "phase1_actor_hardening",
+          "version": "20260723002255"
+        },
+        {
+          "name": "qa_event_provenance",
+          "version": "20260723004439"
+        },
+        {
+          "name": "public_h3_aggregates",
+          "version": "20260723005752"
+        },
+        {
+          "name": "atomic_public_h3_refresh",
+          "version": "20260723010313"
+        },
+        {
+          "name": "atomic_prior_attempt_claim",
+          "version": "20260723044745"
+        },
+        {
+          "name": "document_authenticated_h3_role",
+          "version": "20260723045317"
+        },
+        {
+          "name": "remove_public_submission_residue",
+          "version": "20260723045606"
+        }
+      ],
+      "preserve_added_stage_hashes": true,
+      "protected_original_rows": [
+        {
+          "history_row_sha256": "1a5fc646d6ab0bfbfa30d1d57a43e3bf4411995b31cf1327021f35e07cb9d8cd",
+          "name": "wp1_extensions",
+          "version": "20260722164727"
+        },
+        {
+          "history_row_sha256": "fa375576da89ff3d5f70280cb24821faa729b3e06e7383691673462136756b98",
+          "name": "wp1_schema",
+          "version": "20260722164749"
+        },
+        {
+          "history_row_sha256": "62c149ef06ffe973b13022ce5886e6f3910ffc17584586d71d8fd87dd6b7502e",
+          "name": "wp1_rls",
+          "version": "20260722164806"
+        },
+        {
+          "history_row_sha256": "714a4d8d7336b9a4b13e1aa004e8b323125cc0a779baeb2afda341ec4567b528",
+          "name": "wp1_review_hardening",
+          "version": "20260722170020"
+        }
+      ]
+    }
+  },
+  "state": "PREPARED_NOT_EXECUTED",
+  "target": "toxldjgwkxtneoqsazym",
+  "unchanged_original_versions": [
+    "20260722164727",
+    "20260722164749",
+    "20260722164806",
+    "20260722170020"
+  ],
+  "whole_row_hash_definition": "encode(sha256(convert_to(to_jsonb(m)::text,'UTF8')),'hex') for supabase_migrations.schema_migrations m; all six stored fields included"
+}

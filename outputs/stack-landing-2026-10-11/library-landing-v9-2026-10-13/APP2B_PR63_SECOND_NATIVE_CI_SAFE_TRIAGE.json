@@ -1,0 +1,62 @@
+{
+  "utc": "2026-10-13T18:24:39.955865+00:00",
+  "head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "results": [
+    {
+      "job": 115462859618,
+      "name": "android",
+      "failure_steps": [
+        {
+          "number": 18,
+          "name": "Audit exact Android runtime and license inputs"
+        }
+      ],
+      "raw_log_sha256": "71e9ec0da0743b404fddbfae6892be39fd55e5f5dae4ce38cd9467788b5475c4",
+      "raw_bytes": 114688,
+      "fixed_diagnostics": [
+        {
+          "counts": {},
+          "error_class": "BUILD_TOOL",
+          "source_line": 244,
+          "stage": "android-gradle-inspection"
+        }
+      ],
+      "fixed_markers": {
+        "git_unable_to_read_username": false,
+        "git_invalid_reference": false,
+        "git_not_a_repository": false,
+        "pnpm_frozen_lockfile": false,
+        "git_authentication_failed": false,
+        "native_refusal": false,
+        "gradle_build_failed": false,
+        "xcode_build_failed": false
+      },
+      "raw_log_persisted": false
+    },
+    {
+      "job": 115462859704,
+      "name": "ios",
+      "failure_steps": [
+        {
+          "number": 20,
+          "name": "Build the exact iOS parent in an isolated checkout"
+        }
+      ],
+      "raw_log_sha256": "a77083654814a9b43d0f4022afa8ed4f10b9718b0df438a685098b5597e47c76",
+      "raw_bytes": 1823188,
+      "fixed_diagnostics": [],
+      "fixed_markers": {
+        "git_unable_to_read_username": false,
+        "git_invalid_reference": false,
+        "git_not_a_repository": false,
+        "pnpm_frozen_lockfile": false,
+        "git_authentication_failed": false,
+        "native_refusal": false,
+        "gradle_build_failed": false,
+        "xcode_build_failed": false
+      },
+      "raw_log_persisted": false
+    }
+  ],
+  "boundary": "GET-only metadata/log in memory; fixed diagnostics only; no raw log persisted, source or production change"
+}

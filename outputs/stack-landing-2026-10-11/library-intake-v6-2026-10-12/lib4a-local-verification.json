@@ -1,0 +1,21 @@
+{
+  "recorded_utc": "2026-10-13T02:43:26.987837+00:00",
+  "head": "575630964d721e044c685de130667fd849244848",
+  "web_tests": 384,
+  "python_tests": 452,
+  "python_gdal_skips": 4,
+  "lint": "passed",
+  "typecheck": "passed",
+  "ruff": "passed",
+  "mypy": "passed:50 source files",
+  "normal_capture_closed_build": "passed",
+  "secret_scan": {
+    "version": "8.21.2",
+    "history": "--all",
+    "commits": 120,
+    "leaks": 0,
+    "suppression": "only three owner-approved historical fixture fingerprints"
+  },
+  "independent_review": "pending",
+  "production": "untouched"
+}

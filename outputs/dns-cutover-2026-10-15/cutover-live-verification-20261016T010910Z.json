@@ -1,0 +1,259 @@
+{
+  "status": "NOT_YET_FULLY_VERIFIED",
+  "checked_at_utc": "2026-10-16T01:09:10.678079+00:00",
+  "base_url": "https://globalsoilintelligence.com/",
+  "approved_run": 38821460183,
+  "approved_source_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "approved_artifact_sha256": "2bc0829549d98331c7a8dc5e451b6e5457125fd5863f166e63ce1ea90a4cde33",
+  "files_matching": 0,
+  "files_expected": 38,
+  "activation": null,
+  "files": [
+    {
+      "path": "about/index.html",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "assets/main-CQunBpw7.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "assets/main-CdU0pfZy.css",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/dist-DrwtsX7j.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/esm-CmDILqN6.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/esm-DA9dRiza.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/esm-DceqX21T.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/esm-YcB-ubya.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/index-DZ_h-Mw_.css",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/index-E1VTHjAy.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/synapse-D5y-aojA.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/web-ClVSmdgs.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/web-XXcZAasd.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/assets/web-Z7Um3E4a.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/gsip-activation.json",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/icon.svg",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/index.html",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/manifest.webmanifest",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/registerSW.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/sw.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "capture/workbox-9c191d2f.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "card-bw-preview.png",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "card-color-preview.png",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "card/index.html",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "data/index.html",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "favicon.svg",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "index.html",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "llms.txt",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "map/assets/index-BvpiT6QS.js",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "map/assets/index-gHsDz2RA.css",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "map/index.html",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "methods/index.html",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "og-library.png",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "og.png",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "reference-card/gsip-reference-card-v1-bw.pdf",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "reference-card/gsip-reference-card-v1-color.pdf",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "robots.txt",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    },
+    {
+      "path": "sitemap.xml",
+      "matches_approved_artifact": false,
+      "error_type": "URLError"
+    }
+  ],
+  "routes": [
+    {
+      "requested_url": "https://globalsoilintelligence.com/",
+      "error_type": "URLError",
+      "pass": false
+    },
+    {
+      "requested_url": "http://globalsoilintelligence.com/",
+      "final_url": "http://globalsoilintelligence.com/",
+      "status": 200,
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "content_type": "text/html; charset=utf-8",
+      "redirects": [],
+      "expected_destination": "https://globalsoilintelligence.com/",
+      "pass": false
+    },
+    {
+      "requested_url": "https://www.globalsoilintelligence.com/",
+      "error_type": "URLError",
+      "pass": false
+    },
+    {
+      "requested_url": "http://www.globalsoilintelligence.com/",
+      "error_type": "URLError",
+      "pass": false
+    },
+    {
+      "requested_url": "https://global-soil-intelligence.github.io/gsip/",
+      "error_type": "ValueError",
+      "pass": false
+    },
+    {
+      "requested_url": "https://global-soil-intelligence.github.io/gsip/data/",
+      "error_type": "ValueError",
+      "pass": false
+    },
+    {
+      "requested_url": "https://www.globalsoilintelligence.com/data/",
+      "error_type": "URLError",
+      "pass": false
+    }
+  ],
+  "certificates": [
+    {
+      "hostname": "globalsoilintelligence.com",
+      "trusted_and_hostname_valid": false,
+      "error_type": "SSLCertVerificationError"
+    },
+    {
+      "hostname": "www.globalsoilintelligence.com",
+      "trusted_and_hostname_valid": false,
+      "error_type": "gaierror"
+    }
+  ],
+  "mutations": "NONE; GET and TLS handshakes only; certificate validation enabled"
+}

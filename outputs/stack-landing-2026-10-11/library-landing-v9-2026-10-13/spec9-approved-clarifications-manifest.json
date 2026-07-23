@@ -1,0 +1,10 @@
+{
+  "base": "f560079acdf7dc83722edad6c12922a7951a274a",
+  "scope": "owner approval status and exchange-only deterministic conformance clarifications",
+  "files_sha256": {
+    "docs/SPEC.md": "3fabd7c0ac5f26e58e05e13d0fc091dc5ea9a5f08a6c1c340ebffd13edde3a4c",
+    "docs/BUILD_ORDER.md": "b464b64f8fc8367762159a8428f007487a405ec406110bca805d87ada60fe458"
+  },
+  "runtime_changes": false,
+  "LIB5C_real_policy_held": true
+}

@@ -1,0 +1,27 @@
+{
+  "status": "no_blocking_scope_review_findings",
+  "review_manifest_sha256": "06710bba4738a0a4cebfea27b4c5d34ea282ad21fd40e80a5670e47970364402",
+  "tracked_count": 377,
+  "unchanged_prior_hashes": 371,
+  "prior_acceptance_states": 138,
+  "new_unchecked_criteria": 2,
+  "candidate_passed": 131,
+  "baseline_expected_failures": 38,
+  "external_mutants_rejected": 21,
+  "native_implementation_or_data_access_granted": false,
+  "native_or_device_or_production_executed": false,
+  "files": {
+    "V4_MANIFEST.json": "06710bba4738a0a4cebfea27b4c5d34ea282ad21fd40e80a5670e47970364402",
+    "BASE_MANIFEST.json": "d87d1f26f18a2be15e28b4f82e4a9dde553fcd117866c912a94aa1d733659e10",
+    "V2_PRESERVATION.json": "04e9ba2a888d77e706671f6aec49c4b3de19d358351c2bf9e3b3853f913a7cf6",
+    "candidate-v4.json": "4bc7f6715db3f87bc5d52888787b94043c414c705ee1c7ad84ce5d3a34c9cfc1",
+    "candidate-v4.xml": "e6d114188cc62b38cdfbf8fbbadee3b0e83a47f5275c3cb1bf83c57b7eb21a61",
+    "candidate-v4.log": "c281aaf42cf5df7668507c1bad4018ac6df4cb4d92457d0d7dc116fcd91612fb",
+    "baseline-v4.json": "e570bf752ee74a9b84e0e24cd0cfddaa94ce3006b60a2386fadf0fcddca52909",
+    "baseline-v4.xml": "7c3bf442887c119008c8cd91ae906aada96ed1540c35cb259b0ca8ccc471f1d1",
+    "baseline-v4.log": "cb614d6056cddbb14aae1b7c2ce384fbd5a4556b429822a505b8cf134c226b94",
+    "V2_MUTATION_CHECKS.json": "41217a24bb3752f590dc5850763446c09145c482294a1f72792303b5c62643f8",
+    "V4_MUTATION_CHECKS.json": "fc815d1ddad147afc17ff37a55aa36cf964e1101d0d0e31f8dffb9020810bd60",
+    "FINAL_V13_INDEPENDENT_REVIEW.md": "723abe162abca417883687ab03994502899e51c1924227a5dc307d223155e6f4"
+  }
+}

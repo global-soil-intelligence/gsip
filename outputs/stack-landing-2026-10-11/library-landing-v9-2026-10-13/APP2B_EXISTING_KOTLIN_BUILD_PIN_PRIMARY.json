@@ -1,0 +1,29 @@
+{
+  "build_tool_license": "Apache-2.0",
+  "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21",
+  "licenses": [
+    {
+      "name": "The Apache License, Version 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+    }
+  ],
+  "new_dependency": false,
+  "plugin_license_is_separate": "MIT",
+  "public_sources": [
+    {
+      "bytes": 13199,
+      "public_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-gradle-plugin/2.0.21/kotlin-gradle-plugin-2.0.21.pom",
+      "sha256": "45e9ccece33e4d8dfa9941cc912f35458201a9d3f043720c3247adde57f47ff6",
+      "status": 200
+    },
+    {
+      "bytes": 179869,
+      "public_url": "https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-gradle-plugin/2.0.21/kotlin-gradle-plugin-2.0.21.module",
+      "sha256": "0f9897a06c07a3e87d647131cc3490a1f72d1ae54c107f13f72269d5344b087a",
+      "status": 200
+    }
+  ],
+  "schema": "gsip-existing-kotlin-build-pin-primary-v1",
+  "sdk_install": false,
+  "source_version_changed": false
+}

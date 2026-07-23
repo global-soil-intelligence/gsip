@@ -1,0 +1,149 @@
+{
+  "checked_at_utc": "2026-10-16T11:39:11.458432+00:00",
+  "run_id": 38894216993,
+  "expected_head": "d53eda2e835e57b4ee01dc922fb63d5ebdeceae0",
+  "log_read": {
+    "returncode": 0,
+    "line_count": 2487,
+    "safe_numeric_summaries": [
+      {
+        "job": "validate",
+        "step": "Run pnpm exec playwright test --project=desktop-chrome",
+        "timestamp": "2026-10-16T11:31:53.2354825Z",
+        "category": "playwright_summary",
+        "captures": [
+          "14",
+          "12.6s"
+        ]
+      },
+      {
+        "job": "validate",
+        "step": "Run uv run pytest",
+        "timestamp": "2026-10-16T11:34:03.7561093Z",
+        "category": "pytest_summary",
+        "captures": [
+          "2075",
+          "31",
+          "37",
+          "122.08"
+        ]
+      },
+      {
+        "job": "validate",
+        "step": "Apply migrations to data written before them",
+        "timestamp": "2026-10-16T11:34:11.6446514Z",
+        "category": "migration_fraction",
+        "captures": [
+          "13",
+          "13"
+        ]
+      },
+      {
+        "job": "validate",
+        "step": "Apply migrations to data written before them",
+        "timestamp": "2026-10-16T11:34:11.7026515Z",
+        "category": "migration_fraction",
+        "captures": [
+          "19",
+          "19"
+        ]
+      },
+      {
+        "job": "validate",
+        "step": "Apply migrations to data written before them",
+        "timestamp": "2026-10-16T11:34:11.7567348Z",
+        "category": "migration_fraction",
+        "captures": [
+          "13",
+          "13"
+        ]
+      },
+      {
+        "job": "validate",
+        "step": "Run pnpm db:test",
+        "timestamp": "2026-10-16T11:37:14.7862538Z",
+        "category": "migration_summary",
+        "summary": "All tests successful"
+      },
+      {
+        "job": "validate",
+        "step": "Run pnpm db:test",
+        "timestamp": "2026-10-16T11:37:14.7864247Z",
+        "category": "pgtap_summary",
+        "captures": [
+          "11",
+          "593"
+        ]
+      },
+      {
+        "job": "validate",
+        "step": "Run pnpm db:test",
+        "timestamp": "2026-10-16T11:37:14.7865629Z",
+        "category": "migration_summary",
+        "summary": "Result: PASS"
+      }
+    ],
+    "raw_logs_saved": false,
+    "stderr": ""
+  },
+  "required_checks": {
+    "returncode": 1,
+    "checks": null,
+    "stderr": "no required checks reported on the 'wp-site-1g-map-worker' branch\n"
+  },
+  "pr": {
+    "returncode": 0,
+    "data": {
+      "headRefOid": "d53eda2e835e57b4ee01dc922fb63d5ebdeceae0",
+      "isDraft": false,
+      "mergeStateStatus": "CLEAN",
+      "number": 77,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T11:30:23Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894216700/job/116950700125",
+          "name": "dco",
+          "startedAt": "2026-10-16T11:30:23Z",
+          "status": "COMPLETED",
+          "workflowName": "DCO"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T11:37:38Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894216993/job/116950698453",
+          "name": "validate",
+          "startedAt": "2026-10-16T11:30:25Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T11:30:34Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894217274/job/116950698986",
+          "name": "gitleaks",
+          "startedAt": "2026-10-16T11:30:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Secret scan"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T11:30:32Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894212950/job/116950686124",
+          "name": "gitleaks",
+          "startedAt": "2026-10-16T11:30:23Z",
+          "status": "COMPLETED",
+          "workflowName": "Secret scan"
+        }
+      ],
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/77"
+    },
+    "stderr": ""
+  },
+  "mutations": "NONE; GitHub GETs and local evidence write only"
+}

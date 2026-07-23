@@ -1,0 +1,56 @@
+{
+  "artifact": {
+    "bytes": 361,
+    "path": "/private/tmp/gsip-1385-ios-independent-qbl38tax/FRESH_ARTIFACT_DOWNLOAD.json",
+    "sha256": "56afa125ebb011b02d12599914c1ce2bc8f957adeb3ddf222d697f78f1514e4b"
+  },
+  "at_utc": "2026-10-14T00:28:54.354294+00:00",
+  "authority": {
+    "GET_only": true,
+    "arbitrary_raw_logs_private_values_printed": false,
+    "build_or_signing_or_device_actions": false,
+    "private_artifacts_retained_only_owned_tmp": true,
+    "shared_source_Git_GH_workflow_or_production_mutations": false
+  },
+  "combined_native_acceptance": false,
+  "four_zip_bounds": {
+    "bytes": 1122,
+    "path": "/private/tmp/gsip-1385-ios-independent-qbl38tax/FRESH_FOUR_ZIP_BOUNDS.json",
+    "sha256": "38f547b1b0449f427815988accfc5f0da2dc3730fcf133dd226d5d86e5e04e8e"
+  },
+  "head": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "ios_conclusion": "success",
+  "ios_job_id": 115611486697,
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "merge_binding": {
+    "bytes": 1118,
+    "path": "/private/tmp/gsip-1385-ios-independent-qbl38tax/FRESH_MERGE_BINDING.json",
+    "sha256": "fb418691cc07d9a0aa3335253ce86cc7a906d1859d5df4acd7c5820880d90e79"
+  },
+  "native_run_id": 38489625406,
+  "native_run_number": 51,
+  "older_artifacts_or_old_reference_proofs_reused": false,
+  "original_hosted_cause_inferred": false,
+  "outer_tree": {
+    "bytes": 1767,
+    "path": "/private/tmp/gsip-1385-ios-independent-qbl38tax/FRESH_OUTER_ARTIFACT_TREE.json",
+    "sha256": "d91a6bd70f84983ba62224a07147ed2c2fb7d048531f4321a0c378318e9c2acd"
+  },
+  "pr": 63,
+  "remaining_gates": [
+    "Independent Android artifact verification",
+    "iOS cloud backup exclusion and physical device gates",
+    "Legal/distribution/store/production/capture gates"
+  ],
+  "schema": "gsip-independent-exact-1385-ios-artifact-closure-v1",
+  "source_binding": {
+    "path": "/private/tmp/gsip-1385-ios-independent-qbl38tax/FRESH_SOURCE_BINDING.json",
+    "sha256": "e4b2f45a627d940c73f5899b67593ec3872407fc40e7dda18cd4aed41b6fc63b"
+  },
+  "status": "FRESH_EXACT_HEAD_IOS_ARTIFACT_VERIFIED",
+  "strict_replay": {
+    "bytes": 1312,
+    "path": "/private/tmp/gsip-1385-ios-independent-qbl38tax/FRESH_STRICT_IOS_REPLAY.json",
+    "sha256": "202423633a0a9a178c9f34d45748035f6ea88266709c7ece94a28092fffc16eb"
+  }
+}

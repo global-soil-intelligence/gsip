@@ -1,0 +1,17 @@
+{
+  "base_head": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "tree": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64",
+  "archive_sha256": "f73b6f18c642b0c349bb3887b2366a8778637f209cf73118361afdcf6d2d259c",
+  "author_root": "/private/tmp/gsip-lib5b-author-ovnn60yz",
+  "immutable_base": "/private/tmp/gsip-lib5b-author-ovnn60yz/base",
+  "source": "/private/tmp/gsip-lib5b-author-ovnn60yz/source",
+  "prerequisite_merges": {
+    "58": "333f1492713d41c0ade42d6b16c4453cdfb1b783",
+    "60": "d7ed716ed0921381da04f542e90902ede36cb462"
+  },
+  "governing_files": {
+    "docs/SPEC.md": "ce894fb49e1eac6239cbad596c8df8f2c98e2eeca69eb13ba3892101fc3d3bf7",
+    "docs/BUILD_ORDER.md": "102396787dfdb341e4f397f72fb708bc484b889d32df15c2dde4939bbd1ab81c",
+    "pipeline/node_exchange.py": "ea3be8b40502c35c6b299203515924b818a5ba8283f82eaee8b84bb783563179"
+  }
+}

@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "GSIP data, QA, card, and export pipelines"
 requires-python = ">=3.11,<3.14"
 dependencies = [
+  "numpy>=2,<3",
   "h3>=4.3,<5",
   "httpx>=0.28,<1",
   "opencv-contrib-python-headless>=4.12,<5",

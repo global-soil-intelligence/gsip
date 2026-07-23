@@ -1,0 +1,50 @@
+{
+  "base_commit": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "candidate_helper_sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad",
+  "concrete_witnesses": {
+    "helper_sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad",
+    "native_or_key_operations": false,
+    "witnesses": [
+      {
+        "after_sha256": "f4c385e46ba154a4e9dde9e0ccd72c0a277abae423a381110895f22ad1249382",
+        "before_sha256": "4925dabe29f0d3a6085f11f1b03267e99fbca18f81a44d71b187737a624c761a",
+        "hook_executed": false,
+        "old_cordova_empty_source_guard_still_accepts": null,
+        "relative_generated_input": "capacitor.settings.gradle",
+        "validate_debug_signing_scope_still_accepts": true
+      },
+      {
+        "after_sha256": "5c9d32f1f9f3e4a01a536e6ba891f12b3e8a4468f5dcf9cfcab08043b91fd74e",
+        "before_sha256": "6036b7979cbe0888916cf90ee67e539c46e367aac2ab4f11977cf2c7a50910d5",
+        "hook_executed": false,
+        "old_cordova_empty_source_guard_still_accepts": true,
+        "relative_generated_input": "capacitor-cordova-android-plugins/build.gradle",
+        "validate_debug_signing_scope_still_accepts": true
+      }
+    ]
+  },
+  "finding": "Known generated Gradle includes/project descriptor can change outside the enforced DEBUG_SIGNING_SCOPE. This violates the controlled generated-signing adapter assumption; treating these generated inputs as locked npm plugin logic was too broad.",
+  "fresh_hosted_selected_location": "Still unverified",
+  "harness_note": "First scope-witness draft supplied the Cordova fixture root at the wrong nesting and aborted before any hook or Gradle execution; the final witness constructs a namespace-valid generated descriptor directly and invokes both Python validators.",
+  "native_acceptance": false,
+  "priority": "P2",
+  "remaining": "Review exact immutable v2 correction; no v1 final approval.",
+  "requested_smallest_correction": [
+    "Pin the exact two known parent/candidate capacitor.settings.gradle inputs.",
+    "Pin the existing primary generated capacitor-cordova-android-plugins/build.gradle descriptor, retaining all existing Cordova source/archive checks.",
+    "Append meaningful changed/missing/unrecognized-input refusal controls; retain task/workflow/locator/key-proof bytes."
+  ],
+  "retained_valid_evidence": "Prior independent129 successful synthetic/source/privacy checks,4 effective mutations and configured mypy75 remain valid for their finite slices; they do not close this newly concrete scope gap. No old receipt or test file was overwritten.",
+  "schema": "gsip-independent-selected-debug-v1-supersession-v1",
+  "scope_of_observation": "Python guard invocation only, with inert synthetic Gradle text; no hook, Gradle, key, APK, SDK or cache execution/read occurred.",
+  "source_file": "scripts/app_notification_audit.py",
+  "source_line": 1464,
+  "status": "BLOCKED_MATERIAL_P2",
+  "supersedes": {
+    "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/INDEPENDENT_SELECTED_DEBUG_SIGNING_CLOSURE.json",
+    "prior_approval_invalid": true,
+    "prior_status": "CLOSED_NO_BLOCKER",
+    "sha256": "6630c995435ebc002dd79906ab81dc47ec8ec55f8c9e4546d572886e6a1b5c70"
+  },
+  "witness_sha256": "1299dd235201773e43e894742fed3c75413ff23917b18eadf806d05ed9b77045"
+}

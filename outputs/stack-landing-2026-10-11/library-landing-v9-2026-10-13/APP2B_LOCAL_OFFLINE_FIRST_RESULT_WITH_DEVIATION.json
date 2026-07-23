@@ -1,0 +1,52 @@
+{
+  "corrected_environment": {
+    "ANDROID_HOME": "TASK_PRIVATE_SDK_COPY",
+    "ANDROID_SDK_ROOT": "TASK_PRIVATE_SDK_COPY",
+    "ANDROID_USER_HOME": "TASK_PRIVATE_DIRECTORY",
+    "GRADLE_USER_HOME": "TASK_PRIVATE_COPY",
+    "HOME": "INHERITED_UNCHANGED"
+  },
+  "files": {
+    "inspection.json": {
+      "bytes": 1041,
+      "sha256": "324d5b576db83b14aab21b3b6c33e08de8272d13e1e1e9dce418911b15195ef3"
+    },
+    "offline_run-first-execution.py.txt": {
+      "bytes": 4747,
+      "sha256": "03521c61c7743c1611a917aec7c5cd506a3ada4982f822fe99b601c3622579a7"
+    },
+    "offline_run.py": {
+      "bytes": 4762,
+      "sha256": "4b7fafed0cb6d59cc13e5e4a67e5572479841ede3756862ea89b1c4b2b18c05e"
+    },
+    "prepare-first-execution.py.txt": {
+      "bytes": 2216,
+      "sha256": "6210020cc3809d95b4e6a8911e11a7847b4dd1dcae743c0138e4a855b97b6f69"
+    },
+    "prepare.json": {
+      "bytes": 825,
+      "sha256": "8e1955b6d35f4d27d71a5481bfd5a6d01c7aabc84b11745b1f1ade9738f2e43a"
+    },
+    "prepare.py": {
+      "bytes": 2268,
+      "sha256": "b0c2c0bdcf7b4d4d20130df89f761fbaebb34476670a845d28c94a50588efec4"
+    },
+    "setup.json": {
+      "bytes": 673,
+      "sha256": "212d8009358039fde538a1bc4e48d497b225e63b54a6391101d160242314b65b"
+    }
+  },
+  "first_execution_deviation": {
+    "corrected_before_any_further_tool_execution": true,
+    "environment_name": "HOME",
+    "value_classification": "TASK_PRIVATE_REASSIGNED",
+    "violates_developer_environment_rule": true
+  },
+  "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "maintained_source_edited": false,
+  "network_execution": false,
+  "route_implementation_started": false,
+  "schema": "gsip-c1-first-offline-freeze-v1",
+  "shared_cache_execution": false,
+  "signing_execution": false
+}

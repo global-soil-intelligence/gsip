@@ -1,0 +1,66 @@
+{
+  "actions_executed": [],
+  "exact_ui_plan": [
+    {
+      "action": "Read fresh visible providers state",
+      "expect": {
+        "Allow anonymous sign-ins": 0,
+        "Allow new users to sign up": 1,
+        "Confirm email": 1,
+        "Email provider": "ENABLED",
+        "Save changes": "disabled"
+      },
+      "step": 1
+    },
+    {
+      "action": "Change only the switch labelled Allow new users to sign up",
+      "from": 1,
+      "step": 2,
+      "to": 0
+    },
+    {
+      "action": "Verify only that intended field changed; anonymous sign-ins remain 0, Confirm email remains 1, and Email provider remains ENABLED",
+      "step": 3
+    },
+    {
+      "action": "Click Save changes once",
+      "step": 4
+    },
+    {
+      "action": "After the save completes, reload and read the same exact-target providers page",
+      "expect": {
+        "Allow anonymous sign-ins": 0,
+        "Allow new users to sign up": 0,
+        "Confirm email": 1,
+        "Email provider": "ENABLED",
+        "Save changes": "disabled"
+      },
+      "step": 5
+    },
+    {
+      "action": "Save sanitized timestamped state evidence; report any failure without retrying a broader mutation",
+      "step": 6
+    }
+  ],
+  "intended_effect": "Close new account signup while keeping existing email authentication provider configuration. No existing users, rows, sessions, grants, RLS, functions or credentials are modified by this plan.",
+  "operator": "Root agent is the sole Supabase writer; this subagent performed read-only preparation only.",
+  "preconditions": [
+    "Justin gives an explicit separate go for this authentication-only closure.",
+    "Refresh the providers page and verify the exact GSIP production project and current persisted settings.",
+    "Stop if the target, setting state, authentication requirement, or unrelated unsaved configuration differs; do not authenticate or change additional settings."
+  ],
+  "prepared_at_utc": "2026-10-12T12:21:17.357766+00:00",
+  "read_only_evidence": "production-email-signup-browser-readback-2026-10-12.json",
+  "secret_reads": false,
+  "separate_gates": [
+    "This auth-only closure does not authorize Gate C migration, deployment, capture opening, or anonymous sign-in.",
+    "Fresh counts, migration test, exact migration plan, and a separate Gate C go remain required; any unexplained drift must be reconciled before Gate C."
+  ],
+  "status": "PREPARED_NOT_EXECUTED_REQUIRES_SEPARATE_OWNER_GO",
+  "target": {
+    "branch": "main PRODUCTION",
+    "observed_url": "https://supabase.com/dashboard/project/toxldjgwkxtneoqsazym/auth/providers",
+    "project_name": "gsip",
+    "project_ref": "toxldjgwkxtneoqsazym"
+  }
+}

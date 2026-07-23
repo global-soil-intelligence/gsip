@@ -1,0 +1,38 @@
+{
+  "utc": "2026-10-14T01:43:04.746727+00:00",
+  "head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "manifest_sha256": "6137d9fdef02f2a317514f15f0570b3623639ea09b4d8bcd8b03338d83ab0060",
+  "files": {
+    ".github/workflows/app-build.yml": {
+      "base_e195_sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa",
+      "bytes": 17919,
+      "sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5",
+      "v1_sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+    },
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_e195_sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9",
+      "bytes": 39765,
+      "sha256": "b9cf2cc25a934ad5c072bc27d26252025b5759f8db7bb92e02d3fb557d2e515a",
+      "v1_sha256": "5b0019aa3f0f7ff22fd16309721abd9f51aabf67a2328e4a1c6059797a74bdf6"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_e195_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+      "bytes": 133557,
+      "sha256": "c4df1700e0efce6ca014f9a8bca0e0e7bdcdde11496a50900e88b47024474da6",
+      "v1_sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_e195_sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373",
+      "bytes": 219529,
+      "sha256": "a804fb87a6bf162f3ce513e2894047345dde7e8d97c75a10a9629c932d467c71",
+      "v1_sha256": "fa9a702513b7adf5a56701d26a0fe042e6ffe49383bedfebf83df4a5fde4b6d8"
+    }
+  },
+  "unchanged_other_tracked_files": 361,
+  "helper_v1_delta_only_two_scope_entries": true,
+  "original_test_prefix_only_one_contract_byte_changed": true,
+  "workflow_unchanged_from_v1": true,
+  "both_tasks_byte_exact": true,
+  "committed": false,
+  "production_changes": false
+}

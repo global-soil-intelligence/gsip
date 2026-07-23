@@ -1,0 +1,51 @@
+{
+  "utc": "2026-10-14T00:18:53.710400+00:00",
+  "source_helper_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+  "checks": [
+    {
+      "check": "ruff",
+      "exit_code": 0,
+      "seconds": 0.13,
+      "output_file": "app2b-root-compile-scope-recovered-ruff.txt",
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "output_bytes": 19
+    },
+    {
+      "check": "mypy",
+      "exit_code": 0,
+      "seconds": 0.721,
+      "output_file": "app2b-root-compile-scope-recovered-mypy.txt",
+      "output_sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c",
+      "output_bytes": 44
+    },
+    {
+      "check": "lint",
+      "exit_code": 0,
+      "seconds": 3.471,
+      "output_file": "app2b-root-compile-scope-recovered-lint.txt",
+      "output_sha256": "8185ff7bbf60b066e20260e56c4a3fd10de339d2124fc13559b612a19578a977",
+      "output_bytes": 134
+    },
+    {
+      "check": "language",
+      "exit_code": 0,
+      "seconds": 0.029,
+      "output_file": "app2b-root-compile-scope-recovered-language.txt",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0
+    },
+    {
+      "check": "diff",
+      "exit_code": 0,
+      "seconds": 0.018,
+      "output_file": "app2b-root-compile-scope-recovered-diff.txt",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0
+    }
+  ],
+  "all_pass": true,
+  "unchanged_real_gradle_cases_deselected": false,
+  "real_gradle_task_changed": false,
+  "previous_real_30_execution": "APP2B_ROOT_REVIEWED_NATIVE_V3_PYTHON_CHECKS.json",
+  "production_changes": false
+}

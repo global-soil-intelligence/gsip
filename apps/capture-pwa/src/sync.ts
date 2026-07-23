@@ -15,7 +15,7 @@ export function isSyncEligible(
   record: QueueRecord,
   now: number = Date.now(),
 ): boolean {
-  if (record.deadLetteredAt) return false
+  if (record.draft || record.deadLetteredAt) return false
   if (!record.nextRetryAt) return true
   const retryAt = Date.parse(record.nextRetryAt)
   return !Number.isFinite(retryAt) || retryAt <= now

@@ -1,0 +1,100 @@
+{
+  "snapshot": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+  "configuration_sha256": "80ed083a587a598db1d3d97b6d2831a4414f260bc49f4bf30e67cfd84943658d",
+  "scope": "Corrected whole-frame synthetic CPU compatibility only, no real face positives/recall/approval/RPC or production access",
+  "reports": [
+    {
+      "fixture": "blank.jpg",
+      "face": {
+        "result": "pass",
+        "candidates": 0
+      },
+      "scene_text": {
+        "result": "pass",
+        "candidates": 0
+      },
+      "card_exception": false,
+      "seconds": 0.4673204999999143
+    },
+    {
+      "fixture": "card_inside_and_margin_outside.jpg",
+      "face": {
+        "result": "pass",
+        "candidates": 0
+      },
+      "scene_text": {
+        "result": "flag",
+        "candidates": 6
+      },
+      "card_exception": false,
+      "seconds": 0.7969697500011534
+    },
+    {
+      "fixture": "large_ascii.jpg",
+      "face": {
+        "result": "pass",
+        "candidates": 0
+      },
+      "scene_text": {
+        "result": "flag",
+        "candidates": 2
+      },
+      "card_exception": false,
+      "seconds": 0.3929362089984352
+    },
+    {
+      "fixture": "oblique_ascii.jpg",
+      "face": {
+        "result": "pass",
+        "candidates": 0
+      },
+      "scene_text": {
+        "result": "flag",
+        "candidates": 2
+      },
+      "card_exception": false,
+      "seconds": 0.40217416700033937
+    },
+    {
+      "fixture": "partial_card.jpg",
+      "face": {
+        "result": "pass",
+        "candidates": 0
+      },
+      "scene_text": {
+        "result": "flag",
+        "candidates": 4
+      },
+      "card_exception": false,
+      "seconds": 0.5541892909968738
+    },
+    {
+      "fixture": "rotated_card_and_text.jpg",
+      "face": {
+        "result": "pass",
+        "candidates": 0
+      },
+      "scene_text": {
+        "result": "flag",
+        "candidates": 8
+      },
+      "card_exception": false,
+      "seconds": 0.7666598340001656
+    },
+    {
+      "fixture": "tiny_ascii.jpg",
+      "face": {
+        "result": "pass",
+        "candidates": 0
+      },
+      "scene_text": {
+        "result": "flag",
+        "candidates": 2
+      },
+      "card_exception": false,
+      "seconds": 0.3906584170035785
+    }
+  ],
+  "hard_timeout": "timeout",
+  "remaining_children": 0
+}

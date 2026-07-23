@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-13T17:21:59.019391+00:00",
+  "invariants": "every retained declaration has a complete correct role/stream/measurement binding; inconsistent metadata held before admission/use, preserve repeated keys/drafts/gaps/erasure and all fake rights/caps",
+  "exact5": [
+    {
+      "bytes": 39798,
+      "path": "pipeline/node_exchange_store.py",
+      "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9"
+    },
+    {
+      "bytes": 87015,
+      "path": "pipeline/node_exchange_simulator.py",
+      "sha256": "d5027fc698863d71dcf90973e556fd875e638ada2cde7b0b9eebe210025df8d1"
+    },
+    {
+      "bytes": 46450,
+      "path": "tests/test_node_exchange_store.py",
+      "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17"
+    },
+    {
+      "bytes": 84746,
+      "path": "tests/test_node_exchange_simulator.py",
+      "sha256": "53954d469dd47b6feb95c010fcf511a65eac28f60a3717b2daad3f33dc41871d"
+    },
+    {
+      "bytes": 23389,
+      "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+      "sha256": "a133b625ff6ab3e3f51a5985e6e3a79161e536b325b9f8baad73aea037b9ab86"
+    }
+  ],
+  "changed": [
+    "pipeline/node_exchange_simulator.py",
+    "tests/test_node_exchange_simulator.py",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md"
+  ],
+  "base347_unchanged": true,
+  "metadata_corrected_before_integration": true,
+  "author_final_delivery_and_full_review_pending": true,
+  "commit_push_production_changes": false
+}

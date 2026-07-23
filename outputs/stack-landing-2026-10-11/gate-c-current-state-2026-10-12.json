@@ -1,0 +1,17 @@
+{
+  "observed_at": "2026-10-12T13:41:55.982886+00:00",
+  "target": "toxldjgwkxtneoqsazym",
+  "owner_gate_c": "AUTHORIZED",
+  "command": "EXECUTED_EXIT_0_EXACT_NINE_FILES",
+  "ledger": "VERIFIED_EXACT_26_ORIGINAL_17_FULL_ROW_HASHES_UNCHANGED",
+  "capture": "VERIFIED_SINGLETON_FALSE",
+  "schema_security_backfill": "16_OF_17_PASS_SECURITY_ADVISOR_7_FINDINGS_STOP",
+  "signup_anonymous": "VERIFIED_DISABLED_TARGET_UI",
+  "pages": "VERIFIED_REQUIRED_JUSTIN_REVIEW_ADMIN_BYPASS_DISABLED",
+  "edge_deployments": "NOT_AUTHORIZED_NOT_EXECUTED",
+  "workers_publication": "HELD",
+  "command_receipt_sha256": "12293a4b450019778c86186d62d2c27701e71f40671ae6d3a01a85c3ca10691b",
+  "root_readback_sha256": "1d55444df57084153cc54159b41eafa7c81686570e4187a1dd67daec8b2a1d5e",
+  "overall_state": "STOP_SECURITY_ADVISOR",
+  "execution_stop_receipt_sha256": "6070c7fac31931203f85625b80e81b37d4d703c518eac0822741dfcaf708966d"
+}

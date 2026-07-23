@@ -1,0 +1,165 @@
+{
+  "status": "OWNERSHIP_CHALLENGE_GENERATED_DNS_RECORD_NOT_ADDED_CUTOVER_NOT_AUTHORIZED",
+  "work_package": "WP-SITE-1D",
+  "domain": "globalsoilintelligence.com",
+  "repository": "global-soil-intelligence/gsip",
+  "source_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "deployed_run": 38821460183,
+  "invariants": [
+    "capture_live remains false",
+    "library_intake_live remains false",
+    "GitHub Pages environment retains jdhart81 approval and no admin bypass",
+    "No Supabase, authentication, worker, source, licence, account subscription or nameserver changes",
+    "Preserve every unrelated DNS record"
+  ],
+  "delete": [
+    {
+      "type": "A",
+      "name": "@",
+      "value": "198.49.23.144",
+      "ttl": 14400
+    },
+    {
+      "type": "CNAME",
+      "name": "www",
+      "value": "ext-sq.squarespace.com.",
+      "ttl": 14400
+    }
+  ],
+  "add": [
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.108.153",
+      "ttl": 3600
+    },
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.109.153",
+      "ttl": 3600
+    },
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.110.153",
+      "ttl": 3600
+    },
+    {
+      "type": "A",
+      "name": "@",
+      "value": "185.199.111.153",
+      "ttl": 3600
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8000::153",
+      "ttl": 3600
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8001::153",
+      "ttl": 3600
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8002::153",
+      "ttl": 3600
+    },
+    {
+      "type": "AAAA",
+      "name": "@",
+      "value": "2606:50c0:8003::153",
+      "ttl": 3600
+    },
+    {
+      "type": "CNAME",
+      "name": "www",
+      "value": "global-soil-intelligence.github.io.",
+      "ttl": 3600
+    }
+  ],
+  "github_pages_updates": [
+    {
+      "method": "PUT",
+      "path": "repos/global-soil-intelligence/gsip/pages",
+      "body": {
+        "cname": "globalsoilintelligence.com"
+      },
+      "when": "After ownership verification, before traffic DNS changes"
+    },
+    {
+      "method": "PUT",
+      "path": "repos/global-soil-intelligence/gsip/pages",
+      "body": {
+        "https_enforced": true
+      },
+      "when": "After DNS health checks and valid certificate for apex and www"
+    }
+  ],
+  "ownership_verification": {
+    "status": "GENERATED_PENDING_OWNER_APPROVAL_TO_ADD_DNS_AND_VERIFY",
+    "organization": "global-soil-intelligence",
+    "type": "TXT",
+    "name": "_github-pages-challenge-global-soil-intelligence",
+    "fqdn": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com.",
+    "value": "ec9866a89c5b447bc5d09ef7ceb232",
+    "ttl": 3600,
+    "instruction": "Generated under explicit owner go; enter only relative host in Squarespace. TXT save and GitHub Verify require the next approval. No traffic cutover or Pages domain binding authorized.",
+    "request_generated_at_utc": "2026-10-16T00:29:46.602226+00:00"
+  },
+  "not_authorized": [
+    "Any change before owner go",
+    "Replacing the whole zone or DNS preset",
+    "Registrar transfer, changing NS/DNSSEC, cancelling Squarespace",
+    "Additional Pages deployment, any merge, opening capture or library intake",
+    "Saving the generated TXT record or clicking GitHub Verify before the next owner go"
+  ],
+  "rollback": {
+    "delete_added_A_and_AAAA": true,
+    "restore": [
+      {
+        "type": "A",
+        "name": "@",
+        "value": "198.49.23.144",
+        "ttl": 14400
+      },
+      {
+        "type": "CNAME",
+        "name": "www",
+        "value": "ext-sq.squarespace.com.",
+        "ttl": 14400
+      }
+    ],
+    "github_pages_update_after_dns_no_longer_points_to_github": {
+      "method": "PUT",
+      "path": "repos/global-soil-intelligence/gsip/pages",
+      "body": {
+        "cname": null
+      }
+    },
+    "keep_ownership_TXT": true,
+    "approval": "Execute only within an explicit rollback authorization; stop and report failures otherwise",
+    "minimum_wait_after_authoritative_convergence_seconds": 3600,
+    "recursive_resolvers_to_sample": [
+      "1.1.1.1",
+      "8.8.8.8"
+    ],
+    "cache_caveat": "Sampled resolvers cannot prove worldwide cache expiration; retain verified TXT."
+  },
+  "preserve": [
+    {
+      "group": "Squarespace Domain Connect",
+      "type": "CNAME",
+      "name": "_domainconnect",
+      "value": "_domainconnect.domains.squarespace.com",
+      "ttl": 3600,
+      "action": "PRESERVE"
+    }
+  ],
+  "account_preflight": "Signed-in DNS inventory and nameservers match baseline; Domain Connect record preserved.",
+  "provider_ui_operation": "If later approved, remove only Squarespace Defaults group containing exactly the two specified web records. Preserve Squarespace Domain Connect group and every custom record; add proposed records individually. Stop if group contents change."
+}

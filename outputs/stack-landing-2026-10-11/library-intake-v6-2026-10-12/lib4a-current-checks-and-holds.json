@@ -1,0 +1,96 @@
+{
+  "head": "575630964d721e044c685de130667fd849244848",
+  "check_runs": [
+    {
+      "name": "dco",
+      "conclusion": "skipped",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536091/job/115100918917"
+    },
+    {
+      "name": "android",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536096/job/115100917878"
+    },
+    {
+      "name": "ios",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536096/job/115100917663"
+    },
+    {
+      "name": "validate",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536095/job/115100917590"
+    },
+    {
+      "name": "gitleaks",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337536066/job/115100917500"
+    },
+    {
+      "name": "gitleaks",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38337458480/job/115100670943"
+    }
+  ],
+  "open_dependency_alerts": 0,
+  "pages_admin_bypass": false,
+  "pages_rules": [
+    {
+      "id": 60751762,
+      "node_id": "GA_kwDOTgVRPc4Dnv-S",
+      "type": "branch_policy"
+    },
+    {
+      "id": 68521163,
+      "node_id": "GA_kwDOTgVRPc4EFYzL",
+      "type": "required_reviewers",
+      "prevent_self_review": false,
+      "reviewers": [
+        {
+          "type": "User",
+          "reviewer": {
+            "login": "jdhart81",
+            "id": 179389866,
+            "node_id": "U_kgDOCrFFqg",
+            "avatar_url": "https://avatars.githubusercontent.com/u/179389866?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/jdhart81",
+            "html_url": "https://github.com/jdhart81",
+            "followers_url": "https://api.github.com/users/jdhart81/followers",
+            "following_url": "https://api.github.com/users/jdhart81/following{/other_user}",
+            "gists_url": "https://api.github.com/users/jdhart81/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/jdhart81/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/jdhart81/subscriptions",
+            "organizations_url": "https://api.github.com/users/jdhart81/orgs",
+            "repos_url": "https://api.github.com/users/jdhart81/repos",
+            "events_url": "https://api.github.com/users/jdhart81/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/jdhart81/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          }
+        }
+      ]
+    }
+  ],
+  "native_artifacts": [
+    {
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 3380500,
+      "expired": false,
+      "id": 11785413926
+    },
+    {
+      "name": "gsip-capture-android-debug",
+      "size_in_bytes": 7214391,
+      "expired": false,
+      "id": 11785234342
+    }
+  ]
+}

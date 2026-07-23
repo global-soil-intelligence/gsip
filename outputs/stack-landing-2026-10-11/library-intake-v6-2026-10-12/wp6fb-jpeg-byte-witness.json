@@ -1,0 +1,31 @@
+{
+  "scope": "Synthetic in-memory bytes only; no image persistence, model loads, live HTTP or source edits",
+  "candidate_manifest_sha256": "1d06d19398209c45cb8e29fdb182a5402ddf0625b81e032a38093ff555dc049a",
+  "file_hashes": {
+    "pipeline/photo_privacy.py": "f4a288aad937c73ecb64c3415187e669ba67302a63eddcc0e9a7d65bfdcfa30c",
+    "pipeline/qa.py": "abe3c05d617cb2c2fc30e194226a5db526364b7f0c27b9446c08ce7a89ecb549"
+  },
+  "results": [
+    {
+      "case": "trailer_followed_by_eoi",
+      "decoder_accepted": true,
+      "metadata_guard_reports_dirty": false
+    },
+    {
+      "case": "concatenated_jpeg",
+      "decoder_accepted": true,
+      "metadata_guard_reports_dirty": false
+    },
+    {
+      "case": "extra_jfif_payload",
+      "decoder_accepted": true,
+      "metadata_guard_reports_dirty": false
+    },
+    {
+      "case": "post_scan_comment",
+      "decoder_accepted": true,
+      "metadata_guard_reports_dirty": false
+    }
+  ],
+  "blocking_findings_remain": true
+}

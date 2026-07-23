@@ -1,0 +1,6 @@
+{
+  "exit_code": 1,
+  "output_sha256": "2b46f097ee8f37ba6415e01be6201c971bf21fbeefb72814dd3485e732e442e5",
+  "output_bytes": 16686,
+  "expected_missing_specification": true
+}

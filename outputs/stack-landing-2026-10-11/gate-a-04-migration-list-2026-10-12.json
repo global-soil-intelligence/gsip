@@ -1,0 +1,22 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "gate": "A",
+  "operation": "migration list",
+  "started_at": "2026-10-12T12:43:26.392360+00:00",
+  "completed_at": "2026-10-12T12:43:27.877144+00:00",
+  "argv": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "migration",
+    "list",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo"
+  ],
+  "exit_code": 0,
+  "output_sha256": "eb2fdeeacfe8742d54a0ed88aa3663fc601804b4fc86f13ee9694216a0e1df5c",
+  "safe_output_lines": [
+    "Initialising login role...",
+    "Connecting to remote database..."
+  ]
+}

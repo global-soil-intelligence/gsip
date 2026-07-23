@@ -1,0 +1,38 @@
+{
+  "docs/PHOTO_PRIVACY_AUTHORITY.md": {
+    "bytes": 13246,
+    "sha256": "bd32e6c38d617cd84c57ea8c96b21ff8e3e0e2c5c557f92333515881ac37725d"
+  },
+  "packages/schema/src/database.types.ts": {
+    "bytes": 30994,
+    "sha256": "31fc12af09a8603a58fdf63fcbea6009f39f30804594fbece551bc2033a8e4b5"
+  },
+  "scripts/db-migration-test.sh": {
+    "bytes": 3649,
+    "sha256": "5c1a6e9bf44da31ae4af92b99b3a6d0eab32176620529e16309310637902afa7"
+  },
+  "scripts/test-photo-privacy-concurrency.py": {
+    "bytes": 17288,
+    "sha256": "ba247a3e14a9e540718c13ae77f48bc38152a54bb5df72281a1fdd0e88ab6684"
+  },
+  "supabase/migration-tests/before_20261014010000_wp6fa_private_photo_privacy.sql": {
+    "bytes": 1829,
+    "sha256": "84b82d74a1428160fa1d6edc678ccec8b5c2d4e84d5723797955dc37c81353e0"
+  },
+  "supabase/migration-tests/wp6fa_photo_privacy.test.sql": {
+    "bytes": 3922,
+    "sha256": "43c06a56eee97f2a6f6357e72e024418d8ab7ea8e2b899ed312793cc0c632923"
+  },
+  "supabase/migrations/20261014010000_wp6fa_private_photo_privacy.sql": {
+    "bytes": 62459,
+    "sha256": "3f5e17511d64606b69b23fc45c2a24465e84a60d6d494e29aa25063f31398096"
+  },
+  "supabase/tests/database/wp6fa_photo_privacy.test.sql": {
+    "bytes": 37151,
+    "sha256": "5215a264578bbd2a64342cab2fcdd7904c20aa7b397474f76947236f5015417f"
+  },
+  "supabase/tests/database/wp_lib4_private_intake.test.sql": {
+    "bytes": 28653,
+    "sha256": "dea41799405c9f5b3b8b762896a0a39455dee5144c4b08c95e00960f89264980"
+  }
+}

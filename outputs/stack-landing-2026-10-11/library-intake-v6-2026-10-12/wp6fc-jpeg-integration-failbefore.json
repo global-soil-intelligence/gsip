@@ -1,0 +1,36 @@
+{
+  "head": "e03e20457a11456d1cd3842caa224d049b44265f",
+  "snapshot": "/private/tmp/gsip-6fc-jpeg-regressions-y17252mi",
+  "changed_file": "tests/test_photo_export_privacy.py",
+  "before_sha256": "28e85d61e6fff0e539d80bd7ab462ad26dae9e10ed9d4b8730d5672fe1f6bfaf",
+  "after_sha256": "3c5b1d098db4b185ac6b9433627e65ae2d230a902b0e9fe4b9d0246943826f83",
+  "patch_sha256": "be34a00b0e69a83b8b61390cbe69177294f21eaf1e65b843ca06c06836d5f26b",
+  "invariants": [
+    "exact forged content digest cannot clear hidden canonical JPEG bytes",
+    "existing systemic canonical-metadata ExportPrivacyError preserved",
+    "refused unsafe bytes leave no promoted date artifact or photos",
+    "clean byte preservation and existing49legacy tests remain unchanged"
+  ],
+  "new_parametrized_test_cases": 4,
+  "fail_before": {
+    "pytest_exit": 1,
+    "specific_missing_ExportPrivacyError_failures": 4,
+    "actual_C_implementation_unchanged": true,
+    "real_HTTP_socket_blocked": true,
+    "HF_offline": true,
+    "log_sha256": "3ed8aa02909ae907406c3c812f6a89b7a8aa20a29f37d14e3136a66ad574ed28",
+    "cases": [
+      "trailer_followed_by_eoi",
+      "concatenated_jpeg",
+      "extra_jfif_payload",
+      "post_scan_comment"
+    ]
+  },
+  "initial_attempt": {
+    "valid_fail_before_witness": false,
+    "reason": "DefaultHFcache outside writable roots caused PermissionError. Corrected private cache/offline/socketblocked rerun showed four expected missing privacy refusals."
+  },
+  "production_access": false,
+  "shared_source_changes": false,
+  "legacy49_test_file_sha256": "402d9767fef1fa31e96d532cd324646f94087150e5722875cce9d9fef3e0217e"
+}

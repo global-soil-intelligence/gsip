@@ -1,0 +1,6 @@
+Command: uv run pytest -q tests/test_app_permissions.py tests/test_phone_optics.py tests/test_qa.py
+Observed final exit_code: 0
+........................................................................ [ 34%]
+........................................................................ [ 68%]
+.......................................................
+Final progress: .......... [100%]

@@ -1,0 +1,83 @@
+Command/check: build
+Observed final exit_code: 0
+$ pnpm -r build
+Scope: 4 of 5 workspace projects
+apps/site-web build$ vite build && vite build --ssr src/prerender.tsx && node scripts/prerender.mjs
+packages/schema build$ tsc --noEmit
+apps/site-web build: vite v8.3.1 building client environment for production...
+apps/site-web build: transforming...
+apps/site-web build: ✓ 20 modules transformed.
+apps/site-web build: rendering chunks...
+apps/site-web build: computing gzip size...
+apps/site-web build: dist/data/index.html             1.59 kB │ gzip:  0.64 kB
+apps/site-web build: dist/methods/index.html          1.60 kB │ gzip:  0.65 kB
+apps/site-web build: dist/card/index.html             1.61 kB │ gzip:  0.64 kB
+apps/site-web build: dist/about/index.html            1.63 kB │ gzip:  0.64 kB
+apps/site-web build: dist/index.html                  1.65 kB │ gzip:  0.63 kB
+apps/site-web build: dist/assets/main-CdU0pfZy.css   17.22 kB │ gzip:  4.58 kB
+apps/site-web build: dist/assets/main-C0y9cHm1.js   252.53 kB │ gzip: 77.41 kB
+apps/site-web build: ✓ built in 96ms
+apps/site-web build: vite v8.3.1 building ssr environment for production...
+apps/site-web build: transforming...
+apps/site-web build: ✓ 3 modules transformed.
+apps/site-web build: rendering chunks...
+apps/site-web build: computing gzip size...
+apps/site-web build: dist-ssr/prerender.js  44.76 kB │ gzip: 10.10 kB
+apps/site-web build: ✓ built in 10ms
+apps/site-web build: prerendered 5 pages and llms.txt
+apps/site-web build: Done
+
+packages/schema build: Done
+apps/capture-pwa build$ vite build
+apps/map-web build$ vite build
+apps/map-web build: vite v8.3.1 building client environment for production...
+apps/map-web build: transforming...
+apps/capture-pwa build: vite v8.3.1 building client environment for production...
+apps/capture-pwa build: transforming...
+apps/capture-pwa build: ✓ 202 modules transformed.
+apps/capture-pwa build: rendering chunks...
+apps/map-web build: ✓ 170 modules transformed.
+apps/capture-pwa build: computing gzip size...
+apps/capture-pwa build: dist/gsip-activation.json          0.05 kB │ gzip:   0.05 kB
+apps/capture-pwa build: dist/registerSW.js                 0.13 kB
+apps/capture-pwa build: dist/manifest.webmanifest          0.32 kB
+apps/capture-pwa build: dist/index.html                    0.57 kB │ gzip:   0.34 kB
+apps/capture-pwa build: dist/assets/index-DZ_h-Mw_.css     7.33 kB │ gzip:   2.38 kB
+apps/capture-pwa build: dist/assets/esm-25ypzvXk.js        0.40 kB │ gzip:   0.27 kB
+apps/capture-pwa build: dist/assets/esm-CmEL7Rke.js        0.58 kB │ gzip:   0.35 kB
+apps/capture-pwa build: dist/assets/synapse-D5y-aojA.js    0.62 kB │ gzip:   0.31 kB
+apps/capture-pwa build: dist/assets/esm-Da0lV6Qj.js        0.81 kB │ gzip:   0.49 kB
+apps/capture-pwa build: dist/assets/web-Z7Um3E4a.js        2.08 kB │ gzip:   0.85 kB
+apps/capture-pwa build: dist/assets/web-ClVSmdgs.js        4.43 kB │ gzip:   1.28 kB
+apps/capture-pwa build: dist/assets/dist-DrwtsX7j.js       7.75 kB │ gzip:   3.09 kB
+apps/capture-pwa build: dist/assets/web-BSGBAWq3.js        8.47 kB │ gzip:   2.82 kB
+apps/capture-pwa build: dist/assets/esm-YcB-ubya.js        9.83 kB │ gzip:   3.17 kB
+apps/capture-pwa build: dist/assets/index-Dx858kqL.js    601.53 kB │ gzip: 184.53 kB
+apps/capture-pwa build: ✓ built in 117ms
+apps/map-web build: rendering chunks...
+apps/map-web build: computing gzip size...
+apps/map-web build: dist/index.html                                 0.40 kB │ gzip:   0.27 kB
+apps/map-web build: dist/THIRD_PARTY_LICENSES.md                   23.03 kB
+apps/map-web build: dist/assets/maplibre-gl-worker-CRiIRpYb.js    509.70 kB
+apps/map-web build: dist/assets/index-gHsDz2RA.css                 85.86 kB │ gzip:  11.69 kB
+apps/map-web build: dist/assets/index-BQBUWd1h.js               1,577.64 kB │ gzip: 446.95 kB
+apps/map-web build: ✓ built in 272ms
+apps/map-web build: [plugin builtin:vite-reporter] 
+apps/map-web build: (!) Some chunks are larger than 500 kB after minification. Consider:
+apps/map-web build: - Using dynamic import() to code-split the application
+apps/map-web build: - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+apps/map-web build: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+apps/map-web build: Done
+apps/capture-pwa build: [plugin builtin:vite-reporter] 
+apps/capture-pwa build: (!) Some chunks are larger than 500 kB after minification. Consider:
+apps/capture-pwa build: - Using dynamic import() to code-split the application
+apps/capture-pwa build: - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+apps/capture-pwa build: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+apps/capture-pwa build: PWA v1.3.0
+apps/capture-pwa build: mode      generateSW
+apps/capture-pwa build: precache  15 entries (629.50 KiB)
+apps/capture-pwa build: files generated
+apps/capture-pwa build:   dist/sw.js
+apps/capture-pwa build:   dist/workbox-9c191d2f.js
+apps/capture-pwa build: Done
+

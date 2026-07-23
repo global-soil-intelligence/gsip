@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-10-17 00:02:17 UTC",
+  "runs": [
+    {
+      "conclusion": "cancelled",
+      "databaseId": 38983514973,
+      "event": "push",
+      "headSha": "33260db1ce49c50600942694e43269759e554e66",
+      "name": "Deploy GitHub Pages",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38983514973"
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 38983466011,
+      "event": "push",
+      "headSha": "98e5ed58d960bcb52f6b80610ca184bc83722125",
+      "name": "Deploy GitHub Pages",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38983466011"
+    }
+  ]
+}

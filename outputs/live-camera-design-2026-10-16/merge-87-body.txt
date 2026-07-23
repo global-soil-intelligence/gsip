@@ -1,0 +1,4 @@
+Align phone, website and public protocol guidance with optional physical-reference use and progressively disclose advanced library details. Preserve required photos, real depth and all activation/privacy gates. Independently reviewed and green CI; owner-authorized source merge only.
+
+Co-Authored-By: Codex <codex@openai.com>
+

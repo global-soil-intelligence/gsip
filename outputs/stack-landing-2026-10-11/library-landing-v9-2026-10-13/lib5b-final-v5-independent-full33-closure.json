@@ -1,0 +1,659 @@
+{
+  "at_utc": "2026-10-13T17:38:53.533104+00:00",
+  "reviewer": "Independent CORE reviewer; no LIB implementation authorship",
+  "status": "LIB5B_V5_FULL33_CARD_INDEPENDENT_SOURCE_REVIEW_CLOSED",
+  "open_material_findings": [],
+  "source_root": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source",
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "base_tree": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64",
+  "base_files_verified_against_git_object": 347,
+  "source_files": [
+    {
+      "bytes": 39798,
+      "path": "pipeline/node_exchange_store.py",
+      "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9"
+    },
+    {
+      "bytes": 87015,
+      "path": "pipeline/node_exchange_simulator.py",
+      "sha256": "d5027fc698863d71dcf90973e556fd875e638ada2cde7b0b9eebe210025df8d1"
+    },
+    {
+      "bytes": 46450,
+      "path": "tests/test_node_exchange_store.py",
+      "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17"
+    },
+    {
+      "bytes": 84746,
+      "path": "tests/test_node_exchange_simulator.py",
+      "sha256": "53954d469dd47b6feb95c010fcf511a65eac28f60a3717b2daad3f33dc41871d"
+    },
+    {
+      "bytes": 23389,
+      "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+      "sha256": "a133b625ff6ab3e3f51a5985e6e3a79161e536b325b9f8baad73aea037b9ab86"
+    }
+  ],
+  "source_hashes_unchanged_after_checks": true,
+  "manifest": {
+    "path": "/private/tmp/gsip-lib5b-final-v5-file-manifest-corrected.json",
+    "sha256": "a80bbd0902b721c0786aa7c7ec6588fdc0e8f990c7dc0456466315b161d6d508",
+    "bytes": 2218
+  },
+  "superseded_manifest_preserved": {
+    "path": "/private/tmp/gsip-lib5b-final-v5-file-manifest.json",
+    "sha256": "cbc4fc525ef70349e1f57f331eaef4cb6368382e756ff1379d3ce9db21e9908a",
+    "bytes": 2296
+  },
+  "full_patch": {
+    "bytes": 288186,
+    "path": "/private/tmp/gsip-lib5b-private-exchange-ledger-v5.patch",
+    "sha256": "de62d7c782594cfa4e14db781e8fd11935eb9a173608ba576467b128eea56309"
+  },
+  "v4_to_v5_delta": {
+    "bytes": 12592,
+    "path": "/private/tmp/gsip-lib5b-v4-to-v5.patch",
+    "sha256": "976f5c88feaa554cfe316d3dd332c9fe47b18e107b20e879d2fa7b7fa55d25c1"
+  },
+  "own_full_and_delta_reconstruct_exact5_and_base347": {
+    "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/patch-reconstruction-receipt.json",
+    "sha256": "b27b220581c978c09401ac5011f1c90e6c2965fa28c7d91ce239380852418b6b",
+    "bytes": 1468
+  },
+  "governing9_full_prior_reads_verified_unchanged": [
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/AGENTS.md",
+      "sha256": "cc5a4ea13e2a389006a0a69c6986f5acc767f9c065131b70f078b8ca1580e180",
+      "bytes": 8525
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/docs/SPEC.md",
+      "sha256": "ce894fb49e1eac6239cbad596c8df8f2c98e2eeca69eb13ba3892101fc3d3bf7",
+      "bytes": 153722
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/docs/BUILD_ORDER.md",
+      "sha256": "102396787dfdb341e4f397f72fb708bc484b889d32df15c2dde4939bbd1ab81c",
+      "bytes": 82574
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/CONTRIBUTING.md",
+      "sha256": "7c8cdba11a34dfe71f5ec1376c408f1bb513ee225d855e9c4637ad87cc750fbb",
+      "bytes": 2653
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/GOVERNANCE.md",
+      "sha256": "6c710240437d8fc9f01184d99862a888abacd70c51ac9c0b3a14adcfc5ee18d8",
+      "bytes": 5903
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/docs/PHASE1_DEPLOYMENT.md",
+      "sha256": "cef59e25e1bea9534335d1b3de486f041577085f96ac763f40da6443447d9172",
+      "bytes": 13715
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/docs/APP_STORE.md",
+      "sha256": "d4a54fea2633f053bc676f936b50c9ef1be86e8ca3edfc0c5ee35ff807f4890f",
+      "bytes": 21146
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/docs/legal/README.md",
+      "sha256": "556293ba6092c522633fe7f586e8e9d1478f6f1f24d75b9338949f9cff6e69ec",
+      "bytes": 3258
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/.env.example",
+      "sha256": "c60d4db146fb0275d3a62e69de18a6f36aef4c7423967c4cf6befe57d3fa63ef",
+      "bytes": 714
+    }
+  ],
+  "spec_and_handoff": {
+    "spec16_9_to16_13_read_directly": "source/docs/SPEC.md",
+    "invariants": "I1\u2013I15/L1\u2013L7/B1\u2013B8 retained",
+    "planning33": {
+      "path": "/private/tmp/gsip-lib5b-independent-planning/adversarial-test-cards.md",
+      "sha256": "6c0ffebb1a486148216e076e558925ffb7b9ea6f0b45d24582f3710980004700",
+      "bytes": 24106
+    },
+    "handoff": {
+      "path": "/private/tmp/gsip-lib5b-implementation-handoff.md",
+      "sha256": "2665289abf311281032844783c17e88e33ed39efd91d71b6aad2817f133a3ce4",
+      "bytes": 10055
+    }
+  },
+  "results": {
+    "original_scoped333": {
+      "tests": 333,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fresh_v5_14": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "actual_exclusive_rename_positive1": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "distinct_scoped_passes": 348,
+    "authored_current_store_cases": 111,
+    "authored_current_simulator_cases": 144,
+    "independent_previous73": 73,
+    "independent_preserved_v4_fresh5": 5,
+    "independent_new_v5_cases": 15,
+    "total_independent_cases": 93,
+    "guard_mutations": {
+      "guards": 21,
+      "selected_cases": 23,
+      "expected_failures": 22,
+      "errors": 0,
+      "skipped": 0,
+      "additional_direct_primitive_expected_failure": 1,
+      "receipt": {
+        "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/independent-mutation-receipt.json",
+        "sha256": "e60cb25768b435beda225ec28910fd0ed47053a8d0f5b76226e45385cf7411ee",
+        "bytes": 40646
+      }
+    },
+    "static": "Ruff check/format, mypy4files, Prettier doc and language check pass",
+    "gitleaks": {
+      "version": "8.21.2",
+      "scope": "exact five authored files only",
+      "exit_code": 0,
+      "findings": 0
+    }
+  },
+  "acceptance_cards": {
+    "F01": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Allowed-root/traversal, live root/ancestor and literal trailing-space tests; final ancestor guards rechecked before private reads/returns.",
+      "limit": "Designated local filesystem only; no exhaustive cloud-folder detection."
+    },
+    "F02": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Pinned lock inode, real separately opened process/thread sessions, live lock replacement and inherited-session/context-exit refusals pass.",
+      "limit": "One cooperating-writer root, not a malicious-owner or cross-root locking proof."
+    },
+    "F03": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Descriptor-bound reads verify sizes/digests/live name+inode; same-inode changes and late root/mode changes hold. Own no-follow and byte-integrity removals fail.",
+      "limit": "Consistent owned snapshots and conservative refusal; no authentication/rollback claim."
+    },
+    "F04": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Regular/single-link/private-mode/no-follow tests cover symlink/hardlink/FIFO/directory/unsafe modes. Generic errors, no implicit permission repair.",
+      "limit": "Actual Darwin filesystem cases; other platform execution remains CI."
+    },
+    "F05": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Actual Darwin exclusive rename preserves single links and existing collision targets; unsupported primitive refuses. Own direct primitive positive and corrected overwrite mutation fail as expected.",
+      "limit": "No reproducible upstream binary or secure-erasure claim; Linux primitive execution remains CI."
+    },
+    "F06": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Root/blobs/staging unknown canaries preserve bytes and hold inventory/absence; isolated inventory guard removal fails.",
+      "limit": "No directory discovery, sweeping or certification of unmanaged copies."
+    },
+    "T01": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Authority/capacity refusals preserve charges/aliases/payload; durable full-byte put reservation is observed before first empty stage. Reservation-removal mutation fails.",
+      "limit": "Ambiguous empty unregistered stage holds instead of guessed cleanup."
+    },
+    "T02": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Actual process-exit admission crash matrices reopen twice with zero-or-one admission/charge; only registered pending objects recover; no third image/second staged blob.",
+      "limit": "Local interruption/cooperating-writer behavior, not malicious rollback detection."
+    },
+    "T03": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Actual erase barrier reads durable restriction+pending image before unlink; process crashes/restart preserve canonical withdrawal and obligation. Wrong-order mutation fails.",
+      "limit": "Failed durability can leave restricted unresolved payload; no completed-erasure inference."
+    },
+    "T04": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Source/recipient/draft/preparation and known aliases erase only through registered refs; fresh absence/unknown inventory/false receipts hold. Own fresh store-negative witness and absence omission fail.",
+      "limit": "Exact covered managed local absence only; no remote, released-model or secure-erasure proof."
+    },
+    "T05": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Stale generations, stopped claims/new nonces, replayed old checkpoint and rights invalidation cannot restore state or remove newer intent. Generation/affinity mutations fail.",
+      "limit": "600-second stopped-claim rule is explicitly local, separate from photo lease."
+    },
+    "C01": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Exact inclusive logical-bound/+1 projections and smaller real process last-unit races pass; actual20/21 gap and100-scope cases run; source+recipient role records aggregate.",
+      "limit": "Most1000/10000 cardinalities are serializer/counter projections, not populated-capacity throughput measurements."
+    },
+    "C02": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Actual200,000,000 managed file bytes across all four categories refuse +1, release only after verified absence, and refill exactly. Forged counts refuse; queued-byte projection +1 refuses.",
+      "limit": "Queued200MB is a logical ref projection; actual managed-byte cases are not a disk-space or workload benchmark."
+    },
+    "C03": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Actual32,000,000 encoded metadata and2,000,000 blob boundaries plus +1 pass; current+one replacement and one staged blob observed.",
+      "limit": "Metadata may become the first refusal bound; no eviction or arbitrary payload relabeling."
+    },
+    "C04": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Alias/cleanup/slot/complete-image saturation activates existing reserved scope fence+pending fields; no new alias/slot/item or quota charge; other human remains usable; fence persists after recovery.",
+      "limit": "Saturation combinations use small/encoded projections, not real-scale operational performance."
+    },
+    "C05": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Repeated/coalesced per-scope/sample cleanup retains obligations and minimal refusals. Multi-scope cleanup converges; later unrelated samples follow validated retirement heads without eviction or fake head.",
+      "limit": "No normal fence-release mechanism or capacity-laundering reset exists."
+    },
+    "Q01": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Actual100 source and100 recipient admissions across scopes run independently; exact retry free, distinct repeated tuple charged. Own role-charge removal fails.",
+      "limit": "Original human identity is explicit fake authority, not real enrollment."
+    },
+    "Q02": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "UTC midnight/restart/source-versus-recipient first day and no accepted-charge refund pass. Own early-UTC literal-day and daily-cap probes/removals pass/fail as expected.",
+      "limit": "Clock remains explicit synthetic input; no real wall-clock/production quota claim."
+    },
+    "Q03": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Caller Prepared/bytearray and unknown scope/owner/role/alias substitutions refuse; original fake human derives from canonical scope+origin facts.",
+      "limit": "No peer/user credential or real actor authority implemented."
+    },
+    "R01": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Complete binding-key coverage derives from every live admitted declaration role/stream/measurement; reference stream must match actual event. Both preserved corrupted-index witnesses now hold; fresh missing/wrong-role/unknown/extra-key/cross-stream refs hold without repair; older equivalent live repeat binding is valid. Both new guards are mutation-sensitive.",
+      "limit": "Controlled contradictory fictional metadata only; no ordinary API route producing it or cryptographic/rollback protection claimed."
+    },
+    "R02": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Exact-byte/UUID/slot/stream/scientific conflict and restart cases preserve originals and charges. Erased-alias retirement cannot skip identity; changed bytes never acknowledge absence.",
+      "limit": "Private integrity facts persist; real retention purpose remains LIB5C."
+    },
+    "R03": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Same original owner/sample/measurement/grant and immutable tuple/binding checks pass; missing exact measurement or changed grant cannot borrow sibling authority; valid repeated tuples share one group.",
+      "limit": "Known within-owner lineage is a declaration, not physical pairing or cross-owner material proof."
+    },
+    "R04": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Initial and later sealed/synthetic/withdrawal restrictions persist across aliases, omitted labels, grant ambiguity/replacement and restart. Initial seal guard removal admits forbidden payload and fails witness.",
+      "limit": "Permanent conservative fences need a later approved release protocol; no hidden label exposed."
+    },
+    "R05": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Other fictional human with equal sample/measurement/digest stays independent and usable; scope-specific aliases and original-human grouping prevent cross-owner restrictions/linkage.",
+      "limit": "No spectral privacy or anonymity clearance, global membership index or cross-human join."
+    },
+    "A01": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Current known/connected/expired/revoked scope and exact original measurement rechecked before recipient/retry/draft/claim/recovery/use/preparation/checkpoint. Authority holds do not consume transient attempts.",
+      "limit": "Trusted facts are explicitly supplied fictional values, never real authentication."
+    },
+    "A02": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Real separate-process withdrawal during unlocked delivery and competing last-unit admissions serialize under root lock; rights first holds later payload, admission first retains cleanup obligation.",
+      "limit": "One root linearization only, no hosted SQL/distributed two-node guarantee."
+    },
+    "A03": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Delivery releases root lock; stale/missing/forged/lost replies cannot recreate removed work or complete unrelated/new nonce; valid controls remain available.",
+      "limit": "Only scripted local FakeTransport; no actual network or real peer reply."
+    },
+    "A04": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Retirement applies sample-wide before gaps/conflicts, including empty measurements; no late scientific predecessor resurrection. Valid recipient retirement slots/heads survive erased aliases; wrong predecessor candidate rolls back.",
+      "limit": "Missing predecessor remains held; no reset, fabricated source/receiver head or new-scope escape."
+    },
+    "A05": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Cleanup after ordinary revocation requires separately current known/connected/unexpired cleanup permission; absent original measurement still cannot supply ordinary use authority.",
+      "limit": "No delegated credentials/secret store/post-revocation real authentication policy chosen."
+    },
+    "A06": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Actual20/+1 batch, cleanup priority at spent daily allowance, five attempts and60/120/240/480 backoff,600-second stale-claim recovery and nonce controls pass.",
+      "limit": "No actual sleep, deletion SLA, throughput or remote erasure promise."
+    },
+    "I01": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "Fixed generic exceptions have no cause/context; injected storage callback/private canaries do not print values or paths; public counts are synthetic and physical/field counts remain0.",
+      "limit": "Protected fictional test/evidence traces remain private; no real data used."
+    },
+    "I02": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "All347 base files exact against immutable d7 object; only five new files. Two production modules have explicit designated roots/fake authority+clock/local transport, no CLI/network/env/secret/model/real-content adapter. Authored-only pinned scan0.",
+      "limit": "Existing full-history CI scan, native/device and production gates remain separate."
+    },
+    "I03": {
+      "status": "CLOSED_WITH_STATED_SCOPE_LIMIT",
+      "evidence": "21 actual critical guard removals in owned source copies each cause meaningful assertion failure;23 selected cases/22 failures/0errors/0skip, plus one direct primitive failure. All frozen pass sources rechecked unchanged.",
+      "limit": "Initial ineffective no-replace harness and incomplete scan preserved/disclosed; corrected actual proofs supply closure, no author proof substitution."
+    }
+  },
+  "closed_finding": {
+    "id": "LIB5B-V4-R01-BINDING-COMPLETENESS",
+    "prior_receipt": {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/independent-v4-binding-finding-receipt.json",
+      "sha256": "e04aca8b557389b5577707ac879a459bddefaeef971b2b4ae39dc43400e6fdb0",
+      "bytes": 17161
+    },
+    "result": "Both preserved actual corrupted-index witnesses refuse at v5. Fresh role/key/blob/stream cases preserve the controlled corrupted image without charge or repair; compatible repeated/erased/gapped/draft roles pass.",
+    "limits": "No ordinary API path causing the old contradiction, real attack/privacy leak, storage authentication or rollback detection claimed."
+  },
+  "preserved_banks": [
+    {
+      "original": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes/test_independent_cards.py",
+      "copy": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_independent_cards.py",
+      "sha256": "c871ebdf4e10d23eb7564569cb2aeab433b883285f7fee4837bc76e01afb80d1"
+    },
+    {
+      "original": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes/test_independent_initial_synthetic.py",
+      "copy": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_independent_initial_synthetic.py",
+      "sha256": "df42faa345166538c90889e9b7017df8eb433d4d5241c1b5968d90c755c2ea70"
+    },
+    {
+      "original": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes/test_original_independent_findings.py",
+      "copy": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_original_independent_findings.py",
+      "sha256": "cdb50809f72855144c399eb22f424ef4824dcb14b898f91ab47199f3dfe4582f"
+    },
+    {
+      "original": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes/test_store_independent.py",
+      "copy": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_store_independent.py",
+      "sha256": "6f19c908edb7d9eaba83bd7bdc7686e1a62046b66044da112b63b71adb04bda4"
+    },
+    {
+      "original": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes/test_v4_fresh_review.py",
+      "copy": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_v4_fresh_review.py",
+      "sha256": "6f0f87b5035b11b6eff0af4da7f980be4ba6595ddf798a6c7dfe8b4c1e21e20a"
+    },
+    {
+      "original": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes/test_independent_initial_restriction.py",
+      "copy": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_independent_initial_restriction.py",
+      "sha256": "0b0c3cf6652208ed610d8a14dc15c86d5e04c591f45e5edd140adab85a3d4048"
+    },
+    {
+      "original": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes/test_independent_cleanup_heads.py",
+      "copy": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_independent_cleanup_heads.py",
+      "sha256": "3cc9e4980a0b744335843a1850ce62f95996bbef9bdf8431aa10e9897df826b2"
+    }
+  ],
+  "new_bank": {
+    "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_v5_complete_facts.py",
+    "sha256": "c8533b8932a273ee6b592a8dccfead0689365f8eabe51ede0ea048be9c878413",
+    "bytes": 8323
+  },
+  "commands": [
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes",
+        "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/tests/test_node_exchange_store.py",
+        "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/tests/test_node_exchange_simulator.py",
+        "--tb=short",
+        "--junitxml=/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/scoped.xml",
+        "--basetemp=/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/scoped-roots"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes",
+      "env_overrides": {
+        "PYTHONPATH": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_v5_complete_facts.py",
+        "--tb=short",
+        "--junitxml=/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/fresh-v5.xml",
+        "--basetemp=/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/fresh-v5-roots"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes",
+      "env_overrides": {
+        "PYTHONPATH": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes/test_v5_complete_facts.py",
+        "-k",
+        "actual_exclusive_rename",
+        "--tb=short",
+        "--junitxml=/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/rename-positive.xml",
+        "--basetemp=/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/rename-positive-roots"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/probes",
+      "env_overrides": {
+        "PYTHONPATH": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "pipeline/node_exchange_store.py",
+        "pipeline/node_exchange_simulator.py",
+        "tests/test_node_exchange_store.py",
+        "tests/test_node_exchange_simulator.py"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "pipeline/node_exchange_store.py",
+        "pipeline/node_exchange_simulator.py",
+        "tests/test_node_exchange_store.py",
+        "tests/test_node_exchange_simulator.py"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "mypy",
+        "pipeline/node_exchange_store.py",
+        "pipeline/node_exchange_simulator.py",
+        "tests/test_node_exchange_store.py",
+        "tests/test_node_exchange_simulator.py"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/private/tmp/gsip-app2b-author-lhe_vi2z/source/node_modules/.pnpm/prettier@3.9.9/node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        "docs/LIBRARY_EXCHANGE_SIMULATOR.md"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/check-language.mjs"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/tools/gitleaks-8.21.2/gitleaks",
+        "dir",
+        "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/authored-scan",
+        "--config",
+        "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/source/.gitleaks.toml",
+        "--ignore-gitleaks-allow",
+        "--redact",
+        "--no-banner",
+        "--report-format",
+        "json",
+        "--report-path",
+        "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/gitleaks-authored.json"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/reconstruction-receipt.json",
+      "sha256": "304f89f4eee92908cfc35a1607afceee83c15e180dc39cceb0ca5283c071a453",
+      "bytes": 41498
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/patch-reconstruction-receipt.json",
+      "sha256": "b27b220581c978c09401ac5011f1c90e6c2965fa28c7d91ce239380852418b6b",
+      "bytes": 1468
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/scoped.log",
+      "sha256": "6c20e90ec3872d62a8ef4af1989e35fa631da74597020ed98c45fb89c385f61a",
+      "bytes": 911
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/scoped.xml",
+      "sha256": "75babf2881cbfd56e713363a8f238003c3a789fd8c5c447e2811aea21a52a9d9",
+      "bytes": 2050957
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/scoped-command.json",
+      "sha256": "40ef6a13d77b4c438fa399d0ed3475ef1b24a5bbab8cc243e4bc0f525b016e18",
+      "bytes": 784
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/fresh-v5.log",
+      "sha256": "7c10d89a29772cd0dac2641d18bb131ab5281218256747c16e0cdead96a919e8",
+      "bytes": 99
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/fresh-v5.xml",
+      "sha256": "c25ab9dedd81bd496719d3670edba1171ead77fe9863084f233ee088bd58ce20",
+      "bytes": 2314
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/rename-positive.log",
+      "sha256": "a2d78742cfa1d76910966e33fd3ae6c8143e9e9a4f32f5fbc7dbe4d8c727cc43",
+      "bytes": 113
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/rename-positive.xml",
+      "sha256": "d4987c58947c55ee4ce3b2551ed31861783b46e81ab9ccae492562926be97346",
+      "bytes": 387
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/ruff-format.log",
+      "sha256": "177f260a5645724013185e4b140c7045cc39e56c0c97b120f5cb23599f85f0de",
+      "bytes": 26
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/mypy.log",
+      "sha256": "71144743c83babea384888a735db0c4daba3d4d7b7942b6839984bd5c21b52bb",
+      "bytes": 43
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/prettier.log",
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "bytes": 66
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/language.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/gitleaks-authored.log",
+      "sha256": "9e5948ab7e564106bb754602a3e24a7fbe7474b9fbfa1943ceb51061695dae51",
+      "bytes": 98
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/gitleaks-authored.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/independent-mutation-receipt.json",
+      "sha256": "e60cb25768b435beda225ec28910fd0ed47053a8d0f5b76226e45385cf7411ee",
+      "bytes": 40646
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/initial-mutation-receipt-preserved.json",
+      "sha256": "ae8ab7c4c0e9c593dcae9c9d3b96ec72827ca4fece8bd87d2a48556594d63fa3",
+      "bytes": 38356
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/initial-incomplete-scan.log",
+      "sha256": "9f0bd8eea480075b1367e09bb540a81d6a4fbbcf77a4adcf0d836c84e9f90e5b",
+      "bytes": 326
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/run_independent_mutations.py",
+      "sha256": "a1ad1dee1a46a1074b39be553dfb31e79d9b0ccfded2061bbcb2868c4995b289",
+      "bytes": 10190
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v5-hrtoyrvz/initial-mutation-driver-preserved.py",
+      "sha256": "ff75f207cfb3ef74291a76cb2faccd872f9cfd6bc1de671241b85aee88262993",
+      "bytes": 10174
+    }
+  ],
+  "harness_disclosures": [
+    "Original cbc4 manifest had stale v4 patch labels; corrected a80 manifest binds same5 reviewed source bytes and proper v5 patch/delta; old retained.",
+    "Initial mutation no-replace span matched earlier Error class and did not remove final primitive; evidence preserved, unique primitive corrected, actual integration and direct primitive now fail.",
+    "An initial scan-input setup stopped on new manifest dictionary schema; dependent scan found missing input directory. Partial scan is not counted; exact5 prepared and final scanexit0/findings0.",
+    "Full-patch reconstruction bookkeeping initially iterated dictionary keys after successful patch apply; stopped, then verified full and applied delta separately."
+  ],
+  "limits": [
+    "This closes the exact five-file synthetic local source package; root integration, author final delivery and exact-head green CI remain separate requirements.",
+    "No actual Linux/no-replace platform or GDAL evidence was produced by this verifier; root reports full1132pass/4GDALskip separately, not used as independent closure.",
+    "Logical1000/10000 capacities are exact projections plus smaller real concurrency cases. Actual200MB managed and32MB metadata boundaries passed; no operational performance or disk-space guarantee.",
+    "No malicious-owner rollback, secure erase, distributed/global quota, real contributor/peer authority, credentials or real retention-purpose approval. LIB5C remains held.",
+    "Field_eligible and verified_physical_pairs stay0; no model training/calibration, field science, public spectra, deployment/useful adoption or production/capture/worker/publication authority.",
+    "APP CORE v4/privacy/native preparation evidence remains separate; no native/device/iOS backup/store/production claim."
+  ],
+  "actions": {
+    "author_or_shared_source_edits": false,
+    "Git_GitHub_mutations": false,
+    "network_or_download": false,
+    "credentials_or_real_data": false,
+    "production_or_capture": false,
+    "approval_or_merge": false
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "reviewer": "Codex independent photo_sql_review agent",
+  "reviewed_at": "2026-10-13T05:02:43.135704+00:00",
+  "verdict": "no_code_review_blockers",
+  "base": "f1a644af2a78b1b9865385d603cb77ad156843eb",
+  "frozen_patch_sha256": "2bcb4840770422e8bacbc1b9be114a9682ecbec4bc59ab7b535a6f306686edb8",
+  "forward_delta_sha256": "146d6c71b3112adc5b1dab857ca3c9dcd1d19621982353ab7d114611fdfbc65c",
+  "sql_sha256": "52ea34b5b20be0ccec307fdcab0d865f1b8f8a8826f420b26d7332d95630a9c9",
+  "author_receipt_sha256": "1e306cb1e59eb4ecb3ffccaaaa2a7c554e6edb4b1f2649324bf556f8f402dc8d",
+  "file_manifest": {
+    "docs/PHOTO_PRIVACY_AUTHORITY.md": {
+      "bytes": 14935,
+      "sha256": "b4e430ba96f25383b2f236cc330be500b11429827b5efd45ba2d15bb22f808e6"
+    },
+    "packages/schema/src/database.types.ts": {
+      "bytes": 30994,
+      "sha256": "31fc12af09a8603a58fdf63fcbea6009f39f30804594fbece551bc2033a8e4b5"
+    },
+    "scripts/db-migration-test.sh": {
+      "bytes": 3649,
+      "sha256": "5c1a6e9bf44da31ae4af92b99b3a6d0eab32176620529e16309310637902afa7"
+    },
+    "scripts/test-photo-privacy-concurrency.py": {
+      "bytes": 30264,
+      "sha256": "dd150d14991e09670baa83cd273786453e1cb8d7c0720feae3aa58d5f5a99d5e"
+    },
+    "supabase/migration-tests/before_20261014010000_wp6fa_private_photo_privacy.sql": {
+      "bytes": 1829,
+      "sha256": "84b82d74a1428160fa1d6edc678ccec8b5c2d4e84d5723797955dc37c81353e0"
+    },
+    "supabase/migration-tests/wp6fa_photo_privacy.test.sql": {
+      "bytes": 3922,
+      "sha256": "43c06a56eee97f2a6f6357e72e024418d8ab7ea8e2b899ed312793cc0c632923"
+    },
+    "supabase/migrations/20261014010000_wp6fa_private_photo_privacy.sql": {
+      "bytes": 66343,
+      "sha256": "52ea34b5b20be0ccec307fdcab0d865f1b8f8a8826f420b26d7332d95630a9c9"
+    },
+    "supabase/tests/database/wp6fa_photo_privacy.test.sql": {
+      "bytes": 37151,
+      "sha256": "5215a264578bbd2a64342cab2fcdd7904c20aa7b397474f76947236f5015417f"
+    },
+    "supabase/tests/database/wp_lib4_private_intake.test.sql": {
+      "bytes": 28653,
+      "sha256": "dea41799405c9f5b3b8b762896a0a39455dee5144c4b08c95e00960f89264980"
+    }
+  },
+  "all_nine_exact_hashes_verified": true,
+  "snapshot": "/private/tmp/gsip-6fa-independent-v2-_rwoyoux",
+  "supersedes_original_review": "/private/tmp/gsip-6fa-independent-review-receipt-original.json",
+  "closed_findings": [
+    {
+      "id": "SQL-1",
+      "result": "Original mid-lock source probe now returns prompt generic PP002 without taking child lock or producing 40P01; explicit parent-before-photo SHARE NOWAIT and per-source exception handling prevent blocking against parent/photo/bulk deletion."
+    },
+    {
+      "id": "SQL-2",
+      "result": "Original authenticated allowed-column optional-C insertion probes now wait contributor-first and refuse WD001 after committed withdrawal/account-deletion; no source/private payload recreated. Early BEFORE admission fences refreshed original source relationship and rights before FK/private locks."
+    }
+  ],
+  "remaining_blockers": [],
+  "independent_validation": {
+    "database": "gsip_lib4b_review_6fa_v2_rwoyoux",
+    "fresh_stand_in_pgtap": {
+      "passed": 593,
+      "total": 593,
+      "suites": 11,
+      "photo_assertions": 143,
+      "actual_supabase_platform_not_claimed": true
+    },
+    "photo_concurrency_cases": {
+      "passed": 31,
+      "total": 31,
+      "includes": "mid-parent/photo deletion, skipped-source lock release/next claim, opposite-order two-source export/deletion, authenticated optional-C insertion in both orders for both request kinds, and all9RPC/source admission refusing repeatable-read/serializable"
+    },
+    "exact_migration_runner": {
+      "assertions_passed": 45,
+      "assertions_total": 45,
+      "library_races_passed": 6,
+      "photo_races_passed": 31,
+      "adapter_directory": "/private/tmp/gsip-6fa-independent-v2-pg-adapters",
+      "throwaway_cluster_port": 55493,
+      "scope": "exact frozen shell script through independently inspected local Docker adapters; no shared app DB reset or production access",
+      "runner_log": "/private/tmp/gsip-6fa-independent-v2-migration-runner.log"
+    },
+    "original_independent_failure_probes_rerun": 3,
+    "ruff_check": "passed",
+    "ruff_format": "passed",
+    "strict_mypy_race_script": "passed",
+    "gitleaks": {
+      "version": "8.21.2",
+      "authored_nine_files_dir_scan": "passed",
+      "findings": 0,
+      "suppression_changes": false
+    },
+    "static_first_attempt": {
+      "passed": false,
+      "reason": "uv run accidentally invoked in author snapshot; it created incomplete local venv and failed offline package retrieval before lint. No frozen source files changed; corrected isolated snapshot used existing pinned tools, static checks passed."
+    }
+  },
+  "checked": [
+    "all8private tables retain RLS, restrictive client-deny and no direct API CRUD/schema naming privileges",
+    "exact9public service-only bound invoker wrappers and private pinned empty-search-path bodies; new helper/admission not service-accessible by name",
+    "owner-only defaultfalse gate, calibration/policy/operator provisioning remain unchanged",
+    "exact current immutable digest/version/supported-screen/manual authority and permanent-withhold refusals remain unchanged",
+    "personally authenticated live operator mapping remains enforced",
+    "300second lease/fiveattempt finite retry and stale lease restrictions remain unchanged",
+    "source/rights erasure and unchanged legacy apply/complete worker contracts retain additive honest residual-payload guard",
+    "all9RPC and source admission require read committed rather than authorize from stale stronger snapshots",
+    "no tests, RLS, full-history scanner, production gates or reviewed history weakened"
+  ],
+  "evidence_sha256": {
+    "/private/tmp/gsip-6fa-independent-v2-pgtap-receipt.json": "ef5749b9c5f33154477df9d34ac70308169e0cd923990cfdf5ccc7fbada07328",
+    "/private/tmp/gsip-6fa-independent-v2-races.json": "3c7d6381d5ebe217c7e4907f90adb9f8917d604103d046f2f7b1e08c96a7cacd",
+    "/private/tmp/gsip-6fa-independent-v2-migration-runner-receipt.json": "27779e7da821f1f0f12887dd517edda223f40761b6385ca6eab83007d6c7f40a",
+    "/private/tmp/gsip-6fa-original-probes-corrected-v2.json": "d0df5247b3bee7c93dd94f816fc106a972049f7a14067291cfe1886c548f997c",
+    "/private/tmp/gsip-6fa-independent-v2-gitleaks.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "source_fixes_authored_by_reviewer": false,
+  "production_access": false,
+  "shared_app_database_touched": false,
+  "publication_or_merge_approval": false,
+  "limitations": [
+    "Reviewer exercised isolated local stand-in PostgreSQL and synthetic fixtures, not production or HTTP/PostgREST deployment.",
+    "Actual Supabase platform full suite remains root/CI authority; root reports inherited closed-seed positive-ingest RLS tests25/29/33 failed and all143privacy assertions passed. This receipt does not label the actual platform suite green.",
+    "Historical unrelated gitleaks fixture exception, prerequisite PR merge, exact-head CI, owner calibration/licensing/provisioning and production activation gates remain separate.",
+    "No actual model calibration, contributor data, images, coordinate fixture, real token/credential, external publication, worker dispatch or capture opening was used."
+  ]
+}

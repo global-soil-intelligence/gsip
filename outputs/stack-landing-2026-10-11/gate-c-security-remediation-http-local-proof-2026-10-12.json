@@ -1,0 +1,194 @@
+{
+  "status": "PASS_ISOLATED_LOCAL_HTTP_PROOF",
+  "started_at": "2026-10-12T14:17:58.341585+00:00",
+  "completed_at": "2026-10-12T14:18:03.364800+00:00",
+  "source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "proposal_sha256": "f56380b5a479045d65fda8318ccaa51aa0910d6d837fb3f06ea620598b6d43e7",
+  "proof_script_sha256": "2c36d7956f52d3ce49245246b4d31e80e4789097641af8e3e2833e6493f62b87",
+  "images": {
+    "postgres": "sha256:521e67f2812db505fe6d462b1820136394824d7f5c6016a19234b07ac93d6760",
+    "postgrest": "sha256:fcb9fa67dd53b3b978b52ef07fb195d4bb26434c2e8cba8c96ef257abf2ee753"
+  },
+  "network": "none; PostgREST shares the PG container namespace; loopback only",
+  "host_ports": [],
+  "source_mount": "read-only immutable extracted commit",
+  "api_exposed_schemas": [
+    "public"
+  ],
+  "pool_size": 1,
+  "prepared_statements": true,
+  "proposal_applied_in_one_local_transaction": true,
+  "tests": [
+    {
+      "name": "isolated_network_and_no_host_ports",
+      "status": "PASS"
+    },
+    {
+      "name": "baseline_anonymous_capture_closed",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "baseline_auth_owner_exists",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "baseline_deleted_uid_absent",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "after_reload_anonymous_capture_closed",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "after_reload_auth_owner_exists",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "after_reload_deleted_uid_absent",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "auth_without_uid_stays_false",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "anon_cannot_finalize",
+      "status": "PASS",
+      "http_status": 401
+    },
+    {
+      "name": "service_cannot_finalize",
+      "status": "PASS",
+      "http_status": 403
+    },
+    {
+      "name": "other_owner_cannot_finalize",
+      "status": "PASS",
+      "http_status": 500
+    },
+    {
+      "name": "owner_requires_both_photo_rows",
+      "status": "PASS",
+      "http_status": 400
+    },
+    {
+      "name": "owner_finalizes_through_invoker_adapter",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "owner_finalization_remains_idempotent",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "auth_no_uid_cannot_finalize",
+      "status": "PASS",
+      "http_status": 403
+    },
+    {
+      "name": "volatile_finalization_not_read_only_get",
+      "status": "PASS",
+      "http_status": 405
+    },
+    {
+      "name": "own_live_grant_accepts_uploads",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "other_owner_upload_probe_returns_false",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "withdrawn_grant_upload_returns_false",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "anon_upload_probe_denied",
+      "status": "PASS",
+      "http_status": 401
+    },
+    {
+      "name": "private_profile_get_rejected",
+      "status": "PASS",
+      "http_status": 406
+    },
+    {
+      "name": "private_profile_post_rejected",
+      "status": "PASS",
+      "http_status": 406
+    },
+    {
+      "name": "same_pooled_backend_resets_uid_and_role",
+      "status": "PASS"
+    },
+    {
+      "name": "prepared_rpc_owner_context_not_cached",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "prepared_rpc_other_context_not_cached",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "warm_adapter_rechecks_private_execute_acl",
+      "status": "PASS",
+      "http_status": 403
+    },
+    {
+      "name": "private_execute_restore_recovers_without_reload",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "bound_adapter_observes_callee_replacement",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "bound_adapter_recovers_callee_guard",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "dependency_blocks_private_callee_drop",
+      "status": "PASS"
+    },
+    {
+      "name": "second_reload_keeps_guarded_dispatch",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "capture_stays_closed_at_end",
+      "status": "PASS",
+      "http_status": 200
+    },
+    {
+      "name": "private_namespace_usage_stays_denied",
+      "status": "PASS"
+    }
+  ],
+  "passed": 33,
+  "cleaned_containers_and_fixture_directory": true,
+  "production_operations": [],
+  "credentials": "Synthetic runtime-only signing bytes and JWTs; no real credentials; no token or material persisted.",
+  "limits": [
+    "Synthetic stand-in and cached PostgREST14.15 only, not hosted Supabase authentication or schema-cache deployment proof.",
+    "HTTP write tests and ACL/body fault injection occurred only inside disposable network-isolated local containers.",
+    "No actual photos, coordinate values, response rows, tokens, signing material or complete HTTP response bodies persisted.",
+    "This checks sequential pooled plan/ACL lifecycle; it does not prove arbitrary concurrent DDL or every possible custom/default role grant."
+  ]
+}

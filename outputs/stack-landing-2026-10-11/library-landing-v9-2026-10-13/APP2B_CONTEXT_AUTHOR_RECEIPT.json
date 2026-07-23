@@ -1,0 +1,74 @@
+{
+  "baseline_head": "1deb13d193702ac1e759def3ed7dcfa777f9e2b5",
+  "author_root": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-gradle-context-author-ntgab1za",
+  "owned_files": [
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py",
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+  ],
+  "delta_sha256": "af2002426d562b905f66707ea49a0e512c3155b3a11a5e50a2333d17e6108cab",
+  "manifest_sha256": "64a9c60629f4472947559dee4eef164da7f83b05da25657111b2567b76bc157f",
+  "task_unchanged": true,
+  "task_sha256": "b877b5e4e32f46fde5b2102c9b15bb5e913f27aa1fa1cc460754ad4c7844ed73",
+  "audit_tests_pass": 371,
+  "new_tests": 38,
+  "unchanged_bank_pass": 43,
+  "unchanged_bank_sha256": "4017b63fe4614833f8ded1b38ac545e1c286367e0422d4857ec07f05d5b6c7a5",
+  "fail_before": 3,
+  "effective_guard_mutations": 4,
+  "checks": [
+    {
+      "check": "audit-tests",
+      "exit_code": 0,
+      "output_sha256": "fd09704394f6a87fcd75b3f80e44ab6eb3979cd9099df7e6f19518a1e1b53968"
+    },
+    {
+      "check": "ruff",
+      "exit_code": 0,
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "check": "mypy",
+      "exit_code": 0,
+      "output_sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    {
+      "check": "language",
+      "exit_code": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "check": "format",
+      "exit_code": 0,
+      "output_sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    }
+  ],
+  "real_controls": "Verified Gradle8.14.3/Java21.0.1, own offline cache/fixtures; successful two-view task and actual settings-evaluation failure through original audit.run/main; original tool+CLI exit1, four fields/private refusal verified",
+  "preserved": [
+    "All333 original test/fixture prefix bytes (including291 prior diagnostics)",
+    "Every original non-main function/class AST including all diagnostics/classifiers/readers/validators",
+    "Main unchanged after removing sole supplemental conditional",
+    "Exact generated Gradle task bytes/hash and original exception rethrow",
+    "65,536-byte cap/type/UTF-8/control/marker refusal policies",
+    "All native proof/variant/permission/licence/backup/scanner/workflow/activation guards"
+  ],
+  "assumptions": [
+    "Supplemental context is diagnostic-origin metadata only, not native acceptance or an inferred producer/API repair",
+    "Only the exact inspection CPE in the inspection stage emits context; rejected commands emit none",
+    "Eight fields are fixed tokens only; no arbitrary message/path/URL/key/coordinate/value is copied",
+    "Mixed recognized/unknown failure sections remain AMBIGUOUS",
+    "Real Gradle controls require bounded outside-sandbox Java execution; no Android native build",
+    "Frozen harness replays in recorded author root or assembled owned reproduction; do not execute in frozen folder without its full source/fixtures/cache"
+  ],
+  "limits": [
+    "Android hosted cause remains unconfirmed until next exact-head CI",
+    "No source/Git/PR/GH/workflow/dispatch/production/signing/account/capture action",
+    "No raw Gradle logs or streams persisted; safe enums/counts/hashes only"
+  ],
+  "pinned_scan": {
+    "version": "8.21.2",
+    "scope": "Frozen authored3 supplemental only; no full-history run claimed",
+    "leaks": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  }
+}

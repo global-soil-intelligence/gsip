@@ -1,0 +1,66 @@
+{
+  "utc": "2026-10-14T04:14:05.838851+00:00",
+  "boundary": "Owner-authorized source landing/build continuation; excludes historical separately authorized production gates",
+  "main": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "local_main_clean": true,
+  "required_source_checks_green": true,
+  "merged_PR_numbers": [
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    58,
+    60,
+    63,
+    64,
+    65,
+    66
+  ],
+  "open_PR_inventory": {
+    "utc": "2026-10-14T04:11:38.251193+00:00",
+    "open_pr_count": 0,
+    "open_pr_numbers": [],
+    "complete_page": true,
+    "GET_only": true,
+    "production_queries": false,
+    "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "native_strict_proof_run": 38505847255,
+  "native_main_build_run": 38507012693,
+  "latest_main_has_only_three_docs_changed_no_native_workflow_expected": true,
+  "gitleaks_version": "8.21.2",
+  "all_refs_full_history_commits_reported": 156,
+  "findings": 0,
+  "only_owner_approved_exact_suppressions": true,
+  "Pages_deployment": "waiting_for_jdhart81_no_admin_bypass",
+  "worker_schedule_guards": "all_five_missing_or_held",
+  "active_workers": 0,
+  "complete_nonterminal_worker_inventory": true,
+  "production_queries_changes_deployments": false,
+  "capture_opening": false,
+  "human_DCO_or_approving_GitHub_review": false,
+  "report": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/LANDING_AND_BUILD_REPORT_2026-10-14.md",
+    "sha256": "aa2a8818f7ae2ef8cbca773dbec69c634a5aaec3113e8914f955a595ef17b2ca"
+  },
+  "checks": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/MAIN_SOURCE_CHECK_SNAPSHOT_20261014T041243Z.json",
+    "sha256": "ac2c0ee2eda8eb2ca7a214bc477e525f6f5f18052c69d5b50274d78d0d1d79d9"
+  },
+  "holds": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/READ_ONLY_POST66_HOLD_AUDIT_20261014T041246Z.json",
+    "sha256": "04de06c2314b97574b1ea5d149d19dfb5d1e03a64b27bf5e3c7fc083807bd9b1"
+  },
+  "general_CI": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/FINAL_MAIN_2C6C_GENERAL_CI_CLOSURE.json",
+    "sha256": "f008c7f66e29f048abd7f999a58a0583f8e5dc1617ad92809038638f0a525ca5"
+  },
+  "remaining_gates": [
+    "Physical-device reminders and reliable iOS cloud backup exclusion",
+    "Owner real-peer authority/consent/credential/cleanup/retention decisions",
+    "Consented real instrument/lab pairs, independent scientific evaluation",
+    "Photo licensing/calibration/operator and all separately gated deployment/launch actions"
+  ]
+}

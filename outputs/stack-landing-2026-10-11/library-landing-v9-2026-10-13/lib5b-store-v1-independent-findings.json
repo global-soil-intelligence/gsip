@@ -1,0 +1,119 @@
+{
+  "reviewer": "Codex independent subagent /root/spec9_clarity_review",
+  "recorded_at_utc": "2026-10-13T13:44:58.337464+00:00",
+  "scope": "Only frozen pipeline/node_exchange_store.py and tests/test_node_exchange_store.py; mutable simulator/tests/docs not read or reviewed.",
+  "mode": "Read-only source review plus isolated synthetic filesystem/process/thread probes; no approving GitHub review.",
+  "base_provided_by_root": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "frozen_files_sha256": {
+    "pipeline/node_exchange_store.py": "ffbdca43966918b6f861f7c25806ebd729055c2e166294ad63c27555cff96c61",
+    "tests/test_node_exchange_store.py": "ff4428abd7d6e90ab2456f3e8bb5be0d1d5982664debf99d2c0548cd1050cfae"
+  },
+  "independent_copy": "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/source",
+  "verdict": "Two concrete P2 store-boundary findings block closure of this exact frozen version.",
+  "findings": [
+    {
+      "id": "LIB5B-STORE-R1",
+      "priority": 2,
+      "title": "Recheck live root/ancestor/managed-directory guards after the final read/audit before success",
+      "file": "pipeline/node_exchange_store.py",
+      "affected_functions": [
+        "_read",
+        "_audit",
+        "_recover",
+        "read_blob",
+        "snapshot",
+        "verified_absent"
+      ],
+      "witness": "After acquiring a session containing one registered blob, hook file_after_read. On occurrence 2 for read_blob/snapshot, or 3 for verified_absent([an absent UUID]), weaken root/allowed_root to 0755 or rename root and install another root inode.",
+      "observed": "Nine combinations succeed instead of generically holding. read_blob returns the private synthetic payload, snapshot returns metadata, and verified_absent returns True while the live designated root/ancestor privacy or inode binding is invalid.",
+      "required": "Revalidate the complete live root/ancestor/lock/managed-directory descriptor/name/permission binding at final read/audit and public return boundaries; retain generic cause-free errors."
+    },
+    {
+      "id": "LIB5B-STORE-R2",
+      "priority": 2,
+      "title": "Fence thread/process reuse of an active session or serialize its methods",
+      "file": "pipeline/node_exchange_store.py",
+      "affected_functions": [
+        "PrivateExchangeSession",
+        "locked",
+        "_recover",
+        "public session methods"
+      ],
+      "witness": "One thread uses a shared active session to put a blob and pauses at put_before_payload_write. Another thread uses that same session to snapshot; recovery removes the live stage and rolls back its reservation. Separately fork with a held session; the child calls commit_metadata through the inherited flock open-file-description.",
+      "observed": "The live put aborts because another thread erased its staged transaction. The forked child commits metadata without acquiring a new lock domain; its session and inherited flock were accepted.",
+      "required": "Pin creator PID and thread identity and reject foreign-session use before recovery/read/write, or provide equivalent per-session/process-safe serialization. Sessions acquired independently in separate threads/processes must still share the one root lock."
+    }
+  ],
+  "actual_commands": [
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_node_exchange_store.py",
+        "-q",
+        "--junitxml=/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/author-frozen-baseline.xml",
+        "--basetemp=/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/baseline-roots"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/source",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_store_independent.py",
+        "-q",
+        "--junitxml=/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/independent-final.xml",
+        "--basetemp=/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/final-private-roots"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/source",
+      "exit_code": 1
+    }
+  ],
+  "actual_results": {
+    "author-frozen-baseline": {
+      "tests": 89,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "independent-final": {
+      "tests": 13,
+      "failures": 11,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "passing_controls": [
+    "All 89 frozen author tests pass independently on the same source hash, including its real-process crash and guard-order coverage.",
+    "An internal callback throwing a private fictional message produces a fixed generic store error with no cause/context and releases resources so a later independently locked session succeeds.",
+    "Two threads acquiring their own sessions cannot enter simultaneously: the second enters only after the first root lock is released."
+  ],
+  "independent_probe_counts": "13 cases: 9 late root/ancestor/name guard failures, 1 active shared-thread transaction rollback failure, 1 inherited-fork mutation failure, 2 passing callback/thread-exclusion controls.",
+  "platform": "darwin",
+  "limitations": [
+    "Only local macOS results are claimed; Linux CI/no-replace support and other platform behavior remain separate. Unsupported Windows is not readiness.",
+    "The store does not establish simulator authority, role quotas, alias restrictions, claim/reply policy or erasure coverage mapping; those mutable parent responsibilities remain outside this review.",
+    "No malicious-owner rollback-proof, distributed erasure, real sharing, scientific validation or production authority is established."
+  ],
+  "evidence_sha256": {
+    "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/input-manifest.json": "dbcc58742416efdb1bad27abc9fd1f9bad02ca4c1177f20b02e4b63c69cc0cb2",
+    "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/test_store_independent.py": "c503b42e2e1d43caa5097bfaae9d958066e8fd134cde7062608a6d85e857c261",
+    "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/independent-final.xml": "6bd193c95f9b7382c7f6daed305964ad6fdc1f5fdf9d3dc2cb288ae86cab44f2",
+    "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/independent-final.log": "525d2545aca52f8cafc12432f9edeae12d574b52e90ffcbf5af6d0cdedcb89d4",
+    "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/failure-summary.json": "6a89e2a1fe98edbffc920c6090e592a23a5c1deb8a1059cbb0fc20b31ed9b1df",
+    "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/author-frozen-baseline.xml": "388c3c3ab2a9c45a545da0e4fb33e99f1d3efc127f15c44a9338ed5b0ab0c854",
+    "/private/tmp/gsip-lib5b-store-independent-rrqw9d8k/author-frozen-baseline.log": "6692934017b7c49d882f90bacacdf46a1fb73798aa5057b4c7edfb9fb4d213af"
+  },
+  "actions": {
+    "shared_or_author_source_edits": false,
+    "git_mutations": false,
+    "live_network_HTTP": false,
+    "real_contributor_data": false,
+    "secret_or_model_access": false,
+    "production_calls": false
+  },
+  "remaining": "Author repair and exact new frozen hashes; independent failure witnesses and affinity-specific controls must run again before closure. This is not merge clearance."
+}

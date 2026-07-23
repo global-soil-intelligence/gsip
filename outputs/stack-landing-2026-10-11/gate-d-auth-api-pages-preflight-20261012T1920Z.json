@@ -1,0 +1,66 @@
+{
+  "gate": "D",
+  "phase": "preflight",
+  "status": "PASS",
+  "completed_at_utc": "2026-10-12T19:20:28.882873+00:00",
+  "project_ref": "toxldjgwkxtneoqsazym",
+  "project_name": "gsip",
+  "branch": "main",
+  "environment": "PRODUCTION",
+  "auth": {
+    "observed_at_utc": "2026-10-12T19:19:36.472Z",
+    "url": "https://supabase.com/dashboard/project/toxldjgwkxtneoqsazym/auth/providers",
+    "allow_new_users_signup": false,
+    "allow_anonymous_signins": false,
+    "allow_manual_linking": false,
+    "confirm_email": true,
+    "email_provider": "ENABLED",
+    "save_enabled": false
+  },
+  "data_api": {
+    "observed_at_utc": "2026-10-12T19:19:57.154Z",
+    "url": "https://supabase.com/dashboard/project/toxldjgwkxtneoqsazym/integrations/data_api/settings",
+    "exposed_schemas": [
+      "graphql_public",
+      "public"
+    ],
+    "private_excluded": true,
+    "selection_evidence": "graphql_public and public each display lucide-check icon; private displays no check icon. aria-selected active option is not used as membership.",
+    "save_enabled": false
+  },
+  "pages": {
+    "observed_at_utc": "2026-10-12T19:20:16.116353+00:00",
+    "metadata": {
+      "can_admins_bypass": false,
+      "deployment_branch_policy": {
+        "custom_branch_policies": true,
+        "protected_branches": false
+      },
+      "id": 18657050755,
+      "name": "github-pages",
+      "required_reviewers": [
+        {
+          "prevent_self_review": false,
+          "reviewers": [
+            {
+              "id": 179389866,
+              "login": "jdhart81",
+              "type": "User"
+            }
+          ]
+        }
+      ]
+    },
+    "raw_sha256": "9bf951cf3d82130046aa34179b9bba61ce6f5d8aa317cd0847f80b350be769ce"
+  },
+  "read_only": true,
+  "setting_changes": 0,
+  "save_actions": 0,
+  "SQL_or_deploy_actions": 0,
+  "authentication_actions": 0,
+  "secret_or_row_reads": 0,
+  "PR_mutations": 0,
+  "limits": [
+    "This receipt proves only visible Auth/Data API settings and Pages API protection metadata; database/ledger/advisor/migration authorization proof is handled separately."
+  ]
+}

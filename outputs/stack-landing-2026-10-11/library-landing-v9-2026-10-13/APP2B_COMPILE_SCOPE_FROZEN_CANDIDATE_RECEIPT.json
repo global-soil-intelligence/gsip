@@ -1,0 +1,80 @@
+{
+  "185334_byte_test_prefix_exact": true,
+  "actual_both_roots_collector_receipt_sha256": "2898b2650316cc45ceb07c4508996e7ba27f72b9feb87dbbdaebf3615f7c61f5",
+  "actual_two_root_task_scope_receipt_sha256": "ad75f7562de39abbe37c34dd9df1a540ab0b7c5e62fea77696757aaf68b47eb8",
+  "all_licence_contexts_aliases_functions_and_protocols_exact": true,
+  "baseline_and_four_compile_guard_mutations_sha256": "919358d1cd01460a7cc2645c1e80a7f8472dae3a2205012394d1241268ccb3d4",
+  "combined_native_build_permissions_workflow": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 658,
+    "path": "/private/tmp/gsip-cordova-compile-role-author-pkjnnovs/combined-pure-final.xml",
+    "sha256": "acec1a4e1c45f50925608831e40da750bbc888e3b851995400b435c0cd841272",
+    "skipped": 30,
+    "tests": 688
+  },
+  "files": [
+    {
+      "base_e0_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "bytes": 126055,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8"
+    },
+    {
+      "base_e0_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+      "bytes": 189650,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99"
+    },
+    {
+      "base_e0_sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164",
+      "bytes": 32861,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5"
+    },
+    {
+      "base_e0_sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+      "bytes": 17983,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa"
+    }
+  ],
+  "focused": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 19,
+    "path": "/private/tmp/gsip-cordova-compile-role-author-pkjnnovs/focused-final.xml",
+    "sha256": "358b22d7df76bb2d5b0189fce890938b4783ac0aee05197f44f1ac9639a2c8d8",
+    "skipped": 0,
+    "tests": 19
+  },
+  "language_check_exit": 0,
+  "manifest_sha256": "538123232d1a01b9029c63aa41f03e60f60e685604d06c63e06bf83e709f7824",
+  "mypy_exit": 0,
+  "native_product_or_legal_acceptance": false,
+  "old43bank": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 43,
+    "path": "/private/tmp/gsip-cordova-compile-role-author-pkjnnovs/old43-final.xml",
+    "sha256": "aadc9bd90a624cb50cdb444a49e4942f053b7566b08053e53321bdaf354812c3",
+    "skipped": 0,
+    "tests": 43
+  },
+  "patch_sha256": "d4d1c1156d653df2849c639d99d939f8798d1ee9cf973e55154d253f111760c7",
+  "prettier_doc_workflow_exit": 0,
+  "privacy_or_other_maintained_files_edited": false,
+  "production_changes": false,
+  "real30_Gradle_cases_not_rerun": true,
+  "ruff_exit": 0,
+  "schema": "gsip-cordova-compile-role-frozen-v1",
+  "script_entire_e0_text_exact_after_erasing_only_added_compile_role_regex": true,
+  "shared_source_or_Git_changes": false,
+  "source_archive_binding_sha256": "a263bb872a8aeed77905e2e6600d1da773d38b1672c554a0ed85d9a5f485ada4",
+  "source_base": "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d",
+  "strict_R_ZIP_and_class_predicate_text_exact": true,
+  "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "test_prefix_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+  "workflow_exactly_four_app_target_literal_qualifications": true,
+  "workflow_scope_fail_before_sha256": "64d3c02c094ed573b55af0eeaa85bde083707a4c966729766fcca78ad28813cf"
+}

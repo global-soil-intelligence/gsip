@@ -1,0 +1,74 @@
+{
+  "actual_final_agp_receipt_sha256": "81bd439945473c17d4da725f0118de5fe8d09fb09e97178aec372eaa6e892285",
+  "actual_final_agp_status": 0,
+  "actual_final_graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+  "actual_final_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "all_later_execution_HOME_inherited_unchanged": true,
+  "candidate_files_unchanged": true,
+  "candidate_receipt_sha256": "1e1fceada3b41a067522e1331e43aa99cc935dded7cecc23a76ecc02bd101e2e",
+  "first_attempt_HOME_reassignment_deviation_preserved_sha256": "f4fb3e49bb00370c9a8dd941cfcf4932228476ea371ebcf708cc13b6d340028b",
+  "full_run_honesty": "432 passed and 1 new wrong-variant expectation failed; corrected same negative case then passed alone. Not a fresh atomic433pass claim. Root/independent full fresh suite pending.",
+  "guards": {
+    "actual_baseline_fail_before": 1,
+    "all_expected_nonzero": true,
+    "effective_source_guard_mutations": 4
+  },
+  "harness_correction": "Only new wrong-variant expected status changed: actual safe RELEASE_ARTIFACTS/UNKNOWN refusal required. Fixed pytest failure message prevents raw CalledProcessError repr on future status failure. Original XML preserved.",
+  "hosted_root_cause_identity_not_proven": true,
+  "local_product_apk_or_simulator_built": false,
+  "meaningful_guards_receipt_sha256": "503d6dc60fbd9e2b886b9dec5c16615b6855f26f30fa67012f0b49ce4ee2eaac",
+  "native_CI_acceptance_pending": true,
+  "production_merges_capture_changes": false,
+  "scanner": {
+    "binary_sha256": "90e39dd8b483e30698fc6fbdbe6794b36a6cc49ccde31e2ce9e2d3048838fd74",
+    "config_sha256": "e846bacbb1ce5c41f571a10cdaf0e1fde7bfa399fc5c876480b57124059cc760",
+    "exit_code": 0,
+    "redact": true,
+    "scope": "frozen authored3files filesystem only; root owns full-history scan",
+    "stderr_sha256": "84252628809421e2ff30c4a9b538d08708b27a647a5dc8dc778e17996f1c263e",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "version": "8.21.2",
+    "zero_leaks": true
+  },
+  "schema": "gsip-frozen-split-view-author-verification-v1",
+  "statics": {
+    "doc_prettier": "PASS",
+    "mypy_script": "PASS",
+    "ruff": "PASS"
+  },
+  "tracked_differences_exactly_three_owned_files": [
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py"
+  ],
+  "tracked_files_compared": 365,
+  "xml_results": {
+    "candidate-all-actual.xml": {
+      "counts": {
+        "errors": 0,
+        "failures": 1,
+        "skipped": 0,
+        "tests": 433
+      },
+      "sha256": "a67208c9fccf417ef6ed1d4583f0f57fbd542c1beea0d55cd13e321605a536b2"
+    },
+    "corrected-wrong-variant.xml": {
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests": 1
+      },
+      "sha256": "44bfe77e3fcff67d63068cfef6c4f06dd43887599d1ac7d8ae6720ff323ad5cd"
+    },
+    "old43-replay.xml": {
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests": 43
+      },
+      "sha256": "066ff4c1b3a1bc38c9a1515fb398ab383a4622d225158ec86406f38f4a2d9522"
+    }
+  }
+}

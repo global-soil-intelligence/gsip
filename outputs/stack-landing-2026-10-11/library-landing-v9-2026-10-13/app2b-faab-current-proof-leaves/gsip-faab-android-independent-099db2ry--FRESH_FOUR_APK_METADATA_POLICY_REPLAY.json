@@ -1,0 +1,222 @@
+{
+  "APK_executed_on_device_or_simulator": false,
+  "android_job_id": 115663053505,
+  "artifacts": [
+    {
+      "artifact_sha256": "e6d144885fbc2c122a41a6e4099a23a9ca01915940caada5f1ab5c3d8ab301be",
+      "closed_activation_flags": "pass",
+      "compiled_all_domain_cloud_backup_exclusion": "pass",
+      "compiled_device_transfer_rule": "pass",
+      "exact_alarm_and_wake_lock_absent": true,
+      "identity_marketing_and_run_build_versions": "pass",
+      "label": "parent",
+      "permission_count": 4,
+      "permission_names_sha256": "578d88d503f8e99706fd76e360fad3ec1e63d4efd331f102e55b8f50bfc7565b",
+      "policy_source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "respective_exact_source_permission_policy": "pass",
+      "run_number": 55
+    },
+    {
+      "artifact_sha256": "946e800de9826eabf5587c1544d35dd8049cde91f7a086a6adc003b1300f0c8c",
+      "closed_activation_flags": "pass",
+      "compiled_all_domain_cloud_backup_exclusion": "pass",
+      "compiled_device_transfer_rule": "pass",
+      "exact_alarm_and_wake_lock_absent": true,
+      "identity_marketing_and_run_build_versions": "pass",
+      "label": "candidate",
+      "permission_count": 6,
+      "permission_names_sha256": "1e8d9c57458088edd429a035e19a6b4715cbf9ab238550b69e0d86862615c3cc",
+      "policy_source_commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "respective_exact_source_permission_policy": "pass",
+      "run_number": 55
+    },
+    {
+      "artifact_sha256": "e6d144885fbc2c122a41a6e4099a23a9ca01915940caada5f1ab5c3d8ab301be",
+      "closed_activation_flags": "pass",
+      "compiled_all_domain_cloud_backup_exclusion": "pass",
+      "compiled_device_transfer_rule": "pass",
+      "exact_alarm_and_wake_lock_absent": true,
+      "identity_marketing_and_run_build_versions": "pass",
+      "label": "parent_reference",
+      "permission_count": 4,
+      "permission_names_sha256": "578d88d503f8e99706fd76e360fad3ec1e63d4efd331f102e55b8f50bfc7565b",
+      "policy_source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "respective_exact_source_permission_policy": "pass",
+      "run_number": 55
+    },
+    {
+      "artifact_sha256": "946e800de9826eabf5587c1544d35dd8049cde91f7a086a6adc003b1300f0c8c",
+      "closed_activation_flags": "pass",
+      "compiled_all_domain_cloud_backup_exclusion": "pass",
+      "compiled_device_transfer_rule": "pass",
+      "exact_alarm_and_wake_lock_absent": true,
+      "identity_marketing_and_run_build_versions": "pass",
+      "label": "candidate_reference",
+      "permission_count": 6,
+      "permission_names_sha256": "1e8d9c57458088edd429a035e19a6b4715cbf9ab238550b69e0d86862615c3cc",
+      "policy_source_commit": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+      "respective_exact_source_permission_policy": "pass",
+      "run_number": 55
+    }
+  ],
+  "at": "2026-10-14T03:31:32.930379+00:00",
+  "build_signing_device_or_key_actions": false,
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "hosted_800_tool_version_inferred": false,
+  "metadata_dump_operations": [
+    {
+      "bytes": 402,
+      "operation": "permissions",
+      "returncode": 0,
+      "sha256": "6bca81da2ab8413108c25970286db57a5a349fbae1172486da167f826dd359ad"
+    },
+    {
+      "bytes": 5406,
+      "operation": "badging",
+      "returncode": 0,
+      "sha256": "6ba8d6ae18c1e70982c8dce9773ebd8eac01c49d21399de67f5f73b09f257d13"
+    },
+    {
+      "bytes": 12330,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "1a5d7a473871a6988492c94bda8edc668c0979456f02230b6758930ce5944e55"
+    },
+    {
+      "bytes": 1422281,
+      "operation": "resources",
+      "returncode": 0,
+      "sha256": "8adca1dc213bddeae1d5dfa090d92e19477fdcd73ea5cf6689386dce08af7744"
+    },
+    {
+      "bytes": 2152,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "1440d5c820eac85909759052d96441739175f6151cac16a52100681cecc313fc"
+    },
+    {
+      "bytes": 948,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "05b7094cc4af5379cd3c69d75ee63e1574abd6d5a369d930b2e16df18a4532a3"
+    },
+    {
+      "bytes": 530,
+      "operation": "permissions",
+      "returncode": 0,
+      "sha256": "f9e0053654477b04ff55562a3dc9cbb8e78cbcb29f056e19f5297392837e2e5c"
+    },
+    {
+      "bytes": 5534,
+      "operation": "badging",
+      "returncode": 0,
+      "sha256": "8c1660ed6d0f5d21cff36a53db417f15bc56d916b3a3060e12342d2cc9a79149"
+    },
+    {
+      "bytes": 15335,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "55436eefd03d58d9f7a0874b44092dc937806074ec2a9c26765cf3a68148eea0"
+    },
+    {
+      "bytes": 1422520,
+      "operation": "resources",
+      "returncode": 0,
+      "sha256": "5745eac4da0247d5a90e2439e29d8aed0f3b8c632f48343644ace321a1fd0e92"
+    },
+    {
+      "bytes": 2152,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "1440d5c820eac85909759052d96441739175f6151cac16a52100681cecc313fc"
+    },
+    {
+      "bytes": 948,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "05b7094cc4af5379cd3c69d75ee63e1574abd6d5a369d930b2e16df18a4532a3"
+    },
+    {
+      "bytes": 402,
+      "operation": "permissions",
+      "returncode": 0,
+      "sha256": "6bca81da2ab8413108c25970286db57a5a349fbae1172486da167f826dd359ad"
+    },
+    {
+      "bytes": 5406,
+      "operation": "badging",
+      "returncode": 0,
+      "sha256": "6ba8d6ae18c1e70982c8dce9773ebd8eac01c49d21399de67f5f73b09f257d13"
+    },
+    {
+      "bytes": 12330,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "1a5d7a473871a6988492c94bda8edc668c0979456f02230b6758930ce5944e55"
+    },
+    {
+      "bytes": 1422281,
+      "operation": "resources",
+      "returncode": 0,
+      "sha256": "8adca1dc213bddeae1d5dfa090d92e19477fdcd73ea5cf6689386dce08af7744"
+    },
+    {
+      "bytes": 2152,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "1440d5c820eac85909759052d96441739175f6151cac16a52100681cecc313fc"
+    },
+    {
+      "bytes": 948,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "05b7094cc4af5379cd3c69d75ee63e1574abd6d5a369d930b2e16df18a4532a3"
+    },
+    {
+      "bytes": 530,
+      "operation": "permissions",
+      "returncode": 0,
+      "sha256": "f9e0053654477b04ff55562a3dc9cbb8e78cbcb29f056e19f5297392837e2e5c"
+    },
+    {
+      "bytes": 5534,
+      "operation": "badging",
+      "returncode": 0,
+      "sha256": "8c1660ed6d0f5d21cff36a53db417f15bc56d916b3a3060e12342d2cc9a79149"
+    },
+    {
+      "bytes": 15335,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "55436eefd03d58d9f7a0874b44092dc937806074ec2a9c26765cf3a68148eea0"
+    },
+    {
+      "bytes": 1422520,
+      "operation": "resources",
+      "returncode": 0,
+      "sha256": "5745eac4da0247d5a90e2439e29d8aed0f3b8c632f48343644ace321a1fd0e92"
+    },
+    {
+      "bytes": 2152,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "1440d5c820eac85909759052d96441739175f6151cac16a52100681cecc313fc"
+    },
+    {
+      "bytes": 948,
+      "operation": "xmltree",
+      "returncode": 0,
+      "sha256": "05b7094cc4af5379cd3c69d75ee63e1574abd6d5a369d930b2e16df18a4532a3"
+    }
+  ],
+  "only_metadata_dump_operations_executed": true,
+  "raw_permission_manifest_resource_or_compiled_strings_persisted": false,
+  "run_attempt": 1,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "schema": "gsip-independent-exact-faab-APK-metadata-policy-replay-v1",
+  "status": "FOUR_FRESH_APKS_METADATA_POLICY_REPLAY_PASS",
+  "tool_distribution_provenance_limit": "Existing installed public macOS SDK tool bytes/presence bound; original official distribution archive attestation unavailable. This is an independent metadata parser replay with that stated tool limit.",
+  "tool_sha256": "729a6a8deba828992c50cb448d4ef3947003ec5a0d1deead7534897c8fc3486f",
+  "tool_version": "Android Asset Packaging Tool (aapt) 2.19-11948202"
+}

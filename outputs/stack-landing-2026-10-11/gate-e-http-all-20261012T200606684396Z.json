@@ -1,0 +1,66 @@
+{
+  "state": "PASS_HTTP_SMOKES_METADATA_SEPARATELY_REQUIRED",
+  "phase": "all",
+  "target": "toxldjgwkxtneoqsazym",
+  "started_at_utc": "2026-10-12T20:06:03.542938+00:00",
+  "completed_at_utc": "2026-10-12T20:06:06.684208+00:00",
+  "checks": [
+    {
+      "check": "prior_unauthenticated_denied",
+      "http_status": 401,
+      "expected_status": 401,
+      "response_sha256": "2fa2c84fed16d2ecfffc375515c8095ca6be18d8dabe1f54fd12142d23834634"
+    },
+    {
+      "check": "protocol",
+      "http_status": 200,
+      "expected_status": 200,
+      "response_sha256": "0a2908ff827b7ff36433e0e852c84781508292b0e33d689ccf8ecb10969e994d"
+    },
+    {
+      "check": "resolution9_refused",
+      "http_status": 400,
+      "expected_status": 400,
+      "response_sha256": "006230c8f2483343b73a30d9122101e5d67a2a2f90369f580e57682f61b231b0"
+    },
+    {
+      "check": "mcp_four_tools",
+      "http_status": 200,
+      "expected_status": 200,
+      "response_sha256": "e682cc8415d229df476958c5384e5bb159d56e86aeeb7962a2da7f4b94289efc"
+    },
+    {
+      "check": "public_reader_empty_cell",
+      "http_status": 200,
+      "expected_status": 200,
+      "response_sha256": "4352dea84aff1a7bfa2efd85eff45a128f2679616cefa9e1fe782858074a824c"
+    },
+    {
+      "check": "public_reader_empty_list",
+      "http_status": 200,
+      "expected_status": 200,
+      "response_sha256": "dbc5caafaa36c4c2d0480359ce9e562156f19a1ec60654ce4d4f1b453605459e"
+    },
+    {
+      "check": "public_reader_no_release",
+      "http_status": 200,
+      "expected_status": 200,
+      "response_sha256": "e94aa0d393841da9196540968c82ebb203ac23f103ea85db8b746da29e240a99"
+    },
+    {
+      "check": "public_write_method_refused",
+      "http_status": 405,
+      "expected_status": 405,
+      "response_sha256": "a95fc358abdccaedaa897d7b52208a16be222db5273af907da49ea31f40fad0a"
+    }
+  ],
+  "credentials_used": false,
+  "private_rows_read": false,
+  "prior_jobs_started": false,
+  "automatic_retries": false,
+  "limits": [
+    "HTTP denial alone cannot prove JWT verification; read function metadata.",
+    "Prior owner/service success paths are not invoked; no authenticated job smoke.",
+    "Empty-reader checks require zero public cells and zero dataset releases."
+  ]
+}

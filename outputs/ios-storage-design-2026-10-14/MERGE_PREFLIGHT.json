@@ -1,0 +1,64 @@
+{
+  "pr": {
+    "baseRefOid": "883c7ee51dcb6c58cb7f309b78a590ea684ba8c7",
+    "headRefOid": "258b57732a94968e576eb15e848566a487cb4878",
+    "mergeStateStatus": "CLEAN",
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T22:02:07Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38644748539/job/116128725730",
+        "name": "dco",
+        "startedAt": "2026-10-14T22:02:08Z",
+        "status": "COMPLETED",
+        "workflowName": "DCO"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T22:10:04Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38644748460/job/116128723318",
+        "name": "validate",
+        "startedAt": "2026-10-14T22:02:09Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T22:02:17Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38644747964/job/116128721002",
+        "name": "gitleaks",
+        "startedAt": "2026-10-14T22:02:09Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T22:01:58Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38644711362/job/116128597653",
+        "name": "gitleaks",
+        "startedAt": "2026-10-14T22:01:51Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      }
+    ]
+  },
+  "pages": {
+    "required_reviewers": [
+      "jdhart81"
+    ],
+    "admin_bypass": false
+  },
+  "worker_schedule_guards": {
+    "GSIP_PRIOR_SCHEDULE_ENABLED": "absent",
+    "GSIP_EXPORT_SCHEDULE_ENABLED": "absent",
+    "GSIP_QA_SCHEDULE_ENABLED": "absent",
+    "GSIP_RIGHTS_SCHEDULE_ENABLED": "absent",
+    "GSIP_CLEANUP_SCHEDULE_ENABLED": "absent"
+  },
+  "authority": "Justin explicitly approved merge69 and preparation of next iOS design for review, no production/capture"
+}

@@ -1,0 +1,45 @@
+{
+  "gitleaks_version": "8.21.2",
+  "full_history_flags": [
+    "--log-opts=--all",
+    "--redact"
+  ],
+  "whole_history_exit": 0,
+  "whole_history_findings": 0,
+  "approved_fingerprints": 4,
+  "all_six_ignore_blobs_match_exact_proposal": true,
+  "future_fingerprint_negative_witness_passed": true,
+  "source_head_bindings": [
+    {
+      "branch": "wp-lib-4c-phone-intake",
+      "head": "173e19363df60d029b2ffeb4a7df2e27d6ccd6b6",
+      "ignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5"
+    },
+    {
+      "branch": "docs/spec-v8",
+      "head": "2d13fe73730688eaaa07dee6d7506c6ccd2ad486",
+      "ignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5"
+    },
+    {
+      "branch": "wp-6fa-private-photo-privacy",
+      "head": "0e1e267df1a8cab84cf65dacab30259fa48af27e",
+      "ignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5"
+    },
+    {
+      "branch": "wp-6fb-photo-privacy-worker",
+      "head": "63560d32fbfff843901d222c42e6e5d33be55782",
+      "ignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5"
+    },
+    {
+      "branch": "wp-6fc-photo-export-enforcement",
+      "head": "254b9576977b6b3cc439d66770864fe574b7df24",
+      "ignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5"
+    },
+    {
+      "branch": "docs/spec-v9",
+      "head": "eacb8a4c92da2370a628d7e2c6b6d8eedae64377",
+      "ignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5"
+    }
+  ],
+  "production_mutation": false
+}

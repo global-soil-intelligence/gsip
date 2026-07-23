@@ -1,0 +1,26 @@
+{
+  "scope": "Remaining non-system base tables; counts only, no contents",
+  "target": "toxldjgwkxtneoqsazym",
+  "row_counts": [
+    {
+      "table_name": "extensions.spatial_ref_sys",
+      "row_count": 8500
+    },
+    {
+      "table_name": "realtime.messages",
+      "row_count": 0
+    },
+    {
+      "table_name": "realtime.schema_migrations",
+      "row_count": 81
+    },
+    {
+      "table_name": "realtime.subscription",
+      "row_count": 0
+    },
+    {
+      "table_name": "vault.secrets",
+      "row_count": 0
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+ ❯ tests/guide-session.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guide-session.test.ts [ tests/guide-session.test.ts ]
+Error: Failed to resolve import "../src/guideSession" from "tests/guide-session.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa/tests/guide-session.test.ts:10:7
+  1  |  import { describe, expect, it } from "vitest";
+  2  |  ...ed, GUIDE_ACCESS_LEASE_MS, GUIDE_MAX_RETAINED_BYTES } from "../src/guideSession";
+     |                                                                 ^
+  3  |  const now = 1e5;
+  4  |  const observationId = "00000000-0000-4000-8000-000000000001";
+ ❯ TransformPluginContext._formatLog ../../../GSIP%202.0/node_modules/.pnpm/vite@8.3.1_@types+node@26.6.5_terser@5.51.2/node_modules/vite/dist/node/chunks/node.js:8736:39
+ ❯ TransformPluginContext.error ../../../GSIP%202.0/node_modules/.pnpm/vite@8.3.1_@types+node@26.6.5_terser@5.51.2/node_modules/vite/dist/node/chunks/node.js:8733:14
+ ❯ normalizeUrl ../../../GSIP%202.0/node_modules/.pnpm/vite@8.3.1_@types+node@26.6.5_terser@5.51.2/node_modules/vite/dist/node/chunks/node.js:26423:18
+ ❯ ../../../GSIP%202.0/node_modules/.pnpm/vite@8.3.1_@types+node@26.6.5_terser@5.51.2/node_modules/vite/dist/node/chunks/node.js:26493:30
+ ❯ TransformPluginContext.transform ../../../GSIP%202.0/node_modules/.pnpm/vite@8.3.1_@types+node@26.6.5_terser@5.51.2/node_modules/vite/dist/node/chunks/node.js:26459:4
+ ❯ EnvironmentPluginContainer.transform ../../../GSIP%202.0/node_modules/.pnpm/vite@8.3.1_@types+node@26.6.5_terser@5.51.2/node_modules/vite/dist/node/chunks/node.js:8515:14
+ ❯ loadAndTransform ../../../GSIP%202.0/node_modules/.pnpm/vite@8.3.1_@types+node@26.6.5_terser@5.51.2/node_modules/vite/dist/node/chunks/node.js:19998:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  21:54:04
+   Duration  331ms (transform 8ms, setup 45ms, import 0ms, tests 0ms, environment 221ms)
+
+undefined
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run tests/guide-session.test.ts

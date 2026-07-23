@@ -1,0 +1,9 @@
+{
+  "parent": "14c4188280025c274ac7c58d1fc40138ee3922bb",
+  "original_ignore_sha256": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+  "new_ignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5",
+  "original_lines_preserved": true,
+  "new_lines": 1,
+  "new_fingerprint": "bb9bd8a583231ff63ec14a7622532ddb869d7cde:scripts/e2e_server.py:generic-api-key:32",
+  "AGENTS_records_owner_authority": true
+}

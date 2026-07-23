@@ -1,0 +1,629 @@
+--- a/scripts/app_notification_audit.py
++++ b/scripts/app_notification_audit.py
+@@ -843,6 +843,7 @@
+ GRADLE_TASK = """import groovy.json.JsonOutput
+ import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+ import org.gradle.api.artifacts.component.ProjectComponentIdentifier
++import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+ def gsipFaultSequence = new java.util.concurrent.atomic.AtomicInteger(0)
+ def gsipFaultObserved = new java.util.concurrent.atomic.AtomicBoolean(false)
+ def gsipEmitFault = { phase, failure ->
+@@ -904,9 +905,50 @@
+     try {
+     def app = gradle.rootProject.project(':app')
+     app.tasks.register('gsipRuntimeEvidence') {
++        def selectedViews = [:]
++        def inspectViews = { config ->
++            if (!selectedViews.containsKey(config.name)) {
++                def agp = config.attributes.keySet().findAll {
++                    it.name == 'com.android.build.api.attributes.AgpVersionAttr'
++                }
++                if (agp.isEmpty()) { selectedViews[config.name] = null }
++                else {
++                    if (agp.size() != 1 || config.attributes.getAttribute(agp.first())
++                        .toString() != '8.13.0') {
++                        throw new GradleException('unsupported Android runtime metadata')
++                    }
++                    def rootId = config.incoming.resolutionResult.root.id
++                    def modules = config.incoming.artifactView {
++                        componentFilter { it instanceof ModuleComponentIdentifier }
++                    }
++                    def projects = config.incoming.artifactView {
++                        attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
++                            'android-classes-jar')
++                        componentFilter {
++                            it instanceof ProjectComponentIdentifier && it != rootId
++                        }
++                    }
++                    selectedViews[config.name] = [modules:modules,projects:projects,root:rootId]
++                }
++            }
++            selectedViews[config.name]
++        }
+         dependsOn {
++            def configs = ['debugRuntimeClasspath','releaseRuntimeClasspath'].collect {
++                app.configurations.getByName(it)
++            }
++            if (configs.every { inspectViews(it) == null }) {
+             ['debugRuntimeClasspath','releaseRuntimeClasspath'].collect { name ->
+                 app.configurations.getByName(name).buildDependencies
++            }
++            } else {
++                if (configs.any { inspectViews(it) == null }) {
++                    throw new GradleException('inconsistent Android runtime metadata')
++                }
++                configs.collectMany { config ->
++                    def views = inspectViews(config)
++                    [views.modules.files,views.projects.files]
++                }
+             }
+         }
+         doLast {
+@@ -930,8 +972,8 @@
+                         } else { throw new GradleException('unsupported runtime component') }
+                     }
+                     phase = variant + '_ARTIFACTS'
+-                    def artifacts = config.resolvedConfiguration.resolvedArtifacts.collect {
+-                        artifact ->
++                    def selected = inspectViews(config)
++                    def describeArtifact = { artifact ->
+                         def id = artifact.id.componentIdentifier
+                         if (id instanceof ModuleComponentIdentifier) {
+                             [kind:'module', coordinate:[id.group,id.module,id.version],
+@@ -940,6 +982,25 @@
+                             [kind:'project', project:id.projectPath,
+                              file:artifact.file.canonicalPath]
+                         } else { throw new GradleException('unsupported runtime artifact') }
++                    }
++                    def artifacts
++                    if (selected == null) {
++                        artifacts = config.resolvedConfiguration.resolvedArtifacts.collect {
++                            artifact -> describeArtifact(artifact)
++                        }
++                    } else {
++                        def resolved = selected.modules.artifacts.artifacts +
++                            selected.projects.artifacts.artifacts
++                        def expected = config.incoming.resolutionResult.allComponents.findAll {
++                            it.id instanceof ProjectComponentIdentifier && it.id != selected.root
++                        }.collect { it.id } as Set
++                        def actual = resolved.findAll {
++                            it.id.componentIdentifier instanceof ProjectComponentIdentifier
++                        }.collect { it.id.componentIdentifier } as Set
++                        if (expected != actual) {
++                            throw new GradleException('incomplete Android project runtime')
++                        }
++                        artifacts = resolved.collect { artifact -> describeArtifact(artifact) }
+                     }
+                     [name:name,modules:modules.unique().sort { it.join(':') },
+                      projects:projects.unique().sort(),artifacts:artifacts]
+@@ -1103,8 +1164,9 @@
+         "npm_sources": npm,
+         "temporary_gradle_task_sha256": sha(GRADLE_TASK.encode()),
+         "scope": (
+-            "resolved inputs of both shipped runtime configurations; "
+-            "build/test/toolchain inputs are separate, not inferred shipped"
++            "resolved inputs of both shipped runtime configurations; project binaries are "
++            "compiled runtime classpath JARs; full npm-source and whole-APK evidence "
++            "remain separate; build/test/toolchain inputs are separate, not inferred shipped"
+         ),
+     }
+ 
+@@ -1888,8 +1950,9 @@
+ 
+ def validate_android(native: dict[str, Any], npm: dict[str, dict[str, Any]]) -> None:
+     if native["scope"] != (
+-        "resolved inputs of both shipped runtime configurations; "
+-        "build/test/toolchain inputs are separate, not inferred shipped"
++        "resolved inputs of both shipped runtime configurations; project binaries are "
++        "compiled runtime classpath JARs; full npm-source and whole-APK evidence "
++        "remain separate; build/test/toolchain inputs are separate, not inferred shipped"
+     ):
+         refuse()
+     for key in (
+--- a/tests/test_app_notification_audit.py
++++ b/tests/test_app_notification_audit.py
+@@ -3360,3 +3360,383 @@
+         "native_acceptance_claimed": False,
+     }
+     (tmp_path / "observer-control.json").write_text(json.dumps(control, sort_keys=True) + "\n")
++SPLIT_VIEW_FIXTURE_TEXT = {
++    "app/build.gradle": "import org.gradle.api.attributes.Attribute\n"
++    "def buildType = Attribute.of('gsip.fixture.buildType', String)\n"
++    "['debug','release'].each { variant ->\n"
++    "    def runtime = configurations.create(variant + "
++    "'RuntimeClasspath') {\n"
++    "        canBeConsumed = false\n"
++    "        canBeResolved = true\n"
++    "        attributes.attribute(buildType, variant)\n"
++    "        "
++    "attributes.attribute(Attribute.of('com.android.build.api.attributes.AgpVersionAttr', "
++    "String), '8.13.0')\n"
++    "    }\n"
++    "    dependencies.add(runtime.name, project(':library'))\n"
++    "}\n"
++    "\n"
++    "repositories { maven { url = uri(rootProject.file('repo'));\n"
++    "metadataSources { gradleMetadata();\n"
++    "mavenPom() } } }\n"
++    "['debug','release'].each { variant ->\n"
++    " def name = variant + 'RuntimeClasspath'\n"
++    " dependencies.add(name, 'synthetic.publicview:plain:1.0')\n"
++    " dependencies.add(name, 'synthetic.publicview:androidraw:1.0')\n"
++    " dependencies.add(name, "
++    "dependencies.platform('synthetic.publicview:bom:1.0'))\n"
++    " if (findProperty('caseName') == 'emptyLibrary') { "
++    "dependencies.add(name, 'synthetic.publicview:empty:1.0') }\n"
++    " if (findProperty('caseName') == 'unresolved') { "
++    "dependencies.add(name, 'synthetic.publicview:absent:1.0') }\n"
++    "}\n",
++    "build.gradle": "",
++    "library/build.gradle": "import org.gradle.api.artifacts.type.ArtifactTypeDefinition\n"
++    "import org.gradle.api.attributes.Attribute\n"
++    "def buildType = Attribute.of('gsip.fixture.buildType', "
++    "String)\n"
++    "['debug','release'].each { variant ->\n"
++    "    def classes = tasks.register(variant + 'Classes') {\n"
++    "        def output = layout.buildDirectory.file(variant + "
++    "'/classes.jar')\n"
++    "        outputs.file(output)\n"
++    "        doLast { output.get().asFile.parentFile.mkdirs();\n"
++    "def zip = new "
++    "java.util.zip.ZipOutputStream(output.get().asFile.newOutputStream());\n"
++    "zip.putNextEntry(new "
++    "java.util.zip.ZipEntry('fixture-variant.txt'));\n"
++    "zip.write((variant + '-classes').getBytes('UTF-8'));\n"
++    "zip.closeEntry();\n"
++    "zip.close() }\n"
++    "    }\n"
++    "    def resources = tasks.register(variant + 'Resources') {\n"
++    "        def output = layout.buildDirectory.file(variant + "
++    "'/resources.zip')\n"
++    "        outputs.file(output)\n"
++    "        doLast { output.get().asFile.parentFile.mkdirs();\n"
++    "output.get().asFile.text = variant + '-resources' }\n"
++    "    }\n"
++    "    configurations.create(variant + 'RuntimeElements') {\n"
++    "        canBeConsumed = true\n"
++    "        canBeResolved = false\n"
++    "        attributes.attribute(buildType, variant)\n"
++    "        outgoing.variants.create('classes') {\n"
++    "            "
++    "attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "
++    "'android-classes-jar')\n"
++    "            artifact(layout.buildDirectory.file(variant + "
++    "'/classes.jar')) { builtBy(classes) }\n"
++    "        }\n"
++    "        outgoing.variants.create('resources') {\n"
++    "            "
++    "attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "
++    "'android-res')\n"
++    "            artifact(layout.buildDirectory.file(variant + "
++    "'/resources.zip')) { builtBy(resources) }\n"
++    "        }\n"
++    "    }\n"
++    "}\n",
++    "repo/synthetic/publicview/androidraw/1.0/androidraw-1.0.pom": "<project>\n"
++    "<modelVersion>4.0.0</modelVersion>\n"
++    "<groupId>synthetic.publicview</groupId>\n"
++    "<artifactId>androidraw</artifactId>\n"
++    "<version>1.0</version>\n"
++    "<packaging>aar</packaging>\n"
++    "</project>",
++    "repo/synthetic/publicview/bom/1.0/bom-1.0.module": "{\n"
++    '  "formatVersion": "1.1",\n'
++    '  "component": {\n'
++    '    "group": '
++    '"synthetic.publicview",\n'
++    '    "module": "bom",\n'
++    '    "version": "1.0"\n'
++    "  },\n"
++    '  "variants": [\n'
++    "    {\n"
++    '      "name": '
++    '"platformRuntime",\n'
++    '      "attributes": {\n'
++    '        "org.gradle.category": '
++    '"platform",\n'
++    '        "org.gradle.usage": '
++    '"java-runtime"\n'
++    "      },\n"
++    '      "dependencyConstraints": '
++    "[\n"
++    "        {\n"
++    '          "group": '
++    '"synthetic.publicview",\n'
++    '          "module": "plain",\n'
++    '          "version": {\n'
++    '            "requires": "1.0"\n'
++    "          }\n"
++    "        }\n"
++    "      ]\n"
++    "    }\n"
++    "  ]\n"
++    "}\n",
++    "repo/synthetic/publicview/bom/1.0/bom-1.0.pom": "<project>\n"
++    "<modelVersion>4.0.0</modelVersion>\n"
++    "<groupId>synthetic.publicview</groupId>\n"
++    "<artifactId>bom</artifactId>\n"
++    "<version>1.0</version>\n"
++    "<packaging>pom</packaging>\n"
++    "<dependencyManagement>\n"
++    "<dependencies>\n"
++    "<dependency>\n"
++    "<groupId>synthetic.publicview</groupId>\n"
++    "<artifactId>plain</artifactId>\n"
++    "<version>1.0</version>\n"
++    "</dependency>\n"
++    "</dependencies>\n"
++    "</dependencyManagement>\n"
++    "</project>",
++    "repo/synthetic/publicview/empty/1.0/empty-1.0.module": "{\n"
++    '  "formatVersion": "1.1",\n'
++    '  "component": {\n'
++    '    "group": '
++    '"synthetic.publicview",\n'
++    '    "module": "empty",\n'
++    '    "version": "1.0"\n'
++    "  },\n"
++    '  "variants": [\n'
++    "    {\n"
++    '      "name": "runtime",\n'
++    '      "attributes": {\n'
++    "        "
++    '"org.gradle.category": '
++    '"library",\n'
++    '        "org.gradle.usage": '
++    '"java-runtime"\n'
++    "      },\n"
++    '      "files": []\n'
++    "    }\n"
++    "  ]\n"
++    "}\n",
++    "repo/synthetic/publicview/plain/1.0/plain-1.0.pom": "<project>\n"
++    "<modelVersion>4.0.0</modelVersion>\n"
++    "<groupId>synthetic.publicview</groupId>\n"
++    "<artifactId>plain</artifactId>\n"
++    "<version>1.0</version>\n"
++    "<packaging>jar</packaging>\n"
++    "</project>",
++    "settings.gradle": "rootProject.name = 'gsip-public-secondary-variant-fixture'\n"
++    "include ':app', ':library'\n",
++}
++
++
++def split_view_fixture(root: Path, mode: str) -> None:
++    """Public Gradle secondary variants, local raw JAR/AAR and selected platform only."""
++    root.mkdir()
++    for relative, text in SPLIT_VIEW_FIXTURE_TEXT.items():
++        file = root / relative
++        file.parent.mkdir(parents=True, exist_ok=True)
++        if mode == "unknown_agp":
++            text = text.replace("'8.13.0'", "'99.0.0'")
++        if mode == "library_metadata":
++            text = text.replace("findProperty('caseName') == 'emptyLibrary'", "true")
++        if mode == "unresolved":
++            text = text.replace("findProperty('caseName') == 'unresolved'", "true")
++        file.write_text(text)
++    zipped(root / "repo/synthetic/publicview/plain/1.0/plain-1.0.jar", b"raw jar")
++    zipped(root / "repo/synthetic/publicview/androidraw/1.0/androidraw-1.0.aar", b"raw aar")
++    if mode == "missing_binary":
++        (root / "repo/synthetic/publicview/plain/1.0/plain-1.0.jar").unlink()
++
++
++@pytest.mark.parametrize(
++    "mode",
++    [
++        "success",
++        "unknown_agp",
++        "wrong_type",
++        "missing_project",
++        "omit_module",
++        "no_debug_producer",
++        "no_release_producer",
++        "wrong_variant",
++        "library_metadata",
++        "missing_binary",
++        "unresolved",
++    ],
++)
++def test_real_gradle_split_views_preserve_raw_inputs_and_selected_variants(
++    mode: str, tmp_path: Path
++) -> None:
++    import subprocess
++
++    selected = os.environ.get("GSIP_TEST_GRADLE_HOME")
++    if not selected:
++        pytest.skip("real split-view control requires explicit verified Gradle tool home")
++    home = Path(selected)
++    if not home.is_absolute() or ".." in home.parts or not (home / "bin/gradle").is_file():
++        pytest.fail("invalid explicit Gradle tool home")
++    project = tmp_path / "split-fixture"
++    split_view_fixture(project, mode)
++    task = audit.GRADLE_TASK
++    if mode == "wrong_type":
++        task = task.replace("'android-classes-jar')", "'gsip-missing-type')", 1)
++    elif mode == "missing_project":
++        task = task.replace("it instanceof ProjectComponentIdentifier && it != rootId", "false", 1)
++    elif mode == "omit_module":
++        task = task.replace(
++            "it instanceof ModuleComponentIdentifier }",
++            "it instanceof ModuleComponentIdentifier && it.module != 'plain' }",
++            1,
++        )
++    elif mode in {"no_debug_producer", "no_release_producer"}:
++        kept = "release" if mode == "no_debug_producer" else "debug"
++        task = task.replace(
++            "configs.collectMany { config ->",
++            "configs.findAll { it.name.startsWith('" + kept + "') }.collectMany { config ->",
++            1,
++        )
++    elif mode == "wrong_variant":
++        task = task.replace(
++            "'android-classes-jar')",
++            "'android-classes-jar')\n                        "
++            "attributes.attribute(org.gradle.api.attributes.Attribute.of("
++            "'gsip.fixture.buildType', String), 'debug')",
++            1,
++        )
++    inspection = tmp_path / "inspection.gradle"
++    inspection.write_text(task)
++    output = tmp_path / "resolved.json"
++    output.with_name(output.name + ".faults").mkdir(mode=0o700)
++    environment = dict(os.environ, GRADLE_USER_HOME=str(tmp_path / "gradle-user-home"))
++    completed = subprocess.run(  # noqa: S603 - verified explicit tool and owned offline fixture
++        [
++            str(home / "bin/gradle"),
++            "--no-daemon",
++            "--console=plain",
++            "-I",
++            str(inspection),
++            ":app:gsipRuntimeEvidence",
++            "-PgsipEvidenceOutput=" + str(output),
++        ],
++        cwd=project,
++        env=environment,
++        capture_output=True,
++        timeout=120,
++    )
++    if len(completed.stdout) + len(completed.stderr) > 2_000_000:
++        pytest.fail("synthetic split-view control exceeded fixed output bound")
++    fails_build = mode in {
++        "unknown_agp",
++        "wrong_type",
++        "missing_project",
++        "missing_binary",
++        "unresolved",
++        "wrong_variant",
++    }
++    if (completed.returncode != 0) != fails_build or output.exists() == fails_build:
++        pytest.fail("split-view control has incorrect fixed exit/graph status")
++    if mode == "wrong_variant":
++        assert audit.read_fixed_fault(output.with_name(output.name + ".faults"), tmp_path) == (
++            "RELEASE_ARTIFACTS", "UNKNOWN",
++        )
++    data = audit.decoded(output.read_bytes()) if output.exists() else None
++    expected_modules = {
++        ("synthetic.publicview", name, "1.0") for name in ["plain", "androidraw", "bom"]
++    }
++    if data is not None:
++        assert [view["name"] for view in data["views"]] == [
++            "debugRuntimeClasspath",
++            "releaseRuntimeClasspath",
++        ]
++        for view in data["views"]:
++            assert expected_modules <= {tuple(v) for v in view["modules"]}
++            assert set(view["projects"]) == {":app", ":library"}
++            artifacts = view["artifacts"]
++            module_artifacts = [v for v in artifacts if v["kind"] == "module"]
++            actual_modules = {tuple(v["coordinate"]) for v in module_artifacts}
++            assert actual_modules == expected_modules - {("synthetic.publicview", "bom", "1.0")} - (
++                {("synthetic.publicview", "plain", "1.0")} if mode == "omit_module" else set()
++            )
++            for artifact in module_artifacts:
++                coordinate = artifact["coordinate"]
++                expected = (
++                    project
++                    / "repo/synthetic/publicview"
++                    / coordinate[1]
++                    / "1.0"
++                    / Path(artifact["file"]).name
++                )
++                assert Path(artifact["file"]).read_bytes() == expected.read_bytes()
++            projects = [v for v in artifacts if v["kind"] == "project"]
++            assert len(projects) == 1 and projects[0]["project"] == ":library"
++            file = Path(projects[0]["file"])
++            missing = (
++                mode == "no_debug_producer"
++                and view["name"].startswith("debug")
++                or mode == "no_release_producer"
++                and view["name"].startswith("release")
++            )
++            assert file.is_file() != missing
++            if file.is_file():
++                with zipfile.ZipFile(file) as archive:
++                    actual = archive.read("fixture-variant.txt")
++                variant = "debug" if view["name"].startswith("debug") else "release"
++                assert (actual == (variant + "-classes").encode()) != (
++                    mode == "wrong_variant" and variant == "release"
++                )
++        if mode == "success":
++            offset = completed.stdout.find(b"> Task :app:gsipRuntimeEvidence")
++            for variant in ["debug", "release"]:
++                producer = completed.stdout.find(
++                    ("> Task :library:" + variant + "Classes").encode()
++                )
++                assert 0 <= producer < offset
++    control = {
++        "mode": mode,
++        "tool_exit_code": completed.returncode,
++        "graph_created": output.exists(),
++        "task_sha256": audit.sha(task.encode()),
++        "stdout_sha256": audit.sha(completed.stdout),
++        "stderr_sha256": audit.sha(completed.stderr),
++        "stdout_bytes": len(completed.stdout),
++        "stderr_bytes": len(completed.stderr),
++        "raw_output_persisted": False,
++        "native_acceptance_claimed": False,
++    }
++    (tmp_path / "split-view-control.json").write_text(json.dumps(control, sort_keys=True) + "\n")
++
++
++@pytest.mark.parametrize(
++    "defect", ["missing_module", "missing_project", "pom_metadata", "jar_metadata"]
++)
++def test_split_view_sidecar_keeps_existing_full_component_coverage(
++    defect: str, tmp_path: Path
++) -> None:
++    native = complete_native("a" * 40, "b" * 64)
++    if defect == "missing_project":
++        for row in native["runtime_views"]:
++            row["resolved_runtime_inputs"] = [
++                v for v in row["resolved_runtime_inputs"] if v.get("project") != ":capacitor-camera"
++            ]
++    elif defect == "missing_module":
++        for row in native["runtime_views"]:
++            row["resolved_runtime_inputs"] = [
++                v for v in row["resolved_runtime_inputs"] if "coordinate" not in v
++            ]
++    else:
++        coord = ("synthetic.publicview", "metadata", "1.0")
++        raw = pom(coord).replace(
++            b"</project>",
++            (
++                "<packaging>"
++                + ("pom" if defect == "pom_metadata" else "jar")
++                + "</packaging></project>"
++            ).encode(),
++        )
++        cached(tmp_path, coord, raw)
++        proof = audit.pom_evidence(coord, tmp_path, False)
++        for row in native["runtime_views"]:
++            row["selected_modules"].append(
++                {"coordinate": list(coord), "pom_license_evidence": proof}
++            )
++    if defect == "pom_metadata":
++        audit.validate_android(native, audit.validate_npm(native["npm_sources"], "a" * 40))
++    else:
++        with pytest.raises(audit.AuditError):
++            audit.validate_android(native, audit.validate_npm(native["npm_sources"], "a" * 40))
+--- a/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
++++ b/docs/APP_NOTIFICATION_NATIVE_AUDIT.md
+@@ -36,7 +36,11 @@
+ 
+ `python -m scripts.app_notification_audit android` retains separate exact
+ `debugRuntimeClasspath` and `releaseRuntimeClasspath` dependency trees, their digests
+-and a JSON view of selected resolved modules and actual JAR/AAR inputs. The existing
++and a JSON view of selected resolved modules, original external JAR/AAR inputs and
++compiled project runtime-classpath JARs. Project classpath JARs are not described as
++all intermediate resource, manifest or native-library inputs: full installed npm-source
++manifests and the complete APK/permission/native-entry/repeat proofs remain separate
++and required. The existing
+ `check-dependencies` checks continue on both configurations. Closed SDK coordinates,
+ missing graphs, unknown projects, malformed or ambiguous metadata, unsafe files and
+ unknown licenses fail the additional audit as well. Traversal components are rejected
+@@ -230,44 +234,72 @@
+ identity-cycle and conflicting-label refusals remain intact; unsupported classes remain
+ `UNKNOWN`. These labels are diagnostic coverage and are not a claim about hosted CI.
+ 
+-## Runtime artifact producer order
+-
+-The inspection task declares `dependsOn` for the public `buildDependencies` of both
+-`debugRuntimeClasspath` and `releaseRuntimeClasspath`. Gradle schedules the selected
+-project artifact producers before the task reads resolved artifact files. The
+-[Gradle 8.14.3 configuration API](<https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/Configuration.html#getBuildDependencies()>)
+-provides this dependency information. The
+-[legacy resolved-configuration API](https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/ResolvedConfiguration.html)
+-does not track task dependencies in its returned file sets. Resolving those sets
+-inside `doLast` alone therefore does not schedule their producers.
+-
+-An offline Gradle 8.14.3/Java 21 regression uses built-in Java projects and a registered
+-artifact transform that opens each actual jar as a ZIP. The previous task fails during
+-debug artifact inspection before either selected project jar exists. The declared
+-producers build both selected jars first and the unchanged inspection then succeeds.
+-Removing either variant's dependency, disabling a producer, failing a producer or
+-omitting a runtime configuration still fails; selecting another project never licenses
+-it or bypasses the source audit. This proves a task-input defect and its correction.
+-The hosted Android run reported `DEBUG_ARTIFACTS|UNKNOWN`, so its specific cause remains
+-unverified until a fresh CI run. The local fixture does not establish that cause.
+-
+-The declaration adds no artifact substitution, configuration skip, application release
+-signing, key or account. Both selected graphs, artifact files and all existing source,
+-license, permission, backup, repeat and closed-activation proofs remain required. Task-
+-graph/setup failures may occur before the inspection callback emits a fault receipt;
+-those failures remain failed and explicitly unknown.
+-
+-The real regression is opt-in because ordinary Python validation may lack the verified
+-Gradle/Java tools. A skip is reported as unavailable, never as a passing native control:
++## Runtime artifact selection and producer order
++
++The pinned AGP 8.13.0 projects publish several secondary artifacts on each debug and
++release runtime variant. An unchanged local inspection reproduced
++`ArtifactSelectionException` through the pinned Gradle artifact-ambiguity describer:
++asking the original configuration for an unspecified artifact type cannot choose
++between those secondary artifacts. The same source operation succeeded after the
++adapter below. This establishes the local mechanism; the hosted failure's identical
++root cause still requires a fresh CI result.
++
++The adapter activates only for the public `AgpVersionAttr` metadata with the reviewed
++value `8.13.0`. An unknown AGP version fails; configurations without that Android
++metadata retain the existing unambiguous Java path. Both original component graphs
++and their consumer attributes remain intact. Each Android configuration has two
++strict public artifact views:
++
++- A module-only view adds no attributes and retains original external AAR/JAR bytes.
++- A project-only view requests AGP's `android-classes-jar` artifact type, retaining the
++  selected debug/release variant. The exact resolution-root identity is excluded.
++
++There is no variant reselection, lenient resolution, debug substitution or fallback
++on failure. Every selected nonroot project must be represented; a typed view can
++otherwise return no matching artifact even when leniency is disabled. The existing
++sidecar validator continues to require a binary for every selected non-`pom` module.
++Its metadata-only exception still requires coordinate-matched, licensed primary POM
++proof whose packaging is `pom`; a missing ordinary library never qualifies. Unknown
++projects, paths, modules and licences remain refused.
++
++Producer dependencies are lazy and refer to the exact module/project view file
++collections for both configurations. Those are the files subsequently inspected.
++Using the original configuration's default `buildDependencies` would perform the
++same ambiguous selection before the task ran. The plain Java path retains its
++original dependency declaration and resolved-artifact collection. The
++[ArtifactView API](https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/ArtifactView.html)
++and [ArtifactCollection API](https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/ArtifactCollection.html)
++provide the selected artifacts and producer-aware file collections. The adapter
++never transforms or substitutes the external module binaries.
++
++The four reviewed plugin projects each declare exactly one compiled-class artifact
++of type `android-classes-jar` on both actual runtime variants. AGP's class artifact is
++an explicit classpath projection; separate resources, manifest and native-library
++coverage remains attributed to the unchanged full-source and complete-APK proofs.
++No new resource-directory evidence protocol or broader intermediate-file claim is
++introduced.
++
++Offline public Gradle 8.14.3/Java 21 controls reproduce secondary-artifact ambiguity,
++retain raw external JAR/AAR identity, build different debug/release class JARs, and
++exercise missing typed-project output, missing module/binary, incorrect variant,
++unknown AGP metadata and removal of either producer dependency. Existing producer
++transform, graph, source, licence and diagnostic controls remain required. The local
++Android inspection builds plugin producers, not an application APK, and neither it
++nor a diagnostic supplies native product acceptance.
++
++The real controls are opt-in because ordinary Python validation may lack verified
++Gradle/Java tools. A skip is unavailable evidence:
+ 
+ ```sh
+ GSIP_TEST_GRADLE_HOME="<verified-Gradle-8.14.3-home>" \
+-  python -m pytest tests/test_app_notification_audit.py \
+-  -k real_gradle_runtime_producers_precede_content_transforms
++  python -m pytest tests/test_app_notification_audit.py -k real_gradle
+ ```
+ 
+-It uses a fresh `GRADLE_USER_HOME`, offline resolution and local synthetic Maven/jar
+-fixtures only. Actual CI still supplies the Android product build and artifact evidence.
++They preserve `HOME`, use fresh task-specific `GRADLE_USER_HOME` directories and local
++synthetic Maven inputs, and require no SDK download, owner signing input or account.
++All source, permission, backup, repeated-build and closed-activation checks remain
++mandatory. Actual CI still supplies the complete Android product build, parent
++comparison and published artifact evidence.
+ 
+ ## Reading the artifacts
+ 

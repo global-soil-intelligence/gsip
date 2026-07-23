@@ -1,0 +1,49 @@
+{
+  "checked_at_utc": "2026-10-16T00:27:40.093469+00:00",
+  "status": "AUTHENTICATED_ACCOUNT_READ_ONLY_NO_CHANGES_SAVED",
+  "provider": "Squarespace",
+  "domain": "globalsoilintelligence.com",
+  "dns_panel_url": "https://account.squarespace.com/domains/managed/globalsoilintelligence.com/dns/dns-settings",
+  "records": [
+    {
+      "group": "Squarespace Defaults",
+      "type": "A",
+      "name": "@",
+      "value": "198.49.23.144",
+      "ttl": 14400
+    },
+    {
+      "group": "Squarespace Defaults",
+      "type": "CNAME",
+      "name": "www",
+      "value": "ext-sq.squarespace.com",
+      "ttl": 14400
+    },
+    {
+      "group": "Squarespace Domain Connect",
+      "type": "CNAME",
+      "name": "_domainconnect",
+      "value": "_domainconnect.domains.squarespace.com",
+      "ttl": 3600,
+      "action": "PRESERVE"
+    }
+  ],
+  "custom_records": "UI says No custom records",
+  "nameservers": [
+    "ns-cloud-d1.googledomains.com",
+    "ns-cloud-d2.googledomains.com",
+    "ns-cloud-d3.googledomains.com",
+    "ns-cloud-d4.googledomains.com"
+  ],
+  "github_pages_organization": {
+    "status": "UI says There are no verified domains for this organization",
+    "existing_challenge_read": "NONE_DISPLAYED",
+    "prepared_form_domain": "globalsoilintelligence.com",
+    "submitted": false
+  },
+  "next_gate": "Owner approval to submit pending organization Pages verification request only; exact generated TXT then returns for review",
+  "changed_dns": false,
+  "changed_github_settings": false,
+  "source_changes": "NONE",
+  "privacy": "No registrant contact information retained; saved evidence covers DNS and verification panels only"
+}

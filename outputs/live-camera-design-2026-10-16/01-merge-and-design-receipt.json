@@ -1,0 +1,188 @@
+{
+  "recorded_at": "2026-10-17 01:12:21 UTC",
+  "authority": "Merge #86 then #87; design preparation only; no production changes or collection opening.",
+  "merges": [
+    {
+      "pr": 86,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/86",
+      "reviewed_head": "0b90464b95266135ecd851e0bfb230a3e0f3bd11",
+      "merge": "ce2c383eb28b4c130cbbb6033c7cfecf4a24f291",
+      "postmerge_tree_matches_reviewed_branch": true
+    },
+    {
+      "pr": 87,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/87",
+      "reviewed_head": "731a30ff6f8f3a90e0df31eb1d977edf1fcaf912",
+      "merge": "a2529906a320b2be0339c48cf8dce2b6688f58cf",
+      "postmerge_tree_matches_reviewed_branch": true
+    }
+  ],
+  "main_checks": [
+    {
+      "run_id": 38988103277,
+      "jobs": [
+        {
+          "name": "validate",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": 38988142286,
+      "jobs": [
+        {
+          "name": "validate",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": 38988142311,
+      "jobs": [
+        {
+          "name": "android",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "ios",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": 38988142210,
+      "jobs": [
+        {
+          "name": "gitleaks",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "main_artifacts": {
+    "artifacts": [
+      {
+        "id": 12084615250,
+        "name": "gsip-capture-ios-simulator",
+        "size_in_bytes": 13920661,
+        "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12084615250",
+        "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12084615250/zip",
+        "expired": false,
+        "created_at": "2026-10-17T00:53:28Z",
+        "expires_at": "2026-10-31T00:53:26Z",
+        "updated_at": "2026-10-17T00:53:28Z",
+        "digest": "sha256:4f9cc33654e0bf7690a02f61446737b491eb33fd213b1ec2d6b8d39d79f84230",
+        "workflow_run": {
+          "id": 38988142311,
+          "repository_id": 1308971325,
+          "head_repository_id": 1308971325,
+          "head_branch": "main",
+          "head_sha": "a2529906a320b2be0339c48cf8dce2b6688f58cf"
+        }
+      },
+      {
+        "id": 12084062500,
+        "name": "gsip-capture-android-debug",
+        "size_in_bytes": 29126160,
+        "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12084062500",
+        "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12084062500/zip",
+        "expired": false,
+        "created_at": "2026-10-17T00:57:08Z",
+        "expires_at": "2026-10-31T00:57:06Z",
+        "updated_at": "2026-10-17T00:57:08Z",
+        "digest": "sha256:3fb189a849c8293eca6b9514f93bf4909c5ba9ac859e1f0e9b439631fa5c67b3",
+        "workflow_run": {
+          "id": 38988142311,
+          "repository_id": 1308971325,
+          "head_repository_id": 1308971325,
+          "head_branch": "main",
+          "head_sha": "a2529906a320b2be0339c48cf8dce2b6688f58cf"
+        }
+      }
+    ]
+  },
+  "pages_holds": [
+    {
+      "conclusion": "cancelled",
+      "databaseId": 38988142274,
+      "headSha": "a2529906a320b2be0339c48cf8dce2b6688f58cf",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38988142274"
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 38988103296,
+      "headSha": "ce2c383eb28b4c130cbbb6033c7cfecf4a24f291",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38988103296"
+    }
+  ],
+  "pages_protection": {
+    "can_admins_bypass": false,
+    "name": "github-pages",
+    "protection_rules": [
+      {
+        "id": 60751762,
+        "node_id": "GA_kwDOTgVRPc4Dnv-S",
+        "type": "branch_policy"
+      },
+      {
+        "id": 68521163,
+        "node_id": "GA_kwDOTgVRPc4EFYzL",
+        "prevent_self_review": false,
+        "reviewers": [
+          {
+            "reviewer": {
+              "avatar_url": "https://avatars.githubusercontent.com/u/179389866?v=4",
+              "events_url": "https://api.github.com/users/jdhart81/events{/privacy}",
+              "followers_url": "https://api.github.com/users/jdhart81/followers",
+              "following_url": "https://api.github.com/users/jdhart81/following{/other_user}",
+              "gists_url": "https://api.github.com/users/jdhart81/gists{/gist_id}",
+              "gravatar_id": "",
+              "html_url": "https://github.com/jdhart81",
+              "id": 179389866,
+              "login": "jdhart81",
+              "node_id": "U_kgDOCrFFqg",
+              "organizations_url": "https://api.github.com/users/jdhart81/orgs",
+              "received_events_url": "https://api.github.com/users/jdhart81/received_events",
+              "repos_url": "https://api.github.com/users/jdhart81/repos",
+              "site_admin": false,
+              "starred_url": "https://api.github.com/users/jdhart81/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/jdhart81/subscriptions",
+              "type": "User",
+              "url": "https://api.github.com/users/jdhart81",
+              "user_view_type": "public"
+            },
+            "type": "User"
+          }
+        ],
+        "type": "required_reviewers"
+      }
+    ]
+  },
+  "live_activation": {
+    "url": "https://globalsoilintelligence.com/capture/gsip-activation.json",
+    "http_status": 200,
+    "capture_live": false,
+    "library_intake_live": false,
+    "root_manifest_404": "Root /gsip-activation.json was not the capture manifest; corrected to /capture/gsip-activation.json."
+  },
+  "design": {
+    "pr": 89,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/89",
+    "head": "a45924b141740c58f8d3a3e3f023a0cf5cc6e8d4",
+    "local_focused_tests": 129,
+    "prospective_guard_tests": 36,
+    "independent_review": "No open findings; exact head confirmed",
+    "ci": "pending",
+    "implementation": "not performed"
+  },
+  "production_actions": [],
+  "camera_or_device_actions": [],
+  "activation_changes": []
+}

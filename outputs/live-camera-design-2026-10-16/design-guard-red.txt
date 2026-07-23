@@ -1,0 +1,39 @@
+Command: uv run pytest -q tests/test_browser_camera_design.py -k prospective_private
+Expected failure before design manifest exists.
+
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________________ test_design_is_prospective_private_and_bounded ________________
+
+    def test_design_is_prospective_private_and_bounded() -> None:
+>       validate(design())
+                 ^^^^^^^^
+
+tests/test_browser_camera_design.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_browser_camera_design.py:16: in design
+    value: dict[str, Any] = json.loads((ROOT / "docs/browser-camera-design.json").read_text())
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.12.7-macos-aarch64-none/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/docs/browser-camera-design.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/docs/browser-camera-design.json'
+
+../../../../.local/share/uv/python/cpython-3.12.7-macos-aarch64-none/lib/python3.12/pathlib.py:1013: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_browser_camera_design.py::test_design_is_prospective_private_and_bounded

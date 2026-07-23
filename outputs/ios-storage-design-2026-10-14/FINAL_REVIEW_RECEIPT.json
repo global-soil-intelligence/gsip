@@ -1,0 +1,26 @@
+{
+  "status": "no_blocking_design_review_findings",
+  "manifest_sha256": "d87d1f26f18a2be15e28b4f82e4a9dde553fcd117866c912a94aa1d733659e10",
+  "candidate_cases": 93,
+  "candidate_passed": 93,
+  "baseline_cases": 25,
+  "baseline_expected_failures": 25,
+  "mutants_rejected": 13,
+  "native_device_or_production_acceptance": false,
+  "files": {
+    "V4_MANIFEST.json": "d87d1f26f18a2be15e28b4f82e4a9dde553fcd117866c912a94aa1d733659e10",
+    "BASE_MANIFEST.json": "30f8362ed1799757af96fa4a5e335c339f11ce0cc17e7213fbad883c0276c009",
+    "V4_BINDING.json": "1d816da121d4c75884c43f2d966f10f26be81174612a430fa239d5bcfd2b9c27",
+    "PRESERVATION.json": "7f433287102928cefed6dd970687f3fa40a2a2084f31c0dca7f614fd495f1e24",
+    "candidate-v4-tests.json": "b2b66fda5cc83897e77440a98c5eedc95439102dadcdf4b5a07771dace727b04",
+    "candidate-v4-tests.xml": "a69048ee18bc9e0219032c870e8974fb95073c8a0eaff5c6996ca607eeef1056",
+    "candidate-v4-tests.log": "8eb9e6e24acc347b1ddbb1e3c73929bf6f809aee5a7b8fcfe01267a950b5eea7",
+    "baseline-v4-tests.json": "ef6c7be705f94db50d49a8a905a13d496021ef7ebfb19330b80907a1d65fc259",
+    "baseline-v4-tests.xml": "66f6f4bf510e33dca71d03ed0bd55187105755102a41fc10d2df5528577f5151",
+    "baseline-v4-tests.log": "6ce8cfb90c319c58abba5f75b979084ec389d25f9a38cbdd264908d31fbea8cf",
+    "V4_MUTATION_CHECKS.json": "4949b6e4a1bae1f0e6d21d000860d3bde3f0428a033d71c9e38d11849c936748",
+    "MUTATION_BEHAVIOR_SURVIVOR.json": "7ef57923026c685cbcd9e0604a9547f4fc14e4cb519de10671557a98a69a1f28",
+    "V3_INDEPENDENT_REVIEW.md": "b3984a76e40490626deb08748daba684de87db57a00cf89fcacd061215883b10",
+    "FINAL_INDEPENDENT_REVIEW.md": "549894ad59ece97651ea65958084eba7925eebb32af61c4cff34d6a6a2c8534f"
+  }
+}

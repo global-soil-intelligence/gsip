@@ -1,0 +1,186 @@
+{
+  "actions": {
+    "GitHub_mutations": false,
+    "Git_mutations": false,
+    "artifact_downloads": false,
+    "native_builds_keys_or_signing": false,
+    "production_calls_or_changes": false,
+    "raw_CI_logs_fetched_or_persisted": false,
+    "report_or_source_edits": false,
+    "tests_or_scans_rerun": false
+  },
+  "at": "2026-10-14T04:03:56.780982+00:00",
+  "evidence": [
+    {
+      "bytes": 13169,
+      "path": "/private/tmp/gsip-report-closeout-independent-txx4460k/LANDING_AND_BUILD_REPORT_2026-10-13.md",
+      "sha256": "50f795d17bdac60553b0e4876444e7f794d6cb224e4d3194989a18616db70727"
+    },
+    {
+      "bytes": 21079,
+      "path": "/private/tmp/gsip-report-closeout-independent-txx4460k/REPORT_INPUT_AND_LINKS.json",
+      "sha256": "1fa8e06e8906b382969d2ed42e1f416fb0ce60f41dfac1cef26e838eace61389"
+    },
+    {
+      "bytes": 12907,
+      "path": "/private/tmp/gsip-report-closeout-independent-txx4460k/REMOTE_REPORT_CROSSCHECK.json",
+      "sha256": "42ffd8bcf4782dde20d9253a8c1477eb8ab44841f5ff97696b99bb19b34927cb"
+    },
+    {
+      "bytes": 265,
+      "path": "/private/tmp/gsip-report-closeout-independent-txx4460k/OPERATIONAL_MAIN_READBACK.json",
+      "sha256": "670b39a3e99b27b70b035a00eb488942b2e7be6c52614de7f204c0c6068142e3"
+    },
+    {
+      "bytes": 655,
+      "path": "/private/tmp/gsip-report-closeout-independent-txx4460k/EXACT_SUPPRESSION_BEFORE_AFTER.json",
+      "sha256": "f56d1768a0ed2cff235773d784b4eb062fa610690b5b09b387ccc5026157af8a"
+    }
+  ],
+  "findings": [
+    {
+      "evidence": "Header is 2026-10-14T03:37:41.867417+00:00 while body cites final 03:46 main snapshot and later PR66 follow-up.",
+      "line": 3,
+      "recommendation": "Refresh the report timestamp during the next authorized factual status update.",
+      "severity": "minor",
+      "status": "reported_no_edit",
+      "title": "Refresh timestamp precedes later evidence in report"
+    }
+  ],
+  "limitations": [
+    "Report/source state may change after the bound observation; PR66 was not followed to terminal or merge.",
+    "Safe prior receipts were checked and their stated boundaries retained; no native artifacts downloaded or replayed in this report audit.",
+    "Production endpoint or database health was not queried."
+  ],
+  "no_false_claim_found_in": [
+    "Current check state as-of cited snapshots",
+    "Fresh PR versus metadata-only main artifact verification",
+    "Device or iOS backup evidence",
+    "Production health or deployment",
+    "DCO certification",
+    "Real-sharing/science adoption",
+    "RGB measured spectrum"
+  ],
+  "preserved_outstanding_gates": [
+    "Physical-device capture/reminder/rights behavior",
+    "iOS device backup exclusion",
+    "Real-peer consent/repeated-sharing evidence and LIB5C",
+    "Real scientific calibration/model evaluation and LIB6/LIB7",
+    "Licenced model/HF/tile configuration and quotas",
+    "Counsel/store/signing/distribution obligations",
+    "Deployment/DNS/paid-tier and protected Pages approval",
+    "Operator worker/capture/CAPTCHA/photo activation authority"
+  ],
+  "recovery": [
+    "One initial public historical-commit GET was unavailable; original suppression/config bytes were instead verified using read-only local Git objects with GIT_OPTIONAL_LOCKS=0. No source mismatch inferred."
+  ],
+  "remote_observation_at": "2026-10-14T03:57:42.576736+00:00",
+  "report": {
+    "bytes": 13169,
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/LANDING_AND_BUILD_REPORT_2026-10-13.md",
+    "sha256": "50f795d17bdac60553b0e4876444e7f794d6cb224e4d3194989a18616db70727",
+    "unchanged_from_frozen_audit_copy": true
+  },
+  "safe_general_metric_leaves": [
+    {
+      "path": "/private/tmp/gsip-faab-general-watch/GENERAL_TERMINAL_METRICS.json",
+      "sha256": "454e22c5aa256a1ddf78145b0b6b068b27e4c8edea1470875f0841296bdf0ad1"
+    },
+    {
+      "path": "/private/tmp/gsip-main-a638-general-watch/GENERAL_TERMINAL_METRICS.json",
+      "sha256": "3307d4070b34d37a37ffc46ded09fe54921a34975b25e0f4feebf8c9fc100c92"
+    }
+  ],
+  "schema": "gsip-independent-report-closeout-audit-v1",
+  "scope": "Finite report/current-linked-safe-receipt audit; no recursive historical replay. Current facts bound to the GET observation timestamp, not a continuing watch.",
+  "status": "CLOSED_NO_SUBSTANTIVE_BLOCKER_ONE_MINOR_TIMESTAMP_FINDING",
+  "verified": {
+    "PR66": {
+      "DCO": "skipped_not_certification",
+      "both_secret_scans": "success",
+      "changed_files": 3,
+      "draft": true,
+      "head": "8b8cc24841d58c231743ff69472d3354f612dcf3",
+      "merged": false,
+      "state": "open",
+      "validate": "in_progress"
+    },
+    "all_25_relative_links_exist": true,
+    "all_explicit_report_receipt_SHA256_values_match": true,
+    "artifact_claims_correctly_distinguished": {
+      "Android_tool_archive_provenance_limit_explicit": true,
+      "PR_run55_fresh_Android_and_iOS_proofs_linked": true,
+      "main_artifact_independent_replay_claimed": false,
+      "main_run56_metadata_only_explicit": true
+    },
+    "eleven_merged_PR_links_statuses_and_commits_match_GET": true,
+    "general_PR_and_main_metrics_each": {
+      "Deno_sources_checked": 2,
+      "JavaScript_breakdown": {
+        "capture": 246,
+        "map": 15,
+        "schema": 308,
+        "site": 28
+      },
+      "JavaScript_passed": 597,
+      "Python_passed": 1953,
+      "Python_skipped": 31,
+      "browser_passed": 12,
+      "hosted_site_budget_claimed": false,
+      "map_budget_bytes": 1663811,
+      "map_budget_limit_bytes": 5242880,
+      "migrations_passed_out_of": [
+        [
+          13,
+          13
+        ],
+        [
+          19,
+          19
+        ],
+        [
+          13,
+          13
+        ]
+      ],
+      "mypy_sources": 75,
+      "pgTAP_files": 11,
+      "pgTAP_passed": 593,
+      "required_GDAL_seen": true,
+      "separate_31_actual_Gradle_cases_not_summed": true
+    },
+    "historical_archive_explicitly_superseded": true,
+    "main": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+    "main_checks": {
+      "Pages_build": "success",
+      "Pages_deploy": "waiting",
+      "android": "success",
+      "ios": "success",
+      "secret_scan": "success",
+      "validate": "success"
+    },
+    "main_clean_read_only_git": true,
+    "main_tree": "88baee8e3e9606b386fa011ac71f2d759cf20e50",
+    "merged_PR_numbers": [
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      58,
+      60,
+      64,
+      65,
+      63
+    ],
+    "suppression": {
+      "current_five_physical_lines_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5",
+      "only_approved_line_added": "bb9bd8a583231ff63ec14a7622532ddb869d7cde:scripts/e2e_server.py:generic-api-key:32",
+      "original_four_line_sha256": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+      "original_four_physical_lines_preserved_exact": true,
+      "scanner_config_sha256": "e846bacbb1ce5c41f571a10cdaf0e1fde7bfa399fc5c876480b57124059cc760",
+      "scanner_config_unchanged": true
+    }
+  }
+}

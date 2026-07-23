@@ -1,0 +1,115 @@
+{
+  "mode": "independent read-only; intermediate blocked candidate",
+  "manifest_path": "/private/tmp/gsip-6fb-final-candidate-manifest.json",
+  "manifest_sha256": "db3face16158802eeaa9b46e6485618bc63e86bdaf54a277a2ee9b8404d07306",
+  "independent_snapshot": "/private/tmp/gsip-6fb-final-independent-4w98e0iz",
+  "files": [
+    {
+      "path": "pipeline/privacy_contract.py",
+      "bytes": 8734,
+      "sha256": "7d7615322afd8e1603ac63f7927dae3efa02ef8aa65b3d93febafe3071f6b92c"
+    },
+    {
+      "path": "pipeline/privacy_io.py",
+      "bytes": 3420,
+      "sha256": "35416d792cc5e8a558a71ad9fb3ffbe118fe9055119c36d2aa05d30426c4ed33"
+    },
+    {
+      "path": "pipeline/photo_privacy.py",
+      "bytes": 18249,
+      "sha256": "f4a288aad937c73ecb64c3415187e669ba67302a63eddcc0e9a7d65bfdcfa30c"
+    },
+    {
+      "path": "pipeline/privacy_transport.py",
+      "bytes": 4936,
+      "sha256": "c2fde87e887dac9706bccff8bd56ba25c6306a065b4c199d9768aff3fe3377ad"
+    },
+    {
+      "path": "pipeline/privacy_worker.py",
+      "bytes": 13143,
+      "sha256": "8e1a20b9edc1e4eba99cf661575c4fff79a76c9d2c5c55f37270373c6b7b1659"
+    },
+    {
+      "path": "pipeline/privacy_review.py",
+      "bytes": 7825,
+      "sha256": "5f2ef916558137491cc0d34b36494814dd8cbf60c85aaeeb5595c3ed17073f40"
+    },
+    {
+      "path": "pipeline/photo_privacy_calibrate.py",
+      "bytes": 10939,
+      "sha256": "6b88f0dfc31c95693fa41e1214c806b72b1656336296448371a35c8b60804a62"
+    },
+    {
+      "path": "tests/test_photo_privacy.py",
+      "bytes": 5880,
+      "sha256": "417187076bc6e2f1ba5a3da95e6abe3b266a11874d39cb07e58194aa49a7f807"
+    },
+    {
+      "path": "tests/test_privacy_worker_review.py",
+      "bytes": 13773,
+      "sha256": "007583ed8244ccf6bfd464fda097bdbf3bb8e485e6cac87f195a66ad20ee777a"
+    },
+    {
+      "path": "tests/test_privacy_contract_calibration.py",
+      "bytes": 11280,
+      "sha256": "e4acbbace561959a0f6537d9b25b7b343dc18c5750b3cf4650c5a6cb181121cd"
+    },
+    {
+      "path": "docs/PHOTO_PRIVACY_WORKER.md",
+      "bytes": 11291,
+      "sha256": "465a55de5a31d25f0f84d03de0f9c791066041a08c708cb36b485ed7e8b824cb"
+    },
+    {
+      "path": "pipeline/qa.py",
+      "bytes": 17510,
+      "sha256": "1f12cffa0471d96742ae9e852f5f0ea840c0f5edb2a0e0d2ce87bfec0dbcbb0c"
+    },
+    {
+      "path": "tests/test_qa.py",
+      "bytes": 23574,
+      "sha256": "a152fa4e9f0244eef4007f5d2c82294c0fcaf0e478049e4f699ae47676177acb"
+    }
+  ],
+  "blocking_findings_remain": true,
+  "findings": [
+    {
+      "priority": "P1",
+      "file": "pipeline/qa.py",
+      "line": 227,
+      "problem": "Table/control marker payloads are skipped without validating their full definitions, and complete definitions after the final scan are accepted despite no following SOS. The real full decoder ignores these bytes, preserving identical pixels and permitting a private segment-payload channel.",
+      "required_fix": "Validate full fixed/table payload syntax and require post-scan definitions to be followed by a subsequent supported scan, or conservatively refuse unsupported controls. Preserve ordinary baseline/progressive inter-scan definitions.",
+      "proofs": [
+        {
+          "path": "/private/tmp/gsip-jpeg-ignored-payload-witness-receipt.json",
+          "sha256": "a1e2faad74ba66b5a86f2007edb430a12f6d54fc62d1a099a7f9b90fc0ec2211",
+          "cases": 32
+        },
+        {
+          "path": "/private/tmp/gsip-jpeg-valid-tail-definition-witness-receipt.json",
+          "sha256": "55b83c92abb66379933106ca9e9ccf0b69741bbd43966dd20b362b1bf8afd0d1",
+          "cases": 5
+        }
+      ]
+    }
+  ],
+  "prior_fixes_remain_closed": [
+    "full-frame card exclusion disabled",
+    "post-decision private no-follow decoder/hash before review intent/RPC"
+  ],
+  "original_byte_witnesses_closed_by_candidate": [
+    "trailer+EOI",
+    "concatenated JPEG",
+    "excess JFIF",
+    "JFXX thumbnail",
+    "post-SOS COM"
+  ],
+  "actions": {
+    "author_source_edits": false,
+    "root_source_edits": false,
+    "network_calls": false,
+    "model_loads": false,
+    "real_image_data": false,
+    "commits_push_merges": false
+  },
+  "note": "This is not a final no-blocker receipt. All production/policy/calibration/operator/publication gates remain separate."
+}

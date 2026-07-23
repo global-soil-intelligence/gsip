@@ -1,0 +1,200 @@
+{
+  "android_shared_disposable_debug_key_sha256": "9a7c6aa85618bab1240fe7fe9aaabf721b06f8aa00277b59f8b647be00c6f3e7",
+  "archive_byte_delta": 61875,
+  "candidate": {
+    "archive_bytes": 8599299,
+    "sha256": "a3ffd990f1b1fe9992fb4f1246ad9fb9fe4d1b7df95b1257a9ee7e65baeca210",
+    "uncompressed_entry_bytes_by_kind": {
+      "dex": 15033604,
+      "native_libraries": 152696,
+      "other": 1011600,
+      "resources": 2095151
+    }
+  },
+  "candidate_source_commit": "8088673afb4719290385d96c29850629294ad690",
+  "closed_flags": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "identical_toolchain": {
+    "aapt2": "Android Asset Packaging Tool (aapt) 2.20-15087165",
+    "gradle": "------------------------------------------------------------\nGradle 8.14.3\n------------------------------------------------------------\n\nBuild time:    2025-07-04 13:15:44 UTC\nRevision:      e5ee1df3d88b8ca3a8074787a94f373e3090e1db\n\nKotlin:        2.0.21\nGroovy:        3.0.24\nAnt:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024\nLauncher JVM:  21.0.12.1 (Eclipse Adoptium 21.0.12.1+1-LTS)\nDaemon JVM:    /usr/lib/jvm/temurin-21-jdk-amd64 (no JDK specified, using current Java home)\nOS:            Linux 6.17.0-1022-azure amd64",
+    "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+    "node": "v24.21.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.15 (main, Oct  1 2026, 02:35:59) [GCC 13.3.0]",
+    "runner": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "runner_image": {
+      "ImageOS": "ubuntu24",
+      "ImageVersion": "20261012.334.1",
+      "RUNNER_ARCH": "X64",
+      "RUNNER_OS": "Linux"
+    }
+  },
+  "input_receipts": {
+    "candidate": {
+      "android_version_code": 77,
+      "artifact_sha256": "a3ffd990f1b1fe9992fb4f1246ad9fb9fe4d1b7df95b1257a9ee7e65baeca210",
+      "comparison": {
+        "byte_equal": true,
+        "changed_entries": [],
+        "entry_content_equal": true,
+        "first_only": [],
+        "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+        "second_only": []
+      },
+      "comparison_scope": "same run/generated project; actual repeated native build; Android shared disposable debug key",
+      "ios_build_version": "1.0.76",
+      "lockfile_sha256": {
+        "apps/capture-pwa/android/build.gradle": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
+        "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435",
+        "apps/capture-pwa/android/variables.gradle": "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88",
+        "pnpm-lock.yaml": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+        "uv.lock": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912"
+      },
+      "marketing_version": "0.1.0",
+      "platform": "android",
+      "reference_sha256": "a3ffd990f1b1fe9992fb4f1246ad9fb9fe4d1b7df95b1257a9ee7e65baeca210",
+      "run_number": 77,
+      "source_commit": "8088673afb4719290385d96c29850629294ad690",
+      "source_tree_clean": true,
+      "toolchain": {
+        "aapt2": "Android Asset Packaging Tool (aapt) 2.20-15087165",
+        "gradle": "------------------------------------------------------------\nGradle 8.14.3\n------------------------------------------------------------\n\nBuild time:    2025-07-04 13:15:44 UTC\nRevision:      e5ee1df3d88b8ca3a8074787a94f373e3090e1db\n\nKotlin:        2.0.21\nGroovy:        3.0.24\nAnt:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024\nLauncher JVM:  21.0.12.1 (Eclipse Adoptium 21.0.12.1+1-LTS)\nDaemon JVM:    /usr/lib/jvm/temurin-21-jdk-amd64 (no JDK specified, using current Java home)\nOS:            Linux 6.17.0-1022-azure amd64",
+        "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+        "node": "v24.21.0",
+        "pnpm": "11.9.0",
+        "python": "3.12.15 (main, Oct  1 2026, 02:35:59) [GCC 13.3.0]",
+        "runner": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "runner_image": {
+          "ImageOS": "ubuntu24",
+          "ImageVersion": "20261012.334.1",
+          "RUNNER_ARCH": "X64",
+          "RUNNER_OS": "Linux"
+        }
+      }
+    },
+    "parent": {
+      "android_version_code": 77,
+      "artifact_sha256": "f057654859d888d8c7cec86becc0a12586404acf52ab153c73a217f75680b90b",
+      "comparison": {
+        "byte_equal": true,
+        "changed_entries": [],
+        "entry_content_equal": true,
+        "first_only": [],
+        "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+        "second_only": []
+      },
+      "comparison_scope": "same run/generated project; actual repeated native build; Android shared disposable debug key",
+      "ios_build_version": "1.0.76",
+      "lockfile_sha256": {
+        "apps/capture-pwa/android/build.gradle": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
+        "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435",
+        "apps/capture-pwa/android/variables.gradle": "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88",
+        "pnpm-lock.yaml": "492c699cb8e0d3ca9302dd8cbd04d882bc749b4b33d8047040eec8376dd34644",
+        "uv.lock": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912"
+      },
+      "marketing_version": "0.1.0",
+      "platform": "android",
+      "reference_sha256": "f057654859d888d8c7cec86becc0a12586404acf52ab153c73a217f75680b90b",
+      "run_number": 77,
+      "source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "source_tree_clean": true,
+      "toolchain": {
+        "aapt2": "Android Asset Packaging Tool (aapt) 2.20-15087165",
+        "gradle": "------------------------------------------------------------\nGradle 8.14.3\n------------------------------------------------------------\n\nBuild time:    2025-07-04 13:15:44 UTC\nRevision:      e5ee1df3d88b8ca3a8074787a94f373e3090e1db\n\nKotlin:        2.0.21\nGroovy:        3.0.24\nAnt:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024\nLauncher JVM:  21.0.12.1 (Eclipse Adoptium 21.0.12.1+1-LTS)\nDaemon JVM:    /usr/lib/jvm/temurin-21-jdk-amd64 (no JDK specified, using current Java home)\nOS:            Linux 6.17.0-1022-azure amd64",
+        "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+        "node": "v24.21.0",
+        "pnpm": "11.9.0",
+        "python": "3.12.15 (main, Oct  1 2026, 02:35:59) [GCC 13.3.0]",
+        "runner": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "runner_image": {
+          "ImageOS": "ubuntu24",
+          "ImageVersion": "20261012.334.1",
+          "RUNNER_ARCH": "X64",
+          "RUNNER_OS": "Linux"
+        }
+      }
+    }
+  },
+  "native_audit_sha256": {
+    "candidate": "094f4822f725aa4cf08db3cdfd6cf297acff5efecadf65526f2296d78dd65b37",
+    "parent": "ae7a708dbb6ab2c8a704259e90001dd78a94d087eb08fd3e5477235e6fe90fc7"
+  },
+  "parent": {
+    "archive_bytes": 8537424,
+    "sha256": "f057654859d888d8c7cec86becc0a12586404acf52ab153c73a217f75680b90b",
+    "uncompressed_entry_bytes_by_kind": {
+      "dex": 14941864,
+      "native_libraries": 152696,
+      "other": 978295,
+      "resources": 2093791
+    }
+  },
+  "parent_source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "run_number": 77,
+  "schema_version": "gsip-app2b-feature-comparison-v1",
+  "scope": "overall APP-2B feature delta from exact pinned parent; no dependency-only attribution or universal reproducibility claim",
+  "zip_comparison": {
+    "byte_equal": false,
+    "changed_entries": [
+      "AndroidManifest.xml",
+      "assets/capacitor.config.json",
+      "assets/capacitor.plugins.json",
+      "assets/public/index.html",
+      "classes3.dex",
+      "classes4.dex",
+      "classes5.dex",
+      "classes6.dex",
+      "classes7.dex",
+      "classes8.dex",
+      "classes9.dex",
+      "res/drawable-v23/compat_splash_screen.xml",
+      "res/drawable/m3_password_eye.xml",
+      "res/drawable/mtrl_checkbox_button.xml",
+      "res/drawable/mtrl_checkbox_button_checked_unchecked.xml",
+      "res/drawable/mtrl_checkbox_button_icon.xml",
+      "res/drawable/mtrl_checkbox_button_icon_checked_indeterminate.xml",
+      "res/drawable/mtrl_checkbox_button_icon_checked_unchecked.xml",
+      "res/drawable/mtrl_checkbox_button_icon_indeterminate_checked.xml",
+      "res/drawable/mtrl_checkbox_button_icon_indeterminate_unchecked.xml",
+      "res/drawable/mtrl_checkbox_button_icon_unchecked_checked.xml",
+      "res/drawable/mtrl_checkbox_button_icon_unchecked_indeterminate.xml",
+      "res/drawable/mtrl_checkbox_button_unchecked_checked.xml",
+      "res/drawable/mtrl_dropdown_arrow.xml",
+      "res/drawable/mtrl_switch_thumb.xml",
+      "res/drawable/mtrl_switch_thumb_checked_pressed.xml",
+      "res/drawable/mtrl_switch_thumb_checked_unchecked.xml",
+      "res/drawable/mtrl_switch_thumb_pressed_checked.xml",
+      "res/drawable/mtrl_switch_thumb_pressed_unchecked.xml",
+      "res/drawable/mtrl_switch_thumb_unchecked_checked.xml",
+      "res/drawable/mtrl_switch_thumb_unchecked_pressed.xml",
+      "res/drawable/notification_bg.xml",
+      "res/drawable/notification_bg_low.xml",
+      "res/drawable/notification_tile_bg.xml",
+      "res/layout/material_time_input.xml",
+      "res/layout/mtrl_calendar_month_navigation.xml",
+      "res/layout/mtrl_picker_header_fullscreen.xml",
+      "resources.arsc"
+    ],
+    "entry_content_equal": false,
+    "first_only": [
+      "assets/public/assets/esm-SJJtTZPy.js",
+      "assets/public/assets/esm-xJS9Q29C.js",
+      "assets/public/assets/index-BQWKPJnL.js",
+      "assets/public/assets/web-B0EFtPgk.js"
+    ],
+    "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+    "second_only": [
+      "assets/public/assets/esm-ClP6s137.js",
+      "assets/public/assets/esm-D_mzO3Aa.js",
+      "assets/public/assets/esm-Xkb-pSEu.js",
+      "assets/public/assets/index-B2SvVg2Z.js",
+      "assets/public/assets/web-ClVSmdgs.js",
+      "assets/public/assets/web-DyPOB0Mj.js",
+      "classes10.dex",
+      "res/drawable/ic_transparent.xml",
+      "res/xml/localnotifications_provider_paths.xml"
+    ]
+  }
+}

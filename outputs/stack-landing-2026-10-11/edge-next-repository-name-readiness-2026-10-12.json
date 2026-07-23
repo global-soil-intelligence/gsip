@@ -1,0 +1,80 @@
+{
+  "actions_secrets": {
+    "HF_TOKEN": {
+      "present": false,
+      "value_available_or_inspected": false
+    },
+    "SUPABASE_SERVICE_ROLE_KEY": {
+      "present": false,
+      "value_available_or_inspected": false
+    }
+  },
+  "capture_live": {
+    "present": false,
+    "safe_boolean": null,
+    "status": "ABSENT"
+  },
+  "commands": [
+    {
+      "argv": [
+        "gh",
+        "variable",
+        "list",
+        "--repo",
+        "global-soil-intelligence/gsip",
+        "--json",
+        "name"
+      ],
+      "exit_code": 0,
+      "output_fields": [
+        "name"
+      ]
+    },
+    {
+      "argv": [
+        "gh",
+        "secret",
+        "list",
+        "--repo",
+        "global-soil-intelligence/gsip",
+        "--app",
+        "actions",
+        "--json",
+        "name"
+      ],
+      "exit_code": 0,
+      "output_fields": [
+        "name"
+      ]
+    }
+  ],
+  "interpretation": "Presence does not verify the value, target binding, validity, owner of a key, or that an external dataset exists. No missing configuration was created.",
+  "mutation_actions": 0,
+  "observed_at_utc": "2026-10-12T13:43:31.663911+00:00",
+  "other_variable_values_read_or_printed": false,
+  "repository": "global-soil-intelligence/gsip",
+  "scope": "Repository Actions variable/secret names only; VITE_CAPTURE_LIVE is the only safe boolean value inspected",
+  "secret_values_read_or_printed": false,
+  "variables": {
+    "HF_DATASET_REPO": {
+      "present": false,
+      "value_inspected": false
+    },
+    "SUPABASE_URL": {
+      "present": false,
+      "value_inspected": false
+    },
+    "VITE_GSIP_PUBLIC_API": {
+      "present": false,
+      "value_inspected": false
+    },
+    "VITE_SUPABASE_PUBLISHABLE_KEY": {
+      "present": true,
+      "value_inspected": false
+    },
+    "VITE_SUPABASE_URL": {
+      "present": true,
+      "value_inspected": false
+    }
+  }
+}

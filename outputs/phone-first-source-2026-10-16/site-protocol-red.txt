@@ -1,0 +1,892 @@
+=== SITE: negative-first tests; runtime source unchanged ===
+Command: ['/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node', '/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/node_modules/vitest/vitest.mjs', 'run', 'tests/phone-first.test.tsx']
+Exit: 1
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/site-web
+
+ ❯ tests/phone-first.test.tsx (8 tests | 8 failed) 122ms
+     × home makes the physical card optional before any collection is offered 19ms
+     × card makes the physical card optional before any collection is offered 4ms
+     × methods makes the physical card optional before any collection is offered 4ms
+     × starts with phone observations without claiming automatic sample registration 10ms
+     × keeps A and B required, C optional and both physical-card downloads reachable 71ms
+     × home structured data describes the card as optional 6ms
+     × data structured data describes the card as optional 3ms
+     × keeps card metadata and agent-facing site guidance optional and scientifically bounded 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/phone-first.test.tsx > phone-first public guidance > home makes the physical card optional before any collection is offered
+AssertionError: expected 'Skip to contentGGlobal SoilIntelligen…' to match /No printed card is needed/
+
+- Expected:
+/No printed card is needed/
+
++ Received:
+"Skip to contentGGlobal SoilIntelligenceMapLibraryMethodsPublic capture closedOpen science for the ground beneath usBuild the world’s open soil spectral library.We’re building a shared reference library that connects smartphone soil observations and sample metadata with instrument spectra and laboratory evidence from the same physical samples. Open AI models and better soil maps are the goal.Build with GSIPRun the synthetic library demoIn development. Public capture and library uploads remain closed.01Phone observationImages + field context02Same soil sampleInstrument + lab evidence03Future open AIEvaluate before mappingOpen sourcePrecise locations stay privateRGB ≠ measured spectraUncertainty stays visibleThe evidence we’re building towardA phone starts the record. Measurement builds the reference.01Print the cardUse the free A6 reference for geometry and image checks. RGB remains uncalibrated.Learn more02Record the sampleGuided phone images and context are linked to a physical sample. Public capture is closed.Learn more03Pair measurementsLink instrument spectra and laboratory evidence to that same sample, with method and calibration records.Learn more04Evaluate, then shareVerify rights, pairing and quality before independent model evaluation or an eligible public release.Learn moreOpen soil contextSee the patterns. Never the private point.The map is one way to use the library’s future evidence. Today it offers SoilGrids SOC, pH, and clay context, with a layer for eligible community coverage in H3 cells. These priors are estimates, not new measurements; deeper zoom never invents finer source resolution.Open the global map ↗ Soil prior H3 coverageA shared visual standardOne card. Any modern phone.The free reference card gives every image a common scale, exposure target, marker, and color reference. It helps check the image; it does not turn a phone into a spectrometer. Extracted soil RGB remains uncalibrated.Print the reference cardColor PDFFrom shared evidence to open modelsBuild the reference before trusting the prediction.01PhoneImages + context02SampleShared physical identity03MeasurementSpectra + lab evidence04EvaluationIndependent validation05Future modelsOpen weights + mapsPublic data releases remain gatedCode and local tools are available now. Public releases wait for rights, privacy, scientific and operator gates.Read the data planPrivacy by architectureSharing evidence starts with protecting the person behind it.01Precise stays privateExact coordinates support enrichment and QA inside protected infrastructure only.02Metadata is strippedThe pipeline sanitizes embedded metadata. Photo publication stays held until screening is deployed and its calibration approved.03Uncertainty is explicitPublic soil maps are priors, not truth. Future estimates must show their basis and confidence.Read the complete method →Built in the openThe whole stack is open source.The apps, backend, data pipeline, library tools, modelling code, API and reference-card generator are available in the public repository. Fork, run, modify and extend the MIT-licensed software, or build on one part of it.Run a private local library node with the public source. Your records and credentials remain protected. These tools do not register a node for GSIP’s hosted service; public uploads stay closed. We welcome developers, soil scientists and spectroscopy labs to help build verified paired evidence and future open models.Explore the whole projectAbout the projectGGlobal SoilIntelligenceBuilding an open soil spectral library for future models and maps.ExplorePublic mapReference cardOpen dataProjectMethodsAboutSource codeCode MIT · structured data ODbL 1.0 · contributed photos CC BY-SA 4.0GSIP is not a replacement for laboratory analysis. Estimates must carry uncertainty.{\"@context\":\"https://schema.org\",\"@graph\":[{\"@id\":\"https://globalsoilintelligence.com/#organization\",\"@type\":\"Organization\",\"name\":\"Global Soil Intelligence\",\"sameAs\":[\"https://github.com/global-soil-intelligence/gsip\"],\"url\":\"https://globalsoilintelligence.com/\"},{\"@type\":\"WebSite\",\"description\":\"An open soil spectral reference library in development: smartphone observations linked to instrument spectra and laboratory evidence.\",\"name\":\"Global Soil Intelligence\",\"publisher\":{\"@id\":\"https://globalsoilintelligence.com/#organization\"},\"url\":\"https://globalsoilintelligence.com/\"},{\"@id\":\"https://globalsoilintelligence.com/data/#dataset\",\"@type\":\"Dataset\",\"name\":\"GSIP soil library public releases\",\"description\":\"Planned public releases from an open soil spectral reference library in development. Smartphone RGB images are not measured spectra; instrument spectra and verified laboratory evidence must be linked to the same physical samples. New releases contain structured data only until photo screening is deployed and its calibration approved; individual spectra remain private pending review. Public observation locations are k-anonymous H3 cells shared by at least 3 contributors, never precise points. Map priors are estimates, not laboratory results.\",\"url\":\"https://globalsoilintelligence.com/data/\",\"license\":[\"https://opendatacommons.org/licenses/odbl/1-0/\",\"https://creativecommons.org/licenses/by-sa/4.0/\"],\"conditionsOfAccess\":\"Structured data under ODbL 1.0; contributed photographs under CC BY-SA 4.0, credited to their contributors.\",\"isAccessibleForFree\":true,\"creativeWorkStatus\":\"In development; public releases gated\",\"creator\":{\"@id\":\"https://globalsoilintelligence.com/#organization\"},\"publisher\":{\"@id\":\"https://globalsoilintelligence.com/#organization\"},\"keywords\":[\"soil\",\"citizen science\",\"soil photographs\",\"soil spectral library\",\"H3\",\"open data\"],\"measurementTechnique\":\"Smartphone RGB observations with a reference card; separately recorded instrument reflectance and laboratory methods, linked by physical sample identity\"}]}"
+
+ ❯ tests/phone-first.test.tsx:17:37
+     15|     (page) => {
+     16|       const { container } = render(<App page={page} />)
+     17|       expect(container.textContent).toMatch(/No printed card is needed…
+       |                                     ^
+     18|       expect(container.querySelector('a[href$="card/"]')).toBeTruthy()
+     19|       expect(screen.queryByRole('link', { name: /^start capture$/i }))…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/phone-first.test.tsx > phone-first public guidance > card makes the physical card optional before any collection is offered
+AssertionError: expected 'Skip to contentGGlobal SoilIntelligen…' to match /No printed card is needed/
+
+- Expected:
+/No printed card is needed/
+
++ Received:
+"Skip to contentGGlobal SoilIntelligenceMapLibraryMethodsPublic capture closedA common visual standardGive every phone camera a reference point.Print the GSIP reference card and follow the standard soil photography protocol.RecommendedColor reference cardNine documented patches, a neutral reference, and an ArUco marker support geometry and image checks. Soil RGB remains uncalibrated, even with the reference card.Download color PDFGeometry supportBlack-and-white cardUse this edition when color printing is unavailable. It supports framing, scale, geometry, and exposure—not calibrated color recovery.Download B&W PDFPrint once, use outsideKeep the dimensions honest.01Choose A6 paperUse the document’s native A6 size or trim after printing.02Print at 100%Disable “fit to page” so the scale marker stays accurate.03Keep it matteAvoid glossy lamination that introduces glare outdoors.Capture protocolTwo required photographs. One optional boost.AContextUndisturbed ground surface from roughly 30 cm, card visible.BFresh faceScrape 2–3 cm, then photograph the exposed soil from roughly 15 cm.CTexture · optionalA moistened soil ball or ribbon can improve future texture-confidence work.Public capture closedGGlobal SoilIntelligenceBuilding an open soil spectral library for future models and maps.ExplorePublic mapReference cardOpen dataProjectMethodsAboutSource codeCode MIT · structured data ODbL 1.0 · contributed photos CC BY-SA 4.0GSIP is not a replacement for laboratory analysis. Estimates must carry uncertainty.{\"@context\":\"https://schema.org\",\"@graph\":[{\"@id\":\"https://globalsoilintelligence.com/#organization\",\"@type\":\"Organization\",\"name\":\"Global Soil Intelligence\",\"sameAs\":[\"https://github.com/global-soil-intelligence/gsip\"],\"url\":\"https://globalsoilintelligence.com/\"},{\"@type\":\"WebPage\",\"description\":\"Print the GSIP reference card and follow the standard soil photography protocol.\",\"name\":\"Give every phone camera a reference point. — Global Soil Intelligence\",\"publisher\":{\"@id\":\"https://globalsoilintelligence.com/#organization\"},\"url\":\"https://globalsoilintelligence.com/card/\"}]}"
+
+ ❯ tests/phone-first.test.tsx:17:37
+     15|     (page) => {
+     16|       const { container } = render(<App page={page} />)
+     17|       expect(container.textContent).toMatch(/No printed card is needed…
+       |                                     ^
+     18|       expect(container.querySelector('a[href$="card/"]')).toBeTruthy()
+     19|       expect(screen.queryByRole('link', { name: /^start capture$/i }))…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/phone-first.test.tsx > phone-first public guidance > methods makes the physical card optional before any collection is offered
+AssertionError: expected 'Skip to contentGGlobal SoilIntelligen…' to match /No printed card is needed/
+
+- Expected:
+/No printed card is needed/
+
++ Received:
+"Skip to contentGGlobal SoilIntelligenceMapLibraryMethodsPublic capture closedMethods in the openScientific honesty is part of the architecture.How phone images, measured spectra and laboratory evidence connect without overstating what they prove.Capture and release architectureA fail-closed path from private capture to public context.01Capture PWAPhotos, protocol context, private GPS02Private ingestRLS, quarantine, immutable grant03Prior enrichmentSoilGrids, SSURGO, Open-Meteo04Deterministic QASanitize, sharpness, card, GPS, duplicate05Gated public releaseEligible structured data; photos held pending screeningDifferent evidence, connected by one sampleA photograph is an observation. A spectrum is a measurement.Phone imagesOrdinary phones record RGB images, not wavelength-resolved spectra. Extracted soil RGB is uncalibrated, even with the reference card.Measured spectraA separate instrument records reflectance by wavelength. Pairing it with the same physical sample requires verified identity, method, calibration and uncertainty.Laboratory evidenceVerified assays provide separate reference labels. Biological relationships require actual assays and expert-reviewed terms; images or spectra alone do not establish soil microbial composition.The local RGB-to-reflectance demo uses invented samples and spectra. It demonstrates the software, not field accuracy. No independently validated soil reconstruction model is provided; real models need verified field pairs and independent spatial and device evaluation.Existing maps are priorsContext helps. It does not get the final word.SoilGrids provides global soil context. SSURGO adds higher-resolution United States context. Open-Meteo contributes elevation and recent precipitation. These sources are stored as weak labels with uncertainty rather than treated as measured truth.Confirmed laboratory measurements are modeled separately as gold labels. Future estimators must report a basis and confidence interval for every output.Deterministic photo QAQuality checks are built; photo publication stays gated.Metadata stripOrientation and colour profiles are applied to the pixels, then EXIF, GPS, XMP, ICC, comments, and residual segments are removed.Image qualitySharpness and exposure are judged on the soil itself, with the reference card masked out.Reference cardMarker and patch extraction support geometry and image checks, not calibrated reflectance.GPS plausibilityAccuracy and gross prior mismatches can trigger review.Duplicate defensePerceptual hashes flag repeated or near-repeated images.Terminal outcomeEach submission settles to pass, fail, or flagged review from its two required photos.Public by design, private by defaultEvery public cell holds at least three contributors.Exact geometry remains protected operational data. Public map and dataset records carry only H3 cells: resolution 8 (about 0.74 km²) where at least three people have contributed, otherwise the coarser resolution 6 or 4 cell. Anonymous public reads are limited to aggregate cells—not per-submission coordinates.Read the governing specification ↗Review the acceptance plan ↗GGlobal SoilIntelligenceBuilding an open soil spectral library for future models and maps.ExplorePublic mapReference cardOpen dataProjectMethodsAboutSource codeCode MIT · structured data ODbL 1.0 · contributed photos CC BY-SA 4.0GSIP is not a replacement for laboratory analysis. Estimates must carry uncertainty.{\"@context\":\"https://schema.org\",\"@graph\":[{\"@id\":\"https://globalsoilintelligence.com/#organization\",\"@type\":\"Organization\",\"name\":\"Global Soil Intelligence\",\"sameAs\":[\"https://github.com/global-soil-intelligence/gsip\"],\"url\":\"https://globalsoilintelligence.com/\"},{\"@type\":\"WebPage\",\"description\":\"How phone images, measured spectra and laboratory evidence connect without overstating what they prove.\",\"name\":\"Scientific honesty is part of the architecture. — Global Soil Intelligence\",\"publisher\":{\"@id\":\"https://globalsoilintelligence.com/#organization\"},\"url\":\"https://globalsoilintelligence.com/methods/\"}]}"
+
+ ❯ tests/phone-first.test.tsx:17:37
+     15|     (page) => {
+     16|       const { container } = render(<App page={page} />)
+     17|       expect(container.textContent).toMatch(/No printed card is needed…
+       |                                     ^
+     18|       expect(container.querySelector('a[href$="card/"]')).toBeTruthy()
+     19|       expect(screen.queryByRole('link', { name: /^start capture$/i }))…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/phone-first.test.tsx > phone-first public guidance > starts with phone observations without claiming automatic sample registration
+AssertionError: expected 'Print the card' to be 'Take two phone photos' // Object.is equality
+
+Expected: "Take two phone photos"
+Received: "Print the card"
+
+ ❯ tests/phone-first.test.tsx:27:68
+     25|   it('starts with phone observations without claiming automatic sample…
+     26|     const { container } = render(<App page="home" />)
+     27|     expect(container.querySelector('.steps-grid h3')?.textContent).toB…
+       |                                                                    ^
+     28|     expect(container.textContent).toMatch(/Library sample registration…
+     29|     expect(container.textContent).toMatch(/real declared depth/)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/phone-first.test.tsx > phone-first public guidance > keeps A and B required, C optional and both physical-card downloads reachable
+TestingLibraryElementError: Unable to find an accessible element with the role "heading" and name "Context · required"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "Skip to content":
+  [36m<a[39m
+    [33mclass[39m=[32m"skip-link"[39m
+    [33mhref[39m=[32m"#main-content"[39m
+  [36m/>[39m
+
+  Name "Global SoilIntelligence":
+  [36m<a[39m
+    [33mclass[39m=[32m"brand"[39m
+    [33mhref[39m=[32m"../"[39m
+  [36m/>[39m
+
+  Name "Map":
+  [36m<a[39m
+    [33mhref[39m=[32m"../map/"[39m
+  [36m/>[39m
+
+  Name "Library":
+  [36m<a[39m
+    [33mhref[39m=[32m"../data/"[39m
+  [36m/>[39m
+
+  Name "Methods":
+  [36m<a[39m
+    [33mhref[39m=[32m"../methods/"[39m
+  [36m/>[39m
+
+  Name "Public capture closed":
+  [36m<a[39m
+    [33mclass[39m=[32m"nav-cta"[39m
+    [33mhref[39m=[32m"../about/#launch-status"[39m
+  [36m/>[39m
+
+  Name "Download color PDF":
+  [36m<a[39m
+    [33mclass[39m=[32m"button button-primary"[39m
+    [33mhref[39m=[32m"../reference-card/gsip-reference-card-v1-color.pdf"[39m
+  [36m/>[39m
+
+  Name "Download B&W PDF":
+  [36m<a[39m
+    [33mclass[39m=[32m"button button-secondary"[39m
+    [33mhref[39m=[32m"../reference-card/gsip-reference-card-v1-bw.pdf"[39m
+  [36m/>[39m
+
+  Name "Public capture closed":
+  [36m<a[39m
+    [33mclass[39m=[32m"button button-primary"[39m
+    [33mhref[39m=[32m"../about/#launch-status"[39m
+  [36m/>[39m
+
+  Name "Global SoilIntelligence":
+  [36m<a[39m
+    [33mclass[39m=[32m"brand"[39m
+    [33mhref[39m=[32m"../"[39m
+  [36m/>[39m
+
+  Name "Public map":
+  [36m<a[39m
+    [33mhref[39m=[32m"../map/"[39m
+  [36m/>[39m
+
+  Name "Reference card":
+  [36m<a[39m
+    [33mhref[39m=[32m"../card/"[39m
+  [36m/>[39m
+
+  Name "Open data":
+  [36m<a[39m
+    [33mhref[39m=[32m"../data/"[39m
+  [36m/>[39m
+
+  Name "Methods":
+  [36m<a[39m
+    [33mhref[39m=[32m"../methods/"[39m
+  [36m/>[39m
+
+  Name "About":
+  [36m<a[39m
+    [33mhref[39m=[32m"../about/"[39m
+  [36m/>[39m
+
+  Name "Source code":
+  [36m<a[39m
+    [33mhref[39m=[32m"https://github.com/global-soil-intelligence/gsip"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"site-header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Primary navigation":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"Primary navigation"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mid[39m=[32m"main-content"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"footer-label"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"footer-label"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Give every phone camera a reference point.":
+  [36m<h1 />[39m
+
+  Name "Color reference card":
+  [36m<h2 />[39m
+
+  Name "Black-and-white card":
+  [36m<h2 />[39m
+
+  Name "Keep the dimensions honest.":
+  [36m<h2 />[39m
+
+  Name "Choose A6 paper":
+  [36m<h3 />[39m
+
+  Name "Print at 100%":
+  [36m<h3 />[39m
+
+  Name "Keep it matte":
+  [36m<h3 />[39m
+
+  Name "Two required photographs. One optional boost.":
+  [36m<h2 />[39m
+
+  Name "Context":
+  [36m<h3 />[39m
+
+  Name "Fresh face":
+  [36m<h3 />[39m
+
+  Name "Texture · optional":
+  [36m<h3 />[39m
+
+  --------------------------------------------------
+  article:
+
+  Name "":
+  [36m<article[39m
+    [33mclass[39m=[32m"download-card"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<article[39m
+    [33mclass[39m=[32m"download-card"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<article />[39m
+
+  Name "":
+  [36m<article />[39m
+
+  Name "":
+  [36m<article />[39m
+
+  Name "":
+  [36m<article />[39m
+
+  Name "":
+  [36m<article />[39m
+
+  Name "":
+  [36m<article />[39m
+
+  --------------------------------------------------
+  img:
+
+  Name "GSIP color reference card preview":
+  [36m<img[39m
+    [33malt[39m=[32m"GSIP color reference card preview"[39m
+    [33mheight[39m=[32m"612"[39m
+    [33msrc[39m=[32m"../card-color-preview.png"[39m
+    [33mwidth[39m=[32m"435"[39m
+  [36m/>[39m
+
+  Name "GSIP black-and-white reference card preview":
+  [36m<img[39m
+    [33malt[39m=[32m"GSIP black-and-white reference card preview"[39m
+    [33mheight[39m=[32m"612"[39m
+    [33msrc[39m=[32m"../card-bw-preview.png"[39m
+    [33mwidth[39m=[32m"435"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"site-footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<a[39m
+      [33mclass[39m=[32m"skip-link"[39m
+      [33mhref[39m=[32m"#main-content"[39m
+    [36m>[39m
+      [0mSkip to content[0m
+    [36m</a>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"brand"[39m
+        [33mhref[39m=[32m"../"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+          [33mclass[39m=[32m"brand-mark"[39m
+        [36m>[39m
+          [0mG[0m
+        [36m</span>[39m
+        [36m<span>[39m
+          [0mGlobal Soil[0m
+          [36m<br />[39m
+          [0mIntelligence[0m
+        [36m</span>[39m
+      [36m</a>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Primary navigation"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"../map/"[39m
+        [36m>[39m
+          [0mMap[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"../data/"[39m
+        [36m>[39m
+          [0mLibrary[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"../methods/"[39m
+        [36m>[39m
+          [0mMethods[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"nav-cta"[39m
+          [33mhref[39m=[32m"../about/#launch-status"[39m
+        [36m>[39m
+          [0mPublic capture closed[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mid[39m=[32m"main-content"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"interior-hero"[39m
+      [36m>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"eyebrow"[39m
+        [36m>[39m
+          [0mA common visual standard[0m
+        [36m</p>[39m
+        [36m<h1>[39m
+          [0mGive every phone camera a reference point.[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0mPrint the GSIP reference card and follow the standard soil photography protocol.[0m
+        [36m</p>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"interior-section card-download-grid"[39m
+      [36m>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"download-card"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"GSIP color reference card preview"[39m
+            [33mheight[39m=[32m"612"[39m
+            [33msrc[39m=[32m"../card-color-preview.png"[39m
+            [33mwidth[39m=[32m"435"[39m
+          [36m/>[39m
+          [36m<div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"eyebrow"[39m
+            [36m>[39m
+              [0mRecommended[0m
+            [36m</p>[39m
+            [36m<h2>[39m
+              [0mColor reference card[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0mNine documented patches, a neutral reference, and an ArUco marker support geometry and image checks. Soil RGB remains uncalibrated, even with the reference card.[0m
+            [36m</p>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary"[39m
+              [33mhref[39m=[32m"../reference-card/gsip-reference-card-v1-color.pdf"[39m
+            [36m>[39m
+              [0mDownload color PDF[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</article>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"download-card"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"GSIP black-and-white reference card preview"[39m
+            [33mheight[39m=[32m"612"[39m
+            [33msrc[39m=[32m"../card-bw-preview.png"[39m
+            [33mwidth[39m=[32m"435"[39m
+          [36m/>[39m
+          [36m<div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"eyebrow"[39m
+            [36m>[39m
+              [0mGeometry support[0m
+            [36m</p>[39m
+            [36m<h2>[39m
+              [0mBlack-and-white card[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0mUse this edition when color printing is unavailable. It supports framing, scale, geometry, and exposure—not calibrated color recovery.[0m
+            [36m</p>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-secondary"[39m
+              [33mhref[39m=[32m"../reference-card/gsip-reference-card-v1-bw.pdf"[39m
+            [36m>[39m
+              [0mDownload B&W PDF[0m
+            [36m</a>[39m
+          [36m</div>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"interior-section print-guide"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"section-heading"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0mPrint once, use outside[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0mKeep the dimensions honest.[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"instruction-grid"[39m
+        [36m>[39m
+          [36m<article>[39m
+            [36m<span>[39m
+              [0m01[0m
+            [36m</span>[39m
+            [36m<h3>[39m
+              [0mChoose A6 paper[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mUse the document’s native A6 size or trim after printing.[0m
+            [36m</p>[39m
+          [36m</article>[39m
+          [36m<article>[39m
+            [36m<span>[39m
+              [0m02[0m
+            [36m</span>[39m
+            [36m<h3>[39m
+              [0mPrint at 100%[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mDisable “fit to page” so the scale marker stays accurate.[0m
+            [36m</p>[39m
+          [36m</article>[39m
+          [36m<article>[39m
+            [36m<span>[39m
+              [0m03[0m
+            [36m</span>[39m
+            [36m<h3>[39m
+              [0mKeep it matte[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mAvoid glossy lamination that introduces glare outdoors.[0m
+            [36m</p>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+      [36m</section>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"interior-section shot-guide"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"section-heading"[39m
+        [36m>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"eyebrow"[39m
+          [36m>[39m
+            [0mCapture protocol[0m
+          [36m</p>[39m
+          [36m<h2>[39m
+            [0mTwo required photographs. One optional boost.[0m
+          [36m</h2>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"shot-grid"[39m
+        [36m>[39m
+          [36m<article>[39m
+            [36m<span>[39m
+              [0mA[0m
+            [36m</span>[39m
+            [36m<h3>[39m
+              [0mContext[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mUndisturbed ground surface from roughly 30 cm, card visible.[0m
+            [36m</p>[39m
+          [36m</article>[39m
+          [36m<article>[39m
+            [36m<span>[39m
+              [0mB[0m
+            [36m</span>[39m
+            [36m<h3>[39m
+              [0mFresh face[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mScrape 2–3 cm, then photograph the exposed soil from roughly 15 cm.[0m
+            [36m</p>[39m
+          [36m</article>[39m
+          [36m<article>[39m
+            [36m<span>[39m
+              [0mC[0m
+            [36m</span>[39m
+            [36m<h3>[39m
+              [0mTexture · optional[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mA moistened soil ball or ribbon can improve future texture-confidence work.[0m
+            [36m</p>[39m
+          [36m</article>[39m
+        [36m</div>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"button button-primary"[39m
+          [33mhref[39m=[32m"../about/#launch-status"[39m
+        [36m>[39m
+          [0mPublic capture closed[0m
+        [36m</a>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-lead"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"brand"[39m
+          [33mhref[39m=[32m"../"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"brand-mark"[39m
+          [36m>[39m
+            [0mG[0m
+          [36m</span>[39m
+          [36m<span>[39m
+            [0mGlobal Soil[0m
+            [36m<br />[39m
+            [0mIntelligence[0m
+          [36m</span>[39m
+        [36m</a>[39m
+        [36m<p>[39m
+          [0mBuilding an open soil spectral library for future models and maps.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-links"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"footer-label"[39m
+          [36m>[39m
+            [0mExplore[0m
+          [36m</p>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"../map/"[39m
+          [36m>[39m
+            [0mPublic map[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"../card/"[39m
+          [36m>[39m
+            [0mReference card[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"../data/"[39m
+          [36m>[39m
+            [0mOpen data[0m
+          [36m</a>[39m
+        [36m</div>[39m
+        [36m<div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"footer-label"[39m
+          [36m>[39m
+            [0mProject[0m
+          [36m</p>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"../methods/"[39m
+          [36m>[39m
+            [0mMethods[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"../about/"[39m
+          [36m>[39m
+            [0mAbout[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"https://github.com/global-soil-intelligence/gsip"[39m
+          [36m>[39m
+            [0mSource code[0m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-legal"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0mCode MIT · structured data ODbL 1.0 · contributed photos CC BY-SA 4.0[0m
+        [36m</p>[39m
+        [36m<p>[39m
+          [0mGSIP is not a replacement for laboratory analysis. Estimates must carry uncertainty.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ tests/phone-first.test.tsx:35:19
+     33|   it('keeps A and B required, C optional and both physical-card downlo…
+     34|     render(<App page="card" />)
+     35|     expect(screen.getByRole('heading', { name: 'Context · required' })…
+       |                   ^
+     36|     expect(screen.getByRole('heading', { name: 'Fresh face · required'…
+     37|     expect(screen.getByRole('heading', { name: 'Texture · optional' })…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/phone-first.test.tsx > phone-first public guidance > home structured data describes the card as optional
+ FAIL  tests/phone-first.test.tsx > phone-first public guidance > data structured data describes the card as optional
+AssertionError: expected 'Smartphone RGB observations with a re…' to match /optional physical reference card/
+
+- Expected:
+/optional physical reference card/
+
++ Received:
+"Smartphone RGB observations with a reference card; separately recorded instrument reflectance and laboratory methods, linked by physical sample identity"
+
+ ❯ tests/phone-first.test.tsx:47:51
+     45|     const graph = JSON.parse(container.querySelector('script[type="app…
+     46|     const dataset = graph.find((node) => node['@type'] === 'Dataset')
+     47|     expect(String(dataset?.measurementTechnique)).toMatch(/optional ph…
+       |                                                   ^
+     48|     expect(dataset?.creativeWorkStatus).toBe('In development; public r…
+     49|     expect(String(dataset?.description)).toMatch(/RGB images are not m…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  tests/phone-first.test.tsx > phone-first public guidance > keeps card metadata and agent-facing site guidance optional and scientifically bounded
+AssertionError: expected 'Print the GSIP reference card and fol…' to match /optional/
+
+- Expected:
+/optional/
+
++ Received:
+"Print the GSIP reference card and follow the standard soil photography protocol."
+
+ ❯ tests/phone-first.test.tsx:57:27
+     55|       const description = shell.querySelector(selector)?.getAttribute(…
+     56|       expect(description).toBe(pageMeta.card.description)
+     57|       expect(description).toMatch(/optional/)
+       |                           ^
+     58|     }
+     59|     expect(llmsBuilder).toMatch(/No printed card is needed/)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  20:20:49
+   Duration  574ms (transform 53ms, setup 0ms, import 116ms, tests 122ms, environment 266ms)
+
+
+=== PROTOCOL: negative-first tests; runtime source unchanged ===
+Command: ['/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node', '/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/node_modules/vitest/vitest.mjs', 'run', 'tests/protocol.test.ts', 'tests/agent/rest.test.ts', 'tests/agent/mcp.test.ts']
+Exit: 1
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/packages/schema
+
+ ❯ tests/protocol.test.ts (6 tests | 1 failed) 4ms
+     × makes printing optional without changing required shots or the protocol shape 2ms
+ ❯ tests/agent/rest.test.ts (20 tests | 2 failed) 25ms
+     × serves the protocol with licence, attribution and citation 13ms
+     × describes itself with OpenAPI 3.1 1ms
+ ❯ tests/agent/mcp.test.ts (19 tests | 2 failed) 25ms
+     × lists exactly four read-only tools with JSON Schemas 3ms
+     × serves the same optional-card protocol through its read-only tool 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/protocol.test.ts > the capture protocol served to people and agents > makes printing optional without changing required shots or the protocol shape
+AssertionError: expected 'Two photos of soil beside a free prin…' to match /No printed card is needed/
+
+- Expected:
+/No printed card is needed/
+
++ Received:
+"Two photos of soil beside a free printed reference card, a private location and three one-tap descriptions. GSIP grades every photo, publishes only k-anonymous H3 cells, and reports estimates with uncertainty, never laboratory results."
+
+ ❯ tests/protocol.test.ts:21:38
+     19|     expect(CAPTURE_PROTOCOL.version).toBe('1.1')
+     20|     expect(CAPTURE_PROTOCOL.card.optional).toBe(true)
+     21|     expect(CAPTURE_PROTOCOL.summary).toMatch(/No printed card is neede…
+       |                                      ^
+     22|     expect(CAPTURE_PROTOCOL.card.without_card).toMatch(/uncalibrated/)
+     23|     expect(CAPTURE_PROTOCOL.shots.map(({ id, required }) => ({ id, req…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/agent/mcp.test.ts > MCP, earlier revisions (initialize handshake) > lists exactly four read-only tools with JSON Schemas
+AssertionError: expected 'How a GSIP observation is made: the p…' to match /optional physical reference card/
+
+- Expected:
+/optional physical reference card/
+
++ Received:
+"How a GSIP observation is made: the printed reference card, photo shots A, B and C, sampling rules, recorded descriptions, quality checks, privacy rules, provenance tiers, and property names and units."
+
+ ❯ tests/agent/mcp.test.ts:133:34
+    131|       })
+    132|     }
+    133|     expect(tools[0].description).toMatch(/optional physical reference …
+       |                                  ^
+    134|     expect(tools[1].inputSchema.required).toEqual(['cell'])
+    135|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/agent/mcp.test.ts > MCP, earlier revisions (initialize handshake) > serves the same optional-card protocol through its read-only tool
+AssertionError: expected 'Two photos of soil beside a free prin…' to match /No printed card is needed/
+
+- Expected:
+/No printed card is needed/
+
++ Received:
+"Two photos of soil beside a free printed reference card, a private location and three one-tap descriptions. GSIP grades every photo, publishes only k-anonymous H3 cells, and reports estimates with uncertainty, never laboratory results."
+
+ ❯ tests/agent/mcp.test.ts:144:56
+    142|     expect(json.result.isError).toBe(false)
+    143|     expect(json.result.structuredContent.data.card.optional).toBe(true)
+    144|     expect(json.result.structuredContent.data.summary).toMatch(/No pri…
+       |                                                        ^
+    145|     expect(json.result.structuredContent.data.shots.map((shot: { id: s…
+    146|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/agent/rest.test.ts > REST routes > serves the protocol with licence, attribution and citation
+AssertionError: expected 'Two photos of soil beside a free prin…' to match /No printed card is needed/
+
+- Expected:
+/No printed card is needed/
+
++ Received:
+"Two photos of soil beside a free printed reference card, a private location and three one-tap descriptions. GSIP grades every photo, publishes only k-anonymous H3 cells, and reports estimates with uncertainty, never laboratory results."
+
+ ❯ tests/agent/rest.test.ts:57:31
+     55|     expect(body.data.version).toBe('1.1')
+     56|     expect(body.data.card.optional).toBe(true)
+     57|     expect(body.data.summary).toMatch(/No printed card is needed/)
+       |                               ^
+     58|     expect(body.data.shots.map((shot: { id: string }) => shot.id)).toE…
+     59|       'A',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/agent/rest.test.ts > REST routes > describes itself with OpenAPI 3.1
+AssertionError: expected 'The capture protocol: card, shots, sa…' to match /optional reference card/
+
+- Expected:
+/optional reference card/
+
++ Received:
+"The capture protocol: card, shots, sampling rules and properties"
+
+ ❯ tests/agent/rest.test.ts:220:52
+    218|     const { body } = await get('/v1/openapi.json')
+    219|     expect(body.openapi).toBe('3.1.0')
+    220|     expect(body.paths['/v1/protocol'].get.summary).toMatch(/optional r…
+       |                                                    ^
+    221|     expect(body.servers).toEqual([{ url: BASE }])
+    222|     expect(Object.keys(body.paths)).toEqual([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  5 failed | 40 passed (45)
+   Start at  20:20:49
+   Duration  200ms (transform 154ms, setup 0ms, import 295ms, tests 54ms, environment 0ms)
+
+

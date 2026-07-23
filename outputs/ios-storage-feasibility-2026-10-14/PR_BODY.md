@@ -1,0 +1,45 @@
+WP-APP-2C1 completes source-only feasibility after the approved specification in #68. The existing filesystem bridge cannot establish exclusion readback/error handling, crash-safe replacement or the six-store transaction contract. Four unadopted open components were compared; none satisfies the complete v11 lifecycle/privacy contract. **The result is blocked, with no backend selected.**
+
+Adds an offline Python evidence checker, portable public-source catalog, observed-resolution snapshot and tests. The checker verifies 19 exact public snapshots and 13 application files, emits bounded fixed diagnostics, and deliberately exits 3 for valid source evidence with feasibility still blocked. It accepts no caller capability manifest and performs no network/native/process operation or filesystem mutation in its logic. This implements no app storage adapter, migration or device experiment.
+
+Refs #67; keep that issue open for the unresolved mechanism.
+
+### Explicit invariants and acceptance
+
+- [x] Preserve I1–I15, B1–B8, SPEC section11 and all library/photo/device/production gates. SPEC body from line9 onward is byte-identical; 364 existing files are unchanged. Of all132 existing acceptance lines, only the three APP-2C1 boxes change to checked.
+- [x] Bind exact existing npm/native source versions, declared integrity, source hashes, licences, maintenance dates and source archive sizes. Observed native resolution remains untracked/observational rather than a universal native lock. No dependency was added.
+- [x] Cover all six queue/draft/library/generation/reminder stores, account/session/legacy SDK slots, WebKit/native cookie/cache/preferences, camera temporary files, staging/recovery and generic OS notifications. Preserve original-account and anti-resurrection/rights fences.
+- [x] Tests refuse missing/changed/unknown inputs, false readiness claims, incomplete inventory, symlinks/special files, bounds violations and read-time mutation; generic diagnostics never echo incoming paths/content. Any valid review still has feasibility/backend/migration/device flags false.
+- [x] Source and factual independent reviews closed without blocking findings.
+- [x] Required hosted CI green.
+
+### Verification actually run
+
+- Full local lint (ESLint, language, Prettier), Ruff, strict mypy over78 source files and diff whitespace checks passed.
+- Focused local suite:77 passed, no errors/failures/skips. All38 new tests on the unchanged baseline:38 expected failures, zero errors/skips. Two review regressions additionally failed on the specific pre-fix documents and passed after correction.
+- Independent review repeated77 cases and38 baseline failures, verified all372 source hashes/modes and caught five guard-removal mutations: hash bypass, missing inventory, false-ready output, link following and diagnostic echo. A separate source fact review verified package facts and all19 catalog bindings.
+- Actual public-profile replay by root and independent reviewers: exit3, source_review_valid=true, status=blocked, 19 public/13 repository files; no backend, migration or device acceptance. This is source-evidence verification, not storage/backup proof.
+- Gitleaks8.21.2, non-shallow full Git history/all local refs with redaction:158 reported commits, zero findings. Ignorefile and scanner configuration hashes unchanged; only the four previously approved historical fixture fingerprints remain.
+- No local GDAL/PostGIS/pgTAP/Deno/native/device/backup result is claimed for this package. Hosted source CI supplies its required environment. These source/docs paths do not trigger native artifacts; prior native artifacts do not close device gates.
+
+### Changes after review
+
+- Corrected the displayed observed-resolution hash/length to its actual formatted1233-byte input. Original1260-byte provenance remains explicit, with parsed JSON equality; a new regression compares every displayed row against the fixed profile.
+- Corrected a local evidence range ending beyond the157-line source document and added a failing-before line-range regression.
+- Qualified InAppBrowser's iOS17+ persistent isolation versus older/shared default stores, and explicitly separated manual archive licence/date/size review from what the offline checker validates. These corrections preserve the blocked outcome.
+
+### Assumptions and remaining gates
+
+- Justin approved merging #68 and continuing source-only feasibility on2026-10-14. That does not select a backend, grant a native-language exception or authorize any deployment/device operation.
+- TypeScript/Python-only and the approved no-cloud policy remain binding. No paid/closed service, proprietary SDK or licence change is selected. Candidate package licences and archive sizes do not establish transitive native/binary or installed-app closure.
+- The fixed13-file set and reviewed persistence inventory describe the current source. This tool cannot automatically discover every future new persistence feature in unbound files. Source/version/lock changes or new surfaces require a fresh review, not a blind hash update.
+- The source reader is POSIX-only and bounded/race-aware, not a universal filesystem snapshot. It provides no guarantee after return. Public-source integrity checks are not upstream signature/provenance or device behavior certification.
+- APP-2C2 remains held until a concrete supported mechanism is approved; custom native code additionally needs Justin's explicit language exception. APP-2C3 needs separate synthetic physical-device/account/signing inputs. Old provider backups cannot be retroactively retracted.
+- No production read/change, worker dispatch, Pages approval, capture/sign-in opening, account/signing change or real contributor-data access occurred. Pages for the approved #68 merge is waiting behind the unchanged Justin-only protection, with admin bypass disabled.
+- Codex authored the checker/tests/document integration; independent agents reviewed code/source facts without authoring the reviewed implementation. Justin Hart remains human of record. No agent approval or DCO certification is asserted.
+
+### Final exact-head CI and source evidence (2026-10-14)
+
+Head `258b57732a94968e576eb15e848566a487cb4878`: [validate passed](https://github.com/global-soil-intelligence/gsip/actions/runs/38644748460), [PR secret scan passed](https://github.com/global-soil-intelligence/gsip/actions/runs/38644747964), [branch secret scan passed](https://github.com/global-soil-intelligence/gsip/actions/runs/38644711362). DCO was skipped by the existing workflow; no agent certification is asserted. CI verified2,006 Python passes/31 skips,12 browser passes,mypy78 source files,593 pgTAP assertions in11files, Deno and data-preserving migration suites13/13,19/19,13/13. All lint/typecheck/JavaScript/build/map-budget and disposable database lifecycle steps passed. No native/device/backup result is implied.
+
+Final independent commit closure bound all372 blobs/modes to manifest `4dce6b0fc9fa8c14d8a7e7943fbe0077c8fec97cc45802a66a84305e44cbe975`, parent883c7ee, exactly8 authorized paths, Conventional Commit and Codex trailer with no Signed-off-by. APP-2C1 is complete as a documented blocked feasibility result; this PR is open and unmerged. APP-2C2/backend/native-language/device gates remain held. No production changes or capture opening occurred.

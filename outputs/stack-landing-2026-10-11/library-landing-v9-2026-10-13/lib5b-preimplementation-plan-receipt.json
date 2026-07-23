@@ -1,0 +1,32 @@
+{
+  "schema_version": "gsip-lib5b-planning-receipt-v1",
+  "date": "2026-10-13",
+  "state": "planning_only_waiting_for_LIB5A_and_accounting_clarifications",
+  "reviewed_git_head": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+  "reviewed_git_tree": "94b5e491bbb0626bb571b952dec056916bf8c971",
+  "reviewed_file_sha256": {
+    "AGENTS.md": "cc5a4ea13e2a389006a0a69c6986f5acc767f9c065131b70f078b8ca1580e180",
+    "CONTRIBUTING.md": "7c8cdba11a34dfe71f5ec1376c408f1bb513ee225d855e9c4637ad87cc750fbb",
+    "GOVERNANCE.md": "6c710240437d8fc9f01184d99862a888abacd70c51ac9c0b3a14adcfc5ee18d8",
+    "docs/SPEC.md": "3fabd7c0ac5f26e58e05e13d0fc091dc5ea9a5f08a6c1c340ebffd13edde3a4c",
+    "docs/BUILD_ORDER.md": "b464b64f8fc8367762159a8428f007487a405ec406110bca805d87ada60fe458",
+    "pipeline/library.py": "b734d106948ca4b47c5248afc8fe2d4b3b20fdafecfb32606b2eb6a9466aadd4"
+  },
+  "plan": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/LIB5B_PREIMPLEMENTATION_PLAN_2026-10-13.md",
+    "sha256": "fd478faf3abe357d9e63262ed7f8d02527cd0ef0bed8d1e83119026e854db49b"
+  },
+  "implementation_blockers": [
+    "LIB5A not yet merged",
+    "Clarified retained-byte, metadata/staging, reserved-fence and quota/accounting semantics require reviewed specification before code"
+  ],
+  "no_source_edits": true,
+  "no_implementation": true,
+  "no_tests_run": true,
+  "no_git_mutation": true,
+  "no_network": true,
+  "no_production": true,
+  "real_sharing_LIB5C_held": true,
+  "proposed_metadata_bytes_not_approved": 32000000,
+  "proposed_staged_blob_bytes_not_approved": 2000000
+}

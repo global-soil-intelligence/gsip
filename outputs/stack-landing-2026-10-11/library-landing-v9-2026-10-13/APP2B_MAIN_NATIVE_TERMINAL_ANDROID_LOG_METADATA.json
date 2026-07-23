@@ -1,0 +1,17 @@
+{
+  "actual_checkout": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "artifact_download_replay_or_native_build_key_signing_actions": false,
+  "at": "2026-10-14T03:44:32.592868+00:00",
+  "exact_merged_main_checkout": true,
+  "fixed_context_or_fault": [],
+  "fixed_diagnostics": [],
+  "job_id": 115666719261,
+  "job_label": "android",
+  "main": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "raw_log_bytes": 155318,
+  "raw_log_persisted": false,
+  "raw_log_sha256": "7d5c6ef2ee42e6c0210a96987acc3682bb85a17c2330bce3f93dccea4430e6cd",
+  "run_attempt": 1,
+  "run_id": 38507012693,
+  "schema": "gsip-main-native-terminal-checkout-metadata-v1"
+}

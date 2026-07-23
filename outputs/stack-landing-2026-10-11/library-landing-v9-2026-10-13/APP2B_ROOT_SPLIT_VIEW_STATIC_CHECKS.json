@@ -1,0 +1,50 @@
+{
+  "utc": "2026-10-13T23:08:00.552147+00:00",
+  "source_helper_sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071",
+  "commands": [
+    {
+      "check": "ruff",
+      "exit_code": 0,
+      "seconds": 0.107,
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "output_bytes": 19,
+      "output_file": "app2b-root-split-view-ruff.txt"
+    },
+    {
+      "check": "mypy",
+      "exit_code": 0,
+      "seconds": 0.731,
+      "output_sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c",
+      "output_bytes": 44,
+      "output_file": "app2b-root-split-view-mypy.txt"
+    },
+    {
+      "check": "lint",
+      "exit_code": 0,
+      "seconds": 3.863,
+      "output_sha256": "8185ff7bbf60b066e20260e56c4a3fd10de339d2124fc13559b612a19578a977",
+      "output_bytes": 134,
+      "output_file": "app2b-root-split-view-lint.txt"
+    },
+    {
+      "check": "language",
+      "exit_code": 0,
+      "seconds": 0.033,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0,
+      "output_file": "app2b-root-split-view-language.txt"
+    },
+    {
+      "check": "diff",
+      "exit_code": 0,
+      "seconds": 0.02,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0,
+      "output_file": "app2b-root-split-view-diff.txt"
+    }
+  ],
+  "all_pass": true,
+  "verified_gradle_opt_in": true,
+  "HOME_inherited": true,
+  "production_changes": false
+}

@@ -1,0 +1,16 @@
+{
+  "command": "uv run pytest",
+  "source_head": "0f0427b4a29435754a171cf82dee33d62a68b0ff",
+  "exit_code": 1,
+  "passed": 2160,
+  "failed": 3,
+  "skipped": 35,
+  "seconds": 96.63,
+  "failures": [
+    "tests/test_ios_native_scope.py::test_finite_source_scope_and_approved_policy_have_no_implicit_implementation_grant",
+    "tests/test_ios_native_scope.py::test_duplicate_manifest_fields_cannot_replace_a_restriction",
+    "tests/test_ios_native_scope.py::test_scope_does_not_check_off_existing_implementation_or_device_acceptance"
+  ],
+  "verified_cause": "Two source_bindings digests in docs/ios-native-scope.json still identify the prior camera purpose copy and prior permission regression file. All binding keys and validator checks remain effective.",
+  "planned_correction": "Independently review and refresh only the two exact source digests, documenting that this separately reviewed copy package changes no native scope or permission policy. No test or check weakened."
+}

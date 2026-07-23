@@ -1,0 +1,14 @@
+{
+  "observed_at": "2026-10-12T13:36:03.032781+00:00",
+  "changelog_url": "https://supabase.com/changelog.md",
+  "changelog_sha256": "1237c31d9c2721a9d45d7c57246465dbf19d16bf7d43c99b577a78efbd7b2d55",
+  "recent_breaking_change_headers": [
+    {
+      "title": "PostgreSQL 15.19 / 17.11 minor release \u2014 action may be required for ltree, pgcrypto, btree_gist, and custom operators",
+      "date_tags_link": "2026-09-25 \u00b7 Breaking Change \u00b7 Database \u00b7 [supabase.com/changelog/postgres-15-19-17-11-breaking-changes](https://supabase.com/changelog/postgres-15-19-17-11-breaking-changes)"
+    }
+  ],
+  "exact_installed_push_flags_verified": true,
+  "reference_url": "https://supabase.com/docs/reference/cli/supabase-db-push",
+  "note": "Installed --help succeeds with approved host permission; default sandbox denied local telemetry writes before any database operation."
+}

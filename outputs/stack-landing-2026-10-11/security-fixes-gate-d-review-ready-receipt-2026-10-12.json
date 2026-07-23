@@ -1,0 +1,42 @@
+{
+  "prepared_at": "2026-10-12T15:04:30.889717+00:00",
+  "state": "ALL_13_PR_CHECKS_GREEN_GATE_D_PREPARED_NOT_AUTHORIZED_NOT_EXECUTED",
+  "application_source_head": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "target": "toxldjgwkxtneoqsazym",
+  "production_ledger": 26,
+  "hosted_security_findings": 7,
+  "capture_closed": true,
+  "production_application_changes_after_gate_c": false,
+  "pr_merges_or_approvals": false,
+  "original_workspace_digest": "9f267c791a56dbfe1cbdb8f104cec8dcaa9bc912d2b8c7cfde757ce5dab63419",
+  "bound_receipts": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/REPORT-current.md",
+      "sha256": "73b3105ae7dc5d183aba39dadea40027e063757088fb3a5d133aaa4e7f5f9f20"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-exact-two-migration-plan-2026-10-12.json",
+      "sha256": "944ec0c8cd2a221a6c60e52f2b3f5e23c9316ab4ad91f46832f43010367daa2c"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-exact-two-migration-plan-2026-10-12.md",
+      "sha256": "5bbb7f645b225349da97a1a30874d51dd7d36ea0b73dde21614853ec17ecb3e1"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-fix-all-pr-ci-final-2026-10-12.json",
+      "sha256": "e053c78464f62b052e1e8c0c24013947219fad467e8ef03762239a2e180db158"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-fix-all-13-pr-body-update-receipt-2026-10-12.json",
+      "sha256": "76fb8d2d8a83ecbc15202dc223f7bd2d1ab37a382fcc78faeba0234e1fa1ccd7"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-fix-pr39-native-receipts-verified-2026-10-12.json",
+      "sha256": "c75706191ed8662af01289fcbc23de638d2b83716c7d73ff41cbb7f00646f2cd"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gitleaks-8212-security-fixes-whole-stack-receipt-2026-10-12.json",
+      "sha256": "c6311a5fd48a52c37eaa4a298d6913be8e1f4d12f9be16204cac12683159b1ed"
+    }
+  ]
+}

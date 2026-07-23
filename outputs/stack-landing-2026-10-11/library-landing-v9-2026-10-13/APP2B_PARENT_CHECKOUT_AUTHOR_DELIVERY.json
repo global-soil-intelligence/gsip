@@ -1,0 +1,80 @@
+{
+  "scope": "Source-only APP PR63 isolated exact-parent checkout correction; author evidence, independent review pending.",
+  "base_head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "base_repository": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0",
+  "base_clean_before_and_after": true,
+  "manifest": "/private/tmp/gsip-app-parent-author-fmd54mxk/parent-checkout-manifest.json",
+  "manifest_sha256": "5243b811016cd3f4c63228b93bab89f4e582b46302e8a8dff8096e94f41ccbcb",
+  "patch": "/private/tmp/gsip-app-parent-author-fmd54mxk/app-parent-checkout.patch",
+  "patch_sha256": "21f5a4ec4207aacbb88670aa7fcbb142d2922c65d1eee57e56cb4bb422d6fac9",
+  "frozen": "/private/tmp/gsip-app-parent-author-fmd54mxk/frozen",
+  "files": [
+    {
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+      "baseline_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "bytes": 17963
+    },
+    {
+      "path": "tests/test_app_parent_checkout.py",
+      "sha256": "fe3e95e1163a77c1bbb408f073ffeb51037ec73cfe2380830e746c987339891d",
+      "baseline_sha256": null,
+      "bytes": 7872
+    },
+    {
+      "path": "docs/APP_PARENT_CHECKOUT.md",
+      "sha256": "a8b4747574b199fe01608517780528cd70521db728ff80c14cf653aba9394e21",
+      "baseline_sha256": null,
+      "bytes": 1793
+    }
+  ],
+  "checks_receipt": "/private/tmp/gsip-app-parent-author-fmd54mxk/checks-receipt.json",
+  "checks_receipt_sha256": "2c2b860c80159ed7703610096f6ec03a84854f723a0fc29f3b3a2d5f0fbe92b4",
+  "actual_results": {
+    "focused_python_cases": 366,
+    "new_executed_git_fixture_cases": 8,
+    "original_workflow_failure_cases": 2,
+    "original_git_classification": "checkout returned 128 unable to read tree",
+    "bash_bodies_syntax_checked": 28,
+    "ruff": "pass",
+    "ruff_format": "pass",
+    "mypy_1_file": "pass",
+    "prettier_2_files": "pass",
+    "language": "pass",
+    "exact_patch_application": "pass"
+  },
+  "tools_used": {
+    "git": "git version 2.47.1",
+    "python": "Python 3.12.7",
+    "pytest": "pytest 9.1.1",
+    "node": "v24.19.0"
+  },
+  "implementation": "Each original parent block alone changes from candidate fetch plus local-workspace clone to canonical public GSIP clone plus explicit exact-baseline fetch inside that clone. Exact detached checkout/HEAD guard and every subsequent build/repeat/permission/license/comparison line are byte preserved.",
+  "governing_reads": "Eight mandatory governing documents match the earlier full-read immutable d7 base; changed APP_STORE was fully read from the 8130 snapshot before edits. Nine source hashes are in initial-manifest.json.",
+  "fixture_boundary": "No network: only file transport is allowed; Git URL rewriting maps the literal canonical public remote to an owned bare synthetic fixture. Its baseline object is unreferenced and absent from a candidate partial clone. Enumerating local objects avoids accidental lazy-fetch lookup. The fixture proves the object boundary but does not establish hosted CI internal object layout.",
+  "positive_and_negative_controls": [
+    "Both actual Git prefixes resolve exact baseline contents in an isolated parent, with candidate full byte hashes unchanged and no alternates.",
+    "Unknown baseline stops before synthetic build marker.",
+    "Removing actual explicit parent fetch stops before build.",
+    "Wrong existing checkout ref is rejected by retained exact-HEAD readback.",
+    "Executing unchanged original two prefixes reaches and fails actual checkout 128 after successful fetch and clone."
+  ],
+  "invariants": [
+    "I1-I15/B1-B8/L1-L7 preserved",
+    "baseline d7ed716ed0921381da04f542e90902ede36cb462 unchanged",
+    "same tool/version/build-number/repeat/license/permission/artifact comparisons unchanged",
+    "VITE_CAPTURE_LIVE=false and VITE_LIBRARY_INTAKE_LIVE=false unchanged",
+    "no dependency/install/secret/account/signing/service/production/activation/history changes"
+  ],
+  "assumptions_and_limits": [
+    "Public canonical remote must serve the exact baseline; unavailable clone/fetch/checkout fails closed.",
+    "Hosted CI and Android failure cause are not established by local source tests. No speculative Android-specific correction.",
+    "No native builds/device runs or iOS backup evidence; root owns subsequent independent review, integration and new exact-head CI."
+  ],
+  "initial_harness_corrections": [
+    "Initial prototype SHA lookup lazily fetched a missing commit; final probes enumerate stored objects and assert baseline absence before dispatch.",
+    "Initial test environment disabled all lazy fetches and broke candidate fixture checkout (8 setup failures); removed that fixture-only knob before final actual tests.",
+    "Initial targeted mypy with follow-imports=skip hid pytest types; final ordinary strict targeted mypy passes. Initial Ruff line lengths were formatted."
+  ],
+  "no_mutations": "Only owned temporary source/evidence and synthetic local Git fixtures written. Shared repository source/Git/GH/production untouched."
+}

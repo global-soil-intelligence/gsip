@@ -1,0 +1,128 @@
+{
+  "actual_author_execution_readback": {
+    "command_argv_count": 7,
+    "context": "GSIP_GRADLE_CONTEXT_V1|COMMAND_VALID|BYTES_VALID|BYTES_VALID|WITHIN_BOUND|VALID|SINGLE|PROJECT_CONFIGURATION",
+    "coordinate_allowlist_sha256": "6b28dba3149011d132e78b2ed064937790023e4eb42a33b1220ee7bb310c7861",
+    "diagnostic": {
+      "counts": {},
+      "error_class": "GRADLE_DEPENDENCY_UNRESOLVED",
+      "source_line": 0,
+      "stage": "android-gradle-inspection"
+    },
+    "elapsed_seconds": 4.911,
+    "environment": {
+      "ANDROID_HOME": "TASK_PRIVATE_SDK_COPY",
+      "ANDROID_SDK_ROOT": "TASK_PRIVATE_SDK_COPY",
+      "ANDROID_USER_HOME": "TASK_PRIVATE_DIRECTORY",
+      "GRADLE_USER_HOME": "TASK_PRIVATE_COPY",
+      "HOME": "INHERITED_UNCHANGED"
+    },
+    "fault_file_count": 1,
+    "fixed_fault": "GSIP_FIXED_FAULT_V1|VALID|BUILD_FAILURE|DEPENDENCY_UNRESOLVED",
+    "graph_exists": false,
+    "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+    "missing_allowed_public_coordinates": [
+      "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21"
+    ],
+    "missing_unlisted_coordinate_count": 0,
+    "offline_enforced": true,
+    "public_fixed_token_counts": {
+      "BUILD_FAILED": 1,
+      "DEPENDENCY_RESOLUTION": 1,
+      "OFFLINE_CACHE_MISSING": 6
+    },
+    "raw_streams_persisted": false,
+    "returncode": 1,
+    "schema": "gsip-c1-offline-inspection-v1",
+    "sdk_download_disabled": true,
+    "shared_inputs_read_only": true,
+    "stderr_bytes": 938,
+    "stderr_sha256": "d94029abad11a45392c6a585fae1f02bfa3b2e3f0d1f32485af85c864bf8e7cd",
+    "stdout_bytes": 546,
+    "stdout_sha256": "43f589ae9a135707cf3aa7caa3df64a40b70ae58e4dbc1d4c0f5172a0ff0e4e4",
+    "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+  },
+  "constraints": {
+    "no_git_github_actions": true,
+    "no_network_installs_or_keys": true,
+    "no_raw_tool_text_read_persisted_or_printed": true,
+    "no_source_shared_author_edits": true,
+    "own_tmp_writes_only": true
+  },
+  "created_at_utc": "2026-10-13T22:38:20.893244+00:00",
+  "expanded_literal_allowlist": {
+    "exact_56_prior_plus_12_primary_literal_additions": true,
+    "new_dependency_declarations": false,
+    "no_arbitrary_captured_values_in_labels": true,
+    "unique_coordinates": 68
+  },
+  "first_blocker": {
+    "class": "LOCAL_TOOL_INPUT_CACHE_ABSENCE",
+    "coordinate": "org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21",
+    "graph_produced": false,
+    "lines": [
+      10,
+      20
+    ],
+    "not_hosted_unknown_cause": true,
+    "old_canonical_task_status": 1,
+    "primary_source": "@capacitor/local-notifications8.3.1/android/build.gradle",
+    "primary_source_sha256": "242d69f56ed428e9d36b0a1892d4cc709ba7bb0bbdece69bb8c57dfe83cb0315"
+  },
+  "frozen_own_copies": [
+    {
+      "bytes": 5712,
+      "path": "/private/tmp/gsip-c1-offline-input-review-ls6zidkx/offline_pinned_match.py",
+      "sha256": "e1ebf5b5e7996bc70d52c9e377b279d0c790ce998eddc91eef0b8bcd81aa372a"
+    },
+    {
+      "bytes": 3728,
+      "path": "/private/tmp/gsip-c1-offline-input-review-ls6zidkx/primary-coordinate-allowlist-v2.json",
+      "sha256": "6b28dba3149011d132e78b2ed064937790023e4eb42a33b1220ee7bb310c7861"
+    },
+    {
+      "bytes": 1488,
+      "path": "/private/tmp/gsip-c1-offline-input-review-ls6zidkx/LITERAL_TRANSITIVE_PUBLIC_PINS.json",
+      "sha256": "73e4bf4328e6f5ea4100afbcac08020a3b25d6418a7121c63bd511358020d392"
+    },
+    {
+      "bytes": 991,
+      "path": "/private/tmp/gsip-c1-offline-input-review-ls6zidkx/LITERAL_KOTLIN_BUILD_PIN.json",
+      "sha256": "805e3b9a207f06953c9e33289803721a2ccd53ce8961ea480a00324057bcf530"
+    },
+    {
+      "bytes": 1640,
+      "path": "/private/tmp/gsip-c1-offline-input-review-ls6zidkx/inspection-pinned-match.json",
+      "sha256": "e9315c7afe3059b018efbe630e8460118319dadcd057098a7044dc5114fc0bb9"
+    }
+  ],
+  "independent_checks": {
+    "HOME_inherited_unchanged": true,
+    "driver_exact_hash": true,
+    "missing_coordinate_absent_from_existing_global_cache_checked_read_only": true,
+    "missing_coordinate_matches_actual_primary_plugin_default": true,
+    "old_audit_task_and_seven_arguments_unchanged": true,
+    "old_fault_fourfielddiag_caps_unchanged": true,
+    "source_eight_relevant_inputs_exact_carried_from_prior_hashbound_review": true,
+    "strict_65536_stream_assertion_before_coordinate_matching": true,
+    "zero_external_symlink_or_shared_inode_routes_carried_from_prior_review": true
+  },
+  "kind": "independent-current-c1-reproduction-input-environment-closure",
+  "license_boundary": "Installed local-notifications npm license MIT does not establish Kotlin upstream license; primary Kotlin verification remains pending author GET.",
+  "limits": [
+    "No claim of successful local AGP inspection or graph",
+    "No claim of complete future transitive resolution",
+    "No inferred hosted cause, fix, CI/device/native acceptance",
+    "No reviewer global-write runtime audit; static owned paths and inode/link isolation only, no unsupported historical zero-write claim",
+    "Original HOME reassignment deviation remains preserved and excluded from corrected proof"
+  ],
+  "next_step_authority": "Root separately authorized exact Maven POM/module GET, Kotlin primary-license/transitive-pin verification, then ordinary private-cache resolution using existing repositories with unchanged versions/source/canonical7args and SDK download disabled; this reviewer executed no network/build and does not claim this future work complete.",
+  "outcome": "CURRENT_CORRECTED_ENVIRONMENT_AND_INPUT_BINDING_CLOSED; OFFLINE_COMPLETENESS_BLOCKED_BY_EXACT_EXISTING_KGP2.0.21_CACHE_ABSENCE",
+  "prior_independent_review": {
+    "bytes": 16942,
+    "path": "/private/tmp/gsip-c1-offline-input-review-ls6zidkx/INDEPENDENT_CORRECTED_OFFLINE_REVIEW.json",
+    "sha256": "f4b892806eb9035ad626e55028ebb7c2534155ea8b51e306879e59036f58720e"
+  },
+  "schema": 1,
+  "source_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d"
+}

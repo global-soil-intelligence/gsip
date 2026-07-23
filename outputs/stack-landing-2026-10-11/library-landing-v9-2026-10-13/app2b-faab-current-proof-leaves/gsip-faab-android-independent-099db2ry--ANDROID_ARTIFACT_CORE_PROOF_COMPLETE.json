@@ -1,0 +1,49 @@
+{
+  "android_conclusion": "success",
+  "android_job_id": 115663053505,
+  "artifact": {
+    "bytes": 344,
+    "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_ARTIFACT_DOWNLOAD.json",
+    "sha256": "60d02a9ee94911c63d39f2a1d5cfd986d78fc1f13f37a3a9d06d414e49f8b02c"
+  },
+  "authority": {
+    "GET_only": true,
+    "arbitrary_raw_logs_or_values_printed": false,
+    "build_signing_device_key_actions": false,
+    "shared_source_Git_GH_workflow_production_mutations": false
+  },
+  "combined_native_acceptance": false,
+  "four_APK_bounds": {
+    "bytes": 1126,
+    "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_FOUR_APK_BOUNDS.json",
+    "sha256": "d12701c1c7a29fbda9df9b46590ad94d19e37eaf8d63b57aa9e5000f3d14c80a"
+  },
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "merge_binding": {
+    "bytes": 1330,
+    "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_ACTUAL_MERGE_BINDING.json",
+    "sha256": "a2c2c8ccd4518f2166aff93b02704f53cef5acf760ad8e8efd6cf5c039b9e48a"
+  },
+  "native_run_id": 38505847255,
+  "older_artifacts_reused": false,
+  "outer_tree": {
+    "bytes": 3342,
+    "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_OUTER_ARTIFACT_TREE.json",
+    "sha256": "17e271f70e050741926238cac3f7e7379c1a6c314648c2d67cd9faf96ba3b817"
+  },
+  "permission_version_backup_policy_replay": "separate pending local public-aapt2 metadata read",
+  "run_attempt": 1,
+  "run_number": 55,
+  "schema": "gsip-independent-exact-faab-android-artifact-core-proof-v1",
+  "source_binding": {
+    "path": "/private/tmp/gsip-faab-android-independent-099db2ry/EXACT_SOURCE_PARENT_BINDING.json",
+    "sha256": "802ad13740196761bbb0185728168bf9d3037f29028b5d2577c1bac7eca288df"
+  },
+  "status": "FRESH_EXACT_HEAD_ANDROID_CORE_ARTIFACT_PROOF_VERIFIED",
+  "strict_replay": {
+    "bytes": 2959,
+    "path": "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_STRICT_ANDROID_REPLAY.json",
+    "sha256": "18472d96067caa49a7b9bc508150e5bafd4047ec63571bd5df01e5331885cbb4"
+  }
+}

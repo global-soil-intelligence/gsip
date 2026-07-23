@@ -1,0 +1,5 @@
+docs(spec): bound synthetic iOS native prototype scope
+
+Record accepted passcode and preserve-quarantine policy, and propose exact native/support files, API effects and disposable harness copy/edit boundaries for a separate owner go. Create no native implementation and preserve all existing acceptance states.
+
+Co-Authored-By: Codex <codex@openai.com>

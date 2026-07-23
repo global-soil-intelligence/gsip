@@ -1,0 +1,15 @@
+{
+  "utc": "2026-10-13T23:58:54.630495+00:00",
+  "head": "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d",
+  "version": "8.21.2",
+  "exit_code": 0,
+  "scope": "full nonshallow Git history of all refs (--all)",
+  "scanner_reported_commits": 150,
+  "findings": 0,
+  "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "redacted_output_sha256": "46e2d3f728586379f0ec0dc02304ca2daeeb758da701b240812da7976025169f",
+  "gitleaksignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5",
+  "new_suppressions": false,
+  "scanner_rules_redaction_workflow_unchanged": true,
+  "production_changes": false
+}

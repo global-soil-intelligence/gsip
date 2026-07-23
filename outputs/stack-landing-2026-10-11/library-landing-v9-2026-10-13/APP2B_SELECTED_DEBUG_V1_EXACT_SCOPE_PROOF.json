@@ -1,0 +1,34 @@
+{
+  "all_other_old_assertions_exact": true,
+  "all_other_source_files_byte_exact": 361,
+  "appended_new_controls": 78,
+  "assumptions": [
+    "Controlled no-flavor generated Gradle sources and exact existing locked plugins/CI init remain trusted; this is not an arbitrary Gradle sandbox",
+    "Emitted temporary Gradle configuration is CI tooling only; maintained implementation remains Python/YAML",
+    "Public DSL build-type storeFile is supported only under the enforced controlled scope; unknown variant-signing overrides refuse",
+    "No APK certificate or upstream compiler attestation added"
+  ],
+  "base_head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "baseline_prefix_sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373",
+  "helper_whole_text_exact_after_erasing_only_new_locator_block_optional_signature_branch_and_parser_nargs": true,
+  "hosted_selected_location_and_fresh_native_acceptance": "unverified pending new CI",
+  "native_receipt_fields_and_shared_debug_key_hash_check_unchanged": true,
+  "new_metadata_task_sha256": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf",
+  "no_local_real_key_or_APK_content_read_creation_copy": true,
+  "no_shared_Git_production_or_dependency_changes": true,
+  "old_licence_aliases_contexts_validators_read_archive_permission_graph_repeat_and_fault_protocols_text_exact": true,
+  "old_prefix_erasure_exact": true,
+  "old_test_prefix_bytes": 195244,
+  "one_authorized_old_contract_byte": "Android workflow argv expectation8 to7 for two removed guessed-path arguments",
+  "only_four_owned_files_changed": [
+    ".github/workflows/app-build.yml",
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py"
+  ],
+  "original_runtime_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "schema": "gsip-selected-debug-locator-exact-scope-v1",
+  "source_archive_sha256": "d53d7a987e628b89b16a44fdde3ca62d2180552ae6043b74c08ef001193d3fcc",
+  "store_path_private_locator_only_never_logged_or_uploaded": true,
+  "workflow_only_two_hardcoded_arg_removals": true
+}

@@ -1,0 +1,206 @@
+{
+  "runtime": "read-only links to existing frozen dependencies; initial frozen offline cache misses; no network or lockfile changes; direct CLI execution",
+  "scope": "isolated relative schema sources and isolated Python pipeline; root owns applied workspace/build/browser/DB integration",
+  "checks": [
+    {
+      "name": "schema-typecheck",
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "packages/schema/tsconfig.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.756,
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-schema-typecheck.txt"
+    },
+    {
+      "name": "authored-eslint",
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "node_modules/eslint/bin/eslint.js",
+        "packages/schema/src/nodeExchange.ts",
+        "packages/schema/tests/node-exchange.test.ts"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.57,
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-authored-eslint.txt"
+    },
+    {
+      "name": "authored-prettier",
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        "packages/schema/src/nodeExchange.ts",
+        "packages/schema/src/index.ts",
+        "packages/schema/tests/node-exchange.test.ts",
+        "packages/schema/tests/fixtures/node-exchange-conformance.json",
+        "docs/NODE_EXCHANGE_CONTRACT.md"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.169,
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-authored-prettier.txt"
+    },
+    {
+      "name": "language-guard",
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/check-language.mjs"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.029,
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-language-guard.txt"
+    },
+    {
+      "name": "schema-tests",
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "packages/schema/tests"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.542,
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-schema-tests.txt"
+    },
+    {
+      "name": "python-ruff",
+      "command": [
+        ".venv/bin/ruff",
+        "check",
+        "."
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.041,
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-python-ruff.txt"
+    },
+    {
+      "name": "python-mypy",
+      "command": [
+        ".venv/bin/mypy"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.25,
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-python-mypy.txt"
+    },
+    {
+      "name": "python-tests",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 9.618,
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-python-tests.txt"
+    },
+    {
+      "name": "authored-gitleaks-8.21.2",
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/tools/gitleaks-8.21.2/gitleaks",
+        "dir",
+        "--redact",
+        "--ignore-gitleaks-allow",
+        "--no-banner",
+        "--report-format",
+        "json",
+        "--report-path",
+        "/private/tmp/gsip-lib5a-author-26f0hwio/v2-gitleaks-authored-report.json",
+        "/private/tmp/gsip-lib5a-author-26f0hwio/authored-scan-v2"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-gitleaks-authored.txt",
+      "report": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-gitleaks-authored-report.json",
+      "scope": "exact frozen seven authored files; no suppression/ignore addition"
+    }
+  ],
+  "version": 2,
+  "approved_base_commit": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+  "base_tree_sha256": "0f950c17da620ffb380eaff21d2f478c98cdb35856b799dd9315484d0d4c0b9c",
+  "source_tree_sha256": "e3eda6eb5f830788db1324889c8c00cf48298916b4fe160ba4fb998c05707621",
+  "v1_patch_sha256": "9dd4407a20638ce5ba7479e4734f0f40d8f7502fdab782c900a5e80bc96b9093",
+  "patch": "/private/tmp/gsip-lib5a-author-26f0hwio/lib5a-v2.patch",
+  "patch_sha256": "b4090961d103678b08688cc16dfa81e8e68ed9db95b44f6623a2876a3287fc2b",
+  "delta_patch": "/private/tmp/gsip-lib5a-author-26f0hwio/lib5a-v1-to-v2.patch",
+  "delta_patch_sha256": "b1611f80c89fb946b18ed92ce14e94c3463760f48a113e2cb3fe1f3221a52ab8",
+  "files": [
+    {
+      "path": "docs/NODE_EXCHANGE_CONTRACT.md",
+      "base_sha256": null,
+      "v1_sha256": "15661ea52671707884f6ad67ed43f8e1c703739a510fcacd615250645c5ffcf3",
+      "source_sha256": "ccd9d9e97427fd9ec62210ba425e83f5d09deabd4e3ccf12d4db1af2b486b899",
+      "byte_count": 5185
+    },
+    {
+      "path": "packages/schema/src/index.ts",
+      "base_sha256": "8b83f86de138fcaec38020d41150352a27be7d6c1793a05ddec8b2ce220fb368",
+      "v1_sha256": "88f0441e7f3aeb62da4081d22ebf72a874ad0c583b40b1610dfa48ab926a3cb6",
+      "source_sha256": "88f0441e7f3aeb62da4081d22ebf72a874ad0c583b40b1610dfa48ab926a3cb6",
+      "byte_count": 297
+    },
+    {
+      "path": "packages/schema/src/nodeExchange.ts",
+      "base_sha256": null,
+      "v1_sha256": "9dccc62b16c40d43b9f7adfae3aa4c04bd4ec25eddef7c52a33e7b3da8f0fdda",
+      "source_sha256": "adccffcea3650b91a039e9e203887298ed34e7a7e6547bbc4c72169fb22484e8",
+      "byte_count": 16852
+    },
+    {
+      "path": "packages/schema/tests/fixtures/node-exchange-conformance.json",
+      "base_sha256": null,
+      "v1_sha256": "05ba6c11e1e0b8073618341ca07805f3e70ed0e7b5af3bc8ad3aac5c889c3f9a",
+      "source_sha256": "05ba6c11e1e0b8073618341ca07805f3e70ed0e7b5af3bc8ad3aac5c889c3f9a",
+      "byte_count": 91050
+    },
+    {
+      "path": "packages/schema/tests/node-exchange.test.ts",
+      "base_sha256": null,
+      "v1_sha256": "0329095c32930ae78e0a47dcced71e190fefcc650e2cf8b758030f92e69bc36b",
+      "source_sha256": "182d731508068e3317612acaf9ee491bf8b8a6991428f05c4a435e19fd7a3569",
+      "byte_count": 16507
+    },
+    {
+      "path": "pipeline/node_exchange.py",
+      "base_sha256": null,
+      "v1_sha256": "79075a943e66ec50046b0aafea7a80c2bf35ce5320d9bce5486cdaa1532944f7",
+      "source_sha256": "ea3be8b40502c35c6b299203515924b818a5ba8283f82eaee8b84bb783563179",
+      "byte_count": 15578
+    },
+    {
+      "path": "tests/test_node_exchange_contract.py",
+      "base_sha256": null,
+      "v1_sha256": "89db1cf7cd1d70e4db0c0ac817b82826b50c6a8a5405aba768e8fedd587fb1a2",
+      "source_sha256": "cc78ab39134a774c33377e7f402b53252308b77ec98f2cdcb50ed6f020e739e7",
+      "byte_count": 11351
+    }
+  ],
+  "v2_fail_before": [
+    {
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-fail-before-ts.txt",
+      "tests_failed": 3,
+      "sha256": "f7343a28583b6ad4313ab430a54320d7fe6898bb9a881b968c7b5efd0424f5f7"
+    },
+    {
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-bound-fail-before-ts.txt",
+      "tests_failed": 1,
+      "sha256": "82376f9baddfb2b45fea9913ef9101022eaa501a156b143487faa016097bd473"
+    },
+    {
+      "log": "/private/tmp/gsip-lib5a-author-26f0hwio/v2-bound-fail-before-python.txt",
+      "tests_failed": 1,
+      "sha256": "19f34491028c4b7ee5be752683ac80c32fdf87008bbd981c293771c602ad6b48"
+    }
+  ],
+  "v1_preserved": "/private/tmp/gsip-lib5a-author-26f0hwio/v1",
+  "corrections": [
+    "fresh generic TS schema/helper errors for throwing getters/proxies/malformed fact arrays",
+    "intrinsic pre-copy TS/Python byte length and original-byte snapshot"
+  ],
+  "not_run": [
+    "root applied workspace app/Pages/native/browser/DB integration and full-history secret scan",
+    "four GDAL-required Python tests remain skipped"
+  ],
+  "source_frozen": true
+}

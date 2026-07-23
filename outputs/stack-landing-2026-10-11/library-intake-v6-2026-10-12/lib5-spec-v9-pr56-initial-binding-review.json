@@ -1,0 +1,42 @@
+{
+  "schema_version": "gsip-private-review-binding-v1",
+  "reviewed_at_utc": "2026-10-13T06:14:02.274475+00:00",
+  "reviewer": "/root/lib5_spec_review",
+  "status": "commit_documents_bound_public_body_accuracy_fix_requested",
+  "commit": "db3a37062008c291b6e8aa491b99eab3e752fe16",
+  "commit_changed_paths": [
+    "docs/BUILD_ORDER.md",
+    "docs/SPEC.md"
+  ],
+  "commit_document_sha256": {
+    "docs/SPEC.md": "f50f56da1fb25c4a15f5496e6455811c82e40fe2e5cb9ed931de28b01df3c0ae",
+    "docs/BUILD_ORDER.md": "eff2434d700ee83669136d03efeaf973426b2452740301bbca357cc75734f0b2"
+  },
+  "final_prose_receipt_path": "/private/tmp/gsip-lib5-spec-v9-independent-final-review.json",
+  "final_prose_receipt_sha256": "66efbe14646a689c62badc6f44970fe68268799bf89dc91e4debde4afc2219dc",
+  "final_prose_hashes_match_commit_git_show": true,
+  "prepared_body_path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-intake-v6-2026-10-12/pr56-spec9-body.md",
+  "prepared_body_sha256": "e8d3f4448cb5c73e2e6e15e0cdd5ca45e3b56c845e676eb5a044986bdde28eb0",
+  "body_findings": [
+    {
+      "severity": "P2",
+      "reference": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-intake-v6-2026-10-12/pr56-spec9-body.md:8",
+      "title": "Distinguish sample retirement from saturation scope fence",
+      "finding": "The body says authenticated retirement always fences a known scope. Reviewed SPEC line 534 applies sample-wide refusal normally; lines 558-560 apply the reserved whole-scope fence when detailed cleanup/alias/slot storage cannot be retained. The public summary should preserve that distinction.",
+      "recommended_text": "Withdrawal and retirement restrict monotonically. Authenticated retirement applies sample refusal before payload erasure and does not wait for sequence gaps; saturation uses the reserved scope fence. Acknowledgments remain pending until covered payload is absent."
+    }
+  ],
+  "body_clarity_suggestion": {
+    "reference": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-intake-v6-2026-10-12/pr56-spec9-body.md:1",
+    "suggestion": "Describe existing hosted phone-intake code, to avoid implying production intake is deployed."
+  },
+  "other_body_scope_and_evidence_assessment": "Accurately labels an unapproved architecture proposal, synthetic local packages, owner-held real sharing/credential/retention, provisional resource bounds, private scientific data, unchanged public agents, and separate production/science gates. Separates static prose evidence from runtime and authored-file scans from a held whole-stack scan.",
+  "evidence_limits": {
+    "this_pass": "Read-only git show of two committed files, read-only commit path list and prepared PR-body review.",
+    "prior_eight_static_checks": "Remain evidence from the prior final receipt; they were not rerun or counted as new checks in this pass.",
+    "formatting_whitespace_scan_CI_claims": "Reported by the prepared body; not independently rerun or queried in this narrow pass.",
+    "remote_PR_state": "PR number/base supplied by parent; no network readback.",
+    "no_runtime_capacity_field_science_or_production_claim": true,
+    "mutations": "Only this small private binding receipt was written. No source/draft/PR-body edits, Git mutation, review approval or production operations."
+  }
+}

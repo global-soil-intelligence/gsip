@@ -29,11 +29,11 @@ select is(
 );
 select is(
     public.claim_prior_job_attempt('73f0400e-5c64-5a6e-90d1-6a7686935317'),
-    2::smallint,
-    'a second service-role claim increments from the stored value'
+    null,
+    'an unexpired processing attempt cannot be claimed twice'
 );
 update public.prior_jobs
-set attempts = 31
+set attempts = 31, updated_at = now() - interval '16 minutes'
 where submission_id = '73f0400e-5c64-5a6e-90d1-6a7686935317';
 select is(
     public.claim_prior_job_attempt('73f0400e-5c64-5a6e-90d1-6a7686935317'),

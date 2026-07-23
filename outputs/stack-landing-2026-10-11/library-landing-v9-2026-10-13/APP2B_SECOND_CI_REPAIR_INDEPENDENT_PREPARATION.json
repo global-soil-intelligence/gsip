@@ -1,0 +1,68 @@
+{
+  "artifact_paths": [
+    "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc/synthetic-old-flow.json",
+    "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc/synthetic-parent-control.json"
+  ],
+  "baseline": {
+    "four_current_source_hashes_verified": [
+      {
+        "base_sha256": null,
+        "bytes": 90664,
+        "path": "scripts/app_notification_audit.py",
+        "sha256": "5ce1e7e646dc2e14ccc5b9e3a67efd3945172ab527ea8723e7ca8493b58bbe81",
+        "v6_sha256": "b9af11f753ab9630ecca1fdd9262796f7996c7fad4709d69f61f3ddc3a78d762"
+      },
+      {
+        "base_sha256": null,
+        "bytes": 81486,
+        "path": "tests/test_app_notification_audit.py",
+        "sha256": "650e6b074dbca902c1827ed7af97c83bacd2868473ee9ec504cf0f1b4b7091f1",
+        "v6_sha256": "2868d1721ce606a5d210143c242ebe59084e37f379424490acf0aa8b3d5dcd58"
+      },
+      {
+        "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+        "bytes": 17825,
+        "path": ".github/workflows/app-build.yml",
+        "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+        "v6_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+      },
+      {
+        "base_sha256": null,
+        "bytes": 13634,
+        "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+        "sha256": "9df5e3eac966064ec6d47b00f637c8356c74a5028dacbf1b8f72e66cbae26c88",
+        "v6_sha256": "75747b73ceda9e507bdfc7d40d57aa7daa55379625dc12a61af0fc67e45e31bc"
+      }
+    ],
+    "managed": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0",
+    "own_v7_closure": "/private/tmp/gsip-native-v7-independent-_vi1v9_e/independent-v7-closure.json",
+    "parent_reported_head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+    "root": "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc",
+    "scope": "prepare synthetic local witness only; no managed Git/network",
+    "v7_closure_sha256": "5297ce5e3be9853b059204941e333629ad91d66fd0b7904b3d768179a9fb1783"
+  },
+  "new_native_CI_or_device_acceptance": "unverified; actual Android tool failure cause unknown",
+  "no_actions": [
+    "No managed repository Git, GitHub, network or CI actions",
+    "No shared or author source edits",
+    "No native project build/signing/UI/device, real contributor data, credentials or production"
+  ],
+  "remaining_review": [
+    "Exact frozen patch/hash readbacks and reconstruction in own copy",
+    "Changed parent-command blocks preserve exact baseline readback, separate checkout, same build/policy/repeat/reference comparisons",
+    "Classifier remains bounded fixed-enum output in existing four-key schema; unknown errors generic and no private message/path/tool details emitted",
+    "Finite changed author/independent refusal/control tests only; no repeated full native495-card review unless actual delta/failure warrants it"
+  ],
+  "scope": "bounded independent upcoming parent reconstruction and private classifier delta review",
+  "status": "PREPARED ONLY: both author freeze patches are pending; no repair acceptance or CI success claimed",
+  "synthetic_git_boundary": "Owned temporary bare/source/candidate/parent repositories only; file protocol only, global/system Git configuration and hooks disabled",
+  "synthetic_witness": {
+    "candidate_preserved": true,
+    "canonical_origin_clone_plus_exact_parent_fetch": true,
+    "control_receipt_sha256": "12ea4836b0a4909724cfc8d18b4094e8b58b4c0aaad57ee7eac429ed21370ea6",
+    "failure_receipt_sha256": "ba63083dca816264be941fe4cc0fea47953ee5f2acbdb2ee37cf1832afd3965a",
+    "old_checkout_exit": 128,
+    "old_failure": "fatal unable to read tree on exact synthetic baseline",
+    "unknown_baseline_fetch_exit": 128
+  }
+}

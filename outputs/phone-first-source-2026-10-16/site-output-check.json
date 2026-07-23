@@ -1,0 +1,41 @@
+{
+  "capture_live": false,
+  "library_intake_live": false,
+  "pages": {
+    "home": {
+      "sha256": "f1522fc6ccafe4bdfb483d933cc4b925bf9f0ce8d7e59a3be10ba93f378e2601",
+      "bytes": 12832,
+      "headline_and_json_ld": true,
+      "no_open_capture_link": true
+    },
+    "card": {
+      "sha256": "2701426f1f3e31c6c0431a2afedfcc8bb41deb1b52aa05dc2532f311109559b1",
+      "bytes": 6686,
+      "headline_and_json_ld": true,
+      "no_open_capture_link": true
+    },
+    "methods": {
+      "sha256": "c737ded74443b61a2f128f08e184c8385900a427d880cd2d37e57702939186e5",
+      "bytes": 8516,
+      "headline_and_json_ld": true,
+      "no_open_capture_link": true
+    },
+    "data": {
+      "sha256": "c26c31284fb438c373578942874fbf370ec19ce7bdf2ab3bcf6ffc74ee1db22a",
+      "bytes": 9270,
+      "headline_and_json_ld": true,
+      "no_open_capture_link": true
+    },
+    "about": {
+      "sha256": "68b78295d955c5078b1d43682834d94d750ebc9e48c4f23b7c30be05fbfaa6de",
+      "bytes": 6439,
+      "headline_and_json_ld": true,
+      "no_open_capture_link": true
+    }
+  },
+  "llms": {
+    "sha256": "ddc11808b2b5aa6328aed5fb00a266e3ad58a5abafe0a3953b924c60c7a9dc7f",
+    "bytes": 2323,
+    "optional_card_and_closed_copy": true
+  }
+}

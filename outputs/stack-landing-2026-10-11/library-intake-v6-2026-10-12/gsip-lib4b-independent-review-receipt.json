@@ -1,0 +1,52 @@
+{
+  "review": "WP-LIB-4B independent adversarial review",
+  "base": "fba2aa9b8e09ab542009022e189fe8cd0bb40236",
+  "snapshot": "/private/tmp/gsip-lib4b-independent-b907vedf",
+  "patch": "/private/tmp/gsip-lib4b-private-intake.patch",
+  "patch_sha256": "9b4e2a46f90ee724f226fa7c94601bc7acbdeeb0b1c3ded916140b0268f872f3",
+  "files": {
+    "supabase/migrations/20261013030000_wp_lib4_private_intake.sql": "9088fa34b574efa1ed02d34b300e9ad6192fca5e4c3c1d22a180e25c6a04a7ad",
+    "supabase/tests/database/wp_lib4_private_intake.test.sql": "b4847c0adb4fa171801cf3dda0bc4b50088ed97f59fcc521e05f24a57e607082",
+    "supabase/tests/database/wp_lib4_contract_conformance.test.sql": "3ac1b760f9868e1d30dcf43c1a5fd242db9a8c08a003e821ac3a0dab61c6217a",
+    "supabase/migration-tests/before_20261013030000_wp_lib4_private_intake.sql": "0f1aeebab1f4fb141458aaac99d89f948d472401f54aaec81fad66af0f494acc",
+    "supabase/migration-tests/wp_lib4_private_intake.test.sql": "8e08d63b80a8b234db4f6b443388f790c260130a8c768b607881b0333c1198c0",
+    "packages/schema/src/database.types.ts": "bf3c80d1654d134aefb859d4c9116e2cec170f70650ce8cd26adc63fe2e9de3c",
+    "docs/LIBRARY_PRIVATE_INTAKE.md": "1ff67e6e937bc9998a5472d91140a3d52548ea66a2bf01c5cbcfe055467ef4dc",
+    "docs/SOIL_LIBRARY.md": "eb5b63a24da5d9e7998611eaec6e4dcf73219eda9cc500bf502b63c5cdb3cfc2",
+    "scripts/db-migration-test.sh": "4d0e183bf65e96090cbaf71a16c13e9597de183f093900383bc8a7317bf1b184",
+    "scripts/test-library-intake-concurrency.py": "f8a7f6cd157f9d45c5cf75a91d15e6550d4998c0dcecce282bffe40b4f88ab11"
+  },
+  "verified_file_hashes": 10,
+  "conclusion": "No source-review merge blocker remains in the frozen 10-file candidate. Final integrated CI and full actual Supabase checks remain required.",
+  "independent_checks": {
+    "synthetic_unix_socket_cluster": true,
+    "production_access": false,
+    "pgtap_role_rights": 104,
+    "shared_contract": 45,
+    "additive_migration": 13,
+    "total_passed": 162,
+    "failures": 0,
+    "log": "/private/tmp/gsip-lib4b-independent-sql.log",
+    "log_sha256": "21e102b6d7bb9946b346d0d3e092760382fd7f259dba59f37a58a6bb8124e308"
+  },
+  "resolved_findings": [
+    "Measurement UUID retirement survives payload erasure; new grants and other owners cannot reuse it.",
+    "Intake UUID retirement survives payload erasure; changed payload/sample/source cannot reuse it.",
+    "Completion guards covered sample rows and account-deletion residual namespace/usage payload.",
+    "Reviewed spec7 explicitly permits additive rights and completion triggers while retaining legacy worker signatures and bodies."
+  ],
+  "reviewed_author_evidence": {
+    "two_connection_races": 6,
+    "race_receipts": [
+      "/private/tmp/gsip-lib4b-races-frozen.json",
+      "/private/tmp/gsip-lib4b-native-races-frozen.json"
+    ],
+    "historical_uuid_fail_before": "Each original implementation run had exactly one expected ID-reuse failure of82; frozen post-fix regressions pass."
+  },
+  "residual": [
+    "The independent cluster used the committed synthetic auth/storage stand-in, not the complete real local Supabase stack. Root full local stack test/CI outcomes remain required.",
+    "Independent duplicate race rerun was interrupted by root local database reset; the six actual author races were read and audited.",
+    "Root requested two fixture-only POINT(0 0) -> POINT EMPTY replacements; review that exact delta separately because it is not in the frozen 10-file patch.",
+    "No production migration, activation, contributor data, scientific verification, public release or approval review occurred."
+  ]
+}

@@ -1,0 +1,315 @@
+{
+  "cases": {
+    "emptyLibraryFinal": {
+      "case": "emptyLibraryFinal",
+      "command_model": {
+        "absolute_init_script": true,
+        "console": "plain",
+        "home_preserved": true,
+        "no_daemon": true,
+        "offline": true,
+        "private_gradle_user_home": true
+      },
+      "exit_code": 1,
+      "output_exists": false,
+      "stderr_bytes": 500,
+      "stderr_sha256": "8802947d40962a5adf671bbc8f60f8eae55302c1882459892c5a795ed332efb2",
+      "stdout_bytes": 412,
+      "stdout_sha256": "6aa1b1361f0ed8096dab0fcb8460c4f5ba144cbb04d8a9c148c2380200f6cb49",
+      "tokens": [
+        "GSIP_PROBE_COVERAGE"
+      ]
+    },
+    "missingBinaryFinal": {
+      "case": "missingBinaryFinal",
+      "command_model": {
+        "absolute_init_script": true,
+        "console": "plain",
+        "home_preserved": true,
+        "no_daemon": true,
+        "offline": true,
+        "private_gradle_user_home": true
+      },
+      "exit_code": 1,
+      "output_exists": false,
+      "stderr_bytes": 810,
+      "stderr_sha256": "e3aa4dd301db8e5b61e14f4194bbf447926fb1f366d02944eea27c3080f91e06",
+      "stdout_bytes": 412,
+      "stdout_sha256": "6aa1b1361f0ed8096dab0fcb8460c4f5ba144cbb04d8a9c148c2380200f6cb49",
+      "tokens": [
+        "Could not find"
+      ]
+    },
+    "noProducersFinal": {
+      "case": "noProducersFinal",
+      "command_model": {
+        "absolute_init_script": true,
+        "console": "plain",
+        "home_preserved": true,
+        "no_daemon": true,
+        "offline": true,
+        "private_gradle_user_home": true
+      },
+      "exit_code": 1,
+      "output_exists": false,
+      "stderr_bytes": 507,
+      "stderr_sha256": "2bfa58a4e17c82bd1f2dea4e159ed0c783e4bcfc6e749158898d14ab1b542bb9",
+      "stdout_bytes": 351,
+      "stdout_sha256": "cc2c9332aa884305ed6d135a735bfbdc89e9df5f0b3c4eb590d8062a762f2f1d",
+      "tokens": [
+        "GSIP_PROBE_PRODUCER_MISSING"
+      ]
+    },
+    "omitModuleFinal": {
+      "case": "omitModuleFinal",
+      "command_model": {
+        "absolute_init_script": true,
+        "console": "plain",
+        "home_preserved": true,
+        "no_daemon": true,
+        "offline": true,
+        "private_gradle_user_home": true
+      },
+      "exit_code": 1,
+      "output_exists": false,
+      "stderr_bytes": 498,
+      "stderr_sha256": "8b1c89fcbd7083b502ee9c2fdc7dd3d5ee2773897519819c84475c7edc9e2552",
+      "stdout_bytes": 412,
+      "stdout_sha256": "6aa1b1361f0ed8096dab0fcb8460c4f5ba144cbb04d8a9c148c2380200f6cb49",
+      "tokens": [
+        "GSIP_PROBE_COVERAGE"
+      ]
+    },
+    "originalFinal": {
+      "case": "originalFinal",
+      "command_model": {
+        "absolute_init_script": true,
+        "console": "plain",
+        "home_preserved": true,
+        "no_daemon": true,
+        "offline": true,
+        "private_gradle_user_home": true
+      },
+      "exit_code": 1,
+      "output_exists": false,
+      "stderr_bytes": 21814,
+      "stderr_sha256": "f92577ed7af3387a6c0b4614207f843e36e4343d7af52501a962c4309a7e7448",
+      "stdout_bytes": 450,
+      "stdout_sha256": "d0d7c2ad4a80fb22f33f920252c041b1cd6ce5356859b6be890e079b9002471c",
+      "tokens": [
+        "ArtifactSelectionException",
+        "ambiguous"
+      ]
+    },
+    "positiveFinal": {
+      "case": "positiveFinal",
+      "command_model": {
+        "absolute_init_script": true,
+        "console": "plain",
+        "home_preserved": true,
+        "no_daemon": true,
+        "offline": true,
+        "private_gradle_user_home": true
+      },
+      "exit_code": 0,
+      "output_exists": true,
+      "payload": {
+        "schema": "gsip-public-view-independent-v1",
+        "views": [
+          {
+            "artifactCount": 3,
+            "configuration": "debugRuntimeClasspath",
+            "files": [
+              {
+                "filename": "plain-1.0.jar",
+                "ownerType": "module",
+                "sha256": "9ac15d64ce2b745348606dcb2a6b06517455bc806d0b95c280643679f8abb247"
+              },
+              {
+                "filename": "androidraw-1.0.aar",
+                "ownerType": "module",
+                "sha256": "e03517c11f01cd97dd4ed6e37b606f8f3011d6d32bdbee27240828bd3e74071d"
+              },
+              {
+                "filename": "classes.jar",
+                "ownerType": "project",
+                "sha256": "8b0864601e0a1422cce47d093c35be1a55cfb7b34194c2cb4f855fa45f5dbd3a"
+              }
+            ],
+            "metadataOnly": [
+              "bom"
+            ],
+            "moduleCount": 2,
+            "parentAttributesPreserved": true,
+            "producerComplete": true,
+            "projectCount": 1,
+            "rawModuleLocationsPreserved": true,
+            "rootExempt": true,
+            "selectedComponents": 5
+          },
+          {
+            "artifactCount": 3,
+            "configuration": "releaseRuntimeClasspath",
+            "files": [
+              {
+                "filename": "plain-1.0.jar",
+                "ownerType": "module",
+                "sha256": "9ac15d64ce2b745348606dcb2a6b06517455bc806d0b95c280643679f8abb247"
+              },
+              {
+                "filename": "androidraw-1.0.aar",
+                "ownerType": "module",
+                "sha256": "e03517c11f01cd97dd4ed6e37b606f8f3011d6d32bdbee27240828bd3e74071d"
+              },
+              {
+                "filename": "classes.jar",
+                "ownerType": "project",
+                "sha256": "ad4e25f43a247f07a6eb997ffbef89725b61e5bec18edf4db3a0305bb6a7a636"
+              }
+            ],
+            "metadataOnly": [
+              "bom"
+            ],
+            "moduleCount": 2,
+            "parentAttributesPreserved": true,
+            "producerComplete": true,
+            "projectCount": 1,
+            "rawModuleLocationsPreserved": true,
+            "rootExempt": true,
+            "selectedComponents": 5
+          }
+        ]
+      },
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 429,
+      "stdout_sha256": "ebb79d2523c25e6e00b985af0612bbd14c31ac669d04823ad6522fa8dabe88bf",
+      "tokens": []
+    },
+    "unresolvedFinal": {
+      "case": "unresolvedFinal",
+      "command_model": {
+        "absolute_init_script": true,
+        "console": "plain",
+        "home_preserved": true,
+        "no_daemon": true,
+        "offline": true,
+        "private_gradle_user_home": true
+      },
+      "exit_code": 1,
+      "output_exists": false,
+      "stderr_bytes": 500,
+      "stderr_sha256": "a0ace403fab16103f91058baccbe2537f5b853cabdb0ab125fbb63c243c033d7",
+      "stdout_bytes": 412,
+      "stdout_sha256": "6aa1b1361f0ed8096dab0fcb8460c4f5ba144cbb04d8a9c148c2380200f6cb49",
+      "tokens": [
+        "GSIP_PROBE_UNRESOLVED"
+      ]
+    },
+    "wrongTypeFinal": {
+      "case": "wrongTypeFinal",
+      "command_model": {
+        "absolute_init_script": true,
+        "console": "plain",
+        "home_preserved": true,
+        "no_daemon": true,
+        "offline": true,
+        "private_gradle_user_home": true
+      },
+      "exit_code": 1,
+      "output_exists": false,
+      "stderr_bytes": 497,
+      "stderr_sha256": "b1ef73ddfd528e8461d10753691717c7fd1c5294d9c7c1c9144172161413e565",
+      "stdout_bytes": 351,
+      "stdout_sha256": "cc2c9332aa884305ed6d135a735bfbdc89e9df5f0b3c4eb590d8062a762f2f1d",
+      "tokens": [
+        "GSIP_PROBE_COVERAGE"
+      ]
+    }
+  },
+  "created_at": "2026-10-13T22:57:59.908981+00:00",
+  "driver_sha256": "266ca69fcb55aded790b8c4330c33619592104815f79c66de5537ad85d73a65f",
+  "executed_case_source_manifest_sha256": "27fea3f07aa9ea601a3cce6e4e8bb946c37a12d1f0fb93dcf271a0a61e9171ba",
+  "fixture_manifest_sha256": "8f47f75ea1d7548bc605c7aec9c8b0dfecf055f2568235318d5250ec34b9c1d6",
+  "local_harness_recoveries": [
+    "Initial sandbox run stopped before fixture evaluation with Operation not permitted; approved local offline execution completed.",
+    "First fixture used project.platform instead of dependencies.platform and failed configuration; corrected only owned fixture DSL and reran all final cases.",
+    "Initial metadata-only POM without selected platform category was refused; explicit platform module metadata establishes the intended narrow platform positive without relaxing coverage."
+  ],
+  "maintained_edits": false,
+  "old_guards_not_changed": true,
+  "original_task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+  "parent_frozen_repro_sha256": "9d8406d2df3e2ac85af19287f4703e1bd057d54ac2bae171e0f59d881d540c5b",
+  "previous_verified_tool_closure_sha256": "43991c617f1a4d0ade293d57b5b633cf678d398a5b8808072bd9e34edcb9280f",
+  "primary_api_findings": [
+    "ArtifactView.componentFilter restricts only artifacts returned from selected components.",
+    "Normal artifact selection retains graph selection; withVariantReselection explicitly discards existing parent attributes and is excluded.",
+    "ArtifactCollection.artifactFiles and live resolvedArtifacts provider carry producer task dependencies.",
+    "ResolvedComponentResult.variants exposes selected variants; Category documents platform as dependency-constraint metadata, library as binary/dependency category."
+  ],
+  "primary_api_tool_inputs_sha256": "91bf7f7a9abeebff7c23b6e88e81b004592ae7036783e0dd84efdfda4568c15a",
+  "producer_file_counts": {
+    "emptyLibraryFinal": {
+      "classes_files": 2,
+      "resources_files": 0
+    },
+    "missingBinaryFinal": {
+      "classes_files": 2,
+      "resources_files": 0
+    },
+    "noProducersFinal": {
+      "classes_files": 0,
+      "resources_files": 0
+    },
+    "omitModuleFinal": {
+      "classes_files": 2,
+      "resources_files": 0
+    },
+    "originalFinal": {
+      "classes_files": 0,
+      "resources_files": 0
+    },
+    "positiveFinal": {
+      "classes_files": 2,
+      "resources_files": 0
+    },
+    "unresolvedFinal": {
+      "classes_files": 2,
+      "resources_files": 0
+    },
+    "wrongTypeFinal": {
+      "classes_files": 0,
+      "resources_files": 0
+    }
+  },
+  "proposal": [
+    "Use separate module and project ArtifactViews over each original debugRuntimeClasspath and releaseRuntimeClasspath configuration.",
+    "Module componentFilter view has no added artifact attributes and preserves raw external JAR/AAR files, component identity and locations.",
+    "Project componentFilter view adds only the selected secondary artifact type; no withVariantReselection, retaining original parent build-type attributes.",
+    "Wire both configuration views file collections into lazy dependsOn before task action; actual positive runs both classes producers.",
+    "Require explicit selected-component coverage. lenient(false) alone permits an empty typed project view.",
+    "Exempt exact resolution root identity only. A selected platform-category metadata-only module can lack an artifact; preserve existing independently validated primary POM/source/license/coordinate proof and never exempt arbitrary missing modules.",
+    "Keep unknown components, missing artifacts, absent producers, unrecognized metadata and every existing closed-SDK/permission/source/license guard fail-closed."
+  ],
+  "raw_process_output_persisted": false,
+  "schema": "gsip-independent-public-gradle-artifact-view-api-check-v1",
+  "scope_limits": [
+    "No Android SDK, AGP build, real native binary, maintained source change, dependency fetch, global cache change, Git/GitHub mutation or network operation.",
+    "Synthetic module JAR/AAR are fixture ZIPs only; they are not APK or native proof artifacts.",
+    "This fixture validates public ArtifactView selection mechanics, not selection of the exact AGP published artifact type; author/reviewer must retain actual AGP metadata proof.",
+    "Platform positive uses explicit public Gradle module platform metadata with BOM POM and constraint. Plain plugin-free Maven POM lacking selected platform attributes was conservatively refused; no arbitrary POM exemption added here.",
+    "The eight finite controls do not replace the unchanged existing 19 real controls, historical 403-case prefix, 43-case bank or native proof/schema validation.",
+    "Local original task ambiguity reproduction does not prove the cause of hosted Android failure; combined Android+iOS acceptance remains unverified."
+  ],
+  "source_head_context": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "status": "FINITE_API_PROPOSAL_VALIDATED_NOT_MAINTAINED_PATCH_REVIEW",
+  "tool": {
+    "gradle": "8.14.3",
+    "home_preserved": true,
+    "java": "21.0.1",
+    "official_distribution_sha256": "ed1a8d686605fd7c23bdf62c7fc7add1c5b23b2bbc3721e661934ef4a4911d7c",
+    "offline": true,
+    "private_gradle_user_home": true
+  },
+  "transient_owned_gradle_log_files_removed": 31
+}

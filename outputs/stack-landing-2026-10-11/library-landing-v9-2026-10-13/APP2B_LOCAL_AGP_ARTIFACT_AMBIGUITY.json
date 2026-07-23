@@ -1,0 +1,52 @@
+{
+  "actual_primary_phrase_counts": {
+    "AMBIGUOUS_ARTIFACT_CONFIGURED": 6,
+    "AMBIGUOUS_ARTIFACT_DESCRIBER": 4
+  },
+  "artifact_inventory_is_subset": true,
+  "failure_kind": "AMBIGUOUS_ARTIFACT_VARIANTS",
+  "files": {
+    "ARTIFACT_FAILURE_PRIMARY_TYPES.json": {
+      "bytes": 713,
+      "sha256": "9ecb3bf7bfdcf837c4d657e946541c304cac1dafae3dfaa1989503fcb67a57ac"
+    },
+    "PINNED_EXCEPTION_CLASS_METADATA.json": {
+      "bytes": 882561,
+      "sha256": "7ec653e03521d16f7915b481ef7b90a8d4a9db4dfc7c2a822ba50c515ea3fdc8"
+    },
+    "SHOWSTACKTRACE_ALWAYS_INIT.gradle.txt": {
+      "bytes": 1000,
+      "sha256": "c2546fa5c6a14189b33bf165a6eaa30560987aa81e0fa25d0262f61620d8b04e"
+    },
+    "artifact_kind_run.py": {
+      "bytes": 9450,
+      "sha256": "3d8adde6d7c5c6676930b6339ee61a7cf097586f39de51486b4e36e7743f873e"
+    },
+    "build_exception_inventory.py": {
+      "bytes": 3824,
+      "sha256": "32b3589afdedbbc2bd24ee90ab841aea8f67780981a4bf9d4897f8f39ed71064"
+    },
+    "expanded_type_run.py": {
+      "bytes": 8906,
+      "sha256": "9f1256b6ff434f39b08c20546ce1c6360a99e2104e69e3e6ad930b60be47780d"
+    },
+    "inspection-artifact-kind.json": {
+      "bytes": 2803,
+      "sha256": "25e42d735840f6ea83c8a1195fba344bc8d5ac41063201c10d28f4a0be267c23"
+    },
+    "inspection-expanded-types.json": {
+      "bytes": 2682,
+      "sha256": "cfe4a657e7d5955bea11b95f48b8864c1735cf3b96eb7efe9afbd40fe329a9f3"
+    }
+  },
+  "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "hosted_cause_identity_proven": false,
+  "maintained_changes": false,
+  "no_compatible_signature": false,
+  "original_returncode": 1,
+  "original_stderr_cap": 65536,
+  "original_task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+  "schema": "gsip-exact-c1-artifact-ambiguity-v1",
+  "status_and_cap_unchanged": true,
+  "type_identity": "PINNED_IMPLEMENTATION_NAME_MATCH"
+}

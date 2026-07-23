@@ -1,0 +1,66 @@
+{
+  "files": [
+    {
+      "bytes": 357,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/CONFIG.json",
+      "sha256": "c6b30f95f723eeef282c9e536ccb339568afaaa277edc89b30c269f425b4c8e5"
+    },
+    {
+      "bytes": 13555,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/METADATA_20261014T033722Z.json",
+      "sha256": "693a9dde49b9d4d1f0ad1b655ead89e8b910209b3f4137d6f9ca01e90a0bdafd"
+    },
+    {
+      "bytes": 14028,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/METADATA_20261014T033838Z.json",
+      "sha256": "57a1de00f2348ec26d176e33b2a8e04669da07d1c7d2d3e7d3198eca478938ff"
+    },
+    {
+      "bytes": 14114,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/METADATA_20261014T034035Z.json",
+      "sha256": "d9f91ee25aeb10381cad19a3e35ce6257d5b91c002c9ca8b50b32c919a60075a"
+    },
+    {
+      "bytes": 15210,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/METADATA_20261014T034135Z.json",
+      "sha256": "18cd1810126fa122e96daaf319291f5f20149486c1a17b6c009227b96d56d863"
+    },
+    {
+      "bytes": 15210,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/METADATA_20261014T034257Z.json",
+      "sha256": "05b06ecb4e54335f8b27442d711be1db3e0d00f89f1581c754f491e78d0cece3"
+    },
+    {
+      "bytes": 16307,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/METADATA_20261014T034359Z.json",
+      "sha256": "93c4b9e04471c08e578a2dc87a1d07f55851dd0d3a84f41e4a1e749800de191f"
+    },
+    {
+      "bytes": 416,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/SOURCE_TREE_BINDING.json",
+      "sha256": "7104418844539ae85cd9d4434a787c5bd795cc33a25a5950ea1d9d26d4571020"
+    },
+    {
+      "bytes": 640,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/TERMINAL_ANDROID_LOG_METADATA.json",
+      "sha256": "4f09294b7c36cde06881e4de95ec2bde26e3fd60042935c6d143ae1059697e8c"
+    },
+    {
+      "bytes": 637,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/TERMINAL_IOS_LOG_METADATA.json",
+      "sha256": "96b6a83821ab909e3018218c51508941f219e0b9313449f208ac3644f7d3af6a"
+    },
+    {
+      "bytes": 4023,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/snapshot.py",
+      "sha256": "e769c8948fe1367a8806f70d4864be78e7f07c7c09b67a8ea1e403e92bc22696"
+    },
+    {
+      "bytes": 4669,
+      "path": "/private/tmp/gsip-main-a638-native-metadata-uuy2z1yy/terminal_log_metadata.py",
+      "sha256": "214c5bd512a281680ec0d815e9ff68a6b220204494b15d8ab6d01fe91f059520"
+    }
+  ],
+  "main": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "schema": "gsip-main-native-metadata-evidence-manifest-v1"
+}

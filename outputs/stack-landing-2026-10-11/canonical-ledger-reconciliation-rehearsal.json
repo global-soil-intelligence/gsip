@@ -1,0 +1,193 @@
+{
+  "status": "PASS",
+  "assertions_passed": 64,
+  "expected_assertions": 64,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Canonical ownership behavior",
+      "passed": true,
+      "assertions": 20
+    },
+    {
+      "name": "Exact deployed aliases preserve ownership behavior",
+      "passed": true,
+      "assertions": 20
+    },
+    {
+      "name": "Unsafe permissive policy rejected",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Initial eighteen historical ledger identities",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Adding thirteen produces exact thirty-one identity set",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Retiring thirteen leaves exact eighteen identities",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Retiring stray leaves exact seventeen canonical identities",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Public application catalog unchanged across ledger writes",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Private functions/views/storage/schema ACLs unchanged across ledger writes",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Synthetic application row digests unchanged across ledger writes",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Unrelated sentinel unchanged across ledger writes",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Only nine pending migrations applied",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Final ledger is exact twenty-six reviewed identities",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Target catalog equals clean twenty-six chain apart from five exact surviving aliases",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Target supplemental catalog equals clean twenty-six chain",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Legacy backfill/synthetic provenance/closed capture checks",
+      "passed": true,
+      "assertions": 8
+    },
+    {
+      "name": "Unrelated sentinel survives nine pending migrations",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Removing an unchanged first identity rejected",
+      "passed": true,
+      "assertions": 1
+    },
+    {
+      "name": "Prematurely marking October applied rejected",
+      "passed": true,
+      "assertions": 1
+    }
+  ],
+  "source_commit": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "source_migration_sha256": {
+    "supabase/migrations/20260722164727_wp1_extensions.sql": "a47384b6b2f103e31ae4777534d1e9b1e97be2c51d009be30c7e6396cdb09cb2",
+    "supabase/migrations/20260722164749_wp1_schema.sql": "92ad08bf95c2ec28b36a6973631388c3135ac56a69c87d24173535b29d09efe5",
+    "supabase/migrations/20260722164806_wp1_rls.sql": "49f7ff7782cf06fe50df421d747ea21d049f1996bea5dce8dca8170c268af482",
+    "supabase/migrations/20260722170020_wp1_review_hardening.sql": "cba2ec74526c597170b454851d8012051f238a7db93d818b91d85d96cde6b30b",
+    "supabase/migrations/20260722181500_wp1_v22_privacy_and_grants.sql": "86213d751d8df64404a5aaea332f7ea93d996716f569bfa036aca9f8812e34ff",
+    "supabase/migrations/20260722183000_wp1_performance_indexes.sql": "2efb4383f8629154a031342e0494e04c3105b979353911e3d9415e4fba93880a",
+    "supabase/migrations/20260722190000_wp4_prior_jobs.sql": "430b0c9064e6d075197d755d661bf00e345faff49b4e8e9db59de13253fa2358",
+    "supabase/migrations/20260722190500_wp4_prior_jobs_hardening.sql": "8160abac06009fdf3eab8d9f38b1e4add8330995dd274014a85182eb8e44249c",
+    "supabase/migrations/20260722193000_wp4b_photo_qa.sql": "7dad54be4ec8354fccacd652143ec4f26449d76a6fdf7da107adda6aa7c23ded",
+    "supabase/migrations/20260722200000_wp6_export_guardrails.sql": "c6d491d01686ee2e293b98ccd84e074e96603d4b9d0a8ceaef239e1cb004233f",
+    "supabase/migrations/20260723002255_phase1_actor_hardening.sql": "a3b0a00dc2878a4b1d7b1f9e289d6e1970ef7499105e14bc764c92f69dc1678d",
+    "supabase/migrations/20260723004439_qa_event_provenance.sql": "f2ef7ab587c72fd008383edee716761c908a71f94c82dfb0daedc2dcc3e7698d",
+    "supabase/migrations/20260723005752_public_h3_aggregates.sql": "4ac1f12cb35e1d9a4c5ce4d5c81c9d962a1ec54b60ff99cca87debed4fdce81b",
+    "supabase/migrations/20260723010313_atomic_public_h3_refresh.sql": "e8a80e13b2dfcef185bdb6b84de054cd90bb5656449b095842fb152bfc7bba62",
+    "supabase/migrations/20260723044745_atomic_prior_attempt_claim.sql": "695520093d1332c38563fd83cdefbf726b4c3cde5be360ed851e52580f6a42c4",
+    "supabase/migrations/20260723045317_document_authenticated_h3_role.sql": "fac47eb129ae5e913c973d063f19380b48eede88cd023326a543cc6e769b9220",
+    "supabase/migrations/20260723045606_remove_public_submission_residue.sql": "1f133d48265e25fcdfd7d7b7714697ad4db774fbb8d87fcc8d84683ac5f1a634",
+    "supabase/migrations/20261010120000_wp6b_capture_gate.sql": "d5dc5bb281927e0c3e6d72705ec1d24094de93be17ffa7e02c02c56c375e5964",
+    "supabase/migrations/20261010120100_wp6b_path_binding.sql": "7d6d410f6cfb532d9166088e02bea4f36f6e5c02307d674bac3516b76928c017",
+    "supabase/migrations/20261010120200_wp6b_finalize_and_settle.sql": "da54235f99d2935601753d8461393838672cb0c62a9709616d06e1ca83e725fc",
+    "supabase/migrations/20261010120300_wp6b_k_anonymous_cells.sql": "29e4b3b97b7bbb64e6dbd986d857c73e416a4a7ca4244d4b166210594fc73f3e",
+    "supabase/migrations/20261010120400_wp6b_attribution_and_metadata.sql": "fe4bf14607abd0ce669e34b849a5b6ee016307bcbfe3e272e429626a55d16561",
+    "supabase/migrations/20261010130000_wp6c_priors.sql": "6f3bdc4b13dbe661eee30e6bd1f74fbe4e6853e200705b07e7ab69f347d3f68b",
+    "supabase/migrations/20261010140000_wp6d_contributor_rights.sql": "9cb7c770f3772c463bfa1191741164122513155ab4f60e5db5899fa9c4407790",
+    "supabase/migrations/20261010150000_wp6e_provenance.sql": "d3e772403dd912fe5146210be802906a8d9be1f5c65516a0d5bbd13c63105f05",
+    "supabase/migrations/20261011090000_wp_agent1_releases.sql": "b61dd6ebbff44b8034585673b01958d4ce45e79e77a30c33245bd89bcf49c5fd"
+  },
+  "input_sha256": {
+    "canonical-rehearsal-inputs/alias.sql": "31136bc8192c7d31ae488aba722acf7e3982e4919bc7801b4b09e1c75e9c3bef",
+    "canonical-rehearsal-inputs/container-rehearsal.sh": "d86e7efbb62c2edb73faa9a1b752a67cc6075dc608ac005242e1de34ce194a18",
+    "canonical-rehearsal-inputs/fingerprint.sql": "ff406146bd51411559251993c3de3eeb359020147b934278e4ed754994e506a6",
+    "canonical-rehearsal-inputs/ledger-add.sql": "0314a847a425541c0c59cea4bed0033cfa8ff4044cd101265903129ada463784",
+    "canonical-rehearsal-inputs/ledger-read.sql": "5c78807cb79e7de6a046ff27961da74d3e92306a15cfb4affefd148cad865b34",
+    "canonical-rehearsal-inputs/ledger-retire.sql": "9ac850a479eaf8adf356da571e9f371bcc2a7fbf27c2fddfa6fa2241fd1170ec",
+    "canonical-rehearsal-inputs/ledger-seed.sql": "f4e1c4037d2aa046770a7dc3453e59458ab70688ef266ae1d3a38284e8bc5b9f",
+    "canonical-rehearsal-inputs/ledger-stray.sql": "f00e75a7d21ce102db959b392ecd9c0eab6ccb8b8fdd41b557ad619f863d8e2b",
+    "canonical-rehearsal-inputs/post-upgrade.sql": "3b6dac7419fe8bdaf59cb0c54dfe201db4fa988ae250b9ee9d932cde19dc14be",
+    "canonical-rehearsal-inputs/rls-alias.sql": "965f3bf3346a730ab3cb917a2e745893f4742b0cb77c32f7787ed0cea69feb98",
+    "canonical-rehearsal-inputs/rls-canonical.sql": "0545cf873c9044427aba2247aaf0f93d91b3e845ca84e6294359a4b3ce5bf8e6",
+    "canonical-rehearsal-inputs/seed.sql": "6d5c815dde8f92a5c92d2cf6c95bdf5663c4ee5ef027273c89d059cd7a13d17e"
+  },
+  "query_sha256": {
+    "catalog-snapshot.sql": "89028b8da3460182b59ca9a87b57c6fb1e9be32660dc5806995149d0f9a1db0f",
+    "catalog-snapshot-supplement.sql": "92831e8adcefae9ecd0a1141b833bab1de031d63b385bc7a1c7143ee5d8cd2c9"
+  },
+  "image_id": "sha256:521e67f2812db505fe6d462b1820136394824d7f5c6016a19234b07ac93d6760",
+  "image_digest": "public.ecr.aws/supabase/postgres@sha256:ca7871b587ca2c401ac0f325df6249c9aa0d25647ded34631158efc51176767f",
+  "postgres_version": "17.6",
+  "user": "postgres",
+  "network": "none",
+  "host_ports": [],
+  "source_mount": "read-only",
+  "synthetic_geometry": "POINT EMPTY; no coordinate literals",
+  "ledger_sequence_counts": [
+    18,
+    31,
+    18,
+    17,
+    26
+  ],
+  "pending_migrations_applied": 9,
+  "target_aliases_preserved": [
+    "gold_labels_select_own",
+    "photos_select_own",
+    "predictions_select_own",
+    "priors_select_own",
+    "qa_events_select_own"
+  ],
+  "scope_limits": [
+    "SQL-modeled documented ledger insert/delete effects; no Supabase CLI repair command executed",
+    "Auth/Storage are repository stand-ins; no production data, credentials, or network used",
+    "Metadata history statements are NULL placeholders; no foreign application SQL imported or executed",
+    "Synthetic backfill proof cannot establish historical effects or provenance of live rows",
+    "No pgTAP assertions run here; mandatory db-migration-test.sh remains separately required"
+  ],
+  "production_mutations_performed": [],
+  "driver_sha256": "f3a3698cb9dc6efeb18a3d621dfceb3ab7c7b4a0c24c294e8d29b2cfce290f0c",
+  "reference_sha256": {
+    "canonical-catalog-target26.json": "eca562018a82a5df9f2ddd37b1f47e81a26be709f34e4b967c21d5442a562393",
+    "canonical-catalog-target26-supplement.json": "1ea270359d6b9587d1dc444e9196cc4628c49d21047fa4d0604cfc0925ea136d",
+    "production-catalog-before-reconciliation.json": "21336e768a3ff4cd36d215cac7fe6d28eb96227514a9ed886cb426b8d844f8ef",
+    "canonical-migration-timestamp-map.json": "e2c5756b62a73298aaaa18ef8b0c0a6398d2cb37fcecc885555cef2799d9fcf0"
+  },
+  "output_sha256": {
+    "rehearsal-catalog-before.json": "d7f4d372ffdc4393fc2290520911a92f34ac6584c13879c2a2093f07d7bce3c7",
+    "rehearsal-catalog-target26.json": "58b6085f0a9f24468390fdc7b335735338a214c85e31dcbe3161e9eb61f54585",
+    "rehearsal-catalog-target26-supplement.json": "1ea270359d6b9587d1dc444e9196cc4628c49d21047fa4d0604cfc0925ea136d"
+  }
+}

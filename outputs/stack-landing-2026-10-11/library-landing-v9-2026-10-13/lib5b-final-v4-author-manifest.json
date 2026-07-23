@@ -1,0 +1,55 @@
+{
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "base_tree": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64",
+  "source_root": "/private/tmp/gsip-lib5b-author-ovnn60yz/source",
+  "frozen_review_snapshot": "/private/tmp/gsip-lib5b-final-v4-frozen-mdrkjbhc",
+  "source_prerequisites": {
+    "lib5a_merge": "333f1492713d41c0ade42d6b16c4453cdfb1b783",
+    "spec10_merge": "d7ed716ed0921381da04f542e90902ede36cb462"
+  },
+  "authored_files": [
+    {
+      "path": "pipeline/node_exchange_store.py",
+      "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+      "bytes": 39798
+    },
+    {
+      "path": "pipeline/node_exchange_simulator.py",
+      "sha256": "8d205568d3948417dcb77437c6c047046c942addcb7ceba4122d0584bca32006",
+      "bytes": 86313
+    },
+    {
+      "path": "tests/test_node_exchange_store.py",
+      "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+      "bytes": 46450
+    },
+    {
+      "path": "tests/test_node_exchange_simulator.py",
+      "sha256": "ee1edb274c94441553d015efdfb939014fecfff74f27569f5376b6d90fecbccc",
+      "bytes": 77322
+    },
+    {
+      "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+      "sha256": "c5aac985da4557bdbf80d6da6f7169de558acfb2abb02908a5de3ff382f28cbf",
+      "bytes": 22540
+    }
+  ],
+  "base_files_checked": 347,
+  "base_files_changed": [],
+  "patch": "/private/tmp/gsip-lib5b-private-exchange-ledger-v4.patch",
+  "patch_sha256": "92c7b415e94f0ca44b8ecdb974d0c38d6364511bda739a439ec95e1e69164014",
+  "scope": "one synthetic private local work package; no implementation outside the five files",
+  "version": "v4 erased-alias retirement identity/recipient chain corrections after independent review",
+  "preserved_v1_manifest_sha256": "d6384e0210d78c75f87c2ce8d4d78d1ffed43278e06a31230d454706fa73616f",
+  "preserved_v2_manifest_sha256": "4c44a821f4b91b963a5b095157d05fe371aca6d14bf0778012adfa0e82837be3",
+  "preserved_v3_manifest_sha256": "d7a304e5e35b630c215cdab509076561ed4beb5a98ab2d39767c3c2c52486f2b",
+  "delta_from_v3": {
+    "patch": "/private/tmp/gsip-lib5b-v3-to-v4.patch",
+    "sha256": "53c14e925aa8bd26ca1d664152425936166bd87678226b3224d9824675899f2e",
+    "changed_files": [
+      "pipeline/node_exchange_simulator.py",
+      "tests/test_node_exchange_simulator.py",
+      "docs/LIBRARY_EXCHANGE_SIMULATOR.md"
+    ]
+  }
+}

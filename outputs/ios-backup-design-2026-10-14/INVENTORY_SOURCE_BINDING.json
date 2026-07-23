@@ -1,0 +1,98 @@
+{
+  "source_head": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "source_tree": "1a29b34e9f32df9cbd180d7775836bded3247017",
+  "origin_main": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "origin_main_tree": "1a29b34e9f32df9cbd180d7775836bded3247017",
+  "source_clean": true,
+  "scope": "read-only inventory; no tests or implementation claimed",
+  "files": {
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/queue.ts": {
+      "bytes": 15180,
+      "sha256": "ce389c528acdfce3cb75acab1bfd55d615f3cf5ba8104130a8813ec6cd889f31"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/types.ts": {
+      "bytes": 1915,
+      "sha256": "15ab78d37d2d7edb8703553b825344cc2a2f6cbf193bbbd1af671a0fd2db7ebb"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/library.ts": {
+      "bytes": 2938,
+      "sha256": "d9ab1c2c46656e1325ee44b645fb9160d95b9b10773870cf73180fe19f184f16"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/supabase.ts": {
+      "bytes": 17613,
+      "sha256": "ab953f710703d675d9d3138227dcf840f3c6c51eec0c65d360932630340d3197"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/sync.ts": {
+      "bytes": 5847,
+      "sha256": "8e7bb7a073060c882cda08a04214e1ed69be4b85d0623d00c74d81bf67018c9c"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/syncReminder.ts": {
+      "bytes": 15754,
+      "sha256": "f118a3ff7cfdcb2489b4cda1df0e33a029d63bab778b45a68926c883972259d3"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/platform/camera.ts": {
+      "bytes": 4859,
+      "sha256": "33b5e2a6bbf61c2bd537a4ff7b0973adb959a37a50ed5e51d4cc51234836f4df"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/platform/notifications.ts": {
+      "bytes": 5850,
+      "sha256": "696c89be417cc8dfac6466f6f163b7aaff7eb84143c43200c1a793e8ed05787f"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/platform/types.ts": {
+      "bytes": 2639,
+      "sha256": "44289e71e53301054297ad594645bf18cddb1e0626328eec12867b46d0fffb86"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/src/platform/index.ts": {
+      "bytes": 3584,
+      "sha256": "f5d1903df16286dc3d9a6d565ffcd62b2af89388e84f1a4e9305c4c53aa10f83"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/package.json": {
+      "bytes": 1081,
+      "sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/pnpm-lock.yaml": {
+      "bytes": 225620,
+      "sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/capacitor.config.ts": {
+      "bytes": 1112,
+      "sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/docs/SPEC.md": {
+      "bytes": 154642,
+      "sha256": "a48e6276134fd610b254784ee7e5dc555d3263d83bfbe588c2ab3b2541e3182b"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/docs/BUILD_ORDER.md": {
+      "bytes": 84201,
+      "sha256": "bb7d34c6e0ce08c74bd53f4ac92116f60efe09aad83111e565fcdc8d1ac2c970"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/docs/APP_STORE.md": {
+      "bytes": 22534,
+      "sha256": "bc5be716c7cb6365defafa70db9546741ec0b5e27e6d46b38ff7e33da2e1d411"
+    },
+    "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/docs/legal/PRIVACY.md": {
+      "bytes": 19461,
+      "sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a"
+    },
+    "/private/tmp/gsip-ios-storage-inventory-qa997fc1/filesystem/IONFilesystemLib/IONFILEManager.swift": {
+      "bytes": 15865,
+      "sha256": "0d59a711c547b26f9d16b9743142c32087b94b40ee4f530665b1b76434c1a084"
+    },
+    "/private/tmp/gsip-ios-storage-inventory-qa997fc1/camera/Sources/IONCameraLib/IONCAMRFlowBehaviour.swift": {
+      "bytes": 18686,
+      "sha256": "5444e8519b40b9798f643ad5043322ec77ec6ce05a9f9f2c6ad9edfcee95d729"
+    },
+    "/private/tmp/gsip-ios-storage-inventory-qa997fc1/camera/Sources/IONCameraLib/Interfaces/Extensions/URL+Transformations.swift": {
+      "bytes": 2770,
+      "sha256": "4026b77b0196e9843c22648f5d0f12defc07c43826a2ad5b8e7725bff7f84dee"
+    },
+    "/private/tmp/gsip-ios-storage-inventory-qa997fc1/camera/Sources/IONCameraLib/Interfaces/Extensions/Data+Transformations.swift": {
+      "bytes": 1031,
+      "sha256": "53940fcee8eb0d0709e7fadd747bee11a8c0e8f72b5cbfeb35d26269c2cf8527"
+    },
+    "/private/tmp/gsip-ios-storage-inventory-qa997fc1/IOS_PRIVATE_STORAGE_INVENTORY.md": {
+      "bytes": 15287,
+      "sha256": "c007530c92305a3df0cf1443711e5a8d2df207abb5a3c59c22bdd6f2a6a45baf"
+    }
+  }
+}

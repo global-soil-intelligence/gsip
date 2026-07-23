@@ -1,0 +1,29 @@
+[
+  {
+    "command": [
+      "pnpm",
+      "lint"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 3.27,
+    "log": "../library-landing-v9-2026-10-13/lib5a-root-js-0.log"
+  },
+  {
+    "command": [
+      "pnpm",
+      "typecheck"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 2.63,
+    "log": "../library-landing-v9-2026-10-13/lib5a-root-js-1.log"
+  },
+  {
+    "command": [
+      "pnpm",
+      "test"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 7.13,
+    "log": "../library-landing-v9-2026-10-13/lib5a-root-js-2.log"
+  }
+]

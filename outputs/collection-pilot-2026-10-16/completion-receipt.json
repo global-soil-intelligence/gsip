@@ -1,0 +1,276 @@
+{
+  "version": "gsip-collect2-source-completion-v1",
+  "verified_at_utc": "2026-10-16 23:41:21 UTC",
+  "status": "SOURCE_COMPLETE_CI_GREEN_ACTIVATION_HELD",
+  "ordered_merges": [
+    {
+      "pr": 79,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/79",
+      "head": "57c5a1033a807855da19507588c259012fcdbd9c",
+      "merge_commit": "36fb8cc83248233f0bb0a71628c7ab5ddc923351",
+      "merged_at": "2026-10-16T22:43:56Z"
+    },
+    {
+      "pr": 81,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/81",
+      "head": "3d27077277374fcf2f7bc2411401dd16b6186462",
+      "merge_commit": "0d90167ed464eac5ad4cb55767bbe2414fb111b4",
+      "merged_at": "2026-10-16T22:44:38Z"
+    }
+  ],
+  "open_prs": [
+    {
+      "pr": 83,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/83",
+      "head": "69b57a99c8e4b250b120a12824a377b255a94f98",
+      "base": "main",
+      "state": "open",
+      "merged": false,
+      "final_evidence_present": true
+    },
+    {
+      "pr": 84,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/84",
+      "head": "273ba98704343339c174a31124b887e19ead3dca",
+      "base": "docs/spec-v15",
+      "state": "open",
+      "merged": false,
+      "final_evidence_present": true
+    }
+  ],
+  "workflows": {
+    "spec": [
+      {
+        "id": 38978427245,
+        "name": "DCO",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 189,
+        "jobs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38978427245/jobs",
+        "logs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38978427245/logs",
+        "workflow_id": 371718024
+      },
+      {
+        "id": 38978427219,
+        "name": "Secret scan",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 419,
+        "jobs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38978427219/jobs",
+        "logs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38978427219/logs",
+        "workflow_id": 371718011
+      },
+      {
+        "id": 38978427238,
+        "name": "CI",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 290,
+        "jobs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38978427238/jobs",
+        "logs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38978427238/logs",
+        "workflow_id": 318365326
+      }
+    ],
+    "implementation": [
+      {
+        "id": 38981525844,
+        "name": "DCO",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 190,
+        "jobs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38981525844/jobs",
+        "logs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38981525844/logs",
+        "workflow_id": 371718024
+      },
+      {
+        "id": 38981525901,
+        "name": "Secret scan",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 421,
+        "jobs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38981525901/jobs",
+        "logs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38981525901/logs",
+        "workflow_id": 371718011
+      },
+      {
+        "id": 38981525934,
+        "name": "App build",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 71,
+        "jobs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38981525934/jobs",
+        "logs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38981525934/logs",
+        "workflow_id": 381647102
+      },
+      {
+        "id": 38981525926,
+        "name": "CI",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 291,
+        "jobs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38981525926/jobs",
+        "logs_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/runs/38981525926/logs",
+        "workflow_id": 318365326
+      }
+    ]
+  },
+  "local_verification": {
+    "javascript_tests": 689,
+    "capture_tests": 332,
+    "python_passed": 2162,
+    "python_skipped": 35,
+    "python_collected": 2197,
+    "ruff": "PASS",
+    "mypy_source_files": 83,
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "closed_web_and_native_web_build": "PASS",
+    "map_budget_bytes": 2196657,
+    "map_budget_limit": 5242880,
+    "site_budget_bytes": 319785,
+    "site_budget_limit": 716800,
+    "browser_matrix": {
+      "desktop_chromium_and_emulated_android_iphone": 48,
+      "passed": 48
+    },
+    "isolated_sql_roles": 632,
+    "populated_migration_assertions": 61,
+    "concurrency_scenarios": 43,
+    "gitleaks_version": "8.21.2",
+    "gitleaks_full_history_commits": 181,
+    "gitleaks_findings": 0,
+    "dependency_lockfiles_changed": false,
+    "scanner_policy_changed": false,
+    "approved_suppressions_changed": false
+  },
+  "hosted_verification": {
+    "validate": "SUCCESS",
+    "android": "SUCCESS",
+    "ios": "SUCCESS",
+    "secret_scans": "SUCCESS",
+    "dco": "SKIPPED_UNCHANGED_POLICY_NOT_AGENT_CERTIFICATION",
+    "python_passed": 2166,
+    "python_skipped": 31,
+    "skip_scope": "Existing opt-in verified-real-Gradle controls",
+    "browser_desktop": 16,
+    "browser_invited_phone_engines": 4,
+    "sql_role_assertions": 632,
+    "migration_assertions": 61,
+    "concurrency": [
+      {
+        "production_access": false,
+        "scenarios": 12,
+        "passed": true
+      },
+      {
+        "production_access": false,
+        "scenarios": 31,
+        "passed": true
+      }
+    ],
+    "summary_lines": [
+      "2026-10-16T23:29:57.6623237Z   16 passed (25.7s)",
+      "2026-10-16T23:30:26.8283121Z   4 passed (28.1s)",
+      "2026-10-16T23:34:08.7838530Z 2166 passed, 31 skipped, 37 warnings in 207.09s (0:03:27)",
+      "2026-10-16T23:34:19.6608231Z wp6e_provenance.test.sql: 13/13 ok",
+      "2026-10-16T23:34:19.7629680Z wp6fa_photo_privacy.test.sql: 19/19 ok",
+      "2026-10-16T23:34:19.8676797Z wp_collect2_invited_pilot.test.sql: 16/16 ok",
+      "2026-10-16T23:34:19.9660520Z wp_lib4_private_intake.test.sql: 13/13 ok",
+      "2026-10-16T23:37:51.4612175Z Files=12, Tests=632,  3 wallclock secs ( 0.10 usr  0.03 sys +  0.13 cusr  0.09 csys =  0.35 CPU)",
+      "2026-10-16T23:37:51.4613793Z Result: PASS"
+    ]
+  },
+  "artifacts": [
+    {
+      "id": 12082075116,
+      "name": "gsip-capture-android-debug",
+      "size_in_bytes": 29125224,
+      "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12082075116",
+      "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12082075116/zip",
+      "expired": false,
+      "created_at": "2026-10-16T23:34:56Z",
+      "expires_at": "2026-10-30T23:34:54Z",
+      "updated_at": "2026-10-16T23:34:56Z",
+      "digest": "sha256:ec8fda8409ed01676adbb4838aefb3ad4f394b354b1fadc4a4165dfcdef1f45b",
+      "workflow_run": {
+        "id": 38981525934,
+        "repository_id": 1308971325,
+        "head_repository_id": 1308971325,
+        "head_branch": "wp-collect-2-invited-browser-pilot",
+        "head_sha": "273ba98704343339c174a31124b887e19ead3dca"
+      }
+    },
+    {
+      "id": 12080949345,
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 13920118,
+      "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12080949345",
+      "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12080949345/zip",
+      "expired": false,
+      "created_at": "2026-10-16T23:30:08Z",
+      "expires_at": "2026-10-30T23:30:06Z",
+      "updated_at": "2026-10-16T23:30:08Z",
+      "digest": "sha256:82543e2c0c9c365c143fcdfe10b549b4f031335e07f869ce98bf8b7470e1a407",
+      "workflow_run": {
+        "id": 38981525934,
+        "repository_id": 1308971325,
+        "head_repository_id": 1308971325,
+        "head_branch": "wp-collect-2-invited-browser-pilot",
+        "head_sha": "273ba98704343339c174a31124b887e19ead3dca"
+      }
+    }
+  ],
+  "production": {
+    "changes_performed": false,
+    "migrations_performed": false,
+    "accounts_or_invitations_created": false,
+    "worker_dispatches": false,
+    "deployments": false,
+    "canonical_invited_artifact_built": false,
+    "live_public_capture_flag": false,
+    "live_public_library_flag": false,
+    "live_evidence_file": "live-activation-readback.json",
+    "merge_triggered_pages_runs_cancelled": [
+      38977484136,
+      38977553323
+    ],
+    "last_successful_pages_run": 38895620835,
+    "production_project": "toxldjgwkxtneoqsazym",
+    "baseline_refresh_not_performed_for_this_source_closeout": true
+  },
+  "independent_review": {
+    "status": "NO_OPEN_MATERIAL_FINDINGS",
+    "export_and_artifact_tests": 85,
+    "frontend_tests": 96,
+    "db_review": "Separate nonauthor cross-review completed",
+    "receipts": [
+      "../collection-readiness-2026-10-16/collect2-db-verification.json",
+      "../collection-readiness-2026-10-16/independent-cross-review.json"
+    ]
+  },
+  "post_review_changes": [
+    "Refuse omitted export scope before artifact construction",
+    "Preserve and inventory the real site's XML sitemap",
+    "Fence admission, account switching, queue generations and rights callbacks",
+    "Truthfully distinguish unused Auth accounts and support owner deletion fallback",
+    "Preserve confirmed server requests through local cleanup failure and allow warning recovery",
+    "Discard old-account MySoil results and suppress pilot publication/account-creation promises",
+    "Use explicitly synthetic iOS audit unit fixtures without renewing sealed historical source/device acceptance"
+  ],
+  "held_acceptance": [
+    "Review spec83 then implementation84; no further merge authority",
+    "Fresh production target/counts/advisors/Storage/Auth/worker evidence",
+    "Three pending source migrations require a fresh dry-run and separate exact-command go",
+    "Owner-adopted notices/version, working organizer/privacy contact and cohort bounds",
+    "Existing-account/invitation enrollment requires separate owner go",
+    "Canonical artifact preparation and any deployment/activation require separate owner go",
+    "Actual consenting-participant physical-phone, mail-delivery, hosted cleanup and rights rehearsal",
+    "Native storage/backup/signing/store, original spectra/lab-file intake, pairing verification, field training and public publication remain separate"
+  ],
+  "assumptions": [
+    "Invited adult browser source scope was selected by the owner",
+    "No new paid/closed service, dependency or licence change was authorized or introduced",
+    "Outside counsel is not a collection prerequisite; consent/privacy/rights and factual owner-adopted notices remain",
+    "Synthetic browser tests and CI builds do not establish production or physical-device acceptance"
+  ]
+}

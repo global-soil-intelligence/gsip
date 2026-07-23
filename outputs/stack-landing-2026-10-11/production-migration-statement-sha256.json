@@ -1,0 +1,96 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "scope": "Historical migration statement digests only; no SQL statement contents read back",
+  "migrations": [
+    {
+      "version": "20260722164727",
+      "name": "wp1_extensions",
+      "statement_sha256": "91018b282efcfb446bb4536a908a8c47e06fbca1782dd75f3d6cd612ea1e2668"
+    },
+    {
+      "version": "20260722164749",
+      "name": "wp1_schema",
+      "statement_sha256": "6d9e15125cc08e534d69095c97ed2e0516e7d3872d0951ea005f5340caec91b3"
+    },
+    {
+      "version": "20260722164806",
+      "name": "wp1_rls",
+      "statement_sha256": "01b14c6a07b1236baea977685b20524e938224867dad06d84c13f41a1d95b169"
+    },
+    {
+      "version": "20260722170020",
+      "name": "wp1_review_hardening",
+      "statement_sha256": "25ee487a13947d9f68a692b87aef989ce52279fa1a8327dbeeed6a27892afad2"
+    },
+    {
+      "version": "20260722182403",
+      "name": "wp1_v22_privacy_and_grants",
+      "statement_sha256": "86213d751d8df64404a5aaea332f7ea93d996716f569bfa036aca9f8812e34ff"
+    },
+    {
+      "version": "20260722182446",
+      "name": "wp1_performance_indexes",
+      "statement_sha256": "4b321dcb16f00cc38545ffc6ac95f286ee747494128947f2bd9ed54c341acff7"
+    },
+    {
+      "version": "20260722190912",
+      "name": "wp4_prior_jobs",
+      "statement_sha256": "430b0c9064e6d075197d755d661bf00e345faff49b4e8e9db59de13253fa2358"
+    },
+    {
+      "version": "20260722191140",
+      "name": "wp4_prior_jobs_hardening",
+      "statement_sha256": "8160abac06009fdf3eab8d9f38b1e4add8330995dd274014a85182eb8e44249c"
+    },
+    {
+      "version": "20260722191802",
+      "name": "wp4b_photo_qa",
+      "statement_sha256": "4d79aaa6fdc1a7401a1314deacac61550a7c1656f9450a3be5d86eb6bc0b2148"
+    },
+    {
+      "version": "20260722194033",
+      "name": "wp6_export_guardrails",
+      "statement_sha256": "c6d491d01686ee2e293b98ccd84e074e96603d4b9d0a8ceaef239e1cb004233f"
+    },
+    {
+      "version": "20260723011122",
+      "name": "phase1_actor_hardening",
+      "statement_sha256": "83949135146761ca5df729dcc8b0be022de2b06cf5ee4138e2f233c3e0898fef"
+    },
+    {
+      "version": "20260723011144",
+      "name": "qa_event_provenance",
+      "statement_sha256": "1d48dbf62d31fd5aac9319dab8e630485a9652a31c970626232c76b1f3d61d87"
+    },
+    {
+      "version": "20260723011159",
+      "name": "public_h3_aggregates",
+      "statement_sha256": "14e066cd8b27fa2046f890cb3660661ceb9ef57030d6ee2a8d8370f115020e76"
+    },
+    {
+      "version": "20260723011219",
+      "name": "atomic_public_h3_refresh",
+      "statement_sha256": "82ebc0de1d1cc7e02a2319c9b2e07e2250dd04886ffeea4b256c6d6e67782bd6"
+    },
+    {
+      "version": "20260723050851",
+      "name": "atomic_prior_attempt_claim",
+      "statement_sha256": "1e3251f3963aa18efcfac3e10770674e8f03e846c1a07abb2222dd0b02b9b8ab"
+    },
+    {
+      "version": "20260723050903",
+      "name": "document_authenticated_h3_role",
+      "statement_sha256": "6ce93e1e4dfd6f7b2e3410b8db352f089cb7c9bf142ad086f71662a1e574d888"
+    },
+    {
+      "version": "20260723050918",
+      "name": "remove_public_submission_residue",
+      "statement_sha256": "4f7b36dc1284cdc822fa84e93f9291a5a76707da7ff7d0f3281a4266175a06ad"
+    },
+    {
+      "version": "20260730174047",
+      "name": "wavefunction_beta_schema",
+      "statement_sha256": "b9f784b1377dcd4773065dd1840fc17643281b744c1bc8639b2a197ecb3143a8"
+    }
+  ]
+}

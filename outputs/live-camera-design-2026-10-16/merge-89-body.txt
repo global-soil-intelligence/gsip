@@ -1,0 +1,5 @@
+Owner approved #89 and the reviewed source-build sequence with "go" after the green exact-head design review.
+
+Merge the approved design only. Production, Pages, capture, library uploads and real-device/camera qualification remain held. COLLECT-4A source is next; COLLECT-4B follows its reviewed/green/merged prerequisite. This merge supplies no human DCO certification.
+
+Co-Authored-By: Codex <codex@openai.com>

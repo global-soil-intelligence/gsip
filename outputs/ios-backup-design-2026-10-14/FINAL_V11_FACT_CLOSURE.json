@@ -1,0 +1,34 @@
+{
+  "reviewed_at_utc": "2026-10-14T11:31:40.230117+00:00",
+  "scope": "Final primary-source fact accuracy only; no implementation/behavior or device acceptance claim",
+  "source_manifest_sha256": "67de0de8f45f45894958275b6683917e15888052274fedfed6f4bb79cc3f7be4",
+  "reviewed_source_files": [
+    {
+      "path": "docs/IOS_PRIVATE_STORAGE.md",
+      "sha256": "dd9947196df59cdd52ddd6c1d8138120093b0439343c8258a9f21b75e71a0611",
+      "bytes": 15598,
+      "mode": "0o644"
+    },
+    {
+      "path": "docs/SPEC.md",
+      "sha256": "00d1c36f91c8cb0b4fb056a173b9243efb0270063a067d50d4a4580ef8c82fdb",
+      "bytes": 159168,
+      "mode": "0o644"
+    },
+    {
+      "path": "docs/BUILD_ORDER.md",
+      "sha256": "bcd494f48a9e80987aeb5af4dca37c86599aa9a03df2d5583d6e91c0f4bbe6cb",
+      "bytes": 89347,
+      "mode": "0o644"
+    }
+  ],
+  "primary_evidence_receipt_sha256": "ef8048b59591589267a2cee7798b655cdfe2ff902180075b8e7e6f4037325fe0",
+  "exact_public_source_supplement_sha256": "568dcad2dc80cfbb00490635af23c406794a67a1a03bfdb4afd17d6793723994",
+  "findings": [],
+  "conclusion": "No blocking factual finding in IOS_PRIVATE_STORAGE.md, SPEC15.10 or new APP2C1/2/3 sequence. Claims distinguish observed generated resolution from tracked version lock, source facts from device outcomes, logical deletion from physical erasure, audited cookie surface from observed leakage and temporary photo outputs from Documents. Atomic transaction/backend capabilities are requirements, not provided capabilities. Restore/account/server-rights fences are prospective held implementation acceptance. No backend, native exception, deployment or capture authority selected.",
+  "limitations": [
+    "Supabase adapter/legacy key facts additionally checked against installed exact auth-js2.117.2 source; no live SDK or user/session read",
+    "No policy tests, build, native runtime, signing, device, backup/restore experiment or production operation executed",
+    "This closure reviews only facts, not the test harness, whole manifest source isolation or future mechanism feasibility"
+  ]
+}

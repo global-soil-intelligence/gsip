@@ -1,0 +1,80 @@
+[
+  {
+    "pr": 28,
+    "sha": "517bc1d13118b09d5c8c02973e9e8f04744e13a0",
+    "message": "Merge pull request #28 from global-soil-intelligence/docs/spec-v3\n\ndocs: GSIP spec v3.0 for humans and agents\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 29,
+    "sha": "55d89764375bacaebfcb49662826bc3e6bc2bdb4",
+    "message": "Merge pull request #29 from global-soil-intelligence/wp-6b-launch-hardening\n\nfeat(wp-6b): harden ingest, QA and release integrity for launch\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 30,
+    "sha": "f84f8464c5dee21d68e0b362ebc64c50c3cbf412",
+    "message": "Merge pull request #30 from global-soil-intelligence/wp-6c-priors-and-tiles\n\nfeat(wp-6c): fair-use priors at cell centres and palette-driven tiles\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 31,
+    "sha": "acf10eb41d22c043ffa6f8b6b9af6c1815e96138",
+    "message": "Merge pull request #31 from global-soil-intelligence/wp-6d-contributor-rights\n\nfeat(wp-6d): contributor rights, attribution review and legal pack drafts\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 32,
+    "sha": "7449070d25111340d8c8200bfda38c5735052fb8",
+    "message": "Merge pull request #32 from global-soil-intelligence/wp-6e-provenance\n\nfeat(wp-6e): provenance foundation, actors, terms versions and holdout\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 33,
+    "sha": "02c2ccb91ad8da1e4a6f7325cb2e9087e93b4efc",
+    "message": "Merge pull request #33 from global-soil-intelligence/wp-agent-1-read-api\n\nfeat(wp-agent-1): public read API, MCP server and an agent-readable site\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 34,
+    "sha": "766423725819e77bfc7fa114b8a28f52974f3bb0",
+    "message": "Merge pull request #34 from global-soil-intelligence/wp-app-1-phone-app\n\nfeat(wp-app-1): GSIP phone app with native camera, location and My Soil\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 35,
+    "sha": "e72ecd1901c676da249ae39fe14b6f57f5268eb4",
+    "message": "Merge pull request #35 from global-soil-intelligence/wp-3b-sync-lock\n\nfix(wp-3b): coordinate queue drains across browser tabs\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 36,
+    "sha": "0bde5e7529580b9bbb389070aa824ce853ebc874",
+    "message": "Merge pull request #36 from global-soil-intelligence/wp-agent-0-coding-guidance\n\ndocs(wp-agent-0): add root guidance for coding agents\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 37,
+    "sha": "7f017dc68c58021dd7a8f227d61a9fa2adc386a1",
+    "message": "Merge pull request #37 from global-soil-intelligence/wp-site-1e-tile-host-policy\n\ndocs(wp-site-1e): record conditional same-origin tile hosting\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 38,
+    "sha": "3cdd8c238399c138655feedb997b72d6c40186cf",
+    "message": "Merge pull request #38 from global-soil-intelligence/docs/spec-v4\n\ndocs: propose GSIP spec v4 app readiness and photo privacy\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 39,
+    "sha": "b42cb67965891265beeb432c4b03171588ea72f6",
+    "message": "Merge pull request #39 from global-soil-intelligence/wp-app-2a-build-readiness\n\nfeat(wp-app-2a): verify CI versions, private backups and repeated builds\n",
+    "codex_trailer_present": false
+  },
+  {
+    "pr": 40,
+    "sha": "665506fd7a2e4d972bb9fe03c4faf0f174c4675b",
+    "message": "Merge pull request #40 from global-soil-intelligence/wp-ops-2-production-reconciliation\n\nchore(wp-ops-2): prepare gated production history reconciliation\n",
+    "codex_trailer_present": false
+  }
+]

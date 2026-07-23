@@ -1,0 +1,70 @@
+{
+  "actual_generated_four_archive_guard_passed": true,
+  "baseline8fails_receipt_sha256": "83b968b6782151a3a3df3f238fb0cdd6c69b4b4ea81eeba131af263fd654c31c",
+  "case_guard4fails_mutation_receipt_sha256": "daa9f005692060827fb5a80b199710cd8e496cef5cb90e7c43170502a2d2545c",
+  "doc_prettier_exit": 0,
+  "files": [
+    {
+      "base_c1_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 118884,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "71425d41f957c8c5bee05acf2f2456b2fae181828f0384914f1e0f7c97864655",
+      "v1_sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071",
+      "v2a_sha256": "327bdee08648e06409fdf64b8002cab29e072924eb8907b7b02b06bfbdc6e74a"
+    },
+    {
+      "base_c1_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 161005,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "e2fd5781cfc7169216cfb2bf2b3256137861fd0dadbb0e3a5a80fbb148be10ef",
+      "v1_sha256": "de89652a0f0bb814ee68c7cc25f5bcf44db35e3440e7805e39c8a427b3c10450",
+      "v2a_sha256": "122be6455c090a867a462e2cbab167b381a2b659111d32073531b4faec00e186"
+    },
+    {
+      "base_c1_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 26096,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "ca0736fb18669534ffd7ef661c44f2c28968d483eebee31a5f19aea7a15cef76",
+      "v1_sha256": "fdd8ddf980f2a1f565ff8c658809bf31c6620deebbd90272fb6605690435fb79",
+      "v2a_sha256": "e1b7c073d28befd29237b6a9a3efa09ef7f9687f60347520762f8b8539a7d041"
+    }
+  ],
+  "focused": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 42,
+    "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/cordova-v2b-focused.xml",
+    "sha256": "8f0206f299e0dee2a52b3f3c16179c5421cfa3e0fd429373e00cb80e38486f68",
+    "skipped": 0,
+    "tests": 42
+  },
+  "full_native_script_default": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 445,
+    "path": "/private/tmp/gsip-c1-offline-agp-vdg7yngc/cordova-v2b-full.xml",
+    "sha256": "a279fbfba0546bc161aef6df3958b8e24a1aa02e96b7f790a7f4cc75d88daf62",
+    "skipped": 30,
+    "tests": 475
+  },
+  "license_rules_changed": false,
+  "maintained_other_files_edited": false,
+  "manifest_sha256": "16e01ad088d332c1ca39060e688a06f52d4983fc9536ce7958f258325df2a305",
+  "mypy_exit": 0,
+  "native_product_acceptance": false,
+  "parent_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "patches": {
+    "c1": "fba8c4ba7c0164dcb0ec3584ac0191b12596522ec67809319c181eee45462af9",
+    "v1": "99231fc3f3e499883a38d68fbfd4e2f9045816013542497b749ce6adf9b51d65",
+    "v2a": "244f87187279d6f076916ab0dec0dbeca9c7757b7419fdb1bfe5d4965cccb02a"
+  },
+  "production_changes": false,
+  "real_gradle_controls_rerun_for_v2b": false,
+  "ruff_exit": 0,
+  "schema": "gsip-native-cordova-frozen-v2b",
+  "standalone_native_library_guard": "SO_CASE_INSENSITIVE_ANY_TREE_LOCATION",
+  "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "v2a_test_prefix_bytes": 160373,
+  "v2a_test_prefix_exact": true,
+  "v2a_test_prefix_sha256": "122be6455c090a867a462e2cbab167b381a2b659111d32073531b4faec00e186"
+}

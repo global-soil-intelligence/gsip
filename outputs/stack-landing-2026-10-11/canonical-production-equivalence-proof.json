@@ -1,0 +1,123 @@
+{
+  "catalog_sections_exact_after_six_literal_alias_substitutions": 10,
+  "supplemental_sections_exact_except_three_platform_schema_grants": 4,
+  "allowed_policy_aliases": [
+    {
+      "table": "photos",
+      "policy": "photos_insert_own",
+      "expression_field": "check"
+    },
+    {
+      "table": "photos",
+      "policy": "photos_select_own",
+      "expression_field": "using"
+    },
+    {
+      "table": "gold_labels",
+      "policy": "gold_labels_select_own",
+      "expression_field": "using"
+    },
+    {
+      "table": "predictions",
+      "policy": "predictions_select_own",
+      "expression_field": "using"
+    },
+    {
+      "table": "priors",
+      "policy": "priors_select_own",
+      "expression_field": "using"
+    },
+    {
+      "table": "qa_events",
+      "policy": "qa_events_select_own",
+      "expression_field": "using"
+    }
+  ],
+  "preserved_platform_extensions": [
+    {
+      "name": "pg_stat_statements",
+      "schema": "extensions",
+      "version": "1.11"
+    },
+    {
+      "name": "supabase_vault",
+      "schema": "vault",
+      "version": "0.3.1"
+    },
+    {
+      "name": "uuid-ossp",
+      "schema": "extensions",
+      "version": "1.1"
+    }
+  ],
+  "preserved_platform_schema_grants": [
+    {
+      "schema": "extensions",
+      "role": "dashboard_user",
+      "privilege": "CREATE",
+      "grantable": false
+    },
+    {
+      "schema": "extensions",
+      "role": "dashboard_user",
+      "privilege": "USAGE",
+      "grantable": false
+    },
+    {
+      "schema": "public",
+      "role": "postgres",
+      "privilege": "USAGE",
+      "grantable": false
+    }
+  ],
+  "status": "PASS",
+  "positive_equivalence_proofs": 1,
+  "negative_controls_rejected": 9,
+  "negative_controls": [
+    {
+      "mutation": "private_anon_grant",
+      "rejected": true
+    },
+    {
+      "mutation": "policy_or_true",
+      "rejected": true
+    },
+    {
+      "mutation": "missing_constraint",
+      "rejected": true
+    },
+    {
+      "mutation": "definer_lookup",
+      "rejected": true
+    },
+    {
+      "mutation": "unknown_extension",
+      "rejected": true
+    },
+    {
+      "mutation": "private_schema_usage",
+      "rejected": true
+    },
+    {
+      "mutation": "function_owner_changed",
+      "rejected": true
+    },
+    {
+      "mutation": "table_owner_changed",
+      "rejected": true
+    },
+    {
+      "mutation": "function_delegation_changed",
+      "rejected": true
+    }
+  ],
+  "input_sha256": {
+    "canonical-catalog-baseline17.json": "83b9702c433bbcd0b37382bc85a61767c262f64d0caefeec4902322929b0ffca",
+    "production-catalog-before-reconciliation.json": "21336e768a3ff4cd36d215cac7fe6d28eb96227514a9ed886cb426b8d844f8ef",
+    "canonical-catalog-baseline17-supplement.json": "dd8bdda47d262ef2e86e1679d55c45de8cdf706e4b3f394272c88997e9a7fb7d",
+    "production-catalog-before-reconciliation-supplement.json": "07b6f9e99f1c154ac8b5f9e0ed9b71fe3dc01e6947aa00ade73aa8c426b04f9b"
+  },
+  "comparator_sha256": "14a7a137aecb16df19fdb0db0ffc5d2383e7ec824405af227bab632973013ae5",
+  "extractor_version": 2,
+  "scope": "Current GSIP catalog equivalence only; no production row contents, historical DML proof, or production mutation"
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "gsip-app2b-core-author-delivery-v4",
+  "status": "CORE19-frozen-for-independent-review-not-approved",
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "file_count": 19,
+  "source_copy": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-core-v4-frozen-pw2xve3h/source",
+  "manifest_sources_match": true,
+  "paths": [
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/app2b-core-v4.patch",
+      "sha256": "6c4005b50953d5b5aabd183eee503b3d94c06ac512bfecd0eb29ca9bb9b74f3e"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/app2b-core-v4-manifest.json",
+      "sha256": "98182ef49b25a473ea367273e5d128e8bb3fc932674d8393e5e16fc3f432cd3f"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/validation-v4-final/core-validation-receipt.json",
+      "sha256": "86aa97c6be229548eb94196acee3e8d08b2bffbc0f73301960ec20ee1071e3b8"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/validation-v4-final/prettier-receipt.json",
+      "sha256": "705cc3ba1d3c8b3111ac484d1a82c53a1a10a8be3365dc0364983f768f3a3eac"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/validation-v4-final/authored-gitleaks-v4-receipt.json",
+      "sha256": "48cf6b950fe37fa4de32d6c1246a9dd7d46c8b4ec25da1dbb97923fd4806ff4a"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/mutation-evidence-v4/receipt.json",
+      "sha256": "ea6ecc39bfc3ac982138ac59c8c5608cbfd7c6e74e665a68a824b076501c7e93"
+    },
+    {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-v4-independent-replay-62zqxe__/receipt.json",
+      "sha256": "feb7f68f856d57a21027cd7c2bb799c1ce67c8cc2f02b36e42e06086f263a2f2"
+    },
+    {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-v4-fail-before-l_opzifw/receipt.json",
+      "sha256": "fa2af7c50b959026cc5398470d40f8133ae5c2cf697fb52afe6f61725ff8ac20"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/core-v4-authored-fail-before-receipt.json",
+      "sha256": "d55874a62f4a3b47403ddb674018a995bd8a3813f847b18c4d62b4882b77e128"
+    }
+  ],
+  "validation": {
+    "capture_tests": 246,
+    "capture_test_files": 24,
+    "permission_build_python_cases": 81,
+    "core_types_lint_language_closed_builds_ruff_mypy": "pass",
+    "core_prettier": "pass",
+    "isolated_negative_guard_mutations": 15,
+    "authored_gitleaks_version": "8.21.2",
+    "authored_gitleaks_leaks": 0,
+    "author_replay_of_independent_probes": 57,
+    "independent_closure_claimed": false
+  },
+  "review_correction": {
+    "id": "APP2B-CORE-P2-4",
+    "change": "Recheck active(expected) synchronously immediately before focusQueue after the final observation await; retain existing fresh-state/epoch condition and OS dispatch/rights semantics.",
+    "independent_fail_before_cases": 2,
+    "authored_fail_before_cases": 2,
+    "authored_positive_active_and_pre_stopped_cases": 2
+  },
+  "previous_findings": "P2-1/2/3 independently resolved on v3 receipt; v4 final-tap correction pending independent closure.",
+  "preserved": {
+    "v1_patch_sha256": "5ff2f2e60d4d1faf01c9c383929a1fa80db58493388266133191aec88671dc64",
+    "v2_patch_sha256": "0cb324f82084cacd65837fbcdd48c28b683312115e795ec2b8839f0f601f5c52",
+    "v3_patch_sha256": "60041ae48c68a8ed66cf2572cbeaea4256247a0e944f10d677c079430b102184",
+    "v3_manifest_sha256": "0a81d9f8e84778167a3d31b786a5554fdf14697a66d794270e5a63923a094c97",
+    "v3_delivery_sha256": "6472556ba3de2df8bbe98eb4ffc64bb698f7433259f3458aa6f9beaa344c4598",
+    "typing_validation_history": "/private/tmp/gsip-app2b-author-lhe_vi2z/validation-v4-type-annotation-history",
+    "typing_mutation_history": "/private/tmp/gsip-app2b-author-lhe_vi2z/mutation-evidence-v4-type-annotation-history"
+  },
+  "native_files_edited_by_core_author": false,
+  "native_audit_included_in_core_patch": false,
+  "limits": [
+    "Independent review of these exact CORE19 bytes is pending.",
+    "Full23/native-v4 independent closure and exact-head CI are separate; this is not complete WP readiness.",
+    "Actual Android/iOS builds and physical notification/backup/reboot checks remain CI/device gates.",
+    "No distributed OS/database atomicity or instant cross-process/remote gate cancellation is promised.",
+    "Already dispatched OS calls cannot be retroactively retracted; scoped cleanup and fresh checks hold uncertainty honestly.",
+    "A never-settling native reply holds its serialized chain until restart; rights fences and server requests do not wait for it."
+  ],
+  "authority": {
+    "git_operations": false,
+    "production_actions": false,
+    "capture_activation": false,
+    "secrets_read_or_changed": false,
+    "further_scan_exception": false
+  }
+}

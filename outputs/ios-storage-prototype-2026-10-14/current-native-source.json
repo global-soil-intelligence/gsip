@@ -1,0 +1,23 @@
+{
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Package.swift": "3618553aecbfca250b4ff6d3e94064a7bae8e2d98d984e945bb67a024ac51ec9",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/ExcludedSQLiteStore.swift": "9f3cc15d22a384be72c727f2a5e3c6ee6b8e7f2b6beb83e687df6458fcb80943",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/KeychainAnchor.swift": "b416c2a2a7360bc4a6e284b7b91574d78e8b524889c0d27c0d3664c12e1667f2",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageContract.swift": "d58dfc213de60afc6ee2451fbce52fef2c7c79e0430eb2a5405f5fd62646f3a9",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageCoordinator.swift": "75de68fa29c9b6977994beb180b18c006b19f3f9c192fb8a49024249bef0335a",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/AssetRequestGate.swift": "c1a0f63ce6d33479e5bd3dff8008b2a33286a9e2559c52ecdf3aead49cba0858",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/BridgeMessageGate.swift": "69d26f6bf497556b530d9a5407bd9b25ece470d4766fe9c1a5e7c39d34eb8749",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/OwnedTemporaryPhotoBroker.swift": "5a3951f8e113273d5c663ccec5657bca8a5151d38a49e325af2f362ea445751a",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeDelegationHandler.swift": "6b2a9cdfa6448754ffc4b7b19ce06cf9207de1b27429947c0ff5a73357ec97c2",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeHostController.swift": "cb0dd5d6950ce44a8401a630e313ef14078dbbc603b38abf26b05bc391cf73eb",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeStorePlugin.swift": "aa3fc0e333b70c6db496c43480de8da97c46214f3afc88c878317b7e110d9b19",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/ExcludedSQLiteStoreTests.swift": "f415d707304581c0e9874e08e4a39ceee2b9aa84d251a9070c263bf25180aab8",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/KeychainAnchorTests.swift": "67c4a1223013d1ae72a05476f6ff2a935e312610d77197528cedd083cdaf3a9b",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/NativeTestDoubles.swift": "5a11607af4b2a407e919418cc177a79da4a44d99ee566a9f0a5c4dec2755c53b",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/StorageCoordinatorTests.swift": "ed9f8253263fab07e873230a806bd66df9e35a5380de80d990eb14cdbf1dedd0",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/AssetRequestGateTests.swift": "4220f7e518e55d5d3c6f0e05c664c9216eb5d4697fe35c8ce26f93e818e57bd1",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/BridgeMessageGateTests.swift": "65acc85752144c5bfb7e223eb1b2d24f89a57986863560a14e28cd60eb30d962",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/OwnedTemporaryPhotoBrokerTests.swift": "aa109c1aaeaea858ab5b51a1b0a2b515e4e9b724e335ea851c81b6edd18f9c3c",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeDelegationHandlerTests.swift": "897471db693bdcedf964f06f6d81aded76ff70b46d3f3394255b3f77e37327e5",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeHostControllerTests.swift": "ffa944ae689502eac1ebe76d9b6217780e82fd2d58d70358b723a3150fa64027",
+  "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeStorePluginTests.swift": "36ad2336fa80441dbb15c8ca5545d4ea46cff3f948fdf4ab5a5356316096afa3"
+}

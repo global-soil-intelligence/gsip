@@ -1,0 +1,56 @@
+{
+  "utc": "2026-10-13T23:58:41.429959+00:00",
+  "head": "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d",
+  "parent": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "files": [
+    {
+      "base_c1_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 125844,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "v2b_sha256": "71425d41f957c8c5bee05acf2f2456b2fae181828f0384914f1e0f7c97864655",
+      "v3_sha256": "32a888e72f22dc160f244179701509baccf8cc04acb66e9ef0df70a8d7708bf4"
+    },
+    {
+      "base_c1_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 185334,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+      "v2b_sha256": "e2fd5781cfc7169216cfb2bf2b3256137861fd0dadbb0e3a5a80fbb148be10ef",
+      "v3_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3"
+    },
+    {
+      "base_c1_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 31897,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164",
+      "v2b_sha256": "ca0736fb18669534ffd7ef661c44f2c28968d483eebee31a5f19aea7a15cef76",
+      "v3_sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164"
+    },
+    {
+      "path": "docs/legal/PRIVACY.md",
+      "bytes": 19461,
+      "sha256": "03f1ec472523b84dd83183effefeafdfd6a69819ca384056637563dfb3f8df9a",
+      "base_c1_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00"
+    }
+  ],
+  "proof_bindings": {
+    "APP2B_ROOT_FINAL_FOUR_FILE_STAGING.json": "a7178fe999e15753ac2e608bc3ae01bc8eec7dd75ce09b541c7b87ad5d345a7c",
+    "APP2B_ROOT_REVIEWED_NATIVE_V3_STATIC_CHECKS.json": "47faa7777d4ecc41130e4688e37845d221ef6cd2af6314a9f4e262a375a141df",
+    "APP2B_ROOT_REVIEWED_NATIVE_V3_XML_INITIAL_FAILURE.json": "5d5e67d31449d76699da0dd0bd403b2e3159a16def264e6983387dc5f8d03be3",
+    "APP2B_ROOT_PRIVACY_GATE_REMEDIATION.json": "b371f5b78c5e1c41eb8d4af11ca7fe3b18e724cee4e90c61181dad496414b647",
+    "APP2B_ROOT_FINAL_FOUR_AUTHORED_SCAN.json": "a3f6ca0099d48cf897518ef1c3f613aac587cf2c762e39d879633e03c3be0426",
+    "APP2B_EMPTY_CORDOVA_INDEPENDENT_CLOSURE.json": "2a994038a516ba5bc7ac03818296c282e81099e8f869287ba0e4c1df9f7ebd87",
+    "APP2B_REVIEWED_NATIVE_V3A_CLASSIFICATION_CLOSURE.json": "1e11ec2c4fab261c0e2c94c70dd9695754e40acc5776a364703b75a4dc648316",
+    "APP2B_REVIEWED_NATIVE_V3A_ACTUAL_COLLECTORS_CLOSURE.json": "da4309e66bbddcdc553680c7ec72a13ec7fd32f740c202b5f8715e2ff42ce352",
+    "APP2B_PRIVACY_REFERENCE_HOSTS_INDEPENDENT_CLOSURE.json": "f8e3cd0fc1474f8db1dc20c5fe01cbad1dc1c7d6e2adf1b62a42e381f04c82c5"
+  },
+  "full_local_initial_result": "1707 pass/1 documented privacy-host failure/4 GDAL skips; all30 actual Gradle controls pass",
+  "privacy_remediation": "six existing checks pass; code/test rules unchanged",
+  "native_acceptance": false,
+  "source_review_closed": true,
+  "commit_metadata": "Conventional commit with Codex coauthor; no human DCO certification",
+  "remote_not_yet_pushed": true,
+  "description_prefix_sha256": "318c375f12b1435b3d5776cf3ce3b52852dfdd399e7ca6ca4e10d11b719c3196",
+  "production_changes": false
+}

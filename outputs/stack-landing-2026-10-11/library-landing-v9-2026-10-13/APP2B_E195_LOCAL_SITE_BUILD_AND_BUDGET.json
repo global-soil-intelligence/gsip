@@ -1,0 +1,28 @@
+{
+  "utc": "2026-10-14T01:22:09.702847+00:00",
+  "head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "checks": [
+    {
+      "name": "site_build",
+      "exit_code": 0,
+      "seconds": 1.075,
+      "output_sha256": "71398381441405655cc1c1b9b169d5dbe0e0fdfcf87506aa51830c733a8fd3b1",
+      "output_bytes": 909,
+      "output_file": "app2b-e195-local-site_build.txt"
+    },
+    {
+      "name": "site_budget",
+      "exit_code": 0,
+      "seconds": 0.332,
+      "output_sha256": "c97744284493c4c8ea9cb14af271aa0a393fab9f824fd9e948291e295f983c1e",
+      "output_bytes": 91,
+      "output_file": "app2b-e195-local-site_budget.txt"
+    }
+  ],
+  "all_pass": true,
+  "capture_live": false,
+  "library_intake_live": false,
+  "tracked_source_unchanged": true,
+  "deployment": false,
+  "production_changes": false
+}

@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-13T20:24:38.833137+00:00",
+  "head": "77582b1269cb27d011b5d217996d8c863123f044",
+  "parent": "1deb13d193702ac1e759def3ed7dcfa777f9e2b5",
+  "immediate_pr_head": "77582b1269cb27d011b5d217996d8c863123f044",
+  "description_prefix_preserved": true,
+  "body_sha256": "3edd12845bdfcbfa43166076d816e9d4ee9ce809c59a9260be998d2308444a06",
+  "review_sha256": "1d352be761329dc99911fc23cc01ea4445f4f6394940fccaac6b59a56fbbfa36",
+  "local_python_passed": 1521,
+  "local_GDAL_skips": 4,
+  "full_history_leaks": 0,
+  "source_only": true
+}

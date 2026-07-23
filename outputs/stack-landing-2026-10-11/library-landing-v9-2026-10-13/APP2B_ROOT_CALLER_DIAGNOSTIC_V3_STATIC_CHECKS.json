@@ -1,0 +1,51 @@
+{
+  "utc": "2026-10-14T01:00:06.393988+00:00",
+  "source_helper_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+  "checks": [
+    {
+      "check": "ruff",
+      "exit_code": 0,
+      "seconds": 0.083,
+      "output_file": "app2b-root-caller-diagnostic-v3-ruff.txt",
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "output_bytes": 19
+    },
+    {
+      "check": "mypy",
+      "exit_code": 0,
+      "seconds": 0.563,
+      "output_file": "app2b-root-caller-diagnostic-v3-mypy.txt",
+      "output_sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c",
+      "output_bytes": 44
+    },
+    {
+      "check": "lint",
+      "exit_code": 0,
+      "seconds": 3.801,
+      "output_file": "app2b-root-caller-diagnostic-v3-lint.txt",
+      "output_sha256": "8185ff7bbf60b066e20260e56c4a3fd10de339d2124fc13559b612a19578a977",
+      "output_bytes": 134
+    },
+    {
+      "check": "language",
+      "exit_code": 0,
+      "seconds": 0.031,
+      "output_file": "app2b-root-caller-diagnostic-v3-language.txt",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0
+    },
+    {
+      "check": "diff",
+      "exit_code": 0,
+      "seconds": 0.028,
+      "output_file": "app2b-root-caller-diagnostic-v3-diff.txt",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0
+    }
+  ],
+  "all_pass": true,
+  "unchanged_real_gradle_cases_deselected": false,
+  "real_gradle_task_changed": false,
+  "previous_real_30_execution": "APP2B_ROOT_REVIEWED_NATIVE_V3_PYTHON_CHECKS.json",
+  "production_changes": false
+}

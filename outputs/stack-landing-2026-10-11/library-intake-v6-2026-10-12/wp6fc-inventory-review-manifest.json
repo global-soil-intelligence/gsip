@@ -1,0 +1,13 @@
+{
+  "snapshot": "/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-wp6fc-export-kq5rdn4g",
+  "base": "e98bdb9b806c4bb126b550ddd1376f427ed00cdc",
+  "files": {
+    "pipeline/export.py": "a39ae3f7c2fab8785c05d8fdb4c17f80bc5040b5d31fb667a825e21cca241a88",
+    "pipeline/photo_export_privacy.py": "53655a2ccc8f89c942ea4630ff827c9e0d10ded7755c9d684c85672fc60e621e",
+    "tests/test_export.py": "402d9767fef1fa31e96d532cd324646f94087150e5722875cce9d9fef3e0217e",
+    "tests/test_photo_export_privacy.py": "ae293da426a527056fb7cb5350d4ed5ee2727abdfed9dc4cc0cb627cbf7c0e30"
+  },
+  "gitleaks_version": "8.21.2",
+  "gitleaks_exit": 0,
+  "scope": "Four authored files only; no network or publication"
+}

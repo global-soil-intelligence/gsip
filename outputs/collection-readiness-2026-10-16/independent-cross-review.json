@@ -1,0 +1,80 @@
+{
+  "version": "gsip-collect2-independent-cross-review-v1",
+  "reviewer": "/root/site_library_review",
+  "recorded_at_utc": "2026-10-16T23:26:39.958437+00:00",
+  "worktree": "/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0",
+  "base_head_at_review": "69b57a99c8e4b250b120a12824a377b255a94f98",
+  "scope": [
+    "Frontend account identity and asynchronous cleanup",
+    "Closed default and rights-only capability separation",
+    "Export classification and publication refusal",
+    "Separate invited artifact build/receipt contract"
+  ],
+  "status": "no_open_material_findings",
+  "resolved_findings": [
+    "Omitted export collection_scope now fails closed; trusted synthetic fixtures explicitly mark legacy.",
+    "Artifact packaging explicitly permits the actual closed-site sitemap XML, with negative-first regression.",
+    "Unused provisioned account receives truthful account-only support fallback; no contributor/request creation or false deletion claim.",
+    "Confirmed server rights outcome survives local cleanup failure; generic parent warning survives intentional sign-out and clears after actual successful local retry.",
+    "My Soil is keyed to auth epoch; delayed old-owner results cannot render after identity change.",
+    "Pilot My Soil suppresses automatic publication and account-creation promises; held/private scientific limits remain visible."
+  ],
+  "independently_run_checks": [
+    {
+      "check": "Focused pilot/rights React suites",
+      "files": 8,
+      "passed": 96,
+      "failed": 0,
+      "runner": "Vitest 4.1.11",
+      "duration_seconds": 2.35,
+      "command": "'/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node' ../../node_modules/vitest/vitest.mjs run tests/pilot.test.ts tests/pilot-app.test.tsx tests/pilot-supabase.test.ts tests/pilot-rights-races.test.tsx tests/pilot-my-soil.test.tsx tests/rights-outcomes.test.tsx tests/rights.test.ts tests/your-data.test.tsx"
+    },
+    {
+      "check": "Focused Python export/artifact suites",
+      "passed": 85,
+      "failed": 0,
+      "command": "PYTHONDONTWRITEBYTECODE=1 HF_DATASETS_CACHE=/private/tmp/gsip-collect-export-review-cache HF_HUB_OFFLINE=1 .venv/bin/pytest -q -p no:cacheprovider tests/test_collection_build.py tests/test_collection_export.py"
+    },
+    {
+      "check": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "reviewed_source_sha256": {
+    "apps/capture-pwa/src/App.tsx": "fe449dabca5b775ae73777e607b21befaf3093a43d3b987c991047a5a16cae95",
+    "apps/capture-pwa/src/YourData.tsx": "d714053913bb6414f360ba41c03878e27fb6ba85d136a3af090485600750e760",
+    "apps/capture-pwa/src/MySoilPanel.tsx": "f95927f0cb8d1add77dd101b81c20ac7808a698e43030e433d6c4014cb38a7f7",
+    "apps/capture-pwa/src/supabase.ts": "801a30626460b8e6d27cb025d5d1eaba3149c54d55cf405ea7c12797549e0837",
+    "apps/capture-pwa/src/pilot.ts": "3aa24e41f4426f6b869e4dc0355fdc79487fb9a677e5327db2f4ba0de243fd6e",
+    "apps/capture-pwa/src/queue.ts": "f9336ca8aaa54f14c235f632ddcee7dca28012746dd7549265998fbbe65f60e3",
+    "apps/capture-pwa/src/sync.ts": "09b6e2761f91cf21e161d2dabd13eda99b8d92fb7fd7e6bf2f2a1a4c7185fcb1",
+    "apps/capture-pwa/vite.config.ts": "04e33fdfb992e0a3608ac5b013acf4fe0ad45216a54ddf587101e6d5c078e1dc",
+    "apps/capture-pwa/tests/pilot.test.ts": "349fe81417bddd2eb5b0d83b93b2b166a91eb5bea082b4130554d7ff932abb76",
+    "apps/capture-pwa/tests/pilot-app.test.tsx": "248c4e602dbfe762b74fd582b8f812483685d3f844bfdec658de6d41b2e45117",
+    "apps/capture-pwa/tests/pilot-supabase.test.ts": "12264051e5cfe13edfe6865673379231aeecac3bdb9984df52afdf1aff5ed13f",
+    "apps/capture-pwa/tests/pilot-rights-races.test.tsx": "1476559a51ab844a2f9fb8db23ee5200747a9100bf834902193d08413e6d9a5f",
+    "apps/capture-pwa/tests/pilot-my-soil.test.tsx": "5857ccf3d9bd9e72e71b46ddb9e5029292df363d84d2af6b29840b860ccc4199",
+    "apps/capture-pwa/tests/rights-outcomes.test.tsx": "50d3e2bdecea55ca59a7381d3f9e4bc84a07c4bc9ca84eaeaecf5166dbe70ae7",
+    "apps/capture-pwa/tests/rights.test.ts": "c291c2718d4b839d9d4030c20f1167054efd6ad11375ccea7a9e5c0a4d32cb6b",
+    "apps/capture-pwa/tests/your-data.test.tsx": "08cdf5d28771404e8be45009e5dc373ce8a8532003443215ba6c5cd6952ec9f2",
+    "pipeline/export.py": "2b874391ede819c7e6724f63c4ede4dac622f016699a5c977f71a2d8d40ac544",
+    "scripts/build_collection.py": "f197182d42fe8f9494bdd1601a69b034723d758b664f90fdb120621499b7a82d",
+    "scripts/collection-build-contract.mts": "2d2d17db2c78b329dd9e49282a6b242b23b68f12b7e180943494e014061fcead",
+    ".github/workflows/collection-build.yml": "818de0fefe006609793f4dd66ba72cfb5b4b0b6d04df527f541bdd2aaafb2761",
+    "tests/test_collection_build.py": "643975b1cbe5e84da10e18f83b4aceb318936de1ae08ed0d8cb2bf02168a38a3",
+    "tests/test_collection_export.py": "0603acedfaeca9d642dcea6fb079f2b336317d16aa66fe83833eeb7b13538938",
+    "docs/COLLECTION_PILOT_DESIGN.md": "ecc0e044cefe30407da04f615a01f000f77c2a10aae57f01ca69c61417bec26f",
+    "docs/COLLECTION_PILOT_OPERATIONS.md": "b1302db31bcb0cc9bfc0bea6e48eff743c866494f166bc1d97ad323f781c241a"
+  },
+  "limits": [
+    "Read-only independent review; no source edits, commits, branch changes, remote writes, workflow dispatch, deployment or activation by this review.",
+    "DB implementation was authored by this agent and is excluded from claims of independent review; see separate DB verification receipt and independent DB reviewer.",
+    "No production account, email, physical-device, live cleanup or hosted RLS proof is supplied by these local tests; owner-gated operational rehearsal remains required.",
+    "Current publication capability is fixed false. A future publication enable/revoke protocol requires a separately reviewed source-bound design; repeated adapter checks are not a future cross-service atomic protocol.",
+    "No canonical invited production artifact was generated or released by this review; ordinary closed-site inventory verification is preparation only."
+  ],
+  "final_implementation_commit": "273ba98704343339c174a31124b887e19ead3dca",
+  "merged_main_commit": "33260db1ce49c50600942694e43269759e554e66",
+  "reviewed_tree": "06ca2bcdfe890a569ded80e5b7b64e7a96d7a54e",
+  "commit_binding_verified_at_utc": "2026-10-16T23:52:10.033033+00:00"
+}

@@ -1,0 +1,167 @@
+{
+  "completed_at_utc": "2026-10-17 00:39:46 UTC",
+  "work_package": "WP-COLLECT-3",
+  "issue": "https://github.com/global-soil-intelligence/gsip/issues/85",
+  "pull_requests": [
+    {
+      "number": 86,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/86",
+      "head": "0b90464b95266135ecd851e0bfb230a3e0f3bd11",
+      "base": "main",
+      "state": "open",
+      "checks": "success; DCO skipped"
+    },
+    {
+      "number": 87,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/87",
+      "head": "731a30ff6f8f3a90e0df31eb1d977edf1fcaf912",
+      "base": "docs/spec-v16",
+      "state": "open",
+      "checks": [
+        {
+          "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38986477052/job/117259283475",
+          "name": "ios",
+          "state": "SUCCESS"
+        },
+        {
+          "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38986477052/job/117259283684",
+          "name": "android",
+          "state": "SUCCESS"
+        },
+        {
+          "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38986477510/job/117259027991",
+          "name": "validate",
+          "state": "SUCCESS"
+        },
+        {
+          "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38986477086/job/117259026187",
+          "name": "gitleaks",
+          "state": "SUCCESS"
+        },
+        {
+          "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38986477100/job/117259027839",
+          "name": "dco",
+          "state": "SKIPPED"
+        },
+        {
+          "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38986471351/job/117259008772",
+          "name": "gitleaks",
+          "state": "SUCCESS"
+        }
+      ]
+    }
+  ],
+  "review_order": [
+    86,
+    87
+  ],
+  "merges_executed": [],
+  "ci": {
+    "spec_validate": {
+      "run_id": 38985778729,
+      "status": "success"
+    },
+    "implementation_validate": {
+      "run_id": 38986477510,
+      "status": "success",
+      "javascript_tests": 705,
+      "python_passed": 2167,
+      "python_skipped": 31,
+      "desktop_browser_passed": 16,
+      "invited_mobile_browser_passed": 4,
+      "database_assertions": 632,
+      "database_files": 12,
+      "populated_migration_regression": "passed",
+      "deno": "passed",
+      "gdal_required_python": "passed"
+    },
+    "app_build": {
+      "run_id": 38986477052,
+      "android": "success",
+      "ios": "success",
+      "artifacts": [
+        {
+          "id": 12083901407,
+          "name": "gsip-capture-android-debug",
+          "size_in_bytes": 29126107,
+          "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12083901407",
+          "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12083901407/zip",
+          "expired": false,
+          "created_at": "2026-10-17T00:37:42Z",
+          "expires_at": "2026-10-31T00:37:40Z",
+          "updated_at": "2026-10-17T00:37:42Z",
+          "digest": "sha256:e8c421e413bcc8912f733905bc5da1dd70a2597f69c9222b4aa74ceb98672b0c",
+          "workflow_run": {
+            "id": 38986477052,
+            "repository_id": 1308971325,
+            "head_repository_id": 1308971325,
+            "head_branch": "wp-collect-3-phone-first-capture",
+            "head_sha": "731a30ff6f8f3a90e0df31eb1d977edf1fcaf912"
+          }
+        },
+        {
+          "id": 12082868062,
+          "name": "gsip-capture-ios-simulator",
+          "size_in_bytes": 13920904,
+          "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12082868062",
+          "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12082868062/zip",
+          "expired": false,
+          "created_at": "2026-10-17T00:33:32Z",
+          "expires_at": "2026-10-31T00:33:30Z",
+          "updated_at": "2026-10-17T00:33:32Z",
+          "digest": "sha256:e58a353ab61f45f4318e1b24b7bc7d5db6ea8b91d9e4e2c4aee7f86346c9fb99",
+          "workflow_run": {
+            "id": 38986477052,
+            "repository_id": 1308971325,
+            "head_repository_id": 1308971325,
+            "head_branch": "wp-collect-3-phone-first-capture",
+            "head_sha": "731a30ff6f8f3a90e0df31eb1d977edf1fcaf912"
+          }
+        }
+      ]
+    }
+  },
+  "after_review_changes": [
+    {
+      "commit": "0b90464b95266135ecd851e0bfb230a3e0f3bd11",
+      "reason": "Clarify source photographs versus separately extracted library summaries; no automatic extraction or measured spectrum claim."
+    },
+    {
+      "commit": "731a30ff6f8f3a90e0df31eb1d977edf1fcaf912",
+      "reason": "Refresh exactly two integrity digests for the reviewed camera-purpose string and added regression; preserve every binding key, historical baseline, native scope, validator and rejection test."
+    }
+  ],
+  "evidence": {
+    "local": "local-verification.json",
+    "review": "independent-review.json",
+    "closed_activation": "closed-activation-readback.json",
+    "source_boundary": "source-boundary-receipt.json",
+    "safe_ci_log": "ci-validate-safe-summary.txt",
+    "first_failed_python": "full-python-first-run.json"
+  },
+  "pages_protection": {
+    "required_reviewers": [
+      "jdhart81"
+    ],
+    "can_admins_bypass": false,
+    "changed": false
+  },
+  "production": {
+    "changes": "none",
+    "main_sha": "33260db1ce49c50600942694e43269759e554e66",
+    "pages_deployed": false,
+    "capture_opened": false,
+    "library_uploads_opened": false,
+    "anonymous_signin_changed": false,
+    "accounts_or_invitations_created": false,
+    "workers_dispatched": false
+  },
+  "assumptions": [
+    "Push these updates authorizes bounded package A; live camera guide remains a separately held design follow-up.",
+    "Existing cardless allowance needs no protocol shape/version or schema change.",
+    "Ordinary observations remain distinct from registered samples, extracted camera summaries and instrument spectra.",
+    "Default sample registration with unknown depth needs a future reviewed contract.",
+    "No physical-phone, scientific-accuracy, production-readiness or universal-device claim follows from tests."
+  ],
+  "next_owner_gate": "Review specification #86 then implementation #87; merge and any deployment require their separate go."
+}

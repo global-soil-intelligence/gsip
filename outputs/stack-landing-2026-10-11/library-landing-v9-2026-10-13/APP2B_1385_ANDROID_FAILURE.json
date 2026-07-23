@@ -1,0 +1,92 @@
+{
+  "GET_only": true,
+  "android_conclusion": "failure",
+  "android_job_id": 115611486990,
+  "android_terminal": true,
+  "artifact_acceptance_pending_separate_replay": true,
+  "artifacts": [],
+  "head_sha": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "observations": [
+    {
+      "completed_steps": 11,
+      "current_step": [
+        12
+      ],
+      "failed_steps": [],
+      "head_sha": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+      "job_conclusion": null,
+      "job_id": 115611486990,
+      "job_status": "in_progress",
+      "observed_at_utc": "2026-10-14T00:21:50Z",
+      "run_attempt": 1,
+      "run_id": 38489625406,
+      "run_number": 51
+    },
+    {
+      "completed_steps": 12,
+      "current_step": [
+        13
+      ],
+      "failed_steps": [],
+      "head_sha": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+      "job_conclusion": null,
+      "job_id": 115611486990,
+      "job_status": "in_progress",
+      "observed_at_utc": "2026-10-14T00:22:52Z",
+      "run_attempt": 1,
+      "run_id": 38489625406,
+      "run_number": 51
+    },
+    {
+      "completed_steps": 15,
+      "current_step": [
+        16
+      ],
+      "failed_steps": [],
+      "head_sha": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+      "job_conclusion": null,
+      "job_id": 115611486990,
+      "job_status": "in_progress",
+      "observed_at_utc": "2026-10-14T00:24:25Z",
+      "run_attempt": 1,
+      "run_id": 38489625406,
+      "run_number": 51
+    },
+    {
+      "completed_steps": 17,
+      "current_step": [
+        18
+      ],
+      "failed_steps": [],
+      "head_sha": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+      "job_conclusion": null,
+      "job_id": 115611486990,
+      "job_status": "in_progress",
+      "observed_at_utc": "2026-10-14T00:24:55Z",
+      "run_attempt": 1,
+      "run_id": 38489625406,
+      "run_number": 51
+    },
+    {
+      "completed_steps": 26,
+      "current_step": [],
+      "failed_steps": [
+        18
+      ],
+      "head_sha": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+      "job_conclusion": "failure",
+      "job_id": 115611486990,
+      "job_status": "completed",
+      "observed_at_utc": "2026-10-14T00:26:28Z",
+      "run_attempt": 1,
+      "run_id": 38489625406,
+      "run_number": 51
+    }
+  ],
+  "production_changes": false,
+  "run_attempt": 1,
+  "run_id": 38489625406,
+  "run_number": 51,
+  "schema": "gsip-pr63-1385-finite-android-watch-v1",
+  "source_or_GitHub_mutations": false
+}

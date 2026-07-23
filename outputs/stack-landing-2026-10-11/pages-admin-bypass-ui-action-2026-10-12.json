@@ -1,0 +1,42 @@
+{
+  "repository": "global-soil-intelligence/gsip",
+  "environment": "github-pages",
+  "environment_id": 18657050755,
+  "authorized_action": "Disable only Allow administrators to bypass configured protection rules; save once and reload",
+  "before": {
+    "observed_at_utc": "2026-10-12T13:37:02.769Z",
+    "url": "https://github.com/global-soil-intelligence/gsip/settings/environments/18657050755/edit",
+    "required_reviewers": true,
+    "sole_reviewer_login": "jdhart81",
+    "prevent_self_review": false,
+    "wait_timer": false,
+    "can_admins_bypass": true,
+    "allowed_branches": [
+      "gh-pages",
+      "main"
+    ]
+  },
+  "save_started_at_utc": "2026-10-12T13:37:07.761Z",
+  "post_save_observed_at_utc": "2026-10-12T13:37:14.211Z",
+  "save_count": 1,
+  "save_confirmation": "Environment \"github-pages\" updated.",
+  "persisted_reload": {
+    "observed_at_utc": "2026-10-12T13:37:51.758Z",
+    "url": "https://github.com/global-soil-intelligence/gsip/settings/environments/18657050755/edit",
+    "required_reviewers": true,
+    "can_admins_bypass": false,
+    "prevent_self_review": false,
+    "wait_timer": false,
+    "sole_reviewer_login": "jdhart81",
+    "allowed_branches": [
+      "gh-pages",
+      "main"
+    ],
+    "branch_count": 2,
+    "tag_count": 0
+  },
+  "screenshot_path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/pages-admin-bypass-disabled-2026-10-12.jpg",
+  "api_mutations": false,
+  "supabase_mutations": false,
+  "merge_approve_deploy_comment_actions": false
+}

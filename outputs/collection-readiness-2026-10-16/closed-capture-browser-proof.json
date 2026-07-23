@@ -1,0 +1,13 @@
+{
+  "source": "3d27077277374fcf2f7bc2411401dd16b6186462",
+  "target": "loopback-only closed Pages artifact",
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "closedHeadingsVisible": true,
+  "readyHeadingAbsent": true,
+  "uploadControlsAbsent": true,
+  "mapLinkVisible": true,
+  "productionChanges": false
+}

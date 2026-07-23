@@ -1,0 +1,17 @@
+{
+  "time_utc": "2026-10-16T22:12:21.386632+00:00",
+  "argv": [
+    "/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/node_modules/.bin/supabase",
+    "db",
+    "query",
+    "--linked",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--file",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/collection-readiness-2026-10-16/production-readonly-preflight.sql",
+    "--output",
+    "json"
+  ],
+  "exit_code": 0,
+  "scope": "Read-only transaction; metadata and counts only"
+}

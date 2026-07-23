@@ -1,0 +1,18 @@
+Use case: ads-marketing.
+Create one polished landscape editorial illustration for a LinkedIn announcement of GSIP, the Global Soil Intelligence Project. Wide 16:9 composition, crisp high-resolution typography, readable at feed size, restrained scientific design.
+
+Primary story: an OPEN SOIL SPECTRAL REFERENCE LIBRARY, with smartphones as accessible field capture tools. This is a PROJECT VISION, not a claim of existing global sample coverage.
+
+Visual: rich, tangible soil in warm natural light, a recognizable modern smartphone photographing a small soil sample beside a modest printable reference card with calibration patches. The phone screen shows an ordinary optical photograph of that same soil and reference card. Connect this physical sample through a clean sample-record motif to two parallel contributions: phone imagery/context metadata and a separate compact laboratory spectrometer producing an illustrative reflectance curve. The two meet in an open, shared library of linked records, beside an elegant outline of the world made from fine connected lines. The visual connection must clearly mean SAME PHYSICAL SAMPLE: phones contribute images/context; separate instruments contribute measured spectra. Show a few open record cards as the conceptual library, with no readable personal information. No fake real-world dataset coverage points or numeric research findings.
+
+Style: premium editorial scientific campaign art, photorealistic soil textures combined with elegant dimensional illustration, minimal connective graphics and ample breathing room. Harmonize with the live GSIP website's deep forest green, warm earth and pale botanical accent colors. Confident, warm, collaborative, grounded. No neon science-fiction beams, holographic floating UI, robot heads or generic glowing AI brain.
+
+Text verbatim, and only this text, with clear visual hierarchy:
+Small project name: "GSIP"
+Secondary name: "GLOBAL SOIL INTELLIGENCE PROJECT"
+Large headline: "An open soil spectral library"
+Three compact labels associated with the correct elements: "Smartphone capture" / "Measured spectra" / "Open library"
+Small connecting label by the shared sample-record link: "Same physical sample"
+Clear footer status in a contrasting readable band: "PROJECT VISION • PUBLIC UPLOADS NOT YET OPEN"
+
+Keep typography immaculate and professional. Spell all text correctly; do not add other copy, URLs, numbers, watermark or commercial logos. No precise coordinates, QR codes, actual contributor data, upload buttons or app-store badges. Do not depict the phone measuring wavelength-resolved spectra or identifying organisms. The curve is an illustrative instrument signal without axes/numeric conclusions. The entire image should feel like one compelling announcement artwork, not a cluttered corporate slide.

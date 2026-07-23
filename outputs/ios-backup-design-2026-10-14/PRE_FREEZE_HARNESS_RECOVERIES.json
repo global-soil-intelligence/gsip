@@ -1,0 +1,5 @@
+{
+  "initial_manifest_harness_failure": "Directory-wide count included 3 generated Ruff cache files; corrected declared source-set count to 367, without deleting cache files or changing source.",
+  "initial_formatter_scope": "pnpm exec with absolute external paths returned no per-file output; final formatter was run directly with pinned Node/Prettier3.9.9 from candidate cwd, and processed all three docs.",
+  "tests_retest_after_actual_formatting_pending": true
+}

@@ -1,0 +1,36 @@
+{
+  "GET_only": true,
+  "Pages_approval_or_dispatch_actions": false,
+  "actual_checkout": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "attempt": 1,
+  "conclusion": "success",
+  "head": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "job_id": 115674546855,
+  "main": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "metrics": {
+    "bytes": 7371,
+    "path": "/private/tmp/gsip-final-main-2c6c-general-watch/GENERAL_TERMINAL_METRICS.json",
+    "sha256": "b72499c55986dd660e83d078fe4f7352eefa79312daaa7fa0ed7d3e2fa6421ca"
+  },
+  "mutations": false,
+  "native_artifacts_or_actions_touched": false,
+  "previous_runtime_main": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "production_or_capture_actions": false,
+  "rawlogs_saved": false,
+  "reviewed_docs_head": "8b8cc24841d58c231743ff69472d3354f612dcf3",
+  "run_conclusion": "success",
+  "run_id": 38509512433,
+  "run_number": 259,
+  "run_status": "completed",
+  "scans": {
+    "bytes": 698,
+    "path": "/private/tmp/gsip-final-main-2c6c-general-watch/SCAN_CLOSURE.json",
+    "sha256": "644e9940af75bd6142930a2b334db246e9db04e09d98e897d85d9ac3f6b0a3f7"
+  },
+  "source_binding": {
+    "bytes": 5290,
+    "path": "/private/tmp/gsip-final-main-2c6c-general-watch/SOURCE_BINDING.json",
+    "sha256": "f3c59cff645d839758adff026983538bcec62c274e302e45a986fb19c14621e3"
+  },
+  "status": "completed"
+}

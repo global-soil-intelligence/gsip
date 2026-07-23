@@ -1,0 +1,16 @@
+{
+  "anonymous_sign_in_state": "UNVERIFIED",
+  "authentication_state": "UNVERIFIED",
+  "available_supabase_tab_count": 1,
+  "blocker": "The existing Supabase tab belongs to another project; task scope requires stopping rather than navigating or authenticating.",
+  "existing_supabase_tab_matches_target": false,
+  "method": "CUA enabled browser/tab inventory only",
+  "observed_at_utc": "2026-10-12T02:39:41.084281+00:00",
+  "production_mutations_performed": [],
+  "schema_version": 1,
+  "screenshot_captured": false,
+  "sensitive_data_recorded": false,
+  "target_project_ref": "toxldjgwkxtneoqsazym",
+  "target_project_tab_count": 0,
+  "ui_actions_performed": []
+}

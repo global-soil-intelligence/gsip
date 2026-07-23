@@ -1,0 +1,42 @@
+{
+  "reviewed_on": "2026-10-16",
+  "reviewer": "Codex independent review agent (site_library_review)",
+  "status": "PASS_NO_OPEN_ARTWORK_FINDINGS",
+  "scope": "Local files and rendered preview only; no external action or publication performed",
+  "master": {
+    "file": "gsip-open-soil-library-linkedin-v1.svg",
+    "type": "Editable self-contained SVG vector artwork",
+    "bytes": 18386,
+    "width": 1600,
+    "height": 900,
+    "sha256": "333a43eda7d54f1658bcd96a9ae575e982ba8dc371006515f7c4f2a357bc81f4",
+    "matches_approved_master_digest": true,
+    "elements": 232,
+    "text_elements": 19,
+    "embedded_images": 0,
+    "scripts": 0,
+    "foreign_objects": 0,
+    "external_resource_references": 0,
+    "data_uris": 0
+  },
+  "preview": {
+    "file": "gsip-open-soil-library-svg-preview.png",
+    "type": "PNG raster preview of the approved SVG design",
+    "bytes": 210320,
+    "width": 1600,
+    "height": 900,
+    "sha256": "252d08f0bda483f094e35f80ccb6889f586d53c6ad72b8fe92f18a2e8b6496cd",
+    "valid_png_signature": true,
+    "visually_matches_approved_vector_design": true,
+    "pixel_equivalence_rerender_claimed": false
+  },
+  "claims_checks": {
+    "smartphone_labeled_photographs_and_field_context": true,
+    "measured_spectra_shown_with_separate_instrument": true,
+    "same_physical_sample_link_visible": true,
+    "conceptual_open_library_has_no_existing_coverage_claim": true,
+    "no_validated_ai_or_biological_result_claim": true,
+    "project_vision_and_public_uploads_not_yet_open_footer_legible": true
+  },
+  "platform_scope": "No LinkedIn format acceptance or upload success inferred from local file types"
+}

@@ -1,0 +1,35 @@
+{
+  "status": "PREPARED_AWAITING_OWNER_MERGE_GO_BEFORE_VALID_PAGES_RUN",
+  "repository": "global-soil-intelligence/gsip",
+  "pull_request": 77,
+  "pull_request_url": "https://github.com/global-soil-intelligence/gsip/pull/77",
+  "head_commit": "d53eda2e835e57b4ee01dc922fb63d5ebdeceae0",
+  "prepared_artifact_sha256": "d748a201546fff7b8e71a555ee5abb492cdcb2bffb62d8265dd42c9a160e3d01",
+  "prepared_files": 40,
+  "capture_live": false,
+  "library_intake_live": false,
+  "protected_environment": {
+    "name": "github-pages",
+    "sole_reviewer": "jdhart81",
+    "can_admins_bypass": false,
+    "allowed_branches": [
+      "main",
+      "gh-pages"
+    ]
+  },
+  "required_sequence": [
+    "Verify required exact-head CI green and resolved independent review",
+    "Obtain owner merge go for exact PR head",
+    "Execute only approved merge; existing main push starts Pages workflow",
+    "Read actual new run/source/artifact and confirm it waits for owner review",
+    "Present new immutable run/artifact evidence for separate Pages deployment go"
+  ],
+  "not_performed": [
+    "Merge",
+    "New Pages workflow dispatch",
+    "Deployment approval",
+    "Protection change",
+    "Capture or library opening"
+  ],
+  "exact_commands_proposed_only_file": "NEXT-PAGES-GATE.md"
+}

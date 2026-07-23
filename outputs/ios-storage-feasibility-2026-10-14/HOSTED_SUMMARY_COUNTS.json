@@ -1,0 +1,17 @@
+{
+  "as_of_utc": "2026-10-14T22:11:07.947490+00:00",
+  "head": "258b57732a94968e576eb15e848566a487cb4878",
+  "run": "https://github.com/global-soil-intelligence/gsip/actions/runs/38644748460",
+  "counts": [
+    "12 passed (13.1s)",
+    "no issues found in 78 source files",
+    "2006 passed, 31 skipped",
+    "Files=11, Tests=593"
+  ],
+  "migration_summaries": [
+    "2026-10-14T22:06:33.8389944Z wp6e_provenance.test.sql: 13/13 ok",
+    "2026-10-14T22:06:33.9107400Z wp6fa_photo_privacy.test.sql: 19/19 ok",
+    "2026-10-14T22:06:33.9795845Z wp_lib4_private_intake.test.sql: 13/13 ok"
+  ],
+  "full_log_persisted": false
+}

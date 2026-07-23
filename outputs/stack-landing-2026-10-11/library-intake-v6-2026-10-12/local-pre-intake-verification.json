@@ -1,0 +1,25 @@
+{
+  "source": "4f1ad20db898ffac5ff80e2c847b5ad5fde83469",
+  "python": {
+    "passed": 407,
+    "skippedGDAL": 4
+  },
+  "webUnitPassed": 307,
+  "ruff": "pass",
+  "mypy": "pass,49 files",
+  "lint": "pass",
+  "typecheck": "pass",
+  "webBuild": "pass",
+  "appWebBuild": "pass,capture closed",
+  "mapBytes": 1654727,
+  "homepageBytes": 313574,
+  "pgTAP": {
+    "assertions": 299,
+    "files": 8,
+    "target": "disposable local Supabase"
+  },
+  "migrationRehearsal": "13/13 in local Postgres container",
+  "gitleaks": "8.21.2,119 full-history commits,no leaks,exact original three entries",
+  "native": "CI artifact/run evidence in sec1-native-artifacts.json",
+  "localBrowser": "not rerun after earlier automatic approval rejection; CI browser required/passed"
+}

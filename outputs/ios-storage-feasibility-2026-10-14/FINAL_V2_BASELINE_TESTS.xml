@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="37" skipped="0" tests="37" time="0.218" timestamp="2026-10-14T17:57:28.836549-04:00" hostname="MacBook-Pro-6.local"><testcase classname="tests.test_ios_storage_feasibility" name="test_known_source_review_can_never_be_storage_or_device_acceptance" time="0.002"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_known_source_review_can_n0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10746bfb0&gt;
+
+    def test_known_source_review_can_never_be_storage_or_device_acceptance(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities[missing]" time="0.001"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'missing'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_actual_bytes_are_recomput0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10747cd40&gt;
+
+    @pytest.mark.parametrize("case", ["missing", "changed", "truncated", "appended", "comment_api"])
+    def test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities[changed]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'changed'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_actual_bytes_are_recomput1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10747f6e0&gt;
+
+    @pytest.mark.parametrize("case", ["missing", "changed", "truncated", "appended", "comment_api"])
+    def test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities[truncated]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'truncated'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_actual_bytes_are_recomput2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10747ffe0&gt;
+
+    @pytest.mark.parametrize("case", ["missing", "changed", "truncated", "appended", "comment_api"])
+    def test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities[appended]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'appended'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_actual_bytes_are_recomput3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107508680&gt;
+
+    @pytest.mark.parametrize("case", ["missing", "changed", "truncated", "appended", "comment_api"])
+    def test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities[comment_api]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'comment_api'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_actual_bytes_are_recomput4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107508f50&gt;
+
+    @pytest.mark.parametrize("case", ["missing", "changed", "truncated", "appended", "comment_api"])
+    def test_actual_bytes_are_recomputed_and_source_comments_cannot_add_capabilities(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_no_caller_manifest_or_unknown_file_is_accepted[claims.json]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">extra = 'claims.json'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_no_caller_manifest_or_unk0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1075099d0&gt;
+
+    @pytest.mark.parametrize("extra", ["claims.json", "backend_selected=true", "private-sentinel"])
+    def test_no_caller_manifest_or_unknown_file_is_accepted(
+        extra: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_no_caller_manifest_or_unknown_file_is_accepted[backend_selected=true]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">extra = 'backend_selected=true'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_no_caller_manifest_or_unk1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10750a540&gt;
+
+    @pytest.mark.parametrize("extra", ["claims.json", "backend_selected=true", "private-sentinel"])
+    def test_no_caller_manifest_or_unknown_file_is_accepted(
+        extra: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_no_caller_manifest_or_unknown_file_is_accepted[private-sentinel]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">extra = 'private-sentinel'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_no_caller_manifest_or_unk2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10750b290&gt;
+
+    @pytest.mark.parametrize("extra", ["claims.json", "backend_selected=true", "private-sentinel"])
+    def test_no_caller_manifest_or_unknown_file_is_accepted(
+        extra: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_symlinks_are_refused_at_input_and_nested_source_boundaries[public_root]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">surface = 'public_root'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_symlinks_are_refused_at_i0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10750bec0&gt;
+
+    @pytest.mark.parametrize(
+        "surface", ["public_root", "public_leaf", "repo_intermediate", "repo_leaf"]
+    )
+    def test_symlinks_are_refused_at_input_and_nested_source_boundaries(
+        surface: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_symlinks_are_refused_at_input_and_nested_source_boundaries[public_leaf]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">surface = 'public_leaf'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_symlinks_are_refused_at_i1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107504320&gt;
+
+    @pytest.mark.parametrize(
+        "surface", ["public_root", "public_leaf", "repo_intermediate", "repo_leaf"]
+    )
+    def test_symlinks_are_refused_at_input_and_nested_source_boundaries(
+        surface: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_symlinks_are_refused_at_input_and_nested_source_boundaries[repo_intermediate]" time="0.001"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">surface = 'repo_intermediate'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_symlinks_are_refused_at_i2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10750b530&gt;
+
+    @pytest.mark.parametrize(
+        "surface", ["public_root", "public_leaf", "repo_intermediate", "repo_leaf"]
+    )
+    def test_symlinks_are_refused_at_input_and_nested_source_boundaries(
+        surface: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_symlinks_are_refused_at_input_and_nested_source_boundaries[repo_leaf]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">surface = 'repo_leaf'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_symlinks_are_refused_at_i3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107509b80&gt;
+
+    @pytest.mark.parametrize(
+        "surface", ["public_root", "public_leaf", "repo_intermediate", "repo_leaf"]
+    )
+    def test_symlinks_are_refused_at_input_and_nested_source_boundaries(
+        surface: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_only_bounded_regular_single_link_sources_are_read[directory]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">kind = 'directory'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_only_bounded_regular_sing0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107508890&gt;
+
+    @pytest.mark.parametrize("kind", ["directory", "fifo", "hardlink"])
+    def test_only_bounded_regular_single_link_sources_are_read(
+        kind: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_only_bounded_regular_single_link_sources_are_read[fifo]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">kind = 'fifo'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_only_bounded_regular_sing1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10747c3b0&gt;
+
+    @pytest.mark.parametrize("kind", ["directory", "fifo", "hardlink"])
+    def test_only_bounded_regular_single_link_sources_are_read(
+        kind: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_only_bounded_regular_single_link_sources_are_read[hardlink]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">kind = 'hardlink'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_only_bounded_regular_sing2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107443590&gt;
+
+    @pytest.mark.parametrize("kind", ["directory", "fifo", "hardlink"])
+    def test_only_bounded_regular_single_link_sources_are_read(
+        kind: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_same_length_repository_drift_requires_a_new_source_review" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_same_length_repository_dr0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1074416a0&gt;
+
+    def test_same_length_repository_drift_requires_a_new_source_review(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_a_new_queue_store_cannot_silently_reuse_the_old_inventory" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_a_new_queue_store_cannot_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10746aba0&gt;
+
+    def test_a_new_queue_store_cannot_silently_reuse_the_old_inventory(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:164: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_missing_or_invented_residual_inventory_is_refused[missing]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">change = 'missing'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_missing_or_invented_resid0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107469e80&gt;
+
+    @pytest.mark.parametrize("change", ["missing", "duplicate", "invented"])
+    def test_missing_or_invented_residual_inventory_is_refused(
+        change: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:186: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_missing_or_invented_residual_inventory_is_refused[duplicate]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">change = 'duplicate'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_missing_or_invented_resid1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1075047a0&gt;
+
+    @pytest.mark.parametrize("change", ["missing", "duplicate", "invented"])
+    def test_missing_or_invented_residual_inventory_is_refused(
+        change: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:186: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_missing_or_invented_residual_inventory_is_refused[invented]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">change = 'invented'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_missing_or_invented_resid2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107504140&gt;
+
+    @pytest.mark.parametrize("change", ["missing", "duplicate", "invented"])
+    def test_missing_or_invented_residual_inventory_is_refused(
+        change: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:186: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_source_changed_during_read_is_not_validated_from_its_old_bytes" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_source_changed_during_rea0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107505250&gt;
+
+    def test_source_changed_during_read_is_not_validated_from_its_old_bytes(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:202: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_verification_performs_no_network_process_or_filesystem_mutation" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_verification_performs_no_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107506660&gt;
+
+    def test_verification_performs_no_network_process_or_filesystem_mutation(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:227: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_cli_failure_never_echoes_paths_claims_or_exception_details[args0]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">args = [], capsys = &lt;_pytest.capture.CaptureFixture object at 0x107507710&gt;
+
+    @pytest.mark.parametrize(
+        "args", [[], ["private-sentinel", "--device-verified"], ["private-sentinel"]]
+    )
+    def test_cli_failure_never_echoes_paths_claims_or_exception_details(
+        args: list[str], capsys: pytest.CaptureFixture[str]
+    ) -&gt; None:
+&gt;       module = loaded()
+                 ^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:259: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_cli_failure_never_echoes_paths_claims_or_exception_details[args1]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">args = ['private-sentinel', '--device-verified']
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x107506b10&gt;
+
+    @pytest.mark.parametrize(
+        "args", [[], ["private-sentinel", "--device-verified"], ["private-sentinel"]]
+    )
+    def test_cli_failure_never_echoes_paths_claims_or_exception_details(
+        args: list[str], capsys: pytest.CaptureFixture[str]
+    ) -&gt; None:
+&gt;       module = loaded()
+                 ^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:259: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_cli_failure_never_echoes_paths_claims_or_exception_details[args2]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">args = ['private-sentinel']
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x107505010&gt;
+
+    @pytest.mark.parametrize(
+        "args", [[], ["private-sentinel", "--device-verified"], ["private-sentinel"]]
+    )
+    def test_cli_failure_never_echoes_paths_claims_or_exception_details(
+        args: list[str], capsys: pytest.CaptureFixture[str]
+    ) -&gt; None:
+&gt;       module = loaded()
+                 ^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:259: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_verified_source_cli_exits_blocked_instead_of_readiness_success" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_verified_source_cli_exits0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1075058b0&gt;
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x107504ef0&gt;
+
+    def test_verified_source_cli_exits_blocked_instead_of_readiness_success(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    ) -&gt; None:
+&gt;       module, public, _ = seeded(tmp_path, monkeypatch)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:276: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_even_a_future_profile_edit_cannot_bypass_source_bounds[empty]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'empty'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_even_a_future_profile_edi0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x107469640&gt;
+
+    @pytest.mark.parametrize(
+        "case", ["empty", "duplicate", "oversize", "boolean_size", "digest", "escape", "aggregate"]
+    )
+    def test_even_a_future_profile_edit_cannot_bypass_source_bounds(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_even_a_future_profile_edit_cannot_bypass_source_bounds[duplicate]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'duplicate'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_even_a_future_profile_edi1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10747c740&gt;
+
+    @pytest.mark.parametrize(
+        "case", ["empty", "duplicate", "oversize", "boolean_size", "digest", "escape", "aggregate"]
+    )
+    def test_even_a_future_profile_edit_cannot_bypass_source_bounds(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_even_a_future_profile_edit_cannot_bypass_source_bounds[oversize]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'oversize'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_even_a_future_profile_edi2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10750a960&gt;
+
+    @pytest.mark.parametrize(
+        "case", ["empty", "duplicate", "oversize", "boolean_size", "digest", "escape", "aggregate"]
+    )
+    def test_even_a_future_profile_edit_cannot_bypass_source_bounds(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_even_a_future_profile_edit_cannot_bypass_source_bounds[boolean_size]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'boolean_size'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_even_a_future_profile_edi3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1074f04d0&gt;
+
+    @pytest.mark.parametrize(
+        "case", ["empty", "duplicate", "oversize", "boolean_size", "digest", "escape", "aggregate"]
+    )
+    def test_even_a_future_profile_edit_cannot_bypass_source_bounds(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_even_a_future_profile_edit_cannot_bypass_source_bounds[digest]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'digest'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_even_a_future_profile_edi4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1074f0f20&gt;
+
+    @pytest.mark.parametrize(
+        "case", ["empty", "duplicate", "oversize", "boolean_size", "digest", "escape", "aggregate"]
+    )
+    def test_even_a_future_profile_edit_cannot_bypass_source_bounds(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_even_a_future_profile_edit_cannot_bypass_source_bounds[escape]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'escape'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_even_a_future_profile_edi5')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1074f1a60&gt;
+
+    @pytest.mark.parametrize(
+        "case", ["empty", "duplicate", "oversize", "boolean_size", "digest", "escape", "aggregate"]
+    )
+    def test_even_a_future_profile_edit_cannot_bypass_source_bounds(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_even_a_future_profile_edit_cannot_bypass_source_bounds[aggregate]" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">case = 'aggregate'
+tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_even_a_future_profile_edi6')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1074f2660&gt;
+
+    @pytest.mark.parametrize(
+        "case", ["empty", "duplicate", "oversize", "boolean_size", "digest", "escape", "aggregate"]
+    )
+    def test_even_a_future_profile_edit_cannot_bypass_source_bounds(
+        case: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:290: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_unsupported_no_follow_platform_is_held_without_a_weaker_reader" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">tmp_path = PosixPath('/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/pytest-of-justinhart/pytest-886/test_unsupported_no_follow_pla0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1074f3200&gt;
+
+    def test_unsupported_no_follow_platform_is_held_without_a_weaker_reader(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -&gt; None:
+&gt;       module, public, repository = seeded(tmp_path, monkeypatch)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:318: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ios_storage_feasibility.py:34: in seeded
+    module = loaded()
+             ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_portable_catalog_and_observed_snapshot_match_the_reviewed_profile" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">def test_portable_catalog_and_observed_snapshot_match_the_reviewed_profile() -&gt; None:
+&gt;       module = loaded()
+                 ^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:325: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase><testcase classname="tests.test_ios_storage_feasibility" name="test_displayed_source_table_agrees_with_the_actual_copy_input_profile" time="0.000"><failure message="AssertionError: The offline source-audit contract must exist before migration&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file">def test_displayed_source_table_agrees_with_the_actual_copy_input_profile() -&gt; None:
+&gt;       module = loaded()
+                 ^^^^^^^^
+
+tests/test_ios_storage_feasibility.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def loaded() -&gt; ModuleType:
+&gt;       assert SUBJECT.is_file(), "The offline source-audit contract must exist before migration"
+E       AssertionError: The offline source-audit contract must exist before migration
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/baseline/scripts/ios_storage_feasibility.py').is_file
+
+tests/test_ios_storage_feasibility.py:24: AssertionError</failure></testcase></testsuite></testsuites>

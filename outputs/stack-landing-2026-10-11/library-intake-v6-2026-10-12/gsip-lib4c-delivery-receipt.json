@@ -1,0 +1,77 @@
+{
+  "work_package": "WP-LIB-4C",
+  "created_at": "2026-10-13T02:56:05.997349+00:00",
+  "base": "598d1acfc5e7fab6876b2f109cfac72452d91e74",
+  "snapshot": "/private/tmp/gsip-lib4c-598d1ac",
+  "patch": "/private/tmp/gsip-lib4c-phone-intake.patch",
+  "patch_sha256": "f0a8504572ff8c8b8761d007804f18dd53161bbf360564838e03d1ef062a051a",
+  "manifest": "/private/tmp/gsip-lib4c-snapshot-hashes.json",
+  "manifest_sha256": "a9e82c34c1ad1105bd0dd15e4e38d5bc96258c9b2c6087c258b4f7616fdee2c8",
+  "changed_files": 24,
+  "file_hashes_verified": true,
+  "local_validation": {
+    "app_tests": {
+      "passed": 178,
+      "failed": 0,
+      "report": "/private/tmp/gsip-lib4c-app-tests.json",
+      "sha256": "ccb3d76db594ed89566911667a5ce65789e5ad7b13edfc087333c58c3c66a52a"
+    },
+    "typescript": "passed",
+    "eslint": "passed",
+    "python_app_build_and_permissions_tests": {
+      "passed": 71,
+      "failed": 0
+    },
+    "ruff_check": "passed",
+    "mypy_strict": "passed",
+    "patch_apply_check": "passed against fresh archive of base",
+    "synthetic_e2e": "passed: form -> queued private sample -> stored_private_unverified -> same intake already_stored retry -> withdrawal -> local clear"
+  },
+  "fail_before_reports": {
+    "/private/tmp/gsip-lib4c-before-tests.txt": "1a5a9e99ef26813de6d66673bb5580285328297c4552786b8fcaadec1279ee89",
+    "/private/tmp/gsip-lib4c-before-build-tests.txt": "e00d6000c89199cad44d71a901f45b24837f530888fdffa1ab2fa1212deb05f2",
+    "/private/tmp/gsip-lib4c-before-photo-intent.txt": "65e869aa934c1c21377893adad2bfb24dfa689e8f76af75049aca3e00f85f64c",
+    "/private/tmp/gsip-lib4c-before-already-open.txt": "e85f6414fe3cfb74984e26a8f4abcffbbe2f37be025d95550259aac7930536ac"
+  },
+  "closed_local_app_assets": {
+    "path": "/private/tmp/gsip-lib4c-598d1ac/apps/capture-pwa/dist",
+    "activation": {
+      "capture_live": false,
+      "library_intake_live": false
+    },
+    "assets_sha256": {
+      "assets/dist-DrwtsX7j.js": "3fb5ed5a936995d89004aa9688ea992482ec8320274d50feff3833f057740f11",
+      "assets/esm-CWVNzR14.js": "ee435cea01b4090a74a3ae153fcb8acf7406caa6ea11d44421bef9fb2b66e6b0",
+      "assets/esm-DaWvX54G.js": "103027e883ef3c611482f36d68888723e5db669214e86a2f84b742abcf3803be",
+      "assets/esm-YcB-ubya.js": "03dc21355112032d88a5be7f34462b9a29a69513e2779e5ba020f4e96fabfb8b",
+      "assets/index-CzEeNlts.js": "e008b4afbcbe812a92f87710ed068c4e0751a89cea2776eaf14da2682fe5fcaf",
+      "assets/index-DZ_h-Mw_.css": "359571ceba7714336ebbfcfec093e6001c5ae65f381084a27c1f7e8775b78e56",
+      "assets/synapse-D5y-aojA.js": "db56839eb35756ad0bfa4aee4a008a1fe40b116ef3de989b872282682baa9653",
+      "assets/web-D_m98-zv.js": "944c14a3e101cbc7ea89dc7295030cd5d786c9444e82aa8c48d5e42cb2efe6e1",
+      "assets/web-Z7Um3E4a.js": "f6f6c0067308a0d40aa744d6d9267fb1ca7e1c58f78ec042dbb81547edd511b7",
+      "gsip-activation.json": "e79c9ca28c243929e0252ffd0b42c868560e17d293c225532d09410b92d04bdc",
+      "icon.svg": "7bc121f182dfb271605723fd9e08db8be552b6aa1ba03d5ac249357dfd1c4e91",
+      "index.html": "37c2c5065de90cd3df25366c55da309ec8852e44e4469ddd5541fae3cca9c624"
+    },
+    "service_worker_absent": true,
+    "build": "Vite app mode passed; existing >500kB chunk warning"
+  },
+  "independent_review": {
+    "receipt": "/private/tmp/gsip-lib4c-independent-review-receipt.json",
+    "sha256": "a4154ed053436c723cdab3727640c7d5d2bbe32b389bf208d60ace9247d34b31",
+    "conclusion": "No merge blocker remains in the exact 24-file candidate reviewed."
+  },
+  "constraints": {
+    "schema_contract_and_database_type_copies": "local integration only, excluded from patch",
+    "production_mutation": false,
+    "commits_or_pushes": false,
+    "shared_checkout_writes": false,
+    "feature_default": "VITE_LIBRARY_INTAKE_LIVE=false"
+  },
+  "remaining_gates": [
+    "Parent must apply exact file hashes onto owning branch and run integrated exact-head CI.",
+    "Real Android/iOS artifact/device backup tests and iOS backup exclusion remain deployment/store gates.",
+    "No hosted intake deployment, worker dispatch or production capture/library activation performed.",
+    "Synthetic private receipts are not verified physical pairs or scientific validation."
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "state": "PASS_GATE_E_COMPLETED_AND_VERIFIED",
+  "completed_at_utc": "2026-10-12T20:08:01.261665+00:00",
+  "authorization": "Justin: ok you drive finish what is needed, in response to the prepared Gate E and its pending go. Scope limited to the two posted function deployments.",
+  "project_ref": "toxldjgwkxtneoqsazym",
+  "source_commit": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "deployments": [
+    {
+      "function": "prior-attach",
+      "version": 4,
+      "JWT": true
+    },
+    {
+      "function": "gsip-public",
+      "version": 1,
+      "JWT": false
+    }
+  ],
+  "ledger": 28,
+  "security_findings": 0,
+  "all61_counts_and_catalogs_unchanged": true,
+  "capture_open": false,
+  "signup": false,
+  "anonymous_signin": false,
+  "http_smokes_passed": 8,
+  "workers_held": true,
+  "source_changes": [],
+  "PR_changes": [],
+  "merges": [],
+  "other_production_changes": [],
+  "execution_notes": [
+    "Initial raw comparisons differed only because catalog results were wrapped and an observation timestamp changed. Normalized comparisons proved all metadata and aggregate values exact before deployment.",
+    "The first sandbox CLI version check could not write its normal telemetry file; authorized access succeeded and confirmed unchanged 2.118.0 before any deployment.",
+    "Both deployments ran once with exit code zero; no retry, rollback, config push, secret change or database write."
+  ],
+  "remaining_gates": [
+    "Repository variables and owner service-role secret confirmation",
+    "Contributor-rights worker and data-only release/photo screening gates",
+    "Hugging Face owner setup; export held",
+    "Tiles release assets, range-request proof and Pages approval",
+    "Justin reviews/merges, launch gates and store signing"
+  ],
+  "bound_evidence": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-01-prior-deploy-20261012T2005.json",
+      "sha256": "9f132e30c50e6a71b4a4962e6f81f67c91615c896e7b58ecbf5f8bef11a1f1d5"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-02-public-deploy-20261012T2006.json",
+      "sha256": "83dfb4a9fd3b322b12046324f6dd6697e7e24e32f2d30c8c1429c375755afa7e"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-between-stages-20261012T2005.json",
+      "sha256": "c61b0bdb48dd62b4f2e8237d78fbf91204aaba4b664c08e30bbfb39bed2a8238"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-final-db-functions-20261012T2007.json",
+      "sha256": "88638dcf97ef53dabbd8a1799af73b7998118122c3387149cd84fda1a88de99a"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-auth-exposure-post-20261012T2007.json",
+      "sha256": "d07b7edc6ea152a1ada1971bd777d31eebcd1dc5ae20004e41e3bd2e71681638"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-http-all-20261012T200606684396Z.json",
+      "sha256": "f80e3964df4beced095294263cd51f64c36a5f6036e032f88fd2f7b5b3274e61"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-worker-native-readiness-20261012T200722Z.json",
+      "sha256": "c78b670e102c72c820362c92d5a088517afa391c38d6a3d3c48cf40d9fdbe474"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-fix-all-pr-ci-20261012T200122Z.json",
+      "sha256": "11c89f377bed715c2753fea571f24c470adf3383f436a99a142560c8c381c241"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-reviewed-source-manifest-2026-10-12.json",
+      "sha256": "75aca5a667f59ac75767f19480ac4257f4d2407a39e4b6e10f34a7e0846a39e6"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-review-ready-receipt-2026-10-12.json",
+      "sha256": "a1bc0e2ede90f8fc168bf6d336a24fbed72f275386f99747e7d36be654101048"
+    }
+  ]
+}

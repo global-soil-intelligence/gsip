@@ -1,0 +1,480 @@
+diff --git a/pipeline/node_exchange_simulator.py b/pipeline/node_exchange_simulator.py
+--- a/pipeline/node_exchange_simulator.py
++++ b/pipeline/node_exchange_simulator.py
+@@ -1506,6 +1506,25 @@
+ 
+         return _guard(withdraw)
+ 
++    def _admit_retirement(
++        self, data: dict[str, Any], prepared: PreparedNodeExchangeEvent, group: str
++    ) -> tuple[dict[str, Any], bool]:
++        """Validate recipient facts on a candidate; never promote a contradictory chain."""
++        slot = node_exchange_slot(prepared)
++        try:
++            check_node_exchange_identity(slot, self._facts(data))
++            admitted = copy.deepcopy(data)
++            event = admitted["events"].setdefault(
++                str(prepared.event.event_id), self._event(prepared, group)
++            )
++            event["recipient_admitted"] = True
++            admitted["recipient_slots"][_slot_key(slot)] = _slot_dict(slot)
++            self._advance(admitted, "recipient", _stream_key(slot.stream))
++        except ValueError:
++            data["scopes"][str(prepared.event.scope_id)]["conflicted"] = True
++            return data, True
++        return admitted, False
++
+     def _receive_retirement(self, prepared: PreparedNodeExchangeEvent) -> LocalReceipt:
+         if not isinstance(prepared.event, NodeExchangeRetirement):
+             raise SyntheticExchangeError(_MESSAGE)
+@@ -1522,53 +1541,60 @@
+                 + "/sample/"
+                 + str(prepared.event.payload.sample_handle)
+             )
+-            if refusal_key in data["refusals"]:
+-                # Working mappings remain until erasure; then minimal facts suffice.
+-                known = [
+-                    alias
+-                    for alias in data["aliases"].values()
+-                    if alias["sample"] == str(prepared.event.payload.sample_handle)
+-                    and alias["stream"] == _stream_key(node_exchange_stream(prepared.event))
+-                ]
+-                if not known:
+-                    return self._receipt(
+-                        prepared, "retired", self._cleanup_absent(session, data, prepared)
++            known = [
++                alias
++                for alias in data["aliases"].values()
++                if alias["sample"] == str(prepared.event.payload.sample_handle)
++                and alias["stream"] == _stream_key(node_exchange_stream(prepared.event))
++            ]
++            if known:
++                group_key = self._alias_for_event(data, prepared)["group"]
++            else:
++                # Working aliases may already be erased by another scoped cleanup.
++                # Retained original/event and refusal facts still bind this exact scope.
++                groups = {
++                    event["group"]
++                    for event in data["events"].values()
++                    if event["scope"] == scope_id
++                    and event["sample"] == str(prepared.event.payload.sample_handle)
++                }
++                stream = _stream_key(node_exchange_stream(prepared.event))
++                if (
++                    refusal_key not in data["refusals"]
++                    or len(groups) != 1
++                    or any(
++                        stream + "/measurement/" + str(handle) not in data["refusals"]
++                        for handle in prepared.event.payload.measurement_handles
+                     )
+-            alias = self._alias_for_event(data, prepared)
+-            group_key = alias["group"]
++                ):
++                    return self._receipt(prepared, "held")
++                group_key = next(iter(groups))
+             data["origins"][group_key]["withdrawn"] = True
+             all_aliases = [
+                 value for value in data["aliases"].values() if value["group"] == group_key
+             ]
+             candidate = copy.deepcopy(data)
++            scopes = sorted(
++                {value["stream"].split("/")[2] for value in all_aliases}
++                | {
++                    event["scope"]
++                    for event in data["events"].values()
++                    if event["group"] == group_key
++                }
++            )
+             known_source = data["events"].get(str(prepared.event.event_id))
+             if (
+                 known_source is None
+                 or not known_source["source_admitted"]
+                 or known_source["kind"] != "retire"
+             ):
+-                for value in all_aliases:
+-                    scope = candidate["scopes"][value["stream"].split("/")[2]]
++                for affected_scope_id in scopes:
++                    scope = candidate["scopes"][affected_scope_id]
+                     scope["fenced"] = True
+                     scope["pending_erasure"] = True
+             for value in all_aliases:
+                 self._refuse_alias(candidate, value)
+-            slot = node_exchange_slot(prepared)
+-            conflict = False
+-            try:
+-                check_node_exchange_identity(slot, self._facts(candidate))
+-            except ValueError:
+-                conflict = True
+-                candidate["scopes"][scope_id]["conflicted"] = True
+-            if not conflict:
+-                event_id = str(prepared.event.event_id)
+-                event = candidate["events"].setdefault(event_id, self._event(prepared, group_key))
+-                event["recipient_admitted"] = True
+-                candidate["recipient_slots"][_slot_key(slot)] = _slot_dict(slot)
+-                try:
+-                    self._advance(candidate, "recipient", _stream_key(slot.stream))
+-                except ValueError:
+-                    candidate["scopes"][scope_id]["conflicted"] = True
++            candidate, conflict = self._admit_retirement(candidate, prepared, group_key)
+             try:
+                 self._capacities(candidate, snap, 0)
+                 snap = session.commit_metadata(candidate, snap.generation)
+@@ -1577,7 +1603,7 @@
+                     session,
+                     snap,
+                     data,
+-                    sorted({value["stream"].split("/")[2] for value in all_aliases}),
++                    scopes,
+                 )
+                 return self._receipt(prepared, "held")
+             data = self._data(snap)
+@@ -1591,7 +1617,11 @@
+                     if value["group"] != group_key
+                 }
+                 session.commit_metadata(data, snap.generation)
+-            return self._receipt(prepared, "retired", absent)
++            return (
++                self._receipt(prepared, "conflict")
++                if conflict
++                else self._receipt(prepared, "retired", absent)
++            )
+ 
+     def _cleanup_absent(
+         self,
+diff --git a/tests/test_node_exchange_simulator.py b/tests/test_node_exchange_simulator.py
+--- a/tests/test_node_exchange_simulator.py
++++ b/tests/test_node_exchange_simulator.py
+@@ -1608,3 +1608,319 @@
+     other = stage(clean, uid(32))
+     assert other.status == "stored"
+     assert facts(clean)["quotas"] == {"source/" + OTHER_HUMAN + "/2026-10-13": 1}
++
++
++def erased_alias_cleanup_claims(sim: SyntheticExchangeSimulator) -> list[Any]:
++    stage(sim)
++    stage(sim, OTHER_SCOPE)
++    assert sim.process_batch(FakeTransport()) == {"claimed": 2, "completed": 2}
++    sim.withdraw_original(HUMAN, SAMPLE)
++    claims = sim._claim(2)
++    assert len(claims) == 2
++    first = sim.receive_event(claims[0].raw)
++    assert first.status == "retired" and first.payload_absent
++    assert sim._checkpoint(claims[0], first, False)
++    assert facts(sim)["aliases"] == {}
++    return claims
++
++
++@pytest.mark.parametrize("scope_count", [2, 3])
++@pytest.mark.parametrize("measurement_count", [1, 2])
++def test_multiscope_cleanup_converges_and_later_unrelated_samples_follow_retirement_heads(
++    sim: SyntheticExchangeSimulator, scope_count: int, measurement_count: int
++) -> None:
++    sim = reopen(sim, fixture(scopes=scope_count))
++    scopes = [uid(21 + i) for i in range(scope_count)]
++    for scope in scopes:
++        sim.enroll_scope(scope)
++        stage(sim, scope)
++        if measurement_count == 2:
++            stage(sim, scope, measurement=uid(15))
++    assert sim.process_batch(FakeTransport())["completed"] == scope_count * measurement_count
++    sim.withdraw_original(HUMAN, SAMPLE)
++    assert sim.process_batch(FakeTransport()) == {"claimed": scope_count, "completed": scope_count}
++    assert (
++        sim.counts()["retained_bytes"]
++        == sim.counts()["pending_cleanup"]
++        == sim.counts()["fenced_scopes"]
++        == 0
++    )
++    later = [sim.stage_declaration(scope, uid(16), uid(17)) for scope in scopes]
++    assert sim.process_batch(FakeTransport()) == {"claimed": scope_count, "completed": scope_count}
++    assert all(
++        sim.payload_status(event.event_id) == "available_for_synthetic_simulation"
++        for event in later
++    )
++    data = facts(sim)
++    for scope in scopes:
++        stream = SOURCE + "/" + RECIPIENT + "/" + scope
++        assert data["recipient_heads"][stream] == data["source_heads"][stream]
++        assert data["recipient_heads"][stream]["stream_sequence"] == measurement_count + 1
++
++
++@pytest.mark.parametrize("mutation", ["whitespace", "event", "sequence", "predecessor", "handles"])
++def test_erased_alias_retirement_changed_bytes_never_acknowledge_absence_or_rewrite_identity(
++    sim: SyntheticExchangeSimulator, mutation: str
++) -> None:
++    claims = erased_alias_cleanup_claims(sim)
++    original = claims[1].raw
++    receipt = sim.receive_event(original)
++    assert receipt.status == "retired" and receipt.payload_absent
++    assert sim._checkpoint(claims[1], receipt, False)
++    before = facts(sim)
++    value = json.loads(original)
++    if mutation == "whitespace":
++        changed = original + b" "
++    else:
++        if mutation == "event":
++            value["event_id"] = uid(910)
++        elif mutation == "sequence":
++            value["stream_sequence"] += 1
++        elif mutation == "predecessor":
++            value["previous_event_sha256"] = "f" * 64
++        else:
++            value["payload"]["measurement_handles"] = []
++        changed = json.dumps(value, separators=(",", ":")).encode()
++    response = sim.receive_event(changed)
++    assert response.status in ("held", "conflict") and response.payload_absent is False
++    after = facts(sim)
++    for collection in (
++        "events",
++        "source_slots",
++        "recipient_slots",
++        "source_heads",
++        "recipient_heads",
++        "outbox",
++        "blob_owners",
++        "quotas",
++    ):
++        assert after[collection] == before[collection]
++    assert sim.counts()["retained_bytes"] == 0
++
++
++def test_erased_alias_sparse_retirement_retains_its_slot_without_inventing_missing_science(
++    sim: SyntheticExchangeSimulator,
++) -> None:
++    first, second = stage(sim), stage(sim, OTHER_SCOPE)
++    late_science = raw_for(sim, second.event_id)
++    source_claims = sim._claim(2)
++    receipt = sim.receive_event(source_claims[0].raw)
++    assert receipt.status == "stored" and sim._checkpoint(source_claims[0], receipt, False)
++    sim.withdraw_original(HUMAN, SAMPLE)
++    retirements = sim._claim(2)
++    for claim in retirements:
++        received = sim.receive_event(claim.raw)
++        assert received.status == "retired" and received.payload_absent
++        assert sim._checkpoint(claim, received, False)
++    data = facts(sim)
++    retired = data["events"][retirements[1].event_id]
++    assert retired["recipient_admitted"] is True and retired["gapped"] is True
++    stream = SOURCE + "/" + RECIPIENT + "/" + OTHER_SCOPE
++    assert stream not in data["recipient_heads"]
++    assert data["events"][second.event_id]["recipient_admitted"] is False
++    before_quota = data["quotas"]
++    assert sim.receive_event(late_science).status == "held"
++    assert facts(sim)["quotas"] == before_quota and sim.counts()["retained_bytes"] == 0
++    assert facts(sim)["events"][first.event_id]["recipient_admitted"] is True
++
++
++def test_erased_alias_delayed_retirements_fill_only_consecutively_validated_recipient_slots(
++    sim: SyntheticExchangeSimulator,
++) -> None:
++    claims = erased_alias_cleanup_claims(sim)
++    receipt = sim.receive_event(claims[1].raw)
++    assert sim._checkpoint(claims[1], receipt, False)
++    original = json.loads(claims[1].raw)
++    value2 = copy.deepcopy(original)
++    value2.update(event_id=uid(911), stream_sequence=2, previous_event_sha256=receipt.sha256)
++    raw2 = json.dumps(value2, separators=(",", ":")).encode()
++    prepared2 = prepare_node_exchange_event(raw2)
++    value3 = copy.deepcopy(original)
++    value3.update(event_id=uid(912), stream_sequence=3, previous_event_sha256=prepared2.sha256)
++    raw3 = json.dumps(value3, separators=(",", ":")).encode()
++    stream = SOURCE + "/" + RECIPIENT + "/" + OTHER_SCOPE
++    source_before = facts(sim)["source_heads"]
++    response3 = sim.receive_event(raw3)
++    assert response3.status == "retired" and response3.payload_absent
++    assert uid(912) in facts(sim)["events"], "delivered retirement identity was omitted"
++    assert facts(sim)["events"][uid(912)]["recipient_admitted"] is True
++    assert facts(sim)["events"][uid(912)]["source_admitted"] is False
++    assert facts(sim)["recipient_heads"][stream]["stream_sequence"] == 1
++    response2 = sim.receive_event(raw2)
++    assert response2.status == "retired" and response2.payload_absent
++    assert facts(sim)["recipient_heads"][stream]["stream_sequence"] == 3
++    assert facts(sim)["source_heads"] == source_before
++    assert sim.counts()["retained_bytes"] == 0
++
++
++def test_erased_alias_invalid_retirement_predecessor_holds_without_corrupting_the_root(
++    sim: SyntheticExchangeSimulator,
++) -> None:
++    claims = erased_alias_cleanup_claims(sim)
++    receipt = sim.receive_event(claims[1].raw)
++    assert sim._checkpoint(claims[1], receipt, False)
++    before = facts(sim)
++    invalid = changed(
++        claims[1].raw, event_id=uid(913), stream_sequence=2, previous_event_sha256="f" * 64
++    )
++    response = sim.receive_event(invalid)
++    assert response.status in ("conflict", "held") and response.payload_absent is False
++    after = facts(reopen(sim))
++    for collection in (
++        "events",
++        "source_slots",
++        "recipient_slots",
++        "source_heads",
++        "recipient_heads",
++        "quotas",
++    ):
++        assert after[collection] == before[collection]
++    assert sim.counts()["retained_bytes"] == 0
++
++
++@pytest.mark.parametrize("capacity", ["slots", "metadata"])
++def test_erased_alias_retirement_capacity_refusal_keeps_pending_fence_and_exact_intent(
++    sim: SyntheticExchangeSimulator, monkeypatch: pytest.MonkeyPatch, capacity: str
++) -> None:
++    claims = erased_alias_cleanup_claims(sim)
++    before = facts(sim)
++    if capacity == "slots":
++        monkeypatch.setattr(
++            module,
++            "MAX_SEQUENCE_SLOTS",
++            len(before["source_slots"]) + len(before["recipient_slots"]),
++        )
++    else:
++        monkeypatch.setattr(
++            store_module,
++            "MAX_METADATA_BYTES",
++            len((sim._store.root / "state.json").read_bytes()) + 5,
++        )
++    response = sim.receive_event(claims[1].raw)
++    assert response.status == "held" and response.payload_absent is False
++    after = facts(sim)
++    assert all(scope["fenced"] and scope["pending_erasure"] for scope in after["scopes"].values())
++    for collection in (
++        "events",
++        "source_slots",
++        "recipient_slots",
++        "source_heads",
++        "recipient_heads",
++        "outbox",
++        "cleanup",
++        "refusals",
++        "quotas",
++    ):
++        assert after[collection] == before[collection]
++    assert sim._checkpoint(claims[1], response, False) is False
++    monkeypatch.setattr(module, "MAX_SEQUENCE_SLOTS", 10_000)
++    monkeypatch.setattr(store_module, "MAX_METADATA_BYTES", 32_000_000)
++    assert sim.process_batch(FakeTransport()) == {"claimed": 1, "completed": 1}
++    assert sim.counts()["retained_bytes"] == 0 and sim.counts()["fenced_scopes"] == 2
++    with pytest.raises(SyntheticExchangeError):
++        sim.stage_declaration(OTHER_SCOPE, uid(16), uid(17))
++
++
++@pytest.mark.parametrize(
++    "status",
++    [{"cleanup_allowed": False}, {"known": False}, {"connected": False}, {"expired": True}],
++)
++def test_erased_alias_retirement_needs_fresh_cleanup_authority_before_slot_or_ack(
++    sim: SyntheticExchangeSimulator, status: dict[str, bool]
++) -> None:
++    claims = erased_alias_cleanup_claims(sim)
++    sim.set_scope_status(OTHER_SCOPE, **status)
++    before = facts(sim)
++    response = sim.receive_event(claims[1].raw)
++    assert response.status == "held" and response.payload_absent is False
++    assert facts(sim) == before
++    restored = {key: key not in ("expired",) for key in status}
++    sim.set_scope_status(OTHER_SCOPE, revoke=True, **restored)
++    response = sim.receive_event(claims[1].raw)
++    assert response.status == "retired" and response.payload_absent
++    assert facts(sim)["events"][claims[1].event_id]["recipient_admitted"] is True
++    assert sim._checkpoint(claims[1], response, False)
++    with pytest.raises(SyntheticExchangeError):
++        sim.stage_declaration(OTHER_SCOPE, uid(16), uid(17))
++
++
++def test_multiscope_cleanup_lost_reply_replays_owned_bytes_without_charge_or_missing_slot(
++    sim: SyntheticExchangeSimulator,
++) -> None:
++    stage(sim)
++    stage(sim, OTHER_SCOPE)
++    sim.process_batch(FakeTransport())
++    sim.withdraw_original(HUMAN, SAMPLE)
++    assert sim.process_batch(FakeTransport(("deliver", "lose_reply"))) == {
++        "claimed": 2,
++        "completed": 1,
++    }
++    data = facts(sim)
++    assert len(data["outbox"]) == 1
++    event_id = next(iter(data["outbox"]))
++    raw = raw_for(sim, event_id)
++    assert data["events"][event_id]["recipient_admitted"] is True
++    before_slots, before_quota = data["recipient_slots"], data["quotas"]
++    sim._clock.now += timedelta(days=1)
++    clean = reopen(sim)
++    assert raw_for(clean, event_id) == raw
++    assert clean.process_batch(FakeTransport()) == {"claimed": 1, "completed": 1}
++    assert (
++        facts(clean)["recipient_slots"] == before_slots and facts(clean)["quotas"] == before_quota
++    )
++    assert clean.counts()["retained_bytes"] == clean.counts()["pending_cleanup"] == 0
++
++
++def test_erased_alias_retirement_without_measurement_refusal_cannot_claim_absence(
++    sim: SyntheticExchangeSimulator,
++) -> None:
++    claims = erased_alias_cleanup_claims(sim)
++    receipt = sim.receive_event(claims[1].raw)
++    assert sim._checkpoint(claims[1], receipt, False)
++    value = json.loads(claims[1].raw)
++    value.update(event_id=uid(914), stream_sequence=2, previous_event_sha256=receipt.sha256)
++    value["payload"]["measurement_handles"] = [uid(915)]
++    before = facts(sim)
++    response = sim.receive_event(json.dumps(value, separators=(",", ":")).encode())
++    assert response.status == "held" and response.payload_absent is False
++    assert facts(sim) == before
++
++
++def test_erased_alias_cleanup_stale_claim_cannot_finish_a_new_nonce_or_lose_retirement_slot(
++    sim: SyntheticExchangeSimulator,
++) -> None:
++    claims = erased_alias_cleanup_claims(sim)
++    old = claims[1]
++    response = sim.receive_event(old.raw)
++    assert response.status == "retired" and response.payload_absent
++    sim._clock.now += timedelta(seconds=CLAIM_RECOVERY_SECONDS)
++    assert sim._claim(1) == []
++    sim._clock.now += timedelta(seconds=BACKOFF_SECONDS[0])
++    new = sim._claim(1)[0]
++    assert new.raw == old.raw and new.nonce != old.nonce
++    assert sim._checkpoint(old, response, False) is False
++    assert facts(sim)["outbox"][old.event_id]["claim"] == new.nonce
++    assert sim._checkpoint(new, sim.receive_event(new.raw), False) is True
++    assert facts(sim)["events"][old.event_id]["recipient_admitted"] is True
++    assert sim.counts()["retained_bytes"] == sim.counts()["pending_cleanup"] == 0
++
++
++def test_erased_alias_first_retirement_role_admission_still_checks_source_identity(
++    sim: SyntheticExchangeSimulator,
++) -> None:
++    claims = erased_alias_cleanup_claims(sim)
++    before = facts(sim)
++    assert before["events"][claims[1].event_id]["recipient_admitted"] is False
++    response = sim.receive_event(claims[1].raw + b" ")
++    assert response.status in ("conflict", "held") and response.payload_absent is False
++    after = facts(reopen(sim))
++    for collection in (
++        "events",
++        "source_slots",
++        "recipient_slots",
++        "source_heads",
++        "recipient_heads",
++        "outbox",
++        "quotas",
++    ):
++        assert after[collection] == before[collection]
+diff --git a/docs/LIBRARY_EXCHANGE_SIMULATOR.md b/docs/LIBRARY_EXCHANGE_SIMULATOR.md
+--- a/docs/LIBRARY_EXCHANGE_SIMULATOR.md
++++ b/docs/LIBRARY_EXCHANGE_SIMULATOR.md
+@@ -77,6 +77,10 @@
+ 
+ Recipient heads derive exclusively from recipient-admitted slot facts; source facts never manufacture receipt of missing declarations. Identity/byte/scientific conflicts hold the stream. Current authenticated fake retirement is processed before gaps or slot conflict so an older declaration cannot revive a refused alias. Retirement is sample-wide even when its measurement list is empty. Known same-human aliases inherit the refusal and cover source/recipient declaration bytes, drafts and every registered preparation; working alias/binding mappings are removed after erasure, while minimal refusals and private sequence/digest metadata survive.
+ 
++Every delivered retirement passes the same exact identity and recipient-slot checks, including after another scope's cleanup has erased the working aliases. Retained original/event and refusal facts bind that erased alias to its known scope/sample; all listed measurement handles still need durable refusal coverage. Valid recipient retirement slots persist without scientific payload or a fabricated source role, so later unrelated samples can follow the delivered retirement predecessor normally. Exact-byte cleanup retries remain bound to the original event/digest after all cleanup bytes are deleted; changed-byte/event/slot retries cannot acknowledge absence.
++
++A genuinely missing predecessor leaves the retirement slot gapped without inventing a recipient head. Consecutively validated later arrivals can advance only through their exact predecessors. A known contradictory predecessor or successor is checked on a candidate: its proposed role/event/slot/head changes are discarded, the scope is held for conflict, and canonical refusals and rights erasure remain effective. A refused late scientific declaration does not become an admitted predecessor merely because source facts exist; any remaining gap stays held. Current separate cleanup permission and logical/metadata capacity reservation still precede receipt or absence acknowledgment. A refusal activates the existing affected scope fences and preserves the exact unresolved cleanup intent.
++
+ Cleanup is prioritized independently of the daily scientific admission quota. Only explicitly scripted transient failures spend attempts: five total, with delays of 60/120/240/480 seconds, then held. Disconnected, unknown, expired and otherwise unavailable outcomes preserve the intent without spending a transient attempt. A stopped claim has a separate local 600-second recovery rule: after fresh authority becomes available, it consumes a transient attempt and waits the corresponding delay before a new nonce can retry the original bytes. This is not the imported-photo 300-second lease. A delayed old nonce never removes/recreates a newer or erased queue record.
+ 
+ A matching receipt is not sufficient to finish a declaration: the simulator also checks the receiver's own admitted identity and exact registered bytes. Cleanup completion requires exact stream/scope/sample/list/event/digest agreement, current fake cleanup permission, durable refusal coverage and absence of **all** known covered science copies throughout the root. The entire managed inventory must remain safe. A false acknowledgment, cached status, lost reply, newly present orphan or delayed completion cannot make a held root available. Successful cleanup removes only its pending intent/retirement bytes; accepted daily charges and minimal refusals remain.

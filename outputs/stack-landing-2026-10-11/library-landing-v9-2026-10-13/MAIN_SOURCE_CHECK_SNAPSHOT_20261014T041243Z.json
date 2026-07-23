@@ -1,0 +1,82 @@
+{
+  "utc": "2026-10-14T04:12:43.490049+00:00",
+  "main": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+  "source_checks_green": true,
+  "only_three_factual_docs_changed_no_native_workflow_expected": true,
+  "checks": [
+    {
+      "name": "deploy",
+      "status": "waiting",
+      "conclusion": null,
+      "id": 115674680507,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38509512413/job/115674680507"
+    },
+    {
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115674548816,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38509512413/job/115674548816"
+    },
+    {
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115674546972,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38509512483/job/115674546972"
+    },
+    {
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115674546855,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38509512433/job/115674546855"
+    }
+  ],
+  "runs": [
+    {
+      "id": 38509512483,
+      "workflow_path": ".github/workflows/secret-scan.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "run_number": 365,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38509512483"
+    },
+    {
+      "id": 38509512413,
+      "workflow_path": ".github/workflows/pages.yml",
+      "status": "waiting",
+      "conclusion": null,
+      "attempt": 1,
+      "run_number": 51,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38509512413"
+    },
+    {
+      "id": 38509512433,
+      "workflow_path": ".github/workflows/ci.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "run_number": 259,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38509512433"
+    }
+  ],
+  "bindings": {
+    "main": {
+      "sha256": "88890e515903fe0419cb0b063d9bf74be7a0f2b4f21c5dbc6fd4bd592d9c8cf6",
+      "bytes": 356
+    },
+    "checks": {
+      "sha256": "f364e6b05c0fe9211f18ebd80f9f437812c383e915dd066fc9182ed59fb3d9d2",
+      "bytes": 12901
+    },
+    "runs": {
+      "sha256": "53b5cab74ea4447632c18731e8a9327bc3b4982ac9c2277c93e34e9a813d7149",
+      "bytes": 40460
+    }
+  },
+  "Pages_is_separate_protected_deployment": true,
+  "GET_only": true,
+  "production_queries": false
+}

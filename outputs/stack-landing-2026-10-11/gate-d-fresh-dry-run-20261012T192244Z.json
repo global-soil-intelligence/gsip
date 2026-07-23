@@ -1,0 +1,49 @@
+{
+  "gate": "D",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1"
+  },
+  "started_at_utc": "2026-10-12T19:22:41.023335+00:00",
+  "completed_at_utc": "2026-10-12T19:22:44.274855+00:00",
+  "source_head": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "source_clean": true,
+  "cli_version": "2.118.0",
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "db",
+    "push",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+    "--skip-vault",
+    "--dry-run"
+  ],
+  "exit_code": 0,
+  "expected_pending": [
+    "20261012141828_wp6b_invoker_boundary.sql",
+    "20261012142348_wp6d_private_rights_boundary.sql"
+  ],
+  "filename_occurrences": [
+    "20261012141828_wp6b_invoker_boundary.sql",
+    "20261012142348_wp6d_private_rights_boundary.sql",
+    "20261012141828_wp6b_invoker_boundary.sql",
+    "20261012142348_wp6d_private_rights_boundary.sql"
+  ],
+  "pending_exact_two_in_order": true,
+  "safe_output_lines": [
+    "Initialising login role...",
+    "DRY RUN: migrations will *not* be pushed to the database.",
+    "Connecting to remote database...",
+    "\u2022 20261012141828_wp6b_invoker_boundary.sql",
+    "\u2022 20261012142348_wp6d_private_rights_boundary.sql"
+  ],
+  "output_sha256": "c578fce2678a6c6da2b3424bc5fc84a85eb04d56d5c72636ee25cfb0c2d6f682",
+  "state": "PASS_DRY_RUN_NO_APPLICATION_MIGRATION",
+  "application_migrations_executed": false,
+  "limits": [
+    "CLI may initialize its temporary login role. No application migration, history repair, seed, vault update, deployment or settings change."
+  ]
+}

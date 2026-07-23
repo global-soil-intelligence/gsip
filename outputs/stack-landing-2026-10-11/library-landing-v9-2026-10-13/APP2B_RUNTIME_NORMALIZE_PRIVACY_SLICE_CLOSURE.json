@@ -1,0 +1,194 @@
+{
+  "actual_independent_checks": {
+    "baseline40": {
+      "failed": 22,
+      "passed": 18,
+      "skipped": 0
+    },
+    "current_cases": 87,
+    "failed": 0,
+    "full_project_mypy_source_files": 75,
+    "new": 40,
+    "own_privacy": 4,
+    "passed": 87,
+    "pinned_prettier_exit": 0,
+    "ruff_exit": 0,
+    "setup_errors": 0,
+    "skipped": 0,
+    "three_effective_mutations": {
+      "canonical_file_guard_removed": {
+        "failed": 2,
+        "passed": 38
+      },
+      "complete_proof_guard_removed": {
+        "failed": 6,
+        "passed": 34
+      },
+      "early_skip_before_zip_check": {
+        "failed": 22,
+        "passed": 18
+      }
+    },
+    "unchanged_diagnostics": 43
+  },
+  "base_commit": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "evidence": {
+    "BASELINE_NEW40.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/BASELINE_NEW40.json",
+      "sha256": "df8a6f40102341d8cbd225fd827a435cc1b2122c5ffb5b33cf7a6988efec9003"
+    },
+    "BASELINE_SOURCE_BINDING.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/BASELINE_SOURCE_BINDING.json",
+      "sha256": "5a2e61cbe16ae4ec10884eaac5d2a3d605e23f470f565e311c945201395aa1a7"
+    },
+    "CURRENT_NEW40_DIAG43_OWN4.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/CURRENT_NEW40_DIAG43_OWN4.json",
+      "sha256": "00c0b21b255c78c32865f44fcd6f74a153ddab1d884e134874d53ecb5ce4ab4d"
+    },
+    "EXACT_SOURCE_BINDING.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/EXACT_SOURCE_BINDING.json",
+      "sha256": "268ad28e00f3d90c8566637023883cef87f7507facf10402163446f01135d9cd"
+    },
+    "FINITE_REPLAY_SUMMARY.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/FINITE_REPLAY_SUMMARY.json",
+      "sha256": "a4e044bc6e657af347cccc6e06147c7cacf1d2e415832c782a128c61012a553e"
+    },
+    "MUTATION_canonical_file_conflict_guard.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/MUTATION_canonical_file_conflict_guard.json",
+      "sha256": "92c10ef8edba1fed30d0a74d0c3b2a07607d5645e029831069d11a3c3059fb5c"
+    },
+    "MUTATION_complete_proof_conflict_guard.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/MUTATION_complete_proof_conflict_guard.json",
+      "sha256": "0f00af24b1ee2d953fbac9f2d126e78f95c548aa7b78371d489e58002ec3fc42"
+    },
+    "MUTATION_premature_skip_before_full_zip_check.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/MUTATION_premature_skip_before_full_zip_check.json",
+      "sha256": "80c6913ab2f930c017adfc6d3fe92c037dfed62e6ec2fb5dbc842e2ba9788607"
+    },
+    "PINNED_ARTIFACT_API_PROVENANCE.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/PINNED_ARTIFACT_API_PROVENANCE.json",
+      "sha256": "d1b514ffab7a0432cee7b5a5a129191ed75eaf4d238af891293915a07f7fbd77"
+    },
+    "RETAINED_ACTUAL_DUPLICATE_WITNESS.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/RETAINED_ACTUAL_DUPLICATE_WITNESS.json",
+      "sha256": "ef9a88c0e2629c79fa835db6ebfe2a051d8c562ccecf71adb0fdbed03ae45421"
+    },
+    "STATIC_VERIFICATION.json": {
+      "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/STATIC_VERIFICATION.json",
+      "sha256": "eeb33e02d075061ca19dca342b47e56c44db6092953e44001f45bcbe13ec5a74"
+    }
+  },
+  "exact_source_binding": {
+    "all_occurrence_checks_and_zip_evidence_before_seen_lookup": true,
+    "base_commit": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+    "changed_files": {
+      "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+        "base_sha256": "90be661ac7e140806378f701ce33052aab37a69199e1ea61e47c9502005a6136",
+        "bytes": 41478,
+        "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+        "sha256": "1c9378c3ef3b79a1ca592e0c701827ea4fd02bb2c4a6346af5264dbdec0f5922"
+      },
+      "scripts/app_notification_audit.py": {
+        "base_sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee",
+        "bytes": 133966,
+        "path": "scripts/app_notification_audit.py",
+        "sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4"
+      },
+      "tests/test_app_notification_audit.py": {
+        "base_sha256": "5e2db7a77923d6110ce2abcdfe6fc74fdb1abeb264c9d05c2d9fb4262cd12b27",
+        "bytes": 232804,
+        "path": "tests/test_app_notification_audit.py",
+        "sha256": "d8e05f5fee70c9b90b41227b62094f2f8713f0850fc254fd7368a4c8744a7b25"
+      }
+    },
+    "frozen_untracked_cache_paths_explicitly_excluded": [],
+    "fullproof_and_canonical_path_equality_required": true,
+    "key": "JSON identity structure preserves module/project key type plus filename; path stays internal",
+    "metadata_sha256": {
+      "FROZEN_SOURCE_RECEIPT.json": "465f31605012187b1c9212506fed573a4e9c75e22939e24a378c772b04561a35",
+      "MANIFEST.json": "5788468df3c0f44fe9d16703ed226778a172b68d7fe06239c5afd61c0c937580",
+      "candidate.patch": "136f6877c3bd3b7ec10f14b8c62fbd16ec7e4bcbcb9704e3e7c628a472927874"
+    },
+    "normalizer_state_per_view": true,
+    "old_test_prefix_bytes": 224140,
+    "old_test_prefix_exact": true,
+    "only_changed_function_AST": "runtime_evidence",
+    "source_files": 365,
+    "unchanged_other_files": 362,
+    "validate_android_and_all_other_helper_bytes_exact": true,
+    "whole_helper_erasure_exact_except_collector_normalization": true,
+    "workflow_tasks_pins_marks_caps_schema_proofs_exact": true
+  },
+  "execution_and_authority": {
+    "hosted_actual_values_inferred": false,
+    "new_actual_runtime_collector_Gradle_tool_key_APK_native_build": false,
+    "old_native_artifact_proof_reused": false,
+    "own_executed_inputs": "Synthetic fixtures and disposable archive bytes only",
+    "retained_actual_inputs": "Read-only JSON graphs/sidecars and pinned public Gradle source metadata only",
+    "source_Git_GH_CI_workflow_production_mutations": false
+  },
+  "files": {
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_sha256": "90be661ac7e140806378f701ce33052aab37a69199e1ea61e47c9502005a6136",
+      "bytes": 41478,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "1c9378c3ef3b79a1ca592e0c701827ea4fd02bb2c4a6346af5264dbdec0f5922"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee",
+      "bytes": 133966,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_sha256": "5e2db7a77923d6110ce2abcdfe6fc74fdb1abeb264c9d05c2d9fb4262cd12b27",
+      "bytes": 232804,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "d8e05f5fee70c9b90b41227b62094f2f8713f0850fc254fd7368a4c8744a7b25"
+    }
+  },
+  "frozen_directory": "/private/tmp/gsip-runtime-normalize-frozen-71xk4_n0",
+  "frozen_metadata_sha256": {
+    "AUTHOR_VERIFICATION.json": "81d0a7a49982c0eafcd0a4a8f9236e307e9e38e70e45d10a006c6fa9a15e80af",
+    "FROZEN_SOURCE_RECEIPT.json": "465f31605012187b1c9212506fed573a4e9c75e22939e24a378c772b04561a35",
+    "MANIFEST.json": "5788468df3c0f44fe9d16703ed226778a172b68d7fe06239c5afd61c0c937580",
+    "candidate.patch": "136f6877c3bd3b7ec10f14b8c62fbd16ec7e4bcbcb9704e3e7c628a472927874"
+  },
+  "known_actual_runtime_hold": {
+    "commit_or_runtime_acceptance_authorized": false,
+    "independently_executed_in_this_review": false,
+    "receipt_path": "/private/tmp/gsip-623-duplicate-source-diagnosis-4ouitia4/review-normalizer/ACTUAL_REPLAY_REFUSAL_20261014T023504Z.json",
+    "receipt_sha256": "af589b30925b09135f1c80e603b2d30bba043d546f3449d1643b6bbd4073c40e",
+    "reported_by_root_core": "Runtime-only trace reaches unchanged coverageguard2526:75 selected modules,69 unique module binaries,3 POM leaves,3 nonPOM modules missing binaries(2jar1aar) in both parent configs; project coverage present. Exact primary variant/metadata investigation remains active.",
+    "required_action": "Do not weaken or exempt the unchanged coverage guard. Root holds commit until this separate actual coverage/context question is resolved.",
+    "state": "UNRESOLVED_GENUINE_COVERAGE_REFUSAL_OUTSIDE_THIS_PRIVACY_SLICE"
+  },
+  "pinned_primary_contract": "Gradle8.14.3 public sources distinguish artifact-result Set from FileCollection Set<File> and opaque artifact IDs; no component-plus-basename uniqueness promise was inferred. No new support for distinct physical path collisions is granted.",
+  "privacy_and_control_verdict": [
+    "All artifact occurrences retain original typed identity, source/package membership, contained physical path, suffix, descriptor, bounded read, ZIP and licence-notice evidence checks before normalization. The original list-size cap is enforced before the loop.",
+    "Per-view state prevents cross-configuration dropping. The JSON identity key encodes coordinate-versus-project structure plus filename and remains private implementation state; no path/path-hash/new receipt field/ordinal/diagnostic label is exported.",
+    "Only repeated already-contained canonical file with exact complete proof row is coalesced. Distinct paths refuse even with equal bytes; same-path changed hash,size or notices refuse. Different filenames remain separate evidence.",
+    "Final validate_android byte-for-byte uniqueness and complete module/project coverage checks remain unchanged. Source/notice/licence/schema/metadata/task/permission/repeat/reference/key/equality guards remain exact623.",
+    "Four own CLI controls for path/proof conflicts retain only the fixed four-field bounded diagnostic and print no supplied synthetic private path or value.",
+    "Whole-helper erasure restores61cfd: only runtime_evidence changes. All224140 old test bytes,362 other tracked files and both tasks/workflow/pins/marks remain exact."
+  ],
+  "remaining": [
+    "Actual runtime coverage refusal remains unresolved and holds combined source/native acceptance and commit.",
+    "Fresh exact-head hosted artifacts will be required after any final corrected source is pushed;623iOSclosure is historical for futurehead.",
+    "Legal/device/distribution/capture/owner-signing/production and merge gates remain separate."
+  ],
+  "retained_actual_local_context": {
+    "all_groups": "two module occurrences,one producer canonical-path string,equal entire proof row including notices,size,hash; not project classes.jar collisions",
+    "candidate_occurrences_per_view": 79,
+    "candidate_unique_keys_per_view": 74,
+    "duplicate_groups_per_view_per_side": 5,
+    "full_native_actual_acceptance_inferred": false,
+    "independently_read_only_checked": true,
+    "parent_occurrences_per_view": 78,
+    "parent_unique_keys_per_view": 73,
+    "source": "Retained local graph74ad+collector outputs, not fresh hosted623 values"
+  },
+  "schema": "gsip-independent-runtime-normalizer-privacy-slice-v1",
+  "scope": "Finite exact collector-normalizer privacy/conflict/read-order source review only; complete runtime/native proof is not closed",
+  "status": "CLOSED_NO_PRIVACY_BLOCKER_RUNTIME_COVERAGE_HELD"
+}

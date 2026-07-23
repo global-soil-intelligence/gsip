@@ -1,0 +1,181 @@
+{
+  "utc": "2026-10-14T03:34:16.962151+00:00",
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "native_run": 38505847255,
+  "current_exact_head_native_artifact_acceptance": true,
+  "general_checks_green": true,
+  "DCO_skipped_not_certification": true,
+  "immutable_receipt_copies": {
+    "/private/tmp/gsip-faab-android-independent-099db2ry/EXACT_FAAB_ANDROID_ARTIFACT_CLOSURE.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/APP2B_FAAB_ANDROID_ARTIFACT_CLOSURE.json",
+      "sha256": "ab4caad4a56f57cb24bc773ed5696cc56c6c5bef287038fe8c49b4fcd26b07d6",
+      "bytes": 9623
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_FOUR_APK_METADATA_POLICY_REPLAY.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--FRESH_FOUR_APK_METADATA_POLICY_REPLAY.json",
+      "sha256": "97431dec1276a314b6c849ddade5a12034c23533543a5ee6c2c37ee42b110662",
+      "bytes": 7882
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_ACTUAL_MERGE_BINDING.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--FRESH_ANDROID_ACTUAL_MERGE_BINDING.json",
+      "sha256": "a2c2c8ccd4518f2166aff93b02704f53cef5acf760ad8e8efd6cf5c039b9e48a",
+      "bytes": 1330
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_FOUR_APK_BOUNDS.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--FRESH_FOUR_APK_BOUNDS.json",
+      "sha256": "d12701c1c7a29fbda9df9b46590ad94d19e37eaf8d63b57aa9e5000f3d14c80a",
+      "bytes": 1126
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_OUTER_ARTIFACT_TREE.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--FRESH_ANDROID_OUTER_ARTIFACT_TREE.json",
+      "sha256": "17e271f70e050741926238cac3f7e7379c1a6c314648c2d67cd9faf96ba3b817",
+      "bytes": 3342
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_ANDROID_ARTIFACT_DOWNLOAD.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--FRESH_ANDROID_ARTIFACT_DOWNLOAD.json",
+      "sha256": "60d02a9ee94911c63d39f2a1d5cfd986d78fc1f13f37a3a9d06d414e49f8b02c",
+      "bytes": 344
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/EVIDENCE_MANIFEST.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--EVIDENCE_MANIFEST.json",
+      "sha256": "329489c137ab648b386c7998719b0a4e1fc6713416c7877396ca29872255c962",
+      "bytes": 5130
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/ANDROID_ARTIFACT_CORE_PROOF_COMPLETE.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--ANDROID_ARTIFACT_CORE_PROOF_COMPLETE.json",
+      "sha256": "4985f3be7508b85af8368f7455116952f8cc54dec5a5f9b8777cb3adccf5cac5",
+      "bytes": 2115
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/EXACT_SOURCE_PARENT_BINDING.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--EXACT_SOURCE_PARENT_BINDING.json",
+      "sha256": "802ad13740196761bbb0185728168bf9d3037f29028b5d2577c1bac7eca288df",
+      "bytes": 6449
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/FRESH_STRICT_ANDROID_REPLAY.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--FRESH_STRICT_ANDROID_REPLAY.json",
+      "sha256": "18472d96067caa49a7b9bc508150e5bafd4047ec63571bd5df01e5331885cbb4",
+      "bytes": 2959
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/DOWNLOAD_ATTEMPTED.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--DOWNLOAD_ATTEMPTED.json",
+      "sha256": "3c804735c4ec261c33874fa93d466a404b4fcca4472d3126cdccfd8eae8fe68a",
+      "bytes": 128
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/METADATA_20261014T032517Z.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--METADATA_20261014T032517Z.json",
+      "sha256": "f6d26b4fccf9ae5d92e99ee9ca80f87afda21ebfdfb7023235c7d557195ab62f",
+      "bytes": 6420
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/METADATA_20261014T032621Z.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--METADATA_20261014T032621Z.json",
+      "sha256": "84e2cc8085de64e6d04a1e5ce93378fb48aa2c2f9faa377138e826058e489748",
+      "bytes": 6463
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/METADATA_20261014T032758Z.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--METADATA_20261014T032758Z.json",
+      "sha256": "b4c7b9a936bf5c311795c7c3de8ec50ee0a9c1f61078e83050b93e41fb113063",
+      "bytes": 6463
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/METADATA_20261014T032937Z.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--METADATA_20261014T032937Z.json",
+      "sha256": "428835c235756e9bb6f3832e464e2bb24e34ddba4f3ca428523350bf1122f409",
+      "bytes": 8196
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/PREPARATION_AND_INITIAL_NETWORK_LIMIT.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--PREPARATION_AND_INITIAL_NETWORK_LIMIT.json",
+      "sha256": "c22f01b8fadbf01d9354f26a2329c54189f5be5e3251cbc4bce32b78f8e200b4",
+      "bytes": 538
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/PRIVATE_AAPT2_VERSION_PROBE.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--PRIVATE_AAPT2_VERSION_PROBE.json",
+      "sha256": "ffd1aa6617e95fd489bcf9d5f3b5bf21850741393f415e4c293eaad5806da6e0",
+      "bytes": 672
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/SAFE_ANDROID_TERMINAL_LOG.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--SAFE_ANDROID_TERMINAL_LOG.json",
+      "sha256": "fa9dfbc4cc8c2cd257244985cc610a64ba24070554df92644344d8829830c857",
+      "bytes": 807
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/WATCH_CONFIG.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--WATCH_CONFIG.json",
+      "sha256": "158316824b25e209ad779b72a6452df6089de422130df981173d41896fac158d",
+      "bytes": 514
+    },
+    "/private/tmp/gsip-faab-android-independent-099db2ry/WATCH_CONFIG_INITIAL.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-android-independent-099db2ry--WATCH_CONFIG_INITIAL.json",
+      "sha256": "119270e104dc33680747c507a61da0f96ec30aec1fefa67106454c6f1a3ca040",
+      "bytes": 474
+    },
+    "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/EXACT_FAAB_IOS_ARTIFACT_CLOSURE.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/APP2B_FAAB_IOS_ARTIFACT_CLOSURE.json",
+      "sha256": "a9d86bd8000773e1635ffe0fd2893e9b866490001eacd790fc131762defada9a",
+      "bytes": 2518
+    },
+    "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_ARTIFACT_DOWNLOAD.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-ios-independent-zvyf4ug1--FRESH_ARTIFACT_DOWNLOAD.json",
+      "sha256": "0759cad05000caac8afe6a5247d90ea141a73d86f34895545811acf98178b519",
+      "bytes": 381
+    },
+    "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_FOUR_ZIP_BOUNDS.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-ios-independent-zvyf4ug1--FRESH_FOUR_ZIP_BOUNDS.json",
+      "sha256": "0c31c13669edd42b7d6f4f7fb4758603493ad2900cbb969aa7d9eae2ac417c9a",
+      "bytes": 1122
+    },
+    "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_MERGE_BINDING.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-ios-independent-zvyf4ug1--FRESH_MERGE_BINDING.json",
+      "sha256": "83406d4dd095310038c298d0c69c981826eec5a26fd678ea1cd4ee97828dff22",
+      "bytes": 1265
+    },
+    "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_OUTER_ARTIFACT_TREE.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-ios-independent-zvyf4ug1--FRESH_OUTER_ARTIFACT_TREE.json",
+      "sha256": "eaee8ef60b0503a58918045129148a743bec2d4e735e6f0628d38e60ede03776",
+      "bytes": 1767
+    },
+    "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_SOURCE_BINDING.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-ios-independent-zvyf4ug1--FRESH_SOURCE_BINDING.json",
+      "sha256": "e73f8ac7b26d3973437b030f16eee8fd7ccebd407ffda2180532101a8d4d019b",
+      "bytes": 5034
+    },
+    "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/FRESH_STRICT_IOS_REPLAY.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-ios-independent-zvyf4ug1--FRESH_STRICT_IOS_REPLAY.json",
+      "sha256": "c9b6a11ec0db39eb0a031682b3fdba36e0236ebed528331b5b134b8ecf49a464",
+      "bytes": 1332
+    },
+    "/private/tmp/gsip-faab-ios-independent-zvyf4ug1/snapshot-20261014T032851Z.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-ios-independent-zvyf4ug1--snapshot-20261014T032851Z.json",
+      "sha256": "a3d24ad97fec895032ea2850845fa37f56d3f807e6f2e097b504e883be9a946a",
+      "bytes": 1773
+    },
+    "/private/tmp/gsip-faab-general-watch/FINITE_CLOSURE.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/APP2B_FAAB_GENERAL_CI_CLOSURE.json",
+      "sha256": "a96e0a38f748faf0fa3f8260df1efeedc76d2a79048dbbb3d7348c5237cea574",
+      "bytes": 1207
+    },
+    "/private/tmp/gsip-faab-general-watch/GENERAL_TERMINAL_METRICS.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-general-watch--GENERAL_TERMINAL_METRICS.json",
+      "sha256": "454e22c5aa256a1ddf78145b0b6b068b27e4c8edea1470875f0841296bdf0ad1",
+      "bytes": 7372
+    },
+    "/private/tmp/gsip-faab-general-watch/SCAN_CLOSURE.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-general-watch--SCAN_CLOSURE.json",
+      "sha256": "25f1bb889380e74dd5af9c2c9f0190c75d07f3810a08808e7182fce0599ffea0",
+      "bytes": 2149
+    },
+    "/private/tmp/gsip-faab-general-watch/SOURCE_BINDING.json": {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/app2b-faab-current-proof-leaves/gsip-faab-general-watch--SOURCE_BINDING.json",
+      "sha256": "ce30b32163ad2004453f50b530b5cabaf1171278b1f6a4d26aaf105f4970f8d9",
+      "bytes": 3848
+    }
+  },
+  "checks": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/SOURCE_PR63_CHECK_SNAPSHOT_20261014T033243Z.json",
+    "sha256": "d8b503d1e687ef7cd0377e392bae4a41c2351a8b3c06527500a1780d6a360113"
+  },
+  "holds": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/READ_ONLY_SOURCE_HOLD_AUDIT_20261014T033251Z.json",
+    "sha256": "eba2f741ff8dd3de2dc65267a291f5a36cf212d1902c00e8d448797a681152d9"
+  },
+  "physical_device_and_ios_backup_exclusion": "unverified",
+  "Android_metadata_parser_distribution_provenance_limit": "Existing installed public macOS SDK tool bytes/presence bound; original official distribution archive attestation unavailable. This is an independent metadata parser replay with that stated tool limit.",
+  "production_queries_changes_deployment_capture_opening": false
+}

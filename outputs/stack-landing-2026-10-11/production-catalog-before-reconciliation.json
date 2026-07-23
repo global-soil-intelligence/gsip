@@ -1,0 +1,2952 @@
+{
+  "tables": [
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "contribution_grants",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "contributors",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "gold_labels",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "h3_cells",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "photos",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "predictions",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "prior_jobs",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "priors",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "qa_events",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "qa_jobs",
+      "force_rls": false
+    },
+    {
+      "rls": true,
+      "owner": "postgres",
+      "table": "submissions",
+      "force_rls": false
+    }
+  ],
+  "columns": [
+    {
+      "type": "uuid",
+      "table": "contribution_grants",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "contribution_grants",
+      "column": "contributor_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "contribution_grants",
+      "column": "terms_version",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "contribution_grants",
+      "column": "accepted_at",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "contribution_grants",
+      "column": "data_license",
+      "default": "'ODbL-1.0'::text",
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "contribution_grants",
+      "column": "photo_license",
+      "default": "'CC-BY-SA-4.0'::text",
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "contribution_grants",
+      "column": "attribution_name",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "contributors",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "contributors",
+      "column": "auth_uid",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "contributors",
+      "column": "handle",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "integer",
+      "table": "contributors",
+      "column": "reputation",
+      "default": "0",
+      "not_null": true
+    },
+    {
+      "type": "boolean",
+      "table": "contributors",
+      "column": "precise_location_optin",
+      "default": "false",
+      "not_null": true
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "contributors",
+      "column": "created_at",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "gold_labels",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "gold_labels",
+      "column": "submission_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "gold_labels",
+      "column": "lab_name",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "gold_labels",
+      "column": "method",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "gold_labels",
+      "column": "property",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "double precision",
+      "table": "gold_labels",
+      "column": "value",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "double precision",
+      "table": "gold_labels",
+      "column": "uncertainty",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "gold_labels",
+      "column": "verified_by",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "gold_labels",
+      "column": "document_ref",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "gold_labels",
+      "column": "unit",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "integer",
+      "table": "gold_labels",
+      "column": "depth_top_cm",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "integer",
+      "table": "gold_labels",
+      "column": "depth_bottom_cm",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "h3_cells",
+      "column": "h3_index",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "integer",
+      "table": "h3_cells",
+      "column": "n_submissions",
+      "default": "0",
+      "not_null": true
+    },
+    {
+      "type": "integer",
+      "table": "h3_cells",
+      "column": "n_gold",
+      "default": "0",
+      "not_null": true
+    },
+    {
+      "type": "double precision",
+      "table": "h3_cells",
+      "column": "prior_uncertainty",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "double precision",
+      "table": "h3_cells",
+      "column": "model_disagreement",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "double precision",
+      "table": "h3_cells",
+      "column": "acquisition_score",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "h3_cells",
+      "column": "updated_at",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "type": "date",
+      "table": "h3_cells",
+      "column": "latest_submission_date",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "uuid",
+      "table": "photos",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "photos",
+      "column": "submission_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "photos",
+      "column": "shot_type",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "photos",
+      "column": "storage_path",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "jsonb",
+      "table": "photos",
+      "column": "camera_metadata_private",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "boolean",
+      "table": "photos",
+      "column": "card_detected",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "jsonb",
+      "table": "photos",
+      "column": "card_color_correction",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "real",
+      "table": "photos",
+      "column": "sharpness_score",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "photos",
+      "column": "perceptual_hash",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "photos",
+      "column": "calibration_status",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "uuid",
+      "table": "predictions",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "predictions",
+      "column": "submission_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "predictions",
+      "column": "model_version",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "predictions",
+      "column": "property",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "double precision",
+      "table": "predictions",
+      "column": "value",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "double precision",
+      "table": "predictions",
+      "column": "ci_lo",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "double precision",
+      "table": "predictions",
+      "column": "ci_hi",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "predictions",
+      "column": "basis",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "predictions",
+      "column": "unit",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "prior_jobs",
+      "column": "submission_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "prior_jobs",
+      "column": "status",
+      "default": "'pending'::text",
+      "not_null": true
+    },
+    {
+      "type": "smallint",
+      "table": "prior_jobs",
+      "column": "attempts",
+      "default": "0",
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "prior_jobs",
+      "column": "last_error",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "prior_jobs",
+      "column": "started_at",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "prior_jobs",
+      "column": "completed_at",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "prior_jobs",
+      "column": "updated_at",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "priors",
+      "column": "submission_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "priors",
+      "column": "source",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "priors",
+      "column": "property",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "double precision",
+      "table": "priors",
+      "column": "value",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "double precision",
+      "table": "priors",
+      "column": "uncertainty_lo",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "double precision",
+      "table": "priors",
+      "column": "uncertainty_hi",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "priors",
+      "column": "retrieved_at",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "priors",
+      "column": "unit",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "integer",
+      "table": "priors",
+      "column": "depth_top_cm",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "integer",
+      "table": "priors",
+      "column": "depth_bottom_cm",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "qa_events",
+      "column": "submission_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "qa_events",
+      "column": "check_name",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "boolean",
+      "table": "qa_events",
+      "column": "passed",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "double precision",
+      "table": "qa_events",
+      "column": "score",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "qa_events",
+      "column": "model_version",
+      "default": "'deterministic-v1'::text",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "qa_jobs",
+      "column": "photo_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "qa_jobs",
+      "column": "status",
+      "default": "'pending'::text",
+      "not_null": true
+    },
+    {
+      "type": "smallint",
+      "table": "qa_jobs",
+      "column": "attempts",
+      "default": "0",
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "qa_jobs",
+      "column": "last_error",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "qa_jobs",
+      "column": "completed_at",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "qa_jobs",
+      "column": "updated_at",
+      "default": "now()",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "submissions",
+      "column": "id",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "submissions",
+      "column": "contributor_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "extensions.geometry(Point,4326)",
+      "table": "submissions",
+      "column": "geom_precise",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "submissions",
+      "column": "h3_r8",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "submissions",
+      "column": "h3_r6",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "timestamp with time zone",
+      "table": "submissions",
+      "column": "captured_at",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "text",
+      "table": "submissions",
+      "column": "land_cover",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "submissions",
+      "column": "surface_condition",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "boolean",
+      "table": "submissions",
+      "column": "disturbed",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "submissions",
+      "column": "device_model",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "boolean",
+      "table": "submissions",
+      "column": "precip_flag",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "real",
+      "table": "submissions",
+      "column": "elevation",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "text",
+      "table": "submissions",
+      "column": "status",
+      "default": "'pending'::text",
+      "not_null": true
+    },
+    {
+      "type": "uuid",
+      "table": "submissions",
+      "column": "grant_id",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "type": "real",
+      "table": "submissions",
+      "column": "gps_accuracy_m",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "type": "boolean",
+      "table": "submissions",
+      "column": "is_synthetic",
+      "default": "false",
+      "not_null": true
+    }
+  ],
+  "indexes": [
+    {
+      "name": "contribution_grants_contributor_idx",
+      "table": "contribution_grants",
+      "valid": true,
+      "definition": "CREATE INDEX contribution_grants_contributor_idx ON public.contribution_grants USING btree (contributor_id)"
+    },
+    {
+      "name": "contribution_grants_id_contributor_id_key",
+      "table": "contribution_grants",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX contribution_grants_id_contributor_id_key ON public.contribution_grants USING btree (id, contributor_id)"
+    },
+    {
+      "name": "contribution_grants_pkey",
+      "table": "contribution_grants",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX contribution_grants_pkey ON public.contribution_grants USING btree (id)"
+    },
+    {
+      "name": "contributors_auth_uid_key",
+      "table": "contributors",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX contributors_auth_uid_key ON public.contributors USING btree (auth_uid)"
+    },
+    {
+      "name": "contributors_handle_key",
+      "table": "contributors",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX contributors_handle_key ON public.contributors USING btree (handle)"
+    },
+    {
+      "name": "contributors_pkey",
+      "table": "contributors",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX contributors_pkey ON public.contributors USING btree (id)"
+    },
+    {
+      "name": "gold_labels_pkey",
+      "table": "gold_labels",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX gold_labels_pkey ON public.gold_labels USING btree (id)"
+    },
+    {
+      "name": "gold_labels_submission_idx",
+      "table": "gold_labels",
+      "valid": true,
+      "definition": "CREATE INDEX gold_labels_submission_idx ON public.gold_labels USING btree (submission_id)"
+    },
+    {
+      "name": "h3_cells_pkey",
+      "table": "h3_cells",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX h3_cells_pkey ON public.h3_cells USING btree (h3_index)"
+    },
+    {
+      "name": "photos_pkey",
+      "table": "photos",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX photos_pkey ON public.photos USING btree (id)"
+    },
+    {
+      "name": "photos_submission_idx",
+      "table": "photos",
+      "valid": true,
+      "definition": "CREATE INDEX photos_submission_idx ON public.photos USING btree (submission_id)"
+    },
+    {
+      "name": "photos_submission_shot_key",
+      "table": "photos",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX photos_submission_shot_key ON public.photos USING btree (submission_id, shot_type)"
+    },
+    {
+      "name": "predictions_pkey",
+      "table": "predictions",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX predictions_pkey ON public.predictions USING btree (id)"
+    },
+    {
+      "name": "predictions_submission_idx",
+      "table": "predictions",
+      "valid": true,
+      "definition": "CREATE INDEX predictions_submission_idx ON public.predictions USING btree (submission_id)"
+    },
+    {
+      "name": "prior_jobs_pkey",
+      "table": "prior_jobs",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX prior_jobs_pkey ON public.prior_jobs USING btree (submission_id)"
+    },
+    {
+      "name": "priors_pkey",
+      "table": "priors",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX priors_pkey ON public.priors USING btree (submission_id, source, property, depth_top_cm, depth_bottom_cm)"
+    },
+    {
+      "name": "qa_events_pkey",
+      "table": "qa_events",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX qa_events_pkey ON public.qa_events USING btree (submission_id, check_name)"
+    },
+    {
+      "name": "qa_jobs_pkey",
+      "table": "qa_jobs",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX qa_jobs_pkey ON public.qa_jobs USING btree (photo_id)"
+    },
+    {
+      "name": "submissions_contributor_idx",
+      "table": "submissions",
+      "valid": true,
+      "definition": "CREATE INDEX submissions_contributor_idx ON public.submissions USING btree (contributor_id)"
+    },
+    {
+      "name": "submissions_grant_owner_idx",
+      "table": "submissions",
+      "valid": true,
+      "definition": "CREATE INDEX submissions_grant_owner_idx ON public.submissions USING btree (grant_id, contributor_id)"
+    },
+    {
+      "name": "submissions_h3_r8_idx",
+      "table": "submissions",
+      "valid": true,
+      "definition": "CREATE INDEX submissions_h3_r8_idx ON public.submissions USING btree (h3_r8)"
+    },
+    {
+      "name": "submissions_pkey",
+      "table": "submissions",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX submissions_pkey ON public.submissions USING btree (id)"
+    },
+    {
+      "name": "submissions_status_idx",
+      "table": "submissions",
+      "valid": true,
+      "definition": "CREATE INDEX submissions_status_idx ON public.submissions USING btree (status)"
+    }
+  ],
+  "policies": [
+    {
+      "name": "contribution_grants_insert_own",
+      "check": "((contributor_id = public.current_contributor_id()) AND (accepted_at <= now()))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "contribution_grants",
+      "using": null,
+      "command": "a",
+      "permissive": true
+    },
+    {
+      "name": "contribution_grants_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "contribution_grants",
+      "using": "(contributor_id = public.current_contributor_id())",
+      "command": "r",
+      "permissive": true
+    },
+    {
+      "name": "contributors_insert_self",
+      "check": "(auth_uid = ( SELECT auth.uid() AS uid))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "contributors",
+      "using": null,
+      "command": "a",
+      "permissive": true
+    },
+    {
+      "name": "contributors_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "contributors",
+      "using": "(auth_uid = ( SELECT auth.uid() AS uid))",
+      "command": "r",
+      "permissive": true
+    },
+    {
+      "name": "contributors_update_own",
+      "check": "(auth_uid = ( SELECT auth.uid() AS uid))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "contributors",
+      "using": "(auth_uid = ( SELECT auth.uid() AS uid))",
+      "command": "w",
+      "permissive": true
+    },
+    {
+      "name": "gold_labels_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "gold_labels",
+      "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))",
+      "command": "r",
+      "permissive": true
+    },
+    {
+      "name": "h3_cells_select_all",
+      "check": null,
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "h3_cells",
+      "using": "true",
+      "command": "r",
+      "permissive": true
+    },
+    {
+      "name": "photos_insert_own",
+      "check": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "photos",
+      "using": null,
+      "command": "a",
+      "permissive": true
+    },
+    {
+      "name": "photos_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "photos",
+      "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))",
+      "command": "r",
+      "permissive": true
+    },
+    {
+      "name": "predictions_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "predictions",
+      "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))",
+      "command": "r",
+      "permissive": true
+    },
+    {
+      "name": "prior_jobs_server_only",
+      "check": "false",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "prior_jobs",
+      "using": "false",
+      "command": "*",
+      "permissive": true
+    },
+    {
+      "name": "priors_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "priors",
+      "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))",
+      "command": "r",
+      "permissive": true
+    },
+    {
+      "name": "qa_events_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "qa_events",
+      "using": "(submission_id IN ( SELECT s.id\n   FROM public.submissions s\n  WHERE (s.contributor_id = public.current_contributor_id())))",
+      "command": "r",
+      "permissive": true
+    },
+    {
+      "name": "qa_jobs_server_only",
+      "check": "false",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "table": "qa_jobs",
+      "using": "false",
+      "command": "*",
+      "permissive": true
+    },
+    {
+      "name": "submissions_insert_own",
+      "check": "((contributor_id = public.current_contributor_id()) AND (status = 'pending'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "table": "submissions",
+      "using": null,
+      "command": "a",
+      "permissive": true
+    },
+    {
+      "name": "submissions_select_own",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "table": "submissions",
+      "using": "(contributor_id = public.current_contributor_id())",
+      "command": "r",
+      "permissive": true
+    }
+  ],
+  "triggers": [
+    {
+      "name": "contribution_grants_immutable",
+      "table": "contribution_grants",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER contribution_grants_immutable BEFORE DELETE OR UPDATE ON public.contribution_grants FOR EACH ROW EXECUTE FUNCTION private.reject_contribution_grant_mutation()"
+    },
+    {
+      "name": "photos_enqueue_qa_job",
+      "table": "photos",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER photos_enqueue_qa_job AFTER INSERT ON public.photos FOR EACH ROW EXECUTE FUNCTION public.enqueue_qa_job()"
+    },
+    {
+      "name": "submissions_clear_untrusted_h3",
+      "table": "submissions",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER submissions_clear_untrusted_h3 BEFORE INSERT OR UPDATE OF geom_precise, h3_r8, h3_r6 ON public.submissions FOR EACH ROW EXECUTE FUNCTION private.clear_untrusted_submission_h3()"
+    },
+    {
+      "name": "submissions_enqueue_prior_job",
+      "table": "submissions",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER submissions_enqueue_prior_job AFTER INSERT ON public.submissions FOR EACH ROW EXECUTE FUNCTION public.enqueue_prior_job()"
+    }
+  ],
+  "functions": [
+    {
+      "name": "claim_prior_job_attempt",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        },
+        {
+          "role": "service_role",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "smallint",
+      "arguments": "p_submission_id uuid",
+      "volatility": "v",
+      "security_definer": false,
+      "definition_sha256": "8101174127178f884c618b0a935440b7123da40619eb4d2fb42e9535a83120b7"
+    },
+    {
+      "name": "current_contributor_id",
+      "owner": "postgres",
+      "config": [
+        "search_path=public"
+      ],
+      "grants": [
+        {
+          "role": "authenticated",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        },
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        },
+        {
+          "role": "service_role",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "uuid",
+      "arguments": "",
+      "volatility": "s",
+      "security_definer": false,
+      "definition_sha256": "ef883c634031976437efe75eb44391acb7c6ff0d27c878d122b957e7feb4fcb6"
+    },
+    {
+      "name": "enqueue_prior_job",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        },
+        {
+          "role": "service_role",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "205af292837eae2dfc1f77baaaab9ad178e3a915ac80f4c6b09feb8d004d9bcf"
+    },
+    {
+      "name": "enqueue_qa_job",
+      "owner": "postgres",
+      "config": [
+        "search_path=\"\""
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        },
+        {
+          "role": "service_role",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "trigger",
+      "arguments": "",
+      "volatility": "v",
+      "security_definer": true,
+      "definition_sha256": "7cd3e00f0eb0ad23a2e2c52078e93ad3065f812c5a965de6b9c504ea6a4fe440"
+    },
+    {
+      "name": "refresh_public_h3_cells",
+      "owner": "postgres",
+      "config": [
+        "search_path=public, pg_temp"
+      ],
+      "grants": [
+        {
+          "role": "postgres",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        },
+        {
+          "role": "service_role",
+          "grantable": false,
+          "privilege": "EXECUTE"
+        }
+      ],
+      "result": "integer",
+      "arguments": "payload jsonb",
+      "volatility": "v",
+      "security_definer": false,
+      "definition_sha256": "84d0d8da1bf5d942a190bd1dff08b5c7c19e5169a84d1054a32f2f342860e17f"
+    }
+  ],
+  "extensions": [
+    {
+      "name": "pg_stat_statements",
+      "schema": "extensions",
+      "version": "1.11"
+    },
+    {
+      "name": "pgcrypto",
+      "schema": "extensions",
+      "version": "1.3"
+    },
+    {
+      "name": "plpgsql",
+      "schema": "pg_catalog",
+      "version": "1.0"
+    },
+    {
+      "name": "postgis",
+      "schema": "extensions",
+      "version": "3.3.7"
+    },
+    {
+      "name": "supabase_vault",
+      "schema": "vault",
+      "version": "0.3.1"
+    },
+    {
+      "name": "uuid-ossp",
+      "schema": "extensions",
+      "version": "1.1"
+    }
+  ],
+  "constraints": [
+    {
+      "name": "contribution_grants_attribution_name_check",
+      "type": "c",
+      "table": "contribution_grants",
+      "validated": true,
+      "definition": "CHECK (((char_length(attribution_name) >= 1) AND (char_length(attribution_name) <= 80)))"
+    },
+    {
+      "name": "contribution_grants_contributor_id_fkey",
+      "type": "f",
+      "table": "contribution_grants",
+      "validated": true,
+      "definition": "FOREIGN KEY (contributor_id) REFERENCES public.contributors(id)"
+    },
+    {
+      "name": "contribution_grants_data_license_check",
+      "type": "c",
+      "table": "contribution_grants",
+      "validated": true,
+      "definition": "CHECK ((data_license = 'ODbL-1.0'::text))"
+    },
+    {
+      "name": "contribution_grants_id_contributor_id_key",
+      "type": "u",
+      "table": "contribution_grants",
+      "validated": true,
+      "definition": "UNIQUE (id, contributor_id)"
+    },
+    {
+      "name": "contribution_grants_photo_license_check",
+      "type": "c",
+      "table": "contribution_grants",
+      "validated": true,
+      "definition": "CHECK ((photo_license = 'CC-BY-SA-4.0'::text))"
+    },
+    {
+      "name": "contribution_grants_pkey",
+      "type": "p",
+      "table": "contribution_grants",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "contribution_grants_terms_version_check",
+      "type": "c",
+      "table": "contribution_grants",
+      "validated": true,
+      "definition": "CHECK (((char_length(terms_version) >= 1) AND (char_length(terms_version) <= 64)))"
+    },
+    {
+      "name": "contributors_auth_uid_key",
+      "type": "u",
+      "table": "contributors",
+      "validated": true,
+      "definition": "UNIQUE (auth_uid)"
+    },
+    {
+      "name": "contributors_handle_check",
+      "type": "c",
+      "table": "contributors",
+      "validated": true,
+      "definition": "CHECK (((char_length(handle) >= 3) AND (char_length(handle) <= 32)))"
+    },
+    {
+      "name": "contributors_handle_key",
+      "type": "u",
+      "table": "contributors",
+      "validated": true,
+      "definition": "UNIQUE (handle)"
+    },
+    {
+      "name": "contributors_pkey",
+      "type": "p",
+      "table": "contributors",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "gold_labels_canonical_unit",
+      "type": "c",
+      "table": "gold_labels",
+      "validated": true,
+      "definition": "CHECK ((((property = ANY (ARRAY['soc'::text, 'clay'::text, 'sand'::text, 'silt'::text, 'n'::text])) AND (unit = 'g/kg'::text)) OR ((property = 'ph'::text) AND (unit = 'pH'::text)) OR ((property = 'bd'::text) AND (unit = 'kg/dm3'::text)) OR ((property = 'cec'::text) AND (unit = 'cmol(+)/kg'::text))))"
+    },
+    {
+      "name": "gold_labels_depth_bounds",
+      "type": "c",
+      "table": "gold_labels",
+      "validated": true,
+      "definition": "CHECK (((0 <= depth_top_cm) AND (depth_top_cm < depth_bottom_cm) AND (depth_bottom_cm <= 200)))"
+    },
+    {
+      "name": "gold_labels_pkey",
+      "type": "p",
+      "table": "gold_labels",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "gold_labels_property_check",
+      "type": "c",
+      "table": "gold_labels",
+      "validated": true,
+      "definition": "CHECK ((property = ANY (ARRAY['soc'::text, 'ph'::text, 'clay'::text, 'sand'::text, 'silt'::text, 'bd'::text, 'cec'::text, 'n'::text])))"
+    },
+    {
+      "name": "gold_labels_submission_id_fkey",
+      "type": "f",
+      "table": "gold_labels",
+      "validated": true,
+      "definition": "FOREIGN KEY (submission_id) REFERENCES public.submissions(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "gold_labels_uncertainty_nonnegative",
+      "type": "c",
+      "table": "gold_labels",
+      "validated": true,
+      "definition": "CHECK (((uncertainty IS NULL) OR (uncertainty >= (0)::double precision)))"
+    },
+    {
+      "name": "h3_cells_h3_index_check",
+      "type": "c",
+      "table": "h3_cells",
+      "validated": true,
+      "definition": "CHECK ((h3_index ~ '^[0-9a-f]{15}$'::text))"
+    },
+    {
+      "name": "h3_cells_pkey",
+      "type": "p",
+      "table": "h3_cells",
+      "validated": true,
+      "definition": "PRIMARY KEY (h3_index)"
+    },
+    {
+      "name": "photos_calibration_status_check",
+      "type": "c",
+      "table": "photos",
+      "validated": true,
+      "definition": "CHECK ((calibration_status = ANY (ARRAY['calibrated'::text, 'uncalibrated'::text])))"
+    },
+    {
+      "name": "photos_camera_metadata_allowlist",
+      "type": "c",
+      "table": "photos",
+      "validated": true,
+      "definition": "CHECK (((camera_metadata_private IS NULL) OR ((jsonb_typeof(camera_metadata_private) = 'object'::text) AND ((camera_metadata_private - ARRAY['make'::text, 'model'::text, 'focal_length_mm'::text, 'exposure_time_s'::text, 'f_number'::text, 'iso'::text]) = '{}'::jsonb))))"
+    },
+    {
+      "name": "photos_perceptual_hash_check",
+      "type": "c",
+      "table": "photos",
+      "validated": true,
+      "definition": "CHECK (((perceptual_hash IS NULL) OR (perceptual_hash ~ '^[0-9a-f]{16}$'::text)))"
+    },
+    {
+      "name": "photos_pkey",
+      "type": "p",
+      "table": "photos",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "photos_shot_type_check",
+      "type": "c",
+      "table": "photos",
+      "validated": true,
+      "definition": "CHECK ((shot_type = ANY (ARRAY['A'::text, 'B'::text, 'C'::text])))"
+    },
+    {
+      "name": "photos_submission_id_fkey",
+      "type": "f",
+      "table": "photos",
+      "validated": true,
+      "definition": "FOREIGN KEY (submission_id) REFERENCES public.submissions(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "photos_submission_shot_key",
+      "type": "u",
+      "table": "photos",
+      "validated": true,
+      "definition": "UNIQUE (submission_id, shot_type)"
+    },
+    {
+      "name": "predictions_basis_check",
+      "type": "c",
+      "table": "predictions",
+      "validated": true,
+      "definition": "CHECK ((basis = ANY (ARRAY['image'::text, 'prior'::text, 'fused'::text, 'neighbors'::text])))"
+    },
+    {
+      "name": "predictions_canonical_unit",
+      "type": "c",
+      "table": "predictions",
+      "validated": true,
+      "definition": "CHECK ((((property = ANY (ARRAY['soc'::text, 'clay'::text, 'sand'::text, 'silt'::text, 'n'::text])) AND (unit = 'g/kg'::text)) OR ((property = 'ph'::text) AND (unit = 'pH'::text)) OR ((property = 'bd'::text) AND (unit = 'kg/dm3'::text)) OR ((property = 'cec'::text) AND (unit = 'cmol(+)/kg'::text))))"
+    },
+    {
+      "name": "predictions_pkey",
+      "type": "p",
+      "table": "predictions",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "predictions_property_check",
+      "type": "c",
+      "table": "predictions",
+      "validated": true,
+      "definition": "CHECK ((property = ANY (ARRAY['soc'::text, 'ph'::text, 'clay'::text, 'sand'::text, 'silt'::text, 'bd'::text, 'cec'::text, 'n'::text])))"
+    },
+    {
+      "name": "predictions_submission_id_fkey",
+      "type": "f",
+      "table": "predictions",
+      "validated": true,
+      "definition": "FOREIGN KEY (submission_id) REFERENCES public.submissions(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "value_within_ci",
+      "type": "c",
+      "table": "predictions",
+      "validated": true,
+      "definition": "CHECK (((ci_lo <= value) AND (value <= ci_hi)))"
+    },
+    {
+      "name": "prior_jobs_attempts_check",
+      "type": "c",
+      "table": "prior_jobs",
+      "validated": true,
+      "definition": "CHECK (((attempts >= 0) AND (attempts <= 32)))"
+    },
+    {
+      "name": "prior_jobs_last_error_check",
+      "type": "c",
+      "table": "prior_jobs",
+      "validated": true,
+      "definition": "CHECK ((char_length(last_error) <= 1000))"
+    },
+    {
+      "name": "prior_jobs_pkey",
+      "type": "p",
+      "table": "prior_jobs",
+      "validated": true,
+      "definition": "PRIMARY KEY (submission_id)"
+    },
+    {
+      "name": "prior_jobs_status_check",
+      "type": "c",
+      "table": "prior_jobs",
+      "validated": true,
+      "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'processing'::text, 'completed'::text, 'dead_letter'::text])))"
+    },
+    {
+      "name": "prior_jobs_submission_id_fkey",
+      "type": "f",
+      "table": "prior_jobs",
+      "validated": true,
+      "definition": "FOREIGN KEY (submission_id) REFERENCES public.submissions(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "priors_canonical_unit",
+      "type": "c",
+      "table": "priors",
+      "validated": true,
+      "definition": "CHECK ((((property = ANY (ARRAY['soc'::text, 'clay'::text, 'sand'::text, 'silt'::text, 'n'::text])) AND (unit = 'g/kg'::text)) OR ((property = 'ph'::text) AND (unit = 'pH'::text)) OR ((property = 'bd'::text) AND (unit = 'kg/dm3'::text)) OR ((property = 'cec'::text) AND (unit = 'cmol(+)/kg'::text))))"
+    },
+    {
+      "name": "priors_depth_bounds",
+      "type": "c",
+      "table": "priors",
+      "validated": true,
+      "definition": "CHECK (((0 <= depth_top_cm) AND (depth_top_cm < depth_bottom_cm) AND (depth_bottom_cm <= 200)))"
+    },
+    {
+      "name": "priors_pkey",
+      "type": "p",
+      "table": "priors",
+      "validated": true,
+      "definition": "PRIMARY KEY (submission_id, source, property, depth_top_cm, depth_bottom_cm)"
+    },
+    {
+      "name": "priors_property_check",
+      "type": "c",
+      "table": "priors",
+      "validated": true,
+      "definition": "CHECK ((property = ANY (ARRAY['soc'::text, 'ph'::text, 'clay'::text, 'sand'::text, 'silt'::text, 'bd'::text, 'cec'::text, 'n'::text])))"
+    },
+    {
+      "name": "priors_source_check",
+      "type": "c",
+      "table": "priors",
+      "validated": true,
+      "definition": "CHECK ((source = ANY (ARRAY['soilgrids'::text, 'ssurgo'::text, 'wosis'::text])))"
+    },
+    {
+      "name": "priors_submission_id_fkey",
+      "type": "f",
+      "table": "priors",
+      "validated": true,
+      "definition": "FOREIGN KEY (submission_id) REFERENCES public.submissions(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "priors_uncertainty_order",
+      "type": "c",
+      "table": "priors",
+      "validated": true,
+      "definition": "CHECK (((uncertainty_lo IS NULL) OR (uncertainty_hi IS NULL) OR (uncertainty_lo <= uncertainty_hi)))"
+    },
+    {
+      "name": "qa_events_model_version_length",
+      "type": "c",
+      "table": "qa_events",
+      "validated": true,
+      "definition": "CHECK (((char_length(model_version) >= 1) AND (char_length(model_version) <= 80)))"
+    },
+    {
+      "name": "qa_events_pkey",
+      "type": "p",
+      "table": "qa_events",
+      "validated": true,
+      "definition": "PRIMARY KEY (submission_id, check_name)"
+    },
+    {
+      "name": "qa_events_submission_id_fkey",
+      "type": "f",
+      "table": "qa_events",
+      "validated": true,
+      "definition": "FOREIGN KEY (submission_id) REFERENCES public.submissions(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "qa_jobs_attempts_check",
+      "type": "c",
+      "table": "qa_jobs",
+      "validated": true,
+      "definition": "CHECK (((attempts >= 0) AND (attempts <= 4)))"
+    },
+    {
+      "name": "qa_jobs_last_error_check",
+      "type": "c",
+      "table": "qa_jobs",
+      "validated": true,
+      "definition": "CHECK ((char_length(last_error) <= 1000))"
+    },
+    {
+      "name": "qa_jobs_photo_id_fkey",
+      "type": "f",
+      "table": "qa_jobs",
+      "validated": true,
+      "definition": "FOREIGN KEY (photo_id) REFERENCES public.photos(id) ON DELETE CASCADE"
+    },
+    {
+      "name": "qa_jobs_pkey",
+      "type": "p",
+      "table": "qa_jobs",
+      "validated": true,
+      "definition": "PRIMARY KEY (photo_id)"
+    },
+    {
+      "name": "qa_jobs_status_check",
+      "type": "c",
+      "table": "qa_jobs",
+      "validated": true,
+      "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'processing'::text, 'retrying'::text, 'completed'::text, 'dead_letter'::text])))"
+    },
+    {
+      "name": "submissions_contributor_id_fkey",
+      "type": "f",
+      "table": "submissions",
+      "validated": true,
+      "definition": "FOREIGN KEY (contributor_id) REFERENCES public.contributors(id)"
+    },
+    {
+      "name": "submissions_gps_accuracy_m_check",
+      "type": "c",
+      "table": "submissions",
+      "validated": true,
+      "definition": "CHECK (((gps_accuracy_m IS NULL) OR (gps_accuracy_m >= (0)::double precision)))"
+    },
+    {
+      "name": "submissions_grant_owner_fkey",
+      "type": "f",
+      "table": "submissions",
+      "validated": true,
+      "definition": "FOREIGN KEY (grant_id, contributor_id) REFERENCES public.contribution_grants(id, contributor_id)"
+    },
+    {
+      "name": "submissions_h3_r6_check",
+      "type": "c",
+      "table": "submissions",
+      "validated": true,
+      "definition": "CHECK ((h3_r6 ~ '^86[0-9a-f]{13}$'::text))"
+    },
+    {
+      "name": "submissions_h3_r8_check",
+      "type": "c",
+      "table": "submissions",
+      "validated": true,
+      "definition": "CHECK ((h3_r8 ~ '^88[0-9a-f]{13}$'::text))"
+    },
+    {
+      "name": "submissions_land_cover_check",
+      "type": "c",
+      "table": "submissions",
+      "validated": true,
+      "definition": "CHECK ((land_cover = ANY (ARRAY['cropland'::text, 'grassland'::text, 'forest'::text, 'shrubland'::text, 'wetland'::text, 'urban'::text, 'bare'::text])))"
+    },
+    {
+      "name": "submissions_pkey",
+      "type": "p",
+      "table": "submissions",
+      "validated": true,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "submissions_public_h3_required",
+      "type": "c",
+      "table": "submissions",
+      "validated": true,
+      "definition": "CHECK (((status <> 'qa_pass'::text) OR ((h3_r8 IS NOT NULL) AND (h3_r6 IS NOT NULL))))"
+    },
+    {
+      "name": "submissions_status_check",
+      "type": "c",
+      "table": "submissions",
+      "validated": true,
+      "definition": "CHECK ((status = ANY (ARRAY['pending'::text, 'qa_pass'::text, 'qa_fail'::text, 'flagged'::text])))"
+    },
+    {
+      "name": "submissions_surface_condition_check",
+      "type": "c",
+      "table": "submissions",
+      "validated": true,
+      "definition": "CHECK ((surface_condition = ANY (ARRAY['dry'::text, 'moist'::text, 'wet'::text])))"
+    }
+  ],
+  "table_grants": [
+    {
+      "role": "authenticated",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "contribution_grants",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "contributors",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "gold_labels",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "anon",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "authenticated",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "h3_cells",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "photos",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "predictions",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "postgres",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "prior_jobs",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "priors",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_events",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "qa_jobs",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "postgres",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "postgres",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "postgres",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "postgres",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "postgres",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "postgres",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "postgres",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "table": "submissions",
+      "grantable": false,
+      "privilege": "UPDATE"
+    }
+  ],
+  "column_grants": [
+    {
+      "role": "authenticated",
+      "table": "contributors",
+      "column": "auth_uid",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "contributors",
+      "column": "handle",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "contributors",
+      "column": "handle",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "contributors",
+      "column": "precise_location_optin",
+      "grantable": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "photos",
+      "column": "shot_type",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "photos",
+      "column": "storage_path",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "photos",
+      "column": "submission_id",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "captured_at",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "contributor_id",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "device_model",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "disturbed",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "geom_precise",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "gps_accuracy_m",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "grant_id",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "h3_r6",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "h3_r8",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "id",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "land_cover",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "status",
+      "grantable": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "table": "submissions",
+      "column": "surface_condition",
+      "grantable": false,
+      "privilege": "INSERT"
+    }
+  ]
+}

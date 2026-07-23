@@ -1,0 +1,91 @@
+{
+  "base_head": "e8c452e7734a0c20c3f4cc054e6608767d1a674d",
+  "base_working_context": "root frozen C4 pipeline/export.py,tests/test_export.py,pipeline/photo_export_privacy.py,tests/test_photo_export_privacy.py copied only for full-flow verification; none included in patch",
+  "files": {
+    "pipeline/qa.py": {
+      "before_sha256": "abe3c05d617cb2c2fc30e194226a5db526364b7f0c27b9446c08ce7a89ecb549",
+      "bytes": 17510,
+      "sha256": "1f12cffa0471d96742ae9e852f5f0ea840c0f5edb2a0e0d2ce87bfec0dbcbb0c"
+    },
+    "tests/test_qa.py": {
+      "before_sha256": "9c9a9fc388aaad21e93ce2e2c0ec912f4be54fa87a07620d03764412c343b7af",
+      "bytes": 23574,
+      "sha256": "a152fa4e9f0244eef4007f5d2c82294c0fcaf0e478049e4f699ae47676177acb"
+    }
+  },
+  "limits": [
+    "metadata/stream boundary, not global anti-steganography or producer proof",
+    "pixel/codec decoding remains separate",
+    "no detector/calibration/deployment/capture/publication activation",
+    "no root checkout edits, commits or pushes",
+    "initial full-run failures from sandbox HF cache/Node dependency setup were corrected with private caches/read-only dependency links; no test/rule weakening"
+  ],
+  "patch": "/private/tmp/gsip-shared-jpeg-boundary.patch",
+  "patch_sha256": "50b1da54830882c0f3bfab40be1bf6b9ebd2aa3c0fb3e9c03c18861b3aef7de4",
+  "primary_references": [
+    "https://www.w3.org/Graphics/JPEG/itu-t81.pdf",
+    "https://www.w3.org/Graphics/JPEG/jfif3.pdf"
+  ],
+  "root_base_hashes_match": true,
+  "snapshot": "/private/tmp/gsip-jpeg-boundary-1kj5pel2",
+  "validation": {
+    "after_qa": {
+      "legacy": 15,
+      "log": "/private/tmp/gsip-jpeg-boundary-after-qa.log",
+      "new_corpus": 84,
+      "passed": 99
+    },
+    "before_new_corpus": {
+      "failed": 71,
+      "legacy_deselected": 15,
+      "log": "/private/tmp/gsip-jpeg-boundary-before-tests.log",
+      "old_qa_sha256": "abe3c05d617cb2c2fc30e194226a5db526364b7f0c27b9446c08ce7a89ecb549",
+      "passed": 13,
+      "snapshot": "/private/tmp/gsip-jpeg-before-5wflos7l"
+    },
+    "full_python": {
+      "existing_readonly_node_dependencies": true,
+      "log": "/private/tmp/gsip-jpeg-boundary-full-python.log",
+      "passed": 679,
+      "private_cache": "/private/tmp/gsip-jpeg-boundary-hf-cache",
+      "scope": "isolated e8c452e plus copied C4 context + two authored files; excludes root later5Bdecoder and4C integration additions",
+      "skipped": 4
+    },
+    "gitleaks": {
+      "authored_two_file_scan": true,
+      "findings": 0,
+      "report": "/private/tmp/gsip-jpeg-boundary-gitleaks.json",
+      "suppressions_changed": false,
+      "version": "8.21.2"
+    },
+    "installed_encoders": {
+      "canonical_app0_hex": "4a46494600010100000100010000",
+      "pillow": "12.3.0",
+      "pillow_and_opencv_app0_identical": true
+    },
+    "mypy_two_files": true,
+    "positives": [
+      "baseline/progressive multi-scan JPEG",
+      "actual FF00 stuffed entropy",
+      "actual restart markers",
+      "legal FF marker fill",
+      "JPEG without APP0",
+      "valid unused DQT with FFD9 payload and identical decoded pixels",
+      "exact prior sanitizer output bytes",
+      "private PNG input still reencodes to canonical JPEG",
+      "wholly undecodable input keeps OSError/ValueError refusal"
+    ],
+    "rejections": [
+      "bytes after first EOI including forged final EOI",
+      "concatenated complete JPEGs",
+      "COM and APP1-15 after scan/at scan boundaries",
+      "APP0/JFXX thumbnail/private payload",
+      "standard but variable APP0 metadata fields",
+      "duplicate/late APP0",
+      "reserved/private extensions",
+      "truncated entropy/segment bounds",
+      "readable non-JPEG canonical input"
+    ],
+    "ruff_lint_format": true
+  }
+}

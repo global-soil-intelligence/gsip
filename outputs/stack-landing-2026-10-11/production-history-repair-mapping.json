@@ -1,0 +1,168 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "state": "PREPARED_NOT_EXECUTED_NO_PRODUCTION_GO",
+  "source_receipts": {
+    "production-complete-counts-and-comparison.json": "b304efb24ef9f7d2cdb848fa4efeb6615d298d4cdfe564682242d4fad280f0bb",
+    "production-reconciliation-cli-help-2.118.0.json": "966489669fd5f3480d26d5ef434b47d81246585fd9955c634b43997543c11bf9"
+  },
+  "pairs": [
+    {
+      "name": "wp1_v22_privacy_and_grants",
+      "remote_version": "20260722182403",
+      "local_version": "20260722181500",
+      "recorded_sql_comparison": "RAW_EQUAL",
+      "remote_statement_sha256": "86213d751d8df64404a5aaea332f7ea93d996716f569bfa036aca9f8812e34ff",
+      "local_file_sha256": "86213d751d8df64404a5aaea332f7ea93d996716f569bfa036aca9f8812e34ff"
+    },
+    {
+      "name": "wp1_performance_indexes",
+      "remote_version": "20260722182446",
+      "local_version": "20260722183000",
+      "recorded_sql_comparison": "DIFFERENT_UNVERIFIED",
+      "remote_statement_sha256": "4b321dcb16f00cc38545ffc6ac95f286ee747494128947f2bd9ed54c341acff7",
+      "local_file_sha256": "2efb4383f8629154a031342e0494e04c3105b979353911e3d9415e4fba93880a"
+    },
+    {
+      "name": "wp4_prior_jobs",
+      "remote_version": "20260722190912",
+      "local_version": "20260722190000",
+      "recorded_sql_comparison": "RAW_EQUAL",
+      "remote_statement_sha256": "430b0c9064e6d075197d755d661bf00e345faff49b4e8e9db59de13253fa2358",
+      "local_file_sha256": "430b0c9064e6d075197d755d661bf00e345faff49b4e8e9db59de13253fa2358"
+    },
+    {
+      "name": "wp4_prior_jobs_hardening",
+      "remote_version": "20260722191140",
+      "local_version": "20260722190500",
+      "recorded_sql_comparison": "RAW_EQUAL",
+      "remote_statement_sha256": "8160abac06009fdf3eab8d9f38b1e4add8330995dd274014a85182eb8e44249c",
+      "local_file_sha256": "8160abac06009fdf3eab8d9f38b1e4add8330995dd274014a85182eb8e44249c"
+    },
+    {
+      "name": "wp4b_photo_qa",
+      "remote_version": "20260722191802",
+      "local_version": "20260722193000",
+      "recorded_sql_comparison": "DIFFERENT_UNVERIFIED",
+      "remote_statement_sha256": "4d79aaa6fdc1a7401a1314deacac61550a7c1656f9450a3be5d86eb6bc0b2148",
+      "local_file_sha256": "7dad54be4ec8354fccacd652143ec4f26449d76a6fdf7da107adda6aa7c23ded"
+    },
+    {
+      "name": "wp6_export_guardrails",
+      "remote_version": "20260722194033",
+      "local_version": "20260722200000",
+      "recorded_sql_comparison": "RAW_EQUAL",
+      "remote_statement_sha256": "c6d491d01686ee2e293b98ccd84e074e96603d4b9d0a8ceaef239e1cb004233f",
+      "local_file_sha256": "c6d491d01686ee2e293b98ccd84e074e96603d4b9d0a8ceaef239e1cb004233f"
+    },
+    {
+      "name": "phase1_actor_hardening",
+      "remote_version": "20260723011122",
+      "local_version": "20260723002255",
+      "recorded_sql_comparison": "OUTER_WHITESPACE_EQUAL",
+      "remote_statement_sha256": "83949135146761ca5df729dcc8b0be022de2b06cf5ee4138e2f233c3e0898fef",
+      "local_file_sha256": "a3b0a00dc2878a4b1d7b1f9e289d6e1970ef7499105e14bc764c92f69dc1678d"
+    },
+    {
+      "name": "qa_event_provenance",
+      "remote_version": "20260723011144",
+      "local_version": "20260723004439",
+      "recorded_sql_comparison": "OUTER_WHITESPACE_EQUAL",
+      "remote_statement_sha256": "1d48dbf62d31fd5aac9319dab8e630485a9652a31c970626232c76b1f3d61d87",
+      "local_file_sha256": "f2ef7ab587c72fd008383edee716761c908a71f94c82dfb0daedc2dcc3e7698d"
+    },
+    {
+      "name": "public_h3_aggregates",
+      "remote_version": "20260723011159",
+      "local_version": "20260723005752",
+      "recorded_sql_comparison": "OUTER_WHITESPACE_EQUAL",
+      "remote_statement_sha256": "14e066cd8b27fa2046f890cb3660661ceb9ef57030d6ee2a8d8370f115020e76",
+      "local_file_sha256": "4ac1f12cb35e1d9a4c5ce4d5c81c9d962a1ec54b60ff99cca87debed4fdce81b"
+    },
+    {
+      "name": "atomic_public_h3_refresh",
+      "remote_version": "20260723011219",
+      "local_version": "20260723010313",
+      "recorded_sql_comparison": "OUTER_WHITESPACE_EQUAL",
+      "remote_statement_sha256": "82ebc0de1d1cc7e02a2319c9b2e07e2250dd04886ffeea4b256c6d6e67782bd6",
+      "local_file_sha256": "e8a80e13b2dfcef185bdb6b84de054cd90bb5656449b095842fb152bfc7bba62"
+    },
+    {
+      "name": "atomic_prior_attempt_claim",
+      "remote_version": "20260723050851",
+      "local_version": "20260723044745",
+      "recorded_sql_comparison": "OUTER_WHITESPACE_EQUAL",
+      "remote_statement_sha256": "1e3251f3963aa18efcfac3e10770674e8f03e846c1a07abb2222dd0b02b9b8ab",
+      "local_file_sha256": "695520093d1332c38563fd83cdefbf726b4c3cde5be360ed851e52580f6a42c4"
+    },
+    {
+      "name": "document_authenticated_h3_role",
+      "remote_version": "20260723050903",
+      "local_version": "20260723045317",
+      "recorded_sql_comparison": "OUTER_WHITESPACE_EQUAL",
+      "remote_statement_sha256": "6ce93e1e4dfd6f7b2e3410b8db352f089cb7c9bf142ad086f71662a1e574d888",
+      "local_file_sha256": "fac47eb129ae5e913c973d063f19380b48eede88cd023326a543cc6e769b9220"
+    },
+    {
+      "name": "remove_public_submission_residue",
+      "remote_version": "20260723050918",
+      "local_version": "20260723045606",
+      "recorded_sql_comparison": "OUTER_WHITESPACE_EQUAL",
+      "remote_statement_sha256": "4f7b36dc1284cdc822fa84e93f9291a5a76707da7ff7d0f3281a4266175a06ad",
+      "local_file_sha256": "1f133d48265e25fcdfd7d7b7714697ad4db774fbb8d87fcc8d84683ac5f1a634"
+    }
+  ],
+  "unchanged_versions": [
+    {
+      "name": "wp1_extensions",
+      "remote_version": "20260722164727",
+      "local_version": "20260722164727",
+      "recorded_sql_comparison": "DIFFERENT_UNVERIFIED",
+      "remote_statement_sha256": "91018b282efcfb446bb4536a908a8c47e06fbca1782dd75f3d6cd612ea1e2668",
+      "local_file_sha256": "a47384b6b2f103e31ae4777534d1e9b1e97be2c51d009be30c7e6396cdb09cb2"
+    },
+    {
+      "name": "wp1_schema",
+      "remote_version": "20260722164749",
+      "local_version": "20260722164749",
+      "recorded_sql_comparison": "DIFFERENT_UNVERIFIED",
+      "remote_statement_sha256": "6d9e15125cc08e534d69095c97ed2e0516e7d3872d0951ea005f5340caec91b3",
+      "local_file_sha256": "92ad08bf95c2ec28b36a6973631388c3135ac56a69c87d24173535b29d09efe5"
+    },
+    {
+      "name": "wp1_rls",
+      "remote_version": "20260722164806",
+      "local_version": "20260722164806",
+      "recorded_sql_comparison": "DIFFERENT_UNVERIFIED",
+      "remote_statement_sha256": "01b14c6a07b1236baea977685b20524e938224867dad06d84c13f41a1d95b169",
+      "local_file_sha256": "49f7ff7782cf06fe50df421d747ea21d049f1996bea5dce8dca8170c268af482"
+    },
+    {
+      "name": "wp1_review_hardening",
+      "remote_version": "20260722170020",
+      "local_version": "20260722170020",
+      "recorded_sql_comparison": "DIFFERENT_UNVERIFIED",
+      "remote_statement_sha256": "25ee487a13947d9f68a692b87aef989ce52279fa1a8327dbeeed6a27892afad2",
+      "local_file_sha256": "cba2ec74526c597170b454851d8012051f238a7db93d818b91d85d96cde6b30b"
+    }
+  ],
+  "pending_migrations_excluded_from_repair": [
+    "20261010120000_wp6b_capture_gate.sql",
+    "20261010120100_wp6b_path_binding.sql",
+    "20261010120200_wp6b_finalize_and_settle.sql",
+    "20261010120300_wp6b_k_anonymous_cells.sql",
+    "20261010120400_wp6b_attribution_and_metadata.sql",
+    "20261010130000_wp6c_priors.sql",
+    "20261010140000_wp6d_contributor_rights.sql",
+    "20261010150000_wp6e_provenance.sql",
+    "20261011090000_wp_agent1_releases.sql"
+  ],
+  "only_extra_history_entry": {
+    "version": "20260730174047",
+    "name": "wavefunction_beta_schema",
+    "statement_sha256": "b9f784b1377dcd4773065dd1840fc17643281b744c1bc8639b2a197ecb3143a8",
+    "local_version": null,
+    "comparison": "NO_LOCAL_SOURCE"
+  },
+  "expected_baseline_history_count_after_repair": 17,
+  "remaining_blocker": "Historical SQL differences and exact-baseline rehearsal must be resolved by reviewed reconciliation package before approval/execution."
+}

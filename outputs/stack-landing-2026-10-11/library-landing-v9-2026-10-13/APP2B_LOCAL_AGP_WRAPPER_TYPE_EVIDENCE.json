@@ -1,0 +1,55 @@
+{
+  "actual_stderr_bytes": 120161,
+  "canonical_argument_count": 7,
+  "files": {
+    "LOCAL_AGP_FIRST_REPRODUCTION_FROZEN.json": {
+      "bytes": 2333,
+      "sha256": "d3b6ce40d3cd4bb279c4295c12b41fe3901d719b1d1f2547cceabe6a2e146aa3"
+    },
+    "PRE_STACKTRACE_INPUT_FREEZE.json": {
+      "bytes": 475,
+      "sha256": "0eef4a7a518f68fa4b754c14088be9ea0caf07e4271400064c0dba01ad8ad730"
+    },
+    "RESOLVED_PUBLIC_INPUT_MANIFEST.json": {
+      "bytes": 35284,
+      "sha256": "97be8766fa99dedc4a67590bdc491d282f9856f657a5be1e1177778cdcfb5bb0"
+    },
+    "SHOWSTACKTRACE_ALWAYS_INIT.gradle.txt": {
+      "bytes": 1000,
+      "sha256": "c2546fa5c6a14189b33bf165a6eaa30560987aa81e0fa25d0262f61620d8b04e"
+    },
+    "VERIFIED_STACKTRACE_TYPE_ALLOWLIST.json": {
+      "bytes": 7600,
+      "sha256": "f564db07e4cc390d8705eb8750da16bca6050b096c8705da34c7a1c89c4d9f55"
+    },
+    "existing-build-pin-primary/PRIMARY_RECEIPT.json": {
+      "bytes": 1025,
+      "sha256": "5ea026f8f2aa53ae52d50da2f8ad8faee44f20786ce6775a04fd3e7c4772140b"
+    },
+    "inspection-stacktrace.json": {
+      "bytes": 1973,
+      "sha256": "21ab99c0c89ba10b673524de9c5100cd709c6669fd6ec9cc2a488d79d190a621"
+    },
+    "stacktrace_run.py": {
+      "bytes": 7293,
+      "sha256": "1ea7a3c77e04887df664b5bd47aeec101eed4915c4bc15e6938b823c8cf06a44"
+    }
+  },
+  "fixed_fault": "GSIP_FIXED_FAULT_V1|VALID|BUILD_FAILURE|UNKNOWN",
+  "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "known_verified_type_counts": {
+    "TASK_DEPENDENCY_RESOLVE": 1,
+    "TYPED_RESOLVE": 1
+  },
+  "leaf_cause_established": false,
+  "maintained_changes": false,
+  "names_not_runtime_class_authentication": true,
+  "original_stderr_cap": 65536,
+  "raw_streams_persisted": false,
+  "route_implemented": false,
+  "same_hosted_cause_established": false,
+  "schema": "gsip-first-actual-agp-type-evidence-v1",
+  "showstacktrace": "ALWAYS",
+  "status": 1,
+  "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+}

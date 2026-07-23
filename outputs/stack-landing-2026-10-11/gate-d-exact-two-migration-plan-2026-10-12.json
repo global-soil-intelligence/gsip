@@ -1,0 +1,131 @@
+{
+  "prepared_at": "2026-10-12T15:00:24.298214+00:00",
+  "state": "PREPARED_ONLY_WAITING_JUSTIN_GO",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1"
+  },
+  "source_commit": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "runbook_pr": 40,
+  "runbook_commit": "f5c6967a7df3f85a677bd195eff6667bc80a7162",
+  "cli_version": "2.118.0",
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "db",
+    "push",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0",
+    "--skip-vault"
+  ],
+  "pending_files": [
+    {
+      "name": "20261012141828_wp6b_invoker_boundary.sql",
+      "sha256": "afe4f698989729bd456fe763582f93042f58bf66a271704cdaa1c556eeb124d6"
+    },
+    {
+      "name": "20261012142348_wp6d_private_rights_boundary.sql",
+      "sha256": "27c0b1ae001351358b6a56490bc1389d1075dd62cbd6ffc4e6250943fa507260"
+    }
+  ],
+  "expected_ledger": {
+    "before": 26,
+    "after": 28,
+    "preserve_all_previous_complete_record_hashes": true
+  },
+  "expected_application_row_changes": 0,
+  "proof": {
+    "pgTAP": {
+      "pass": 299,
+      "total": 299
+    },
+    "migration_test": {
+      "pass": 13,
+      "total": 13
+    },
+    "new_assertions_failing_before": 13,
+    "http": {
+      "pass": 33,
+      "total": 33
+    },
+    "fresh_and_upgrade_catalog_equal": true,
+    "official_scoped_advisor_before": 7,
+    "official_scoped_advisor_after": 0,
+    "hosted_advisor_current": 7,
+    "hosted_advisor_required_after": 0,
+    "all_13_current_pr_checks_green": true,
+    "all_26_previous_migration_blobs_unchanged": true
+  },
+  "postchecks": [
+    "exact ledger28 and all26 original full-record hashes unchanged",
+    "full hosted security advisor zero",
+    "strict target28 catalog/complete ACLs/owners versus source model with only previously bound allowances",
+    "all61 table identities/counts unchanged except ledger+2",
+    "capture singleton false, sign-up off, anonymous sign-in off",
+    "private unexposed; original public caller ACLs and all existing schema/table/column/storage grants unchanged",
+    "all3 new private complete ACLs and postgres ownership exact",
+    "backfill and k-anonymity anomaly counts zero",
+    "anonymous capture RPC false without creating contributors or private row reads"
+  ],
+  "stop_conditions": [
+    "any freshness/precondition mismatch",
+    "unexpected migration file/order",
+    "failed or partial push",
+    "any postcheck mismatch"
+  ],
+  "assumptions": [
+    "verified postgres migration owner and default grants unchanged",
+    "private remains absent from exposed Data API schemas",
+    "no overlapping production writer; worker schedules stay quiescent",
+    "SQL-standard bound function bodies supported by hosted PostgreSQL17; tested on local17 and CI16"
+  ],
+  "scope_excluded": [
+    "history repair or old migration replay",
+    "automatic retry/reset/rollback",
+    "additional SQL cache reload",
+    "Edge deployment/workers/export/tile or Pages publication",
+    "capture or authentication setting changes",
+    "PR merge or approval"
+  ],
+  "bound_receipts": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-boundary-all-13-push-receipt-2026-10-12.json",
+      "sha256": "49e2c28ef16c7895754ee5ebf9540015d3e51b51c6bdc43d242876d2422158b2"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-target28-fresh-upgrade-local-proof-2026-10-12.json",
+      "sha256": "5f410d445a8b2926cec75dee3395ec539922fcceadac9645e943187715ed6083"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-c-security-remediation-http-local-proof-2026-10-12.json",
+      "sha256": "1667c648580787a6dd79485a8e57f9973cb2472e42ba426e45429f938da53928"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-refresh-20261012T144433Z.json",
+      "sha256": "9e0be0252df98349286e6748661f82e8994202598ec25cc36ae5138953002aed"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-data-api-exposed-schemas-ui-readonly-2026-10-12.json",
+      "sha256": "96df3a2962089f32084ea47873b3f2aa44f2122ed9d7aa1682435a5418033a97"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-private-default-function-acls-readonly-2026-10-12.json",
+      "sha256": "7baa32b0a7b0123d451ac7932e428f6b76265426b6d10ef0bd4b62d489fcd434"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-exact-two-dry-run-2026-10-12.json",
+      "sha256": "2b9269fde7e435fc073147d718b007bceb8590684bf69c3d3942cc47080b33a4"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gitleaks-8212-security-fixes-whole-stack-receipt-2026-10-12.json",
+      "sha256": "c6311a5fd48a52c37eaa4a298d6913be8e1f4d12f9be16204cac12683159b1ed"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-fix-all-pr-ci-20261012T145650Z.json",
+      "sha256": "a654e352e76d9732adf78f10184da4fd0dbeacef2534a3f82b02599f2d8aa7ca"
+    }
+  ],
+  "production_application_mutations": []
+}

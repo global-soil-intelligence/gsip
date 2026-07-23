@@ -1,0 +1,14 @@
+{
+  "log_sha256": "a77083654814a9b43d0f4022afa8ed4f10b9718b0df438a685098b5597e47c76",
+  "fixed_error_terms": [],
+  "commands_detected": {
+    "fetch_started": true,
+    "clone_started": true,
+    "checkout_detached": false,
+    "parent_install_started": false,
+    "clone_warning": false,
+    "fatal_present": true,
+    "exit128": true
+  },
+  "raw_log_persisted": false
+}

@@ -1,0 +1,98 @@
+Command: uv run pytest -q -p no:cacheprovider tests/test_browser_camera_design.py -k prospective_private
+Expected failure before the four review-added completion/writer guards exist.
+
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________________ test_design_is_prospective_private_and_bounded ________________
+
+    def test_design_is_prospective_private_and_bounded() -> None:
+>       validate(design())
+
+tests/test_browser_camera_design.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = {'schema': 'gsip-browser-camera-design-v1', 'document_grants_implementation': False, 'audience': 'invited_private_browser', 'storage': 'ram_until_atomic_owner_queue', ...}
+
+    def validate(value: dict[str, Any]) -> None:
+        assert set(value) == {
+            "schema",
+            "document_grants_implementation",
+            "audience",
+            "storage",
+            "mixed_photos",
+            "snapshot",
+            "limits",
+            "commit",
+            "new_dependencies",
+            "new_native_files",
+            "new_backend_schema",
+            "indexeddb_version_change",
+            "activation_changes",
+        }
+        assert value["schema"] == "gsip-browser-camera-design-v1"
+        assert value["document_grants_implementation"] is False
+        assert value["audience"] == "invited_private_browser"
+        assert value["storage"] == "ram_until_atomic_owner_queue"
+        assert value["mixed_photos"] is False
+        assert value["snapshot"] == {
+            "pipeline": "video_frame_jpeg",
+            "audio": False,
+            "overlay_in_evidence": False,
+            "calibration_claim": False,
+            "automatic_sample": False,
+        }
+        for key in ("audio", "overlay_in_evidence", "calibration_claim", "automatic_sample"):
+            assert value["snapshot"][key] is False
+        for key, number in value["limits"].items():
+            assert type(number) is (float if key == "jpeg_quality" else int)
+        for key, flag in value["commit"].items():
+            if key != "stores":
+                assert type(flag) is bool
+        assert value["limits"] == {
+            "streams": 1,
+            "pending_requests": 1,
+            "pending_encoders": 1,
+            "selected_shots": 3,
+            "candidates": 1,
+            "max_frame_edge": 2048,
+            "max_frame_pixels": 4194304,
+            "min_short_edge": 720,
+            "min_long_edge": 1280,
+            "max_photo_bytes": 12582912,
+            "max_retained_encoded_bytes": 50331648,
+            "jpeg_quality": 0.92,
+            "permission_wait_ms": 20000,
+            "playback_wait_ms": 10000,
+            "preview_ms": 60000,
+            "encode_wait_ms": 10000,
+            "access_wait_ms": 5000,
+            "access_refresh_ms": 5000,
+            "access_lease_ms": 15000,
+            "revision_poll_ms": 1000,
+        }
+>       assert value["commit"] == {
+            "stores": ["submissions", "queueState", "draftPhotos", "libraryDraft"],
+            "requires_empty_photo_store": True,
+            "requires_current_owner": True,
+            "requires_revision_and_session": True,
+            "exact_library_context": True,
+            "advance_revision_on_new_commit": True,
+            "reconcile_existing_identity_first": True,
+            "original_writer_revision_required": True,
+            "stale_writer_refusal_observable": True,
+            "blanket_draft_cleanup": False,
+            "overwrites_existing_record": False,
+        }
+E       AssertionError: assert {'stores': ['...n': True, ...} == {'stores': ['...n': True, ...}
+E         
+E         Omitting 7 identical items, use -vv to show
+E         Right contains 4 more items:
+E         {'advance_revision_on_new_commit': True,
+E          'original_writer_revision_required': True,
+E          'reconcile_existing_identity_first': True,
+E          'stale_writer_refusal_observable': True}
+E         Use -v to get more diff
+
+tests/test_browser_camera_design.py:77: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_browser_camera_design.py::test_design_is_prospective_private_and_bounded

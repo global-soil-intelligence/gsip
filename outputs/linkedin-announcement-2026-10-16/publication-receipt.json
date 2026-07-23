@@ -1,0 +1,55 @@
+{
+  "status": "POSTED_VERIFIED",
+  "recordedAt": "2026-10-16T21:59:30.915614+00:00",
+  "postUrl": "https://www.linkedin.com/feed/update/urn:li:activity:7516980306453741568/",
+  "author": "Justin Hart",
+  "audience": "Anyone",
+  "authorizedBy": "Explicit user instruction: post, immediately after approved final LinkedIn announcement and SVG",
+  "postClickCount": 1,
+  "content": "Final approved post, both URLs and uploads-closed note",
+  "artwork": "PNG export of the same SVG; LinkedIn media input accepts raster formats and omits SVG",
+  "linkVerification": "Both LinkedIn short-link landing targets followed and verified in browser",
+  "projectActivationChanges": "NONE",
+  "files": [
+    {
+      "path": "approved-post.txt",
+      "bytes": 1410,
+      "sha256": "12ff2e850420dffb1ca520b4df52ccbdd1c100e9e51c014ba41188468159d140"
+    },
+    {
+      "path": "gsip-open-soil-library-linkedin-v1.svg",
+      "bytes": 18386,
+      "sha256": "333a43eda7d54f1658bcd96a9ae575e982ba8dc371006515f7c4f2a357bc81f4"
+    },
+    {
+      "path": "gsip-open-soil-library-svg-preview.png",
+      "bytes": 210320,
+      "sha256": "252d08f0bda483f094e35f80ccb6889f586d53c6ad72b8fe92f18a2e8b6496cd"
+    },
+    {
+      "path": "prepublication-artwork-independent-audit.json",
+      "bytes": 1641,
+      "sha256": "38e381d2e880a780f996639e41b337b9d4abeabd33ca7228eb995ced2ef877ef"
+    },
+    {
+      "path": "linkedin-published-readback.json",
+      "bytes": 532,
+      "sha256": "b0752479dc251cef885776fd65ec04cdcba6a650f558e4263b4bff82fd1cadfc"
+    },
+    {
+      "path": "published-link-destinations-browser.json",
+      "bytes": 976,
+      "sha256": "dfe0fa7cdf58c3592745f10e83f8ca6560669c6c98d3967957133d6f7d4ba93f"
+    },
+    {
+      "path": "linkedin-posted-top.png",
+      "bytes": 142470,
+      "sha256": "e53714f1471651f4b1dfe480bf306fab37e090e7de1942ce14c293fac833dcac"
+    },
+    {
+      "path": "linkedin-posted-artwork.png",
+      "bytes": 108101,
+      "sha256": "b419e6c0c2a12bf5c445b34543074cfb1ba63865da4e6f4c4d0c28e508705d82"
+    }
+  ]
+}

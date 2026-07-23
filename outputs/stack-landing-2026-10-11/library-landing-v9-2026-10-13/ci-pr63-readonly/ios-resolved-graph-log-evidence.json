@@ -1,0 +1,273 @@
+{
+  "log_sha256": "b9d0cf3abff77e1956daa9ae12225057d842a3ad986cb03a3085ae6f512b671b",
+  "evidence": [
+    {
+      "line": 228,
+      "text": "2026-10-13T16:18:48.1725130Z Xcode 26.6"
+    },
+    {
+      "line": 229,
+      "text": "2026-10-13T16:18:48.1725660Z Build version 17F113"
+    },
+    {
+      "line": 230,
+      "text": "2026-10-13T16:18:48.1799930Z ##[group]Run pnpm install --frozen-lockfile --package-import-method copy"
+    },
+    {
+      "line": 231,
+      "text": "2026-10-13T16:18:48.1801340Z \u001b[36;1mpnpm install --frozen-lockfile --package-import-method copy\u001b[0m"
+    },
+    {
+      "line": 232,
+      "text": "2026-10-13T16:18:48.1848740Z shell: /bin/bash -e {0}"
+    },
+    {
+      "line": 233,
+      "text": "2026-10-13T16:18:48.1849090Z env:"
+    },
+    {
+      "line": 234,
+      "text": "2026-10-13T16:18:48.1849390Z   VITE_SUPABASE_URL: https://toxldjgwkxtneoqsazym.supabase.co"
+    },
+    {
+      "line": 236,
+      "text": "2026-10-13T16:18:48.1850270Z   VITE_CAPTURE_LIVE: false"
+    },
+    {
+      "line": 237,
+      "text": "2026-10-13T16:18:48.1850590Z   VITE_LIBRARY_INTAKE_LIVE: false"
+    },
+    {
+      "line": 238,
+      "text": "2026-10-13T16:18:48.1850820Z   VITE_TERMS_URL: "
+    },
+    {
+      "line": 239,
+      "text": "2026-10-13T16:18:48.1851020Z   VITE_PRIVACY_URL: "
+    },
+    {
+      "line": 240,
+      "text": "2026-10-13T16:18:48.1851240Z   VITE_SAMPLING_RULES_URL: "
+    },
+    {
+      "line": 241,
+      "text": "2026-10-13T16:18:48.1851550Z   PNPM_HOME: /Users/runner/setup-pnpm/node_modules/.bin"
+    },
+    {
+      "line": 426,
+      "text": "2026-10-13T16:19:18.2455840Z Resolve Package Graph"
+    },
+    {
+      "line": 427,
+      "text": "2026-10-13T16:19:31.2842520Z "
+    },
+    {
+      "line": 428,
+      "text": "2026-10-13T16:19:31.2947810Z Fetching from https://github.com/ionic-team/capacitor-swift-pm.git"
+    },
+    {
+      "line": 429,
+      "text": "2026-10-13T16:19:32.4375890Z "
+    },
+    {
+      "line": 430,
+      "text": "2026-10-13T16:19:32.4507790Z Fetching from https://github.com/ionic-team/ion-ios-geolocation.git"
+    },
+    {
+      "line": 431,
+      "text": "2026-10-13T16:19:32.4647040Z "
+    },
+    {
+      "line": 432,
+      "text": "2026-10-13T16:19:33.3186030Z Fetching from https://github.com/ionic-team/ion-ios-filesystem.git"
+    },
+    {
+      "line": 433,
+      "text": "2026-10-13T16:19:33.4971030Z "
+    },
+    {
+      "line": 434,
+      "text": "2026-10-13T16:19:33.5025810Z Fetching from https://github.com/ionic-team/ion-ios-camera.git"
+    },
+    {
+      "line": 435,
+      "text": "2026-10-13T16:19:33.5026260Z "
+    },
+    {
+      "line": 436,
+      "text": "2026-10-13T16:19:36.1404290Z Creating working copy of package \u2018capacitor-swift-pm\u2019"
+    },
+    {
+      "line": 437,
+      "text": "2026-10-13T16:19:36.3245990Z "
+    },
+    {
+      "line": 438,
+      "text": "2026-10-13T16:19:36.3352470Z Checking out 8.5.2 of package \u2018capacitor-swift-pm\u2019"
+    },
+    {
+      "line": 439,
+      "text": "2026-10-13T16:19:36.4419910Z "
+    },
+    {
+      "line": 440,
+      "text": "2026-10-13T16:19:36.5101330Z Creating working copy of package \u2018ion-ios-camera\u2019"
+    },
+    {
+      "line": 441,
+      "text": "2026-10-13T16:19:36.6861130Z "
+    },
+    {
+      "line": 442,
+      "text": "2026-10-13T16:19:36.6941320Z Checking out 2.0.0 of package \u2018ion-ios-camera\u2019"
+    },
+    {
+      "line": 443,
+      "text": "2026-10-13T16:19:36.8281040Z "
+    },
+    {
+      "line": 444,
+      "text": "2026-10-13T16:19:36.8767820Z Creating working copy of package \u2018ion-ios-filesystem\u2019"
+    },
+    {
+      "line": 445,
+      "text": "2026-10-13T16:19:37.0191260Z "
+    },
+    {
+      "line": 446,
+      "text": "2026-10-13T16:19:37.0328520Z Checking out 1.1.4 of package \u2018ion-ios-filesystem\u2019"
+    },
+    {
+      "line": 447,
+      "text": "2026-10-13T16:19:37.0957850Z "
+    },
+    {
+      "line": 453,
+      "text": "2026-10-13T16:19:40.7377740Z Resolved source packages:"
+    },
+    {
+      "line": 454,
+      "text": "2026-10-13T16:19:40.7378550Z   IONCameraLib: https://github.com/ionic-team/ion-ios-camera.git @ 2.0.0"
+    },
+    {
+      "line": 455,
+      "text": "2026-10-13T16:19:40.7379500Z   CapacitorGeolocation: /Users/runner/work/gsip/gsip/node_modules/.pnpm/@capacitor+geolocation@8.2.2_@capacitor+core@8.5.2/node_modules/@capacitor/geolocation @ local"
+    },
+    {
+      "line": 456,
+      "text": "2026-10-13T16:19:40.7389750Z   CapacitorFilesystem: /Users/runner/work/gsip/gsip/node_modules/.pnpm/@capacitor+filesystem@8.1.3_@capacitor+core@8.5.2/node_modules/@capacitor/filesystem @ local"
+    },
+    {
+      "line": 457,
+      "text": "2026-10-13T16:19:40.7391430Z   CapacitorLocalNotifications: /Users/runner/work/gsip/gsip/node_modules/.pnpm/@capacitor+local-notifications@8.3.1_@capacitor+core@8.5.2/node_modules/@capacitor/local-notifications @ local"
+    },
+    {
+      "line": 458,
+      "text": "2026-10-13T16:19:40.7392900Z   CapacitorCamera: /Users/runner/work/gsip/gsip/node_modules/.pnpm/@capacitor+camera@8.2.4_@capacitor+core@8.5.2/node_modules/@capacitor/camera @ local"
+    },
+    {
+      "line": 459,
+      "text": "2026-10-13T16:19:40.7394080Z   IONGeolocationLib: https://github.com/ionic-team/ion-ios-geolocation.git @ 2.1.1"
+    },
+    {
+      "line": 460,
+      "text": "2026-10-13T16:19:40.7394810Z   capacitor-swift-pm: https://github.com/ionic-team/capacitor-swift-pm.git @ 8.5.2"
+    },
+    {
+      "line": 461,
+      "text": "2026-10-13T16:19:40.7395630Z   CapApp-SPM: /Users/runner/work/gsip/gsip/apps/capture-pwa/ios/App/CapApp-SPM @ local"
+    },
+    {
+      "line": 462,
+      "text": "2026-10-13T16:19:40.7396350Z   IONFilesystemLib: https://github.com/ionic-team/ion-ios-filesystem.git @ 1.1.4"
+    },
+    {
+      "line": 463,
+      "text": "2026-10-13T16:19:40.7396800Z "
+    },
+    {
+      "line": 464,
+      "text": "2026-10-13T16:19:40.8047840Z 2026-10-13 16:19:40.804 xcodebuild[1421:7793] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty."
+    },
+    {
+      "line": 465,
+      "text": "2026-10-13T16:19:42.4471270Z ComputePackagePrebuildTargetDependencyGraph"
+    },
+    {
+      "line": 466,
+      "text": "2026-10-13T16:19:43.0831470Z "
+    },
+    {
+      "line": 3904,
+      "text": "2026-10-13T16:20:51.3850140Z Resolve Package Graph"
+    },
+    {
+      "line": 3905,
+      "text": "2026-10-13T16:20:55.4476650Z "
+    },
+    {
+      "line": 3906,
+      "text": "2026-10-13T16:20:55.4577780Z "
+    },
+    {
+      "line": 3907,
+      "text": "2026-10-13T16:20:55.4682830Z 2026-10-13 16:20:55.455 xcodebuild[3650:15459] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty."
+    },
+    {
+      "line": 3908,
+      "text": "2026-10-13T16:20:55.4684710Z Resolved source packages:"
+    },
+    {
+      "line": 3909,
+      "text": "2026-10-13T16:20:55.4780500Z   CapacitorLocalNotifications: /Users/runner/work/gsip/gsip/node_modules/.pnpm/@capacitor+local-notifications@8.3.1_@capacitor+core@8.5.2/node_modules/@capacitor/local-notifications @ local"
+    },
+    {
+      "line": 3910,
+      "text": "2026-10-13T16:20:55.4882590Z   CapacitorCamera: /Users/runner/work/gsip/gsip/node_modules/.pnpm/@capacitor+camera@8.2.4_@capacitor+core@8.5.2/node_modules/@capacitor/camera @ local"
+    },
+    {
+      "line": 3911,
+      "text": "2026-10-13T16:20:55.4983120Z   CapApp-SPM: /Users/runner/work/gsip/gsip/apps/capture-pwa/ios/App/CapApp-SPM @ local"
+    },
+    {
+      "line": 3912,
+      "text": "2026-10-13T16:20:55.5087350Z   IONFilesystemLib: https://github.com/ionic-team/ion-ios-filesystem.git @ 1.1.4"
+    },
+    {
+      "line": 3913,
+      "text": "2026-10-13T16:20:55.5184670Z   capacitor-swift-pm: https://github.com/ionic-team/capacitor-swift-pm.git @ 8.5.2"
+    },
+    {
+      "line": 3914,
+      "text": "2026-10-13T16:20:55.5286970Z   CapacitorGeolocation: /Users/runner/work/gsip/gsip/node_modules/.pnpm/@capacitor+geolocation@8.2.2_@capacitor+core@8.5.2/node_modules/@capacitor/geolocation @ local"
+    },
+    {
+      "line": 3915,
+      "text": "2026-10-13T16:20:55.5387360Z   CapacitorFilesystem: /Users/runner/work/gsip/gsip/node_modules/.pnpm/@capacitor+filesystem@8.1.3_@capacitor+core@8.5.2/node_modules/@capacitor/filesystem @ local"
+    },
+    {
+      "line": 3916,
+      "text": "2026-10-13T16:20:55.5489390Z   IONGeolocationLib: https://github.com/ionic-team/ion-ios-geolocation.git @ 2.1.1"
+    },
+    {
+      "line": 3917,
+      "text": "2026-10-13T16:20:55.5588480Z   IONCameraLib: https://github.com/ionic-team/ion-ios-camera.git @ 2.0.0"
+    },
+    {
+      "line": 3918,
+      "text": "2026-10-13T16:20:55.5688330Z "
+    },
+    {
+      "line": 3919,
+      "text": "2026-10-13T16:20:56.1589030Z CreateBuildRequest"
+    },
+    {
+      "line": 3920,
+      "text": "2026-10-13T16:20:56.1691680Z "
+    },
+    {
+      "line": 3921,
+      "text": "2026-10-13T16:20:56.1792660Z SendProjectDescription"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "all_other361_source_files_v1_exact": true,
+  "all_v1_tests_and_assertions_exact_after_fixture_literal_erasure": true,
+  "appended_new_controls": 28,
+  "base_head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "helper_exact_v1_after_erasing_only_two_scope_entries": true,
+  "known_direct_generated_script_count_each_root": 8,
+  "metadata_task_sha256": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf",
+  "no_Gradle_key_APK_operations": true,
+  "old_runtime_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "original195244_test_prefix_exact_to_v1": true,
+  "schema": "gsip-selected-debug-v2-exact-data-delta-v1",
+  "v1_fixture_extended_by_only_two_generated_inputs": true,
+  "v1_only_authorized_argv8_to7_byte_exception_retained": true,
+  "v1_receipt_sha256": "493ef14393d4c7821e8dee3e66cc03afab322d0e41343793d6ca020b04b3983d",
+  "workflow_v1_exact": true
+}

@@ -1,0 +1,2 @@
+Public homepage initial assets: 319785 / 716800 bytes
+$ node scripts/check-site-budget.mjs

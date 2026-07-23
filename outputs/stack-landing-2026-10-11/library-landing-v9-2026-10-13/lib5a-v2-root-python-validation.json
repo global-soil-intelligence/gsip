@@ -1,0 +1,35 @@
+[
+  {
+    "command": [
+      "uv",
+      "run",
+      "ruff",
+      "check",
+      "."
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.12,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-python-0.log"
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "mypy"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.5,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-python-1.log"
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "pytest",
+      "--junitxml=../library-landing-v9-2026-10-13/lib5a-v2-root-python.xml"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 11.08,
+    "log": "../library-landing-v9-2026-10-13/lib5a-v2-root-python-2.log"
+  }
+]

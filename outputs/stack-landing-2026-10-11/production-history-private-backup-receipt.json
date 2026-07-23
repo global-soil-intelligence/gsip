@@ -1,0 +1,51 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "scope": "Migration ledger schema/data only, stored owner-private; contents not printed",
+  "private_directory": "/Users/justinhart/.supabase/gsip-recovery/2026-10-11",
+  "directory_mode": "0o700",
+  "results": [
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+        "db",
+        "dump",
+        "--project-ref",
+        "toxldjgwkxtneoqsazym",
+        "--workdir",
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+        "--schema",
+        "supabase_migrations",
+        "--file",
+        "/Users/justinhart/.supabase/gsip-recovery/2026-10-11/original-history-schema.sql"
+      ],
+      "exit_code": 0,
+      "output_sha256": "d822f3d20583af28ad8099557f362edd6f513d6ac9e37c2b0da01a8001d2b782",
+      "sha256": "ae56295c7e66a8b46ab50df6f00cf57f7866f2478a17fbe3910d9def39e836ab",
+      "bytes": 1116,
+      "mode": "0o600"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+        "db",
+        "dump",
+        "--project-ref",
+        "toxldjgwkxtneoqsazym",
+        "--workdir",
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+        "--schema",
+        "supabase_migrations",
+        "--file",
+        "/Users/justinhart/.supabase/gsip-recovery/2026-10-11/original-history.sql",
+        "--data-only"
+      ],
+      "exit_code": 0,
+      "output_sha256": "e8f74855ccf4bf9fd6386c33d4e13cd9e04e828022a6b4f132462c11f78522b5",
+      "sha256": "612b05231c79eac1e52cc4bf5da49ec2e9d4755358b461c902af69f6f089c857",
+      "bytes": 37668,
+      "mode": "0o600"
+    }
+  ],
+  "restoration_verification": "PENDING",
+  "production_application_or_history_mutations": []
+}

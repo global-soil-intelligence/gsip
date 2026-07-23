@@ -1,0 +1,56 @@
+{
+  "artifact": {
+    "bytes": 361,
+    "path": "/private/tmp/gsip-e0-ios-independent-boby50cu/FRESH_ARTIFACT_DOWNLOAD.json",
+    "sha256": "a0368c69400ebd740f5db8ec2f64a1e4d4630329958a6cba649a922c32cf0550"
+  },
+  "at_utc": "2026-10-14T00:07:16.397681+00:00",
+  "authority": {
+    "GET_only": true,
+    "arbitrary_raw_logs_private_values_printed": false,
+    "build_or_signing_or_device_actions": false,
+    "private_artifacts_retained_only_owned_tmp": true,
+    "shared_source_Git_GH_workflow_or_production_mutations": false
+  },
+  "combined_native_acceptance": false,
+  "four_zip_bounds": {
+    "bytes": 1122,
+    "path": "/private/tmp/gsip-e0-ios-independent-boby50cu/FRESH_FOUR_ZIP_BOUNDS.json",
+    "sha256": "50dc04c8fd3062013189921977d9d8d8aacbf9ff0260592386591ae672753a3a"
+  },
+  "head": "e0cebc9eda6b7c4a6ae7134e3d4218d02cfe5c8d",
+  "ios_conclusion": "success",
+  "ios_job_id": 115604811186,
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "merge_binding": {
+    "bytes": 1118,
+    "path": "/private/tmp/gsip-e0-ios-independent-boby50cu/FRESH_MERGE_BINDING.json",
+    "sha256": "40f448e3cbf17ee724319fc489cc579ba27eadfb45090e365b9c958538dfb84a"
+  },
+  "native_run_id": 38487570722,
+  "native_run_number": 50,
+  "older_artifacts_or_old_reference_proofs_reused": false,
+  "original_hosted_cause_inferred": false,
+  "outer_tree": {
+    "bytes": 1767,
+    "path": "/private/tmp/gsip-e0-ios-independent-boby50cu/FRESH_OUTER_ARTIFACT_TREE.json",
+    "sha256": "2282578e2e20a9218130a72fa87b7668f024d55e9eab23adc109c682aeb7e871"
+  },
+  "pr": 63,
+  "remaining_gates": [
+    "Independent Android artifact verification",
+    "iOS cloud backup exclusion and physical device gates",
+    "Legal/distribution/store/production/capture gates"
+  ],
+  "schema": "gsip-independent-exact-e0-ios-artifact-closure-v1",
+  "source_binding": {
+    "path": "/private/tmp/gsip-e0-ios-independent-boby50cu/FRESH_SOURCE_BINDING.json",
+    "sha256": "f6fee31f9c30192a070cddbca3dc4746223d8b75a2acf5309915b46fe0366c81"
+  },
+  "status": "FRESH_EXACT_HEAD_IOS_ARTIFACT_VERIFIED",
+  "strict_replay": {
+    "bytes": 1312,
+    "path": "/private/tmp/gsip-e0-ios-independent-boby50cu/FRESH_STRICT_IOS_REPLAY.json",
+    "sha256": "3576385f47252ed85509a68d66cd6cd1b5f7dee54dddf817e3715e5a28e8eb1a"
+  }
+}

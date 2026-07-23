@@ -1,0 +1,113 @@
+{
+  "declared_source_byte_freeze": {
+    "all_declared_bytes_match": true,
+    "files": 365,
+    "note": "Prior fullcheck generated untracked pytest/mypy/pycache files inside source after365sourcefilefreeze. Preserve them as tool bookkeeping, exclude explicitly from tracked source/proof inputs. No deletion or refreeze. Furtherbookkeeping uses outside caches/PYTHONDONTWRITEBYTECODE.",
+    "paths": [
+      ".pytest_cache/CACHEDIR.TAG",
+      ".pytest_cache/README.md",
+      ".pytest_cache/.gitignore",
+      ".mypy_cache/missing_stubs",
+      ".mypy_cache/CACHEDIR.TAG",
+      ".mypy_cache/.gitignore",
+      ".pytest_cache/v/cache/nodeids",
+      "tests/__pycache__/test_app_build.cpython-312-pytest-9.1.1.pyc",
+      "tests/__pycache__/test_app_notification_audit.cpython-312-pytest-9.1.1.pyc",
+      "tests/__pycache__/test_app_permissions.cpython-312-pytest-9.1.1.pyc",
+      ".mypy_cache/3.11/cache.db",
+      "scripts/__pycache__/app_build.cpython-312.pyc",
+      "scripts/__pycache__/app_permissions.cpython-312.pyc",
+      "scripts/__pycache__/app_notification_audit.cpython-312.pyc",
+      "scripts/__pycache__/__init__.cpython-312.pyc"
+    ],
+    "untracked_tool_artifacts": 15
+  },
+  "directory_immutability_claim": false,
+  "full_combined": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 30,
+    "tests": 776
+  },
+  "full_project_mypy": {
+    "exit": 0,
+    "output": "Success: no issues found in 75 source files",
+    "output_sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c",
+    "target_count": 75
+  },
+  "guard_mutations": [
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 12,
+      "mutation": "omit_included_settings",
+      "tests": 28
+    },
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 12,
+      "mutation": "omit_generated_cordova_descriptor",
+      "tests": 28
+    }
+  ],
+  "native_product_acceptance": false,
+  "new_controls": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 28
+  },
+  "new_runtime_or_key_or_APK_execution": false,
+  "old43": "Carried from v1 exactdiagnostic/classifier code and same two task strings; not rerun",
+  "pinned_authored_scan": {
+    "exit": 0,
+    "findings": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "version": "8.21.2"
+  },
+  "schema": "gsip-selected-debug-v2-author-verification-v1",
+  "static": {
+    "eslint": {
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "language": {
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prettier": {
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    },
+    "ruff": {
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    }
+  },
+  "v1_actual_metadata_probe_carried_by_exact_task_bytes_plus_new_source_guard_rebind": {
+    "Gradle_or_key_APK_operation_rerun": false,
+    "carry_mechanism": "Both task byte strings exactv1; only mandatory generated input pins changed, actual earlier copied probe source passes new complete source guard.",
+    "metadata_task_sha256": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf",
+    "original_runtime_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "schema": "gsip-metadata-probe-v2-source-guard-only-rebind-v1",
+    "v1_actual_metadata_probe_sha256": "edd6655a3e9225e903ce65ebe492cc95b2b3527975d675dc70a079eeb0ea6af9",
+    "v2_controlled_generated_source_guard_read_only_pass": true
+  },
+  "v1_fail_before_new28": {
+    "errors": 0,
+    "failures": 24,
+    "skipped": 0,
+    "tests": 28
+  },
+  "v1_findings_preserved": [
+    "directly included capacitor.settings.gradle omitted",
+    "generated Cordova build.gradle omitted"
+  ]
+}

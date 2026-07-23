@@ -1,0 +1,47 @@
+Command: pnpm test (Node 24)
+
+packages/schema test:  RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/packages/schema
+apps/site-web test:  RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/site-web
+packages/schema test:  Test Files  15 passed (15)
+packages/schema test:       Tests  310 passed (310)
+packages/schema test:    Start at  22:05:31
+packages/schema test:    Duration  1.24s (transform 6.04s, setup 0ms, import 8.60s, tests 712ms, environment 1ms)
+packages/schema test: Done
+apps/site-web test:  Test Files  3 passed (3)
+apps/site-web test:       Tests  41 passed (41)
+apps/site-web test:    Start at  22:05:32
+apps/site-web test:    Duration  1.66s (transform 196ms, setup 0ms, import 722ms, tests 908ms, environment 2.56s)
+apps/site-web test: Done
+apps/capture-pwa test$ vitest run
+apps/map-web test$ vitest run
+apps/capture-pwa test:  RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+apps/map-web test:  RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/map-web
+apps/map-web test:  Test Files  3 passed (3)
+apps/map-web test:       Tests  16 passed (16)
+apps/map-web test:    Start at  22:05:34
+apps/map-web test:    Duration  2.02s (transform 398ms, setup 0ms, import 730ms, tests 783ms, environment 2.79s)
+apps/map-web test: Done
+apps/capture-pwa test:  ❯ tests/library-app.test.tsx (17 tests | 1 failed) 6939ms
+apps/capture-pwa test:    × holds a restored library context with no original revision until explicit restart 5005ms
+apps/capture-pwa test:  Test Files  1 failed | 32 passed (33)
+apps/capture-pwa test:       Tests  1 failed | 443 passed (444)
+apps/capture-pwa test:    Start at  22:05:34
+apps/capture-pwa test:    Duration  8.71s (transform 2.57s, setup 3.54s, import 5.11s, tests 19.02s, environment 25.49s)
+apps/capture-pwa test: ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+apps/capture-pwa test:  FAIL  tests/library-app.test.tsx > holds a restored library context with no original revision until explicit restart
+apps/capture-pwa test: Error: Test timed out in 5000ms.
+apps/capture-pwa test: If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+apps/capture-pwa test:  ❯ tests/library-app.test.tsx:264:1
+apps/capture-pwa test:     262| })
+apps/capture-pwa test:     263|
+apps/capture-pwa test:     264| it('holds a restored library context with no original revision until e…
+apps/capture-pwa test:        | ^
+apps/capture-pwa test:     265|   const q = await import('../src/queue')
+apps/capture-pwa test:     266|   await q.queueRevision()
+apps/capture-pwa test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+apps/capture-pwa test: Failed
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @gsip/capture-pwa@0.1.0 test: `vitest run`
+Exit status 1
+[ELIFECYCLE] Test failed. See above for more details.
+

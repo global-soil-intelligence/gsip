@@ -1,0 +1,19 @@
+{
+  "local_lint": "passed: ESLint, language guard, Prettier",
+  "local_ruff": "passed",
+  "local_mypy": "passed:79sourcefiles",
+  "local_related_pytest": "93passed,0errors/failures/skips",
+  "initial_new_test_baseline": "25expectedfailures,0errors/skips",
+  "review_changes": [
+    "Replaced insufficient stock host subclass/router with conditional owned public host/asset-handler mechanism; file route is handled before stock router.",
+    "Camera URI is not an existing opaque-handle broker: provenance seam is an explicit held prototype gate.",
+    "Distinguished known-schema no-create IDB export from empty/unknown/read-error; froze bounded snapshot batches.",
+    "Required ordinary user-driven relaunch, not programmatic exit; purge callback is not physical erasure.",
+    "Corrected Keychain default access-group wording; bounded counters hold on exhaustion."
+  ],
+  "production_operations": false,
+  "native_code_or_api_execution": false,
+  "device_or_backup_experiment": false,
+  "new_dependencies": false,
+  "proposed_passcode_and_reset_policy": "pending_owner"
+}

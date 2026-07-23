@@ -1,0 +1,44 @@
+{
+  "utc": "2026-10-13T17:39:06.210138+00:00",
+  "invariants": "nonregular inputs promptly refused; descriptor-bound nofollow/regular/singlelink/size and every source/native/privacy guard retained",
+  "source_head": "bb3910164cc47eae72958ad521b2186684584978",
+  "changed_v6_to_v7": [
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py",
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+  ],
+  "exact4": [
+    {
+      "base_sha256": null,
+      "bytes": 90664,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "5ce1e7e646dc2e14ccc5b9e3a67efd3945172ab527ea8723e7ca8493b58bbe81",
+      "v6_sha256": "b9af11f753ab9630ecca1fdd9262796f7996c7fad4709d69f61f3ddc3a78d762"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 81486,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "650e6b074dbca902c1827ed7af97c83bacd2868473ee9ec504cf0f1b4b7091f1",
+      "v6_sha256": "2868d1721ce606a5d210143c242ebe59084e37f379424490acf0aa8b3d5dcd58"
+    },
+    {
+      "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "bytes": 17825,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "v6_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 13634,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "9df5e3eac966064ec6d47b00f637c8356c74a5028dacbf1b8f72e66cbae26c88",
+      "v6_sha256": "75747b73ceda9e507bdfc7d40d57aa7daa55379625dc12a61af0fc67e45e31bc"
+    }
+  ],
+  "core19_and_workflow_unchanged_v6": true,
+  "code_delta": "O_NONBLOCK only",
+  "independent_final_review_pending": true,
+  "commit_push_production_changes": false
+}

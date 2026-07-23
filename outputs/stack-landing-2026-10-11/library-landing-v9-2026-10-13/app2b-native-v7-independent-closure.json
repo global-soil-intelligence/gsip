@@ -1,0 +1,305 @@
+{
+  "acceptance_cards": [
+    {
+      "card": "file/coordinate",
+      "proof": "Original containment/links/hardlink/bounds/coordinate/project-root banks pass; both byte-unchanged independent FIFO/no-writer and regular-to-FIFO swap cases pass v7; current regular read and NOFOLLOW/NONBLOCK flag-preservation author controls pass; descriptor fstat guards and finally-close unchanged",
+      "status": "CLOSED"
+    },
+    {
+      "card": "POM license/provenance",
+      "proof": "Unchanged bounded coordinate-matched inheritance, duplicate/closed/ambiguous/missing/depth refusals pass; no declared-license or provenance weakening",
+      "status": "CLOSED source/fixture"
+    },
+    {
+      "card": "complete Android/native/build receipt",
+      "proof": "Both actual runtime views and required source/npm/POM/module/project/binary bindings preserved; exact all 13 fields, nested fixed proof shape, artifact and both retained repeat references recomputed; diagnostics 43-case bank passes; no assumed Android CI producer/root-cause correction",
+      "status": "CLOSED source/fixture"
+    },
+    {
+      "card": "iOS complete selected source/binary graph",
+      "proof": "Four selected fixed repos/versions/revisions and exact three lockfiles; complete Capacitor/three ION source archive trees; fixed manifest/README/MIT/Cordova header; published Capacitor/Cordova archive hashes/sizes/54+58-file trees; all preserved former P2 witnesses, coordinated proof/missing/change/extra controls and fresh actual-primary cases pass with production expected constants unchanged",
+      "status": "CLOSED source/retained-primary bytes"
+    }
+  ],
+  "adaptation_boundary": "The original 26-case ION bank source remains unchanged. Its unused pre-v6 synthetic Capacitor revision literal is routed at runtime to the fixed real release input. No validator/production expectation constant is patched. Actual-primary controls independently retain and check all four actual source archives and both binary archives with unmodified constants.",
+  "artifacts": {
+    "extra-checks.json": "9893ef5f04972444dcf5fd4b3becb4adbcfe55d7c676939ca6ec994e751bf560",
+    "final-v7-command.json": "2a3b1cc1ad57df47c76a12c098b89fcd225989caad2ec7b5ae0824e6619d91e6",
+    "final-v7-replay.log": "7a94f7b040272273f22496bb856e04be96f41a28aa941229ef0724bdc40d565e",
+    "final-v7-replay.xml": "5a04941163f3b9c643493b42f1fcbf9adcaeabe99fccaa9d68b01905502546bc",
+    "gitleaks-authored.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "integrity-readback.json": "82ef344696ec7719d056c335ac811330b188d35af85d4f571e73494c3dd9ead3",
+    "nonblock-mutation-receipt.json": "8e8be8671b63dc2cc6eb6e6afcc7a74e2acc2b5ada08f551f2840d921d656ab2",
+    "nonblock-mutation.log": "ca0fb5f74400b79974d36b42771aee431ad302354b742532dab4ffbabb97e542",
+    "nonblock-mutation.xml": "771e79a9e8e2f686b54b31589d4ea90155ad4fc9e2abaa5b4e75f7f78255289a",
+    "primary_ion_fixture_adapter.py": "80cd23bad4e55b6a6fde531674f09b525640016caf68c170c7d11b97a3110623",
+    "workflow-preparation-review.json": "db8bb3908a567c06817b6a8b05fad4a4b16a4695d01ab6dfc62b8d35e12e6fdc"
+  },
+  "authority": "Own temporary copies/reports only. No shared/author source edits, Git/GitHub requests or writes, network, native project build/signing/UI/device, real contributor data, credentials or production actions. Root owns integration/PR/CI.",
+  "base_patch_sha256": "6130189bc65f9bdf40c3e3f06058c057dd1dd79060bd5b1fc9f15294227501d9",
+  "by_file": {
+    "test_app_build": 53,
+    "test_app_notification_audit": 241,
+    "test_app_permissions": 28,
+    "test_independent_android_diagnostics": 43,
+    "test_processors": 6,
+    "test_review_native_adversarial": 7,
+    "test_review_native_fifo": 2,
+    "test_review_v3_build_receipt": 6,
+    "test_review_v4_expanded": 40,
+    "test_review_v5_capacitor_binding": 3,
+    "test_review_v5_capacitor_sidecar": 4,
+    "test_review_v5_primary_graph": 26,
+    "test_review_v6_actual_primary": 20,
+    "test_review_v6_coordinated_proof": 16
+  },
+  "counts": {
+    "actual_complete_primary_controls": 20,
+    "author_build": 53,
+    "author_current": 328,
+    "author_native": 241,
+    "author_permissions": 28,
+    "errors": 0,
+    "failures": 0,
+    "fresh_coordinated_bank": 16,
+    "independent_FIFO": 2,
+    "meaningful_NONBLOCK_removal_expected_failures": 2,
+    "passed": 495,
+    "pinned_authored_scan_findings": 0,
+    "preserved_capacitor_banks": 7,
+    "preserved_diagnostics": 43,
+    "preserved_expanded": 40,
+    "preserved_original_plus_v3": 13,
+    "processors": 6,
+    "retained_ION_primary_with_fixture_real_cap_pin": 26,
+    "skipped": 0,
+    "workflow_bash_bodies": 28
+  },
+  "fixture_adaptations_unchanged": [
+    {
+      "adapter": "/private/tmp/gsip-native-v6-whole-independent-r_8nw2n9/primary_ion_fixture_adapter.py",
+      "correction": "Runtime fixture-only substitution to CAPACITOR_RELEASE revision; no audit validator/constant changed; corrected 26 passed",
+      "original_bank_unchanged": true,
+      "original_run": "442 passed, 26 failed because new fixed Capacitor revision guard rejected 1 repeated 40 times before ION controls",
+      "scope": "Only preserved 26-case ION bank unused synthetic Capacitor stub"
+    },
+    {
+      "correction": "Owned installed links and exact own-review uv.lock supplied; final 20 passed; initial logs retained",
+      "initial_errors": "20 setup errors from copied installed-package directories instead of owned node_modules links, then 20 setup errors from missing uv.lock in retained minimal fixture",
+      "scope": "fresh actual-primary fixture setup",
+      "source_finding": false
+    }
+  ],
+  "freeze": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v7-frozen-30k39g9j",
+  "freeze_receipt_sha256": "4a85fececcdb94dca3a29389e4904206ab3b991b1e56685d0de4eff62269d860",
+  "governing9_full_read_carried_forward": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "cc5a4ea13e2a389006a0a69c6986f5acc767f9c065131b70f078b8ca1580e180"
+    },
+    {
+      "path": "docs/SPEC.md",
+      "sha256": "ce894fb49e1eac6239cbad596c8df8f2c98e2eeca69eb13ba3892101fc3d3bf7"
+    },
+    {
+      "path": "docs/BUILD_ORDER.md",
+      "sha256": "102396787dfdb341e4f397f72fb708bc484b889d32df15c2dde4939bbd1ab81c"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "7c8cdba11a34dfe71f5ec1376c408f1bb513ee225d855e9c4637ad87cc750fbb"
+    },
+    {
+      "path": "GOVERNANCE.md",
+      "sha256": "6c710240437d8fc9f01184d99862a888abacd70c51ac9c0b3a14adcfc5ee18d8"
+    },
+    {
+      "path": "docs/PHASE1_DEPLOYMENT.md",
+      "sha256": "cef59e25e1bea9534335d1b3de486f041577085f96ac763f40da6443447d9172"
+    },
+    {
+      "path": "docs/APP_STORE.md",
+      "sha256": "bc5be716c7cb6365defafa70db9546741ec0b5e27e6d46b38ff7e33da2e1d411"
+    },
+    {
+      "path": "docs/legal/README.md",
+      "sha256": "556293ba6092c522633fe7f586e8e9d1478f6f1f24d75b9338949f9cff6e69ec"
+    },
+    {
+      "path": ".env.example",
+      "sha256": "c60d4db146fb0275d3a62e69de18a6f36aef4c7423967c4cf6befe57d3fa63ef"
+    }
+  ],
+  "hash_bound_semantic_carry_forward": "All audit script bytes except addition of O_NONBLOCK are identical to v6. Governing docs, workflow, constants, Android diagnostics/collection/validation, POM/source/binary graph validators, exact 13-field build proof and reference validation are unchanged. Current finite full replay validates these preserved cards again.",
+  "integrity": {
+    "audit_only_change": "O_NONBLOCK flag added; all other source bytes identical",
+    "by_file": {
+      "test_app_build": 53,
+      "test_app_notification_audit": 241,
+      "test_app_permissions": 28,
+      "test_independent_android_diagnostics": 43,
+      "test_processors": 6,
+      "test_review_native_adversarial": 7,
+      "test_review_native_fifo": 2,
+      "test_review_v3_build_receipt": 6,
+      "test_review_v4_expanded": 40,
+      "test_review_v5_capacitor_binding": 3,
+      "test_review_v5_capacitor_sidecar": 4,
+      "test_review_v5_primary_graph": 26,
+      "test_review_v6_actual_primary": 20,
+      "test_review_v6_coordinated_proof": 16
+    },
+    "commands": [
+      [
+        "patch",
+        "--batch",
+        "--reverse",
+        "-p1",
+        "-i",
+        "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v6-frozen-a1f80kbl/base-to-v6.patch"
+      ],
+      [
+        "patch",
+        "--batch",
+        "-p1",
+        "-i",
+        "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v7-frozen-30k39g9j/base-to-v7.patch"
+      ]
+    ],
+    "counts": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 495
+    },
+    "exact_base_patch_reconstructs_four": true,
+    "exact_four_frozen_hashes": [
+      {
+        "base_sha256": null,
+        "bytes": 90664,
+        "path": "scripts/app_notification_audit.py",
+        "sha256": "5ce1e7e646dc2e14ccc5b9e3a67efd3945172ab527ea8723e7ca8493b58bbe81",
+        "v6_sha256": "b9af11f753ab9630ecca1fdd9262796f7996c7fad4709d69f61f3ddc3a78d762"
+      },
+      {
+        "base_sha256": null,
+        "bytes": 81486,
+        "path": "tests/test_app_notification_audit.py",
+        "sha256": "650e6b074dbca902c1827ed7af97c83bacd2868473ee9ec504cf0f1b4b7091f1",
+        "v6_sha256": "2868d1721ce606a5d210143c242ebe59084e37f379424490acf0aa8b3d5dcd58"
+      },
+      {
+        "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+        "bytes": 17825,
+        "path": ".github/workflows/app-build.yml",
+        "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+        "v6_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+      },
+      {
+        "base_sha256": null,
+        "bytes": 13634,
+        "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+        "sha256": "9df5e3eac966064ec6d47b00f637c8356c74a5028dacbf1b8f72e66cbae26c88",
+        "v6_sha256": "75747b73ceda9e507bdfc7d40d57aa7daa55379625dc12a61af0fc67e45e31bc"
+      }
+    ],
+    "only_review_source_changes": [
+      "scripts/app_notification_audit.py",
+      "tests/test_app_notification_audit.py",
+      "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+    ],
+    "privacy_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+    "unchanged_banks_and_other_source": true,
+    "v6_delta_reconstructs_four": true,
+    "v6_receipt_preserved": true
+  },
+  "limits": [
+    "Actual CI38429415336 failed both additive audits and supplied no accepted artifacts; v6 source controls do not establish new CI acceptance.",
+    "Android actual failure root cause remains unknown; both actual variants remain required.",
+    "Primary facts come from retained previously retrieved public release files; no fresh network/tag-availability assertion.",
+    "Actual tool-output/SPM checkout availability, native size/repeat receipts, Android/iPhone delivery/cancellation/reboot/logging/device backups, iOS WebKit exclusion, signing/accounts/stores and production readiness remain unverified."
+  ],
+  "meaningful_guard_mutation": {
+    "command": [
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+      "-B",
+      "-m",
+      "pytest",
+      "--override-ini=addopts=",
+      "-q",
+      "--disable-warnings",
+      "--junitxml=/private/tmp/gsip-native-v7-independent-_vi1v9_e/nonblock-mutation.xml",
+      "tests/test_review_native_fifo.py"
+    ],
+    "exact_independent_witness_sha256": "1dcb3ea0be42dda5628ac0e5aaf4e66cd717825dac81bbc672d8ee7e7a3fd3da",
+    "exit_code": 1,
+    "expected_failed_FIFO_cases": 2,
+    "main_review_source_unchanged": true,
+    "mutation": "remove only O_NONBLOCK in separate owned copy"
+  },
+  "preserved_prior_diagnostic_guard_evidence": {
+    "independent_cases": 43,
+    "meaningful_expected_failure_mutations": 4,
+    "path": "/private/tmp/gsip-native-v5-diagnostics-independent-gdpobfm0/independent-diagnostics-receipt.json",
+    "sha256": "a16eea384c9836bad06407d45f6d238e17e2c387787fa76571d82ff9e3c4cacf",
+    "v6_diagnostic_AST_unchanged": true
+  },
+  "preserved_v6_blocked_receipt": {
+    "finding": "FIFO can block before descriptor check on v6; two failing witnesses retained",
+    "path": "/private/tmp/gsip-native-v6-whole-independent-r_8nw2n9/independent-v6-blocked-receipt.json",
+    "sha256": "e78ac3309ad6f1266e2d7fa03ed144a81e551958894cb8df09785291e60fc285"
+  },
+  "resolved_findings": [
+    {
+      "file": "scripts/app_notification_audit.py",
+      "independent_FIFO_cases": 2,
+      "independent_FIFO_witness_sha256": "1dcb3ea0be42dda5628ac0e5aaf4e66cd717825dac81bbc672d8ee7e7a3fd3da",
+      "line": 186,
+      "priority": "P2",
+      "resolution": "O_NONBLOCK added to O_RDONLY|O_NOFOLLOW before retained fstat regular/single-link/size checks. It prevents a FIFO open from waiting for a writer even after regular-to-FIFO substitution.",
+      "same_two_cases_fail_without_new_flag": true
+    }
+  ],
+  "scope": "Independent exact native v7 source/fixture/retained-primary-byte acceptance only; no actual CI/native/device/production or GitHub approval claim",
+  "source_files": [
+    {
+      "base_sha256": null,
+      "bytes": 90664,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "5ce1e7e646dc2e14ccc5b9e3a67efd3945172ab527ea8723e7ca8493b58bbe81",
+      "v6_sha256": "b9af11f753ab9630ecca1fdd9262796f7996c7fad4709d69f61f3ddc3a78d762"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 81486,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "650e6b074dbca902c1827ed7af97c83bacd2868473ee9ec504cf0f1b4b7091f1",
+      "v6_sha256": "2868d1721ce606a5d210143c242ebe59084e37f379424490acf0aa8b3d5dcd58"
+    },
+    {
+      "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "bytes": 17825,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "v6_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 13634,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "9df5e3eac966064ec6d47b00f637c8356c74a5028dacbf1b8f72e66cbae26c88",
+      "v6_sha256": "75747b73ceda9e507bdfc7d40d57aa7daa55379625dc12a61af0fc67e45e31bc"
+    }
+  ],
+  "source_freeze_unchanged": true,
+  "static_checks": {
+    "language": "passed",
+    "mypy": "passed on the two authored Python files",
+    "pinned_Gitleaks": "8.21.2 four authored files, zero findings; unchanged full-history scan remains required",
+    "prettier": "passed",
+    "ruff_check": "passed",
+    "ruff_format": "passed"
+  },
+  "status": "CLOSED: all four frozen native source audit cards; no unresolved material finding",
+  "v6_delta_sha256": "0147c9be6510ffb20c883da74eff5c598c9a439f0a0259100c4ea5bf89dbfc67"
+}

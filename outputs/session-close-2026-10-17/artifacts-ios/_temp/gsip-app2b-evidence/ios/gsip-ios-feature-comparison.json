@@ -1,0 +1,162 @@
+{
+  "android_shared_disposable_debug_key_sha256": null,
+  "archive_byte_delta": 173943,
+  "candidate": {
+    "archive_bytes": 3598102,
+    "sha256": "838a0c66f59f6b6a0d7201eb14bd13f4cf8c0c58407b0ab16632dc3e42f80992",
+    "uncompressed_entry_bytes_by_kind": {
+      "dex": 0,
+      "native_libraries": 0,
+      "other": 12830417,
+      "resources": 0
+    }
+  },
+  "candidate_source_commit": "b7107fe7a06b856a9ac5c137d0370db365009e27",
+  "closed_flags": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "identical_toolchain": {
+    "node": "v24.21.0",
+    "pnpm": "11.9.0",
+    "python": "3.12.10 (v3.12.10:0cc81280367, Apr  8 2025, 08:46:59) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "runner": "macOS-26.6.2-arm64-arm-64bit",
+    "runner_image": {
+      "ImageOS": "macos26",
+      "ImageVersion": "20261013.0424.1",
+      "RUNNER_ARCH": "ARM64",
+      "RUNNER_OS": "macOS"
+    },
+    "sdk": "26.5",
+    "xcode": "Xcode 26.6\nBuild version 17F113"
+  },
+  "input_receipts": {
+    "candidate": {
+      "android_version_code": 78,
+      "artifact_sha256": "838a0c66f59f6b6a0d7201eb14bd13f4cf8c0c58407b0ab16632dc3e42f80992",
+      "comparison": {
+        "byte_equal": false,
+        "changed_entries": [],
+        "entry_content_equal": true,
+        "first_only": [],
+        "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+        "second_only": []
+      },
+      "comparison_scope": "same run/generated project; actual repeated native build; iOS unsigned simulator; signing disabled",
+      "ios_build_version": "1.0.77",
+      "lockfile_sha256": {
+        "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "c1469e509371c8c989620e7d5d913349699d3255d442a02c3d0bb6d19385a4ac",
+        "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-filesystem/IONFilesystemLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767",
+        "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-geolocation/IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767",
+        "pnpm-lock.yaml": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+        "uv.lock": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912"
+      },
+      "marketing_version": "0.1.0",
+      "platform": "ios",
+      "reference_sha256": "d77ec1b6afb065b4cc4049fcd03ff33432742314a676f7241eb22cb95189092c",
+      "run_number": 78,
+      "source_commit": "b7107fe7a06b856a9ac5c137d0370db365009e27",
+      "source_tree_clean": true,
+      "toolchain": {
+        "node": "v24.21.0",
+        "pnpm": "11.9.0",
+        "python": "3.12.10 (v3.12.10:0cc81280367, Apr  8 2025, 08:46:59) [Clang 13.0.0 (clang-1300.0.29.30)]",
+        "runner": "macOS-26.6.2-arm64-arm-64bit",
+        "runner_image": {
+          "ImageOS": "macos26",
+          "ImageVersion": "20261013.0424.1",
+          "RUNNER_ARCH": "ARM64",
+          "RUNNER_OS": "macOS"
+        },
+        "sdk": "26.5",
+        "xcode": "Xcode 26.6\nBuild version 17F113"
+      }
+    },
+    "parent": {
+      "android_version_code": 78,
+      "artifact_sha256": "7c4f20f27a27410a93acf2a872fcff50cdda7e044b4a36f873a2814a4cd05ae4",
+      "comparison": {
+        "byte_equal": false,
+        "changed_entries": [],
+        "entry_content_equal": true,
+        "first_only": [],
+        "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+        "second_only": []
+      },
+      "comparison_scope": "same run/generated project; actual repeated native build; iOS unsigned simulator; signing disabled",
+      "ios_build_version": "1.0.77",
+      "lockfile_sha256": {
+        "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "a5680c03c8d0e2c29f821fcbd6afd1fce69377941b95f7d2db63d17f4b7c9692",
+        "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-filesystem/IONFilesystemLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767",
+        "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-geolocation/IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767",
+        "pnpm-lock.yaml": "492c699cb8e0d3ca9302dd8cbd04d882bc749b4b33d8047040eec8376dd34644",
+        "uv.lock": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912"
+      },
+      "marketing_version": "0.1.0",
+      "platform": "ios",
+      "reference_sha256": "a2d20a0c237c2240540f801f158c81ca6f68015dc29736929cbbcf3054dd934b",
+      "run_number": 78,
+      "source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+      "source_tree_clean": true,
+      "toolchain": {
+        "node": "v24.21.0",
+        "pnpm": "11.9.0",
+        "python": "3.12.10 (v3.12.10:0cc81280367, Apr  8 2025, 08:46:59) [Clang 13.0.0 (clang-1300.0.29.30)]",
+        "runner": "macOS-26.6.2-arm64-arm-64bit",
+        "runner_image": {
+          "ImageOS": "macos26",
+          "ImageVersion": "20261013.0424.1",
+          "RUNNER_ARCH": "ARM64",
+          "RUNNER_OS": "macOS"
+        },
+        "sdk": "26.5",
+        "xcode": "Xcode 26.6\nBuild version 17F113"
+      }
+    }
+  },
+  "native_audit_sha256": {
+    "candidate": "2a9b5f6b8c7df9caf495cbefe4821a52d82fc53024a6135820c2f5a5dcb66074",
+    "parent": "92e276f32079d2db03d91f4a013686848e48802267cd8f6699ad405b8399b22e"
+  },
+  "parent": {
+    "archive_bytes": 3424159,
+    "sha256": "7c4f20f27a27410a93acf2a872fcff50cdda7e044b4a36f873a2814a4cd05ae4",
+    "uncompressed_entry_bytes_by_kind": {
+      "dex": 0,
+      "native_libraries": 0,
+      "other": 12264851,
+      "resources": 0
+    }
+  },
+  "parent_source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "run_number": 78,
+  "schema_version": "gsip-app2b-feature-comparison-v1",
+  "scope": "overall APP-2B feature delta from exact pinned parent; no dependency-only attribution or universal reproducibility claim",
+  "zip_comparison": {
+    "byte_equal": false,
+    "changed_entries": [
+      "App.app/App",
+      "App.app/App.debug.dylib",
+      "App.app/Frameworks/IONCameraLib.framework/IONCameraLib",
+      "App.app/Info.plist",
+      "App.app/capacitor.config.json",
+      "App.app/public/index.html"
+    ],
+    "entry_content_equal": false,
+    "first_only": [
+      "App.app/public/assets/esm-BFNqu2rd.js",
+      "App.app/public/assets/esm-D_8Z5VXF.js",
+      "App.app/public/assets/index-D83OA-al.js",
+      "App.app/public/assets/web-D5diqHwJ.js"
+    ],
+    "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+    "second_only": [
+      "App.app/public/assets/esm-CHexk534.js",
+      "App.app/public/assets/esm-DuvVHJ9t.js",
+      "App.app/public/assets/esm-tmKGrztD.js",
+      "App.app/public/assets/index-D9frTImk.js",
+      "App.app/public/assets/web-BDJpBTOe.js",
+      "App.app/public/assets/web-ClVSmdgs.js"
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "base_head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "frozen": "/private/tmp/gsip-app-parent-author-fmd54mxk/frozen",
+  "patch": "/private/tmp/gsip-app-parent-author-fmd54mxk/app-parent-checkout.patch",
+  "patch_sha256": "21f5a4ec4207aacbb88670aa7fcbb142d2922c65d1eee57e56cb4bb422d6fac9",
+  "files": [
+    {
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+      "baseline_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "bytes": 17963
+    },
+    {
+      "path": "tests/test_app_parent_checkout.py",
+      "sha256": "fe3e95e1163a77c1bbb408f073ffeb51037ec73cfe2380830e746c987339891d",
+      "baseline_sha256": null,
+      "bytes": 7872
+    },
+    {
+      "path": "docs/APP_PARENT_CHECKOUT.md",
+      "sha256": "a8b4747574b199fe01608517780528cd70521db728ff80c14cf653aba9394e21",
+      "baseline_sha256": null,
+      "bytes": 1793
+    }
+  ],
+  "other_362_original_files_preserved": true,
+  "checks_receipt": "/private/tmp/gsip-app-parent-author-fmd54mxk/checks-receipt.json",
+  "checks_receipt_sha256": "2c2b860c80159ed7703610096f6ec03a84854f723a0fc29f3b3a2d5f0fbe92b4"
+}

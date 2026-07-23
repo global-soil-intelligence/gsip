@@ -1,0 +1,155 @@
+{
+  "status": "PASS_LOCAL_WP6B_SOURCE_BOUNDARY",
+  "started_at": "2026-10-12T14:21:42.076278+00:00",
+  "completed_at": "2026-10-12T14:21:44.721633+00:00",
+  "image_id": "sha256:521e67f2812db505fe6d462b1820136394824d7f5c6016a19234b07ac93d6760",
+  "network": "none",
+  "source_mount": "read-only",
+  "host_ports": [],
+  "production_operations": [],
+  "proofs": [
+    {
+      "owner": "wp6b",
+      "baseline_head": "050de0d4fd93893e305a6996e0ac8dcfe3a4905c",
+      "core_proposal_inherited": false,
+      "migration_files": 22,
+      "new_contract_before": {
+        "planned": 16,
+        "passed": 11,
+        "failed": 5,
+        "failures": [
+          "not ok 1 - capture and finalization public entries use caller privileges",
+          "not ok 2 - finalize wrapper has a definition-time bound SQL body",
+          "not ok 3 - private finalize keeps its guarded privileged body and empty search path",
+          "not ok 4 - private finalization dispatch is granted only to authenticated",
+          "not ok 5 - finalize wrapper tracks the private function dependency"
+        ]
+      },
+      "new_contract_after": {
+        "planned": 16,
+        "passed": 16,
+        "failed": 0,
+        "failures": []
+      },
+      "existing_suites_before": {
+        "prior_attempts.test.sql": {
+          "planned": 6,
+          "passed": 6,
+          "failed": 0,
+          "failures": []
+        },
+        "rls.test.sql": {
+          "planned": 42,
+          "passed": 42,
+          "failed": 0,
+          "failures": []
+        },
+        "wp6b_integrity.test.sql": {
+          "planned": 51,
+          "passed": 51,
+          "failed": 0,
+          "failures": []
+        }
+      },
+      "existing_suites_after": {
+        "prior_attempts.test.sql": {
+          "planned": 6,
+          "passed": 6,
+          "failed": 0,
+          "failures": []
+        },
+        "rls.test.sql": {
+          "planned": 42,
+          "passed": 42,
+          "failed": 0,
+          "failures": []
+        },
+        "wp6b_integrity.test.sql": {
+          "planned": 51,
+          "passed": 51,
+          "failed": 0,
+          "failures": []
+        }
+      },
+      "official_lints_before": [
+        {
+          "name": "anon_security_definer_function_executable",
+          "title": "Public Can Execute SECURITY DEFINER Function",
+          "level": "WARN",
+          "facing": "EXTERNAL",
+          "categories": [
+            "SECURITY"
+          ],
+          "description": "Detects `SECURITY DEFINER` functions that are callable without signing in. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if it is not meant to be public.",
+          "detail": "Function `public.capture_is_open()` can be executed by the `anon` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/capture_is_open`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable",
+          "metadata": {
+            "name": "capture_is_open",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "cache_key": "anon_security_definer_function_executable_public_capture_is_open_"
+        },
+        {
+          "name": "authenticated_security_definer_function_executable",
+          "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+          "level": "WARN",
+          "facing": "EXTERNAL",
+          "categories": [
+            "SECURITY"
+          ],
+          "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+          "detail": "Function `public.capture_is_open()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/capture_is_open`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+          "metadata": {
+            "name": "capture_is_open",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "cache_key": "authenticated_security_definer_function_executable_public_capture_is_open_"
+        },
+        {
+          "name": "authenticated_security_definer_function_executable",
+          "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+          "level": "WARN",
+          "facing": "EXTERNAL",
+          "categories": [
+            "SECURITY"
+          ],
+          "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+          "detail": "Function `public.finalize_submission(p_submission_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/finalize_submission`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+          "metadata": {
+            "name": "finalize_submission",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_submission_id uuid",
+            "security_definer": true
+          },
+          "cache_key": "authenticated_security_definer_function_executable_public_finalize_submission_p_submission_id uuid"
+        }
+      ],
+      "official_lints_after": [],
+      "capture_final": {
+        "rows": 1,
+        "open_rows": 0
+      },
+      "source_migration": "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0/supabase/migrations/20261012141828_wp6b_invoker_boundary.sql",
+      "sql_sha256": "afe4f698989729bd456fe763582f93042f58bf66a271704cdaa1c556eeb124d6",
+      "source_tests": "/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0/supabase/tests/database/wp6b_invoker_boundary.test.sql",
+      "tests_sha256": "ee6f9055d683631401242670e345572a791cdabaa29bc14068e58f1b9075612c",
+      "existing_metadata_grants_owners_unchanged": true,
+      "fresh_install_equals_forward_upgrade_primary_and_supplement": true
+    }
+  ],
+  "limits": [
+    "Actual uncommitted source files are hash-bound; root alone owns source commit and propagation.",
+    "WP6d uses the same core proposal as an inherited fix-forward prerequisite.",
+    "Scoped official rules are not a production advisor result.",
+    "Only disposable synthetic local tests temporarily open the fixture gate; final capture is false."
+  ]
+}

@@ -1,0 +1,640 @@
+{
+  "bound_inputs": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-catalog-20261012T192521Z.json",
+      "sha256": "2b355c4d32ca21771092ece146ef1911f6f587012155de5e2ec8b892988db4e1"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-supplement-20261012T192521Z.json",
+      "sha256": "468343dad38dd8adfed0b713dbf97e5faaa734114b2ec4022e899ec486347466"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-counts-20261012T192521Z.json",
+      "sha256": "d0fc5c38e59337a159a99e84e1824403c23ab93f44e78ea830798bfa28d4ff3d"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-ledger-20261012T192521Z.json",
+      "sha256": "d3edfe7f4f6744dbdfa950928d1ec957ec774e5d1c4b5c0ec68bc3b6b25efb22"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-table_inventory-20261012T192521Z.json",
+      "sha256": "484890515a255e498cd94a41d266e431b732170396ea060c34d9b3655c5e6193"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-capture-20261012T192521Z.json",
+      "sha256": "88e84ccb6e01dfde9fbc0a0c1f3f4c049dbb9fe9285f24e49c8f3226297dcdac"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-default_acls-20261012T192521Z.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-security_advisor-20261012T192521Z.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-edge_inventory-20261012T192521Z.json",
+      "sha256": "c7dcc8b46c3306d785d93114532fce44ac4503109337e525c838afe0b2405927"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-query-inputs-20261012T192521Z.json",
+      "sha256": "5502e7e64f21c5d02538d8f22a9267f620873090e397be81898b8f7f21801381"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-query-response-times-20261012T192521Z.json",
+      "sha256": "9410d9a30eb9f34e51ef489c0eca648323a1894750bdcd21cfc0e62c7a1f8ec4"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-catalog-target28.json",
+      "sha256": "ad00014b27dbead6250853c7fc16071d6532c15353e234e777de66d4608dcacc"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-supplement-target28.json",
+      "sha256": "d9bb5d6c74f35251d3204c6e4b1b79d1259e52b017663ebf561c30f7ecf7150b"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-pre-gate-d-refresh-20261012T144433Z.json",
+      "sha256": "9e0be0252df98349286e6748661f82e8994202598ec25cc36ae5138953002aed"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/verify-gate-d-metadata-2026-10-12.py",
+      "sha256": "446c222c729bb3080576b9b69cb7eb6f7d4601dc071921df1dac0b91c05f93af"
+    }
+  ],
+  "capture": [
+    {
+      "capture_false_count": 1,
+      "capture_true_count": 0,
+      "row_count": 1,
+      "singleton_true_count": 1
+    }
+  ],
+  "checks": {
+    "all26_complete_historical_row_hashes_preserved": true,
+    "all61_table_inventory_exact": true,
+    "all61_table_names_and_counts_exact_except_authorized_ledger_delta": true,
+    "all_full_ledger_hashes_valid": true,
+    "all_public_signatures_owners_complete_caller_acls_unchanged": true,
+    "capture_exactly_one_closed_singleton": true,
+    "column_grants_unchanged": true,
+    "complete_edge_metadata_unchanged": true,
+    "complete_hosted_security_advisor_zero_findings": true,
+    "exactly_same5_bound_ownership_aliases": true,
+    "ledger_exact_expected_identities": true,
+    "postgres_global_private_default_function_acls_still_empty": true,
+    "prior_attach_v3_only_active_jwt_on": true,
+    "schema_grants_unchanged": true,
+    "source_exact_candidate_and_clean": true,
+    "storage_policies_unchanged": true,
+    "strict_comparator_source_unchanged": true,
+    "strict_target_catalog_comparator_pass": true,
+    "table_grants_unchanged": true,
+    "three_new_private_helpers_exact_reviewed_definitions_owners_and_complete_acls": true
+  },
+  "completed_at_utc": "2026-10-12T19:26:33.773661+00:00",
+  "default_function_acls": [],
+  "failed_checks": [],
+  "ledger": [
+    {
+      "history_row_sha256": "1a5fc646d6ab0bfbfa30d1d57a43e3bf4411995b31cf1327021f35e07cb9d8cd",
+      "name": "wp1_extensions",
+      "version": "20260722164727"
+    },
+    {
+      "history_row_sha256": "fa375576da89ff3d5f70280cb24821faa729b3e06e7383691673462136756b98",
+      "name": "wp1_schema",
+      "version": "20260722164749"
+    },
+    {
+      "history_row_sha256": "62c149ef06ffe973b13022ce5886e6f3910ffc17584586d71d8fd87dd6b7502e",
+      "name": "wp1_rls",
+      "version": "20260722164806"
+    },
+    {
+      "history_row_sha256": "714a4d8d7336b9a4b13e1aa004e8b323125cc0a779baeb2afda341ec4567b528",
+      "name": "wp1_review_hardening",
+      "version": "20260722170020"
+    },
+    {
+      "history_row_sha256": "2af4b0d6d1984d75c04c430bb58b871865e7767e774981f9e330a3a2e9a1af86",
+      "name": "wp1_v22_privacy_and_grants",
+      "version": "20260722181500"
+    },
+    {
+      "history_row_sha256": "4b26901a525cb64791dbcc428c277cb26564464e97d1af3cf3bbde10d36bdb93",
+      "name": "wp1_performance_indexes",
+      "version": "20260722183000"
+    },
+    {
+      "history_row_sha256": "36044acc2dea448debea57ce377e4c449049265c815d7bbd1e7ad02cab49604d",
+      "name": "wp4_prior_jobs",
+      "version": "20260722190000"
+    },
+    {
+      "history_row_sha256": "8e4131e15e1a6134fae389eb5fa118120b2b4da3ad8bfa5a0a09a9ab7579c14b",
+      "name": "wp4_prior_jobs_hardening",
+      "version": "20260722190500"
+    },
+    {
+      "history_row_sha256": "fbb55d148274027918867d745956d277c64d523a2e652b291b69c342a9b8f09a",
+      "name": "wp4b_photo_qa",
+      "version": "20260722193000"
+    },
+    {
+      "history_row_sha256": "2e88cda9e4cc2f3e3b63b3acb22a07993fa47dabaca5519b93f86a998a61ba49",
+      "name": "wp6_export_guardrails",
+      "version": "20260722200000"
+    },
+    {
+      "history_row_sha256": "7ff5a5a1ff4709aa7e5940651e1e097306694dada9837e705b9c7166e115393f",
+      "name": "phase1_actor_hardening",
+      "version": "20260723002255"
+    },
+    {
+      "history_row_sha256": "a76009bd8c387178df05bf6b4e7c049ae44343fccec630b2a4f00de8cff99e2d",
+      "name": "qa_event_provenance",
+      "version": "20260723004439"
+    },
+    {
+      "history_row_sha256": "a07de117b915d476b003899ceaaa12d7e09f7bd203b3154931655e390c4c86b5",
+      "name": "public_h3_aggregates",
+      "version": "20260723005752"
+    },
+    {
+      "history_row_sha256": "ab1451e9f0e5dcaf437318e86a32bd07c437c3387e0f124a108e2a706a98f317",
+      "name": "atomic_public_h3_refresh",
+      "version": "20260723010313"
+    },
+    {
+      "history_row_sha256": "fda2bbe1bcd8f4d4386667461c44c9a533a0483cac41fd601a816dccb6530b8c",
+      "name": "atomic_prior_attempt_claim",
+      "version": "20260723044745"
+    },
+    {
+      "history_row_sha256": "63abedd966bc26e7f90ff47bda24caab4a02b129111d5a582dacb5a78d72f710",
+      "name": "document_authenticated_h3_role",
+      "version": "20260723045317"
+    },
+    {
+      "history_row_sha256": "05535852c1756309f8f2f90c65c3f0a269e4662c3f9e113fa66e9172cc324ec3",
+      "name": "remove_public_submission_residue",
+      "version": "20260723045606"
+    },
+    {
+      "history_row_sha256": "3c2e1665df6daa3d5a2c08fd5a631e326088b899a306c4a9615339ed8a631719",
+      "name": "wp6b_capture_gate",
+      "version": "20261010120000"
+    },
+    {
+      "history_row_sha256": "bce2a738fb8f72fc13d9de68e41e447fe3e5ef9d5213fa1b70358f29a62e1073",
+      "name": "wp6b_path_binding",
+      "version": "20261010120100"
+    },
+    {
+      "history_row_sha256": "7692a4232a19675ee132fc4eff27cb9577ab113ebb702c29c2779d6dd9c5176a",
+      "name": "wp6b_finalize_and_settle",
+      "version": "20261010120200"
+    },
+    {
+      "history_row_sha256": "ff12e7bebfb7619d5b8972c07dc0e137cb9ecf46efb115fb744a04efeb085cad",
+      "name": "wp6b_k_anonymous_cells",
+      "version": "20261010120300"
+    },
+    {
+      "history_row_sha256": "30e2d8d8937f9cbbb9221e6f23bbfd2c7797bcc363713e555b2e50b0f63b865f",
+      "name": "wp6b_attribution_and_metadata",
+      "version": "20261010120400"
+    },
+    {
+      "history_row_sha256": "7504b7f858a4ed15dd1c599ffb288beaa4585e0134e755711bdc31dca75a0de4",
+      "name": "wp6c_priors",
+      "version": "20261010130000"
+    },
+    {
+      "history_row_sha256": "844c86243d9126418ff2fdb58deaaa1159739e69cbc6c8867151f5ccf2e60b35",
+      "name": "wp6d_contributor_rights",
+      "version": "20261010140000"
+    },
+    {
+      "history_row_sha256": "d7b1de6965fbdedc7583e9ef003ee5808eb568eaecb593ae94fbb3a2cf42ac03",
+      "name": "wp6e_provenance",
+      "version": "20261010150000"
+    },
+    {
+      "history_row_sha256": "cd1a1b48c322ab94acc1bc55074a66c131e87517ab47b6642db206b5f856c59e",
+      "name": "wp_agent1_releases",
+      "version": "20261011090000"
+    },
+    {
+      "history_row_sha256": "9f71ead0bf67a4523ca4c86b820cc39ff3a5800e804be0a763efae395f07ca60",
+      "name": "wp6b_invoker_boundary",
+      "version": "20261012141828"
+    },
+    {
+      "history_row_sha256": "f8fb6f0fa6cc27a09d64109da42a2aa9a728f094fbbab9988c2689f4cbaca233",
+      "name": "wp6d_private_rights_boundary",
+      "version": "20261012142348"
+    }
+  ],
+  "production_mutations_by_this_agent": 0,
+  "scope_limits": [
+    "Metadata, hashes and aggregate counts only; no real contributor contents, precise coordinates, keys or raw uploads.",
+    "This agent never runs the migration push or any production mutation.",
+    "Auth flags, exposed schema configuration, worker quiescence and anonymous hosted RPC probe are separately verified by root.",
+    "Post-phase claims require fresh reads after root explicitly announces completed execution."
+  ],
+  "security_categories": 0,
+  "security_instance_count": 0,
+  "state": "PASS_READONLY_GATE_D_POST",
+  "strict_comparator": {
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "scripts.reconciliation",
+      "--reference-catalog",
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-catalog-target28.json",
+      "--observed-catalog",
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-catalog-20261012T192521Z.json",
+      "--reference-supplement",
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/canonical-supplement-target28.json",
+      "--observed-supplement",
+      "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-post-supplement-20261012T192521Z.json"
+    ],
+    "exit_code": 0,
+    "result": {
+      "allowed_differences": [
+        {
+          "identifier": "pg_stat_statements",
+          "kind": "exact_platform_addition",
+          "section": "extensions"
+        },
+        {
+          "identifier": "supabase_vault",
+          "kind": "exact_platform_addition",
+          "section": "extensions"
+        },
+        {
+          "identifier": "uuid-ossp",
+          "kind": "exact_platform_addition",
+          "section": "extensions"
+        },
+        {
+          "identifier": "gold_labels_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "photos_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "predictions_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "priors_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "qa_events_select_own",
+          "kind": "exact_submission_alias",
+          "section": "policies"
+        },
+        {
+          "identifier": "extensions.dashboard_user.CREATE",
+          "kind": "exact_platform_addition",
+          "section": "schema_grants"
+        },
+        {
+          "identifier": "extensions.dashboard_user.USAGE",
+          "kind": "exact_platform_addition",
+          "section": "schema_grants"
+        },
+        {
+          "identifier": "public.postgres.USAGE",
+          "kind": "exact_platform_addition",
+          "section": "schema_grants"
+        }
+      ],
+      "counts": {
+        "column_grants": {
+          "observed": 56,
+          "reference": 56
+        },
+        "columns": {
+          "observed": 162,
+          "reference": 162
+        },
+        "constraints": {
+          "observed": 126,
+          "reference": 126
+        },
+        "extensions": {
+          "observed": 6,
+          "reference": 3
+        },
+        "functions": {
+          "observed": 19,
+          "reference": 19
+        },
+        "indexes": {
+          "observed": 42,
+          "reference": 42
+        },
+        "policies": {
+          "observed": 26,
+          "reference": 26
+        },
+        "private_functions": {
+          "observed": 25,
+          "reference": 25
+        },
+        "schema_grants": {
+          "observed": 16,
+          "reference": 13
+        },
+        "storage_policies": {
+          "observed": 5,
+          "reference": 5
+        },
+        "table_grants": {
+          "observed": 315,
+          "reference": 315
+        },
+        "tables": {
+          "observed": 20,
+          "reference": 20
+        },
+        "triggers": {
+          "observed": 22,
+          "reference": 22
+        },
+        "views": {
+          "observed": 1,
+          "reference": 1
+        }
+      },
+      "input_sha256": {
+        "observed-catalog": "2b355c4d32ca21771092ece146ef1911f6f587012155de5e2ec8b892988db4e1",
+        "observed-supplement": "468343dad38dd8adfed0b713dbf97e5faaa734114b2ec4022e899ec486347466",
+        "reference-catalog": "ad00014b27dbead6250853c7fc16071d6532c15353e234e777de66d4608dcacc",
+        "reference-supplement": "d9bb5d6c74f35251d3204c6e4b1b79d1259e52b017663ebf561c30f7ecf7150b"
+      },
+      "ok": true,
+      "scope": "provided catalog metadata only; no data or deployment proof",
+      "unexpected_differences": []
+    },
+    "source_sha256": "2ea3ce49a3a68a9ba4e42b4b0314d8c118bc0098f702d540b82fba9f8207e620"
+  },
+  "table_counts": [
+    {
+      "row_count": 0,
+      "table_name": "auth.audit_log_entries"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.custom_oauth_providers"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.flow_state"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.identities"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.instances"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.mfa_amr_claims"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.mfa_challenges"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.mfa_factors"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.mfa_recovery_code_sets"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.mfa_recovery_codes"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.oauth_authorizations"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.oauth_client_states"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.oauth_clients"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.oauth_consents"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.one_time_tokens"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.refresh_tokens"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.saml_providers"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.saml_relay_states"
+    },
+    {
+      "row_count": 82,
+      "table_name": "auth.schema_migrations"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.scim_tokens"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.scim_users"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.sessions"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.sso_domains"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.sso_providers"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.users"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.webauthn_challenges"
+    },
+    {
+      "row_count": 0,
+      "table_name": "auth.webauthn_credentials"
+    },
+    {
+      "row_count": 8500,
+      "table_name": "extensions.spatial_ref_sys"
+    },
+    {
+      "row_count": 5,
+      "table_name": "public.actors"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.attribution_reviews"
+    },
+    {
+      "row_count": 5,
+      "table_name": "public.contribution_grants"
+    },
+    {
+      "row_count": 5,
+      "table_name": "public.contributors"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.dataset_releases"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.deletion_requests"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.gold_labels"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.grant_withdrawals"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.h3_cells"
+    },
+    {
+      "row_count": 25,
+      "table_name": "public.photos"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.predictions"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.prior_cell_cache"
+    },
+    {
+      "row_count": 25,
+      "table_name": "public.prior_jobs"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.priors"
+    },
+    {
+      "row_count": 0,
+      "table_name": "public.qa_events"
+    },
+    {
+      "row_count": 25,
+      "table_name": "public.qa_jobs"
+    },
+    {
+      "row_count": 1,
+      "table_name": "public.service_state"
+    },
+    {
+      "row_count": 25,
+      "table_name": "public.submissions"
+    },
+    {
+      "row_count": 2,
+      "table_name": "public.terms_versions"
+    },
+    {
+      "row_count": 3,
+      "table_name": "public.upstream_buckets"
+    },
+    {
+      "row_count": 0,
+      "table_name": "realtime.messages"
+    },
+    {
+      "row_count": 89,
+      "table_name": "realtime.schema_migrations"
+    },
+    {
+      "row_count": 0,
+      "table_name": "realtime.subscription"
+    },
+    {
+      "row_count": 2,
+      "table_name": "storage.buckets"
+    },
+    {
+      "row_count": 0,
+      "table_name": "storage.buckets_analytics"
+    },
+    {
+      "row_count": 0,
+      "table_name": "storage.buckets_vectors"
+    },
+    {
+      "row_count": 73,
+      "table_name": "storage.migrations"
+    },
+    {
+      "row_count": 0,
+      "table_name": "storage.objects"
+    },
+    {
+      "row_count": 0,
+      "table_name": "storage.s3_multipart_uploads"
+    },
+    {
+      "row_count": 0,
+      "table_name": "storage.s3_multipart_uploads_parts"
+    },
+    {
+      "row_count": 0,
+      "table_name": "storage.vector_indexes"
+    },
+    {
+      "row_count": 28,
+      "table_name": "supabase_migrations.schema_migrations"
+    },
+    {
+      "row_count": 0,
+      "table_name": "vault.secrets"
+    }
+  ],
+  "target_project_ref": "toxldjgwkxtneoqsazym"
+}

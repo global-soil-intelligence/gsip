@@ -1,0 +1,34 @@
+{
+  "manifest_sha256": "4dce6b0fc9fa8c14d8a7e7943fbe0077c8fec97cc45802a66a84305e44cbe975",
+  "all_372_manifest_files_verified": true,
+  "only_v2_delta": [
+    "docs/IOS_STORAGE_FEASIBILITY.md",
+    "tests/test_ios_storage_feasibility.py"
+  ],
+  "checker_sha256": "47e25c7768b8a586ac9082b7cdd50816b10aea878b288a75752237a3deecf36b",
+  "v2_mutation_and_actual_profile_proof_retained": true,
+  "previous_receipt_sha256": "92c6d4772d865a86a404ad0c6f3fa3a7ea98901d175ca47c3b0107c5897eac99",
+  "results": [
+    {
+      "label": "v3-current",
+      "code": 0,
+      "tests": 77,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "3ca273e3a81dbd224d1bae109714d43cf1f21ad9655dfb5b260dee1d86016158"
+    },
+    {
+      "label": "v3-baseline",
+      "code": 1,
+      "tests": 38,
+      "failed": 38,
+      "errors": 0,
+      "skipped": 0,
+      "xml_sha256": "0cfdcddae5b8abc20b04f3aaeaa5a18c6a3061a608dc780a1879a7a7b95ba9e1"
+    }
+  ],
+  "new_blocking_findings": [],
+  "manual_archive_facts_distinguished_from_checker_evidence": true,
+  "no_shared_source_git_gh_native_device_production_changes": true
+}

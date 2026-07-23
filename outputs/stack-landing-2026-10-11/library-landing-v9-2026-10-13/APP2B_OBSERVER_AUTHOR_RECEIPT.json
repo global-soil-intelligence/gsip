@@ -1,0 +1,669 @@
+{
+  "base_commit": "748146da663e692f6637a5a11a43ad063c49cd4f",
+  "scope": "Diagnostic-only public build-failure observer; no source-cause fix, native card, workflow or operational changes",
+  "manifest": [
+    {
+      "path": "scripts/app_notification_audit.py",
+      "base_sha256": "fba437191cd7bfe38a9a79d6adccd42ed10d71a9f16774e5a5de4bb07c6241f3",
+      "candidate_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "base_bytes": 110031,
+      "candidate_bytes": 110609
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "base_sha256": "ed80d0d9cfd9318a470652922b0a80f534abb8d6f5e27c3768b94d91728bd166",
+      "candidate_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "base_bytes": 127882,
+      "candidate_bytes": 136378
+    },
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "base_sha256": "a353247b42f0285934c89bef3e53c09d35a8f2aeb464f231ce8f78a9b9c57f35",
+      "candidate_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "base_bytes": 20361,
+      "candidate_bytes": 22226
+    }
+  ],
+  "only_changed_paths": [
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py"
+  ],
+  "source_inventory_files": 481,
+  "old_test_prefix": {
+    "bytes": 127882,
+    "sha256": "ed80d0d9cfd9318a470652922b0a80f534abb8d6f5e27c3768b94d91728bd166",
+    "cases": 403,
+    "byte_identical": true
+  },
+  "projections": {
+    "all_python_functions_except_private_fault_phase_validator_unchanged": true,
+    "all_original_gradle_graph_classification_cause_walk_and_producer_operations_unchanged": true,
+    "only_new_cause_keys": {
+      "STACK_OVERFLOW": "GRADLE_STACK_OVERFLOW",
+      "OUT_OF_MEMORY": "GRADLE_OUT_OF_MEMORY"
+    },
+    "only_new_private_fault_phase": "BUILD_FAILURE",
+    "observer_task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+    "baseline_task_sha256": "378545f139571e28e6f4970697a82f894b8986ff501ead286f7c7945c6eb269d"
+  },
+  "invariants": [
+    "only original failed BuildResult with no earlier task/setup fault attempt may emit build-level fault",
+    "same exclusive writer, regular singlelink nofollow bounded reader and256 cap",
+    "existing command7args/lease/originalCPE/nonzero/fourfield65Kcap/context remain",
+    "no graph/variant/source/license/binary/permission/backup/repeat/closedflag/scanner weakening",
+    "no arbitrary message/property/classname/path/URL/credential copied",
+    "success graph bytes and status identical; previous fault remains one and unchanged",
+    "malformed/multiple/unregistered remainUNKNOWN",
+    "cycle/depth/conflicting/unknown labels remain conservative; only two exact publicJava21 errors added"
+  ],
+  "actual_checks": {
+    "all_with_verified_gradle": {
+      "tests": 418,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "default_without_opt_in": {
+      "tests": 418,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 19
+    },
+    "new_cases": 15,
+    "new_real_cases": 12,
+    "old_real_cases": 7,
+    "cli_fail_before": {
+      "tests": 3,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    "unchanged_bank43": {
+      "tests": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "new_observer_real_controls": [
+      {
+        "fault": null,
+        "fault_file_count": 0,
+        "graph_exists": true,
+        "mode": "success",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 0,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1187,
+        "stdout_sha256": "235aa6a849445d53edc1f588969adf224e3d1483c42b130dd4783e9095bae0e3",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+      },
+      {
+        "fault": [
+          "BUILD_FAILURE",
+          "ILLEGAL_STATE"
+        ],
+        "fault_file_count": 1,
+        "graph_exists": false,
+        "mode": "producer",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 70621,
+        "stderr_sha256": "98372c14955920986d9ecc322b6f00af29855f91f1d4cd37ca5ab0ba6ada003d",
+        "stdout_bytes": 1001,
+        "stdout_sha256": "80a310c1c34fd217299558f39d61a4e273d662e81f7e3350a229469faddd555c",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+      },
+      {
+        "fault": null,
+        "fault_file_count": 1,
+        "graph_exists": false,
+        "mode": "existing_malformed",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 70622,
+        "stderr_sha256": "51c5571fb8dcd2911b8d5c4a559ea73e7c31f57af30201107946e1f54c8928cd",
+        "stdout_bytes": 1001,
+        "stdout_sha256": "80a310c1c34fd217299558f39d61a4e273d662e81f7e3350a229469faddd555c",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+      },
+      {
+        "fault": null,
+        "fault_file_count": 2,
+        "graph_exists": false,
+        "mode": "existing_multiple",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 70622,
+        "stderr_sha256": "c85ec3229d7804d025b80b47370b38a5ad4ba31cb4081537dc1881f4ccb6dd55",
+        "stdout_bytes": 1001,
+        "stdout_sha256": "80a310c1c34fd217299558f39d61a4e273d662e81f7e3350a229469faddd555c",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+      },
+      {
+        "fault": [
+          "BUILD_FAILURE",
+          "STACK_OVERFLOW"
+        ],
+        "fault_file_count": 1,
+        "graph_exists": false,
+        "mode": "stack",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 70622,
+        "stderr_sha256": "445d6d24b1359bdc1a38e5ea8a686082e1f80dcbad39fdf0b071fbebfea034c9",
+        "stdout_bytes": 1001,
+        "stdout_sha256": "80a310c1c34fd217299558f39d61a4e273d662e81f7e3350a229469faddd555c",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+      },
+      {
+        "fault": [
+          "BUILD_FAILURE",
+          "OUT_OF_MEMORY"
+        ],
+        "fault_file_count": 1,
+        "graph_exists": false,
+        "mode": "memory",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 70621,
+        "stderr_sha256": "0ddc55c03f03cb0d5eedd58ac1591e9ff4a229d0b81ceab0231b0af6a88a862a",
+        "stdout_bytes": 1001,
+        "stdout_sha256": "80a310c1c34fd217299558f39d61a4e273d662e81f7e3350a229469faddd555c",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+      },
+      {
+        "fault": [
+          "DEBUG_ARTIFACTS",
+          "FILE_MISSING"
+        ],
+        "fault_file_count": 1,
+        "graph_exists": false,
+        "mode": "task",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 1428,
+        "stderr_sha256": "872868c0e64cf09be9706fba98c9aac0a188cb71d2c822507cb302302811c1d4",
+        "stdout_bytes": 1076,
+        "stdout_sha256": "951eae9df1685e4af74f5b6e54bddb2556080e1a25c0e1462547c7ba921c83c8",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+      },
+      {
+        "fault": [
+          "TASK_SETUP",
+          "UNKNOWN"
+        ],
+        "fault_file_count": 1,
+        "graph_exists": false,
+        "mode": "setup",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 632,
+        "stderr_sha256": "086e3a06287eed92e33524beb0951cb220d551e864b15d303851a9ccb3564748",
+        "stdout_bytes": 553,
+        "stdout_sha256": "72f8f448c3d45d039c507821e5aad82449affae595814f3d54531011c4d829ac",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+      },
+      {
+        "fault": [
+          "BUILD_FAILURE",
+          "CONFIGURATION_MISSING"
+        ],
+        "fault_file_count": 1,
+        "graph_exists": false,
+        "mode": "configuration",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 694,
+        "stderr_sha256": "fcc08b8e0c1c112b80767c2c1b0ae8192516519fd0be765a12f8436dabc2f434",
+        "stdout_bytes": 553,
+        "stdout_sha256": "72f8f448c3d45d039c507821e5aad82449affae595814f3d54531011c4d829ac",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765"
+      },
+      {
+        "fault": null,
+        "fault_file_count": 0,
+        "graph_exists": false,
+        "mode": "unregistered",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 1071,
+        "stderr_sha256": "978e0f5b29496ddb77aed0a4696babcf064a379ebd7204ab9c26b74840dae3b9",
+        "stdout_bytes": 822,
+        "stdout_sha256": "5c5b5c69232cc509f0c16329c70f33c50e656de5b7e911e3b0f300d1869295d5",
+        "task_sha256": "4007a0cbb2c4b4eef0051cfa5628d6e157a1754cd7cd72aa9ec82e8b549b9f50"
+      },
+      {
+        "fault": [
+          "BUILD_FAILURE",
+          "UNKNOWN"
+        ],
+        "fault_file_count": 1,
+        "graph_exists": false,
+        "mode": "cyclic",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 70564,
+        "stderr_sha256": "df356137b76709e45a2800554fb0cf6c223d7b492e508850287ee383e63764b3",
+        "stdout_bytes": 553,
+        "stdout_sha256": "72f8f448c3d45d039c507821e5aad82449affae595814f3d54531011c4d829ac",
+        "task_sha256": "ffe3d193d9649faa7fae029dbe5a6793655fea2b86f7a1f4eb44e515f6024c28"
+      },
+      {
+        "fault": [
+          "BUILD_FAILURE",
+          "UNKNOWN"
+        ],
+        "fault_file_count": 1,
+        "graph_exists": false,
+        "mode": "depth",
+        "native_acceptance_claimed": false,
+        "original_tool_exit_code": 1,
+        "raw_streams_persisted": false,
+        "stderr_bytes": 70564,
+        "stderr_sha256": "f095941b72c610da3159257da6b35ccdcec3e816b4cd4c3c17b6364cf9265b40",
+        "stdout_bytes": 553,
+        "stdout_sha256": "72f8f448c3d45d039c507821e5aad82449affae595814f3d54531011c4d829ac",
+        "task_sha256": "58af97c4b9cdfd1419a86e0a9a9ce67d78be2dce4719c90e2f1cea40350635b3"
+      }
+    ],
+    "retained_producer_controls": [
+      {
+        "fixed_fault": null,
+        "graph_created": true,
+        "graph_sha256": "3739dee62f19456a73a6d04a71a82432cba0d411568eed7f6b8a5389b7b2bb72",
+        "mode": "success",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": true,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1187,
+        "stdout_sha256": "b2c711950ceccef0de65d7dbb3fa19639e8250bb18594a91610dcd44645a63b0",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+        "tool_exit_code": 0
+      },
+      {
+        "fixed_fault": [
+          "DEBUG_ARTIFACTS",
+          "FILE_MISSING"
+        ],
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "no_debug_dependency",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": false,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 1428,
+        "stderr_sha256": "b7ed804a22cabfd54faad8de4fe3c54225b24ff710f111c8548163bd98b13b2e",
+        "stdout_bytes": 932,
+        "stdout_sha256": "d2edc945187ecc07696b663cc5cee7874685452c8f8f1ef48a3b3e369ad0b659",
+        "task_sha256": "8798b138e9dac27c4b5fe6d6758ccd7a1c482ee133a98fdcead76ac376d023da",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": [
+          "RELEASE_ARTIFACTS",
+          "FILE_MISSING"
+        ],
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "no_release_dependency",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": true,
+          "other-library": false
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 1468,
+        "stderr_sha256": "40215f85d722d75ff80058a7ae70bc58d77c19b1feb13d74fe5797fc5445e6d5",
+        "stdout_bytes": 896,
+        "stdout_sha256": "89f0db753d1f28e40d9ac7bced2545652818f40fba2fdf92847fc2e1f500791e",
+        "task_sha256": "6ae049f2236377dc00742ff02188976d9f6883dc4e3ee320f0c337844b867f4f",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": [
+          "DEBUG_ARTIFACTS",
+          "FILE_MISSING"
+        ],
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "missing_producer",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": false,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 1428,
+        "stderr_sha256": "4840279c5b7a37da03ba6e37cc84ff5116f13c571b8c7a5d495833c8129e0227",
+        "stdout_bytes": 1076,
+        "stdout_sha256": "951eae9df1685e4af74f5b6e54bddb2556080e1a25c0e1462547c7ba921c83c8",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": [
+          "BUILD_FAILURE",
+          "ILLEGAL_STATE"
+        ],
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "producer_failure",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": false,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 629,
+        "stderr_sha256": "dcf1a3612880f55c39e49338222c5c6301625c0687f66eeae1aec223e50565f8",
+        "stdout_bytes": 1001,
+        "stdout_sha256": "80a310c1c34fd217299558f39d61a4e273d662e81f7e3350a229469faddd555c",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": [
+          "BUILD_FAILURE",
+          "CONFIGURATION_MISSING"
+        ],
+        "graph_created": false,
+        "graph_sha256": null,
+        "mode": "missing_configuration",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": false,
+          "other-library": false
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 694,
+        "stderr_sha256": "641b3ff52f0a5bb5462b1b7fd165babcc70804c55251ffe0e1612c3c5b2ae615",
+        "stdout_bytes": 553,
+        "stdout_sha256": "72f8f448c3d45d039c507821e5aad82449affae595814f3d54531011c4d829ac",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+        "tool_exit_code": 1
+      },
+      {
+        "fixed_fault": null,
+        "graph_created": true,
+        "graph_sha256": "83444e5a70dd030e3cd8b4f39d698c3ee3406ce272700a729c67ecc8f6d409ca",
+        "mode": "foreign",
+        "native_acceptance_claimed": false,
+        "project_jars": {
+          "library": true,
+          "other-library": true
+        },
+        "raw_tool_output_persisted": false,
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1425,
+        "stdout_sha256": "8b5baab1caa60d32a602ccf365346f3b3667e580d2bfd37122ec8c38b22b14e5",
+        "task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+        "tool_exit_code": 0
+      }
+    ],
+    "public_api_baseline_candidate_controls": {
+      "public_api": "Gradle.buildFinished Closure receives BuildResult.getFailure; supported on pinned8.14.3 without configuration cache",
+      "deprecated_and_config_cache_unsupported": true,
+      "observer_task_sha256": "24c08c1e629ddb0624b1a6436318d2182ea88bf529e94d972ca98e0bd65e2765",
+      "actual_controls": [
+        {
+          "case": "state",
+          "version": "base",
+          "tool_exit_code": 1,
+          "graph_absent": true,
+          "inspection_task_not_executed": true,
+          "stderr_bytes": 70522,
+          "stderr_sha256": "f1c45354f10a7e6b8ec3277681afd5d62b915408fe13f3ad177e522940397ec5",
+          "stdout_sha256": "80a310c1c34fd217299558f39d61a4e273d662e81f7e3350a229469faddd555c",
+          "fixed_receipt": null,
+          "raw_streams_persisted": false
+        },
+        {
+          "case": "state",
+          "version": "candidate",
+          "tool_exit_code": 1,
+          "graph_absent": true,
+          "inspection_task_not_executed": true,
+          "stderr_bytes": 70568,
+          "stderr_sha256": "ee293106772fb10492ee8442b9e6563f6f25a26018a741f0e398bcfca8a6bd7b",
+          "stdout_sha256": "c10b7e07adba66c8e77a393e181641c5c0b1d178c1d40bfe2fd4f08fcd1c57ff",
+          "fixed_receipt": {
+            "schema": "gsip-fixed-fault-v1",
+            "phase": "BUILD_FAILURE",
+            "cause": "ILLEGAL_STATE"
+          },
+          "raw_streams_persisted": false
+        },
+        {
+          "case": "stack",
+          "version": "base",
+          "tool_exit_code": 1,
+          "graph_absent": true,
+          "inspection_task_not_executed": true,
+          "stderr_bytes": 70522,
+          "stderr_sha256": "a98ccba2709561c6ec8e7f92373579bf87e86e43288460a253ad59f9b2d7a1ee",
+          "stdout_sha256": "e36b9665d0078427e44d3e60e2505d44ec0970271e1199c6ed521a3213d84e5c",
+          "fixed_receipt": null,
+          "raw_streams_persisted": false
+        },
+        {
+          "case": "stack",
+          "version": "candidate",
+          "tool_exit_code": 1,
+          "graph_absent": true,
+          "inspection_task_not_executed": true,
+          "stderr_bytes": 70569,
+          "stderr_sha256": "208cb2bd69a477ac13cf6faea17c8788cfd2a031b2fd1c5ddeaa9be70013213a",
+          "stdout_sha256": "c10b7e07adba66c8e77a393e181641c5c0b1d178c1d40bfe2fd4f08fcd1c57ff",
+          "fixed_receipt": {
+            "schema": "gsip-fixed-fault-v1",
+            "phase": "BUILD_FAILURE",
+            "cause": "STACK_OVERFLOW"
+          },
+          "raw_streams_persisted": false
+        },
+        {
+          "case": "memory",
+          "version": "base",
+          "tool_exit_code": 1,
+          "graph_absent": true,
+          "inspection_task_not_executed": true,
+          "stderr_bytes": 70523,
+          "stderr_sha256": "f1e5178553af69e9d95407fa25e640c0e0e83c5f070c55b5ef02c7459063509b",
+          "stdout_sha256": "e36b9665d0078427e44d3e60e2505d44ec0970271e1199c6ed521a3213d84e5c",
+          "fixed_receipt": null,
+          "raw_streams_persisted": false
+        },
+        {
+          "case": "memory",
+          "version": "candidate",
+          "tool_exit_code": 1,
+          "graph_absent": true,
+          "inspection_task_not_executed": true,
+          "stderr_bytes": 70569,
+          "stderr_sha256": "e839e8789554cce2288005ac03458bad9c888444494a0ad17a271cd5d4f232e3",
+          "stdout_sha256": "c10b7e07adba66c8e77a393e181641c5c0b1d178c1d40bfe2fd4f08fcd1c57ff",
+          "fixed_receipt": {
+            "schema": "gsip-fixed-fault-v1",
+            "phase": "BUILD_FAILURE",
+            "cause": "OUT_OF_MEMORY"
+          },
+          "raw_streams_persisted": false
+        }
+      ],
+      "deliberate_resource_exhaustion": false,
+      "hosted_cause_claimed": false
+    },
+    "new_label_conflict": {
+      "tool_exit_code": 1,
+      "graph_absent": true,
+      "fault": [
+        "BUILD_FAILURE",
+        "UNKNOWN"
+      ],
+      "stderr_bytes": 70568,
+      "stdout_sha256": "e36b9665d0078427e44d3e60e2505d44ec0970271e1199c6ed521a3213d84e5c",
+      "stderr_sha256": "989377c0599a4fec10891caac379b45c8c6f5c591e62564cf14d89a0d301433d",
+      "raw_streams_persisted": false,
+      "deliberate_resource_exhaustion": false,
+      "hosted_cause_claimed": false
+    },
+    "effective_guard_mutations": [
+      {
+        "guard": "failure_only",
+        "mode": "success",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "xml_sha256": "d51e067cfaca7483e86b63c48d89181872784482b47282c1dcde34601b65107a",
+        "captured_output_sha256": "f9b000947a51ddcae45ffcdb1c263fb9db36da9ef2d4c3669dc23261daf12bfd",
+        "raw_output_persisted": false
+      },
+      {
+        "guard": "no_prior_fault",
+        "mode": "task",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "xml_sha256": "256ea95b63bf55e5a4d31f02f71f40353c297be604786067971b46f44fb097b6",
+        "captured_output_sha256": "5ddf723d23ec0f9f77ad9a529876defd04bc147b987a4afa66279fcc1225108b",
+        "raw_output_persisted": false
+      },
+      {
+        "guard": "cycle_refusal",
+        "mode": "cyclic",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "xml_sha256": "4d6bd3bd75e8305fc2e1b59219d6c42396989b25e454df4444f00955f864798b",
+        "captured_output_sha256": "4ef777a8b072da59d5b747615e7040baaeb48de906ef2aac9221974427e61d66",
+        "raw_output_persisted": false
+      },
+      {
+        "guard": "depth_bound",
+        "mode": "depth",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "xml_sha256": "1c8aac60d5e6c65cfeefcd16c41794a97cae8d05e5e35b5aaaf625bc80b2b561",
+        "captured_output_sha256": "5d7ca8496214975a1354bb79b685ff7654e0b3be5fde604b5fba5f2f71aca680",
+        "raw_output_persisted": false
+      }
+    ],
+    "ruff": "passed",
+    "mypy_two_files": "passed",
+    "docs_format": "passed",
+    "language": "passed"
+  },
+  "primary_tool_binding": {
+    "gradle": "8.14.3",
+    "archive_bytes": 224584249,
+    "archive_sha256": "ed1a8d686605fd7c23bdf62c7fc7add1c5b23b2bbc3721e661934ef4a4911d7c",
+    "full_distribution_files": 22432,
+    "full_distribution_manifest_sha256": "45efd22826d38a1dffca4dbeb190ad04a7665cb8a5d16af9be17866e2d780c9e",
+    "gradle_launcher_sha256": "4f4e6088759550eab2a3e7904265a3e9e3043d178e96ab169da0c7ea09795984",
+    "java": "21.0.1",
+    "java_binary_sha256": "c44bb5e63341a3210c998cc953f25546f8474fa7d83044965af84889d4594159",
+    "java_version_output_sha256": "ee4b7a54cec941471df3539fc1c4bb12ed04d11ce2e04a43b5746155630183f6",
+    "java_public_sources": {
+      "java.base/java/lang/StackOverflowError.java": "502d4008453715582a19429a3d1ac17e3da273c69185c7ee51e4cf32811109c8",
+      "java.base/java/lang/OutOfMemoryError.java": "3f72583d77e9501d8f126d19015129c243118f827350d30a91fda68055efa58b"
+    },
+    "primary_docs": {
+      "docs/javadoc/org/gradle/api/invocation/Gradle.html": "7c7daedab21800d6a1f2061d7e0d029336acaf5386abd4d357c216bd2a7d3207",
+      "docs/javadoc/org/gradle/BuildResult.html": "2ce3879e5e949a7caebde4b25147b49b541943b3084d1f24b847565e32f6b708"
+    },
+    "public_callback_deprecated_and_configuration_cache_unsupported": true,
+    "no_cache_or_command_flags_changed": true,
+    "test_environment": {
+      "GSIP_TEST_GRADLE_HOME": "/private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-build-observer-author-_2uj6r7h/real-gradle/gradle-user-home/wrapper/dists/gradle-8.14.3-all/10utluxaxniiv4wxiphsi49nj/gradle-8.14.3",
+      "JAVA_HOME": "/Users/justinhart/Library/Java/JavaVirtualMachines/openjdk-21.0.1/Contents/Home"
+    },
+    "no_new_dependency_or_tool_install": true
+  },
+  "patch_sha256": "e0f43b65451fa32dbad3060c4f60194bbe6d7cb7ae0226c067a9a4bc1e8653f2",
+  "manifest_sha256": "e6ef9b6e107b9aaf54d57fd73677c6b5e3d3367b612314fc8c924f2f861633ad",
+  "evidence_hashes": {
+    "creation-receipt.json": "e30083807d02afa10046d08b4b9dfc0d44e9df05fcb07f6cb676e4372488e206",
+    "public-observer-api-proof.json": "bcf5f77ffa2a293cbb9aba5373ae65dde3d641950e261b4c9da907c09e693298",
+    "probe-observer-api.py": "d6c530a8f24b8f9a7d3d8f634bfd1eb70f8edcaa2bbe95168631f617e307ea20",
+    "candidate-all-actual.xml": "0765f13ad13f3377ba6e1c2036173d5a38441f4882c6e07adbb091b4f1b7c7c2",
+    "candidate-all-actual.log": "2f810fc6f0845e9496154247913ddfc28a89ff2a2347ff8fbd22a8e19dcb4a52",
+    "candidate-default-final.xml": "c5e2aae19728e5e2176fdf7c553a3dedde5cfd91aa1b212cd27416cee34a6a09",
+    "candidate-default-final.log": "a1e437f9606d715cf2e8aed475cfbc8df9679c1a34a33c1ea10b270503bdcb6b",
+    "fail-before.xml": "dc0b934888a451d8907501cf0c118645802505cf79c0b096201bf642a807b514",
+    "fail-before.log": "afabcd96cc47f265af3290f167fb3ccb00a8b48bf44cba8ff3c1346582f80f89",
+    "bank43.xml": "14d4a97720ef0dffa40f5b9caf70629c650048e32025fbf0d9e9c2a0d2aca122",
+    "bank43.log": "100444d6df0967a20295a140c00eb7a26a27fc945672ed3dadd7cd0361c7fb4c",
+    "verified-observer-primary-binding.json": "9d5f0d5242c3373d875591fae489d2a6962c3b7c8a0fc567b74804b1b5fe3fb2",
+    "observer-primary-binding.py": "d11a927178cca0aed10e9d09e40e51ee795d8083d400e959e8e07ca7ebe0acb9",
+    "effective-observer-guard-mutations.json": "4acc4e34f5e5926c4ea3184a213fc75c7dd5c82cffc01de7182457bb98ef0d10",
+    "observer-guard-mutations.py": "e853c05eb948b69c2bed9b9f6e723b0901860d5e3daae77bfa47786061172f44",
+    "new-label-conflict-control.json": "c587fb53a85b43bc0bc8348041ec54c17a36dc990c608b49e0ec2a4556c3312e",
+    "ruff-final.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "mypy-final.log": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8",
+    "format-final.log": "2d3f2052ca8f427019aaf1cfb607e061e1134ee9286595ce98b68e39c6888e89",
+    "language-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "success-observer-control.json": "78ce1e3b81b097f9c71874e95bc893d92c4a95c465ad26c9fd0ed9a486bbad63",
+    "producer-observer-control.json": "5c7f092b6900155e583820b9a2950ae64d9e1e0929f7f0b7ddb71f28bc5f3fed",
+    "existing_malformed-observer-control.json": "38c1242c25d95085d21fb1ee56f8700314735c3b2f332352d1c541e4d815ffac",
+    "existing_multiple-observer-control.json": "466ae3a425b239ea9260b90425930af056bde1818952aaff6eace6f74038e3bd",
+    "stack-observer-control.json": "ac25b40f3cd07eb495a32d1a44d563b167be88519d091a42ac2ad0c75426e003",
+    "memory-observer-control.json": "095a12048e072bc43f6747d062bff9eeb4cdf09cefa498ce4ac70a0c514bfe0a",
+    "task-observer-control.json": "356b3868cc5ba3a1c00646a864d2bb9beb4f8c367f6407223729870d57fd2a2d",
+    "setup-observer-control.json": "51643735887fae55aeeb59da1e8af80f5cbab87ef2578a435a456011d679e901",
+    "configuration-observer-control.json": "3b5ca1efedf30528ca34e088e583cb8bd1fe22e87147d72db6b67457b35caa8c",
+    "unregistered-observer-control.json": "d264b9749e5f3c6bf819a6cd95230d5e2fe50abaa24e119f2ebfcb1436967650",
+    "cyclic-observer-control.json": "21a41eb7a2f45966cfb3efef8ae183da20d8852da2ba1c1bbb23a53592f70bc4",
+    "depth-observer-control.json": "bf9bfdb6ae9d123d7f414dbf5879b6c63f5828f5aa4177cf22671b964c1d6330",
+    "success-producer-control.json": "4d694c95ef5360e3b51bb4b86dded8ed5f7d44d735fd15e860c0af2452d3325c",
+    "no_debug_dependency-producer-control.json": "1fb95c95f74be2132f6876a49b14fe9584305e719b46898fb7f6c60ac23a5082",
+    "no_release_dependency-producer-control.json": "70e28d5f0841109d67146d735c00d28c594135e5b184bfac85c1b0c22a40f53c",
+    "missing_producer-producer-control.json": "cf1f5c36971531d2df454e23dec048d4b223a984880bd8457960051fd4249dbb",
+    "producer_failure-producer-control.json": "26ac048a22d9b1f39df97868f8391c25779bc06ac7f88cddd96e23575758a0f9",
+    "missing_configuration-producer-control.json": "ee7ecd4367ad26e814a96ef1374d4107b6c9241e9d7694dcf0a8771a9cd03278",
+    "foreign-producer-control.json": "292b433fb411cbdc0bb65b0b8c7e2b430cea4867b87005da3d027aa89234b5fe",
+    "gitleaks-authored.log": "6782cd9833ec223d1f9b054195214648b4d53abb2b8b6fcc9dd81c221a264716"
+  },
+  "assumptions": [
+    "Public Gradle8.14.3 buildFinished callback is deprecated and unsupported with configuration cache; existing pinned operation has it disabled, and no flag was changed. Future tool/cache changes need reviewed evidence.",
+    "BuildResult failure observer uses Python-emitted ephemeral Gradle configuration only, no shipped native code/dependency.",
+    "Java builtin errors were synthetically thrown using installed21.0.1 source/class bindings; no stack or memory exhaustion was induced.",
+    "Cyclic/depth supplied-Throwable classifier controls emit privately then cause an ordinary separate synthetic failure, avoiding throwing cyclic graphs into Gradle."
+  ],
+  "limits": [
+    "The actual hosted748 cause remainsUNKNOWN; no inference that either Java error occurred.",
+    "Unregistered/unusable-output conditions remainUNKNOWN and failed.",
+    "No native SDK/product build, device proof, signing, deployment, production, merge or capture action occurred.",
+    "Actual fresh hosted native CI/artifact proofs are still required."
+  ],
+  "scan": {
+    "version": "8.21.2",
+    "scope": "Frozen authored three files only; current scanner rules/redaction unchanged, no suppressions",
+    "exit_code": 0,
+    "leaks": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "full_history": "Root integration owns full-history scan; not run by this author task"
+  }
+}

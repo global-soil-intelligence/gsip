@@ -1,0 +1,100 @@
+{
+  "schema_version": "gsip-spec10-independent-source-review-v1",
+  "reviewer": "lib5a_author independent of spec10 author",
+  "base_commit": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+  "exact_hashes": {
+    "patch": "1c858084d9d1d56065e3d8c011c80dbd6459cd3e8d7720c0068d3e244a92ba90",
+    "manifest": "9bceb2e01274948b26e5b96793dd6e09e763bacaea464c296a1a7a71c4a37cf8",
+    "receipt": "2d1c997967b0e360f706ec5abf025b777048c90e78ef55665489d00f4457ee86"
+  },
+  "source_files": [
+    {
+      "path": "docs/SPEC.md",
+      "absolute_path": "/private/tmp/gsip-lib5-spec10-xfwjq270/docs/SPEC.md",
+      "base_sha256": "3fabd7c0ac5f26e58e05e13d0fc091dc5ea9a5f08a6c1c340ebffd13edde3a4c",
+      "sha256": "ce894fb49e1eac6239cbad596c8df8f2c98e2eeca69eb13ba3892101fc3d3bf7",
+      "bytes": 153722
+    },
+    {
+      "path": "docs/BUILD_ORDER.md",
+      "absolute_path": "/private/tmp/gsip-lib5-spec10-xfwjq270/docs/BUILD_ORDER.md",
+      "base_sha256": "b464b64f8fc8367762159a8428f007487a405ec406110bca805d87ada60fe458",
+      "sha256": "102396787dfdb341e4f397f72fb708bc484b889d32df15c2dde4939bbd1ab81c",
+      "bytes": 82574
+    }
+  ],
+  "policy_preservation": {
+    "SPEC_1_to_13_exact": true,
+    "SPEC_15_to_16_8_exact": true,
+    "SPEC_LIB5A_wire_and_source_authority_exact": true,
+    "SPEC_16_13_real_decisions_and_license_exact": true,
+    "SPEC_existing_saturation_rule_exact": true,
+    "BUILD_workflow_guardrails_exact": true,
+    "BUILD_LIB5A_acceptance_exact": true,
+    "BUILD_LIB5C_real_gates_exact": true,
+    "BUILD_review_and_production_policy_exact": true
+  },
+  "validation": [
+    {
+      "name": "patch_dry_run",
+      "command": [
+        "patch",
+        "--dry-run",
+        "-p1",
+        "-i",
+        "/private/tmp/gsip-lib5-spec10-local-accounting.patch"
+      ],
+      "exit_code": 0,
+      "log": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-spec10-independent-author-k_2tq6ag/patch_dry_run.log"
+    },
+    {
+      "name": "patch_apply_to_review_copy",
+      "command": [
+        "patch",
+        "-p1",
+        "-i",
+        "/private/tmp/gsip-lib5-spec10-local-accounting.patch"
+      ],
+      "exit_code": 0,
+      "log": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-spec10-independent-author-k_2tq6ag/patch_apply_to_review_copy.log"
+    },
+    {
+      "name": "document_prettier",
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        "--config",
+        "/private/tmp/gsip-lib5-spec10-xfwjq270/.prettierrc.json",
+        "/private/tmp/gsip-lib5-spec10-xfwjq270/docs/SPEC.md",
+        "/private/tmp/gsip-lib5-spec10-xfwjq270/docs/BUILD_ORDER.md"
+      ],
+      "exit_code": 0,
+      "log": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-spec10-independent-author-k_2tq6ag/document_prettier.log"
+    }
+  ],
+  "supplemental_added_line_language_guard_violations": 0,
+  "findings": [],
+  "result": "no_actionable_source_findings",
+  "review_scope": [
+    "four LIB5B accounting and local-ownership clarifications",
+    "transaction reservation/recovery and saturation-fence interpretation",
+    "persisted source/recipient day and exact-retry admission",
+    "retained-byte/readback and pending erasure semantics",
+    "unchanged LIB5A wire and real-sharing/science/production holds"
+  ],
+  "implementation_obligations": [
+    "prove each managed copy remains charged until verified absence",
+    "prove reserved active fence/pending state fits at metadata saturation without alias/slot/cleanup allocation",
+    "prove first durable admission persists charge/day in each independent endpoint view",
+    "prove crash/reopen and lock/concurrency behavior without distributed-atomicity claims"
+  ],
+  "tests_or_ci_run": false,
+  "implementation_or_author_source_edits": false,
+  "remaining_gates": [
+    "actual protected CI and specification merge",
+    "merged LIB5A before any LIB5B code",
+    "later exact-hash independent LIB5B implementation review",
+    "unchanged LIB5C/scientific/legal/production owner gates"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "report_sha256": "ac37b920c26238b4f92552d2986cade5d54d55741b1ce2afa240c635d7eeae2a",
+  "original_workspace_status_entries": 61,
+  "original_workspace_status_sha256": "9f267c791a56dbfe1cbdb8f104cec8dcaa9bc912d2b8c7cfde757ce5dab63419",
+  "current_whole_stack_scan": {
+    "version": "8.21.2",
+    "command": [
+      "/private/tmp/gsip-gitleaks-8212-gj2csfbo/gitleaks",
+      "git",
+      ".",
+      "--no-banner",
+      "--redact",
+      "--log-opts=--all",
+      "--report-format=json",
+      "--report-path",
+      "/private/tmp/gsip-whole-stack-final-leaks.json"
+    ],
+    "exit_code": 0,
+    "redacted_output": "\u001b[90m10:29PM\u001b[0m \u001b[32mINF\u001b[0m 79 commits scanned.\n\u001b[90m10:29PM\u001b[0m \u001b[32mINF\u001b[0m scan completed in 814ms\n\u001b[90m10:29PM\u001b[0m \u001b[32mINF\u001b[0m no leaks found\n",
+    "ignore_exact": true,
+    "ignore_sha256": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+    "findings": []
+  },
+  "production_actions_performed": [],
+  "history_repair_approval": "PENDING",
+  "foreign_function_deletion_approval": "PENDING",
+  "preapproval_refresh_sha256": "fed89943b3e3e6f1366707234b95e270ad44ee3acef83c765a1f51bb52d5bc2c",
+  "anonymous_signin_disabled": true,
+  "anonymous_auth_readback_sha256": "a4a543dd48dfc19abe48fd6a9df662abc208196dd627de344d95a07afdbed72e",
+  "table_counts_report_sha256": "364eb52e570bdb41144a470a2721ab0cda5467a12e735a821364e14a42e9ec2d"
+}

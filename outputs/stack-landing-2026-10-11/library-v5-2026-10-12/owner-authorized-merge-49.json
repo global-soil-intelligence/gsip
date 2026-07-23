@@ -1,0 +1,59 @@
+{
+  "checksBefore": {
+    "baseRefName": "main",
+    "headRefOid": "fba2aa9b8e09ab542009022e189fe8cd0bb40236",
+    "mergeable": "MERGEABLE",
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:52:13Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38338952033/job/115105405149",
+        "name": "dco",
+        "startedAt": "2026-10-13T02:52:19Z",
+        "status": "COMPLETED",
+        "workflowName": "DCO"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:57:18Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38338952031/job/115105379817",
+        "name": "validate",
+        "startedAt": "2026-10-13T02:52:15Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:52:23Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38338952016/job/115105379590",
+        "name": "gitleaks",
+        "startedAt": "2026-10-13T02:52:15Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-13T02:51:58Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38338921744/job/115105284446",
+        "name": "gitleaks",
+        "startedAt": "2026-10-13T02:51:52Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      }
+    ]
+  },
+  "after": {
+    "mergeCommit": {
+      "oid": "0387405429ac8849829a45ccf45250fa08734dc3"
+    },
+    "mergedAt": "2026-10-13T02:59:08Z",
+    "state": "MERGED",
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/49"
+  },
+  "mergeMessage": "chore: merge reviewed PR 49\n\nCo-Authored-By: Codex <codex@openai.com>"
+}

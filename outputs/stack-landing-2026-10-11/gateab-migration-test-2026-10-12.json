@@ -1,0 +1,28 @@
+{
+  "observed_at_utc": "2026-10-12T12:21:27.583669+00:00",
+  "source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--network",
+    "none",
+    "--user",
+    "postgres",
+    "--entrypoint",
+    "bash",
+    "-v",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo:/work:ro",
+    "-w",
+    "/work",
+    "public.ecr.aws/supabase/postgres:17.6.1.156",
+    "-lc",
+    "scripts/db-migration-test.sh"
+  ],
+  "exit_code": 0,
+  "stdout": "wp6e_provenance.test.sql: 13/13 ok\n",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "production_touched": false,
+  "network": "none",
+  "earlier_attempt": "Docker engine unavailable; no test assertions or production action before engine startup"
+}

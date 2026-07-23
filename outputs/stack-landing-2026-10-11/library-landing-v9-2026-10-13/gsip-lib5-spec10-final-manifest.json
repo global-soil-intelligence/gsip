@@ -1,0 +1,32 @@
+{
+  "schema_version": "gsip-spec10-local-clarification-manifest-v1",
+  "date": "2026-10-13",
+  "snapshot": "/private/tmp/gsip-lib5-spec10-xfwjq270",
+  "base_head": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+  "base_tree": "94b5e491bbb0626bb571b952dec056916bf8c971",
+  "source_files": [
+    {
+      "path": "docs/SPEC.md",
+      "absolute_path": "/private/tmp/gsip-lib5-spec10-xfwjq270/docs/SPEC.md",
+      "base_sha256": "3fabd7c0ac5f26e58e05e13d0fc091dc5ea9a5f08a6c1c340ebffd13edde3a4c",
+      "sha256": "ce894fb49e1eac6239cbad596c8df8f2c98e2eeca69eb13ba3892101fc3d3bf7",
+      "bytes": 153722
+    },
+    {
+      "path": "docs/BUILD_ORDER.md",
+      "absolute_path": "/private/tmp/gsip-lib5-spec10-xfwjq270/docs/BUILD_ORDER.md",
+      "base_sha256": "b464b64f8fc8367762159a8428f007487a405ec406110bca805d87ada60fe458",
+      "sha256": "102396787dfdb341e4f397f72fb708bc484b889d32df15c2dde4939bbd1ab81c",
+      "bytes": 82574
+    }
+  ],
+  "patch": {
+    "path": "/private/tmp/gsip-lib5-spec10-local-accounting.patch",
+    "sha256": "1c858084d9d1d56065e3d8c011c80dbd6459cd3e8d7720c0068d3e244a92ba90"
+  },
+  "issue_draft": {
+    "path": "/private/tmp/gsip-lib5-spec10-xfwjq270/LIB5B_UNDERSPEC_ISSUE_DRAFT.md",
+    "sha256": "dcb67a49603176ba2f8084f9fd0e936c8e65a59734d0f3974a7e49d6c57f25b1",
+    "posted": false
+  }
+}

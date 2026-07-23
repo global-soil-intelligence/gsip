@@ -1,0 +1,98 @@
+--- a/tests/test_photo_export_privacy.py
++++ b/tests/test_photo_export_privacy.py
+@@ -133,6 +133,95 @@
+     )
+     assert result.rows == 3 and result.photos == 0
+     assert not (result.target / "photos").exists()
++
++
++@pytest.mark.parametrize(
++    "case",
++    [
++        "trailer_followed_by_eoi",
++        "concatenated_jpeg",
++        "extra_jfif_payload",
++        "post_scan_comment",
++        "tail_dri_surplus",
++        "tail_dnl_surplus",
++        "tail_dqt_surplus",
++        "tail_dht_surplus",
++        "tail_unused_dri",
++        "tail_unused_dnl",
++        "tail_unused_dqt",
++        "tail_unused_dht",
++        "tail_unused_dac",
++        "prefix_unused_dqt",
++        "prefix_unused_dht",
++        "prefix_overwritten_dqt",
++        "prefix_overwritten_dht",
++    ],
++)
++def test_exact_clearance_cannot_publish_hidden_jpeg_payloads(tmp_path: Path, case: str) -> None:
++    """Matching private clearance cannot admit decoder-ignored payloads."""
++    clean = fixtures.clean_photo()
++    hidden = b"synthetic-private-channel"
++
++    def segment(marker: int, payload: bytes) -> bytes:
++        return b"\xff" + bytes([marker]) + (len(payload) + 2).to_bytes(2, "big") + payload
++
++    def quant(table_id: int) -> bytes:
++        return bytes([table_id]) + hidden + b"\x01" * (64 - len(hidden))
++
++    def huffman(table_id: int) -> bytes:
++        return bytes([0x10 | table_id]) + bytes([0, 0, 4] + [0] * 13) + b"site"
++
++    # Preserve first-position JFIF so prefix cases exercise table consumption.
++    prefix = 2
++    if clean[prefix : prefix + 2] == b"\xff\xe0":
++        prefix += 2 + int.from_bytes(clean[prefix + 2 : prefix + 4], "big")
++    payloads = {
++        "tail_dri_surplus": segment(0xDD, b"\x00\x00" + hidden),
++        "tail_dnl_surplus": segment(0xDC, b"\x00\x78" + hidden),
++        "tail_dqt_surplus": segment(0xDB, quant(3) + hidden),
++        "tail_dht_surplus": segment(0xC4, huffman(3) + hidden),
++        "tail_unused_dri": segment(0xDD, b"\x13\x37"),
++        "tail_unused_dnl": segment(0xDC, b"\x00\x78"),
++        "tail_unused_dqt": segment(0xDB, quant(3)),
++        "tail_unused_dht": segment(0xC4, huffman(3)),
++        "tail_unused_dac": segment(0xCC, b"\x13\x3f"),
++        "prefix_unused_dqt": segment(0xDB, quant(3)),
++        "prefix_unused_dht": segment(0xC4, huffman(3)),
++        "prefix_overwritten_dqt": segment(0xDB, quant(0)),
++        "prefix_overwritten_dht": segment(0xC4, huffman(0)),
++    }
++    variants = {
++        "trailer_followed_by_eoi": clean + hidden + b"\xff\xd9",
++        "concatenated_jpeg": clean + clean,
++        "extra_jfif_payload": clean[:2]
++        + segment(0xE0, b"JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00" + hidden)
++        + clean[2:],
++        "post_scan_comment": clean[:-2] + segment(0xFE, hidden) + clean[-2:],
++    }
++    for name, payload in payloads.items():
++        variants[name] = (
++            clean[:prefix] + payload + clean[prefix:]
++            if name.startswith("prefix_")
++            else clean[:-2] + payload + clean[-2:]
++        )
++    raw = variants[case]
++
++    class ExactUnsafeBytes(fixtures.SyntheticPrivacy):
++        def binding(self, photo_id: str) -> PhotoExportBinding | None:
++            binding = super().binding(photo_id)
++            assert binding is not None
++            return replace(binding, sanitized_sha256=hashlib.sha256(raw).hexdigest())
++
++    with pytest.raises(export.ExportPrivacyError):
++        build_export(
++            fixtures.three_contributors_in_one_cell(),
++            tmp_path,
++            fixtures.EXPORT_DATE,
++            lambda _: raw,
++            photo_privacy=ExactUnsafeBytes(),
++        )
++    assert not (tmp_path / fixtures.EXPORT_DATE.isoformat()).exists()
++    assert not any(tmp_path.rglob("*.jpg"))
+ 
+ 
+ def test_fresh_authorization_removes_photo_and_all_public_references(tmp_path: Path) -> None:

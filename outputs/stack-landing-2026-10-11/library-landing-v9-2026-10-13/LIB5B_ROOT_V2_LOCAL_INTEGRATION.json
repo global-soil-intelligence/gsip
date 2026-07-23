@@ -1,0 +1,21 @@
+{
+  "base": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "branch": "wp-lib-5b-private-exchange-ledger",
+  "scope": "five uncommitted new files; only simulator/test/doc differ from preserved v1",
+  "files_before": {
+    "pipeline/node_exchange_store.py": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+    "pipeline/node_exchange_simulator.py": "4e3f1eb4183205cb1705672f01547ab4d8aa8c78569a42a5cfc4af7579e4fa87",
+    "tests/test_node_exchange_store.py": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+    "tests/test_node_exchange_simulator.py": "20e8ac506071e994dccd7d93c8423c8cf573ca8087085b8ecd143390f7a4b830",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md": "81e6bd675e15dc8ded29e4e3d1891274b7cd27fa39915c49cbe3e09bdc7565c4"
+  },
+  "files_after": {
+    "pipeline/node_exchange_store.py": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+    "pipeline/node_exchange_simulator.py": "2601595ed7f862d2c0bc504e685daa83885ce830117e3e028ca93f7da9667d27",
+    "tests/test_node_exchange_store.py": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+    "tests/test_node_exchange_simulator.py": "47ae080056afd2e44e9100d1993aa04c9d461a90a8d6fc6ff5a8387fd7000067",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md": "da32982ad9c8c39f08b23e0bcf84e236b39ccddd1200fc1ca78d5c43db15a3c8"
+  },
+  "full_independent_review": "pending",
+  "root_validation": "pending"
+}

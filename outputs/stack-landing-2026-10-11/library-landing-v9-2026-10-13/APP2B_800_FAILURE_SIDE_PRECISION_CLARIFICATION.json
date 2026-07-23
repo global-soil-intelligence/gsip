@@ -1,0 +1,17 @@
+{
+  "corrected_scope": "Final feature comparison entered receipt toolchain validation and refused the aapt2-format guard; side and actual tool string are unavailable.",
+  "correction": "The original receipt described this as parent-receipt validation because source validates parent before candidate. Sequential source order alone cannot identify which call failed when both invoke the same guard. Failure side is unavailable from the fixed diagnostic and no Android artifact was published.",
+  "effect_on_source_fix_review": "None; independent official-documentation valid-format fail-before and parser boundary/equality proofs stand independently.",
+  "new_network_native_key_APK_actions": false,
+  "original_receipt_preserved": true,
+  "original_terminal_receipt_sha256": "7afbbcdfab0a10041a6482cd6f521992148c49e22506947edbcd9c8840690523",
+  "schema": "gsip-800-failure-side-precision-clarification-v1",
+  "unchanged_fixed_facts": {
+    "captured_tool_value_available": false,
+    "error_class": "AUDIT_REFUSAL",
+    "guard": "validate_toolchain aapt2 version fullmatch",
+    "head": "800e669fd3f663b25b378fcdf1591557b3cd1c94",
+    "source_line": 2980,
+    "stage": "feature-comparison"
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "prepared_at_utc": "2026-10-12T12:50:56.758746+00:00",
+  "state": "PREPARED_LOCAL_READONLY_GATE_C_NOT_AUTHORIZED_NOT_EXECUTED",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "project_name": "gsip",
+    "region": "us-east-1",
+    "production_branch": "main"
+  },
+  "source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "source_worktree_clean": true,
+  "cli_version": "2.118.0",
+  "dry_run_argv_prepared_not_executed": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "db",
+    "push",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+    "--skip-vault",
+    "--dry-run"
+  ],
+  "migration_argv_prepared_not_executed": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "db",
+    "push",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+    "--skip-vault"
+  ],
+  "migrations": [
+    {
+      "file": "supabase/migrations/20261010120000_wp6b_capture_gate.sql",
+      "version": "20261010120000",
+      "sha256": "d5dc5bb281927e0c3e6d72705ec1d24094de93be17ffa7e02c02c56c375e5964",
+      "package": "WP-6b",
+      "effects": [
+        "Creates one RLS-protected service_state row with capture_open=false and a fail-closed capture_is_open helper.",
+        "Replaces grant/submission/photo insert policies to require the capture gate. Only service_role can update the switch."
+      ],
+      "existing_data_effect": "No legacy observation removal; adds one operational switch row."
+    },
+    {
+      "file": "supabase/migrations/20261010120100_wp6b_path_binding.sql",
+      "version": "20261010120100",
+      "sha256": "7d6d410f6cfb532d9166088e02bea4f36f6e5c02307d674bac3516b76928c017",
+      "package": "WP-6b",
+      "effects": [
+        "Adds the owner/submission/shot/UUID photo-path binding trigger for every writing role, including service_role.",
+        "Tightens private incoming Storage insert/update path rules; inserts require capture open and the caller's submission."
+      ],
+      "existing_data_effect": "Existing paths are not rewritten or validated in place; future relevant writes are bound. Existing worker code independently re-derives paths."
+    },
+    {
+      "file": "supabase/migrations/20261010120200_wp6b_finalize_and_settle.sql",
+      "version": "20261010120200",
+      "sha256": "da54235f99d2935601753d8461393838672cb0c62a9709616d06e1ca83e725fc",
+      "package": "WP-6b",
+      "effects": [
+        "Adds submissions.finalized_at and photos.qa_status, owner-only idempotent A/B finalization and service-only settlement.",
+        "Backfills complete legacy A/B sets, derives photo verdicts from completed/dead-letter QA jobs and re-settles legacy submission statuses under the new A/B rules; optional C does not determine status."
+      ],
+      "existing_data_effect": "Existing status, finalization time and per-photo verdict fields may change intentionally; row counts must remain stable. Incomplete sets can return to pending; do not promise status-byte equality."
+    },
+    {
+      "file": "supabase/migrations/20261010120300_wp6b_k_anonymous_cells.sql",
+      "version": "20261010120300",
+      "sha256": "29e4b3b97b7bbb64e6dbd986d857c73e416a4a7ca4244d4b166210594fc73f3e",
+      "package": "WP-6b",
+      "effects": [
+        "Adds resolution and distinct-contributor counts to public cells, requiring resolutions 4/6/8, matching index resolution, at least 3 contributors and consistent counts.",
+        "Replaces service-only atomic public-cell refresh with validation. Deletes legacy cells whose contributor count is unproven before enforcing non-null constraints."
+      ],
+      "existing_data_effect": "Intentional removal of unproven public aggregates; accepted baseline is already 0 cells, so expected post-migration count is 0. No export/rebuild is authorized by this gate."
+    },
+    {
+      "file": "supabase/migrations/20261010120400_wp6b_attribution_and_metadata.sql",
+      "version": "20261010120400",
+      "sha256": "fe4bf14607abd0ce669e34b849a5b6ee016307bcbfe3e272e429626a55d16561",
+      "package": "WP-6b",
+      "effects": [
+        "Adds a NOT VALID safe-attribution constraint, enforced for new writes while preserving existing immutable grants.",
+        "Extends the private camera-metadata allowlist with a bounded colour-space class, and defaults future QA events to deterministic-v2."
+      ],
+      "existing_data_effect": "Existing grant names are not rewritten/revalidated; private metadata remains private. Constraint installation still validates the camera-metadata contract."
+    },
+    {
+      "file": "supabase/migrations/20261010130000_wp6c_priors.sql",
+      "version": "20261010130000",
+      "sha256": "6f3bdc4b13dbe661eee30e6bd1f74fbe4e6853e200705b07e7ab69f347d3f68b",
+      "package": "WP-6c",
+      "effects": [
+        "Adds terminal empty_sources metadata, a service-only resolution-9 prior cache and three service-only upstream token buckets.",
+        "Replaces old claim_prior_job_attempt with service-only atomic claim/token-spend begin_prior_attempt and bounded failure/stale-job helpers."
+      ],
+      "existing_data_effect": "Adds an empty array to each legacy prior job and three bucket rows; no upstream lookup, queue drain or cache population is run by the migration. The old claim RPC is removed, so a stale Edge deployment/drain must not be invoked until its separately gated redeploy."
+    },
+    {
+      "file": "supabase/migrations/20261010140000_wp6d_contributor_rights.sql",
+      "version": "20261010140000",
+      "sha256": "9cb7c770f3772c463bfa1191741164122513155ab4f60e5db5899fa9c4407790",
+      "package": "WP-6d",
+      "effects": [
+        "Creates private deletion_requests, append-only grant_withdrawals, private attribution_reviews and a service-only security-invoker review queue.",
+        "Adds immediate grant-withdrawal/request guards, deleted-user recreation guards, anti-update/delete/truncate protections and service-only idempotent rights/orphan-listing RPCs."
+      ],
+      "existing_data_effect": "Creates mechanisms but files no requests and invokes no worker/deletion RPC; no contribution, object or auth user is deleted by applying this file."
+    },
+    {
+      "file": "supabase/migrations/20261010150000_wp6e_provenance.sql",
+      "version": "20261010150000",
+      "sha256": "d3e772403dd912fe5146210be802906a8d9be1f5c65516a0d5bbd13c63105f05",
+      "package": "WP-6e",
+      "effects": [
+        "Creates one immutable human actor per existing contributor; actor status is revoked only when contributors.auth_uid IS NULL. Missing auth.users alone is not this backfill condition. Adds final revocation and operator guards.",
+        "Backfills every submission with its contributor's actor and server-derived tier: -1 for is_synthetic=true, otherwise 0. Legacy claims default web/unknown/unknown/null; synthetic rows cannot return to field data.",
+        "Adds private allowlisted capture evidence and per-photo tiers, initially null evidence and -1/0 from the parent synthetic flag; future tier 1 depends on corroboration, with tiers 2/3 reserved.",
+        "Creates the published July-v1 terms version and retired records for other existing grant versions, adds the terms FK and received_at=null for legacy grants; new grants require current published terms and a recent nonfuture acceptance.",
+        "Adds server-only gold-label holdout=false and narrows owner selection to exclude the holdout field."
+      ],
+      "existing_data_effect": "Adds 5 human actors if current contributor count remains 5; updates actor/tier columns without deleting rows, fabricating evidence or reclassifying the is_synthetic flag. Legacy received_at remains unknown. Terms row count depends on distinct existing versions, so measure it rather than assume it."
+    },
+    {
+      "file": "supabase/migrations/20261011090000_wp_agent1_releases.sql",
+      "version": "20261011090000",
+      "sha256": "b61dd6ebbff44b8034585673b01958d4ce45e79e77a30c33245bd89bcf49c5fd",
+      "package": "WP-AGENT-1",
+      "effects": [
+        "Creates RLS-protected public-read/service-insert dataset_releases with append-only grants and a unique version/revision key.",
+        "Revokes anon/authenticated execution of private mutation-rejection trigger functions; agent interfaces retain only permitted public information."
+      ],
+      "existing_data_effect": "Creates an empty release ledger; does not upload a dataset, export photos or deploy gsip-public."
+    }
+  ],
+  "preconditions": [
+    "Gate A completed and passed the saved full readback: exactly 17 reviewed July identities, all 52 counts and cumulative baseline catalog/supplement preserved, advisor zero findings; its --skip-vault dry run verified these exact nine pending files. Bind the completion receipt and recheck if the state changes.",
+    "Gate B completed under its separate authorization: wavefunction-api absent, and prior-attach version 3/JWT-on selected metadata unchanged. Saved A/B completion evidence does not approve Gate C or redeploy the remaining function.",
+    "Show this exact command, target and nine hashes; wait for Justin's explicit Gate C go. A/B approvals, signup closure, CI, a merge or this artifact do not approve C.",
+    "Immediately before execution, verify clean f9 source, CLI 2.118.0, the exact 17 ledger set and a --skip-vault dry run listing only these nine files. Stop on any drift or extra file.",
+    "Confirm no overlapping migration/auth/operator writer, active QA/rights/export/prior drain or stale prior-attach invocation. If operational suspension is needed, present it separately for authority; this plan changes no schedule or service.",
+    "The required row-bearing migration test already passed 13/13 at f9 on 2026-10-12, and the isolated cumulative rehearsal passed 64/64. Repeat if source, target schema or accepted assumptions change; do not substitute an empty successful run.",
+    "Keep the recoverable original ledger backup private and durable. It is not a rollback of application DDL/backfill. Stop on a failed/partial push, record the per-file ledger and propose a reviewed fix forward; no automatic retry/reset/rollback.",
+    "Do not use --include-all, --include-seed, --include-roles, db reset or new SQL. Keep --skip-vault to avoid unrelated Vault changes; do not weaken RLS or reapply the July baseline."
+  ],
+  "postchecks": [
+    {
+      "check": "Ledger exact set",
+      "expected": "26 identities = the unchanged 17 reviewed July files plus these exact 9 October files; foreign identity absent; no missing/duplicate/unknown name. Count alone is insufficient."
+    },
+    {
+      "check": "Supabase security advisor",
+      "expected": "Zero findings on fresh production readback. Any finding is reported and stops further steps; no automatic weakening or generic suppression."
+    },
+    {
+      "check": "Capture gate",
+      "expected": "Exactly one service_state row and capture_open=false; capture_is_open reads false. Do not update capture, enable anonymous auth or publish a capture-live Pages artifact."
+    },
+    {
+      "check": "Auth configuration",
+      "expected": "Fresh persisted target-bound dashboard readback: Allow new users to sign up=false and Allow anonymous sign-ins=false; email confirmation stays enabled. The existing signup-closure receipt proves configuration at its recorded time, not an executed signup smoke test."
+    },
+    {
+      "check": "Counts",
+      "expected": "All original table counts stay equal to the accepted baseline apart from the intended migration ledger 17 to 26; existing h3_cells remains 0. Managed realtime.schema_migrations=89 is the accepted owner baseline, not an unexplained override. Unexpected platform drift requires a new explicit reconciliation decision.",
+      "unchanged_expected_counts": {
+        "auth.audit_log_entries": 0,
+        "auth.custom_oauth_providers": 0,
+        "auth.flow_state": 0,
+        "auth.identities": 0,
+        "auth.instances": 0,
+        "auth.mfa_amr_claims": 0,
+        "auth.mfa_challenges": 0,
+        "auth.mfa_factors": 0,
+        "auth.mfa_recovery_code_sets": 0,
+        "auth.mfa_recovery_codes": 0,
+        "auth.oauth_authorizations": 0,
+        "auth.oauth_client_states": 0,
+        "auth.oauth_clients": 0,
+        "auth.oauth_consents": 0,
+        "auth.one_time_tokens": 0,
+        "auth.refresh_tokens": 0,
+        "auth.saml_providers": 0,
+        "auth.saml_relay_states": 0,
+        "auth.schema_migrations": 82,
+        "auth.scim_tokens": 0,
+        "auth.scim_users": 0,
+        "auth.sessions": 0,
+        "auth.sso_domains": 0,
+        "auth.sso_providers": 0,
+        "auth.users": 0,
+        "auth.webauthn_challenges": 0,
+        "auth.webauthn_credentials": 0,
+        "extensions.spatial_ref_sys": 8500,
+        "public.contribution_grants": 5,
+        "public.contributors": 5,
+        "public.gold_labels": 0,
+        "public.h3_cells": 0,
+        "public.photos": 25,
+        "public.predictions": 0,
+        "public.prior_jobs": 25,
+        "public.priors": 0,
+        "public.qa_events": 0,
+        "public.qa_jobs": 25,
+        "public.submissions": 25,
+        "realtime.messages": 0,
+        "realtime.schema_migrations": 89,
+        "realtime.subscription": 0,
+        "storage.buckets": 2,
+        "storage.buckets_analytics": 0,
+        "storage.buckets_vectors": 0,
+        "storage.migrations": 73,
+        "storage.objects": 0,
+        "storage.s3_multipart_uploads": 0,
+        "storage.s3_multipart_uploads_parts": 0,
+        "storage.vector_indexes": 0,
+        "vault.secrets": 0
+      }
+    },
+    {
+      "check": "New tables",
+      "expected": {
+        "service_state": 1,
+        "upstream_buckets": 3,
+        "prior_cell_cache": 0,
+        "deletion_requests": 0,
+        "grant_withdrawals": 0,
+        "attribution_reviews": 0,
+        "actors": 5,
+        "terms_versions": "one published July-v1 plus one retired row per other distinct existing grant version, computed from aggregate preflight",
+        "dataset_releases": 0
+      }
+    },
+    {
+      "check": "Legacy settlement/QA",
+      "expected": "Aggregate A/B-complete count matches finalized_at backfill; photo verdict aggregates follow completed/dead-letter QA jobs; submission status aggregates satisfy the reviewed settlement table. Statuses may change intentionally. No real row contents or per-contributor data in receipts."
+    },
+    {
+      "check": "Actor/provenance backfill",
+      "expected": "One human actor per contributor and every submission actor bound to that contributor; no missing/duplicate/foreign actor. Actor revoked iff existing auth_uid is null for this backfill. Submission and photo tiers are exactly -1 when parent is_synthetic is true and otherwise 0; no tier 1+ is invented. Synthetic flag aggregate is unchanged; legacy claims web/unknown/unknown/null and all legacy photo evidence null."
+    },
+    {
+      "check": "Terms/holdout",
+      "expected": "Every legacy grant resolves to a terms row; only July-v1 active and all other legacy versions retired. Every legacy received_at stays null. Existing gold labels default holdout=false, with field inaccessible to authenticated owner selection. Do not print legacy term strings or grant names."
+    },
+    {
+      "check": "RLS and privileges",
+      "expected": "Read sanitized catalog/supplement metadata and compare to the reviewed 26-file reference, preserving only the already reviewed exact five surviving ownership aliases and hosted extension/schema-grant metadata. All 20 public base tables have RLS, exact role/column privileges, owners, private function grants and grantability; server-only tables remain inaccessible to public/client roles. Do not execute a write smoke test in production."
+    },
+    {
+      "check": "k-anonymity",
+      "expected": "Zero public-cell constraint violations: only resolution 4/6/8, matching index/resolution, n_contributors>=3 and n_submissions>=n_contributors. Empty table is expected; no export or public refresh is performed here."
+    },
+    {
+      "check": "Gate B inventory retained",
+      "expected": "Foreign function still absent and intended Edge Functions unchanged by a database-only operation. Edge redeploy and protocol/MCP smoke tests are later separate gates."
+    }
+  ],
+  "authority_and_transition_limits": [
+    "The nine files contain no WP-6f photo screening, privacy-screen status, detector, or runtime data-only export mode. The owner-requested #38 gate requires no new photo publication until WP-6f is deployed and calibration is approved; eligible releases before then must be structured data only.",
+    "The bound f9 export can include photos. Do not dispatch/publish that photo path under this gate. A reliable data-only export change or WP-6f implementation needs its own reviewed work package and applicable specification approval; do not patch migration architecture or assume individual attribution review satisfies the photo gate.",
+    "No worker dispatch, Edge Function redeploy, repository-variable change, secret read, Hugging Face publication, tile upload, Pages deployment, signup/capture opening or store action is covered by C. Follow PHASE1_DEPLOYMENT section by section with separate exact-target go where required.",
+    "CLI database push can partially apply the ordered chain; the original ledger backup does not undo new status/tier backfills. Preserve receipts and stop on failure, with no production reset or automatic replay.",
+    "Counts are necessary but not proof of unchanged field values or seed classification. Justin's seed classification is owner evidence; the migration obeys the actual is_synthetic flags and must not silently recategorize them.",
+    "Local reference/rehearsal uses platform stand-ins, and prior success is not proof of production success. Post-migration hosted readbacks remain required."
+  ],
+  "evidence_sha256": {
+    "gate-a-03-final-ledger-2026-10-12.json": "0fc203968deff91e10f2e8a0999104485038cf3f0619767bc077b873cf901367",
+    "production-accepted-count-baseline-2026-10-12.json": "6156534e84c43055c6764f76276b34b1557474614958b5944e4969e6e94f20eb",
+    "production-signup-closure-action-readback-2026-10-12.json": "bfec01a0ac075bffaf33f9d143a36f9481638a24ace17d59d9a4e5a0c1fc2554",
+    "gateab-migration-test-2026-10-12.json": "d336e4e84164b60418cb8465cf2c654579638ceddca7b4d60972e65c026636a8",
+    "gateab-rehearsal-2026-10-12.json": "c0736221cbf9ffaba5a60602df1f532a0768fab7c14230480a38c465760eb94f",
+    "canonical-ledger-reconciliation-rehearsal.json": "4080346f1d0935d3bc93a428df227eaf7380450f03be7c2e1e1dcd6591372cef",
+    "canonical-catalog-target26.json": "eca562018a82a5df9f2ddd37b1f47e81a26be709f34e4b967c21d5442a562393",
+    "canonical-catalog-target26-supplement.json": "1ea270359d6b9587d1dc444e9196cc4628c49d21047fa4d0604cfc0925ea136d",
+    "production-gates-a-b-execution-receipt-2026-10-12.json": "c4934bed71dc8427648e89668f2899eedfc033ab9a0d9371d760a5440333f0a4"
+  },
+  "production_queries_performed": false,
+  "production_mutations_performed": false,
+  "source_files_written": false,
+  "commits_created": false,
+  "updated_at_utc": "2026-10-12T12:52:13.540131+00:00",
+  "completed_prior_gates_observed_from_saved_receipts": {
+    "A": "PASS",
+    "B": "PASS",
+    "completed_at_utc": "2026-10-12T12:48:31.792598+00:00",
+    "gate_c": "NOT_AUTHORIZED_NOT_EXECUTED"
+  }
+}

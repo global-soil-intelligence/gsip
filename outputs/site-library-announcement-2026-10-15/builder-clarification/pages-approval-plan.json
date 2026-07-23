@@ -1,0 +1,36 @@
+{
+  "status": "AWAITING_OWNER_MERGE_AND_PAGES_APPROVAL",
+  "repository": "global-soil-intelligence/gsip",
+  "reviewed_source_commit": "d13abfb1bace8ba84e6091ce0033f104b53edf78",
+  "local_artifact": {
+    "file": "gsip-site-1f-builders-pages.tar.gz",
+    "sha256": "0b869a920d39310a331f1e9517d3d4000af12d0faba40a218371e9e8707b80a6",
+    "bytes": 3727912,
+    "activation": {
+      "capture_live": false,
+      "library_intake_live": false
+    }
+  },
+  "environment": {
+    "name": "github-pages",
+    "required_reviewer": "jdhart81",
+    "admins_bypass": false,
+    "branches": [
+      "main",
+      "gh-pages"
+    ]
+  },
+  "release_sequence": [
+    "Owner approves PR #75 merge after green validate/gitleaks; no merge has been performed.",
+    "Merging to main triggers the unchanged pages.yml, builds both activation flags false, and uploads _site.",
+    "Match that new workflow run to its exact merge SHA; do not approve stale run 38657274196.",
+    "Reverify the activation manifest and expected page content in the new run artifact, then present exact run and approval action to Justin.",
+    "Only Justin\u2019s separate Pages go permits release from the protected github-pages environment.",
+    "After deployment verify Pages home/data/methods/about/card/llms.txt/og-library.png and capture/gsip-activation.json; inspect capture closed page without submitting data."
+  ],
+  "scope": "Static website release only; no DNS, production database, Edge Functions, worker, auth, app signing or capture changes.",
+  "rollback": "Owner-approved revert of the website commit via PR; preserve forced-closed activation and environment protection.",
+  "known_limit": "Planned canonical domain remains a Coming Soon page until separate owner DNS cutover; announcement should link GitHub.",
+  "source_scope": "Whole-stack open-source messaging, public component/status map and local builder quickstart; no licence changes.",
+  "supersedes": "../pages-approval-plan.json (prior source head preserved as historical evidence)"
+}

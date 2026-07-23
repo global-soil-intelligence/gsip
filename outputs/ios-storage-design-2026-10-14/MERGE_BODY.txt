@@ -1,0 +1,3 @@
+Merge the exact independently reviewed APP-2C1 source-audit package after green CI, under Justin Hart's explicit 2026-10-14 approval. Storage feasibility remains blocked; no backend, native-language exception, production or capture authority is selected.
+
+Co-Authored-By: Codex <codex@openai.com>

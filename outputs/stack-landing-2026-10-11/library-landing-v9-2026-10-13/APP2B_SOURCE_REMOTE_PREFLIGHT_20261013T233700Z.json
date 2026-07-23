@@ -1,0 +1,15 @@
+{
+  "utc": "2026-10-13T23:37:00.679740+00:00",
+  "remote_heads": {
+    "refs/heads/main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+    "refs/heads/wp-app-2b-local-notifications": "c1cb7e36087d7e20c2acd790106535d036d63d1d"
+  },
+  "pr": 63,
+  "draft": true,
+  "description_prefix_sha256": "318c375f12b1435b3d5776cf3ce3b52852dfdd399e7ca6ca4e10d11b719c3196",
+  "description_characters": 37187,
+  "remote_response_sha256": "1da8ba45f70ca0a7219593934fe334fea4b872eb77a1d9303bbfcbc4b92a7326",
+  "pr_response_sha256": "3dcb013eedb882d8a15e45bf52e774fdc14f4249258a46350c03965f946cb698",
+  "read_only": true,
+  "production_queries_or_changes": false
+}

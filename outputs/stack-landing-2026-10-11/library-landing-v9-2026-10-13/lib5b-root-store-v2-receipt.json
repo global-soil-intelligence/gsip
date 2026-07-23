@@ -1,0 +1,28 @@
+{
+  "at_utc": "2026-10-13T14:01:30.951311+00:00",
+  "scope": "Frozen store v2 only; complete simulator and independent review pending",
+  "cwd": "/private/tmp/gsip-lib5b-store-v2-frozen-kaj7ol9s",
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_node_exchange_store.py",
+    "--tb=short",
+    "--basetemp=/private/tmp/gsip-lib5b-root-store-v2-test-roots"
+  ],
+  "exit_code": 0,
+  "tests": 109,
+  "failures": 0,
+  "source_hashes": {
+    "pipeline/node_exchange_store.py": "74d87bb742f3f466f31f283c9e0ae5b0ab80f56c8473d091e1d2a4cc7e2aa9c9",
+    "tests/test_node_exchange_store.py": "98942224622f28465a0b99ec19a9310eccdbaa7236b5dbfd81fd1d5620aab5a7"
+  },
+  "log_sha256": "62f7f057ab40e90556678fc7ab9ae63bc815537694c506e88a642054dc78fbc6",
+  "network": "Test suite denies socket construction and connection; no production/data calls",
+  "limitations": [
+    "Local Darwin only",
+    "This does not clear full simulator authority/claim/quota/cleanup logic or independently close store findings"
+  ]
+}

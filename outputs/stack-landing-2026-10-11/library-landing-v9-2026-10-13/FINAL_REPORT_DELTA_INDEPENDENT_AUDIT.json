@@ -1,0 +1,180 @@
+{
+  "actions": {
+    "artifacts_or_raw_CI_logs_downloaded": false,
+    "production_queries_or_changes": false,
+    "source_report_Git_or_GitHub_mutations": false,
+    "tests_scans_or_native_builds_rerun": false
+  },
+  "at": "2026-10-14T04:10:08.186366+00:00",
+  "evidence": [
+    {
+      "bytes": 740,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_MAIN_FAST_FORWARD.json",
+      "sha256": "a2a117187c97092373ec0d8e9dab75a838ed8d3122f821c49114702482b631ff"
+    },
+    {
+      "bytes": 1222,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_PR66_GENERAL_CI_CLOSURE.json",
+      "sha256": "ab3565209f938c2481a0ccda0433530d344f1e7358b8f0e9b90c05a5ca394e56"
+    },
+    {
+      "bytes": 1779,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/SOURCE_PR66_CHECK_SNAPSHOT_20261014T040220Z.json",
+      "sha256": "024543e78832c0165026ac0182cc68d1c71439d506d991366e4f01b4aa15e3fa"
+    },
+    {
+      "bytes": 1343,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_FINAL_PR_ACCEPTANCE_APPEND.json",
+      "sha256": "6593badf4848feee3fdff0889a0bbaa1166a7e0c978393f98e69f551e2c0a688"
+    },
+    {
+      "bytes": 2062,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/owner-authorized-merge-66.json",
+      "sha256": "309f06e65e182d9614c40f1564dc93149e619daa362e39e5ef188e7368790677"
+    },
+    {
+      "bytes": 2275,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/MAIN_SOURCE_CHECK_SNAPSHOT_20261014T040444Z.json",
+      "sha256": "c22c6e0bdbe318c0802ef3a09a62b8dd5153b524c9c28e10ba7b609052f0483e"
+    },
+    {
+      "bytes": 571,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_POSTMERGE_FULL_HISTORY_SCAN.json",
+      "sha256": "c0add02189a900f308ad459e5e2a1e166a90a64a0d33b4121f155300f19d334a"
+    },
+    {
+      "bytes": 21289,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/READ_ONLY_POST66_HOLD_AUDIT_20261014T040445Z.json",
+      "sha256": "e6e88dc4c89eaf11c4f547e9992f7c8b0a86b04e85f2ec6b725a019aadbcdfcf"
+    },
+    {
+      "bytes": 7372,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_PR66_METRICS.json",
+      "sha256": "8a048629d5fc91e093da01a4536c8bdbe542e1ddeeef7c30983456a5b8999780"
+    },
+    {
+      "bytes": 1401,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_PR66_SCANS.json",
+      "sha256": "e3215374e8899d88998fc0248185be82689ea5d1b5e4ae826b1fb3dbe45ea308"
+    },
+    {
+      "bytes": 5009,
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/DOC1_REMINDER_PR66_SOURCE_BINDING.json",
+      "sha256": "43cf491c55bfc50a71dbf53187bbf93279328c6ad69a6f8cb82cb5715c184ea0"
+    },
+    {
+      "bytes": 15799,
+      "path": "/private/tmp/gsip-final-report-delta-smh81bi8/LANDING_AND_BUILD_REPORT_2026-10-14.md",
+      "sha256": "e44776bf1226f8a6e6fc5c8f50154786f16104352d8f99e47f14ebd757f6207b"
+    },
+    {
+      "bytes": 12437,
+      "path": "/private/tmp/gsip-final-report-delta-smh81bi8/report-delta.patch",
+      "sha256": "4c9a41e32b5cb4b54d8b83a81db8535c897af3035ad7171912f677234dc86e8f"
+    },
+    {
+      "bytes": 5950,
+      "path": "/private/tmp/gsip-final-report-delta-smh81bi8/LINKS.json",
+      "sha256": "acc1d7d0108f28be77d1bc52e2f91c3b5781fe0d26d5ff2fffbf2ae9816493d6"
+    },
+    {
+      "bytes": 669,
+      "path": "/private/tmp/gsip-final-report-delta-smh81bi8/LOCAL_FINAL_MAIN_BINDING.json",
+      "sha256": "9bfa13738e481126f19942f9c170f3b8dca17f6857fb036cc661ba872a364a82"
+    },
+    {
+      "bytes": 3519,
+      "path": "/private/tmp/gsip-final-report-delta-smh81bi8/LIVE_DELTA_METADATA.json",
+      "sha256": "71c66a4abe7468b43b66bcb48dd12d53b1b86a7bbba260db15e4c14ecebf006d"
+    }
+  ],
+  "findings": [],
+  "harness_recovery": [
+    "An initial literal comparison included the old report EOF newline in the assumptions paragraph; corrected to compare the complete assumptions lines, which are exact. Source/report bytes were never modified."
+  ],
+  "limits": [
+    "Bounded delta audit, not a continuing final-main CI watch.",
+    "Safe receipts and read-only source/CI metadata only; no recursive historical replay, artifact download/replay, native build or production query.",
+    "Final-main CI remained running at the bound GET observation; no deployment or device readiness inferred.",
+    "The runtime a638 paragraph is the prior timestamped source-check proof, separate from the final-main section."
+  ],
+  "prior_audit": {
+    "facts_carried_only_for_unchanged_content_and_hashes": true,
+    "path": "/private/tmp/gsip-report-closeout-independent-txx4460k/INDEPENDENT_REPORT_CLOSEOUT_AUDIT.json",
+    "sha256": "5174e70ddec3307a8aae5f6658020b2a41befef5c7afb544f69829ef711ef20c"
+  },
+  "report": {
+    "bytes": 15799,
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/library-landing-v9-2026-10-13/LANDING_AND_BUILD_REPORT_2026-10-14.md",
+    "refreshed_at": "2026-10-14T04:06:19.297195+00:00",
+    "sha256": "e44776bf1226f8a6e6fc5c8f50154786f16104352d8f99e47f14ebd757f6207b",
+    "unchanged_at_close": true
+  },
+  "schema": "gsip-independent-final-report-delta-audit-v1",
+  "status": "CLOSED_NO_FINDINGS_DELTA_ONLY",
+  "verified": {
+    "PR66_merged_after_green_CI_with_exact_metadata_and_reviewed_tree": true,
+    "PR66_safe_general_numeric_and_skip_claims_match": true,
+    "PR66_two_hosted_scans_156_zero_match": true,
+    "all_relative_links_exist": 35,
+    "all_twelve_PR_register_rows_match_held_snapshot": true,
+    "deployment_device_science_gate_tables_and_assumptions_exact_prior_report": true,
+    "final_hold_snapshot": {
+      "Pages_sole_reviewer": "jdhart81",
+      "admin_bypass": false,
+      "five_guards": "missing_held",
+      "five_nonterminal_status_pages_complete": true,
+      "nonterminal_workers": 0,
+      "query_finished_at": "2026-10-14T04:04:45.699460+00:00",
+      "twelve_merges_verified": true
+    },
+    "final_main_scan": {
+      "all_refs_full_history": true,
+      "exit_code": 0,
+      "findings": 0,
+      "head": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+      "ignorefile_lines": 5,
+      "ignorefile_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5",
+      "log_opts": "--all",
+      "new_suppression": false,
+      "nonshallow": true,
+      "output_bytes": 150,
+      "output_sha256": "33ecdd9984f1285029011041269be8615b3b41699c5f34574acdce1bb97fb088",
+      "production_changes": false,
+      "redaction": true,
+      "reported_commits": 156,
+      "utc": "2026-10-14T04:04:45.380455+00:00",
+      "version": "8.21.2"
+    },
+    "green_PR_CI_distinct_from_running_final_main_CI": true,
+    "main": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+    "main_clean": true,
+    "main_current_GET": {
+      "CI_attempt": 1,
+      "CI_run": 38509512433,
+      "CI_run_number": 259,
+      "CI_status": "in_progress",
+      "Pages_build": "success",
+      "Pages_deploy": "waiting",
+      "Pages_run": 38509512413,
+      "at": "2026-10-14T04:07:53.798400+00:00",
+      "scanner": "success"
+    },
+    "no_final_main_terminal_claim": true,
+    "only_changed_paths_from_a638": [
+      "README.md",
+      "docs/BUILD_ORDER.md",
+      "docs/SPEC.md"
+    ],
+    "parents": [
+      "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+      "8b8cc24841d58c231743ff69472d3354f612dcf3"
+    ],
+    "printed_linked_receipt_hashes_match": true,
+    "shared_receipts_byte_exact_to_prior_audit": 23,
+    "timestamp_finding_fixed": true,
+    "timestamp_follows_final_included_receipts": true,
+    "tree": "1a29b34e9f32df9cbd180d7775836bded3247017",
+    "unchanged_runtime_artifact_text_verified": true
+  }
+}

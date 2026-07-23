@@ -1,0 +1,19 @@
+{
+  "pr": 56,
+  "head": "db3a37062008c291b6e8aa491b99eab3e752fe16",
+  "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38355333489",
+  "conclusion": "success",
+  "python_with_GDAL": 779,
+  "typescript_tests": 424,
+  "pgTAP_assertions": 593,
+  "populated_migration_assertions": 45,
+  "library_two_connection_cases": 6,
+  "photo_two_connection_cases": 31,
+  "browser_tests": 12,
+  "mypy_files": 66,
+  "evidence_log_sha256": "9411c31025250c74305eee3f5e3e427b1e848d076d0d66246c77b58b719379a0",
+  "gitleaks_green": false,
+  "prose_only_change": true,
+  "runtime_architecture_approved": false,
+  "no_production_changes": true
+}

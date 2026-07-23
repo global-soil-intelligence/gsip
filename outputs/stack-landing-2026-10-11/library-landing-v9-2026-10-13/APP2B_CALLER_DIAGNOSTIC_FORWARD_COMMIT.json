@@ -1,0 +1,35 @@
+{
+  "utc": "2026-10-14T01:00:20.524868+00:00",
+  "head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "parent": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "message": "fix(app-2b): identify failing evidence callers\n\nCo-Authored-By: Codex <codex@openai.com>",
+  "files": [
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "base_bytes": 32861,
+      "base_sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5",
+      "bytes": 33577,
+      "sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9"
+    },
+    {
+      "path": "scripts/app_notification_audit.py",
+      "base_bytes": 126055,
+      "base_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+      "bytes": 126232,
+      "sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6"
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "base_bytes": 189650,
+      "base_sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99",
+      "bytes": 195244,
+      "sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373"
+    }
+  ],
+  "conventional_and_agent_trailer": true,
+  "human_DCO": false,
+  "history_rewrite": false,
+  "production_changes": false,
+  "native_acceptance": false,
+  "git_output_sha256": "d1f8505d90ae0890667c50c08a9dcc83624261edaac5c67d6b99908448365e23"
+}

@@ -1,0 +1,18 @@
+{
+  "head": "1deb13d193702ac1e759def3ed7dcfa777f9e2b5",
+  "run": 38457750424,
+  "job": 115504729121,
+  "status": "completed",
+  "conclusion": "failure",
+  "failed_step": 18,
+  "raw_log_sha256": "85f6694b0daa711d5da07a858077b5816b08559424c59c82ab9cb39dd31af81c",
+  "raw_log_characters": 114858,
+  "diagnostics": [
+    {
+      "stage": "android-gradle-inspection",
+      "error_class": "BUILD_TOOL",
+      "source_line": 400,
+      "counts": {}
+    }
+  ]
+}

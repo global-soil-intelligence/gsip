@@ -1,0 +1,77 @@
+{
+  "utc": "2026-10-13T21:50:17.813953+00:00",
+  "pr": 65,
+  "head": "a2ad2d80ea288b9e2de8c984dcee56fa4803a1bc",
+  "state": "open",
+  "draft": true,
+  "base": "main",
+  "checks": [
+    {
+      "name": "dco",
+      "status": "completed",
+      "conclusion": "skipped",
+      "id": 115556842966
+    },
+    {
+      "name": "validate",
+      "status": "in_progress",
+      "conclusion": null,
+      "id": 115556841020
+    },
+    {
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115556840797
+    },
+    {
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115556813996
+    }
+  ],
+  "runs": [
+    {
+      "id": 38473072586,
+      "workflow": ".github/workflows/dco.yml",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 38473072582,
+      "workflow": "UNRECOGNIZED_WORKFLOW",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 38473072529,
+      "workflow": ".github/workflows/ci.yml",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 38473064508,
+      "workflow": "UNRECOGNIZED_WORKFLOW",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "all_required_checks_green": false,
+  "response_bindings": {
+    "pr": {
+      "sha256": "46ae7d2185fd22b7d26c1dced9fb755eb863a2d74b554865cd975d7d7c9ebda3",
+      "bytes": 20748
+    },
+    "checks": {
+      "sha256": "d102e1154df5b8f7f23a5c5da9241a925059518cd308029fb917b0ab8be23bd3",
+      "bytes": 14294
+    },
+    "runs": {
+      "sha256": "345fbe056ecc647b96658cd97650278c3f4574c9f574a14529f3a0e643a78470",
+      "bytes": 57050
+    }
+  },
+  "GET_only": true,
+  "production_queries": false
+}

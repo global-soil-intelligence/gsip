@@ -1,0 +1,102 @@
+{
+  "main": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "environment": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "workflows": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "main_runs": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "runs_queued": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "runs_in_progress": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "runs_waiting": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "runs_requested": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "runs_pending": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "guard_GSIP_PRIOR_SCHEDULE_ENABLED": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "guard_GSIP_QA_SCHEDULE_ENABLED": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "guard_GSIP_EXPORT_SCHEDULE_ENABLED": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "guard_GSIP_CLEANUP_SCHEDULE_ENABLED": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "guard_GSIP_RIGHTS_SCHEDULE_ENABLED": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_51": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_52": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_53": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_54": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_55": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_56": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_58": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_60": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_64": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "pr_65": {
+    "api_status": "unavailable",
+    "exit_code": 1
+  },
+  "query_started_at": "2026-10-14T00:10:43.629258+00:00",
+  "query_finished_at": "2026-10-14T00:10:44.114846+00:00",
+  "boundary": "GET-only named source/CI/environment/guard metadata; no secret values, Supabase, dispatch, approval, merge or source edit",
+  "nonterminal_workers": []
+}

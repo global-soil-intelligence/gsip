@@ -1,0 +1,164 @@
+{
+  "work_package": "WP-LIB-5B",
+  "state": "changes_required; new P2 first-admission sample-wide restriction finding",
+  "frozen_at": "2026-10-13T15:33:03.220865+00:00",
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "base_tree": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64",
+  "exact_input": {
+    "patch": {
+      "path": "/private/tmp/gsip-lib5b-private-exchange-ledger-v2.patch",
+      "sha256": "d9aedeeb7952ee6109e40076a4c36eecc474e167b961bcea9179e9059e6cfdc3",
+      "bytes": 246432
+    },
+    "manifest": {
+      "path": "/private/tmp/gsip-lib5b-final-v2-file-manifest.json",
+      "sha256": "4c44a821f4b91b963a5b095157d05fe371aca6d14bf0778012adfa0e82837be3",
+      "bytes": 1789
+    },
+    "author_receipt": {
+      "path": "/private/tmp/gsip-lib5b-final-v2-delivery-receipt.json",
+      "sha256": "075a254137a1900f9e1b28dd7c133ee8a04f33971ca2f594ad708b5ff256a82b",
+      "bytes": 16236
+    },
+    "authored_files": [
+      {
+        "path": "pipeline/node_exchange_store.py",
+        "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+        "bytes": 39798
+      },
+      {
+        "path": "pipeline/node_exchange_simulator.py",
+        "sha256": "2601595ed7f862d2c0bc504e685daa83885ce830117e3e028ca93f7da9667d27",
+        "bytes": 83565
+      },
+      {
+        "path": "tests/test_node_exchange_store.py",
+        "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+        "bytes": 46450
+      },
+      {
+        "path": "tests/test_node_exchange_simulator.py",
+        "sha256": "47ae080056afd2e44e9100d1993aa04c9d461a90a8d6fc6ff5a8387fd7000067",
+        "bytes": 51165
+      },
+      {
+        "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+        "sha256": "da32982ad9c8c39f08b23e0bcf84e236b39ccddd1200fc1ca78d5c43db15a3c8",
+        "bytes": 19016
+      }
+    ],
+    "all_source_author_frozen_hashes_still_match": true
+  },
+  "isolation": {
+    "owned_source": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/source",
+    "author_shared_source_edits": false,
+    "git_or_pr_writes": false,
+    "network_listener_credentials_real_data_model_production_capture_publication": false
+  },
+  "review_reads": {
+    "governing_documents": "All governing documents read in original review; unchanged prerequisites/base verified for v2. All simulator source read as v1 plus exact v2 diff; full unchanged store source now read. Independent33 cards and handoff read.",
+    "read_before_review": [
+      "AGENTS.md",
+      "docs/AGENTS.md",
+      "docs/SPEC.md full",
+      "docs/BUILD_ORDER.md full",
+      "CONTRIBUTING.md",
+      "GOVERNANCE.md",
+      "docs/PHASE1_DEPLOYMENT.md",
+      "docs/APP_STORE.md",
+      "docs/legal/README.md",
+      ".env.example"
+    ]
+  },
+  "checks": {
+    "original_unchanged_independent_witnesses": {
+      "result": "all3 pass, closes the two original reproduced triggers only",
+      "summary": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "tests": {
+        "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/test_original_independent_findings.py",
+        "sha256": "cdb50809f72855144c399eb22f424ef4824dcb14b898f91ab47199f3dfe4582f",
+        "bytes": 3352
+      },
+      "preserved_original_test_sha256": "cdb50809f72855144c399eb22f424ef4824dcb14b898f91ab47199f3dfe4582f",
+      "log": {
+        "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/original-witness-replay.log",
+        "sha256": "4a6070b078e8713685bb7d423b62e85d6415f822c5c557fbcd20f48e88981629",
+        "bytes": 98
+      },
+      "junit": {
+        "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/original-witness-replay.xml",
+        "sha256": "52a70f63069d5817fa316b8b3ba6c4c3ae6f79f6f4339f782251c6185875718d",
+        "bytes": 697
+      },
+      "exit_code": 0
+    },
+    "new_independent_sample_wide_first_admission_witness": {
+      "result": "one meaningful behavioral assertion failure; no setup errors",
+      "summary": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "test": {
+        "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/test_independent_initial_restriction.py",
+        "sha256": "0b0c3cf6652208ed610d8a14dc15c86d5e04c591f45e5edd140adab85a3d4048",
+        "bytes": 1627
+      },
+      "log": {
+        "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/initial-restriction-findings.log",
+        "sha256": "f4c6692d020dbd582da3bab504feff68139cd39de01e2fcbeece8cd3b576d39f",
+        "bytes": 1967
+      },
+      "junit": {
+        "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/initial-restriction-findings.xml",
+        "sha256": "05db5db92f239cfcfb0a88f9d8c046d1da8994a9d050639c860549011ee1c96f",
+        "bytes": 2519
+      },
+      "observed": {
+        "path": "/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/initial-restriction-observed.json",
+        "sha256": "89d236e77d5c5107443abdaffddd44bf96b811338d9be5f22f5e7701cd028bec",
+        "bytes": 195
+      },
+      "exit_code": 1,
+      "command": "PYTHONPATH=/private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/source <approved Python> -m pytest -q /private/tmp/gsip-lib5b-v2-full-review-vbwj_o4v/test_independent_initial_restriction.py --junitxml=<owned initial-restriction-findings.xml>"
+    }
+  },
+  "finding": {
+    "id": "P2-3",
+    "title": "Inherit known sample-wide restrictions before the first declaration admission",
+    "file": "pipeline/node_exchange_simulator.py",
+    "lines": [
+      1052,
+      1067
+    ],
+    "trigger": "Fresh fixture has two SyntheticOrigins M/N sharing the exact original human/sample/grant. M is unsealed; N is already sealed. Stage M before any existing group metadata.",
+    "cause": "_load propagates restrictions only into already persisted origin groups. stage_declaration initializes a new group with sealed=false/synthetic=false, then ORs only the selected origin M. The known sibling N is not consulted until a later _load.",
+    "observed": {
+      "receipt_status": "stored",
+      "retained_payload_files": 1,
+      "retained_payload_bytes": 915,
+      "source_charges": 1,
+      "source_slots": 1,
+      "outbox_items": 1,
+      "durable_group_sealed": false
+    },
+    "impact": "Known sealed source sample gets a normal scientific outbox payload and spends one source admission. A later load sealing the group does not undo the prohibited payload storage or charged unit.",
+    "requirement": "SPEC16.11 known sealed source samples cannot enter normal exchange payload; SPEC16.11/16.12 same-owner sample-wide monotonic restrictions and no charge on unavailable-rights admission; cards R04/A01/T03/Q02.",
+    "suggested_correction": "Initialize or refresh the conservative sample group from all currently known origins of the original same-owner/sample/grant before allocating aliases, event/slot, blob, charge or outbox. Apply the same initial aggregation to synthetic restriction; preserve monotonic restrictions after the source/label/alias disappears.",
+    "independent_witness": "test_known_sibling_seal_blocks_first_source_payload_and_charge"
+  },
+  "closure_limits": {
+    "full_independent_card_closure": false,
+    "all_remaining_cards": "Not independently closed; review stops on newly reproduced P2 as requested so author can repair and refreeze. All33 must resume against corrected exact five-file candidate.",
+    "full191_author_cases": "Not independently rerun this turn; no author broad result is claimed as independent closure.",
+    "actual_capacity_tests_this_turn": "None. Prior original saturated-metadata regression replay is a reduced serializer-bound projection; no new actual32MB/200MB boundary or Linux/GDAL/CI result claimed.",
+    "root_prior_store_closure": "Remains useful separately bound store-only evidence; not claimed as full simulator closure.",
+    "authority_or_science_or_approval_claim": false
+  }
+}

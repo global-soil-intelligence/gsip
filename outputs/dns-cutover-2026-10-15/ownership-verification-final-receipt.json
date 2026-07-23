@@ -1,0 +1,45 @@
+{
+  "status": "TXT_ADDED_AND_GITHUB_OWNERSHIP_VERIFIED_NO_TRAFFIC_CUTOVER",
+  "checked_at_utc": "2026-10-16T00:37:16.483061+00:00",
+  "authority": "Justin: Go. Add only that TXT record in Squarespace and complete GitHub ownership verification. No DNS cutover yet; keep capture and library uploads closed.",
+  "domain": "globalsoilintelligence.com",
+  "organization": "global-soil-intelligence",
+  "changes": [
+    {
+      "type": "TXT",
+      "host": "_github-pages-challenge-global-soil-intelligence",
+      "fqdn": "_github-pages-challenge-global-soil-intelligence.globalsoilintelligence.com.",
+      "value": "ec9866a89c5b447bc5d09ef7ceb232",
+      "ttl": 3600
+    },
+    "GitHub organization Pages ownership verification completed"
+  ],
+  "authoritative_dns": "Exact TXT confirmed on all four servers; original routing records unchanged by root and independent readbacks",
+  "github_verified": true,
+  "pages_cname": null,
+  "activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "canonical": {
+    "status": 200,
+    "title": [
+      "Coming Soon"
+    ],
+    "sha256": "9eea597a49e357ac1e2c8e4e98876e1c28454257df4e9a5116346f904001c462"
+  },
+  "no_other_dns_records_changed": true,
+  "no_pages_deployment_or_merge": true,
+  "no_supabase_or_worker_changes": true,
+  "next_gate": "Explicit owner approval required for website traffic cutover; verification TXT must remain in DNS",
+  "evidence": [
+    "txt-record.SAVED.txt",
+    "txt-record.SAVED.jpg",
+    "github-ownership.VERIFIED.txt",
+    "github-ownership.VERIFIED.jpg",
+    "txt-added-authoritative-readback.ATTEMPT-1.json",
+    "independent-pre-txt-dns-readback.json",
+    "independent-post-txt-dns-readback.json",
+    "ownership-verified-final-readback.json"
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "GET_only_no_auth": true,
+  "at": "2026-10-14T02:46:34.626816+00:00",
+  "native_key_APK_build_signing_or_source_mutations": false,
+  "probe_INPUTS_sha256": "2c4d2f8a25c79cb154e970ba41da92074876375f1d2f598a4a548b27a3d17856",
+  "rows": [
+    {
+      "bytes": 34460,
+      "coordinate": [
+        "androidx.annotation",
+        "annotation",
+        "1.8.1"
+      ],
+      "matches_cached_probe_pin_exactly": true,
+      "primary_url": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation/1.8.1/annotation-1.8.1.module",
+      "sha256": "e6386e85afdd865044e216575e493ed39a63a6325bd925379a21429c3941c8b5"
+    },
+    {
+      "bytes": 3225,
+      "coordinate": [
+        "androidx.annotation",
+        "annotation-jvm",
+        "1.8.1"
+      ],
+      "matches_cached_probe_pin_exactly": true,
+      "primary_url": "https://dl.google.com/dl/android/maven2/androidx/annotation/annotation-jvm/1.8.1/annotation-jvm-1.8.1.module",
+      "sha256": "c959e3b0cdc75c15efe01605fa56aa79f033e39238e150638b8fabde6aa121a0"
+    },
+    {
+      "bytes": 30696,
+      "coordinate": [
+        "androidx.collection",
+        "collection",
+        "1.4.2"
+      ],
+      "matches_cached_probe_pin_exactly": true,
+      "primary_url": "https://dl.google.com/dl/android/maven2/androidx/collection/collection/1.4.2/collection-1.4.2.module",
+      "sha256": "0326d2cf5adbe592312810ca1f71c6c0cc30f753c43f07c7402361b788a7784c"
+    },
+    {
+      "bytes": 4570,
+      "coordinate": [
+        "androidx.collection",
+        "collection-jvm",
+        "1.4.2"
+      ],
+      "matches_cached_probe_pin_exactly": true,
+      "primary_url": "https://dl.google.com/dl/android/maven2/androidx/collection/collection-jvm/1.4.2/collection-jvm-1.4.2.module",
+      "sha256": "aad6b3536c0f0e570aa733d5141d70fa6b9b3add370f73a311ca4ca5dee25448"
+    },
+    {
+      "bytes": 31934,
+      "coordinate": [
+        "androidx.graphics",
+        "graphics-shapes",
+        "1.0.1"
+      ],
+      "matches_cached_probe_pin_exactly": true,
+      "primary_url": "https://dl.google.com/dl/android/maven2/androidx/graphics/graphics-shapes/1.0.1/graphics-shapes-1.0.1.module",
+      "sha256": "2d7f6d55042299f9c4f8478aa094bc4099a346902779ff3091fed1dfc2b62f53"
+    },
+    {
+      "bytes": 5754,
+      "coordinate": [
+        "androidx.graphics",
+        "graphics-shapes-android",
+        "1.0.1"
+      ],
+      "matches_cached_probe_pin_exactly": true,
+      "primary_url": "https://dl.google.com/dl/android/maven2/androidx/graphics/graphics-shapes-android/1.0.1/graphics-shapes-android-1.0.1.module",
+      "sha256": "9a5508caf02d78fcf2729394e97e7b27a43786273e17ccb65bf8e1b00a598324"
+    }
+  ],
+  "schema": "gsip-independent-six-primary-gmm-pin-check-v1",
+  "selected_variant_claimed_from_primary_all_variants": false,
+  "status": "PASS_SIX_EXACT_PRIMARY_DOCS"
+}

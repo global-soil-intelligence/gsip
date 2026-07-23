@@ -1,0 +1,33 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "gate": "A",
+  "status": "PASS_EXACT_NINE_OCTOBER_FILES",
+  "verified_at": "2026-10-12T12:45:06.447764+00:00",
+  "command_receipt": "gate-a-05-dry-run-2026-10-12.json",
+  "command_receipt_sha256": "debec1374a3216778e2d16ce6e6f3fcacbd9d57b86334df4ec62fa79fa771c6a",
+  "command_exit_code": 0,
+  "raw_output_sha256": "70a1a17fa9c631c66cbde4201dd13bb359506dbafdb39c7390c63e4be58569c5",
+  "authoritative_bullet_plan": [
+    "20261010120000_wp6b_capture_gate.sql",
+    "20261010120100_wp6b_path_binding.sql",
+    "20261010120200_wp6b_finalize_and_settle.sql",
+    "20261010120300_wp6b_k_anonymous_cells.sql",
+    "20261010120400_wp6b_attribution_and_metadata.sql",
+    "20261010130000_wp6c_priors.sql",
+    "20261010140000_wp6d_contributor_rights.sql",
+    "20261010150000_wp6e_provenance.sql",
+    "20261011090000_wp_agent1_releases.sql"
+  ],
+  "file_hashes": {
+    "20261010120000_wp6b_capture_gate.sql": "d5dc5bb281927e0c3e6d72705ec1d24094de93be17ffa7e02c02c56c375e5964",
+    "20261010120100_wp6b_path_binding.sql": "7d6d410f6cfb532d9166088e02bea4f36f6e5c02307d674bac3516b76928c017",
+    "20261010120200_wp6b_finalize_and_settle.sql": "da54235f99d2935601753d8461393838672cb0c62a9709616d06e1ca83e725fc",
+    "20261010120300_wp6b_k_anonymous_cells.sql": "29e4b3b97b7bbb64e6dbd986d857c73e416a4a7ca4244d4b166210594fc73f3e",
+    "20261010120400_wp6b_attribution_and_metadata.sql": "fe4bf14607abd0ce669e34b849a5b6ee016307bcbfe3e272e429626a55d16561",
+    "20261010130000_wp6c_priors.sql": "6f3bdc4b13dbe661eee30e6bd1f74fbe4e6853e200705b07e7ab69f347d3f68b",
+    "20261010140000_wp6d_contributor_rights.sql": "9cb7c770f3772c463bfa1191741164122513155ab4f60e5db5899fa9c4407790",
+    "20261010150000_wp6e_provenance.sql": "d3e772403dd912fe5146210be802906a8d9be1f5c65516a0d5bbd13c63105f05",
+    "20261011090000_wp_agent1_releases.sql": "b61dd6ebbff44b8034585673b01958d4ce45e79e77a30c33245bd89bcf49c5fd"
+  },
+  "initial_receipt_parser_limit": "Initial extractor counted filenames in both the CLI human plan and repeated output representation (18 occurrences). The exact CLI bullet plan contains nine files, ordered identically to the reviewed October set; no extra pending identity is present. Original diagnostic receipt retained."
+}

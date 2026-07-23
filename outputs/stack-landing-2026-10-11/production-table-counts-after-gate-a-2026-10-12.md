@@ -1,0 +1,60 @@
+# Production table counts after Gate A — 2026-10-12
+
+Target: `toxldjgwkxtneoqsazym` (`gsip`, us-east-1). Aggregate counts only; no row contents. Readback time: 2026-10-12 12:44:27 UTC. Gate A ledger17 and owner-accepted Realtime89; all remaining counts match pre-repair baseline.
+
+| Table | Rows |
+| --- | ---: |
+| auth.audit_log_entries | 0 |
+| auth.custom_oauth_providers | 0 |
+| auth.flow_state | 0 |
+| auth.identities | 0 |
+| auth.instances | 0 |
+| auth.mfa_amr_claims | 0 |
+| auth.mfa_challenges | 0 |
+| auth.mfa_factors | 0 |
+| auth.mfa_recovery_code_sets | 0 |
+| auth.mfa_recovery_codes | 0 |
+| auth.oauth_authorizations | 0 |
+| auth.oauth_client_states | 0 |
+| auth.oauth_clients | 0 |
+| auth.oauth_consents | 0 |
+| auth.one_time_tokens | 0 |
+| auth.refresh_tokens | 0 |
+| auth.saml_providers | 0 |
+| auth.saml_relay_states | 0 |
+| auth.schema_migrations | 82 |
+| auth.scim_tokens | 0 |
+| auth.scim_users | 0 |
+| auth.sessions | 0 |
+| auth.sso_domains | 0 |
+| auth.sso_providers | 0 |
+| auth.users | 0 |
+| auth.webauthn_challenges | 0 |
+| auth.webauthn_credentials | 0 |
+| extensions.spatial_ref_sys | 8500 |
+| public.contribution_grants | 5 |
+| public.contributors | 5 |
+| public.gold_labels | 0 |
+| public.h3_cells | 0 |
+| public.photos | 25 |
+| public.predictions | 0 |
+| public.prior_jobs | 25 |
+| public.priors | 0 |
+| public.qa_events | 0 |
+| public.qa_jobs | 25 |
+| public.submissions | 25 |
+| realtime.messages | 0 |
+| realtime.schema_migrations | 89 |
+| realtime.subscription | 0 |
+| storage.buckets | 2 |
+| storage.buckets_analytics | 0 |
+| storage.buckets_vectors | 0 |
+| storage.migrations | 73 |
+| storage.objects | 0 |
+| storage.s3_multipart_uploads | 0 |
+| storage.s3_multipart_uploads_parts | 0 |
+| storage.vector_indexes | 0 |
+| supabase_migrations.schema_migrations | 17 |
+| vault.secrets | 0 |
+
+Source receipt: `production-post-gate-a-verification-2026-10-12.json`, SHA-256 `77a91551ad9e04f11ade62478a23149c9dec74bbb8d7fb5f424655c7fc86f4bb`.

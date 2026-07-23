@@ -1,0 +1,12 @@
+{
+  "android_job_id": 115663053505,
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "helper_sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "repo": "global-soil-intelligence/gsip",
+  "run_attempt": 1,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "task_sha256": "f90e5f896bddf83530e304b315e79694c7992c87e79f3b53288b27067b66c856",
+  "workflow_sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+}

@@ -1,0 +1,4 @@
+Clarify the existing optional-card policy and register the bounded phone-first work package after independent review and green CI. Owner-authorized source merge; no deployment or activation.
+
+Co-Authored-By: Codex <codex@openai.com>
+

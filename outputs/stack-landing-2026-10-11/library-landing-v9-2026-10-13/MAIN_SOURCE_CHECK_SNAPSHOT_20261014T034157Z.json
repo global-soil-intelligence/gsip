@@ -1,0 +1,104 @@
+{
+  "utc": "2026-10-14T03:41:57.753735+00:00",
+  "main": "a63850591c3c54ddb7923f8072671f6dea4fe9ed",
+  "source_checks_green": false,
+  "checks": [
+    {
+      "name": "deploy",
+      "status": "waiting",
+      "conclusion": null,
+      "id": 115666896897,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012650/job/115666896897"
+    },
+    {
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115666721215,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012650/job/115666721215"
+    },
+    {
+      "name": "ios",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115666719513,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012693/job/115666719513"
+    },
+    {
+      "name": "android",
+      "status": "in_progress",
+      "conclusion": null,
+      "id": 115666719261,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012693/job/115666719261"
+    },
+    {
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115666719112,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012748/job/115666719112"
+    },
+    {
+      "name": "validate",
+      "status": "in_progress",
+      "conclusion": null,
+      "id": 115666719046,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012733/job/115666719046"
+    }
+  ],
+  "runs": [
+    {
+      "id": 38507012733,
+      "workflow_path": ".github/workflows/ci.yml",
+      "status": "in_progress",
+      "conclusion": null,
+      "attempt": 1,
+      "run_number": 257,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012733"
+    },
+    {
+      "id": 38507012693,
+      "workflow_path": ".github/workflows/app-build.yml",
+      "status": "in_progress",
+      "conclusion": null,
+      "attempt": 1,
+      "run_number": 56,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012693"
+    },
+    {
+      "id": 38507012748,
+      "workflow_path": ".github/workflows/secret-scan.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "run_number": 362,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012748"
+    },
+    {
+      "id": 38507012650,
+      "workflow_path": ".github/workflows/pages.yml",
+      "status": "waiting",
+      "conclusion": null,
+      "attempt": 1,
+      "run_number": 50,
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38507012650"
+    }
+  ],
+  "bindings": {
+    "main": {
+      "sha256": "efd4d517e5867de768f4394b38ce9026bdf35d3f75334e8f552584c8bcafe61e",
+      "bytes": 356
+    },
+    "checks": {
+      "sha256": "a97ce111cbb3f4a6d0fe764ac606e6816d2ff051b1a3ad2b26f09a5aa1d1a6c0",
+      "bytes": 19043
+    },
+    "runs": {
+      "sha256": "e2a9e7c0f7721755770d663f6d8cacdb7e4b252f4ce69569ac32e0393fddc692",
+      "bytes": 53932
+    }
+  },
+  "Pages_is_separate_protected_deployment": true,
+  "GET_only": true,
+  "production_queries": false
+}

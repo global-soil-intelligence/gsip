@@ -1,0 +1,32 @@
+{
+  "actual_fresh_native_acceptance": false,
+  "behavioral_tests_rerun": false,
+  "files": {
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_bytes": 32861,
+      "base_sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5",
+      "bytes": 33577,
+      "sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_bytes": 126055,
+      "base_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+      "bytes": 126232,
+      "sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_bytes": 189650,
+      "base_sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99",
+      "bytes": 195169,
+      "sha256": "a5ac8205344fa71f455e756fa232b54f7f5472244118ee12cc42b89e7872c3d7"
+    }
+  },
+  "format_correction_sha256": "e860afb486f10fb95e27194740bdb977c7a858115a5ef0302f9e24d442e91aa7",
+  "manifest_sha256": "fd61e4a4d7fd3f44dec7273ad08791246c1378effebb71e95e38ec88f8722a62",
+  "missing_file": "unknown",
+  "patch_sha256": "9d965abb9c21efb67ac51aa9fd67d870d69a32bc6c7342357e71f0c072b8743f",
+  "schema": "gsip-diagnostic-caller-author-v2-freeze-v1",
+  "source_head": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "v1_behavior_evidence_carried_by_exact_bytes": true,
+  "v1_receipt_sha256": "62142ecd365ed49c01e984e936dc68854930a185076cfe4c4722f8e85b67e873"
+}

@@ -1,0 +1,47 @@
+{
+  "utc": "2026-10-14T03:21:08.709233+00:00",
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "parent": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "source_manifest_sha256": "bf75009c671b84cc5b0366ecf25aabc78d9dca2c298888fcaee910047bc48deb",
+  "files": [
+    {
+      "bytes": 44023,
+      "normalizer_base_sha256": "1c9378c3ef3b79a1ca592e0c701827ea4fd02bb2c4a6346af5264dbdec0f5922",
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "feb569c51cd958260ae372bbe5f00edbb49003245c7cf55e771892ae9f0ec784"
+    },
+    {
+      "bytes": 144888,
+      "normalizer_base_sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4",
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d"
+    },
+    {
+      "bytes": 269106,
+      "normalizer_base_sha256": "d8e05f5fee70c9b90b41227b62094f2f8713f0850fc254fd7368a4c8744a7b25",
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "67d7f761d046c620b08b1982bbc38e1f3574f98355bd825ce9cfb15bf44a84d6"
+    }
+  ],
+  "independent_and_author_evidence": [
+    {
+      "path": "/private/tmp/gsip-selected-route-independent-93zade87/INDEPENDENT_FINAL_SELECTED_ROUTE_CLOSURE.json",
+      "sha256": "ae0c3ec20f4037535705c9fa3f7363a8d0012c4cc515dfacac79f747be44e619"
+    },
+    {
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/INDEPENDENT_FINAL_SELECTED_ROUTE_PRIVACY_CLOSURE.json",
+      "sha256": "d10a428cc3146813f8ccebf92745841acd52b54ef7e2337c434aa5c645b45f5b"
+    },
+    {
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/AUTHOR_FINAL_VERIFICATION.json",
+      "sha256": "0e9bca3cc82a433ebcf21f685a70ec2d0e8fce95afc6adc9ad4eac420def0ed9"
+    }
+  ],
+  "message": "fix(app-2b): bind selected Android runtime variants\n\nCo-Authored-By: Codex <codex@openai.com>",
+  "conventional_and_agent_trailer": true,
+  "human_DCO": false,
+  "history_rewrite": false,
+  "production_changes": false,
+  "native_acceptance": false,
+  "git_output_sha256": "d6376295a5ae02f1e08423ed2bb4a54eac41c9a408f46ffd7f5d5811a0a5fd0c"
+}

@@ -1,0 +1,100 @@
+{
+  "schema": "gsip-app2b-core-author-delivery-v3",
+  "status": "CORE19-frozen-for-independent-review-not-approved",
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "file_count": 19,
+  "source_copy": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-core-v3-frozen-_5jue1x6/source",
+  "manifest_sources_match": true,
+  "paths": [
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/app2b-core-v3.patch",
+      "sha256": "60041ae48c68a8ed66cf2572cbeaea4256247a0e944f10d677c079430b102184"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/app2b-core-v3-manifest.json",
+      "sha256": "0a81d9f8e84778167a3d31b786a5554fdf14697a66d794270e5a63923a094c97"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/validation-v3-final/core-validation-receipt.json",
+      "sha256": "65ab9c3ec98a1595dd998d5d6c7f57a898c268ae3469f51197a0499ce833e51e"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/validation-v3-final/core-v3-prettier-receipt.json",
+      "sha256": "705cc3ba1d3c8b3111ac484d1a82c53a1a10a8be3365dc0364983f768f3a3eac"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/validation-v3-final/authored-gitleaks-v3-receipt.json",
+      "sha256": "0050c08b7982e502c34743d3b247f1743c39eed1385d5f3d5ee18cf3bb9f9b25"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/core-v3-fail-before-receipt.json",
+      "sha256": "a181cbef4bf235cf3e0837d9e088e99dc6b6642a8ee525c07e9ce7f489157218"
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-author-lhe_vi2z/mutation-evidence-v3/receipt.json",
+      "sha256": "b73b9a083dcfa9b50a9af50997d5eea9827540caf08da61a680fd80c18cf5b63"
+    },
+    {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-v3-independent-replay-xh6gmt3q/receipt.json",
+      "sha256": "5a21d6b4e926664555f040604ade89104c939b3b37043614611bee332330c03c"
+    }
+  ],
+  "validation": {
+    "capture_tests": 242,
+    "capture_test_files": 24,
+    "permission_build_python_cases": 81,
+    "core_types_lint_language_closed_builds_ruff_mypy": "pass",
+    "core_prettier": "pass",
+    "isolated_negative_guard_mutations": 14,
+    "authored_gitleaks_version": "8.21.2",
+    "authored_gitleaks_leaks": 0,
+    "author_replay_of_independent_probes": 32,
+    "independent_closure_claimed": false
+  },
+  "review_correction": {
+    "id": "APP2B-CORE-P2-3",
+    "fail_before_cases": 2,
+    "change": "Disposed lifetimes stop public action admission, queued lock callbacks, context/read/update continuations, SDK permission/schedule/cleanup dispatch and stale UI/auth callbacks. Atomic no-op updates submit no stale IDB put; detached cleanup acts only on its originally fenced owner/epoch and exact listener handle. Rights fences remain nonblocking."
+  },
+  "preserved": {
+    "v1_patch_sha256": "5ff2f2e60d4d1faf01c9c383929a1fa80db58493388266133191aec88671dc64",
+    "v2_patch_sha256": "0cb324f82084cacd65837fbcdd48c28b683312115e795ec2b8839f0f601f5c52",
+    "v2_source": "/private/tmp/gsip-app2b-author-lhe_vi2z/v2-core-source",
+    "v2_validation": "/private/tmp/gsip-app2b-author-lhe_vi2z/validation-v2-reviewed-freeze",
+    "v3_mutation_filter_correction_history": "/private/tmp/gsip-app2b-author-lhe_vi2z/mutation-evidence-v3-filter-correction-history"
+  },
+  "native_files_untouched_by_core_author": [
+    {
+      "path": "scripts/app_notification_audit.py",
+      "observed_current_sha256": "34ef744657c183a33f82ac98f429441e7184970f062db9f4170b7bf052691459"
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "observed_current_sha256": "bb79f1e64bbf6406a7ab9244595eed0e425f938145d676a22f0a3029aaa100ca"
+    },
+    {
+      "path": ".github/workflows/app-build.yml",
+      "observed_current_sha256": "c0c4f4e7503106af28a258beb6e5078659cff44818ea3eeaa003565c28a57206"
+    },
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "observed_current_sha256": "9707b4b623090c8e3ca1bedfcf783e43a3876d662b4b8d21e12f3e045d6ff6d6"
+    }
+  ],
+  "native_audit_included_in_core_patch": false,
+  "limits": [
+    "Independent review of these exact CORE19 bytes is still pending.",
+    "Full23 requires separate native-v3 independent closure; this is not a complete WP readiness receipt.",
+    "Actual Android/iOS builds and physical notification/backup/reboot checks remain CI/device gates.",
+    "No distributed OS/database atomicity or instant cross-process/remote gate cancellation is promised.",
+    "Already dispatched OS calls cannot be retroactively retracted; scoped cleanup and fresh checks hold uncertainty honestly.",
+    "A never-settling native reply holds its serialized chain until restart; rights fences and server requests do not wait for it."
+  ],
+  "authority": {
+    "git_operations": false,
+    "production_actions": false,
+    "capture_activation": false,
+    "secrets_read_or_changed": false,
+    "further_scan_exception": false
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "status": "PASS_LIVE_40_FILE_RECEIPT_AUDIT_AND_CURRENT_DEPLOYMENT_RUN_BINDING",
+  "audited_at_utc": "2026-10-16T18:48:28Z",
+  "reviewer": "independent map-worker non-author Codex agent",
+  "verification_method": "Audited the independent network verifier's saved live receipt against the original actual-run artifact manifest; refreshed GitHub run/jobs directly; avoided a duplicate 40-file scan as directed",
+  "live_receipt": "live-final-independent-20261016T184639Z.json",
+  "live_receipt_sha256": "fb6e258f994fb9cf86dd8e109809cf519d9b473c8142a223307f2565c157c9f6",
+  "live_scan_started_at_utc": "2026-10-16T18:46:39.826775+00:00",
+  "live_scan_completed_at_utc": "2026-10-16T18:46:43.809341+00:00",
+  "artifact_manifest": "pages-run-38895620835-artifact-verification.json",
+  "artifact_manifest_sha256": "406c45b59328844d692a23cf262897d42990a702e139510c765fad6e0336f825",
+  "pages_run": {
+    "id": 38895620835,
+    "run_attempt": 1,
+    "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835",
+    "head_branch": "main",
+    "source_commit": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "source_tree": "d49fa2ef6b31a0042db64d74e78b8a12df5b758b",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 116955267851,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 116955470777,
+        "name": "deploy",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "deployment_id_from_authorized_deployment_receipt": 7118088317,
+  "artifact_id": 12043617713,
+  "artifact_zip_sha256": "d818ff8663588d7eb12bdf691b92127ee6ca61495c4e6ab9c08eae1c596fbc0b",
+  "live_file_audit": {
+    "origin": "https://globalsoilintelligence.com",
+    "unique_paths": 40,
+    "paths_match_original_manifest": true,
+    "all_status_200": true,
+    "all_byte_counts_match": true,
+    "all_sha256_match": true,
+    "all_requested_and_final_urls_canonical_https_same_origin": true,
+    "all_40_redirect_chains_empty": true,
+    "matched_content_bytes": 6623136,
+    "matched_map_bytes": 2422310,
+    "map_budget_bytes": 5242880,
+    "unexplained_mismatches": [],
+    "worker": {
+      "bytes": 509702,
+      "sha256": "096f3b4deeeaa7ed1372a96978bea3495b78250041df835fada34f12320e11d2",
+      "content_type": "application/javascript; charset=utf-8",
+      "matches_verified_non_html_javascript_artifact": true
+    },
+    "full_notice": {
+      "bytes": 32566,
+      "sha256": "9aa4807394e33c6a38be8c590001a791203e703d9afefa0e7c2f47b1655a1dce",
+      "matches_verified_exact_pinned_maplibre_license_artifact": true
+    },
+    "activation": {
+      "capture_live": false,
+      "library_intake_live": false,
+      "strict_boolean_types": true
+    },
+    "trusted_tls": {
+      "receipt_both_hosts_pass": true,
+      "hostname_validation": true,
+      "hosts": [
+        "globalsoilintelligence.com",
+        "www.globalsoilintelligence.com"
+      ],
+      "protocol": "TLSv1.3",
+      "certificate_expires": "Jan 14 00:32:32 2027 GMT"
+    }
+  },
+  "scope": "Published static files and Pages source/run binding only; no contributor records, user sessions, uploads, backend activation, credentials or account changes",
+  "mutations_by_reviewer": "Only requested local review receipts; no source, deployment, approval or production mutations",
+  "unresolved_findings": []
+}

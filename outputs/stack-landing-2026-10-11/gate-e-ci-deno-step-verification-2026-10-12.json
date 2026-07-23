@@ -1,0 +1,20 @@
+{
+  "state": "PASS_CI_DENO_CHECK_VERIFIED",
+  "observed_at_utc": "2026-10-12T19:43:15.330185+00:00",
+  "source_head": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "pr": 34,
+  "run_id": 38265397737,
+  "job_id": 114866165733,
+  "job_conclusion": "success",
+  "deno_check_steps": [
+    {
+      "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "local_deno_available": false,
+  "source_CI_receipt": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-fix-all-pr-ci-20261012T193832Z.json",
+  "source_CI_sha256": "1c52e7e73534c2300bbca248df0d0fd5213514214c9a12fb73d5bec73e5f7f60",
+  "production_changes": []
+}

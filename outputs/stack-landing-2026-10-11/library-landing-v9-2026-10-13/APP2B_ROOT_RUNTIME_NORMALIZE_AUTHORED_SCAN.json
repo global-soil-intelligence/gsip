@@ -1,0 +1,12 @@
+{
+  "utc": "2026-10-14T02:33:44.723401+00:00",
+  "version": "8.21.2",
+  "helper_sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4",
+  "exit_code": 0,
+  "findings": 0,
+  "inline_allow_ignored": true,
+  "new_suppression": false,
+  "output_sha256": "334bed5d451709b03f3a44c248863f3c949f645221d1576c0d08396c2906e902",
+  "output_bytes": 100,
+  "production_changes": false
+}

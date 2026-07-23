@@ -1,0 +1,35 @@
+{
+  "facts": [
+    {
+      "archive_comment_bytes": 0,
+      "entry_comment_bytes": 0,
+      "entry_compression_type": 0,
+      "entry_external_type_bits": 32768,
+      "entry_extra_bytes": 0,
+      "entry_extra_is_Java_Jar_magic": false,
+      "entry_extra_is_empty": true,
+      "entry_extra_source": "JDK JarOutputStream JAR_MAGIC if present",
+      "entry_flag_bits": 0,
+      "expected_class_bytes": 150,
+      "expected_class_bytes_exact": true,
+      "expected_class_sha256": "3bcff37a8da344d813483fecde266705db27eb75c73f85f6de2c85449064a077"
+    },
+    {
+      "archive_comment_bytes": 0,
+      "entry_comment_bytes": 0,
+      "entry_compression_type": 0,
+      "entry_external_type_bits": 32768,
+      "entry_extra_bytes": 0,
+      "entry_extra_is_Java_Jar_magic": false,
+      "entry_extra_is_empty": true,
+      "entry_extra_source": "JDK JarOutputStream JAR_MAGIC if present",
+      "entry_flag_bits": 0,
+      "expected_class_bytes": 150,
+      "expected_class_bytes_exact": true,
+      "expected_class_sha256": "3bcff37a8da344d813483fecde266705db27eb75c73f85f6de2c85449064a077"
+    }
+  ],
+  "generator_primary_metadata_sha256": "993fbcb35016159d73cafca27ba3ee84f8bc7195ca5cefe79d07eb3d4f427d71",
+  "maintained_changes": false,
+  "schema": "gsip-deterministic-empty-r-class-and-jar-facts-v1"
+}

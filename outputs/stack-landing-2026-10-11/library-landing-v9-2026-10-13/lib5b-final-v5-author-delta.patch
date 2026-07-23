@@ -1,0 +1,221 @@
+--- a/pipeline/node_exchange_simulator.py
++++ b/pipeline/node_exchange_simulator.py
+@@ -601,6 +601,17 @@
+                 )
+                 _require(owner["science"] == (event["kind"] == "declare"))
+         _require(set(snap.blobs) == set(data["blob_owners"]))
++        expected_binding_keys = {
++            role + "/" + _stream_key(event["slot"]["stream"]) + "/" + event["measurement"]
++            for event in data["events"].values()
++            if event["kind"] == "declare"
++            for role in ("source", "recipient")
++            if event[role + "_blob"] is not None
++        }
++        # The binding map is an index over complete retained declaration facts,
++        # never optional caller authority. Repeats share one key; erased roles
++        # retain slot/digest facts without retaining a scientific binding.
++        _require(set(data["bindings"]) == expected_binding_keys)
+         for key, binding in data["bindings"].items():
+             _require(
+                 type(binding) is dict
+@@ -618,6 +629,7 @@
+             linked = references.get(binding["blob_id"], [])
+             _require(len(linked) == 1)
+             role, event = linked[0]
++            _require(binding["stream"] == _stream_key(event["slot"]["stream"]))
+             _require(
+                 (role, event["kind"], event["group"], event["sample"], event["measurement"])
+                 == (
+--- a/tests/test_node_exchange_simulator.py
++++ b/tests/test_node_exchange_simulator.py
+@@ -18,7 +18,7 @@
+ 
+ import pipeline.node_exchange_simulator as module
+ import pipeline.node_exchange_store as store_module
+-from pipeline.node_exchange import prepare_node_exchange_event
++from pipeline.node_exchange import NodeExchangeDeclaration, prepare_node_exchange_event
+ from pipeline.node_exchange_simulator import (
+     BACKOFF_SECONDS,
+     CLAIM_RECOVERY_SECONDS,
+@@ -1924,3 +1924,170 @@
+         "quotas",
+     ):
+         assert after[collection] == before[collection]
++
++
++@pytest.mark.parametrize(
++    "corruption",
++    [
++        "all_missing",
++        "source_missing",
++        "recipient_missing",
++        "source_other_stream",
++        "recipient_other_stream",
++        "both_unknown_stream",
++    ],
++)
++@pytest.mark.parametrize("boundary", ["open", "existing_use", "existing_admission"])
++def test_live_binding_coverage_and_reference_stream_hold_corrupt_state(
++    sim: SyntheticExchangeSimulator, corruption: str, boundary: str
++) -> None:
++    original = stage(sim)
++    original_raw = raw_for(sim, original.event_id)
++    assert sim.receive_event(original_raw).status == "stored"
++    assert sim.payload_status(original.event_id) == "available_for_synthetic_simulation"
++    root = sim._store.root
++    original_image = json.loads((root / "state.json").read_bytes())
++    image = copy.deepcopy(original_image)
++    bindings = image["data"]["bindings"]
++    if corruption == "all_missing":
++        bindings.clear()
++    elif corruption.endswith("missing"):
++        role = corruption.split("_")[0]
++        for key in tuple(bindings):
++            if bindings[key]["role"] == role:
++                del bindings[key]
++    else:
++        target_role = None if corruption == "both_unknown_stream" else corruption.split("_")[0]
++        replacement_stream = (
++            "/".join((uid(901), uid(902), uid(903)))
++            if target_role is None
++            else "/".join((SOURCE, RECIPIENT, OTHER_SCOPE))
++        )
++        for key in tuple(bindings):
++            value = bindings[key]
++            if target_role is None or value["role"] == target_role:
++                del bindings[key]
++                value["stream"] = replacement_stream
++                bindings[value["role"] + "/" + replacement_stream + "/" + value["measurement"]] = (
++                    value
++                )
++    assert image["blobs"] == original_image["blobs"]
++    assert {key for key in image["data"] if image["data"][key] != original_image["data"][key]} == {
++        "bindings"
++    }
++    (root / "state.json").write_text(json.dumps(image, sort_keys=True, separators=(",", ":")))
++    with pytest.raises(SyntheticExchangeError) as error:
++        if boundary == "open":
++            reopen(sim)
++        elif boundary == "existing_use":
++            sim.payload_status(original.event_id)
++        else:
++            wire = json.loads(original_raw)
++            wire.update(event_id=uid(910), stream_sequence=1, previous_event_sha256=original.sha256)
++            wire["payload"]["measurement"]["mean_rgb"][0] += 0.01
++            sim.receive_event(json.dumps(wire, separators=(",", ":")).encode())
++    fixed(error)
++    # Refusal is not a repair or a successful admission; no quota/head/payload fact
++    # is rewritten, and the explicitly controlled fictional corruption remains.
++    assert json.loads((root / "state.json").read_bytes()) == image
++
++
++@pytest.mark.parametrize("draft", [False, True])
++def test_source_only_draft_binding_is_required_before_reopen(
++    sim: SyntheticExchangeSimulator, draft: bool
++) -> None:
++    original = stage(sim, draft=draft)
++    assert reopen(sim).counts()["queued_declarations"] == 1
++    root = sim._store.root
++    image = json.loads((root / "state.json").read_bytes())
++    assert len(image["data"]["bindings"]) == 1
++    image["data"]["bindings"].clear()
++    (root / "state.json").write_text(json.dumps(image, sort_keys=True, separators=(",", ":")))
++    with pytest.raises(SyntheticExchangeError) as error:
++        reopen(sim)
++    fixed(error)
++    assert image["data"]["events"][original.event_id]["recipient_admitted"] is False
++
++
++def test_repeated_measurement_shares_complete_binding_and_partial_erasure_keeps_recipient(
++    sim: SyntheticExchangeSimulator,
++) -> None:
++    first, second = stage(sim), stage(sim)
++    assert sim.receive_event(raw_for(sim, first.event_id)).status == "stored"
++    assert sim.receive_event(raw_for(sim, second.event_id)).status == "stored"
++    opened = reopen(sim)
++    assert len(facts(opened)["bindings"]) == 2
++    assert len(facts(opened)["events"]) == 2
++    assert opened.payload_status(first.event_id) == "available_for_synthetic_simulation"
++    assert opened.payload_status(second.event_id) == "available_for_synthetic_simulation"
++    opened.withdraw_original(HUMAN, SAMPLE)
++    partial = facts(reopen(opened))
++    assert {value["role"] for value in partial["bindings"].values()} == {"recipient"}
++    assert opened.process_batch(FakeTransport())["completed"] == 1
++    erased = facts(reopen(opened))
++    assert erased["bindings"] == {} and erased["blob_owners"] == {}
++    assert erased["source_slots"] and erased["recipient_slots"] and erased["refusals"]
++
++
++def test_gapped_recipient_binding_and_draft_recovery_remain_complete(
++    sim: SyntheticExchangeSimulator,
++) -> None:
++    first = stage(sim, draft=True)
++    second = stage(sim)
++    assert sim.receive_event(raw_for(sim, second.event_id)).status == "stored"
++    assert facts(sim)["events"][second.event_id]["gapped"] is True
++    opened = reopen(sim)
++    assert len(facts(opened)["bindings"]) == 2
++    assert opened.payload_status(second.event_id) == "held"
++    assert opened.receive_event(raw_for(opened, first.event_id)).status == "stored"
++    assert reopen(opened).payload_status(second.event_id) == "available_for_synthetic_simulation"
++
++
++@pytest.mark.parametrize("role", ["source", "recipient"])
++def test_live_binding_cannot_reference_equal_aliases_in_another_valid_stream(
++    sim: SyntheticExchangeSimulator, monkeypatch: pytest.MonkeyPatch, role: str
++) -> None:
++    first = stage(sim)
++    first_raw = raw_for(sim, first.event_id)
++    parsed = prepare_node_exchange_event(first_raw).event
++    assert isinstance(parsed, NodeExchangeDeclaration)
++    # Different streams may use the same opaque sample/measurement handles. Force
++    # that allowed collision through the ordinary stage API, with distinct event
++    # and blob UUIDs, so only the referenced stream guard detects the corruption.
++    ids = iter(
++        (
++            parsed.payload.sample_handle,
++            parsed.payload.measurement_handle,
++            UUID(uid(920)),
++            UUID(uid(921)),
++        )
++    )
++    with monkeypatch.context() as scoped:
++        scoped.setattr(module, "uuid4", lambda: next(ids))
++        second = stage(sim, OTHER_SCOPE)
++    assert sim.receive_event(first_raw).status == "stored"
++    assert sim.receive_event(raw_for(sim, second.event_id)).status == "stored"
++    assert reopen(sim).counts()["independent_fake_samples"] == 1
++    root = sim._store.root
++    image = json.loads((root / "state.json").read_bytes())
++    first_binding = next(
++        value
++        for value in image["data"]["bindings"].values()
++        if value["role"] == role and value["stream"].endswith("/" + SCOPE)
++    )
++    second_binding = next(
++        value
++        for value in image["data"]["bindings"].values()
++        if value["role"] == role and value["stream"].endswith("/" + OTHER_SCOPE)
++    )
++    assert (first_binding["sample"], first_binding["measurement"], first_binding["group"]) == (
++        second_binding["sample"],
++        second_binding["measurement"],
++        second_binding["group"],
++    )
++    first_binding["blob_id"] = second_binding["blob_id"]
++    (root / "state.json").write_text(json.dumps(image, sort_keys=True, separators=(",", ":")))
++    with pytest.raises(SyntheticExchangeError) as error:
++        reopen(sim)
++    fixed(error)
++    assert json.loads((root / "state.json").read_bytes()) == image
+--- a/docs/LIBRARY_EXCHANGE_SIMULATOR.md
++++ b/docs/LIBRARY_EXCHANGE_SIMULATOR.md
+@@ -77,6 +77,8 @@
+ 
+ Recipient heads derive exclusively from recipient-admitted slot facts; source facts never manufacture receipt of missing declarations. Identity/byte/scientific conflicts hold the stream. Current authenticated fake retirement is processed before gaps or slot conflict so an older declaration cannot revive a refused alias. Retirement is sample-wide even when its measurement list is empty. Known same-human aliases inherit the refusal and cover source/recipient declaration bytes, drafts and every registered preparation; working alias/binding mappings are removed after erasure, while minimal refusals and private sequence/digest metadata survive.
+ 
++Every open and operation checks the complete role/stream/measurement binding-key set against retained declaration event/blob facts. Each binding must reference a declaration in its actual admitted stream with the same role, lineage, sample and measurement. Missing or redirected index entries hold the root generically before admission or use; the simulator does not silently repair contradictory metadata or treat omitted prior facts as authority. Identical repeated measurements share one binding per role and stream. Drafts and gapped recipient declarations remain covered; erased payload roles require no scientific binding, while their minimal slot/digest facts remain. This validates controlled corruption of fictional metadata, not a claim of authenticated storage, rollback detection or an ordinary API route that produces such corruption.
++
+ Every delivered retirement passes the same exact identity and recipient-slot checks, including after another scope's cleanup has erased the working aliases. Retained original/event and refusal facts bind that erased alias to its known scope/sample; all listed measurement handles still need durable refusal coverage. Valid recipient retirement slots persist without scientific payload or a fabricated source role, so later unrelated samples can follow the delivered retirement predecessor normally. Exact-byte cleanup retries remain bound to the original event/digest after all cleanup bytes are deleted; changed-byte/event/slot retries cannot acknowledge absence.
+ 
+ A genuinely missing predecessor leaves the retirement slot gapped without inventing a recipient head. Consecutively validated later arrivals can advance only through their exact predecessors. A known contradictory predecessor or successor is checked on a candidate: its proposed role/event/slot/head changes are discarded, the scope is held for conflict, and canonical refusals and rights erasure remain effective. A refused late scientific declaration does not become an admitted predecessor merely because source facts exist; any remaining gap stays held. Current separate cleanup permission and logical/metadata capacity reservation still precede receipt or absence acknowledgment. A refusal activates the existing affected scope fences and preserves the exact unresolved cleanup intent.

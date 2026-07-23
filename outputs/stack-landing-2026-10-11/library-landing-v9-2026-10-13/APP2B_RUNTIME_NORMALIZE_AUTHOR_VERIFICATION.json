@@ -1,0 +1,164 @@
+{
+  "assumptions": [
+    "normalizer is per configuration and retains first occurrence order",
+    "typed identity is canonical JSON of validated coordinate or project field; no new exported identifier/path",
+    "every occurrence reuses all original descriptor/ZIP/evidence operations before comparison",
+    "retained local path/proof evidence does not identify actual failed hosted values"
+  ],
+  "authored_scan": {
+    "config_exact_base": true,
+    "exit": 0,
+    "findings": 0,
+    "scope": "exact three changed files; no full-history claim",
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "version": "8.21.2"
+  },
+  "base": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "combined_module": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 30,
+    "tests": 779,
+    "xml_sha256": "340ea61a07767f3b1bf65f720b52f263703413568a3abd1b601a6f129a8e2d77"
+  },
+  "eslint": {
+    "all_project_files": true,
+    "exit": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "temporary_readonly_installed_dependency_lookup_removed": true,
+    "version": "10.11.0"
+  },
+  "fail_before_corrected_fixture": {
+    "errors": 0,
+    "failures": 22,
+    "skipped": 0,
+    "tests": 40,
+    "xml_sha256": "3d32b2a73baa2645b47c781c94b076d52781b7b9eca9357fa2235ddfee203ce4"
+  },
+  "first_fixture_failures_preserved": {
+    "cause": "new module-only fixture omitted nonempty project proof required by unchanged finalvalidator",
+    "correction": "only appended fixture now has valid project evidence in both modes; target artifact remains last; no production guard weakened",
+    "first_baseline": {
+      "errors": 0,
+      "failures": 27,
+      "skipped": 0,
+      "tests": 40,
+      "xml_sha256": "e5a4ae48d833eb9b4ad7cca3aff9674b9d328ffaddede0855fe173ef3178e7c0"
+    },
+    "first_candidate": {
+      "errors": 0,
+      "failures": 11,
+      "skipped": 0,
+      "tests": 40,
+      "xml_sha256": "a624b4c792a9f0009f886b4f32a4c0c36fe72d4f1c6c25fa84df9f1e30d7b4a1"
+    }
+  },
+  "frozen_source_receipt_sha256": "465f31605012187b1c9212506fed573a4e9c75e22939e24a378c772b04561a35",
+  "full_mypy": {
+    "exit": 0,
+    "files": 75,
+    "sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c"
+  },
+  "historical_local_evidence_sha256": "a631eed58db393cc982bb0f255840482d0deea9ed313f77b0deff905aba069a7",
+  "language": {
+    "exit": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mutations": [
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 22,
+      "name": "restore_original_collector",
+      "source_sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee",
+      "tests": 40,
+      "xml_sha256": "71a7e024c1758d7ae8899888171f6d970aafbf7dda53a6e0fb39ad9e402e4b65"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 2,
+      "name": "ignore_conflicting_canonical_file",
+      "source_sha256": "ae48b2e07ac663766fa603a2cf5f6ea136581492e808038fb10a773d1bf2a059",
+      "tests": 40,
+      "xml_sha256": "55d50d42072cd869a7a216c1e79bfc56b19497b5536a02fba964a502d9313e33"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 6,
+      "name": "ignore_changed_complete_proof",
+      "source_sha256": "c9c87427bafd1aca3bdc0235f2437edd69bf31bf5c5c520de2fa849b572baa8b",
+      "tests": 40,
+      "xml_sha256": "24302d766e27d88a954dc932c1f7cb13b96e53c6fd89f4301793be0a21ff02f3"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 22,
+      "name": "skip_repeat_before_zip_descriptor_proof",
+      "source_sha256": "11d02c13a7fe9dadcc75860c3a73a023d86a973b540ef8d3fd5a6de4b3e17d89",
+      "tests": 40,
+      "xml_sha256": "dafb7c4e0d23bf659d04b05c498e7acf410b24cbc15dbc209dad65a781b7641f"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 22,
+      "name": "share_seen_map_across_configurations",
+      "source_sha256": "bb62c5248164b8fe682bc7cb4cd4e04850b68fa05512a2423d9709c1832ed94c",
+      "tests": 40,
+      "xml_sha256": "9d1a576fb159dd37fd825d261334c3e3f931b31604e418a49638369605aa19d1"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 6,
+      "name": "collapse_distinct_filenames",
+      "source_sha256": "d93d43b5e2ee2047d5ac29b7b60654738b59e64f8e5e0aef373320cf3d9bc671",
+      "tests": 40,
+      "xml_sha256": "691aa509bddd0ee25974801a129b1dfde0f1bb321eef671a2ff1352477ec4c76"
+    },
+    {
+      "errors": 0,
+      "exit": 1,
+      "failures": 4,
+      "name": "remove_final_validator_duplicate_rejection",
+      "source_sha256": "203582b11ec656372061e373966b1caf573978e7c2f25e26b990c274acf62dc9",
+      "tests": 40,
+      "xml_sha256": "2378bdf2c9fe0de7b6df531e2382526637c17503562bf0f42dd6d1c756f395b6"
+    }
+  ],
+  "new40": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 40,
+    "xml_sha256": "79ee49fb6bb47d64047c27fd7658f264bc159961ba186fb4b6d41ba3f0688b9b"
+  },
+  "no_native_key_APK_build_Git_sharedsource_production_operation": true,
+  "preserved_diagnostic_bank": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 43,
+    "xml_sha256": "77835ad87d06f55f04f68090868000396fadeb259251cad6ac186581406f9ca8"
+  },
+  "prettier": {
+    "all_project_files": true,
+    "exit": 0,
+    "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "version": "3.9.9"
+  },
+  "ruff": {
+    "exit": 0,
+    "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  },
+  "schema": "gsip-runtime-normalizer-author-verification-v1",
+  "source_hashes_reverified": true,
+  "unverified": [
+    "fresh corrected hosted native artifact and complete feature comparison acceptance",
+    "actual failed623hostedduplicatevalues",
+    "device/store/legal/calibration/production gates"
+  ]
+}

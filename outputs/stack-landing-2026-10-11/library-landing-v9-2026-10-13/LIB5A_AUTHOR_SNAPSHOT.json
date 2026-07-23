@@ -1,0 +1,9 @@
+{
+  "base": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+  "root": "/private/tmp/gsip-lib5a-author-26f0hwio",
+  "source": "/private/tmp/gsip-lib5a-author-26f0hwio/source",
+  "base_snapshot": "/private/tmp/gsip-lib5a-author-26f0hwio/base",
+  "archive_sha256": "5c0fdda9ba2fb39fa47a5250d3577c709352c7c80f04fd06b78646bbd988dabd",
+  "synthetic_only": true,
+  "Git_metadata": false
+}

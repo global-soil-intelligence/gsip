@@ -1,0 +1,14 @@
+{
+  "head": "06902edf36810c55e51b169dcb813e81b22206b0",
+  "parent": "de9d1221b7c73e9be5c7e25ccaa24dcfa7903934",
+  "tracked_files": 374,
+  "frozen_manifest_sha256": "d87d1f26f18a2be15e28b4f82e4a9dde553fcd117866c912a94aa1d733659e10",
+  "commit_metadata_verified": true,
+  "gitleaks_version": "8.21.2",
+  "nonshallow": true,
+  "all_refs": true,
+  "redacted": true,
+  "findings": 0,
+  "ignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5",
+  "config_sha256": "e846bacbb1ce5c41f571a10cdaf0e1fde7bfa399fc5c876480b57124059cc760"
+}

@@ -1,0 +1,172 @@
+{
+  "acceptance": {
+    "combined_native_acceptance": false,
+    "production_capture_device_iOSbackup_legal_store_acceptance_claimed": false,
+    "source_PR_ready_or_merge_claimed": false
+  },
+  "actual_checkout": "627d85a5874c355c76925452d04a3891f195f9e9",
+  "android_conclusion": "failure",
+  "android_job_id": 115643736754,
+  "artifact": {
+    "APK_permission_version_backup_readback_executed": false,
+    "download_attempts": 0,
+    "fresh_Android_artifact_present": false,
+    "old_artifact_or_old_proof_substituted": false,
+    "strict_artifact_replay_executed": false
+  },
+  "at": "2026-10-14T02:24:54.521630+00:00",
+  "authority": {
+    "GH_GET_only": true,
+    "local_native_build_signing_key_or_real_APK_execution": false,
+    "raw_logs_arbitrary_stderr_key_coordinate_or_compiled_values_persisted": false,
+    "shared_source_Git_GH_PR_CI_production_mutations": false
+  },
+  "candidate_steps1through18": "success",
+  "checkout_parents": [
+    "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+    "623a91aa50f06e2dd894e656b30ea0c17c2481c3"
+  ],
+  "current_source_inputs_verified": 9,
+  "entire_checkout_tree_exact_head": true,
+  "evidence": {
+    "EXACT_SOURCE_PARENT_BINDING.json": {
+      "bytes": 6539,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/EXACT_SOURCE_PARENT_BINDING.json",
+      "sha256": "51ef19a0cb5aa758d58274cf818d66ad258175540c94f87d59890f3658e7a746"
+    },
+    "EXISTING_AAPT2_TOOL_BINDING.json": {
+      "bytes": 692,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/EXISTING_AAPT2_TOOL_BINDING.json",
+      "sha256": "13ab64e980da500df34f542805112504003fe5d627dd8bf43dc8f45c3bba11ff"
+    },
+    "FAILURE_SIDE_PRECISION_CLARIFICATION.json": {
+      "bytes": 1196,
+      "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/FAILURE_SIDE_PRECISION_CLARIFICATION.json",
+      "sha256": "00c06756651d6fb8d10c593040574146dcb0961ce5ea1f7146e63c7540d77b3e"
+    },
+    "FIXED_FAILURE_SOURCE_LOCATION.json": {
+      "bytes": 545,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/FIXED_FAILURE_SOURCE_LOCATION.json",
+      "sha256": "b3dd893a53640c3365db880d8c811afe6419ea2714022b8629d01693736d5338"
+    },
+    "METADATA_20261014T022205Z.json": {
+      "bytes": 7589,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/METADATA_20261014T022205Z.json",
+      "sha256": "2e63f3a25d559d377b619f0ccb05e0004643da28af8d59107c222e36f2a901a4"
+    },
+    "PRIVATE_AAPT2_INITIAL_STREAM_CHECK.json": {
+      "bytes": 466,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/PRIVATE_AAPT2_INITIAL_STREAM_CHECK.json",
+      "sha256": "4b406ce797991bf022162b8fa2fce5504785e4daac4902e8d03da3ebaee1009d"
+    },
+    "PRIVATE_AAPT2_VERSION_PROBE.json": {
+      "bytes": 794,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/PRIVATE_AAPT2_VERSION_PROBE.json",
+      "sha256": "d8b91b729320d07f1beaec39d8daa284a5cf1a3802c30b35085dfdffa63d2d0f"
+    },
+    "SAFE_ANDROID_TERMINAL_LOG.json": {
+      "bytes": 942,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/SAFE_ANDROID_TERMINAL_LOG.json",
+      "sha256": "2a72ecb7315d6852e3c4d82de883e4d6c393451d4636ef05635869604b0c1ec3"
+    },
+    "WATCH_CONFIG.json": {
+      "bytes": 479,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/WATCH_CONFIG.json",
+      "sha256": "e1eda0e0dddf568b2518cc647d8d4e785851c473424c23bb39e1217f06497afd"
+    },
+    "bind_source.py": {
+      "bytes": 4011,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/bind_source.py",
+      "sha256": "d36991f7de9111d91b740f84bf4f094cbf3d7e806727ee0a388d18d5c1a52f79"
+    },
+    "extract_safe_terminal_log.py": {
+      "bytes": 4958,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/extract_safe_terminal_log.py",
+      "sha256": "3ccdffbd2d804c5ac8e40a43881e99ea68c5b1821a986145c9855c06d4d00e7c"
+    },
+    "replay_apk_metadata_policy.py": {
+      "bytes": 6517,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/replay_apk_metadata_policy.py",
+      "sha256": "743394a80dee558865adcd9a90cb524ec9f8ff3145ae4491da41faca0e785f24"
+    },
+    "snapshot.py": {
+      "bytes": 2099,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/snapshot.py",
+      "sha256": "848868dff532214729e82e3457cbee0955c93370eb777e93daf650eccfd48ade"
+    },
+    "verify_fresh_android_artifact.py": {
+      "bytes": 13707,
+      "path": "/private/tmp/gsip-app-623-android-watch-wg_xfcw0/verify_fresh_android_artifact.py",
+      "sha256": "642404838ad2fda3d0a572a6feac462c3dc119b8c0668de21f7c6b16bc0f1b6f"
+    }
+  },
+  "exact_parent": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "failure_source_location": {
+    "Gradle_success_messages": 4,
+    "actual_side_configuration_identity_filename": "unavailable; not inferred from source iteration order",
+    "cause_or_remedy_inferred": false,
+    "function": "validate_android",
+    "guard_condition": "(identity, filename) in identities",
+    "guard_source_lines": [
+      2508,
+      2509
+    ],
+    "native_collector_success_messages": 2,
+    "operation": "final feature comparison native validation",
+    "shell_step": 19,
+    "shell_step_name": "Build the exact APP-2B parent in an isolated checkout",
+    "source_line": 2509
+  },
+  "head": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "helper_sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee",
+  "job_link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38499781969/job/115643736754",
+  "local_tool": {
+    "hosted800_value_inferred": false,
+    "official_distribution_archive_provenance": "unavailable; installed presence/bytes only",
+    "public_version": "Android Asset Packaging Tool (aapt) 2.19-11948202",
+    "tool_sha256": "729a6a8deba828992c50cb448d4ef3947003ec5a0d1deead7534897c8fc3486f",
+    "version_only_read_executed": true
+  },
+  "log": {
+    "bytes": 152510,
+    "persisted": false,
+    "sha256": "dd2fcc87be752a04ea3ea44445aafcc6ce02d89e9f1e02eaec5f8a893006c1cc"
+  },
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "old800_precision_clarification": {
+    "original_receipt_preserved": true,
+    "path": "/private/tmp/gsip-app-800-android-watch-tj09yrp9/FAILURE_SIDE_PRECISION_CLARIFICATION.json",
+    "sha256": "00c06756651d6fb8d10c593040574146dcb0961ce5ea1f7146e63c7540d77b3e"
+  },
+  "parent_committed_inputs_verified": 6,
+  "parent_final_comparison_step19": "failure",
+  "primary_generated_inputs_verified": 3,
+  "recoveries": [
+    "Initial watch invocation used a mistyped temporary directory and stopped before network or source activity; corrected to actual newly created directory.",
+    "Existing aapt2 version-only wrapper first assumed stdout; the public tool writes version to stderr. Recorded stream hashes and used combined streams consistent with existing app_build.command; no arbitrary output persisted.",
+    "Prepared current artifact/metadata drivers were never executed because Android upload was skipped.",
+    "Preserved clarification corrects old800 failure-side specificity; fixed guard and unavailable captured tool string remain unchanged."
+  ],
+  "remaining": [
+    "Determine actual repeated runtime-binary identity/filename context without weakening source/provenance/completeness rules.",
+    "Fresh corrected-head Android artifact/source/reference/repeat/native/license/permission proof unavailable.",
+    "Independent iOS/general checks owned separately."
+  ],
+  "run_attempt": 1,
+  "run_conclusion": "failure",
+  "run_id": 38499781969,
+  "run_link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38499781969",
+  "run_number": 54,
+  "safe_failure": [
+    {
+      "counts": {},
+      "error_class": "AUDIT_REFUSAL",
+      "source_line": 2509,
+      "stage": "feature-comparison"
+    }
+  ],
+  "schema": "gsip-independent-exact-623-Android-terminal-closure-v1",
+  "status": "ANDROID_FAILED_FINAL_NATIVE_COMPARISON_NO_ARTIFACT",
+  "upload20": "skipped",
+  "workflow_sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+}

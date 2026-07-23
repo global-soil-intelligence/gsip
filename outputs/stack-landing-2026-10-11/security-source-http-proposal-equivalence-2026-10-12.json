@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "target_head": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "comparisons": [
+    {
+      "owner": "wp6b",
+      "source_path": "supabase/migrations/20261012141828_wp6b_invoker_boundary.sql",
+      "source_sha256": "afe4f698989729bd456fe763582f93042f58bf66a271704cdaa1c556eeb124d6",
+      "proposal_sha256": "3951511127e88dcb79d71e64fbb259e15f923f02df101944b7515ab80041e929",
+      "sql_tokens_and_quoted_function_bodies_match": true
+    },
+    {
+      "owner": "wp6d",
+      "source_path": "supabase/migrations/20261012142348_wp6d_private_rights_boundary.sql",
+      "source_sha256": "27c0b1ae001351358b6a56490bc1389d1075dd62cbd6ffc4e6250943fa507260",
+      "proposal_sha256": "483b5985e3d7464ad5f53db8d8d5aeddd728659128c93b44190b9a29203b1f4b",
+      "sql_tokens_and_quoted_function_bodies_match": true
+    }
+  ],
+  "normalization": "Remove full-line comments and whitespace outside quoted strings/dollar bodies only; preserve all quoted values and function bodies exactly.",
+  "http_repeat_needed": false,
+  "reason": "Source differs only in unexecuted comments and SQL token spacing from the independently HTTP-tested owner-split proposal effects.",
+  "production_operations": []
+}

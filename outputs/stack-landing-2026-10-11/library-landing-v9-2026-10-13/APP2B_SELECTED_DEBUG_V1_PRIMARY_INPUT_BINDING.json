@@ -1,0 +1,68 @@
+{
+  "assets": {
+    "android-template.tar.gz": {
+      "bytes": 217371,
+      "reviewed_members": {
+        "app/build.gradle": {
+          "bytes": 2140,
+          "sha256": "b3a3835e3c6bf4b146ff224daa41b1de758aeba73ab52b030169f287f8d7953c"
+        },
+        "build.gradle": {
+          "bytes": 637,
+          "sha256": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9"
+        },
+        "gradle.properties": {
+          "bytes": 987,
+          "sha256": "3bab15c5b8bc4c2f4b6cf525497d15ad4abca53a460e6dd2eb0f0135817d31e6"
+        },
+        "settings.gradle": {
+          "bytes": 208,
+          "sha256": "6ce098d15ebd69b44c4ecd786bca1bdc366340d2459b2af4d7bb0ab317aa9669"
+        },
+        "variables.gradle": {
+          "bytes": 498,
+          "sha256": "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88"
+        }
+      },
+      "sha256": "5edb50a67a034556da8bb5fa54eb08211eaa952aac0949c75050ebcf0be97303"
+    },
+    "capacitor-cordova-android-plugins.tar.gz": {
+      "bytes": 926,
+      "reviewed_members": {
+        "build.gradle": {
+          "bytes": 1634,
+          "sha256": "b05a25c58e19bb0874313f4b81421db5fced6ef3eae6a9db48f8fbc0f5b828ca"
+        }
+      },
+      "sha256": "c9fa746751c74e786878e40b073fd3854c772b26716663cabbd8ebb874e39ba9"
+    }
+  },
+  "controlled_generated_scope": {
+    "app/capacitor.build.gradle": [
+      "1e9853951237c6f0ea40553502bcb30397bdcc15ad79841546e9165e479624f1",
+      "74310abc26144419455c1e6ff2e38dac2d3d476ab9e00671de009eaedea810de"
+    ],
+    "build.gradle": [
+      "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9"
+    ],
+    "capacitor-cordova-android-plugins/cordova.variables.gradle": [
+      "b13104b34f7738abceec358ae8226ba5e64855e97babde54a115880e9b9bd47b"
+    ],
+    "gradle.properties": [
+      "3bab15c5b8bc4c2f4b6cf525497d15ad4abca53a460e6dd2eb0f0135817d31e6"
+    ],
+    "settings.gradle": [
+      "6ce098d15ebd69b44c4ecd786bca1bdc366340d2459b2af4d7bb0ab317aa9669"
+    ],
+    "variables.gradle": [
+      "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88"
+    ]
+  },
+  "existing_CLI_package_license": "MIT",
+  "existing_CLI_package_version": "8.5.2",
+  "no_new_dependency_or_version": true,
+  "normalized_app_template_sha256": "a3bc1ec0e644b04050e9a3feeeea83119347987340252fea311fe0907823d3f9",
+  "package_json_sha256": "bad0fbf5d81a6e677cc98d64bc5c59872e8a77f6966d13e38392ffedda345504",
+  "public_AGP_API_jar_sha256": "3fec7962a3109f0a6b0b6e27c89ffcee75c88096263f1910d475f2e3b515757e",
+  "public_AGP_API_receipt_sha256": "039894686fe1101b80bd1d5ab250321b9a9024a88bf34ced32544cdc84148681"
+}

@@ -1,0 +1,148 @@
+{
+  "status": "Finite exact-head general CI and fresh iOS artifact verification completed; combined native acceptance blocked by Android failure.",
+  "observed_end_utc": "2026-10-13T20:08:32.088000+00:00",
+  "source_head": "1deb13d193702ac1e759def3ed7dcfa777f9e2b5",
+  "all_six_checks_terminal": true,
+  "general_ci": {
+    "run_id": 38457750412,
+    "job_id": 115504728053,
+    "conclusion": "success",
+    "successful_steps": 34,
+    "javascript_tests": 597,
+    "javascript_files": 44,
+    "browser": [
+      {
+        "passed": 12,
+        "seconds": 15.3
+      }
+    ],
+    "python": [
+      {
+        "passed": 1487,
+        "skipped": 0,
+        "warnings": 37,
+        "seconds": 147.42
+      }
+    ],
+    "pgTAP": [
+      {
+        "files": 11,
+        "tests": 593
+      }
+    ],
+    "deno_checked_entrypoints": 2,
+    "GDAL_required_flag_observed": true,
+    "migration_existing_data_step_succeeded": true,
+    "migration_numeric_case_count": null,
+    "raw_logs_persisted": false
+  },
+  "secret_scans": [
+    {
+      "event": "pull_request",
+      "run_id": 38457750471,
+      "job_id": 115504728378,
+      "conclusion": "success",
+      "no_leaks_literal_observed": true,
+      "version_8_21_2_token_observed": true,
+      "log_bytes": 21883,
+      "log_sha256": "e99ea8fde0fa0965e31508765452fe150dd4947d50f19851fda5a6f9aa992ab6",
+      "raw_log_persisted": false
+    },
+    {
+      "event": "push",
+      "run_id": 38457744937,
+      "job_id": 115504708802,
+      "conclusion": "success",
+      "no_leaks_literal_observed": true,
+      "version_8_21_2_token_observed": true,
+      "log_bytes": 20566,
+      "log_sha256": "ca5778421140423e32f44dcd6ef8e1b58abc43a57f8aa90fdea69ca0bac7ed9b",
+      "raw_log_persisted": false
+    }
+  ],
+  "DCO": {
+    "run_id": 38457750398,
+    "job_id": 115504729898,
+    "conclusion": "skipped",
+    "policy": "unchanged same-repository policy; skip is not pass"
+  },
+  "native_run": {
+    "id": 38457750424,
+    "run_number": 45,
+    "ios_job": 115504729468,
+    "ios_conclusion": "success",
+    "ios_successful_steps": 26,
+    "android_job": 115504729121,
+    "android_conclusion": "failure",
+    "android_failed_step": 18,
+    "android_cause": "outside this observer scope; root/native author handles diagnostics",
+    "combined_acceptance": false
+  },
+  "fresh_ios_artifact": {
+    "id": 11843939345,
+    "bytes": 13914603,
+    "sha256": "20a7f2e0038999ec1b76f965b0504653fac6e3bc82470f1d1a8100f1fb7c9aa2",
+    "required_files": 9,
+    "four_nested_zip_bounds": "pass",
+    "d74_archive_reused": false
+  },
+  "ios_source_binding": {
+    "head": "1deb13d193702ac1e759def3ed7dcfa777f9e2b5",
+    "merge_checkout": "e7f0f3c0f2a63a374007450c8f3a30cdf9454eb1",
+    "merge_parents": [
+      "710d144db94097be71989c67b5d3b4bb48135ad8",
+      "1deb13d193702ac1e759def3ed7dcfa777f9e2b5"
+    ],
+    "merge_tree_sha": "446469536c15252bc251f1643870c469e06b6a3b",
+    "source_files_blob_bound": 8,
+    "dco_job": {
+      "conclusion": "skipped",
+      "head_sha": "1deb13d193702ac1e759def3ed7dcfa777f9e2b5",
+      "id": 115504729898,
+      "run_id": 38457750398,
+      "status": "completed"
+    },
+    "dco_skip_is_not_pass": true,
+    "get_only": true,
+    "raw_responses_persisted": false
+  },
+  "ios_strict_replay": {
+    "helper_sha256": "25c648dea41a51a8dcd076f61419b2b94a350c279c4d0f465059451cbf13bdd8",
+    "retained_comparison_json_sha256": "e032885ae1f8d63ab324a2605090fa4601f940d0c7c165e1b6bdaec85eb08cb8",
+    "dictionary_equal": true,
+    "serialized_bytes_equal": true,
+    "parent_source": "d7ed716ed0921381da04f542e90902ede36cb462",
+    "candidate_merge_checkout": "e7f0f3c0f2a63a374007450c8f3a30cdf9454eb1",
+    "both_build_receipts_exact_13_fields": "pass",
+    "native_sidecar_four_pins_source_archive_binary_and_license_fields": "pass",
+    "frozen_locks_and_source_inputs": "pass",
+    "actual_reference_hash_binding_and_repeat_recomputation": "pass",
+    "false_activation_receipts": "pass",
+    "same_actual_parent_candidate_toolchain_run_versions": "pass",
+    "repeat_results": {
+      "parent": {
+        "byte_equal": false,
+        "entry_content_equal": true
+      },
+      "candidate": {
+        "byte_equal": false,
+        "entry_content_equal": true
+      }
+    },
+    "parent_zip_bytes": 3424154,
+    "candidate_zip_bytes": 3593953,
+    "overall_APP2B_zip_delta_bytes": 169799,
+    "plugin_isolated_overhead_claimed": false
+  },
+  "manifest": "/private/tmp/gsip-app1deb-ci-ios-watch-9nl80md2/exact-head-ci-ios-manifest.json",
+  "manifest_sha256": "16b6b9cce328119b86367b3110ef91ebb85a3893fce357c63e6af923c148d77b",
+  "privacy_and_authority": "Only GET GitHub run/job/check/log/commit/tree/artifact reads and owned temporary source/helpers/evidence. Full logs remained in memory; no raw URLs, bearer/publishable keys, coordinates, compiled strings or private payloads emitted/persisted as logs. No source/Git/PR/CI/dispatch/production/account/signing/device mutations.",
+  "automatic_review_note": "One early metadata action timed out during automatic permission review with no safety finding. Its single permitted smaller bounded retry succeeded; no unresolved permission blocker.",
+  "limitations": [
+    "The actual checkout is authenticated PR merge e7f0f3c... of main710 and exact source1deb, not the branch-head commit alone. Eight fixed source files match merge-tree blobs and artifact source hashes.",
+    "General CI/secret scans and actual iOS artifacts do not clear Android failed acceptance. No new Android hypothesis/fix introduced.",
+    "Both actual repeat ZIPs differ in full bytes even though nondirectory entry bytes match; no universal/cross-runner reproducibility claim.",
+    "Migration compatibility success has no standalone printed numeric case total. GDAL required flag/full Python zero skips observed; individual GDAL case names were not printed by quiet pytest.",
+    "Strict retained license/source proof fields replayed; no independent upstream recompilation, native/device run, iOS backup exclusion, store/signing/field/production readiness inferred."
+  ]
+}

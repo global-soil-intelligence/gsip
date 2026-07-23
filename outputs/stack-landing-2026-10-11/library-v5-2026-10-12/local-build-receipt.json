@@ -1,0 +1,77 @@
+{
+  "branches": {
+    "docs/spec-v5": "eef39896cee6bc09eb3c50429bd9a1d1eb4fe250",
+    "wp-lib-1-private-library": "32f29210d6bfa35a65ec7d8a80fd520f33ff3cd1",
+    "wp-lib-2-phone-optics": "ee25b636d8da2cb7d837a5138a6e4e81eaca83f1",
+    "wp-lib-3-paired-baseline": "19b7d395b77843bb4a40788bd9aac30101028ad7"
+  },
+  "ci_runs": {
+    "42": 38332567235,
+    "43": 38332920944,
+    "44": [
+      38332919353,
+      38332919362
+    ],
+    "45": [
+      38332920544,
+      38332921724
+    ]
+  },
+  "ci_status": "All four PR heads: validate and gitleaks success; DCO skipped by unchanged same-repository policy",
+  "ci_tip_counts": {
+    "pgTAP_assertions": 299,
+    "pgTAP_files": 8,
+    "playwright_desktop_chrome": 12,
+    "pytest": 386
+  },
+  "demo": {
+    "development_rmse": 7.990267290611345e-05,
+    "development_samples": 5,
+    "input_sha256": "7b8902ce95cb35c5cdafe8f792fbed57432be432b8cd4d436002ff105e4f2591",
+    "mode": "synthetic-demo-only",
+    "model_version": "rgb-reflectance-ridge-demo-v1",
+    "numpy_version": "2.4.6",
+    "sample_overlap": 0,
+    "scientific_validation": false,
+    "train_samples": 7
+  },
+  "independent_review": "outstanding",
+  "local_validation": {
+    "capture_app_web_build": "passed",
+    "eslint_language_prettier": "passed",
+    "frozen_dependencies": "passed",
+    "gdal_tests_skipped": 4,
+    "gitleaks": "8.21.2 full history --all --redact,110 commits,no leaks,unchanged approved ignore file",
+    "homepage_budget_bytes": 313574,
+    "homepage_budget_limit": 716800,
+    "map_budget_bytes": 1654727,
+    "map_budget_limit": 5242880,
+    "mypy": "passed,48 source files",
+    "new_tests": 37,
+    "playwright_local": "not run: automatic approval review rejected existing capture-enabled local test build",
+    "python_tests": 382,
+    "ruff": "passed",
+    "typescript": "passed",
+    "web_build": "passed",
+    "web_tests": 307
+  },
+  "main_base": "665506fd7a2e4d972bb9fe03c4faf0f174c4675b",
+  "merges": [],
+  "production_actions": [],
+  "remaining": [
+    "LIB-4 phone and authenticated private hosted intake",
+    "LIB-5 canonical/federated node exchange",
+    "paired calibrated field spectra/lab evidence",
+    "LIB-6 independent reconstruction/assay evaluation",
+    "LIB-7 spectral fingerprinting/privacy review and approved releases"
+  ],
+  "source_sha256": {
+    "docs/BUILD_ORDER.md": "b56b0158fe8421412bc3fd7b0f83e9d956e648a0167030b2f7b3b76b037dd849",
+    "docs/SOIL_LIBRARY.md": "c59daad2ff5fc68e95f503e49fed27b20d964f8a4f7b27db90414a9bf7d4d623",
+    "docs/SPEC.md": "a9633bc535ec6728902b9a043dabe55520d2dd9c3ae912253e1065577774be55",
+    "ml/library_baseline.py": "62c620afb90a49e35a662dfe9908060bb1d4c8bfca5ef0e388ed302277ada4de",
+    "pipeline/library.py": "2675b05ac7a3f6053b70c8e633bd1dd2fdee82be18de5e35816e741101c83930",
+    "pipeline/library_demo.py": "62e99eb7bcbe9d05372c9ac1e4b1cb1103c87845143ce9bac097449281a448ab",
+    "pipeline/phone_optics.py": "129304f38cd9a054adc18cd094221bab714d8563c7de48db2ce619f131e67a69"
+  }
+}

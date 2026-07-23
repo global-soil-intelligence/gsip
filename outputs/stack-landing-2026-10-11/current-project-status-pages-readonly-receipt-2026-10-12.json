@@ -1,0 +1,60 @@
+{
+  "observed_at_utc": "2026-10-12T18:58:42.419856+00:00",
+  "branch_policy_observed_at_utc": "2026-10-12T18:59:51.587313+00:00",
+  "repository": "global-soil-intelligence/gsip",
+  "environment": {
+    "can_admins_bypass": false,
+    "deployment_branch_policy": {
+      "custom_branch_policies": true,
+      "protected_branches": false
+    },
+    "id": 18657050755,
+    "name": "github-pages",
+    "protection_rules": [
+      {
+        "prevent_self_review": null,
+        "reviewers": [],
+        "type": "branch_policy"
+      },
+      {
+        "prevent_self_review": false,
+        "reviewers": [
+          {
+            "id": 179389866,
+            "login": "jdhart81",
+            "type": "User"
+          }
+        ],
+        "type": "required_reviewers"
+      }
+    ]
+  },
+  "deployment_branch_policies": {
+    "branch_policies": [
+      {
+        "id": 55456772,
+        "name": "gh-pages",
+        "type": "branch"
+      },
+      {
+        "id": 55456704,
+        "name": "main",
+        "type": "branch"
+      }
+    ],
+    "total_count": 2
+  },
+  "sole_required_reviewer": {
+    "login": "jdhart81",
+    "id": 179389866
+  },
+  "admins_may_bypass": false,
+  "read_only": true,
+  "settings_mutations": 0,
+  "reviews_approvals_merges_deployments": 0,
+  "secret_reads": 0,
+  "raw_metadata_sha256": {
+    "environment": "b0bd8bca4497119d1872711b578dfe23f168fb8f11d02c7577c6f84f8794aab9",
+    "branch_policies": "da28f37f2da7e379d40ed9afd6214909ac09d52bc2b449ebc6e62165f47e76d4"
+  }
+}

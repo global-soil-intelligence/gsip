@@ -1,0 +1,21 @@
+We’re building an open soil spectral library—and inviting builders to help shape it.
+
+Introducing GSIP: the Global Soil Intelligence Project.
+
+Our vision is to connect soil observations from around the world into a shared, traceable reference library for AI research, better soil maps, and deeper understanding of the soil biome.
+
+Smartphones are the accessible field capture tool: guided photographs, a reference card, sample records and environmental context. Instruments provide measured spectra, and laboratories provide verified measurements.
+
+The key is connecting that evidence to the same physical soil sample. Together, these records can support training and evaluating AI models, with clear provenance and uncertainty.
+
+The software is open source. Developers and researchers can fork it, self-host it, build instrument adapters, improve the capture tools, or develop applications on top.
+
+The website and public map are live. Public capture and library uploads are still closed while we complete the required reviews and validation. The map currently displays existing soil-map layers; the global reference library is what we’re building toward.
+
+We welcome developers, soil scientists, spectroscopy researchers and open-data contributors.
+
+🌱 Website: https://globalsoilintelligence.com/
+
+🔧 GitHub: https://github.com/global-soil-intelligence/gsip
+
+#OpenSource #SoilScience #OpenScience

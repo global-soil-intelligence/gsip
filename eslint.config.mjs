@@ -6,6 +6,8 @@ export default tseslint.config(
     ignores: [
       '**/.venv/**',
       '**/dist/**',
+      '**/ios/**',
+      '**/android/**',
       '**/coverage/**',
       '_site/**',
       'output/**',

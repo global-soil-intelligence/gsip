@@ -1,0 +1,44 @@
+{
+  "APK_count": 0,
+  "APK_or_signing_key_read": false,
+  "HOME": "INHERITED_UNCHANGED",
+  "SDK_download_disabled": true,
+  "artifact_counts": [
+    78,
+    78
+  ],
+  "command_argv_count": 7,
+  "elapsed_seconds": 13.341,
+  "fault_file_count": 0,
+  "fixed_token_counts": {
+    "BUILD_SUCCESSFUL": 1,
+    "INSPECTION_TASK": 1,
+    "PRODUCER_DEBUG": 33,
+    "PRODUCER_RELEASE": 33
+  },
+  "fresh_registry_install": false,
+  "graph_bytes": 51387,
+  "graph_exists": true,
+  "graph_sha256": "400a9c7892c1c0e4eb50bf9684a03c7803ba709bef0648848fbf98db2b74e5b4",
+  "helper_script_sha256": "71425d41f957c8c5bee05acf2f2456b2fae181828f0384914f1e0f7c97864655",
+  "module_counts": [
+    75,
+    75
+  ],
+  "native_product_acceptance": false,
+  "preparation_receipt_sha256": "dcbd5d5abd4df33c92514f390f564eb8d787eb63319037034d34b965cf4b0dc7",
+  "production_changes": false,
+  "project_counts": [
+    5,
+    5
+  ],
+  "raw_streams_persisted": false,
+  "returncode": 0,
+  "schema": "gsip-exact-d7-parent-canonical-inspection-v1",
+  "source_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "stderr_bytes": 894,
+  "stderr_sha256": "0398502e65a52e71dcdda4d438b82db727bbb0cf8cb7ab881e9b718f99667dd9",
+  "stdout_bytes": 8484,
+  "stdout_sha256": "11f7f7e06c40cbf77fba0971f31e816be61346bfda672e3e16676cbb96add063",
+  "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0"
+}

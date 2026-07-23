@@ -1,0 +1,19 @@
+{
+  "actual_graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+  "allow_only_existing_selected_public_pom_metadata_fetch": true,
+  "apk_or_signing_key_read": false,
+  "candidate_script_sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071",
+  "collector_success": false,
+  "diagnostic": {
+    "counts": {
+      "module_inputs": 75
+    },
+    "error_class": "AUDIT_REFUSAL",
+    "source_line": 74,
+    "stage": "android-runtime-licenses"
+  },
+  "elapsed_seconds": 0.178,
+  "raw_logs_persisted": false,
+  "schema": "gsip-actual-runtime-collector-verification-v1",
+  "task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0"
+}

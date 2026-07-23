@@ -1,0 +1,79 @@
+{
+  "final_exact_tests_on_baseline": {
+    "errors": 0,
+    "failures": 7,
+    "skipped": 0,
+    "tests": 12
+  },
+  "focused": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 12
+  },
+  "initial_cli_test_harness_correction": "Existing CLI emits two fixed stderr lines, not one; corrected only new test, then final exact tests replayed on unchanged baseline. Early exec fixture prototype replaced with FunctionType fixtures to satisfy existing S102 rule.",
+  "initial_prototype_fail_before": {
+    "errors": 0,
+    "failures": 7,
+    "skipped": 0,
+    "tests": 12
+  },
+  "mutations": [
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 5,
+      "mutation": "restore_contained_wrapper",
+      "tests": 12
+    },
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 3,
+      "mutation": "restore_read_wrapper",
+      "tests": 12
+    },
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 2,
+      "mutation": "restore_refuse_wrapper",
+      "tests": 12
+    },
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 1,
+      "mutation": "structural_equality_exclusion",
+      "tests": 12
+    }
+  ],
+  "mypy_helper": {
+    "exit": 0,
+    "sources": 1
+  },
+  "no_Gradle_or_native_product_runs": true,
+  "pinned_authored_scan": {
+    "exit": 0,
+    "findings": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "version": "8.21.2"
+  },
+  "preserved_old43": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 43
+  },
+  "prettier_doc": {
+    "exit": 0,
+    "recovery": "First invocation used default Node20 incompatible with installed pnpm; reran with existing Codex runtime Node in PATH only, HOME unchanged."
+  },
+  "ruff_check": {
+    "exit": 0
+  }
+}

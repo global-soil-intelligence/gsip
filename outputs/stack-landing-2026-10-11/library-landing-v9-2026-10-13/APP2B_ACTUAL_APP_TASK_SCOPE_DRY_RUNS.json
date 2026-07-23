@@ -1,0 +1,92 @@
+{
+  "APK_or_signing_key_read": false,
+  "HOME": "INHERITED_UNCHANGED",
+  "dry_run_only": true,
+  "maintained_source_changes": false,
+  "observations": [
+    {
+      "Cordova_assembleDebug_present": true,
+      "Cordova_bundleDebugAar_present": true,
+      "Cordova_bundleLibCompileToJarDebug_present": true,
+      "app_assembleDebug_present": true,
+      "app_task_count": 43,
+      "elapsed_seconds": 6.464,
+      "raw_streams_persisted": false,
+      "returncode": 0,
+      "source": "parent",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 10743,
+      "stdout_sha256": "a7ac342d179ab6773cd160e5d96181b211b03fbd8fcc7e92b119d1bbcaf6188e",
+      "target": "unqualified",
+      "task_count": 199
+    },
+    {
+      "Cordova_assembleDebug_present": false,
+      "Cordova_bundleDebugAar_present": false,
+      "Cordova_bundleLibCompileToJarDebug_present": true,
+      "app_assembleDebug_present": true,
+      "app_task_count": 43,
+      "elapsed_seconds": 5.209,
+      "raw_streams_persisted": false,
+      "returncode": 0,
+      "source": "parent",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 7845,
+      "stdout_sha256": "04a016e74902ec89c277c0344edaa6121209b3eb9c63fdcac126600f2c1eebf0",
+      "target": "app_qualified",
+      "task_count": 147
+    },
+    {
+      "APK_count": 0,
+      "all_original_app_tasks_retained": true,
+      "qualified_subset_of_unqualified": true,
+      "removed_non_app_tasks_count": 52,
+      "source": "parent"
+    },
+    {
+      "Cordova_assembleDebug_present": true,
+      "Cordova_bundleDebugAar_present": true,
+      "Cordova_bundleLibCompileToJarDebug_present": true,
+      "app_assembleDebug_present": true,
+      "app_task_count": 43,
+      "elapsed_seconds": 7.311,
+      "raw_streams_persisted": false,
+      "returncode": 0,
+      "source": "candidate",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 13236,
+      "stdout_sha256": "8c7eb7463c07e98cfd8695385e66281290c942ab557ccc1e2a23b8f1d9a51d54",
+      "target": "unqualified",
+      "task_count": 239
+    },
+    {
+      "Cordova_assembleDebug_present": false,
+      "Cordova_bundleDebugAar_present": false,
+      "Cordova_bundleLibCompileToJarDebug_present": true,
+      "app_assembleDebug_present": true,
+      "app_task_count": 43,
+      "elapsed_seconds": 5.669,
+      "raw_streams_persisted": false,
+      "returncode": 0,
+      "source": "candidate",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 9516,
+      "stdout_sha256": "70a00d6403c162edd26de5ad277f35b666c5f81ea64fb3476380644744353fa6",
+      "target": "app_qualified",
+      "task_count": 174
+    },
+    {
+      "APK_count": 0,
+      "all_original_app_tasks_retained": true,
+      "qualified_subset_of_unqualified": true,
+      "removed_non_app_tasks_count": 65,
+      "source": "candidate"
+    }
+  ],
+  "production_changes": false,
+  "schema": "gsip-actual-app-qualified-debug-task-scope-v1"
+}

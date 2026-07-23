@@ -1,0 +1,133 @@
+{
+  "review_id": "gsip-v13-v4-final-core-scope-fact-closure-2026-10-14",
+  "status": "closed-no-core-source-fact-blockers",
+  "scope": "Final immutable V4 exact-byte core/source scope rebind plus finite hash-preserving destination-map verification. No implementation/test execution.",
+  "manifest": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/ios-native-scope-2026-10-14/V4_MANIFEST.json",
+    "size": 55856,
+    "sha256": "06710bba4738a0a4cebfea27b4c5d34ea282ad21fd40e80a5670e47970364402"
+  },
+  "reviewed_inputs": [
+    {
+      "path": "/private/tmp/gsip-ios-v13-v4-32n530rl/docs/IOS_NATIVE_SCOPE.md",
+      "size": 25961,
+      "sha256": "d6463222a40ea9a132c8423600caea41df2b7ecb58e38414b22786ea504e0271"
+    },
+    {
+      "path": "/private/tmp/gsip-ios-v13-v4-32n530rl/docs/ios-native-scope.json",
+      "size": 14175,
+      "sha256": "810bca4dcaa09a796e3622f72c0c5f48f56d0ce70b0688eb24de4cf6fab7ac9d"
+    },
+    {
+      "path": "/private/tmp/gsip-ios-v13-v4-32n530rl/tests/test_ios_native_scope.py",
+      "size": 17103,
+      "sha256": "deb182c7e515ab61f8806fe67a2b560f2a5e732cfa6a6bafdac086d1318775c3"
+    }
+  ],
+  "source_review_only": true,
+  "native_exception_granted": false,
+  "implementation_authorized_by_this_review": false,
+  "native_api_executed": false,
+  "native_tests_or_build_run": false,
+  "device_verified": false,
+  "shared_source_git_github_production_mutated": false,
+  "blocking_findings": [],
+  "facts_closed": [
+    "21 unique prospective Swift paths: manifest1/core4/core-test4/host6/host-test6; all absent in frozen tree",
+    "3 prospective support files and9 generated edit paths; prospective support files absent",
+    "Core-only SwiftPM target/test, no Capacitor dependency or unsupported npm SwiftPM assumption",
+    "Exact4 core and4 direct test/helper maximum imports match independent proposal; CryptoKit restricted to SHA256, SQLite3 system-only link and no native shim selected",
+    "Exact passcode-only/no-sync/default-group anchor; readback and unknown/unsupported hold; no SecItemDelete/delete-add/weaker substitution; fixture initial seed is test authority only",
+    "SQLite exclusion/protection-before-open/recovery and actual settings are required future evidence; no backup/power-loss or two-store atomicity acceptance inferred",
+    "Nonnegative JS-safe maxcounter2^53-1 and provisional128KiB/512KiB/256MiB bounds correctly represented; exhaustion holds",
+    "Fixed independent synthetic root/anchor namespace and no ordinary SDK/account/reset/migration access; accepted policy is separated from pending exact exception",
+    "All9 declared repository source bindings match frozen bytes"
+  ],
+  "optional_wording_clarification": {
+    "status": "resolved-in-V2",
+    "detail": "CryptoKit phrase now excludes additional frameworks beyond explicitly listed system modules."
+  },
+  "limits": [
+    "No Swift compile/link, native test, iOS SDK import availability or test-host startup was executed; these remain A gates",
+    "Simulator/fake Keychain results cannot certify passcode-class lifecycle or backup exclusion",
+    "Physical backup/restore, power-loss and actual SQLite VFS/Keychain cross-store durability remain unverified",
+    "No tests were run by this reviewer; root test counts are not independently claimed. Scope remains prospective/held. Constructor source inspection is not platform/runtime/notification acceptance.",
+    "Root-reported131 related passes/38 new were not independently run by this reviewer. Mapping verification is a read-only JSON/source check, not native execution or working harness proof."
+  ],
+  "prior_evidence": [
+    {
+      "path": "/private/tmp/gsip-app2c2a-core-scope-6vyhswu3/FINAL_SCOPE_REVIEW_BINDING_V2.json",
+      "size": 3908,
+      "sha256": "4a3604bd88f8e9e5ffd5b3e6f6fbe64c454f18d1d7278f14112c5bb9dcf58263"
+    },
+    {
+      "path": "/private/tmp/gsip-ios-native-design-primary-ynayeyje/FINAL_DESIGN_EVIDENCE_BINDING.json",
+      "size": 4899,
+      "sha256": "c09127a2292dab6e07a40adea2ddab0721e1fd03f183d342c7606ba7e585e3af"
+    },
+    {
+      "path": "/private/tmp/gsip-app2c2a-core-scope-6vyhswu3/V13_V1_CORE_SCOPE_FACT_CLOSURE.json",
+      "size": 4016,
+      "sha256": "d8e44c6a3a521c8a6e9bb8e7c11fad097af36bc53ec61900bd5d319035df049d"
+    },
+    {
+      "path": "/private/tmp/gsip-app2c2a-core-scope-6vyhswu3/V13_V2_FINAL_CORE_SCOPE_FACT_CLOSURE.json",
+      "size": 4490,
+      "sha256": "9198919f03c3779795f941fe1be922f07984a9751e2852badaf33ede20e8e4bc"
+    },
+    {
+      "path": "/private/tmp/gsip-app2c2a-core-scope-6vyhswu3/V13_V3_FINAL_CORE_SCOPE_FACT_CLOSURE.json",
+      "size": 7326,
+      "sha256": "f0500d856d1ecad92d53a7511b098f443e5dd1b197bc2cdc32b7e6b918af2652"
+    }
+  ],
+  "v1_to_v2_diff_review": {
+    "core_file_import_effect_inventory_unchanged": true,
+    "native21_support3_generated9_bindings9_unchanged": true,
+    "core_test_identity_qualifier": "Fresh generated iOS XCTest runner and its ordinary default group must be bound before synthetic anchor calls; host bundle ID is not assumed to cover core package tests. This correctly narrows identity admission.",
+    "host_qualifiers": "Notification routing/operations disabled and public source links added; independent host fact reviewer owns that closure.",
+    "new_native_capability_inferred": false
+  },
+  "v2_to_v3_diff_review": {
+    "json_and_native_core_inventory_unchanged": true,
+    "native21_support3_generated9_bindings9_unchanged": true,
+    "added_constructor_notification_facts": "Public bridge accepts autoRegisterPlugins. false skips generated package discovery, not the core5 or NotificationRouter construction. Writable descriptor notification flag is copied into readonly configuration; constructor applies it. Router false does not install itself or remove pending/delivered notifications. Added paragraph matches inspected pinned source.",
+    "test_delta": "Local per-effect no-URLSession/no-SecItemDelete source guard assertions added; test file bound, not executed or certified by this reviewer.",
+    "fact_blockers": []
+  },
+  "additional_pinned_source_inputs": [
+    {
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/node_modules/.pnpm/@capacitor+ios@8.5.2_@capacitor+core@8.5.2/node_modules/@capacitor/ios/Capacitor/Capacitor/CapacitorBridge.swift",
+      "size": 29920,
+      "sha256": "d6b89d0edc97a62476d9985f23e7988fd101883c4b73c35893d847df1aef5bdd"
+    },
+    {
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/node_modules/.pnpm/@capacitor+ios@8.5.2_@capacitor+core@8.5.2/node_modules/@capacitor/ios/Capacitor/Capacitor/NotificationRouter.swift",
+      "size": 2478,
+      "sha256": "503694949401d7831b12ac3f1f97aa1ce622cbbd0a67cf65a464964bd70334a8"
+    },
+    {
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/node_modules/.pnpm/@capacitor+ios@8.5.2_@capacitor+core@8.5.2/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPInstanceDescriptor.h",
+      "size": 8193,
+      "sha256": "f5efe0da72d802d1ce0626d4e54d809281de8bdc3ab46e614a1b8e074111a88e"
+    },
+    {
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/node_modules/.pnpm/@capacitor+ios@8.5.2_@capacitor+core@8.5.2/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPInstanceDescriptor.swift",
+      "size": 9439,
+      "sha256": "10dec7a60ba3cfba17d0991bd48a5f3414516167b6bf3e505fd36df0a4e2fde6"
+    },
+    {
+      "path": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/node_modules/.pnpm/@capacitor+ios@8.5.2_@capacitor+core@8.5.2/node_modules/@capacitor/ios/Capacitor/Capacitor/CAPInstanceConfiguration.h",
+      "size": 2035,
+      "sha256": "9e8d45ca898c2a7cac927e36af12bbaa5df73f84258544ad4bd5f969dcd936ca"
+    }
+  ],
+  "v3_to_v4_diff_review": {
+    "core_API_import_policy_native_support_generated_edit_source_bindings_unchanged": true,
+    "generated_copies_exact_source_set": 21,
+    "generated_copy_destinations_unique": 21,
+    "nine_template_edit_targets_disjoint_from_copy_destinations": true,
+    "copy_path_mapping": "9 core/manifest/tests retain relative paths under literal GSIPPrivateStorePrototype/ sibling;6 host source basenames under App/App/GSIPStorageHostPrototype/;6 host test basenames under App/GSIPStorageHostPrototypeTests/. No absolute/traversal/other destination.",
+    "source_fact_blockers": []
+  }
+}

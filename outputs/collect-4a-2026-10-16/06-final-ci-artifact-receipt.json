@@ -1,0 +1,133 @@
+{
+  "head": "9b5331569602db7f2a54b0748e03325f591ffa9d",
+  "tested_merge": "8088673afb4719290385d96c29850629294ad690",
+  "tested_tree": "ebad8683407010e1a7d24e2d07415061fbd67ce6",
+  "tested_tree_equals_reviewed_head": true,
+  "ci": {
+    "run": 38994200164,
+    "job": 117282974489,
+    "result": "success",
+    "unit_tests": 811,
+    "desktop_browser_tests": 16,
+    "phone_browser_engine_tests": 4,
+    "python": {
+      "passed": 2203,
+      "skipped": 31,
+      "warnings": 37
+    },
+    "migration_regression": {
+      "result": "success",
+      "files": 4,
+      "assertions": 61
+    },
+    "pgtap": {
+      "files": 12,
+      "assertions": 632,
+      "result": "PASS"
+    },
+    "deno": "passed",
+    "ruff": "passed",
+    "mypy": "passed",
+    "selected_output": [
+      "2026-10-17T02:16:29.9449600Z apps/site-web test:  Test Files  3 passed (3)",
+      "2026-10-17T02:16:29.9458087Z apps/site-web test:       Tests  41 passed (41)",
+      "2026-10-17T02:16:30.0217927Z packages/schema test:  Test Files  15 passed (15)",
+      "2026-10-17T02:16:30.0219339Z packages/schema test:       Tests  310 passed (310)",
+      "2026-10-17T02:16:33.1435864Z apps/map-web test:  Test Files  3 passed (3)",
+      "2026-10-17T02:16:33.1460831Z apps/map-web test:       Tests  16 passed (16)",
+      "2026-10-17T02:16:54.2458350Z apps/capture-pwa test:  Test Files  33 passed (33)",
+      "2026-10-17T02:16:54.2461629Z apps/capture-pwa test:       Tests  444 passed (444)",
+      "2026-10-17T02:18:06.5278315Z   16 passed (27.5s)",
+      "2026-10-17T02:18:38.2083356Z   4 passed (30.6s)",
+      "2026-10-17T02:18:38.3091080Z All checks passed!",
+      "2026-10-17T02:22:09.0466224Z 2203 passed, 31 skipped, 37 warnings in 195.84s (0:03:15)",
+      "2026-10-17T02:25:18.2047431Z All tests successful.",
+      "2026-10-17T02:25:18.2048533Z Files=12, Tests=632,  3 wallclock secs ( 0.07 usr  0.04 sys +  0.11 cusr  0.10 csys =  0.32 CPU)",
+      "2026-10-17T02:25:18.2049500Z Result: PASS"
+    ],
+    "migration_output": [
+      "2026-10-17T02:22:18.1670554Z wp6e_provenance.test.sql: 13/13 ok",
+      "2026-10-17T02:22:18.2595001Z wp6fa_photo_privacy.test.sql: 19/19 ok",
+      "2026-10-17T02:22:18.3567388Z wp_collect2_invited_pilot.test.sql: 16/16 ok",
+      "2026-10-17T02:22:18.4462956Z wp_lib4_private_intake.test.sql: 13/13 ok"
+    ]
+  },
+  "app": {
+    "run": 38994200223,
+    "result": "success",
+    "jobs": {
+      "android": "success",
+      "ios": "success"
+    },
+    "artifacts": [
+      {
+        "id": 12086990876,
+        "name": "gsip-capture-android-debug",
+        "size_in_bytes": 29130292,
+        "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12086990876",
+        "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12086990876/zip",
+        "expired": false,
+        "created_at": "2026-10-17T02:25:10Z",
+        "expires_at": "2026-10-31T02:25:08Z",
+        "updated_at": "2026-10-17T02:25:10Z",
+        "digest": "sha256:603a336ef349a4182b59cf2412e74206b70777add564303f9cced2c495e8e413",
+        "workflow_run": {
+          "id": 38994200223,
+          "repository_id": 1308971325,
+          "head_repository_id": 1308971325,
+          "head_branch": "wp-collect-4a-guide-session",
+          "head_sha": "9b5331569602db7f2a54b0748e03325f591ffa9d"
+        }
+      },
+      {
+        "id": 12086123011,
+        "name": "gsip-capture-ios-simulator",
+        "size_in_bytes": 13923422,
+        "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12086123011",
+        "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12086123011/zip",
+        "expired": false,
+        "created_at": "2026-10-17T02:21:26Z",
+        "expires_at": "2026-10-31T02:21:24Z",
+        "updated_at": "2026-10-17T02:21:26Z",
+        "digest": "sha256:f38aca3d8f28e330cb885f5244b799d845056a2f8929dcf21f4d9f70641126b7",
+        "workflow_run": {
+          "id": 38994200223,
+          "repository_id": 1308971325,
+          "head_repository_id": 1308971325,
+          "head_branch": "wp-collect-4a-guide-session",
+          "head_sha": "9b5331569602db7f2a54b0748e03325f591ffa9d"
+        }
+      }
+    ]
+  },
+  "secret_scans": [
+    {
+      "run": 38994200421,
+      "result": "success"
+    },
+    {
+      "run": 38994197053,
+      "result": "success"
+    }
+  ],
+  "dco": {
+    "run": 38994200299,
+    "result": "skipped",
+    "human_certification_by_agent": false
+  },
+  "review": {
+    "exact_head": true,
+    "findings": 0,
+    "clean_worktree": true
+  },
+  "owner_merge_go": false,
+  "production_changes": [],
+  "pages_deployment": false,
+  "capture_opened": false,
+  "library_opened": false,
+  "local_artifact_verification": [
+    "04-ios-artifact-verification.json",
+    "05-android-artifact-verification.json"
+  ],
+  "next_gate": "Justin review and merge go for #91 before COLLECT-4B live preview implementation"
+}

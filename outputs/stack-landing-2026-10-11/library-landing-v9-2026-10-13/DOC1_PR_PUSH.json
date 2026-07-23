@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-13T21:46:20.106965+00:00",
+  "head": "a2ad2d80ea288b9e2de8c984dcee56fa4803a1bc",
+  "base": "710d144db94097be71989c67b5d3b4bb48135ad8",
+  "pr": 65,
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/65",
+  "body_sha256": "1613320d27f16f72ea62d5a056834c2202c418409b52a74fdb5904e2517de9d4",
+  "source_only": true,
+  "authored_leaks": 0,
+  "full_history_leaks": 0,
+  "root_doc_cases": 18,
+  "production_changes": false
+}

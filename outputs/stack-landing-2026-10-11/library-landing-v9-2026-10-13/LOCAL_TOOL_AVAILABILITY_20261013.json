@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-13T20:30:10.236781+00:00",
+  "scope": "PATH presence only; no daemon, database, SDK, device or native execution implied",
+  "available_on_current_PATH": {
+    "docker": true,
+    "psql": false,
+    "gdalinfo": false,
+    "deno": false,
+    "sdkmanager": false,
+    "adb": false,
+    "xcodebuild": true
+  }
+}

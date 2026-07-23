@@ -1,0 +1,487 @@
+{
+  "observed_at_utc": "2026-10-14T21:48:12.043035+00:00",
+  "scope": "Public source/metadata only, no installs or source/runtime mutation",
+  "review_sha256": "a330a3435002f3d8de8d22a9c0e81e78b36107d4e6a094f218edbb42afad7f00",
+  "primary_archive_sri_verified_count": 3,
+  "crucial_commit_source_equal_count": 3,
+  "selected_mechanisms": [],
+  "owner_question_recommended_now": null,
+  "outcome": "BLOCKED_FULL_V11_CONTRACT; no APP2C2 readiness",
+  "files": [
+    {
+      "path": "aparajita__capacitor-secure-storage/METADATA.json",
+      "bytes": 3633,
+      "sha256": "c5ae86abdd0dcbfcca8916d7b2406f823559f508a01d68f2d26edec84619ba95"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/package.tgz",
+      "bytes": 21145,
+      "sha256": "719ac5fa10d16c365dd9c0e7391b73eea982fdfa87afdeb4dd3aabf2448d76bb"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/AparajitaCapacitorSecureStorage.podspec",
+      "bytes": 657,
+      "sha256": "e5b4ced29db323228365f3e151fe16f604a3ae90d3f36a82b25d26603dbe8d90"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/LICENSE",
+      "bytes": 1078,
+      "sha256": "49b0448d57ded1af368f4e70970a3a427e3205f67fc57b7e229407dd7516dc24"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/Package.swift",
+      "bytes": 822,
+      "sha256": "688958da2b8b3e601444e1f84d0457d6730ffbf4ba8a31cf60e5ef8acd69c5d7"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/README.md",
+      "bytes": 5959,
+      "sha256": "35260200e2b8d25235ec06bac586c0958c27e33eb1a0c946ab990de5c6a9a9c6"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/dist/esm/base.d.ts",
+      "bytes": 3114,
+      "sha256": "f287a63e31586cdf1ca9643e60f5da511221c8e599f15ea1ec4bc3e899f5efe5"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/dist/esm/base.js",
+      "bytes": 6451,
+      "sha256": "581d0f79c92c37f6ad32735f835a9dd324d3d4d1544f7a64e25cb1d70eb779d9"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/dist/esm/definitions.d.ts",
+      "bytes": 9296,
+      "sha256": "ea003c20844180fffcec6ce1564be5245ff8b2b9589dbef6fd87e213b76cfacc"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/dist/esm/index.d.ts",
+      "bytes": 172,
+      "sha256": "9719824b3411155f9b3be3338cb2a84e61514ce547edea199d50c38595345053"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/dist/esm/native.d.ts",
+      "bytes": 1114,
+      "sha256": "be580ecc42e1cd1d31a0f8bb383488bbcc96df95d08f793e4f07446ed49e6e07"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/dist/esm/native.js",
+      "bytes": 1911,
+      "sha256": "1ce1b0142e3e2128e3851a0db67c53349dee54ae3aea696f417f0fc5ee0d4d98"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/dist/esm/web.d.ts",
+      "bytes": 828,
+      "sha256": "d465e9a70cfc86c5c4be74bb2eab77903fe986d0426b312bbf30650a4df73987"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/dist/esm/web.js",
+      "bytes": 1896,
+      "sha256": "e6bded1cc3ad1415cd6b11fef81300a738da671fb19e0cd82f18a37e74899ea0"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/ios/Sources/SecureStoragePlugin/KeychainError.swift",
+      "bytes": 1318,
+      "sha256": "cfcb6552ff151113bb3e65a11b34245502ea05181c51d9b4e2363ba1e3ebff28"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/ios/Sources/SecureStoragePlugin/Plugin.swift",
+      "bytes": 5363,
+      "sha256": "4fa7a1ebb6b1dde96461d5541545286001c9918a5d64886102c972406ab75cf8"
+    },
+    {
+      "path": "aparajita__capacitor-secure-storage/source/package/package.json",
+      "bytes": 5620,
+      "sha256": "7c389bfe1fe7e347f061430926dcf22dc04fe68f5ba481b49a7394dd7ec2005f"
+    },
+    {
+      "path": "capacitor-community__sqlite/METADATA.json",
+      "bytes": 8285,
+      "sha256": "5c6852fd590c5d8dfea55452ccaf77a0edcbefee672ceb0d06d4774524bd1e0d"
+    },
+    {
+      "path": "capacitor-community__sqlite/package.tgz",
+      "bytes": 271508,
+      "sha256": "f6edcc030e910eac92c53400bed2464e9057139c9c99bed61b975ee6af92c90f"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/CapacitorCommunitySqlite.podspec",
+      "bytes": 611,
+      "sha256": "edec39ba568ceb8561e3adf1500a246792e025eb9dba7f0b3d6ec284482bfc96"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/LICENSE",
+      "bytes": 1079,
+      "sha256": "f138ef5563fe07869aeaa54d14117c8a1111656d3a8d274917ec185f1dc02ce3"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/Package.swift",
+      "bytes": 1193,
+      "sha256": "a54174c20bcad806d016f1a9829956d84bd337a93255ce212f869d8613207c75"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/README.md",
+      "bytes": 25364,
+      "sha256": "52e273238807c9dcdcd88c2b99256473e7236baab8e534740df6b4fca0c537a0"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/dist/esm/definitions.d.ts",
+      "bytes": 43909,
+      "sha256": "adb1f9e57fad90c70cdcaeef0749445e7edac12d3f1cac5b6bc7d5b0d6693f2e"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/dist/esm/index.d.ts",
+      "bytes": 173,
+      "sha256": "0c3b4556e5ee3b61afc4b9b106770145d6ee7826f48561a1c5d856c340efd1b7"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/dist/esm/web.d.ts",
+      "bytes": 5042,
+      "sha256": "cd22c81ba8e7a8b673540b5472c714f49d93ac86c047740e3cb5618c2e435ae1"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/BiometricIDAuthentication.swift",
+      "bytes": 2554,
+      "sha256": "c66640a19c2f1fadd3b0c275d0734324f20cfc9f2e6216b13f49c0f57708b643"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/CapacitorSQLite.swift",
+      "bytes": 66786,
+      "sha256": "d1466ea208ebcb8ae1f61f4e1393935509973e42472af04dcf6f2eea488c78b3"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/CapacitorSQLitePlugin.swift",
+      "bytes": 62551,
+      "sha256": "702ab293a17f520d9eba2948fba313c7ad23a73db4eae83362f791fb5354eeff"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Database.swift",
+      "bytes": 29152,
+      "sha256": "4058ba77be38932e8e51b5447b3e11ef1f858a628698d97eeda1e80973341ed4"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Extensions/Array.swift",
+      "bytes": 219,
+      "sha256": "56e35575ab4190c4429f274623bb6f68fd80295abc156603ea114aa869ee9c8d"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Extensions/Data.swift",
+      "bytes": 201,
+      "sha256": "507899445d4e306e90e2a553482213c8af8e4772dd3fe2bfc57283d7ed94e1ff"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Extensions/Notification.Name.swift",
+      "bytes": 523,
+      "sha256": "84d066b38f2e3af1742528f136bc662827a6e0a2c61cd21482d187d0cc921d60"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Extensions/String.swift",
+      "bytes": 1457,
+      "sha256": "1efb83e833985f343130f38f48469562b5b25acb728931a2d79e639cdc339be0"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/GlobalSQLite.swift",
+      "bytes": 279,
+      "sha256": "29292890802956c84153beb3794fe9e8073a108262e1d5b4b32fce93bb363044"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/ImportExportJson/ExportToJson.swift",
+      "bytes": 57204,
+      "sha256": "0b72993874a562f92ebf543b6b9b829ec9545428d76323364b94628c14bffdf4"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/ImportExportJson/ImportData.swift",
+      "bytes": 11826,
+      "sha256": "30a0c66bcf5a20c301e917f2485709bb1c3106cac1a5ed5460c615c0c7ab95ca"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/ImportExportJson/ImportFromJson.swift",
+      "bytes": 25726,
+      "sha256": "1321ca0630c6a70a6f8d999f7139456e6a6709cc7aa67034a344900c92e685c2"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/ImportExportJson/JsonSQLite.swift",
+      "bytes": 4553,
+      "sha256": "bc0202890a244ed1a43144d2deb79205b3a81687ba4c9e02a17f0b29daba9b97"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Models/KeychainServices.swift",
+      "bytes": 4952,
+      "sha256": "6f095dda0580f90cd418d95ab68860abecacc066d3cdf084dd42b0e7deaeb5f3"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/ReturnHandler.swift",
+      "bytes": 2825,
+      "sha256": "ff299397334fc30090198c0aa46bcb9a74f0524977b630b697b76ceecd0132df"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/SqliteConfig.swift",
+      "bytes": 299,
+      "sha256": "554b81388d2381b8190cec66d202ef721ba7dd2fa72c5000f2a657de6485429c"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsBinding.swift",
+      "bytes": 3861,
+      "sha256": "ddc607d5ee93adc7bcde2c9f6d9ea9687c4a63ae6ba053dc269b5da63235408c"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsDelete.swift",
+      "bytes": 20649,
+      "sha256": "ea0012a4899f8b01605170a12c1d272decef5c47b8ac53c268fa87a5dafd30a2"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsDownloadFromHTTP.swift",
+      "bytes": 7835,
+      "sha256": "077a570841a3a94aa76df1d4bcb14f7a54860b07c4c85e9a62281496dd6e0e2a"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsDrop.swift",
+      "bytes": 10406,
+      "sha256": "5fcd0b9f115646cade7022998461f2ffa99018ad36bf81a0d444206ebb14f8ea"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsEncryption.swift",
+      "bytes": 7414,
+      "sha256": "dcc5594011e1bee63eb60a60fe514fc57ab586ba4613a89a33a32499876904d0"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsFile.swift",
+      "bytes": 23908,
+      "sha256": "db166433869c798a6afbc17333978c511a54892be802bfaa1003876e41613821"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsJson.swift",
+      "bytes": 21802,
+      "sha256": "36e9574161eaef8c1b41a2c95ee8d642733deda20fef016b3f76b5791c32fbfa"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsMigrate.swift",
+      "bytes": 12365,
+      "sha256": "59d8530ad084b4ba77a2f450d7bdacd58d51e368a1257f7b10f52d75d9d383aa"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsNCDatabase.swift",
+      "bytes": 932,
+      "sha256": "1c3636292ed43154b5de6de9e86a5e8b95b0b75efe9dd7b27b568acfb8417d1a"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsSQLCipher.swift",
+      "bytes": 43198,
+      "sha256": "08dd5b896e2d3a6c57804c4318cac6c17311aa5dc13a4a7cf86e0fbc7be4e75d"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsSQLStatement.swift",
+      "bytes": 32488,
+      "sha256": "83c89bdd3606e7bc0ba10100545e67403aa7c7ea6f1110b06568d26e7997c642"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsSecret.swift",
+      "bytes": 12151,
+      "sha256": "774817665376438b8d676621fe707b9d8e25a5afc12af7cd7ac1f215e1296511"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/ios/Plugin/Utils/UtilsUpgrade.swift",
+      "bytes": 3217,
+      "sha256": "9d3487e9c31500a9c462b45eb22514a41f13a3000308bbc0b3d2ad544b081e82"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/package.json",
+      "bytes": 3640,
+      "sha256": "8a7ac11589b40d75585ceef7f6d91319f3ccc39f4f44c80ce8c5245f80ef8fca"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/src/definitions.ts",
+      "bytes": 63215,
+      "sha256": "7b3f47b849566b366270c60fca61a26171d7ca8794e253dadc7940a87f03503a"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/src/index.ts",
+      "bytes": 412,
+      "sha256": "36b1c9c853fc45f0ec608164c35b21b6092fb5c024e103cf6f94ecd4325a6cb1"
+    },
+    {
+      "path": "capacitor-community__sqlite/source/package/src/web.ts",
+      "bytes": 17827,
+      "sha256": "feb9f3b602f87d6b26dd944b75c33ad98150da69645312387a9ca33bb14042e0"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/METADATA.json",
+      "bytes": 6425,
+      "sha256": "e0d1ec232f2ff853bd5a3eaad1b6e71e863671a1bea0fea41a681e547fcb9975"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/package.tgz",
+      "bytes": 352784,
+      "sha256": "fb438433572cbd5faa5241d62c29c4b80ed08f787058ad44b34ec3f5ca3c45ae"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/CapgoCapacitorInappbrowser.podspec",
+      "bytes": 633,
+      "sha256": "0f00a82d42a6b3a8ac4dd8de66f9cfc5f95f77dd5287b46ab39d33e5adf0cf88"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/LICENSE",
+      "bytes": 16725,
+      "sha256": "86cf9656479f1edb82245b985f4a2cc0d503b945766ebeda4269c60b307699ae"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/Package.swift",
+      "bytes": 945,
+      "sha256": "6d4c54138a49fcd9f5535cfbdda6b6e9cdc5acd39c53e86621191884fc4e4b80"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/README.md",
+      "bytes": 339259,
+      "sha256": "66ff58344400dd5d4f2cf72a371a47c4ed04444fa48bffc99d768079d89cd30b"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/dist/esm/bundled-asset-support.d.ts",
+      "bytes": 2337,
+      "sha256": "a897601f6f237ccb1b997fa61cd5819370d8dc79eaec918c16d6bc60c68654cd"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/dist/esm/definitions.d.ts",
+      "bytes": 74286,
+      "sha256": "96dbb44096916e2ead8fab98187517a44e8d359ffca656b06f9c1107748b8538"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/dist/esm/index.d.ts",
+      "bytes": 343,
+      "sha256": "562241c8a93c5e915ffba43aa710ade7184d89982ae203d6cb9f9429536594c5"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/dist/esm/web.d.ts",
+      "bytes": 3757,
+      "sha256": "5ce85e4e5fb29dc00f301b9462bd26d0444675fc83abb1c99d8e95e669d75875"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/BrowserFullscreenSupport.swift",
+      "bytes": 8281,
+      "sha256": "db9fd6d87348dbcb2e65a11d93e64a643d9b619d4658b2827c9c54087034e6e7"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/BundledAssetSchemeHandler.swift",
+      "bytes": 6734,
+      "sha256": "eb1ac666976948305bb730847e55dcdc72daf1c9c377952165d32a24b0406fa8"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/BundledAssetSupport.swift",
+      "bytes": 7306,
+      "sha256": "107e15c7b55e6845263188d875b50056210a298ea04e822cfa7e2bc6a4b87f4e"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/CloseButtonPositionSupport.swift",
+      "bytes": 432,
+      "sha256": "b82770b840080a053751453f1b4d8bd0112f632f0343bbea0d50d2f4cb5cf1ba"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/DownloadPreviewSupport.swift",
+      "bytes": 775,
+      "sha256": "3b75e32f4b096839edc8cfbbd683df015662726122c66ca50792b4d4cd0442a6"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/Enums.swift",
+      "bytes": 1432,
+      "sha256": "79c729fc5b8230792a326623e1ef4ed048b2bdfa43243cadbcf7a7e9992788cf"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/HtmlDataUrlSupport.swift",
+      "bytes": 1101,
+      "sha256": "3e67392f5e4bdc01d6d46bbb237c1b67df2f7aa33c830abbc52b45509a786540"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/InAppBrowserPlugin.swift",
+      "bytes": 129307,
+      "sha256": "843dafb630bd90e6d8084e9fce987c58aaf90c219c2c0941f67d23279362e431"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/NavigationBarShadowSupport.swift",
+      "bytes": 1344,
+      "sha256": "ce6aed039ad838a9787205fc17be0edbe156c62820c68409df3a80196cc391d8"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/PreferredContentModeSupport.swift",
+      "bytes": 1612,
+      "sha256": "bb8b7de65e99abfcf58387ec3ea7ad4ad95b0bc06ed790347200c591f95a5672"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/ProxyBridge.swift",
+      "bytes": 6999,
+      "sha256": "43dfd09723e57cef9c8138842a344516703c187f4a4c186e0dac41e6c56a1fe7"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/ProxySchemeHandler.swift",
+      "bytes": 52266,
+      "sha256": "aaa4896e1aee9dad25a31c27b7d5138e5101dbf17728bb5ef854e850bdcc936e"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/ShareActivityItemSource.swift",
+      "bytes": 782,
+      "sha256": "2dce55432352b282ca34be9ee96a6d1d381c0ebf2ad84fbc5302cf9c66e34829"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/WKWebView+SchemeHandling.swift",
+      "bytes": 2926,
+      "sha256": "d939fddb349d70feb0ca5528d0ea7f3bb096a78a7891a22566577d8ac3adcc18"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/WKWebViewController+ReloadGesture.swift",
+      "bytes": 6677,
+      "sha256": "9feed08cb27de4389d06fcfa6e5af1098b199ae020c351a1c8cc6aa7c88b1663"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/WKWebViewController.swift",
+      "bytes": 173118,
+      "sha256": "d2fb595a461846457c0b37c0cb7af2f51d99aa3082fd1b8db1b9a66a7c36f453"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/ios/Sources/InAppBrowserPlugin/WalletPassSupport.swift",
+      "bytes": 618,
+      "sha256": "849f8f3259b0d2e9bd996e490168d98a4b037a24f9f4899ded5d760fe005c4cd"
+    },
+    {
+      "path": "capgo__capacitor-inappbrowser/source/package/package.json",
+      "bytes": 6817,
+      "sha256": "d02458bd080ec7101eb1e53f641a8bc91284dd76a8834b5ae198cc3df29b2760"
+    },
+    {
+      "path": "keychain21.swift",
+      "bytes": 11524,
+      "sha256": "5e4c2c7381f2c857f789f0c944d8e1e73d0d0bcc17943067d2111af968406495"
+    },
+    {
+      "path": "keychain21-license",
+      "bytes": 1090,
+      "sha256": "7aaa2bea1f502d3a23cbd9707191b38d9b1b987bf207a007dfad8416a86eb00c"
+    },
+    {
+      "path": "sqlcipher414-package.swift",
+      "bytes": 985,
+      "sha256": "4de2e04cf45557311a0fc68229dec985b19e7b585ca1048c315c74711d0456ec"
+    },
+    {
+      "path": "sqlcipher414-license",
+      "bytes": 23086,
+      "sha256": "930857b664903eef7d8ee4f110c111aa6f97acebf96f162669f4bf62722c2b31"
+    },
+    {
+      "path": "CANDIDATE_EVIDENCE.json",
+      "bytes": 20516,
+      "sha256": "e0fb262899b43357fbbe00e4b380a01a19208df7e81a33dbd45942d7cf1af4f4"
+    },
+    {
+      "path": "NATIVE_DECLARATION_SOURCE_SUPPLEMENT.json",
+      "bytes": 2149,
+      "sha256": "87290ea9f1b09f7a4b2a83c56f121761d1e7ce2e2a8b52cd48f282a578d95a89"
+    },
+    {
+      "path": "PUBLIC_COMMIT_MATCHES.json",
+      "bytes": 1015,
+      "sha256": "5bfc964788fcf7cebf279df422644863293b60e50ecdebea439d44d50f5a1ef6"
+    },
+    {
+      "path": "UPSTREAM_FEASIBILITY_REVIEW.md",
+      "bytes": 11063,
+      "sha256": "a330a3435002f3d8de8d22a9c0e81e78b36107d4e6a094f218edbb42afad7f00"
+    }
+  ]
+}

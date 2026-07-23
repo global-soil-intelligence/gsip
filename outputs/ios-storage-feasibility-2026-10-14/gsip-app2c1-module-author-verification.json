@@ -1,0 +1,46 @@
+{
+  "verified_at_utc": "2026-10-14T21:52:10.932257+00:00",
+  "module_path": "/private/tmp/gsip-app2c1-module.py",
+  "module_sha256": "7d1aa363e419310008d888469a2651e4827518f2d7312ac6d3e6ee4949e20271",
+  "module_bytes": 17860,
+  "source_input_map_path": "/private/tmp/gsip-app2c1-source-input-map.json",
+  "source_input_map_sha256": "37e9873406c38745a8c42b3f6ecfbd6cd639546f45fd73579e022bb2b8b58554",
+  "public_sources": 19,
+  "repository_sources": 13,
+  "verification": [
+    {
+      "check": "AST parse",
+      "outcome": "passed"
+    },
+    {
+      "check": "ruff format/check against repository pyproject with no cache",
+      "outcome": "passed"
+    },
+    {
+      "check": "mypy strict no incremental using private cache",
+      "outcome": "passed"
+    }
+  ],
+  "earlier_attempts": [
+    {
+      "check": "initial Ruff default cache",
+      "outcome": "environment refused readonly worktree cache write; rerun no-cache passed"
+    },
+    {
+      "check": "initial mypy default cache",
+      "outcome": "internal cache/runtime error; rerun explicit private cache passed"
+    },
+    {
+      "check": "first no-cache Ruff",
+      "outcome": "binding literal lines exceeded100; formatter split literals; check then passed"
+    }
+  ],
+  "not_run": [
+    "Independent unit/adversarial tests (root owns)",
+    "Real public-profile CLI (root owns)",
+    "Any application/native/device/production operation"
+  ],
+  "io_limits": "reads compiled source bindings only, no caller profile; no downloading, writes or process execution in module",
+  "known_report": "source_review_valid only; storage remains blocked, never selected/implemented/device verified",
+  "sole_shared_writer": "root; module and map authored private tmp only"
+}

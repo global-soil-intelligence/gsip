@@ -1,0 +1,33 @@
+{
+  "status": "LOCAL_HTTP_PROOF_FAILED",
+  "started_at": "2026-10-12T14:16:57.529482+00:00",
+  "completed_at": "2026-10-12T14:17:06.610658+00:00",
+  "source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "proposal_sha256": "f56380b5a479045d65fda8318ccaa51aa0910d6d837fb3f06ea620598b6d43e7",
+  "proof_script_sha256": "4b2867f4c5594f16d4ec7be5a37bf51ed57a42dd7f95ed6596188d5636a1d8d0",
+  "images": {
+    "postgres": "sha256:521e67f2812db505fe6d462b1820136394824d7f5c6016a19234b07ac93d6760",
+    "postgrest": "sha256:fcb9fa67dd53b3b978b52ef07fb195d4bb26434c2e8cba8c96ef257abf2ee753"
+  },
+  "network": "none; PostgREST shares the PG container namespace; loopback only",
+  "host_ports": [],
+  "source_mount": "read-only immutable extracted commit",
+  "api_exposed_schemas": [
+    "public"
+  ],
+  "pool_size": 1,
+  "prepared_statements": true,
+  "proposal_applied_in_one_local_transaction": true,
+  "tests": [],
+  "passed": 0,
+  "cleaned_containers_and_fixture_directory": true,
+  "production_operations": [],
+  "credentials": "Synthetic runtime-only signing bytes and JWTs; no real credentials; no token or material persisted.",
+  "limits": [
+    "Synthetic stand-in and cached PostgREST14.15 only, not hosted Supabase authentication or schema-cache deployment proof.",
+    "HTTP write tests and ACL/body fault injection occurred only inside disposable network-isolated local containers.",
+    "No actual photos, coordinate values, response rows, tokens, signing material or complete HTTP response bodies persisted.",
+    "This checks sequential pooled plan/ACL lifecycle; it does not prove arbitrary concurrent DDL or every possible custom/default role grant."
+  ],
+  "safe_failure": "isolated-pg-not-ready"
+}

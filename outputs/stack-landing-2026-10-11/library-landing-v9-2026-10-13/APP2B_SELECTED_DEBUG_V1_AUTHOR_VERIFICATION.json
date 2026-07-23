@@ -1,0 +1,148 @@
+{
+  "actual_AGP_metadata_probe": {
+    "complete_bounded_locator_bytes": 266,
+    "dry_run": {
+      "dry_run_task_count": 1,
+      "exit": 0,
+      "fixed_unsupported_metadata_message": false,
+      "no_key_APK_files_under_private_preferences": true,
+      "only_locator_task_in_dry_run": true,
+      "seconds": 14.366,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 608,
+      "stdout_sha256": "02faf8afef92877b50616552d370e92311e497105000821fb1ea77da19c40fcf"
+    },
+    "home_inherited_unchanged": true,
+    "metadata_only": {
+      "dry_run_task_count": 0,
+      "exit": 0,
+      "fixed_unsupported_metadata_message": false,
+      "no_key_APK_files_under_private_preferences": true,
+      "only_locator_task_in_dry_run": null,
+      "seconds": 4.917,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 637,
+      "stdout_sha256": "29cabd5f738b895bb528b06c6b1fa0d55cc60a0fc35b5c0eef685401984c1c38"
+    },
+    "metadata_reader_validated": true,
+    "offline": true,
+    "original_runtime_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "private_android_preferences": true,
+    "real_key_APK_reads": false,
+    "real_key_creation_or_copy": false,
+    "schema": "gsip-public-debug-signing-metadata-probe-v1",
+    "selected_store_is_not_HOME_assumption": true,
+    "selected_store_is_under_private_preferences": true,
+    "signing_build_or_validation_tasks_requested": false,
+    "store_path_or_raw_metadata_persisted": false,
+    "task_sha256": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf"
+  },
+  "actual_AGP_metadata_probe_receipt_sha256": "edd6655a3e9225e903ce65ebe492cc95b2b3527975d675dc70a079eeb0ea6af9",
+  "actual_probe_harness_recovery": "Initial sandbox blocked Gradle FileLockContentionHandler localhost socket; preserved fixed receipt. Exact offline copied inputs dry-run/metadata-only operation succeeded after permission escalation. No signing/build dependencies selected, no real key/APK read/generated.",
+  "authored_pinned_scan": {
+    "exit": 0,
+    "findings": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "version": "8.21.2"
+  },
+  "baseline_new_controls": {
+    "errors": 0,
+    "failures": 75,
+    "skipped": 0,
+    "tests": 78
+  },
+  "baseline_note": "75 failures include absent new locator APIs/default CLI/workflow behavior;3 existing compatibility/shared-proof controls pass. Not75independent defects.",
+  "bookkeeping_recovery": "Initial primary JSON serialization encountered a set; no source changed. Final deterministic sorted hash lists serialized in this receipt.",
+  "combined": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 30,
+    "tests": 748
+  },
+  "default_alias_primary_binding": "Pinned builder8.13 DefaultSigningConfig$DebugSigningConfig classf59b0d944c27d608fd79dac1500e6ae51c676fd5f3732fa63dbf584d60993ae3 carries fixed AndroidDebugKey alias; accessed via public DSL only.",
+  "early_test_harness_recovery": "Initial new workflow test searched .py invocation; corrected to the existing python -m module invocation before final controls.",
+  "first_combined_contract_failure": {
+    "errors": 0,
+    "failures": 1,
+    "skipped": 30,
+    "tests": 748
+  },
+  "focused": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 78
+  },
+  "guard_mutations": [
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 9,
+      "mutation": "unknown_field_accepted",
+      "tests": 78
+    },
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 3,
+      "mutation": "lexical_path_guard_removed",
+      "tests": 78
+    },
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 5,
+      "mutation": "app_template_guard_removed",
+      "tests": 78
+    },
+    {
+      "effective": true,
+      "errors": 0,
+      "exit": 1,
+      "failures": 1,
+      "mutation": "shared_key_equality_removed",
+      "tests": 78
+    }
+  ],
+  "mypy_target_set": "Success: no issues found in75sourcefiles",
+  "old43": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 43
+  },
+  "primary_property_recovery": "Old local fixture0bbb included sdkDownload=false. Production scope accepts only primary CLI3bab15; offline setting is private init configuration, no broadened properties whitelist.",
+  "real_30_tool_cases": "Explicitly skipped, unchanged original task74ad. Actual metadata-only AGP proof is separate from native product acceptance.",
+  "static": {
+    "eslint": {
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "language": {
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mypy": {
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c"
+    },
+    "prettier": {
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    },
+    "ruff": {
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    }
+  }
+}

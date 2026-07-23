@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /private/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-writer-baseline-2oytwzn0/apps/capture-pwa
+
+ ❯ tests/library-app.test.tsx (17 tests | 1 failed | 16 skipped) 286ms
+   × can start fresh context and declaration after discarding an unresolved older declaration read 285ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/library-app.test.tsx > can start fresh context and declaration after discarding an unresolved older declaration read
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/library-app.test.tsx:461:5
+    459|       }) as HTMLInputElement
+    460|     ).disabled,
+    461|   ).toBe(false)
+       |     ^
+    462|   await optIn()
+    463|   const fresh = (await q.savedLibraryDraft())!
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  22:04:51
+   Duration  833ms (transform 120ms, setup 59ms, import 37ms, tests 286ms, environment 381ms)
+

@@ -1,0 +1,20 @@
+{
+  "state": "PASS_LOCAL_SMOKE_VERIFIER_SELF_TESTS",
+  "completed_at_utc": "2026-10-12T19:50:37.391218+00:00",
+  "command": [
+    "python3",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-e-edge-smoke-2026-10-12.py",
+    "--self-test"
+  ],
+  "exit_code": 0,
+  "tests_passed": 13,
+  "tests_total": 13,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "b986091cdd4d7aeb1185de9a51d74065913d71702d10fa5dada3e4c584a2ddd7",
+  "verifier_sha256": "2b74853beea8d08ec1a43a1f4f1a5ed2f7fc1ecd0b0b4404b61edf801ed982f0",
+  "network_calls": 0,
+  "production_changes": [],
+  "limits": [
+    "Synthetic HTTP transport validation, not deployed-function or runtime smoke proof."
+  ]
+}

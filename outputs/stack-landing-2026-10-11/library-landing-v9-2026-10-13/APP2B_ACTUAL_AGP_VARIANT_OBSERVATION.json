@@ -1,0 +1,38 @@
+{
+  "direct_artifact_type_attributes_absent": true,
+  "each_has_one_compiled_class_publish_artifact_type": "android-classes-jar",
+  "files": {
+    "ACTUAL_AGP_VARIANT_METADATA_FINAL.json": {
+      "bytes": 7042,
+      "sha256": "ed9f686e42c247b663cf6dad040648820ef27b41a3c0f9f01988446d4439863b"
+    },
+    "ACTUAL_AGP_VARIANT_METADATA_FINAL_EXECUTION.json": {
+      "bytes": 10946,
+      "sha256": "3c7f6eb3f1ed75e2c6026f6a3c3fc4992a8b26f76927321dba2d2f03e33e49fe"
+    },
+    "ACTUAL_ARTIFACT_AMBIGUITY_FROZEN.json": {
+      "bytes": 1890,
+      "sha256": "b8981089da436a3a74a1edeb6abf712afcfef530d9e9ee7bcac8fa4038f2685f"
+    },
+    "PUBLIC_SECONDARY_VARIANT_REPRO_FROZEN.json": {
+      "bytes": 1346,
+      "sha256": "9d8406d2df3e2ac85af19287f4703e1bd057d54ac2bae171e0f59d881d540c5b"
+    },
+    "variant-metadata-final.gradle": {
+      "bytes": 6964,
+      "sha256": "cd66bf2465ecc2ecf8e359b9870dbc1e13d65358d72409a8e26f252f69071002"
+    },
+    "variant_metadata_final_probe.py": {
+      "bytes": 6186,
+      "sha256": "8d7182428ccd642e93795b1fee3df292c45cda0067b6685d5de35b12f8fb1e06"
+    }
+  },
+  "full_graph_module_count_each": 75,
+  "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "known_plugin_variant_count": 8,
+  "maintained_changes": false,
+  "platform_category_candidate_count_each": 2,
+  "platform_category_not_an_artifact_exemption": true,
+  "schema": "gsip-exact-c1-final-variant-observation-v1",
+  "unknown_class_type_count": 0
+}

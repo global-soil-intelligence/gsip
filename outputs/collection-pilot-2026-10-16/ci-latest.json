@@ -1,0 +1,48 @@
+{
+  "observed_at": "2026-10-16T23:31:57.368174+00:00",
+  "runs": [
+    {
+      "run": 38981525926,
+      "status": "in_progress",
+      "conclusion": "",
+      "head": "273ba98704343339c174a31124b887e19ead3dca",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38981525926",
+      "jobs": [
+        {
+          "name": "validate",
+          "status": "in_progress",
+          "conclusion": "",
+          "active": [
+            "Run uv run pytest"
+          ],
+          "failed": []
+        }
+      ]
+    },
+    {
+      "run": 38981525934,
+      "status": "in_progress",
+      "conclusion": "",
+      "head": "273ba98704343339c174a31124b887e19ead3dca",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38981525934",
+      "jobs": [
+        {
+          "name": "ios",
+          "status": "completed",
+          "conclusion": "success",
+          "active": [],
+          "failed": []
+        },
+        {
+          "name": "android",
+          "status": "in_progress",
+          "conclusion": "",
+          "active": [
+            "Audit exact Android runtime and license inputs"
+          ],
+          "failed": []
+        }
+      ]
+    }
+  ]
+}

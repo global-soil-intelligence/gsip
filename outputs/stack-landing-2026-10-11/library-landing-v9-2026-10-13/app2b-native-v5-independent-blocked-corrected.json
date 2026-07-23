@@ -1,0 +1,254 @@
+{
+  "base_patch_sha256": "c521669a1c0d871a668d0122b1f81f1268f0c6560a2b52cb5c6a96dddd84d41e",
+  "checks": [
+    {
+      "counts": {
+        "errors": "0",
+        "failures": "1",
+        "hostname": "MacBook-Pro-6.local",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "341",
+        "time": "3.836",
+        "timestamp": "2026-10-13T12:56:17.926889-04:00"
+      },
+      "log": "replay.log",
+      "log_sha256": "368b44b096653e7145b97c83f7a480796a20da577d0a14dbdb047096b7571de7",
+      "status": "initial missing separately bound disclosure, 1 processor failure",
+      "xml": "replay.xml",
+      "xml_sha256": "99d6e398c5f299220e3ec323130ba7fc142d04f805e4aba99b02e8aeba6ed87b"
+    },
+    {
+      "counts": {
+        "errors": "0",
+        "failures": "0",
+        "hostname": "MacBook-Pro-6.local",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "341",
+        "time": "3.503",
+        "timestamp": "2026-10-13T13:00:13.626845-04:00"
+      },
+      "log": "replay-corrected-disclosure.log",
+      "log_sha256": "152af60a17c8d59018ea46dc066c7b123b8b2aeb127ca4844db52092deebf04f",
+      "status": "pass",
+      "xml": "replay-corrected-disclosure.xml",
+      "xml_sha256": "e8d2cfa9facab649cab92fe8e8ceb5618a207a04e0bd94655c0e547828102405"
+    },
+    {
+      "counts": {
+        "errors": "0",
+        "failures": "0",
+        "hostname": "MacBook-Pro-6.local",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "26",
+        "time": "3.381",
+        "timestamp": "2026-10-13T13:00:10.050544-04:00"
+      },
+      "log": "primary-probes.log",
+      "log_sha256": "b992e0fb1861297dd80c79f35e530e3d4e7bda30afbb682cfc003be75182caf3",
+      "status": "pass",
+      "xml": "primary-probes.xml",
+      "xml_sha256": "fb2a37348cff116516a42034e0221131ffdf0d03a02a7e110e0424dc75ca7444"
+    },
+    {
+      "counts": {
+        "errors": "0",
+        "failures": "3",
+        "hostname": "MacBook-Pro-6.local",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "3",
+        "time": "0.162",
+        "timestamp": "2026-10-13T12:57:25.514106-04:00"
+      },
+      "log": "capacitor-witness.log",
+      "log_sha256": "cdef5a9ffe8af405225fa0b08061cd6a750451e5457533dbaedece035fbe881f",
+      "status": "expected source finding",
+      "xml": "capacitor-witness.xml",
+      "xml_sha256": "cfcfed7ac1a4db9937cee7d3e294f219496b5c12aa9152ece9be39767de85fb7"
+    },
+    {
+      "counts": {
+        "errors": "0",
+        "failures": "3",
+        "hostname": "MacBook-Pro-6.local",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "4",
+        "time": "0.127",
+        "timestamp": "2026-10-13T12:58:37.400432-04:00"
+      },
+      "log": "capacitor-sidecar.log",
+      "log_sha256": "a5327e9ac2f4c914ca2b944b44d5b85d05ad59a3732fe35e1c56ee5cc3460103",
+      "status": "expected same finding sidecar witnesses",
+      "xml": "capacitor-sidecar.xml",
+      "xml_sha256": "8c0846fceb95c61770d268c7316cc230611be1daabfa4b464b284db9e6290f87"
+    }
+  ],
+  "combined_author_baseline_prior": {
+    "d7_build_permissions": 71,
+    "native_author": 211,
+    "passed": 341,
+    "prior_expanded": 40,
+    "prior_witnesses": 13,
+    "processors": 6
+  },
+  "correction": {
+    "explanation": "Changing only top-level Capacitor pins/HEAD/tag leaves separately serialized resolved_inventory pins unchanged; existing inventory equality correctly refuses. A complete coordinated inventory-pin variant was supplied separately by native author and is not counted in this original bank.",
+    "failed_witnesses": 6,
+    "observed": [
+      {
+        "failures": 3,
+        "outcomes": [
+          {
+            "expected_failure": true,
+            "test": "test_capacitor_checkout_unknown_content_must_refuse[manifest_source_target]"
+          },
+          {
+            "expected_failure": true,
+            "test": "test_capacitor_checkout_unknown_content_must_refuse[manifest_dependency]"
+          },
+          {
+            "expected_failure": true,
+            "test": "test_capacitor_checkout_unknown_content_must_refuse[extra_source]"
+          }
+        ],
+        "passes": 0,
+        "path": "/private/tmp/gsip-native-v5-independent-3f4cb4ez/capacitor-witness.xml",
+        "sha256": "cfcfed7ac1a4db9937cee7d3e294f219496b5c12aa9152ece9be39767de85fb7",
+        "tests": 3
+      },
+      {
+        "failures": 3,
+        "outcomes": [
+          {
+            "expected_failure": true,
+            "test": "test_unbound_capacitor_proof_must_refuse[manifest_digest]"
+          },
+          {
+            "expected_failure": false,
+            "test": "test_unbound_capacitor_proof_must_refuse[unchecked_capacitor_revision]"
+          },
+          {
+            "expected_failure": true,
+            "test": "test_unbound_capacitor_proof_must_refuse[archive_digest_and_swift_checksum]"
+          },
+          {
+            "expected_failure": true,
+            "test": "test_unbound_capacitor_proof_must_refuse[upstream_description_digest]"
+          }
+        ],
+        "passes": 1,
+        "path": "/private/tmp/gsip-native-v5-independent-3f4cb4ez/capacitor-sidecar.xml",
+        "sha256": "8c0846fceb95c61770d268c7316cc230611be1daabfa4b464b284db9e6290f87",
+        "tests": 4
+      }
+    ],
+    "passing_case": "unchecked_capacitor_revision",
+    "passing_existing_refusal": 1,
+    "prior_receipt": "/private/tmp/gsip-native-v5-independent-3f4cb4ez/independent-v5-blocked-receipt.json",
+    "prior_sha256": "c3695df3236406b6971b726fb1143c4b4eb856e0aecfa7c1fb71b62730f07757",
+    "reason": "I misread the sidecar exit1 as four individual failures. Actual preserved XML has three failed sidecar refusals and one passing revision refusal. No original evidence changed."
+  },
+  "delegated_diagnostics": {
+    "finding": "none in diagnostics/workflow slice",
+    "guard_mutations_expected_fail": 4,
+    "independent_cases": 43,
+    "receipt": "/private/tmp/gsip-native-v5-diagnostics-independent-gdpobfm0/independent-diagnostics-receipt.json",
+    "sha256": "a16eea384c9836bad06407d45f6d238e17e2c387787fa76571d82ff9e3c4cacf",
+    "workflow_bash_bodies": 28,
+    "workflow_unchanged_v4": true
+  },
+  "disclosure": {
+    "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/formatted-privacy-candidate.md",
+    "scope": "Previously independent root-owned required host-disclosure input, integrated only in own review copy after initial expected processor failure; no change authored here.",
+    "sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00"
+  },
+  "files": [
+    {
+      "base_sha256": null,
+      "bytes": 83833,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "f588112af2eb2f51a354a7856a9c0bb916722e3422807b2af223acc9c24b5ab0",
+      "v4_sha256": "bbc96feba3a8e33900ba5d5c78a8e968e1e3d62f8a3b3af90dc3b812572ae54f"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 69749,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "fef70073abf42ec433dc5193be7df7f4a7c6d74d3795c88502d022a329726c8e",
+      "v4_sha256": "df732911e989b4bed5d051dd7c1665c12e312b6d7dfae47561e8aaa6f7427f66"
+    },
+    {
+      "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "bytes": 17825,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "v4_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 12167,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "3278d03081afec2bc5c408eb87afde23268b264acc3c5cfd8ac810aa284907da",
+      "v4_sha256": "7809956ce546f1a389e1d01018f1b5ab71ed41a93f2970b4f99e6c40ba608715"
+    }
+  ],
+  "finding": {
+    "actual": "Three collector witnesses and three sidecar witnesses reproduce the gap. The fourth sidecar case (incompletely coordinated Capacitor revision mutation) is already refused by inventory equality.",
+    "file": "scripts/app_notification_audit.py",
+    "impact": "The selected release HEAD/tag alone does not prove worktree source content; unreviewed source/manifest changes and self-consistent forged Capacitor metadata can be represented as reviewed native dependency evidence.",
+    "lines": [
+      1067,
+      1077,
+      1630
+    ],
+    "priority": "P2",
+    "required_fix": "Bind Capacitor exact reviewed release revision, full manifest and entire checkout source archive/tree as for ION, plus exact binary checksums/description proof; reject extra, changed, linked, unsafe or omitted inputs and contradictory complete sidecars. Preserve unchanged frozen witnesses and all valid controls.",
+    "root_confirmed": "Parent explicitly confirmed source-proof P2 requires a forward fix; no weakening exception.",
+    "title": "Capacitor manifest/source checkout is not bound to exact reviewed release content",
+    "trigger": "After positive collection and full validate_native, append unreviewed .target or .package to Package.swift, or add Unreviewed.swift beneath capacitor-swift-pm while two original .binaryTarget declarations remain."
+  },
+  "freeze": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v5-frozen-mii_1mdf",
+  "freeze_receipt_sha256": "394ac613d2da1e6031f8b7f2945287003153f7dae8929b2594995d913f1abd8e",
+  "independent_retained_primary_graph": {
+    "passed": 26,
+    "real_public_archives": 3,
+    "scope": "Actual retained ION public primary archive/LICENSE/manifest/tag-reference/commit bytes; mocked Git command values and mocked HTTP byte returns, not compilation"
+  },
+  "limits": [
+    "Actual CI38429415336 failed both additive audits; v5 source results do not establish next native acceptance.",
+    "Android actual failure cause remains unconfirmed; diagnostic-only delta preserves both actual variants.",
+    "Retained primary source facts are read-only, prior-retrieved evidence; no fresh upstream readback or tool-resolution assertion.",
+    "Real-device delivery/cancellation/reboot/logging/Android backup and iOS WebKit backup gates remain unverified; signing/accounts/stores/production/capture gates unchanged."
+  ],
+  "no_actions": [
+    "No native builds/signing/UI",
+    "No Git/GitHub changes or requests",
+    "No network or downloads",
+    "No real contributor content/credentials/production",
+    "No shared operational or author edits"
+  ],
+  "prior13_byte_unchanged": true,
+  "prior40_byte_unchanged": true,
+  "review_tests": [
+    {
+      "path": "/private/tmp/gsip-native-v5-independent-3f4cb4ez/repo/tests/test_review_v5_capacitor_binding.py",
+      "sha256": "e8cfc9636c87f2c1ec0294374fc09cafcbd5d18a29b7b0b826e1693999f094e0"
+    },
+    {
+      "path": "/private/tmp/gsip-native-v5-independent-3f4cb4ez/repo/tests/test_review_v5_capacitor_sidecar.py",
+      "sha256": "0cc94371f89fc7d7f22ce1f0142661191d9d25be47a3d64d1dfb434e42f7b063"
+    },
+    {
+      "path": "/private/tmp/gsip-native-v5-independent-3f4cb4ez/repo/tests/test_review_v5_primary_graph.py",
+      "sha256": "aa62aa034ccb723cb39c917d287ae89a8657e01d080d847905591b79b4f79a36"
+    }
+  ],
+  "scope": "Independent read-only frozen APP2B native v5 four-file source review, not GitHub approval, CI/native/device/production proof",
+  "source_freeze_rechecked_unchanged": true,
+  "status": "BLOCKED: one material native source-proof P2 remains",
+  "v4_delta_sha256": "ca144f32777dc90690df8d6c19421baaf16d1e2726c90141e51898f00b0912e0"
+}

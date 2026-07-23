@@ -1,0 +1,32 @@
+{
+  "qa_sha256": "5dcb86eaf5424d7af547c5487eff5186027b3e42fa6c98289e371c1f3f40387f",
+  "decoder_sha256": "f4a288aad937c73ecb64c3415187e669ba67302a63eddcc0e9a7d65bfdcfa30c",
+  "scope": "synthetic duplicate sequential scan with unused private table; no network/models/image files",
+  "results": [
+    {
+      "duplicate_baseline_scan": true,
+      "extra_scan_entropy_bytes": 0,
+      "entropy_is_private_ascii": false,
+      "metadata_dirty": false,
+      "decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "duplicate_baseline_scan": true,
+      "extra_scan_entropy_bytes": 1,
+      "entropy_is_private_ascii": false,
+      "metadata_dirty": false,
+      "decoder_accepted": true,
+      "pixels_identical": true
+    },
+    {
+      "duplicate_baseline_scan": true,
+      "extra_scan_entropy_bytes": 25,
+      "entropy_is_private_ascii": true,
+      "metadata_dirty": false,
+      "decoder_accepted": true,
+      "pixels_identical": true
+    }
+  ],
+  "blocking_findings_remain": true
+}

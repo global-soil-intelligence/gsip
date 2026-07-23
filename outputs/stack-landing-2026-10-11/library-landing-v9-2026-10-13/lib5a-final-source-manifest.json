@@ -1,0 +1,51 @@
+[
+  {
+    "path": "docs/NODE_EXCHANGE_CONTRACT.md",
+    "base_sha256": null,
+    "v1_sha256": "15661ea52671707884f6ad67ed43f8e1c703739a510fcacd615250645c5ffcf3",
+    "source_sha256": "4cd2af29d7d15b9a6721b229c16582732a7fbc397d7ba3f595a60f4c9785b945",
+    "byte_count": 5221
+  },
+  {
+    "path": "packages/schema/src/index.ts",
+    "base_sha256": "8b83f86de138fcaec38020d41150352a27be7d6c1793a05ddec8b2ce220fb368",
+    "v1_sha256": "88f0441e7f3aeb62da4081d22ebf72a874ad0c583b40b1610dfa48ab926a3cb6",
+    "source_sha256": "88f0441e7f3aeb62da4081d22ebf72a874ad0c583b40b1610dfa48ab926a3cb6",
+    "byte_count": 297
+  },
+  {
+    "path": "packages/schema/src/nodeExchange.ts",
+    "base_sha256": null,
+    "v1_sha256": "9dccc62b16c40d43b9f7adfae3aa4c04bd4ec25eddef7c52a33e7b3da8f0fdda",
+    "source_sha256": "adccffcea3650b91a039e9e203887298ed34e7a7e6547bbc4c72169fb22484e8",
+    "byte_count": 16852
+  },
+  {
+    "path": "packages/schema/tests/fixtures/node-exchange-conformance.json",
+    "base_sha256": null,
+    "v1_sha256": "05ba6c11e1e0b8073618341ca07805f3e70ed0e7b5af3bc8ad3aac5c889c3f9a",
+    "source_sha256": "05ba6c11e1e0b8073618341ca07805f3e70ed0e7b5af3bc8ad3aac5c889c3f9a",
+    "byte_count": 91050
+  },
+  {
+    "path": "packages/schema/tests/node-exchange.test.ts",
+    "base_sha256": null,
+    "v1_sha256": "0329095c32930ae78e0a47dcced71e190fefcc650e2cf8b758030f92e69bc36b",
+    "source_sha256": "182d731508068e3317612acaf9ee491bf8b8a6991428f05c4a435e19fd7a3569",
+    "byte_count": 16507
+  },
+  {
+    "path": "pipeline/node_exchange.py",
+    "base_sha256": null,
+    "v1_sha256": "79075a943e66ec50046b0aafea7a80c2bf35ce5320d9bce5486cdaa1532944f7",
+    "source_sha256": "ea3be8b40502c35c6b299203515924b818a5ba8283f82eaee8b84bb783563179",
+    "byte_count": 15578
+  },
+  {
+    "path": "tests/test_node_exchange_contract.py",
+    "base_sha256": null,
+    "v1_sha256": "89db1cf7cd1d70e4db0c0ac817b82826b50c6a8a5405aba768e8fedd587fb1a2",
+    "source_sha256": "cc78ab39134a774c33377e7f402b53252308b77ec98f2cdcb50ed6f020e739e7",
+    "byte_count": 11351
+  }
+]

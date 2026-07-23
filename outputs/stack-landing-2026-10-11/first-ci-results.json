@@ -1,0 +1,1900 @@
+{
+  "captured_at_utc": "2026-10-12T00:10:20.298765+00:00",
+  "repository": "global-soil-intelligence/gsip",
+  "first_validate_runs": [
+    {
+      "branch": "docs/spec-v3",
+      "run_id": 38186375127,
+      "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38186375127",
+      "validate_job_id": 114609461634,
+      "validate_status": "completed",
+      "validate_conclusion": "success",
+      "counts": {
+        "vitest_files_passed": 10,
+        "vitest_tests_passed": 35,
+        "playwright_passed": 4,
+        "pytest_passed": 29,
+        "pytest_skipped": 0,
+        "pgtap_files": 2,
+        "pgtap_assertions": 48
+      },
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Run uv sync --frozen --all-groups",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Run pnpm lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Run pnpm typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Run pnpm test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Run pnpm build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Run pnpm check:map-budget",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Run pnpm exec playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Run pnpm exec playwright test --project=desktop-chrome",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Run uv run ruff check .",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Run uv run mypy",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Run uv run pytest",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 19,
+          "name": "Run pnpm db:start",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 20,
+          "name": "Run pnpm db:reset",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 21,
+          "name": "Run pnpm db:test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 22,
+          "name": "Run pnpm db:stop",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 40,
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 41,
+          "name": "Post Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 42,
+          "name": "Post Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 43,
+          "name": "Post Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 44,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 45,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "log_policy": "Only parsed numeric verification summaries retained; raw logs and matched source content not saved.",
+      "vitest_suites": [
+        {
+          "package": "packages/schema",
+          "tests_passed": 11
+        },
+        {
+          "package": "apps/site-web",
+          "tests_passed": 8
+        },
+        {
+          "package": "apps/map-web",
+          "tests_passed": 3
+        },
+        {
+          "package": "apps/capture-pwa",
+          "tests_passed": 13
+        }
+      ],
+      "migration_numeric_evidence": null,
+      "database_numeric_summaries": [
+        {
+          "files": 2,
+          "assertions": 48
+        }
+      ]
+    },
+    {
+      "branch": "wp-6b-launch-hardening",
+      "run_id": 38186377736,
+      "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38186377736",
+      "validate_job_id": 114609468702,
+      "validate_status": "completed",
+      "validate_conclusion": "success",
+      "counts": {
+        "vitest_files_passed": 12,
+        "vitest_tests_passed": 73,
+        "playwright_passed": 4,
+        "pytest_passed": 82,
+        "pytest_skipped": 0,
+        "pgtap_files": 3,
+        "pgtap_assertions": 99
+      },
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Run uv sync --frozen --all-groups",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Run pnpm lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Run pnpm typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Run pnpm test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Run pnpm build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Run pnpm check:map-budget",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Run pnpm exec playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Run pnpm exec playwright test --project=desktop-chrome",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Run uv run ruff check .",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Run uv run mypy",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Run uv run pytest",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 19,
+          "name": "Run pnpm db:start",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 20,
+          "name": "Run pnpm db:reset",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 21,
+          "name": "Run pnpm db:test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 22,
+          "name": "Run pnpm db:stop",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 40,
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 41,
+          "name": "Post Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 42,
+          "name": "Post Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 43,
+          "name": "Post Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 44,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 45,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "log_policy": "Only parsed numeric verification summaries retained; raw logs and matched source content not saved.",
+      "vitest_suites": [
+        {
+          "package": "packages/schema",
+          "tests_passed": 32
+        },
+        {
+          "package": "apps/site-web",
+          "tests_passed": 8
+        },
+        {
+          "package": "apps/map-web",
+          "tests_passed": 5
+        },
+        {
+          "package": "apps/capture-pwa",
+          "tests_passed": 28
+        }
+      ],
+      "migration_numeric_evidence": null,
+      "database_numeric_summaries": [
+        {
+          "files": 3,
+          "assertions": 99
+        }
+      ]
+    },
+    {
+      "branch": "wp-6c-priors-and-tiles",
+      "run_id": 38186380831,
+      "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38186380831",
+      "validate_job_id": 114609478042,
+      "validate_status": "completed",
+      "validate_conclusion": "success",
+      "counts": {
+        "vitest_files_passed": 16,
+        "vitest_tests_passed": 109,
+        "playwright_passed": 4,
+        "pytest_passed": 111,
+        "pytest_skipped": 0,
+        "pgtap_files": 3,
+        "pgtap_assertions": 123
+      },
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Install GDAL for the golden-tile tests",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Run uv sync --frozen --all-groups",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Run pnpm lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Run pnpm typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Run pnpm test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Run pnpm build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Run pnpm check:map-budget",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Run pnpm exec playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Run pnpm exec playwright test --project=desktop-chrome",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Run uv run ruff check .",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 19,
+          "name": "Run uv run mypy",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 20,
+          "name": "Run uv run pytest",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 21,
+          "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 22,
+          "name": "Run pnpm db:start",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 23,
+          "name": "Run pnpm db:reset",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 24,
+          "name": "Run pnpm db:test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 25,
+          "name": "Run pnpm db:stop",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 45,
+          "name": "Post Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 46,
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 47,
+          "name": "Post Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 48,
+          "name": "Post Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 49,
+          "name": "Post Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 50,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 51,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "log_policy": "Only parsed numeric verification summaries retained; raw logs and matched source content not saved.",
+      "vitest_suites": [
+        {
+          "package": "packages/schema",
+          "tests_passed": 58
+        },
+        {
+          "package": "apps/site-web",
+          "tests_passed": 8
+        },
+        {
+          "package": "apps/map-web",
+          "tests_passed": 15
+        },
+        {
+          "package": "apps/capture-pwa",
+          "tests_passed": 28
+        }
+      ],
+      "migration_numeric_evidence": null,
+      "database_numeric_summaries": [
+        {
+          "files": 3,
+          "assertions": 123
+        }
+      ]
+    },
+    {
+      "branch": "wp-6d-contributor-rights",
+      "run_id": 38186384859,
+      "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38186384859",
+      "validate_job_id": 114609490752,
+      "validate_status": "completed",
+      "validate_conclusion": "success",
+      "counts": {
+        "vitest_files_passed": 20,
+        "vitest_tests_passed": 154,
+        "playwright_passed": 4,
+        "pytest_passed": 163,
+        "pytest_skipped": 0,
+        "pgtap_files": 4,
+        "pgtap_assertions": 193
+      },
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Install GDAL for the golden-tile tests",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Run uv sync --frozen --all-groups",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Run pnpm lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Run pnpm typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Run pnpm test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Run pnpm build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Run pnpm check:map-budget",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Run pnpm exec playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Run pnpm exec playwright test --project=desktop-chrome",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Run uv run ruff check .",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 19,
+          "name": "Run uv run mypy",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 20,
+          "name": "Run uv run pytest",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 21,
+          "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 22,
+          "name": "Run pnpm db:start",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 23,
+          "name": "Run pnpm db:reset",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 24,
+          "name": "Run pnpm db:test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 25,
+          "name": "Run pnpm db:stop",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 45,
+          "name": "Post Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 46,
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 47,
+          "name": "Post Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 48,
+          "name": "Post Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 49,
+          "name": "Post Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 50,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 51,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "log_policy": "Only parsed numeric verification summaries retained; raw logs and matched source content not saved.",
+      "vitest_suites": [
+        {
+          "package": "packages/schema",
+          "tests_passed": 58
+        },
+        {
+          "package": "apps/site-web",
+          "tests_passed": 8
+        },
+        {
+          "package": "apps/map-web",
+          "tests_passed": 15
+        },
+        {
+          "package": "apps/capture-pwa",
+          "tests_passed": 73
+        }
+      ],
+      "migration_numeric_evidence": null,
+      "database_numeric_summaries": [
+        {
+          "files": 4,
+          "assertions": 193
+        }
+      ]
+    },
+    {
+      "branch": "wp-6e-provenance",
+      "run_id": 38186387023,
+      "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38186387023",
+      "validate_job_id": 114609497381,
+      "validate_status": "completed",
+      "validate_conclusion": "success",
+      "counts": {
+        "vitest_files_passed": 21,
+        "vitest_tests_passed": 177,
+        "playwright_passed": 4,
+        "pytest_passed": 200,
+        "pytest_skipped": 0,
+        "pgtap_files": 5,
+        "pgtap_assertions": 250
+      },
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Install GDAL for the golden-tile tests",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Run uv sync --frozen --all-groups",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Run pnpm lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Run pnpm typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Run pnpm test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Run pnpm build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Run pnpm check:map-budget",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Run pnpm exec playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Run pnpm exec playwright test --project=desktop-chrome",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Run uv run ruff check .",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 19,
+          "name": "Run uv run mypy",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 20,
+          "name": "Run uv run pytest",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 21,
+          "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 22,
+          "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 23,
+          "name": "Apply migrations to data written before them",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 24,
+          "name": "Run pnpm db:start",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 25,
+          "name": "Run pnpm db:reset",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 26,
+          "name": "Run pnpm db:test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 27,
+          "name": "Run pnpm db:stop",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 49,
+          "name": "Post Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 50,
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 51,
+          "name": "Post Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 52,
+          "name": "Post Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 53,
+          "name": "Post Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 54,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 55,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "log_policy": "Only parsed numeric verification summaries retained; raw logs and matched source content not saved.",
+      "vitest_suites": [
+        {
+          "package": "packages/schema",
+          "tests_passed": 58
+        },
+        {
+          "package": "apps/site-web",
+          "tests_passed": 8
+        },
+        {
+          "package": "apps/map-web",
+          "tests_passed": 15
+        },
+        {
+          "package": "apps/capture-pwa",
+          "tests_passed": 96
+        }
+      ],
+      "migration_numeric_evidence": {
+        "step_status": "completed",
+        "step_conclusion": "success",
+        "numeric_check_total": null,
+        "note": "The migration-test step succeeded; no trustworthy numerical check-total summary was captured from its log."
+      },
+      "database_numeric_summaries": [
+        {
+          "files": 5,
+          "assertions": 250
+        }
+      ]
+    },
+    {
+      "branch": "wp-agent-1-read-api",
+      "run_id": 38186389478,
+      "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38186389478",
+      "validate_job_id": 114609503807,
+      "validate_status": "completed",
+      "validate_conclusion": "success",
+      "counts": {
+        "vitest_files_passed": 29,
+        "vitest_tests_passed": 265,
+        "playwright_passed": 12,
+        "pytest_passed": 202,
+        "pytest_skipped": 0,
+        "pgtap_files": 6,
+        "pgtap_assertions": 262
+      },
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Install GDAL for the golden-tile tests",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Run uv sync --frozen --all-groups",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Run pnpm lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Run pnpm typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Run pnpm test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Run pnpm build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Run pnpm check:map-budget",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Run pnpm exec playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Run pnpm exec playwright test --project=desktop-chrome",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Run uv run ruff check .",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 19,
+          "name": "Run uv run mypy",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 20,
+          "name": "Run uv run pytest",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 21,
+          "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 22,
+          "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 23,
+          "name": "Apply migrations to data written before them",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 24,
+          "name": "Run pnpm db:start",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 25,
+          "name": "Run pnpm db:reset",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 26,
+          "name": "Run pnpm db:test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 27,
+          "name": "Run pnpm db:stop",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 49,
+          "name": "Post Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 50,
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 51,
+          "name": "Post Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 52,
+          "name": "Post Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 53,
+          "name": "Post Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 54,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 55,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "log_policy": "Only parsed numeric verification summaries retained; raw logs and matched source content not saved.",
+      "vitest_suites": [
+        {
+          "package": "packages/schema",
+          "tests_passed": 126
+        },
+        {
+          "package": "apps/site-web",
+          "tests_passed": 28
+        },
+        {
+          "package": "apps/map-web",
+          "tests_passed": 15
+        },
+        {
+          "package": "apps/capture-pwa",
+          "tests_passed": 96
+        }
+      ],
+      "migration_numeric_evidence": {
+        "step_status": "completed",
+        "step_conclusion": "success",
+        "numeric_check_total": null,
+        "note": "The migration-test step succeeded; no trustworthy numerical check-total summary was captured from its log."
+      },
+      "database_numeric_summaries": [
+        {
+          "files": 6,
+          "assertions": 262
+        }
+      ]
+    },
+    {
+      "branch": "wp-app-1-phone-app",
+      "run_id": 38186393245,
+      "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38186393245",
+      "validate_job_id": 114609514868,
+      "validate_status": "completed",
+      "validate_conclusion": "success",
+      "counts": {
+        "vitest_files_passed": 33,
+        "vitest_tests_passed": 302,
+        "playwright_passed": 12,
+        "pytest_passed": 223,
+        "pytest_skipped": 0,
+        "pgtap_files": 6,
+        "pgtap_assertions": 262
+      },
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Install GDAL for the golden-tile tests",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Run pnpm install --frozen-lockfile",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Run uv sync --frozen --all-groups",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Run pnpm lint",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Run pnpm typecheck",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Run pnpm test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Run pnpm build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Run pnpm check:map-budget",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Run pnpm exec playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Run pnpm exec playwright test --project=desktop-chrome",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Run uv run ruff check .",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 19,
+          "name": "Run uv run mypy",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 20,
+          "name": "Run uv run pytest",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 21,
+          "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 22,
+          "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 23,
+          "name": "Apply migrations to data written before them",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 24,
+          "name": "Run pnpm db:start",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 25,
+          "name": "Run pnpm db:reset",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 26,
+          "name": "Run pnpm db:test",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 27,
+          "name": "Run pnpm db:stop",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 49,
+          "name": "Post Run denoland/setup-deno@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 50,
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 51,
+          "name": "Post Run astral-sh/setup-uv@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 52,
+          "name": "Post Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 53,
+          "name": "Post Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 54,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 55,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "log_policy": "Only parsed numeric verification summaries retained; raw logs and matched source content not saved.",
+      "vitest_suites": [
+        {
+          "package": "packages/schema",
+          "tests_passed": 126
+        },
+        {
+          "package": "apps/site-web",
+          "tests_passed": 28
+        },
+        {
+          "package": "apps/map-web",
+          "tests_passed": 15
+        },
+        {
+          "package": "apps/capture-pwa",
+          "tests_passed": 133
+        }
+      ],
+      "migration_numeric_evidence": {
+        "step_status": "completed",
+        "step_conclusion": "success",
+        "numeric_check_total": null,
+        "note": "The migration-test step succeeded; no trustworthy numerical check-total summary was captured from its log."
+      },
+      "database_numeric_summaries": [
+        {
+          "files": 6,
+          "assertions": 262
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Counts reflect only summary patterns found in the original validate job logs; missing counts remain unverified.",
+    "Original successful runs do not certify subsequent commits.",
+    "Playwright counts are for the desktop-chrome project run by CI; they do not establish results for other local projects."
+  ],
+  "current_pr34_validation": {
+    "pr": 34,
+    "head_sha": "94e19ff7fa06a8b284165d57e612c1bda86ce4c8",
+    "run_id": 38186898183,
+    "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38186898183",
+    "run_status": "completed",
+    "run_conclusion": "success",
+    "validate_job_id": 114611055198,
+    "validate_status": "completed",
+    "validate_conclusion": "success",
+    "counts": {
+      "vitest_tests_passed": 302,
+      "vitest_files_passed": 33,
+      "pytest_passed": 224,
+      "pytest_skipped": 0,
+      "playwright_desktop_chrome_passed": 12,
+      "pgtap_files": 6,
+      "pgtap_assertions": 262
+    },
+    "steps": [
+      {
+        "number": 1,
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 2,
+        "name": "Run actions/checkout@v7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 3,
+        "name": "Run pnpm/action-setup@v6",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 4,
+        "name": "Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 5,
+        "name": "Run astral-sh/setup-uv@v7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 6,
+        "name": "Run actions/setup-python@v7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 7,
+        "name": "Run denoland/setup-deno@v2",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 8,
+        "name": "Install GDAL for the golden-tile tests",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 9,
+        "name": "Run pnpm install --frozen-lockfile",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 10,
+        "name": "Run uv sync --frozen --all-groups",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 11,
+        "name": "Run pnpm lint",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 12,
+        "name": "Run pnpm typecheck",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 13,
+        "name": "Run pnpm test",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 14,
+        "name": "Run pnpm build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 15,
+        "name": "Run pnpm check:map-budget",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 16,
+        "name": "Run pnpm exec playwright install --with-deps chromium",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 17,
+        "name": "Run pnpm exec playwright test --project=desktop-chrome",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 18,
+        "name": "Run uv run ruff check .",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 19,
+        "name": "Run uv run mypy",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 20,
+        "name": "Run uv run pytest",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 21,
+        "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 22,
+        "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 23,
+        "name": "Apply migrations to data written before them",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 24,
+        "name": "Run pnpm db:start",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 25,
+        "name": "Run pnpm db:reset",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 26,
+        "name": "Run pnpm db:test",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 27,
+        "name": "Run pnpm db:stop",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 49,
+        "name": "Post Run denoland/setup-deno@v2",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 50,
+        "name": "Post Run actions/setup-python@v7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 51,
+        "name": "Post Run astral-sh/setup-uv@v7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 52,
+        "name": "Post Run actions/setup-node@v7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 53,
+        "name": "Post Run pnpm/action-setup@v6",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 54,
+        "name": "Post Run actions/checkout@v7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 55,
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "captured_at_utc": "2026-10-12T00:14:49.934463+00:00"
+  }
+}

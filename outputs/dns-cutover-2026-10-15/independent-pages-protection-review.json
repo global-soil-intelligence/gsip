@@ -1,0 +1,46 @@
+{
+  "reviewer": "Codex independent review agent (site_library_review)",
+  "checked_at_utc": "2026-10-16T01:28:51Z",
+  "mode": "read_only_authenticated_GitHub_metadata_GETs",
+  "repository": "global-soil-intelligence/gsip",
+  "status": "VERIFIED_NO_OPEN_FINDINGS",
+  "main": {
+    "ref": "refs/heads/main",
+    "sha": "73088050d6fc68baedf893990ab3fbe76d5e749c"
+  },
+  "latest_pages_workflow_run": {
+    "id": 38821460183,
+    "head_sha": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+    "head_branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-15T23:05:48Z",
+    "updated_at": "2026-10-15T23:47:47Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183"
+  },
+  "preceding_pages_run_ids": [38657274196, 38652748052],
+  "pages_environment": {
+    "name": "github-pages",
+    "can_admins_bypass": false,
+    "required_reviewers": [{"type": "User", "login": "jdhart81"}],
+    "required_reviewer_count": 1,
+    "prevent_self_review": false,
+    "deployment_branch_policy": {
+      "custom_branch_policies": true,
+      "protected_branches": false
+    }
+  },
+  "checks": {
+    "approved_pages_run_is_latest": true,
+    "approved_run_source_matches_main": true,
+    "approved_pages_run_succeeded": true,
+    "sole_required_reviewer_is_jdhart81": true,
+    "administrator_bypass_disabled": true
+  },
+  "scope_limits": [
+    "No GitHub, DNS, source, production or deployment mutation performed.",
+    "No secrets printed or inspected.",
+    "Certificate and trusted HTTPS checks are assigned separately and were not polled here.",
+    "This metadata receipt neither changes nor grants deployment or capture authority."
+  ]
+}

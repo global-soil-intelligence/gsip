@@ -1,0 +1,65 @@
+{
+  "pr": {
+    "baseRefOid": "2c6caa15cbc381eb1c0e3a0b47f40847ef2210c1",
+    "headRefOid": "476bbdab190c99a3bb6d5d8143f21bebde6baf9f",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T11:36:48Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38557797535/job/115831191071",
+        "name": "dco",
+        "startedAt": "2026-10-14T11:36:55Z",
+        "status": "COMPLETED",
+        "workflowName": "DCO"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T11:44:06Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38557797439/job/115831151396",
+        "name": "validate",
+        "startedAt": "2026-10-14T11:36:50Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T11:36:58Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38557797394/job/115831149965",
+        "name": "gitleaks",
+        "startedAt": "2026-10-14T11:36:50Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-14T11:36:38Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/global-soil-intelligence/gsip/actions/runs/38557758174/job/115831020601",
+        "name": "gitleaks",
+        "startedAt": "2026-10-14T11:36:30Z",
+        "status": "COMPLETED",
+        "workflowName": "Secret scan"
+      }
+    ]
+  },
+  "pages": {
+    "reviewers": [
+      "jdhart81"
+    ],
+    "admin_bypass": false
+  },
+  "worker_schedule_guards": {
+    "GSIP_PRIOR_SCHEDULE_ENABLED": "absent",
+    "GSIP_EXPORT_SCHEDULE_ENABLED": "absent",
+    "GSIP_QA_SCHEDULE_ENABLED": "absent",
+    "GSIP_RIGHTS_SCHEDULE_ENABLED": "absent",
+    "GSIP_CLEANUP_SCHEDULE_ENABLED": "absent"
+  },
+  "owner_authority": "Justin explicitly approved merge68 and source-only feasibility on2026-10-14"
+}

@@ -1,0 +1,576 @@
+{
+  "main": {
+    "sha": "710d144db94097be71989c67b5d3b4bb48135ad8",
+    "expected": "710d144db94097be71989c67b5d3b4bb48135ad8",
+    "matches": true
+  },
+  "environment": {
+    "name": "github-pages",
+    "can_admins_bypass": false,
+    "reviewers": [
+      "jdhart81"
+    ]
+  },
+  "workflows": {
+    "total_count": 13,
+    "complete_page": true,
+    "workflows": [
+      {
+        "id": 381647102,
+        "name": "App build",
+        "path": ".github/workflows/app-build.yml",
+        "state": "active"
+      },
+      {
+        "id": 318365326,
+        "name": "CI",
+        "path": ".github/workflows/ci.yml",
+        "state": "active"
+      },
+      {
+        "id": 371718024,
+        "name": "DCO",
+        "path": ".github/workflows/dco.yml",
+        "state": "active"
+      },
+      {
+        "id": 372626465,
+        "name": "Nightly public dataset export",
+        "path": ".github/workflows/nightly-export.yml",
+        "state": "disabled_manually"
+      },
+      {
+        "id": 372625331,
+        "name": "Deploy GitHub Pages",
+        "path": ".github/workflows/pages.yml",
+        "state": "active"
+      },
+      {
+        "id": 372626162,
+        "name": "Private photo QA",
+        "path": ".github/workflows/photo-qa.yml",
+        "state": "disabled_manually"
+      },
+      {
+        "id": 372625971,
+        "name": "Prior enrichment drain",
+        "path": ".github/workflows/prior-enrichment.yml",
+        "state": "disabled_manually"
+      },
+      {
+        "id": 382665797,
+        "name": "Quarantine cleanup",
+        "path": ".github/workflows/quarantine-cleanup.yml",
+        "state": "active"
+      },
+      {
+        "id": 382667845,
+        "name": "Contributor rights requests",
+        "path": ".github/workflows/rights-worker.yml",
+        "state": "active"
+      },
+      {
+        "id": 371718011,
+        "name": "Secret scan",
+        "path": ".github/workflows/secret-scan.yml",
+        "state": "active"
+      },
+      {
+        "id": 372625680,
+        "name": "Dependabot Updates",
+        "path": "dynamic/dependabot/dependabot-updates",
+        "state": "active"
+      },
+      {
+        "id": 372625360,
+        "name": "Dependency Graph",
+        "path": "dynamic/dependabot/update-graph",
+        "state": "active"
+      },
+      {
+        "id": 319210878,
+        "name": "pages-build-deployment",
+        "path": "dynamic/pages/pages-build-deployment",
+        "state": "active"
+      }
+    ]
+  },
+  "main_runs": {
+    "total_count": 189,
+    "complete_page": false,
+    "runs": [
+      {
+        "id": 38443032236,
+        "name": "Secret scan",
+        "head_sha": "710d144db94097be71989c67b5d3b4bb48135ad8",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38443032236",
+        "workflow_id": 371718011,
+        "created_at": "2026-10-13T17:58:52Z",
+        "updated_at": "2026-10-13T17:59:04Z"
+      },
+      {
+        "id": 38443032217,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "710d144db94097be71989c67b5d3b4bb48135ad8",
+        "status": "waiting",
+        "conclusion": null,
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38443032217",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T17:58:52Z",
+        "updated_at": "2026-10-13T17:59:27Z"
+      },
+      {
+        "id": 38443032588,
+        "name": "CI",
+        "head_sha": "710d144db94097be71989c67b5d3b4bb48135ad8",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38443032588",
+        "workflow_id": 318365326,
+        "created_at": "2026-10-13T17:58:52Z",
+        "updated_at": "2026-10-13T18:06:30Z"
+      },
+      {
+        "id": 38420605652,
+        "name": "Contributor rights requests",
+        "head_sha": "d7ed716ed0921381da04f542e90902ede36cb462",
+        "status": "completed",
+        "conclusion": "skipped",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38420605652",
+        "workflow_id": 382667845,
+        "created_at": "2026-10-13T15:16:16Z",
+        "updated_at": "2026-10-13T15:16:17Z"
+      },
+      {
+        "id": 38419373318,
+        "name": "Quarantine cleanup",
+        "head_sha": "d7ed716ed0921381da04f542e90902ede36cb462",
+        "status": "completed",
+        "conclusion": "skipped",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38419373318",
+        "workflow_id": 382665797,
+        "created_at": "2026-10-13T15:07:52Z",
+        "updated_at": "2026-10-13T15:07:53Z"
+      },
+      {
+        "id": 38400202221,
+        "name": "Secret scan",
+        "head_sha": "d7ed716ed0921381da04f542e90902ede36cb462",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38400202221",
+        "workflow_id": 371718011,
+        "created_at": "2026-10-13T12:49:47Z",
+        "updated_at": "2026-10-13T12:49:56Z"
+      },
+      {
+        "id": 38400202152,
+        "name": "CI",
+        "head_sha": "d7ed716ed0921381da04f542e90902ede36cb462",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38400202152",
+        "workflow_id": 318365326,
+        "created_at": "2026-10-13T12:49:47Z",
+        "updated_at": "2026-10-13T12:55:51Z"
+      },
+      {
+        "id": 38400202149,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "d7ed716ed0921381da04f542e90902ede36cb462",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38400202149",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T12:49:47Z",
+        "updated_at": "2026-10-13T17:58:54Z"
+      },
+      {
+        "id": 38399530208,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "333f1492713d41c0ade42d6b16c4453cdfb1b783",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38399530208",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T12:44:29Z",
+        "updated_at": "2026-10-13T12:49:48Z"
+      },
+      {
+        "id": 38399530233,
+        "name": "CI",
+        "head_sha": "333f1492713d41c0ade42d6b16c4453cdfb1b783",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38399530233",
+        "workflow_id": 318365326,
+        "created_at": "2026-10-13T12:44:29Z",
+        "updated_at": "2026-10-13T12:50:46Z"
+      },
+      {
+        "id": 38399530209,
+        "name": "Secret scan",
+        "head_sha": "333f1492713d41c0ade42d6b16c4453cdfb1b783",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38399530209",
+        "workflow_id": 371718011,
+        "created_at": "2026-10-13T12:44:29Z",
+        "updated_at": "2026-10-13T12:44:40Z"
+      },
+      {
+        "id": 38399530346,
+        "name": "App build",
+        "head_sha": "333f1492713d41c0ade42d6b16c4453cdfb1b783",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38399530346",
+        "workflow_id": 381647102,
+        "created_at": "2026-10-13T12:44:29Z",
+        "updated_at": "2026-10-13T12:48:01Z"
+      },
+      {
+        "id": 38393044166,
+        "name": "CI",
+        "head_sha": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38393044166",
+        "workflow_id": 318365326,
+        "created_at": "2026-10-13T11:50:48Z",
+        "updated_at": "2026-10-13T11:55:58Z"
+      },
+      {
+        "id": 38393044118,
+        "name": "Secret scan",
+        "head_sha": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38393044118",
+        "workflow_id": 371718011,
+        "created_at": "2026-10-13T11:50:48Z",
+        "updated_at": "2026-10-13T11:50:59Z"
+      },
+      {
+        "id": 38393044277,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38393044277",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T11:50:48Z",
+        "updated_at": "2026-10-13T12:44:30Z"
+      },
+      {
+        "id": 38392954647,
+        "name": "CI",
+        "head_sha": "c804e1516ccb29c3f2535bc0a685ab1a907a32fe",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392954647",
+        "workflow_id": 318365326,
+        "created_at": "2026-10-13T11:50:03Z",
+        "updated_at": "2026-10-13T11:55:38Z"
+      },
+      {
+        "id": 38392954655,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "c804e1516ccb29c3f2535bc0a685ab1a907a32fe",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392954655",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T11:50:03Z",
+        "updated_at": "2026-10-13T11:50:49Z"
+      },
+      {
+        "id": 38392954626,
+        "name": "Secret scan",
+        "head_sha": "c804e1516ccb29c3f2535bc0a685ab1a907a32fe",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392954626",
+        "workflow_id": 371718011,
+        "created_at": "2026-10-13T11:50:03Z",
+        "updated_at": "2026-10-13T11:50:15Z"
+      },
+      {
+        "id": 38392867070,
+        "name": "CI",
+        "head_sha": "9a51ec4564358068d1ba245455f6f5d3ea68f286",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392867070",
+        "workflow_id": 318365326,
+        "created_at": "2026-10-13T11:49:18Z",
+        "updated_at": "2026-10-13T11:54:45Z"
+      },
+      {
+        "id": 38392867102,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "9a51ec4564358068d1ba245455f6f5d3ea68f286",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392867102",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T11:49:18Z",
+        "updated_at": "2026-10-13T11:50:05Z"
+      },
+      {
+        "id": 38392867036,
+        "name": "Secret scan",
+        "head_sha": "9a51ec4564358068d1ba245455f6f5d3ea68f286",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392867036",
+        "workflow_id": 371718011,
+        "created_at": "2026-10-13T11:49:18Z",
+        "updated_at": "2026-10-13T11:49:28Z"
+      },
+      {
+        "id": 38392771649,
+        "name": "CI",
+        "head_sha": "1dc380a16f8d6494f20ac59901a5347e2f31b64a",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392771649",
+        "workflow_id": 318365326,
+        "created_at": "2026-10-13T11:48:28Z",
+        "updated_at": "2026-10-13T11:54:13Z"
+      },
+      {
+        "id": 38392771661,
+        "name": "App build",
+        "head_sha": "1dc380a16f8d6494f20ac59901a5347e2f31b64a",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392771661",
+        "workflow_id": 381647102,
+        "created_at": "2026-10-13T11:48:28Z",
+        "updated_at": "2026-10-13T11:53:13Z"
+      },
+      {
+        "id": 38392771618,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "1dc380a16f8d6494f20ac59901a5347e2f31b64a",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392771618",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T11:48:28Z",
+        "updated_at": "2026-10-13T11:49:20Z"
+      },
+      {
+        "id": 38392771608,
+        "name": "Secret scan",
+        "head_sha": "1dc380a16f8d6494f20ac59901a5347e2f31b64a",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392771608",
+        "workflow_id": 371718011,
+        "created_at": "2026-10-13T11:48:28Z",
+        "updated_at": "2026-10-13T11:48:37Z"
+      },
+      {
+        "id": 38392645603,
+        "name": "Secret scan",
+        "head_sha": "ffd056dc506911a1a60541ceb2eedc668b7d1576",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392645603",
+        "workflow_id": 371718011,
+        "created_at": "2026-10-13T11:47:22Z",
+        "updated_at": "2026-10-13T11:47:33Z"
+      },
+      {
+        "id": 38392645759,
+        "name": "CI",
+        "head_sha": "ffd056dc506911a1a60541ceb2eedc668b7d1576",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392645759",
+        "workflow_id": 318365326,
+        "created_at": "2026-10-13T11:47:22Z",
+        "updated_at": "2026-10-13T11:53:00Z"
+      },
+      {
+        "id": 38392645724,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "ffd056dc506911a1a60541ceb2eedc668b7d1576",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392645724",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T11:47:22Z",
+        "updated_at": "2026-10-13T11:48:30Z"
+      },
+      {
+        "id": 38392472493,
+        "name": "Secret scan",
+        "head_sha": "5a26ca2f1cb47233b8d82228d96d4df0aea9a4b3",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392472493",
+        "workflow_id": 371718011,
+        "created_at": "2026-10-13T11:45:53Z",
+        "updated_at": "2026-10-13T11:46:05Z"
+      },
+      {
+        "id": 38392472366,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "5a26ca2f1cb47233b8d82228d96d4df0aea9a4b3",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38392472366",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T11:45:53Z",
+        "updated_at": "2026-10-13T11:47:24Z"
+      }
+    ]
+  },
+  "runs_queued": {
+    "total_count": 0,
+    "complete_page": true,
+    "runs": []
+  },
+  "runs_in_progress": {
+    "total_count": 0,
+    "complete_page": true,
+    "runs": []
+  },
+  "runs_waiting": {
+    "total_count": 1,
+    "complete_page": true,
+    "runs": [
+      {
+        "id": 38443032217,
+        "name": "Deploy GitHub Pages",
+        "head_sha": "710d144db94097be71989c67b5d3b4bb48135ad8",
+        "status": "waiting",
+        "conclusion": null,
+        "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38443032217",
+        "workflow_id": 372625331,
+        "created_at": "2026-10-13T17:58:52Z",
+        "updated_at": "2026-10-13T17:59:27Z"
+      }
+    ]
+  },
+  "runs_requested": {
+    "total_count": 0,
+    "complete_page": true,
+    "runs": []
+  },
+  "runs_pending": {
+    "total_count": 0,
+    "complete_page": true,
+    "runs": []
+  },
+  "guard_GSIP_PRIOR_SCHEDULE_ENABLED": {
+    "api_status": 404,
+    "state": "missing_held"
+  },
+  "guard_GSIP_QA_SCHEDULE_ENABLED": {
+    "api_status": 404,
+    "state": "missing_held"
+  },
+  "guard_GSIP_EXPORT_SCHEDULE_ENABLED": {
+    "api_status": 404,
+    "state": "missing_held"
+  },
+  "guard_GSIP_CLEANUP_SCHEDULE_ENABLED": {
+    "api_status": 404,
+    "state": "missing_held"
+  },
+  "guard_GSIP_RIGHTS_SCHEDULE_ENABLED": {
+    "api_status": 404,
+    "state": "missing_held"
+  },
+  "pr_51": {
+    "number": 51,
+    "html_url": "https://github.com/global-soil-intelligence/gsip/pull/51",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-10-13T11:45:50Z",
+    "merge_commit_sha": "5a26ca2f1cb47233b8d82228d96d4df0aea9a4b3",
+    "head_sha": "173e19363df60d029b2ffeb4a7df2e27d6ccd6b6"
+  },
+  "pr_52": {
+    "number": 52,
+    "html_url": "https://github.com/global-soil-intelligence/gsip/pull/52",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-10-13T11:47:20Z",
+    "merge_commit_sha": "ffd056dc506911a1a60541ceb2eedc668b7d1576",
+    "head_sha": "2d13fe73730688eaaa07dee6d7506c6ccd2ad486"
+  },
+  "pr_53": {
+    "number": 53,
+    "html_url": "https://github.com/global-soil-intelligence/gsip/pull/53",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-10-13T11:48:26Z",
+    "merge_commit_sha": "1dc380a16f8d6494f20ac59901a5347e2f31b64a",
+    "head_sha": "0e1e267df1a8cab84cf65dacab30259fa48af27e"
+  },
+  "pr_54": {
+    "number": 54,
+    "html_url": "https://github.com/global-soil-intelligence/gsip/pull/54",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-10-13T11:49:16Z",
+    "merge_commit_sha": "9a51ec4564358068d1ba245455f6f5d3ea68f286",
+    "head_sha": "63560d32fbfff843901d222c42e6e5d33be55782"
+  },
+  "pr_55": {
+    "number": 55,
+    "html_url": "https://github.com/global-soil-intelligence/gsip/pull/55",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-10-13T11:50:01Z",
+    "merge_commit_sha": "c804e1516ccb29c3f2535bc0a685ab1a907a32fe",
+    "head_sha": "254b9576977b6b3cc439d66770864fe574b7df24"
+  },
+  "pr_56": {
+    "number": 56,
+    "html_url": "https://github.com/global-soil-intelligence/gsip/pull/56",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-10-13T11:50:45Z",
+    "merge_commit_sha": "1d105bde4d009403d114c844c52d5bf6aaf4565e",
+    "head_sha": "eacb8a4c92da2370a628d7e2c6b6d8eedae64377"
+  },
+  "pr_58": {
+    "number": 58,
+    "html_url": "https://github.com/global-soil-intelligence/gsip/pull/58",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-10-13T12:44:25Z",
+    "merge_commit_sha": "333f1492713d41c0ade42d6b16c4453cdfb1b783",
+    "head_sha": "f07a876defbc3ee208996747f3f4b596b7606614"
+  },
+  "pr_60": {
+    "number": 60,
+    "html_url": "https://github.com/global-soil-intelligence/gsip/pull/60",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-10-13T12:49:44Z",
+    "merge_commit_sha": "d7ed716ed0921381da04f542e90902ede36cb462",
+    "head_sha": "59044d3b62265d56d2983b17924bb72765b08556"
+  },
+  "pr_64": {
+    "number": 64,
+    "html_url": "https://github.com/global-soil-intelligence/gsip/pull/64",
+    "state": "closed",
+    "merged": true,
+    "merged_at": "2026-10-13T17:58:50Z",
+    "merge_commit_sha": "710d144db94097be71989c67b5d3b4bb48135ad8",
+    "head_sha": "7934aaa8b729e42ce373977cabfd9f18e5784c18"
+  },
+  "query_started_at": "2026-10-13T19:26:44.949902+00:00",
+  "query_finished_at": "2026-10-13T19:26:47.681323+00:00",
+  "boundary": "GET-only named source/CI/environment/guard metadata; no secret values, Supabase, dispatch, approval, merge or source edit",
+  "nonterminal_workers": []
+}

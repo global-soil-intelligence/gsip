@@ -1,0 +1,270 @@
+{
+  "comparison_record_count": 18,
+  "complete_six_field_metadata_equal": true,
+  "complete_statement_arrays_equal": true,
+  "container_removed": true,
+  "directory_mode": "0700",
+  "driver_sha256": "75061ce9b60fc0b2da18d933266d5efa035e1955f0ea1be4d349eec0219fdb60",
+  "dump_structure_validation": {
+    "data": {
+      "executable_ledger_statement_values": 0,
+      "inserted_column_count": 6,
+      "ledger_insert_commands": 1,
+      "literal_rows": 18,
+      "outer_commands": 14
+    },
+    "schema": {
+      "ledger_ddl_commands": 6,
+      "outer_commands": 18
+    }
+  },
+  "exact_names_and_versions_equal": true,
+  "files": [
+    {
+      "bytes": 1116,
+      "mode": "0600",
+      "name": "original-history-schema.sql",
+      "sha256": "ae56295c7e66a8b46ab50df6f00cf57f7866f2478a17fbe3910d9def39e836ab"
+    },
+    {
+      "bytes": 37668,
+      "mode": "0600",
+      "name": "original-history.sql",
+      "sha256": "612b05231c79eac1e52cc4bf5da49ec2e9d4755358b461c902af69f6f089c857"
+    }
+  ],
+  "host_ports": [],
+  "image_digest": "public.ecr.aws/supabase/postgres@sha256:ca7871b587ca2c401ac0f325df6249c9aa0d25647ded34631158efc51176767f",
+  "image_id": "sha256:521e67f2812db505fe6d462b1820136394824d7f5c6016a19234b07ac93d6760",
+  "ledger_count": 18,
+  "ledger_statement_values_executed": false,
+  "migrations": [
+    {
+      "full_metadata_sha256": "1a5fc646d6ab0bfbfa30d1d57a43e3bf4411995b31cf1327021f35e07cb9d8cd",
+      "name": "wp1_extensions",
+      "statement_array_sha256": "4d5225d7b6e1671da02948b41723891f94052543e98eb32f145b55a5071c880e",
+      "statement_count": 1,
+      "statement_sha256": "91018b282efcfb446bb4536a908a8c47e06fbca1782dd75f3d6cd612ea1e2668",
+      "statements_null": false,
+      "version": "20260722164727"
+    },
+    {
+      "full_metadata_sha256": "fa375576da89ff3d5f70280cb24821faa729b3e06e7383691673462136756b98",
+      "name": "wp1_schema",
+      "statement_array_sha256": "ff08f62b61eb8ef7166bf44de721c78062abe68fd2557c148c1ad027a77cda2f",
+      "statement_count": 1,
+      "statement_sha256": "6d9e15125cc08e534d69095c97ed2e0516e7d3872d0951ea005f5340caec91b3",
+      "statements_null": false,
+      "version": "20260722164749"
+    },
+    {
+      "full_metadata_sha256": "62c149ef06ffe973b13022ce5886e6f3910ffc17584586d71d8fd87dd6b7502e",
+      "name": "wp1_rls",
+      "statement_array_sha256": "28287cb28875c904c0208e68c2c81de9afba01df3083d698787166959b2578d6",
+      "statement_count": 1,
+      "statement_sha256": "01b14c6a07b1236baea977685b20524e938224867dad06d84c13f41a1d95b169",
+      "statements_null": false,
+      "version": "20260722164806"
+    },
+    {
+      "full_metadata_sha256": "714a4d8d7336b9a4b13e1aa004e8b323125cc0a779baeb2afda341ec4567b528",
+      "name": "wp1_review_hardening",
+      "statement_array_sha256": "4f586899b96304dca96734eb50b4e879bf4d9df47e370c4d1a0dfa942d2ac105",
+      "statement_count": 1,
+      "statement_sha256": "25ee487a13947d9f68a692b87aef989ce52279fa1a8327dbeeed6a27892afad2",
+      "statements_null": false,
+      "version": "20260722170020"
+    },
+    {
+      "full_metadata_sha256": "17a8f4d9bd6468fe4eedde8e8240bef4a1dad2e4d1ae16a5de7e7aacfe7b1adf",
+      "name": "wp1_v22_privacy_and_grants",
+      "statement_array_sha256": "80bc1ca04635ea606b4033c112f168ba8a96e20510733d3b01090856c3f59be3",
+      "statement_count": 1,
+      "statement_sha256": "86213d751d8df64404a5aaea332f7ea93d996716f569bfa036aca9f8812e34ff",
+      "statements_null": false,
+      "version": "20260722182403"
+    },
+    {
+      "full_metadata_sha256": "003a39323960ba09331bd841771afa83f56a098c09956cce2fd6c58374f81eb4",
+      "name": "wp1_performance_indexes",
+      "statement_array_sha256": "7aef1a02447a04428a81d52d73e4903a60068cead485b298a59ee1054b6f902e",
+      "statement_count": 1,
+      "statement_sha256": "4b321dcb16f00cc38545ffc6ac95f286ee747494128947f2bd9ed54c341acff7",
+      "statements_null": false,
+      "version": "20260722182446"
+    },
+    {
+      "full_metadata_sha256": "d6c65f00e2a4c388019e6620450f91ae9acbc5a504a89437f948c283f319ded4",
+      "name": "wp4_prior_jobs",
+      "statement_array_sha256": "424f535068e68c3a1729260319e3e41c2d95ac76bb527b14a473d92d9005dadf",
+      "statement_count": 1,
+      "statement_sha256": "430b0c9064e6d075197d755d661bf00e345faff49b4e8e9db59de13253fa2358",
+      "statements_null": false,
+      "version": "20260722190912"
+    },
+    {
+      "full_metadata_sha256": "f93e9aa679b3312d2227bef8d21d49e5b8c65c3a7534008cc10214c973e069b5",
+      "name": "wp4_prior_jobs_hardening",
+      "statement_array_sha256": "bccf1928a00ee44cba2fd9debc3bf4f93c311c4c9d01214fcd8b74adcc777cad",
+      "statement_count": 1,
+      "statement_sha256": "8160abac06009fdf3eab8d9f38b1e4add8330995dd274014a85182eb8e44249c",
+      "statements_null": false,
+      "version": "20260722191140"
+    },
+    {
+      "full_metadata_sha256": "e27f897f0fa6001cdf2c75eeb1df3e653f8962d2d0c3700df413b0ea5528e86d",
+      "name": "wp4b_photo_qa",
+      "statement_array_sha256": "dd4a080676469bb3ab7d97cf1bf6be976058bb65e462b4fd8eb73dc78b049e21",
+      "statement_count": 1,
+      "statement_sha256": "4d79aaa6fdc1a7401a1314deacac61550a7c1656f9450a3be5d86eb6bc0b2148",
+      "statements_null": false,
+      "version": "20260722191802"
+    },
+    {
+      "full_metadata_sha256": "1c924985720c5b95bd70f8af78d303a4b34e59730183431666b0f194c43f918f",
+      "name": "wp6_export_guardrails",
+      "statement_array_sha256": "1b492676ff4a35add378c142bc33c2281936de20a432bc36235ec90c312acd04",
+      "statement_count": 1,
+      "statement_sha256": "c6d491d01686ee2e293b98ccd84e074e96603d4b9d0a8ceaef239e1cb004233f",
+      "statements_null": false,
+      "version": "20260722194033"
+    },
+    {
+      "full_metadata_sha256": "c13c69037e91cd7740b7e28244f759333afc220c377a6264fc53fbdda407fbe3",
+      "name": "phase1_actor_hardening",
+      "statement_array_sha256": "7d09a2e1cc15966234ec122fd73e243935077d9b792f6776834497d2c7997058",
+      "statement_count": 1,
+      "statement_sha256": "83949135146761ca5df729dcc8b0be022de2b06cf5ee4138e2f233c3e0898fef",
+      "statements_null": false,
+      "version": "20260723011122"
+    },
+    {
+      "full_metadata_sha256": "a4e5586df3c0fd5bd8b2c5d33be86abaeefd0d44e9963be3786fff4ead08975c",
+      "name": "qa_event_provenance",
+      "statement_array_sha256": "49702cbd3da58c4b19f6a4d49e3ac8b00fa4d737fc14ae9b2791dee51aeb9fe8",
+      "statement_count": 1,
+      "statement_sha256": "1d48dbf62d31fd5aac9319dab8e630485a9652a31c970626232c76b1f3d61d87",
+      "statements_null": false,
+      "version": "20260723011144"
+    },
+    {
+      "full_metadata_sha256": "ff83a4d172d71ef33f65f21da24efb07a1c734acb859dea816739cd4ddbeae0e",
+      "name": "public_h3_aggregates",
+      "statement_array_sha256": "1a18fd74da0c9230a1d1b1bf834ff216d60e0a41687f791e035d889f1aecfc37",
+      "statement_count": 1,
+      "statement_sha256": "14e066cd8b27fa2046f890cb3660661ceb9ef57030d6ee2a8d8370f115020e76",
+      "statements_null": false,
+      "version": "20260723011159"
+    },
+    {
+      "full_metadata_sha256": "bbbc40283421aae0b4527176cd4b8ff2798a9cc21083d57da85ad15ab483f1c6",
+      "name": "atomic_public_h3_refresh",
+      "statement_array_sha256": "22560e4939725da7a0f8088955cdef2d4d966cc2b617851005cee37a168bb8fe",
+      "statement_count": 1,
+      "statement_sha256": "82ebc0de1d1cc7e02a2319c9b2e07e2250dd04886ffeea4b256c6d6e67782bd6",
+      "statements_null": false,
+      "version": "20260723011219"
+    },
+    {
+      "full_metadata_sha256": "cf7aa67d5d8b2c7093fe24e206318e38fdf74774a7a103a1db542f14679f576d",
+      "name": "atomic_prior_attempt_claim",
+      "statement_array_sha256": "1055a605eb49f9b0462bb4ee5452be13dbc6807dbdcc58b323c453548ae5a953",
+      "statement_count": 1,
+      "statement_sha256": "1e3251f3963aa18efcfac3e10770674e8f03e846c1a07abb2222dd0b02b9b8ab",
+      "statements_null": false,
+      "version": "20260723050851"
+    },
+    {
+      "full_metadata_sha256": "3d13a4ab768cdbdc9633de6efa9a68dbdd80bf5ef7c8d4ce696c17b863ff5dbf",
+      "name": "document_authenticated_h3_role",
+      "statement_array_sha256": "01ce2f57ab0c72660eb5aaf0f9c51f616068ea36ee1b10fa7719f359c8339405",
+      "statement_count": 1,
+      "statement_sha256": "6ce93e1e4dfd6f7b2e3410b8db352f089cb7c9bf142ad086f71662a1e574d888",
+      "statements_null": false,
+      "version": "20260723050903"
+    },
+    {
+      "full_metadata_sha256": "67ef2ce2bc23d91f39ea696e1cb3dce31cded97ca0e5c8cf0031f9aa344a4898",
+      "name": "remove_public_submission_residue",
+      "statement_array_sha256": "bdf84ce41148317ad12bc8d6c34523a6e64c1f8856f92c46aeb4d33f8077bb2f",
+      "statement_count": 1,
+      "statement_sha256": "4f7b36dc1284cdc822fa84e93f9291a5a76707da7ff7d0f3281a4266175a06ad",
+      "statements_null": false,
+      "version": "20260723050918"
+    },
+    {
+      "full_metadata_sha256": "a2a70343791eb1b3266c82c96c83d49429b691c63a64c5b919f7fa2a7d38cb8d",
+      "name": "wavefunction_beta_schema",
+      "statement_array_sha256": "32159c326109c2897b02de5fb9f6a73d228a4050d2ead86be0be085a7fccce13",
+      "statement_count": 1,
+      "statement_sha256": "b9f784b1377dcd4773065dd1840fc17643281b744c1bc8639b2a197ecb3143a8",
+      "statements_null": false,
+      "version": "20260730174047"
+    }
+  ],
+  "network": "none",
+  "observed_at_utc": "2026-10-12T02:21:56.024297+00:00",
+  "postgres_version": "17.6",
+  "private_directory": "/Users/justinhart/.supabase/gsip-recovery/2026-10-11",
+  "private_sql_transport": "stdin to psql inside disposable container; no host output copy",
+  "production_metadata_receipt_sha256": "3f7ad6b4af2eacd0489036824bf1b2a2eafc97bfbea0a92a318ed613faee6453",
+  "production_mutations_performed": false,
+  "production_whole_row_metadata_receipt_sha256": "f00f00d7344b1929626af555b3099f379874614aaa67d61727735b8bbcaef05c",
+  "query_sha256": "686c372f560460aac1bb1899df83b8fd3a98384d8fd6d3f44fc9270c4c24cd60",
+  "restore_driver_private_sql_contents_printed_or_copied_to_outputs": false,
+  "restored_ledger_columns": [
+    {
+      "name": "version",
+      "not_null": true,
+      "type": "text"
+    },
+    {
+      "name": "statements",
+      "not_null": false,
+      "type": "text[]"
+    },
+    {
+      "name": "name",
+      "not_null": false,
+      "type": "text"
+    },
+    {
+      "name": "created_by",
+      "not_null": false,
+      "type": "text"
+    },
+    {
+      "name": "idempotency_key",
+      "not_null": false,
+      "type": "text"
+    },
+    {
+      "name": "rollback",
+      "not_null": false,
+      "type": "text[]"
+    }
+  ],
+  "restored_ledger_constraints": [
+    {
+      "definition": "UNIQUE (idempotency_key)",
+      "name": "schema_migrations_idempotency_key_key",
+      "type": "u"
+    },
+    {
+      "definition": "PRIMARY KEY (version)",
+      "name": "schema_migrations_pkey",
+      "type": "p"
+    }
+  ],
+  "restored_ledger_owner": "postgres",
+  "scope": "Local private-ledger recovery verification only; no production connection or mutation",
+  "scope_limits": [
+    "All six stored ledger fields are independently compared through whole-row JSON hashes; names, versions and complete statement arrays also have individual comparisons.",
+    "This verifies local recoverability, not owner-controlled durable backup retention."
+  ],
+  "status": "PASS",
+  "target": "toxldjgwkxtneoqsazym",
+  "user": "postgres",
+  "user_function_count": 0,
+  "user_table_count": 1
+}

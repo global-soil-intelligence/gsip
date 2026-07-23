@@ -1,0 +1,174 @@
+{
+  "actual_independent_checks": {
+    "combined_cases": 121,
+    "effective_guard_mutations": 4,
+    "failed": 0,
+    "full_project_mypy_files": 75,
+    "mutation_case_results": "Four separate controls each fail exactly one selected test after removing its operative guard; none are production candidates",
+    "new_locator_cases": 78,
+    "own_privacy_and_literal_scope_cases": 8,
+    "pinned_prettier": 0,
+    "ruff": 0,
+    "skipped": 0,
+    "total_positive_cases": 129,
+    "unchanged_diagnostic_bank_cases": 43
+  },
+  "author_evidence_reviewed_not_independently_executed": {
+    "actual_AGP_probe_receipt_sha256": "edd6655a3e9225e903ce65ebe492cc95b2b3527975d675dc70a079eeb0ea6af9",
+    "author_baseline": "78 new cases:75 failures,3 passes; missing new APIs/default-mode behavior account for many failures, not75 independent defects",
+    "author_combined": "748 total,718 passed,30 explicit unchanged tool skips,0 failures; initial one old argv-contract failure preserved before the authorized digit correction",
+    "primary_API_and_template_binding": "Immutable primary class/API declarations and CLI template asset/hash provenance reviewed; no new cache/SDK reads by reviewer",
+    "probe_summary": "Author protected offline copied-input dry-run selected exactly one locator task; metadata execution exited0 and returned bounded metadata; no signing/build/validation tasks or key/APK creation/read/copy. Initial sandbox failure is retained and excluded from actual success.",
+    "probe_task_matches_frozen_task_sha256": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf"
+  },
+  "base_commit": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "evidence": {
+    "FINITE_WITNESSES_SUMMARY.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/FINITE_WITNESSES_SUMMARY.json",
+      "sha256": "705ed519e487b3f92286a59beb3002b2f2676160d133e77b97d65025277a973d"
+    },
+    "OWN_PRIVACY_WITNESSES.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/OWN_PRIVACY_WITNESSES.json",
+      "sha256": "321e4e8373e8c38a3f7e94350d970eb301840abccee6050c7a79db812aa70a40"
+    },
+    "SELECTED_AND_DIAGNOSTIC_SUMMARY.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/SELECTED_AND_DIAGNOSTIC_SUMMARY.json",
+      "sha256": "e2162b883ecb30eff849f6d7bf6a752ec80aec2ab06d5fbeb2702c6e079e3e34"
+    },
+    "SELECTED_AND_DIAGNOSTIC_TESTS.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/SELECTED_AND_DIAGNOSTIC_TESTS.json",
+      "sha256": "c1f2d180173f0f61d0f6cc950d0469c2e13147da645a722da70d1453ee9db41b"
+    },
+    "SOURCE_SCOPE_BINDING.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/SOURCE_SCOPE_BINDING.json",
+      "sha256": "7d5f715ff26a6d2329379f58d91fdc84107c4022d77e65a4958fbf5ee5760fbe"
+    },
+    "STATIC_VERIFICATION.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/STATIC_VERIFICATION.json",
+      "sha256": "4032d85718d051dd8b7ace270e2435943e9bb78ce345d4afe7c86a20c95e5d1b"
+    },
+    "WHOLE_SOURCE_ERASURE_AND_TASK_REVIEW.json": {
+      "path": "/private/tmp/gsip-selected-debug-review-x9bp8xnk/WHOLE_SOURCE_ERASURE_AND_TASK_REVIEW.json",
+      "sha256": "6e4db5937d31a7db4562b33802d09deb350e9dae8c51d8f333b7412788ed9b15"
+    }
+  },
+  "files": {
+    ".github/workflows/app-build.yml": {
+      "base_bytes": 17983,
+      "base_sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa",
+      "bytes": 17919,
+      "sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+    },
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_bytes": 33577,
+      "base_sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9",
+      "bytes": 37989,
+      "sha256": "5b0019aa3f0f7ff22fd16309721abd9f51aabf67a2328e4a1c6059797a74bdf6"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_bytes": 126232,
+      "base_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+      "bytes": 133225,
+      "sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_bytes": 195244,
+      "base_sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373",
+      "bytes": 215787,
+      "sha256": "fa9a702513b7adf5a56701d26a0fe042e6ffe49383bedfebf83df4a5fde4b6d8"
+    }
+  },
+  "frozen_directory": "/private/tmp/gsip-selected-debug-frozen-7vzylg6g",
+  "frozen_metadata_sha256": {
+    "AUTHOR_VERIFICATION.json": "b9c1d83795458c19752d48c41e47dade84f9fa602e2be99c1f5299d89f9e10d2",
+    "EXACT_SCOPE_PROOF.json": "f3655580dd1d0a006367236d0381416d055778d32a6f555b7e8e743b70e8fd46",
+    "FROZEN_CANDIDATE_RECEIPT.json": "493ef14393d4c7821e8dee3e66cc03afab322d0e41343793d6ca020b04b3983d",
+    "FROZEN_SOURCE_RECEIPT.json": "7a583b500312cad00d9c71ff3b2a3576bf0e9e676a6e2f9f5307a8e86ebdd02e",
+    "MANIFEST.json": "d35de19616a5677d9deb2743dd57cc2957f5dce7d83d117311d2a4d1926b7652",
+    "PRIMARY_INPUT_BINDING.json": "98de8a4bc7b7978d27dc87adb810747d5260b22952c74b2de956de3d1b2a7286",
+    "candidate.patch": "924347fe8c582b21ea3702e68307b170fe988106c335b9673aed9505d89fcb27",
+    "probe-PROBE_RECEIPT_RECOVERED.json": "edd6655a3e9225e903ce65ebe492cc95b2b3527975d675dc70a079eeb0ea6af9"
+  },
+  "harness_recovery": "Initial independent runner asserted14 new test functions, observed13, and aborted before running pytest. Only that harness count was corrected; final13 functions expand to78 cases. No failed or skipped product-test result was discarded.",
+  "own_execution_limits": {
+    "native_gradle_SDK_cache_execution": false,
+    "production_or_capture_changes": false,
+    "raw_test_streams": "Captured in memory; only hashes/counts and safe nodeid/outcome records retained",
+    "real_key_or_APK_reads_creation_copy": false,
+    "shared_source_or_git_or_remote_mutations": false,
+    "synthetic_disposable_test_bytes_only": true
+  },
+  "privacy_and_guard_findings": [
+    "Public selected debug build-type signingConfig.storeFile getter is used; no independent signingConfigs.debug lookup or path fallback.",
+    "New task has no dependsOn/finalizedBy, signing/build/validation request, key/password read, key creation/copy, or path logging operation. It writes only one exclusive bounded JSON metadata file inside the private temporary directory.",
+    "Exact generated-input hashes plus exactly-once restricted literal normalization refuse source drift, injected syntax, flavors, signing hooks, or unknown adapter scope under the stated locked-plugin/controlled-CI trust assumptions.",
+    "Exact-schema duplicate/nonfinite/unknown-field refusal, 8192-byte metadata bound, 4096-character ASCII lexical path bound, basename/traversal/control refusal, and existing nofollow/nonblocking/regular/single-link read are retained.",
+    "CLI explicit-path compatibility is covered; default mode returns selected metadata without reading or creating a file. Actual hash read still uses the original descriptor guard and parent/candidate key equality still refuses changed bytes.",
+    "Four-field diagnostics, fixed labels/counts/limits, old task74ad, all other helper bytes, native13-field receipts, source/archive/licence/permission/repeat/reference/equality guards remain unchanged by exact erasure. No store path is added to persisted native receipts.",
+    "Workflow changes only remove the two guessed key arguments; all other bytes are exact. The only old test-prefix change is the authorized Android argv8-to7 digit, with new explicit8-argv compatibility coverage."
+  ],
+  "remaining": [
+    "Fresh exact-head hosted CI must demonstrate selected file exists, both actual artifact/source/native/licence proofs, repeats/reference comparisons and shared key equality.",
+    "Actual hosted selected file location remains unestablished by this source-only review.",
+    "Previous e195 iOS proof is historical for any new source head.",
+    "No owner-signing, device, legal, capture, production, distribution, or merge approval is conferred."
+  ],
+  "schema": "gsip-independent-selected-debug-signing-source-review-v1",
+  "scope": "Independent source/privacy/native-proof preservation review of immutable four-file locator delta only; no fresh native, key, or APK acceptance",
+  "source_scope": {
+    "authorized_old_test_prefix_bytes": 195244,
+    "base_commit": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+    "base_file_count": 365,
+    "changed": {
+      ".github/workflows/app-build.yml": {
+        "base_bytes": 17983,
+        "base_sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa",
+        "bytes": 17919,
+        "sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+      },
+      "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+        "base_bytes": 33577,
+        "base_sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9",
+        "bytes": 37989,
+        "sha256": "5b0019aa3f0f7ff22fd16309721abd9f51aabf67a2328e4a1c6059797a74bdf6"
+      },
+      "scripts/app_notification_audit.py": {
+        "base_bytes": 126232,
+        "base_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+        "bytes": 133225,
+        "sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad"
+      },
+      "tests/test_app_notification_audit.py": {
+        "base_bytes": 195244,
+        "base_sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373",
+        "bytes": 215787,
+        "sha256": "fa9a702513b7adf5a56701d26a0fe042e6ffe49383bedfebf83df4a5fde4b6d8"
+      }
+    },
+    "existing_functions_changed": [
+      "collect_android",
+      "main"
+    ],
+    "frozen_manifest_sha256": "d35de19616a5677d9deb2743dd57cc2957f5dce7d83d117311d2a4d1926b7652",
+    "new_functions": [
+      "read_debug_signing_locator",
+      "selected_debug_key",
+      "validate_debug_signing_scope"
+    ],
+    "old_task_and_license_constants_unchanged": true,
+    "prefix_only_one_byte_change": true,
+    "runtime_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+    "unchanged_file_count": 361,
+    "workflow_only_two_arguments_removed": true
+  },
+  "status": "CLOSED_NO_BLOCKER",
+  "whole_source_erasure_and_task_review": {
+    "baseline_helper_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+    "field_schema_unchanged_via_whole_helper_erasure": true,
+    "new_metadata_task_sha256": "cad3263ac41ad26c2f289a79247195b1441e45338bc3a1ba7d14a082be04bcaf",
+    "new_task_no_build_signing_validation_dependencies": true,
+    "private_single_exclusive_path_metadata_write": true,
+    "public_selected_build_type_getter_order": true,
+    "whole_helper_erasure_equals_baseline": true
+  }
+}

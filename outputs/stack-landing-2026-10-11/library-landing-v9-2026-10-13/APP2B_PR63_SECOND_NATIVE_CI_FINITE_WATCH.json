@@ -1,0 +1,85 @@
+{
+  "observed_at_utc": "2026-10-13T18:30:25.487939+00:00",
+  "status": "FINITE_WATCH_COMPLETE_FAILURE_RETURNED_TO_ROOT",
+  "pr": 63,
+  "head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "native_run": 38445551423,
+  "native_run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38445551423",
+  "checks": [
+    {
+      "id": 115462932422,
+      "name": "dco",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 115462865958,
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 115462859704,
+      "name": "ios",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 115462859618,
+      "name": "android",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 115462858939,
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 115462824371,
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifact_total_count": 0,
+  "accepted_artifact_count": 0,
+  "ios": {
+    "job_id": 115462859704,
+    "failed_step_number": 20,
+    "failed_step": "Build the exact iOS parent in an isolated checkout",
+    "candidate_compile_repeat_and_selected_source_license_audit": "SUCCESS",
+    "failure_class": "GIT_BASELINE_TREE_UNREADABLE",
+    "exact_baseline": "d7ed716ed0921381da04f542e90902ede36cb462",
+    "raw_log_sha256": "a77083654814a9b43d0f4022afa8ed4f10b9718b0df438a685098b5597e47c76",
+    "cause": "The parent clone has no usable exact-baseline tree at detached checkout; parent installation and compilation were not reached.",
+    "recommendation": "Prepare a minimal parent-checkout change that independently obtains the exact baseline inside its isolated destination (canonical repository remote), then reads HEAD back before install/build. Preserve candidate source isolation and all baseline/native comparisons. Add a realistic fixture for fetched but unusable baseline after local cloning."
+  },
+  "android": {
+    "job_id": 115462859618,
+    "failed_step_number": 18,
+    "failed_step": "Audit exact Android runtime and license inputs",
+    "raw_log_sha256": "71e9ec0da0743b404fddbfae6892be39fd55e5f5dae4ce38cd9467788b5475c4",
+    "native_diagnostics": [
+      {
+        "counts": {},
+        "error_class": "BUILD_TOOL",
+        "source_line": 244,
+        "stage": "android-gradle-inspection"
+      }
+    ],
+    "confirmed_cause": "Gradle inspection command failed; its captured tool stderr is hidden by the current safe handler. No more specific producer/artifact cause is established.",
+    "recommendation": "Add a fixed enum/count-only taxonomy of the captured inspection failure with meaningful privacy tests, or emit fixed markers from the temporary Gradle task. Obtain actual evidence before selecting any producer correction; retain both exact runtime views and all licensed-artifact requirements."
+  },
+  "safe_artifact_proof": "NOT_MET; artifact inventory is empty",
+  "raw_logs_persisted": false,
+  "raw_values_paths_urls_credentials_persisted": false,
+  "mutations": [],
+  "authority": "GET-only PR/run/job/check/artifact readbacks; no Git/source/PR/CI dispatch/production changes",
+  "receipt_hashes": {
+    "latest.json": "dcda7c61731409a0346526ed15510deed7152488a8a79951d69e744a547d57a4",
+    "ios-decoded-safe-failure.json": "9a372c867e50ec47db523952d15d82417bb6d7cbbb5ed577a8eac937ec11420d",
+    "android-decoded-safe-failure.json": "7aa50b6715a9ee5f3dfc080a2595c47d85c914794276b7a73cfb0aabeb55de09"
+  }
+}

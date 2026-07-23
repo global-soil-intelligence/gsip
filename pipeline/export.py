@@ -271,7 +271,7 @@ class SupabaseExportSource:
 
     def submissions(self) -> list[ExportSubmission]:
         rows = self._rows(
-            "submissions?status=eq.qa_pass&is_synthetic=eq.false&order=id&select="
+            "submissions?status=eq.qa_pass&is_synthetic=eq.false&upload_completed_at=not.is.null&order=id&select="
             "id,h3_r8,h3_r6,captured_at,land_cover,surface_condition,disturbed,"
             "precip_flag,status,is_synthetic,grant_id"
         )

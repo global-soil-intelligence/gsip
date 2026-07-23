@@ -1,0 +1,183 @@
+{
+  "schema": "gsip-app2b-independent-core-review-v1",
+  "generated_utc": "2026-10-13T14:37:57.131500+00:00",
+  "status": "changes_requested",
+  "review_complete": false,
+  "reason": "Root requested freezing findings and freeing slot for correction; full closure requires v2 review/replay.",
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "patch_sha256": "5ff2f2e60d4d1faf01c9c383929a1fa80db58493388266133191aec88671dc64",
+  "manifest_sha256": "bfe114890af67e28e2ee515914cf9c660271cd94e76dd16cbf4a1d4e7a619c69",
+  "delivery_sha256": "57c10263f7fdf418b133e063b51539df2d4ed9080b5706c894d42f74e8f031d6",
+  "all_19_manifest_hashes_match": true,
+  "author_source_19_still_frozen": true,
+  "runtime": {
+    "node_path": "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "node_version": "v24.19.0",
+    "dependency_root_read_only": "/private/tmp/gsip-app2b-author-lhe_vi2z/source/node_modules",
+    "dependency_install": false,
+    "cache_root": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/vite-cache"
+  },
+  "findings": [
+    {
+      "id": "APP2B-CORE-P2-1",
+      "priority": 2,
+      "title": "Dispose a listener that resolves after stop",
+      "source": "apps/capture-pwa/src/syncReminder.ts",
+      "lines": [
+        249,
+        250,
+        265,
+        330,
+        336
+      ],
+      "trigger": "Start awaits notifications.onTap; stop captures undefined removeListener; registration then resolves. The late handle is assigned but the queued disposer captured undefined.",
+      "observed": "Independent listener remove spy received0calls, expected1.",
+      "required": "Remove any late registration handle exactly once and prevent stale callbacks from observing/mutating shared state after disposal."
+    },
+    {
+      "id": "APP2B-CORE-P2-2",
+      "priority": 2,
+      "title": "Revalidate durable cross-context intent at native dispatch",
+      "source": "apps/capture-pwa/src/platform/notifications.ts",
+      "lines": [
+        64,
+        65,
+        85,
+        87,
+        88
+      ],
+      "coordinator_lines": [
+        205,
+        207,
+        296,
+        297
+      ],
+      "trigger": "Actual provider schedule yields at its cached plugin Promise; a separate coordinator hold advances persistent epoch3to4 and enabled=false; original currentIntent checks only localversion and returns true.",
+      "observed": "Actual underlying synthetic SDK schedule dispatch count1 while shared enabled=false, epoch4. Subsequent cancel/remove run after dispatch and final cleanupPending=false; those later removals do not eliminate the stale pre-dispatch side effect.",
+      "required": "Fresh shared epoch/owner/rights/gates after provider import await, with local-version fence immediately before native permission/schedule calls. Preserve rights progress when native replies never settle."
+    }
+  ],
+  "verification": {
+    "independent_behavioral_probes": {
+      "total": 8,
+      "passed": 6,
+      "failed": 2,
+      "exit_code": 1
+    },
+    "authored_core_regressions_in_isolated_copy": {
+      "files": 5,
+      "passed": 47,
+      "exit_code": 0
+    },
+    "independent_underlying_permission_guard_probes": {
+      "total": 28,
+      "all_expected_results": true,
+      "baseline_sensitive_closed_rejects_preserved": true
+    }
+  },
+  "commands": [
+    {
+      "cwd": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/source/apps/capture-pwa",
+      "env": {
+        "VITE_CAPTURE_LIVE": "false",
+        "VITE_LIBRARY_INTAKE_LIVE": "false"
+      },
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/private/tmp/gsip-app2b-author-lhe_vi2z/source/node_modules/vitest/vitest.mjs",
+        "run",
+        "tests/independent-core-review.test.ts",
+        "--config",
+        "independent.vitest.config.ts"
+      ],
+      "exit_code": 1,
+      "log": "independent-probes-witness.log"
+    },
+    {
+      "cwd": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/source/apps/capture-pwa",
+      "env": {
+        "VITE_CAPTURE_LIVE": "false",
+        "VITE_LIBRARY_INTAKE_LIVE": "false"
+      },
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/private/tmp/gsip-app2b-author-lhe_vi2z/source/node_modules/vitest/vitest.mjs",
+        "run",
+        "tests/notifications.test.ts",
+        "tests/sync-reminder.test.ts",
+        "tests/reminder-queue.test.ts",
+        "tests/reminder-rights.test.tsx",
+        "tests/reminder-app.test.tsx",
+        "--config",
+        "independent.vitest.config.ts"
+      ],
+      "exit_code": 0,
+      "log": "author-core-regressions.log"
+    },
+    {
+      "cwd": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/source",
+      "description": "28 synthetic direct calls of actual permission/apply/dependency guard; all per-case commands, inputs hashes and expected exit codes recorded",
+      "receipt": "independent-permission-probes.json"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/hash-verification.json",
+      "sha256": "e8093e746d90d08100ed8fe6e0195cbd7e8d7517ffd469fc975ae79b7c044df0",
+      "bytes": 5251
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/independent-probes.log",
+      "sha256": "21b5702dafc0ef05e7b8a427b106d5a2bf2d31193121fbf233c7f8d9165ea451",
+      "bytes": 2804
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/independent-probes-witness.log",
+      "sha256": "ca1395fbb89628fc952f161374955c92499aa20dfbc43911129502e5b4040a34",
+      "bytes": 2481
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/cross-context-witness.json",
+      "sha256": "47721183ceba1415feeebcfbff3d43eb481a026b6584249d274a9d1449036ba2",
+      "bytes": 1513
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/author-core-regressions.log",
+      "sha256": "c3f3ff63931cf0e1d709ed2ad21ede6792d85553d06224ef5481d7e6f24e60dd",
+      "bytes": 606
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/independent-permission-probes.json",
+      "sha256": "9361f73bac32232f86ca33ebb263739bdbd192898cfd67d6ed42d71d886728cf",
+      "bytes": 16045
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/source/apps/capture-pwa/tests/independent-core-review.test.ts",
+      "sha256": "59b2535911c72a32ddab91fdb73a59dd103124d321cfcda90866b68010719a11",
+      "bytes": 8703
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-6qs0uayg/source/apps/capture-pwa/independent.vitest.config.ts",
+      "sha256": "26c76be6224b55995af042c11e2ca3fa33794ade851ec47b144410baaa241c4a",
+      "bytes": 289
+    }
+  ],
+  "scope": {
+    "git_mutations": false,
+    "author_source_edits": false,
+    "production_actions": false,
+    "network": false,
+    "accounts_credentials": false,
+    "capture_activation": false,
+    "native_audit_mutable_files_inspected": false,
+    "native_or_device_execution": false
+  },
+  "limitations": [
+    "CORE remains changes requested, no closure.",
+    "Review was ended at root request after concrete P2 probes; complete mandatory SPEC/BUILD readback and remaining broader review cards are still needed on v2.",
+    "Synthetic JavaScript provider and SDK cannot prove native delivery, OS permission races, native log privacy, backup/restore, lifecycle or reboot.",
+    "No exact-head native CI/transitive runtime license/size evidence reviewed here; separate native auditor owns that scope.",
+    "iOS WebKit backup exclusion remains blocked/unverified; Android compiled configuration requires candidate-native readback and devices.",
+    "No field/store/launch readiness, merge approval, production or capture opening is inferred."
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "status": "LOCAL_VERIFIER_EXPECTATION_CORRECTED",
+  "at": "2026-10-12T14:30:16.003210+00:00",
+  "target_head": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "issue": "Expected explicit owner ACL grantable=true; actual default function owner EXECUTE ACL is grantable=false. Ownership rights are separate.",
+  "correction": "Expected exact observed PostgreSQL owner ACL flag false; caller ACL role allowlists remain unchanged.",
+  "source_changes": false,
+  "production_operations": []
+}

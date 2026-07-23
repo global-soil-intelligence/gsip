@@ -1,0 +1,16 @@
+Source: main CI run 38988142286 / job 117264290204 at a2529906a320b2be0339c48cf8dce2b6688f58cf
+Only test-summary lines extracted; full raw logs were not printed or saved.
+
+2026-10-17T00:50:42.1951685Z apps/site-web test:  Test Files  3 passed (3)
+2026-10-17T00:50:42.1953094Z apps/site-web test:       Tests  41 passed (41)
+2026-10-17T00:50:42.3168021Z packages/schema test:  Test Files  15 passed (15)
+2026-10-17T00:50:42.3169002Z packages/schema test:       Tests  310 passed (310)
+2026-10-17T00:50:44.9167335Z apps/map-web test:  Test Files  3 passed (3)
+2026-10-17T00:50:44.9195289Z apps/map-web test:       Tests  16 passed (16)
+2026-10-17T00:50:57.9457716Z apps/capture-pwa test:  Test Files  31 passed (31)
+2026-10-17T00:50:57.9463719Z apps/capture-pwa test:       Tests  338 passed (338)
+2026-10-17T00:52:03.2519500Z   16 passed (20.7s)
+2026-10-17T00:52:24.9283452Z   4 passed (20.8s)
+2026-10-17T00:54:57.3755373Z 2167 passed, 31 skipped, 37 warnings in 142.33s (0:02:22)
+2026-10-17T00:58:16.1753328Z Files=12, Tests=632,  2 wallclock secs ( 0.08 usr  0.01 sys +  0.09 cusr  0.05 csys =  0.23 CPU)
+2026-10-17T00:58:16.1754608Z Result: PASS

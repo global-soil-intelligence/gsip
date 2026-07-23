@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.034" timestamp="2026-10-14T17:57:02.218857-04:00" hostname="MacBook-Pro-6.local"><testcase classname="tests.test_ios_storage_feasibility" name="test_displayed_source_table_agrees_with_the_actual_copy_input_profile" time="0.001"><failure message="AssertionError: assert {'filesystem-...002f7c'), ...} == {'filesystem-...002f7c'), ...}&#10;  &#10;  Omitting 18 identical items, use -vv to show&#10;  Differing items:&#10;  {'observed-native-resolution.source': (1260, '5734e9e6485f2aaa1fb6419d3be44157c89810a48ccca5e92e25f1c899ef4503')} != {'observed-native-resolution.source': (1233, '03c73f532a75e0228889472ed648d4ed36a68f05566922ecfb05abef16b18b3f')}&#10;  Use -v to get more diff">def test_displayed_source_table_agrees_with_the_actual_copy_input_profile() -&gt; None:
+        module = loaded()
+        document = (ROOT / "docs/IOS_STORAGE_FEASIBILITY.md").read_text()
+        rows = {
+            parts[0].strip("`"): (int(parts[1]), parts[2].strip("`"))
+            for line in document.splitlines()
+            if line.startswith("|")
+            and len(parts := [field.strip() for field in line.strip("|").split("|")]) == 3
+            and parts[0].endswith(".source`")
+        }
+&gt;       assert rows == {item.path: (item.size, item.sha256) for item in module.PUBLIC_SOURCES}
+E       AssertionError: assert {'filesystem-...002f7c'), ...} == {'filesystem-...002f7c'), ...}
+E         
+E         Omitting 18 identical items, use -vv to show
+E         Differing items:
+E         {'observed-native-resolution.source': (1260, '5734e9e6485f2aaa1fb6419d3be44157c89810a48ccca5e92e25f1c899ef4503')} != {'observed-native-resolution.source': (1233, '03c73f532a75e0228889472ed648d4ed36a68f05566922ecfb05abef16b18b3f')}
+E         Use -v to get more diff
+
+tests/test_ios_storage_feasibility.py:353: AssertionError</failure></testcase></testsuite></testsuites>

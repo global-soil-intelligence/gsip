@@ -1,0 +1,74 @@
+{
+  "actions": [
+    {
+      "action": "fresh exact-target precondition readback",
+      "passed": true
+    },
+    {
+      "action": "toggle only Allow new users to sign up from 1 to 0 once",
+      "pre_change_utc": "2026-10-12T12:32:10.055Z"
+    },
+    {
+      "action": "read unsaved state: only approved switch changed; other required controls unchanged"
+    },
+    {
+      "action": "click Save changes once",
+      "post_click_utc": "2026-10-12T12:32:22.199Z"
+    },
+    {
+      "action": "reload exact providers page"
+    },
+    {
+      "action": "read persisted post-reload state",
+      "readback_utc": "2026-10-12T12:32:43.378Z"
+    }
+  ],
+  "authority": "Justin explicit separate signup-only go, relayed by root before this sole-writer UI action",
+  "before": {
+    "allow_anonymous_sign_ins": false,
+    "allow_new_users_to_sign_up": true,
+    "confirm_email": true,
+    "email_provider_enabled": true,
+    "manual_linking": false,
+    "save_changes_disabled": true
+  },
+  "database_repairs_or_migrations": false,
+  "function_or_capture_actions": false,
+  "limits": [
+    "Persisted dashboard configuration readback, not an executed signup or authentication smoke test.",
+    "No other production operation is authorized by this receipt."
+  ],
+  "persisted_after_reload": {
+    "allow_anonymous_sign_ins": false,
+    "allow_new_users_to_sign_up": false,
+    "confirm_email": true,
+    "email_provider_enabled": true,
+    "manual_linking": false,
+    "save_changes_disabled": true
+  },
+  "recorded_at_utc": "2026-10-12T12:36:00.501259+00:00",
+  "screenshot": {
+    "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-signup-closed-2026-10-12.jpg",
+    "scope": "Providers page with target header and disabled new-user signup; existing UI banner partly overlays other controls, whose values were verified by accessibility state",
+    "sha256": "29aebcde9fc822c92723f80a593fdeb79837162cd4cbff8a6e7984d070549385"
+  },
+  "secret_reads": false,
+  "signup_or_test_writes": false,
+  "status": "EXECUTED_PERSISTED_SIGNUP_DISABLED",
+  "supabase_mutation_ownership_released_to_root_after_readback": true,
+  "target": {
+    "branch": "main PRODUCTION",
+    "project_name": "gsip",
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "url": "https://supabase.com/dashboard/project/toxldjgwkxtneoqsazym/auth/providers"
+  },
+  "verification": {
+    "anonymous_remained_disabled": true,
+    "confirm_email_unchanged_enabled": true,
+    "email_provider_unchanged_enabled": true,
+    "exact_target_verified_before_and_after": true,
+    "manual_linking_unchanged_disabled": true,
+    "save_button_disabled": true,
+    "signup_disabled": true
+  }
+}

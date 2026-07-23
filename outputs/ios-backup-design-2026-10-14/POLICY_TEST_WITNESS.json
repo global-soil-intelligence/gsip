@@ -1,0 +1,16 @@
+{
+  "baseline": {
+    "tests": 15,
+    "failures": 15,
+    "errors": 0,
+    "skipped": 0
+  },
+  "candidate": {
+    "tests": 15,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "candidate_exit": 0,
+  "output_sha256": "511fb971caf59261241ec2a3919d9d10c7dcb9ec044ee07d50b2db465184f057"
+}

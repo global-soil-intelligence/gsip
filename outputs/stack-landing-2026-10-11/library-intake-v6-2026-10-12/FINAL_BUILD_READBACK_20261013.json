@@ -1,0 +1,36 @@
+{
+  "scope": "Final source/CI/report readback; not production verification",
+  "main": "66b78ef8a42ddddba4e28601b3905d55d189dc3a",
+  "current_branch": "docs/spec-v9",
+  "clean_working_tree": true,
+  "approved_ignore_file_exact": true,
+  "additional_suppressions": 0,
+  "main_merges_in_continuation": 0,
+  "production_actions_in_continuation": 0,
+  "open_PRs": [
+    51,
+    52,
+    53,
+    54,
+    55,
+    56
+  ],
+  "validate_all_six_success": true,
+  "secret_scans_red": true,
+  "assumption": "Current production state is not reverified; historical deployment receipts remain separately labelled.",
+  "files_sha256": {
+    "BUILD_REPORT_2026-10-13.md": "b479d294314c25d3fd68d79f23dbc2575ceab1af715c15c9a7d1c541ad19f3ba",
+    "open-prs-final-20261013.json": "c83800cf20068df04f7609cbb121f48a70a238a368fded3ba2b6452645506224",
+    "wp6fb-final-independent-review.json": "9dafbdb2d0bab14972447c0fafa339429a8b852026c19109773a98a17c5bafd0",
+    "wp6fb-final-closure.json": "389e5c59c7743fa285f57d5a81efbce7d29032c43f817b37e98206fa1f6b2534",
+    "wp6fc-final-independent-review.json": "ef54ee792cea5508c0d9385b67ec84343283bb36241a6a1ad700813d00d652d8",
+    "wp6fc-final-root-validation.json": "355f2c71170a796e855ddf0182cc81d62e0f3a8cb744de2722c3577dd2041c7a",
+    "lib5-spec-v9-final-independent-review.json": "66efbe14646a689c62badc6f44970fe68268799bf89dc91e4debde4afc2219dc",
+    "lib5-spec-v9-pr56-final-binding-review.json": "48a9e2fa807f92b187eaea26a6a9154bfdbe3b650851b61221f25e63add3c07e",
+    "pr54-actual-final-ci-counts.json": "b1cc0310b4c691fb8ab1ca37f83966003640a45c16d8f26ef4370ed54900d86e",
+    "pr55-actual-final-ci-counts.json": "396633b520f2b4915923378e28fc5c10c6909b4220d280eb8deb2a2fc9ca22b4",
+    "pr56-actual-final-ci-counts.json": "da70e7e235ad28ae1754c1cbcdc9a56a8d16374f18ce1646120acf9050ba04b6",
+    "stack-gitleaks-final-20261013.json": "d34add6d7ee8781483cdf4c55b5edb846a8fa90c8d2b88838c60e6b155c69426",
+    "final-ci-secret-scan-readback.json": "e7bf1113ec918d4cc0d61ce7418a75957080968867b1fb261c3c5e78e8e15c87"
+  }
+}

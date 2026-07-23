@@ -1,0 +1,25 @@
+{
+  "actual_checkout": "5d974ed24977e44026666ba8d3b2158b4a22dd06",
+  "android_job_id": 115663053505,
+  "exact_virtual_merge_and_source_binding_match": true,
+  "fixed_diagnostics": [],
+  "fixed_gradle_context": [],
+  "fixed_gradle_fault": [],
+  "fixed_message_counts": {
+    "Gradle_success_messages": 4,
+    "native_audit_success_messages": 3
+  },
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "hosted_cause_inferred": false,
+  "observed_at": "2026-10-14T03:30:21.897017+00:00",
+  "raw_log": {
+    "bytes": 156421,
+    "persisted": false,
+    "sha256": "c43052632239054d40ea309cdb3ff5772991f083d0c7217788c6427b0c53c072"
+  },
+  "raw_or_arbitrary_values_persisted": false,
+  "run_attempt": 1,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "schema": "gsip-exact-faab-safe-android-terminal-log-v1"
+}

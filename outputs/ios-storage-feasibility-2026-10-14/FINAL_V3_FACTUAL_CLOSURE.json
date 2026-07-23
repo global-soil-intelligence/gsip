@@ -1,0 +1,122 @@
+{
+  "review": "Independent final factual review, APP-2C1 documentation/catalog",
+  "reviewed_utc": "2026-10-14T22:00:48.465473+00:00",
+  "frozen_manifest": {
+    "path": "/private/tmp/gsip-app2c1-author-6454jf_3/FROZEN_MANIFEST_V3.json",
+    "sha256": "4dce6b0fc9fa8c14d8a7e7943fbe0077c8fec97cc45802a66a84305e44cbe975",
+    "all_372_file_hashes_match": true
+  },
+  "factual_review_closed": true,
+  "blocking_findings": [],
+  "source_and_runtime_status": {
+    "storage_feasible": false,
+    "backend_selected": false,
+    "device_verified": false,
+    "migration_implemented": false,
+    "next_gate": "APP-2C2 held"
+  },
+  "reviewed_files": [
+    {
+      "path": "docs/IOS_STORAGE_FEASIBILITY.md",
+      "bytes": 21191,
+      "sha256": "b4f93d4e53676f2d084c47ec9df2d3bc31416b10e14b2cbf514c7458de16a243"
+    },
+    {
+      "path": "docs/ios-storage-feasibility-sources.json",
+      "bytes": 12832,
+      "sha256": "da363b702ee344354566e6b5818eb59cab44d7de4ae67d3aeecf84df6c1cc09a"
+    },
+    {
+      "path": "docs/ios-storage-observed-resolution.json",
+      "bytes": 1233,
+      "sha256": "03c73f532a75e0228889472ed648d4ed36a68f05566922ecfb05abef16b18b3f"
+    },
+    {
+      "path": "docs/IOS_PRIVATE_STORAGE.md",
+      "bytes": 15809,
+      "sha256": "840f5457798eafb2499b522329e0c9dc792aeb911ce73037366baa817691232b"
+    },
+    {
+      "path": "docs/SPEC.md",
+      "bytes": 159335,
+      "sha256": "3396fd658df74e1ce9b616e242c1dd076316f9d43b78e01ad436b43e582557d4"
+    },
+    {
+      "path": "docs/BUILD_ORDER.md",
+      "bytes": 89715,
+      "sha256": "46623f4262964a4ee6727feb3d6b147ab5a37cf268207c3ba9b13a90f2bec91f"
+    },
+    {
+      "path": "scripts/ios_storage_feasibility.py",
+      "bytes": 17860,
+      "sha256": "47e25c7768b8a586ac9082b7cdd50816b10aea878b288a75752237a3deecf36b"
+    },
+    {
+      "path": "tests/test_ios_storage_feasibility.py",
+      "bytes": 14305,
+      "sha256": "8e33518abd387d0226acc94d6645ee2a0d05734cdf3a4c7c89ca14a3a5ecfa7b"
+    }
+  ],
+  "verified_facts": [
+    "All19 catalog source byte lengths/hashes match independently verified exact public archive members or the normalized public resolution snapshot.",
+    "All19 displayed source table rows equal catalog/profile binding facts.",
+    "Nine existing package licence/release-date/compressed/unpacked source-size facts match exact archive and official npm observations.",
+    "Three observed native source versions/commits/source archives and MIT licence facts match audited primary evidence; no universal native lock is claimed.",
+    "Three primary-agent candidate archives were independently rehashed/SRI-checked and sizes/file counts/LICENSE digests matched; Preferences candidate was checked through own earlier source archive audit.",
+    "SQLite helper/transaction/replacement/diagnostic facts match exact source; private readback helper existence is distinguished from zero callers/exposed enforcement.",
+    "Secure Storage default sync=false and whenUnlocked, minimum KeychainSwift range and delete-before-add facts match exact source; Apple primary guidance supports the distinct no-backup semantics caveat.",
+    "InAppBrowser managed isolation is scoped to iOS17+; older/shared cases use default; clear-all code excludes host.",
+    "Filesystem marker attempt/non-atomic write/pre-delete rename/no-readback/API limits remain negative or unproven.",
+    "Inventory links include all six current stores and residual/rights/fence scope without inventing private cookies, a phone tombstone store or persisted Supabase mutex.",
+    "SPEC normative body unchanged; status reflects approved68. BUILD_ORDER changes threeC1 boxes only; C2/C3 remain unticked.",
+    "Newdoc explicitly distinguishes manual archive/metadata/licence/date/size/semantic review from checker byte binding; no metadata download/validation claim."
+  ],
+  "normalization": {
+    "parsed_values_equal": true,
+    "original_bytes": 1260,
+    "original_sha256": "5734e9e6485f2aaa1fb6419d3be44157c89810a48ccca5e92e25f1c899ef4503",
+    "normalized_bytes": 1233,
+    "normalized_sha256": "03c73f532a75e0228889472ed648d4ed36a68f05566922ecfb05abef16b18b3f",
+    "original_is_generated_not_repository_native_lock": true
+  },
+  "resolved_findings": [
+    {
+      "original_version": "V1",
+      "finding": "Displayed original resolution bytes1260/hash5734 did not match normalized profile1233/hash03c7.",
+      "verified_fixed_in": "V2 andV3"
+    },
+    {
+      "original_version": "V2",
+      "finding": "Physical-proof source range ended159 although document ends157.",
+      "verified_fixed_in": "V3"
+    },
+    {
+      "original_version": "V2",
+      "finding": "InAppBrowser store isolation wording should state older/shared default behavior.",
+      "verified_fixed_in": "V3"
+    },
+    {
+      "original_version": "V2",
+      "finding": "Clarify manual archive metadata/licence/size/semantic audit versus offline byte checker.",
+      "verified_fixed_in": "V3"
+    }
+  ],
+  "checks_actually_run": [
+    "All372 frozenV3 file hashes.",
+    "19catalog/member hashes and all19 displayed row parity.",
+    "Independent cryptographic candidate archive/SRI/size/LICENSE checks, source inspection and scope comparison.",
+    "Own actual fixed public profile replay: exit3,19public/13repository,statusblocked,all readiness booleansfalse,emptystderr. V3 checker/catalog/snapshot unchanged from replay."
+  ],
+  "actual_profile_receipt": {
+    "path": "/private/tmp/gsip-app2c1-independent-facts-dxerotsm/INDEPENDENT_PUBLIC_PROFILE_REPLAY.json",
+    "sha256": "72e831296fdfa80b760c8bc92c565406207be7b77e42556048b13e50928f666c"
+  },
+  "primary_apple_reference": "https://support.apple.com/guide/security/keychain-data-protection-secb0694df1a/web",
+  "scope_limits": [
+    "No code/source/Git/GitHub mutation.",
+    "No new dependency installation/import/native execution.",
+    "No real app-data, account/signing, device/backup or production action.",
+    "No pytest/native/device success claimed by this factual review.",
+    "Source archive sizes are not installed/transitive/native app growth or acceptance proof."
+  ]
+}

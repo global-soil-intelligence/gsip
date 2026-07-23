@@ -1,0 +1,18 @@
+{
+  "observed_at_utc": "2026-10-12T01:20:33.647369+00:00",
+  "target": "toxldjgwkxtneoqsazym",
+  "source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "command": [
+    "node_modules/.bin/supabase",
+    "db",
+    "push",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--skip-vault",
+    "--dry-run"
+  ],
+  "exit_code": 1,
+  "stdout": "{\"_tag\":\"Error\",\"error\":{\"code\":\"DbPushMissingLocalError\",\"message\":\"Remote migration versions not found in local migrations directory.\",\"suggestion\":\"\\nMake sure your local git repo is up-to-date. If the error persists, try repairing the migration history table:\\nsupabase migration repair --status reverted 20260722182403 20260722182446 20260722190912 20260722191140 20260722191802 20260722194033 20260723011122 20260723011144 20260723011159 20260723011219 20260723050851 20260723050903 20260723050918 20260730174047\\n\\nAnd update local migrations to match remote database:\\nsupabase db pull\\n\"}}\n",
+  "stderr": "Initialising login role...\nDRY RUN: migrations will *not* be pushed to the database.\nConnecting to remote database...\n",
+  "dry_run_only": true
+}

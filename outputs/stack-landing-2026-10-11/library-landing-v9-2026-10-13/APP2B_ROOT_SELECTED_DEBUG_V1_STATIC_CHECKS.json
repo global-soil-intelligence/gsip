@@ -1,0 +1,51 @@
+{
+  "utc": "2026-10-14T01:31:48.725898+00:00",
+  "source_helper_sha256": "a1a0b6e11169c9a97c9cd21107cb60005b4bad1278d4395645319946e3c816ad",
+  "checks": [
+    {
+      "check": "ruff",
+      "exit_code": 0,
+      "seconds": 0.13,
+      "output_file": "app2b-root-selected_debug_v1-ruff.txt",
+      "output_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "output_bytes": 19
+    },
+    {
+      "check": "mypy",
+      "exit_code": 0,
+      "seconds": 0.966,
+      "output_file": "app2b-root-selected_debug_v1-mypy.txt",
+      "output_sha256": "abcb6647b13baa8244d90bb839deeab7f27878b24d4a96ce9a221f280e0e8a6c",
+      "output_bytes": 44
+    },
+    {
+      "check": "lint",
+      "exit_code": 0,
+      "seconds": 5.372,
+      "output_file": "app2b-root-selected_debug_v1-lint.txt",
+      "output_sha256": "8185ff7bbf60b066e20260e56c4a3fd10de339d2124fc13559b612a19578a977",
+      "output_bytes": 134
+    },
+    {
+      "check": "language",
+      "exit_code": 0,
+      "seconds": 0.035,
+      "output_file": "app2b-root-selected_debug_v1-language.txt",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0
+    },
+    {
+      "check": "diff",
+      "exit_code": 0,
+      "seconds": 0.013,
+      "output_file": "app2b-root-selected_debug_v1-diff.txt",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_bytes": 0
+    }
+  ],
+  "all_pass": true,
+  "real_gradle_cases_deselected": false,
+  "real_gradle_runtime_task_changed": false,
+  "actual_metadata_probe_separate": true,
+  "production_changes": false
+}

@@ -1,0 +1,45 @@
+{
+  "utc": "2026-10-13T16:53:03.803749+00:00",
+  "source_head": "bb3910164cc47eae72958ad521b2186684584978",
+  "invariants": "complete exact graph/source/license/fileinventory binding, unknown/binary refusal, safe Android stage/class/count diagnostics only; workflow and old permission/dependency/scanner guards unchanged",
+  "changed": [
+    "scripts/app_notification_audit.py",
+    "tests/test_app_notification_audit.py",
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+    "docs/legal/PRIVACY.md"
+  ],
+  "native4_final": [
+    {
+      "base_sha256": null,
+      "bytes": 83833,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "f588112af2eb2f51a354a7856a9c0bb916722e3422807b2af223acc9c24b5ab0",
+      "v4_sha256": "bbc96feba3a8e33900ba5d5c78a8e968e1e3d62f8a3b3af90dc3b812572ae54f"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 69749,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "fef70073abf42ec433dc5193be7df7f4a7c6d74d3795c88502d022a329726c8e",
+      "v4_sha256": "df732911e989b4bed5d051dd7c1665c12e312b6d7dfae47561e8aaa6f7427f66"
+    },
+    {
+      "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "bytes": 17825,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "v4_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d"
+    },
+    {
+      "base_sha256": null,
+      "bytes": 12167,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "3278d03081afec2bc5c408eb87afde23268b264acc3c5cfd8ac810aa284907da",
+      "v4_sha256": "7809956ce546f1a389e1d01018f1b5ab71ed41a93f2970b4f99e6c40ba608715"
+    }
+  ],
+  "privacy_sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+  "core18_and_other_files_unchanged": true,
+  "independent_native_v5_pending": true,
+  "commit_push_production_changes": false
+}

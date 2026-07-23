@@ -1,0 +1,38 @@
+{
+  "observedAt": "2026-10-12T12:38:07.906249+00:00",
+  "version": "8.21.2",
+  "binary_sha256": "90e39dd8b483e30698fc6fbdbe6794b36a6cc49ccde31e2ce9e2d3048838fd74",
+  "official_archive_sha256": "cad3de5dc9a4d5447d967a70a4d49499c557f04db028274cc324f9ff983f6502",
+  "command": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/tools/gitleaks-8.21.2/gitleaks",
+    "git",
+    ".",
+    "--no-banner",
+    "--redact",
+    "--log-opts=--all",
+    "--report-format=json",
+    "--report-path",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gitleaks-8212-restored-full-stack-report.json"
+  ],
+  "repository": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+  "head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "all_refs_sha256": "e16f01caefab290bb61ae07bc2feab81751a0ab8e4479f8e5982be1a11a6f3ae",
+  "all_refs_unchanged_during_scan": true,
+  "reachable_commits_rev_list_all": 125,
+  "scanner_commits_scanned": 80,
+  "exit_code": 0,
+  "redacted_summary": "8:38AM INF 80 commits scanned.\n8:38AM INF scan completed in 771ms\n8:38AM INF no leaks found",
+  "ignore_exact": true,
+  "approved_historical_exception_entries": 3,
+  "policy_sha256": {
+    ".gitleaksignore": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+    ".gitleaks.toml": "e846bacbb1ce5c41f571a10cdaf0e1fde7bfa399fc5c876480b57124059cc760",
+    ".github/workflows/secret-scan.yml": "b29dc91eb6becb78672ddf5ca7e96133e4265d69a04610666c87aaa3fdace8f9"
+  },
+  "rules_and_workflow_equal_reviewed_baseline": true,
+  "environment_config_overrides": false,
+  "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "finding_count": 0,
+  "findings": [],
+  "source_or_production_changes": false
+}

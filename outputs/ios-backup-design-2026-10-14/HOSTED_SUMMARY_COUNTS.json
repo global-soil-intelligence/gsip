@@ -1,0 +1,15 @@
+{
+  "captured_at_utc": "2026-10-14T11:45:16.073385+00:00",
+  "source": "https://github.com/global-soil-intelligence/gsip/actions/runs/38557797439",
+  "exact_head": "476bbdab190c99a3bb6d5d8143f21bebde6baf9f",
+  "counts": [
+    "12 passed (12.3s)",
+    "no issues found in 76 source files",
+    "1968 passed, 31 skipped",
+    "13/13",
+    "19/19",
+    "All tests successful",
+    "Files=11, Tests=593"
+  ],
+  "full_log_persisted": false
+}

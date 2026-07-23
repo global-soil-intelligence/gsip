@@ -1,0 +1,10 @@
+$ vitest run tests/queue.test.ts tests/library-drafts.test.ts
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+
+ Test Files  2 passed (2)
+      Tests  68 passed (68)
+   Start at  22:01:57
+   Duration  2.46s (transform 127ms, setup 89ms, import 243ms, tests 2.05s, environment 481ms)
+

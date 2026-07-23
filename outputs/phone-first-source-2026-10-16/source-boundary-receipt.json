@@ -1,0 +1,22 @@
+{
+  "source_head": "731a30ff6f8f3a90e0df31eb1d977edf1fcaf912",
+  "source_tree": "7bbf7b023ba99a2904d1e4759ce6248e7171096f",
+  "spec_head": "0b90464b95266135ecd851e0bfb230a3e0f3bd11",
+  "main_ref": "33260db1ce49c50600942694e43269759e554e66",
+  "worktree_clean": true,
+  "unchanged_guard_scopes": [
+    ".github/workflows/",
+    ".gitleaksignore",
+    ".gitleaks.toml",
+    "pnpm-lock.yaml",
+    "uv.lock",
+    ".env.example",
+    "supabase/migrations/",
+    "apps/capture-pwa/package.json",
+    "apps/capture-pwa/capacitor.config.ts"
+  ],
+  "full_diff_sha256": "849f96b66afd618e54f3647c67f6d1f635f8529ad0f19cfc6c710741b41d2495",
+  "implementation_diff_sha256": "e1bc5c18739add1c5f00f7eeacc63a0713fa64524b4ebc476efc9d45032db027",
+  "merge_executed": false,
+  "production_change": false
+}

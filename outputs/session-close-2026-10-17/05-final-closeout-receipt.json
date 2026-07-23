@@ -1,0 +1,163 @@
+{
+  "recorded_at_utc": "2026-10-17T14:08:14Z",
+  "pr": {
+    "number": 91,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/91",
+    "state": "MERGED",
+    "head": "9b5331569602db7f2a54b0748e03325f591ffa9d",
+    "merge": "b7107fe7a06b856a9ac5c137d0370db365009e27",
+    "tree_matches_reviewed_head": true,
+    "independent_findings": 0,
+    "owner_authorized": true
+  },
+  "issue": {
+    "number": 90,
+    "state": "CLOSED"
+  },
+  "main": {
+    "head": "b7107fe7a06b856a9ac5c137d0370db365009e27",
+    "source_tree": "ebad8683407010e1a7d24e2d07415061fbd67ce6",
+    "checkout_clean": true,
+    "checkout_branch": "main",
+    "remote_matches": true,
+    "source_edits_after_review": []
+  },
+  "ci": {
+    "run": 39038685793,
+    "job": 117413585912,
+    "result": "success",
+    "unit_tests": 811,
+    "desktop_browser_tests": 16,
+    "phone_browser_engine_tests": 4,
+    "python": {
+      "passed": 2203,
+      "skipped": 31,
+      "warnings": 37
+    },
+    "migration_regression": {
+      "files": 4,
+      "assertions": 61,
+      "result": "success"
+    },
+    "pgtap": {
+      "files": 12,
+      "assertions": 632,
+      "result": "PASS"
+    },
+    "selected_output": [
+      "2026-10-17T13:58:30.4826532Z apps/site-web test:  Test Files  3 passed (3)",
+      "2026-10-17T13:58:30.4834986Z apps/site-web test:       Tests  41 passed (41)",
+      "2026-10-17T13:58:30.5057108Z packages/schema test:  Test Files  15 passed (15)",
+      "2026-10-17T13:58:30.5081338Z packages/schema test:       Tests  310 passed (310)",
+      "2026-10-17T13:58:33.8839507Z apps/map-web test:  Test Files  3 passed (3)",
+      "2026-10-17T13:58:33.8875566Z apps/map-web test:       Tests  16 passed (16)",
+      "2026-10-17T13:58:53.8859044Z apps/capture-pwa test:  Test Files  33 passed (33)",
+      "2026-10-17T13:58:53.8860990Z apps/capture-pwa test:       Tests  444 passed (444)",
+      "2026-10-17T14:00:09.4866900Z   16 passed (25.8s)",
+      "2026-10-17T14:00:37.9345679Z   4 passed (27.4s)",
+      "2026-10-17T14:04:18.4830876Z 2203 passed, 31 skipped, 37 warnings in 205.78s (0:03:25)",
+      "2026-10-17T14:04:27.4619673Z wp6e_provenance.test.sql: 13/13 ok",
+      "2026-10-17T14:04:27.5575546Z wp6fa_photo_privacy.test.sql: 19/19 ok",
+      "2026-10-17T14:04:27.6565859Z wp_collect2_invited_pilot.test.sql: 16/16 ok",
+      "2026-10-17T14:04:27.7506259Z wp_lib4_private_intake.test.sql: 13/13 ok",
+      "2026-10-17T14:07:36.1382227Z All tests successful.",
+      "2026-10-17T14:07:36.1383557Z Files=12, Tests=632,  3 wallclock secs ( 0.08 usr  0.04 sys +  0.13 cusr  0.08 csys =  0.33 CPU)",
+      "2026-10-17T14:07:36.1384541Z Result: PASS"
+    ]
+  },
+  "app": {
+    "run": 39038685787,
+    "result": "success",
+    "android": "success",
+    "ios": "success",
+    "artifacts": [
+      {
+        "id": 12102743795,
+        "name": "gsip-capture-android-debug",
+        "size_in_bytes": 29130279,
+        "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12102743795",
+        "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12102743795/zip",
+        "expired": false,
+        "created_at": "2026-10-17T14:05:46Z",
+        "expires_at": "2026-10-31T14:05:45Z",
+        "updated_at": "2026-10-17T14:05:46Z",
+        "digest": "sha256:707b3f604c99f2d2ff9d18fe20157be3043e01810207e5183ac8f0d1cbe4f53b",
+        "workflow_run": {
+          "id": 39038685787,
+          "repository_id": 1308971325,
+          "head_repository_id": 1308971325,
+          "head_branch": "main",
+          "head_sha": "b7107fe7a06b856a9ac5c137d0370db365009e27"
+        }
+      },
+      {
+        "id": 12102234717,
+        "name": "gsip-capture-ios-simulator",
+        "size_in_bytes": 13923566,
+        "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12102234717",
+        "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12102234717/zip",
+        "expired": false,
+        "created_at": "2026-10-17T14:03:14Z",
+        "expires_at": "2026-10-31T14:03:11Z",
+        "updated_at": "2026-10-17T14:03:14Z",
+        "digest": "sha256:2f166f5d563e30dfe8826066241e16b4c741089a36bb1bb10d7044392dd0d4ae",
+        "workflow_run": {
+          "id": 39038685787,
+          "repository_id": 1308971325,
+          "head_repository_id": 1308971325,
+          "head_branch": "main",
+          "head_sha": "b7107fe7a06b856a9ac5c137d0370db365009e27"
+        }
+      }
+    ],
+    "local_verification": [
+      "03-ios-main-artifact-verification.json",
+      "04-android-main-artifact-verification.json"
+    ],
+    "artifact_capture_live": false,
+    "artifact_library_intake_live": false
+  },
+  "secret_scan": {
+    "run": 39038685827,
+    "result": "success"
+  },
+  "pages": {
+    "run": 39038685785,
+    "result": "cancelled",
+    "deploy_job": "cancelled",
+    "deployed": false,
+    "protection": {
+      "reviewer": "jdhart81",
+      "can_admins_bypass": false
+    }
+  },
+  "monitor": {
+    "id": "monitor-gsip-website-and-pull-requests",
+    "status": "ACTIVE",
+    "kind": "heartbeat",
+    "schedule": "09:00 America/New_York daily",
+    "baseline_updated_for_merge": true,
+    "read_only": true,
+    "quiet_when_unchanged": true
+  },
+  "remaining": {
+    "pr": 73,
+    "state": "DRAFT",
+    "hold": "Known unsupported hosted iOS storage protection; simulator check remains red, safeguards unchanged",
+    "future_feature": "COLLECT-4B preview/controller and separately approved actual-device qualification; not begun"
+  },
+  "public_site": {
+    "paths_200": [
+      "/",
+      "/map/",
+      "/llms.txt",
+      "/capture/gsip-activation.json"
+    ],
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "production_changes": [],
+  "capture_opening": false,
+  "library_opening": false,
+  "session_close_blockers": []
+}

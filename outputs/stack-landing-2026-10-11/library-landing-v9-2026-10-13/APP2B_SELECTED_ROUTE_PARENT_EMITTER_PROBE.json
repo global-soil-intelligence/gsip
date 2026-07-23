@@ -1,0 +1,137 @@
+{
+  "HOME_unchanged": true,
+  "exact_production_closure_sha256": "4bf41bfdce52639d3d9cb9687d0fa99c3a0487a0d0d47c38df3f910c44748ea3",
+  "helper_sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
+  "label": "parent",
+  "no_build_key_APK_signing_operation": true,
+  "no_key_APK_in_private_preferences": true,
+  "offline": true,
+  "only_metadata_operation": true,
+  "output_bytes": 1433,
+  "output_sha256": "e250b5816c0ba222b5b6adcd9af3c4f1e46c702459e655842272f54c40ebf192",
+  "probe_sha256": "84cc0f00836cba0ae5b364358b48a60a1857176bbd0108bd0b0ee037127fa795",
+  "runtime_task_sha256": "f90e5f896bddf83530e304b315e79694c7992c87e79f3b53288b27067b66c856",
+  "source_input_sha256": "2c3659cd2bd6e9500bbf29ad2c0a0558f43ebae5b37f81d8838f2a2e8fb71b99",
+  "steps": [
+    {
+      "exit": 0,
+      "only_probe_in_dry_run": true,
+      "phase": "dry_run",
+      "raw_streams_persisted": false,
+      "seconds": 4.902,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 612,
+      "stdout_sha256": "ed6aa9dde61d73d3f799bdeed218c3ce46511b016cf105b80384d271d74225d5"
+    },
+    {
+      "exit": 0,
+      "only_probe_in_dry_run": null,
+      "phase": "metadata_only",
+      "raw_streams_persisted": false,
+      "seconds": 3.76,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 642,
+      "stdout_sha256": "507518e60a61bd255b465811eb620527466edb32a9eba71f25aab1667dedd180"
+    }
+  ],
+  "views": [
+    {
+      "configuration": "debugRuntimeClasspath",
+      "redirects": [
+        {
+          "source": [
+            "androidx.annotation",
+            "annotation",
+            "1.8.1"
+          ],
+          "target": [
+            "androidx.annotation",
+            "annotation-jvm",
+            "1.8.1"
+          ],
+          "target_variant": "jvmRuntimeElements-published",
+          "variant": "jvmRuntimeElements-published"
+        },
+        {
+          "source": [
+            "androidx.collection",
+            "collection",
+            "1.4.2"
+          ],
+          "target": [
+            "androidx.collection",
+            "collection-jvm",
+            "1.4.2"
+          ],
+          "target_variant": "jvmRuntimeElements-published",
+          "variant": "jvmRuntimeElements-published"
+        },
+        {
+          "source": [
+            "androidx.graphics",
+            "graphics-shapes",
+            "1.0.1"
+          ],
+          "target": [
+            "androidx.graphics",
+            "graphics-shapes-android",
+            "1.0.1"
+          ],
+          "target_variant": "releaseRuntimeElements-published",
+          "variant": "releaseRuntimeElements-published"
+        }
+      ],
+      "selected_module_count": 75
+    },
+    {
+      "configuration": "releaseRuntimeClasspath",
+      "redirects": [
+        {
+          "source": [
+            "androidx.annotation",
+            "annotation",
+            "1.8.1"
+          ],
+          "target": [
+            "androidx.annotation",
+            "annotation-jvm",
+            "1.8.1"
+          ],
+          "target_variant": "jvmRuntimeElements-published",
+          "variant": "jvmRuntimeElements-published"
+        },
+        {
+          "source": [
+            "androidx.collection",
+            "collection",
+            "1.4.2"
+          ],
+          "target": [
+            "androidx.collection",
+            "collection-jvm",
+            "1.4.2"
+          ],
+          "target_variant": "jvmRuntimeElements-published",
+          "variant": "jvmRuntimeElements-published"
+        },
+        {
+          "source": [
+            "androidx.graphics",
+            "graphics-shapes",
+            "1.0.1"
+          ],
+          "target": [
+            "androidx.graphics",
+            "graphics-shapes-android",
+            "1.0.1"
+          ],
+          "target_variant": "releaseRuntimeElements-published",
+          "variant": "releaseRuntimeElements-published"
+        }
+      ],
+      "selected_module_count": 75
+    }
+  ]
+}

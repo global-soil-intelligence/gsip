@@ -1,0 +1,33 @@
+{
+  "APK_or_signing_key_read": false,
+  "all347_tracked_source_bytes_unchanged_after_generation": true,
+  "candidate_graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+  "configurations": [
+    {
+      "candidate_module_count": 75,
+      "candidate_projects": 6,
+      "configuration": "debugRuntimeClasspath",
+      "module_coordinate_sets_equal": true,
+      "parent_module_count": 75,
+      "parent_projects": 5,
+      "project_delta_only_local_notifications": true
+    },
+    {
+      "candidate_module_count": 75,
+      "candidate_projects": 6,
+      "configuration": "releaseRuntimeClasspath",
+      "module_coordinate_sets_equal": true,
+      "parent_module_count": 75,
+      "parent_projects": 5,
+      "project_delta_only_local_notifications": true
+    }
+  ],
+  "full_runtime_license_collector_pending_final_v3": true,
+  "helper_script_sha256": "71425d41f957c8c5bee05acf2f2456b2fae181828f0384914f1e0f7c97864655",
+  "native_product_acceptance": false,
+  "parent_generated_Cordova_guard_passed": true,
+  "parent_graph_sha256": "400a9c7892c1c0e4eb50bf9684a03c7803ba709bef0648848fbf98db2b74e5b4",
+  "production_changes": false,
+  "schema": "gsip-exact-d7-parent-source-and-runtime-baseline-binding-v1",
+  "source_commit": "d7ed716ed0921381da04f542e90902ede36cb462"
+}

@@ -1,0 +1,365 @@
+{
+  "schema": "gsip-app2b-independent-core-review-v4",
+  "generated_utc": "2026-10-13T15:53:35.671366+00:00",
+  "status": "CORE19_INDEPENDENT_REVIEW_CLOSED",
+  "core_closure": true,
+  "full_wp_ready": false,
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "patch_sha256": "6c4005b50953d5b5aabd183eee503b3d94c06ac512bfecd0eb29ca9bb9b74f3e",
+  "manifest_sha256": "98182ef49b25a473ea367273e5d128e8bb3fc932674d8393e5e16fc3f432cd3f",
+  "delivery_sha256": "b21e06c685520756f2b134b67a858cffeefad21c9f2348113a862bc4744ac518",
+  "verified_core_files": 19,
+  "changed_from_v3_count": 2,
+  "unchanged_from_v3_count": 17,
+  "all9_completed_governing_documents_verified_unchanged": true,
+  "independent_probe_assertions_unchanged": true,
+  "only_owned_copy_capture_paths_repointed": true,
+  "prior_witness_hashes_preserved": true,
+  "resolved_findings": [
+    {
+      "id": "APP2B-CORE-P2-1",
+      "status": "independently_resolved_on_exact_v4"
+    },
+    {
+      "id": "APP2B-CORE-P2-2",
+      "status": "independently_resolved_on_exact_v4"
+    },
+    {
+      "id": "APP2B-CORE-P2-3",
+      "status": "independently_resolved_on_exact_v4"
+    },
+    {
+      "id": "APP2B-CORE-P2-4",
+      "status": "independently_resolved_on_exact_v4"
+    }
+  ],
+  "open_core_findings": [],
+  "verification": {
+    "original57independent_probes": {
+      "total": 57,
+      "passed": 57,
+      "failed": 0
+    },
+    "full_capture_suite": {
+      "files": 29,
+      "total": 303,
+      "passed": 303,
+      "authored_cases": 246,
+      "independent_cases": 57,
+      "exit_code": 0
+    },
+    "permission_backup_processor_suite": {
+      "total": 87,
+      "passed": 87,
+      "exit_code": 0
+    },
+    "product_static_checks": {
+      "types": true,
+      "lint": true,
+      "language": true,
+      "ruff_python3files": true,
+      "mypy": true,
+      "prettier_supported_core16files": true
+    },
+    "closed_web_app_builds": {
+      "total": 2,
+      "both_capture_live_false": true,
+      "both_library_intake_live_false": true,
+      "native_builds_claimed": false
+    },
+    "pinned_gitleaks": {
+      "version": "8.21.2",
+      "core19files": 19,
+      "leaks": 0,
+      "exit_code": 0
+    },
+    "independent_final_tap_guard_mutation": {
+      "original_guard_passes": true,
+      "mutant_expected_failures": 2,
+      "observed_meaningful_failures": 2,
+      "source_original_unchanged": true
+    }
+  },
+  "commands": [
+    {
+      "cwd": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/source/apps/capture-pwa",
+      "env": {
+        "VITE_CAPTURE_LIVE": "false",
+        "VITE_LIBRARY_INTAKE_LIVE": "false"
+      },
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/private/tmp/gsip-app2b-author-lhe_vi2z/source/node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        "independent.vitest.config.ts"
+      ],
+      "exit_code": 0,
+      "log": "full-capture-results.log"
+    },
+    {
+      "cwd": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/source",
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-o",
+        "addopts=",
+        "tests/test_app_permissions.py",
+        "tests/test_app_build.py",
+        "tests/test_processors.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "log": "permission-backup-processor-tests.log"
+    },
+    {
+      "description": "Every exact static/build/scan/mutation argv,cwd,exit and hashed readback is in its linked independently generated receipt."
+    }
+  ],
+  "runtime": {
+    "node_path": "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "node_version": "v24.19.0",
+    "frozen_dependency_root": "/private/tmp/gsip-app2b-author-lhe_vi2z/source/node_modules",
+    "no_install_or_lock_change": true
+  },
+  "acceptance_cards": [
+    {
+      "card": 1,
+      "scope_status": "CORE_PASS",
+      "evidence": "Unsupported/web method matrix refuses plugin import and private getters; actual boxed Capacitor Proxy never exposes synthetic then; startup clears only owned opaque ID and asks no permission."
+    },
+    {
+      "card": 2,
+      "scope_status": "CORE_PASS",
+      "evidence": "Actual permission/schedule dispatch sees peer durable hold and final local fence; denial/unknown/error/revocation and late dialogs do not enable/schedule; only explicit native opt-in requests permission."
+    },
+    {
+      "card": 3,
+      "scope_status": "CORE_PASS",
+      "evidence": "Exact actual SDK payload is one opaque471031 and fixed generic title/body, inexact flags, future nonrepeating at, allowWhileIdlefalse. Raw queue/account/photos/points/extras/URLs never reach provider payload; no new GPS/push/sign-in/service call."
+    },
+    {
+      "card": 4,
+      "scope_status": "CORE_PASS",
+      "evidence": "Single24h attempt per nonempty eligible backlog; no timer/partial-sync/held recovery/restart/overlap rearm; empty-to-nonempty opens new cycle; durable consumed reservation precedes schedule."
+    },
+    {
+      "card": 5,
+      "scope_status": "CORE_PASS",
+      "evidence": "Independent real fake-IDB3to4 upgrade preserves submission/photo/library/namespace/generation bytes; intent stores only checked private fields, drops extras and owns snapshots. Complete mixed/unbound/foreign/unresolved/stale-terms backlog holds."
+    },
+    {
+      "card": 6,
+      "scope_status": "CORE_PASS",
+      "evidence": "Disposed public admission/queued locks/paused context/read/update resumes do not mutate replacement; actual no-op IDB submit has no put; fresh shared epoch plus local dispatch fence; stale late replies remain scoped."
+    },
+    {
+      "card": 7,
+      "scope_status": "CORE_PASS",
+      "evidence": "Actual cancel+delivered-remove then pending AND delivered readback; malformed/lost/readback uncertainty remains pending; owned cleanup stops on changed owner/epoch between awaits and never clears replacement. Startup/restart remains conservative."
+    },
+    {
+      "card": 8,
+      "scope_status": "CORE_PASS",
+      "evidence": "Full rights tests and actual never-settling cancel probe preserve durable before-server fence and nonblocked rights; successful server clear stays successful, failed server requests retain queue; clearQueue atomically disables intent/advances epoch."
+    },
+    {
+      "card": 9,
+      "scope_status": "CORE_PASS",
+      "evidence": "Owned tap ignores extras/URLs, uses fresh current access/epoch/permission; immediate final active(expected) fence now blocks both disposed microtask timings. Listener late registration/repeated-start disposal and actual App stale auth callbacks pass; isolated fence mutation meaningfully fails2tests."
+    },
+    {
+      "card": 10,
+      "scope_status": "CORE_PASS",
+      "evidence": "Synthetic nested errors/proxies/getters remain generic; no canary logs/UI, store/native uncertainty holds; source contains no new private logging. Static types/lint/language pass; pinned8.21.2scan of exact19files reports0leaks."
+    },
+    {
+      "card": 11,
+      "scope_status": "CORE_LOCAL_GUARDS_PASS_NATIVE_DEVICE_GATE_PENDING",
+      "evidence": "87permission/backup/processor tests pass, preserving ordinary/SDK-qualified exact-alarm/WAKE_LOCK rejection and prior sensitive/closed-SDK checks; source Android all-domain cloud exclusion remains. Compiled exact-candidate native readback/device behavior requires separate evidence."
+    },
+    {
+      "card": 12,
+      "scope_status": "NATIVE_AUDIT_EXTERNAL_GATE_UNVERIFIED",
+      "evidence": "Exact8.3.1 package/config/lock unchanged and code-license/maintenance/archive evidence remains recorded. Native runtime graph/licenses/feature-size/repeat APK/iOS artifacts are not CORE19proof. Mutable native4files were not inspected; root reports native review under repair."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/hash-verification.json",
+      "sha256": "18b73bd75b4d2b43792df94340880de6582a3dbb5cefa531952ea9deea4cc591",
+      "bytes": 7933
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/probe-replay-path-receipt.json",
+      "sha256": "4d372c200a6848ea6a1534f3120dcaeb6818c2ebe79a17fb7eecd76c2ae34c6d",
+      "bytes": 2324
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/prior-witness-integrity-receipt.json",
+      "sha256": "883d69356df97a823271883110ce7d08c30299e5a0b258efbe9f40ddf5d12026",
+      "bytes": 2945
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/full-capture-results.log",
+      "sha256": "419f933fbec60deee9dc0471ba1c63d1f2894339faf7db9de51883c3f48c1803",
+      "bytes": 272
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/permission-backup-processor-tests.log",
+      "sha256": "f1037c24438e4b4b6f1c366eab17929faf2eb09fa9235f1ed6070a9957cd59c1",
+      "bytes": 179
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-static-checks.json",
+      "sha256": "e3188d8fe0b048d30871ea0232d5aeb49f91874a858122138268b84b0ec766b1",
+      "bytes": 4087
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-closed-builds-receipt.json",
+      "sha256": "fee23acd1f4bdff5ebc705b9a0672fa989005f4e8f40d2083f64fc6e27e32712",
+      "bytes": 7678
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-core-scan-receipt.json",
+      "sha256": "d9150c2c92c8322e594e455fef089a1168afabaa4f013adee3f7d79f1b684dca",
+      "bytes": 705
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-core-scan.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-core-scan.log",
+      "sha256": "1041b0d1894f374e6310e71be647f7adeefe2d17c250ea3a18ac2ad1c628aafd",
+      "bytes": 100
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-final-tap-mutation-receipt.json",
+      "sha256": "05fd9ddd024593e3b839f2ccfca4e53357a154a8a0741cac5df60991347cebd6",
+      "bytes": 1050
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-final-tap-mutation.log",
+      "sha256": "9c5905be0b90a1b9655ed75adf5b83533d95613b41f201153953a1c639bd70f9",
+      "bytes": 1289
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/prettier-unsupported-input-history.log",
+      "sha256": "985e4a3e1efb0c505b2417b044a4c968d84e08108a4ed489d639e817d5004769",
+      "bytes": 480
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/cross-context-witness.json",
+      "sha256": "e99c1383f1fff05a1e5c109725b14706f83f1c5377033c524a9ac25d65a17124",
+      "bytes": 1412
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/disposed-refresh-witness.json",
+      "sha256": "4632124fbb01d328539bbb576cbe93e78e23fea3ccc9f2c4c0a342995636722c",
+      "bytes": 491
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/tap-witness-turn-0.json",
+      "sha256": "9007bc540d1403d4d7d27e2b2831e84017b85cf43cbfee0783ddce4eae4ff28f",
+      "bytes": 469
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/tap-witness-turn-1.json",
+      "sha256": "5c0db5e559af2ec6b0a4c53440b97174664133636eeae7f17c4645eb451b827e",
+      "bytes": 469
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/tap-witness-turn-2.json",
+      "sha256": "94a3df95004ed67472c05c1263df48191e93c4db16ee4482f50734c0f10b8601",
+      "bytes": 469
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/tap-witness-turn-3.json",
+      "sha256": "628d24863c564f38b1d9fd569007ea88a750bfe4ba948a1e741ff67dc3ef2e70",
+      "bytes": 570
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/tap-witness-turn-4.json",
+      "sha256": "bea7e3c03628ab1128051b2d15ae48eff2713d2c272c4ba048fdb0150780992c",
+      "bytes": 570
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/tap-witness-turn-5.json",
+      "sha256": "87286bb62d3ea5669a12d5a37e2676746da5de0b63d1d4a8f63a0b0f7d99c9f4",
+      "bytes": 570
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/tap-witness-turn-6.json",
+      "sha256": "37129f4006c663bbda157713d84bfdce354c6a41b2ed3547dc11c85f20097b88",
+      "bytes": 570
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/tap-witness-turn-7.json",
+      "sha256": "fae4a653298be5f2b1fe18d6e9953047e721ab48b11205e8f0783f53a06617f4",
+      "bytes": 570
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/tap-witness-turn-8.json",
+      "sha256": "e99eb6acdd3d10910f97019ae80897cc5a0cafa41b7eef42f20860b9164839b3",
+      "bytes": 570
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/source/apps/capture-pwa/tests/independent-core-review.test.ts",
+      "sha256": "19323edda58827266986d8dd9e424a79466d02b62b58d2a41de9a9faef818465",
+      "bytes": 19108
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/source/apps/capture-pwa/tests/independent-storage-rights.test.ts",
+      "sha256": "8aa533609da737890ba4a9e1b62cd4e8c9ef5b6222211d634c6813c14c918b18",
+      "bytes": 4894
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/source/apps/capture-pwa/tests/independent-v3-lifecycle.test.ts",
+      "sha256": "8b0abbd145f070cbbf5388af587c47b2eeebeedd06382087cde8e711fd4796b7",
+      "bytes": 9631
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/source/apps/capture-pwa/tests/independent-v3-idb.test.ts",
+      "sha256": "d61346a5e7edd8b552843333cfec8bf16b6fe7454c88c727a5fb74510b1bfe76",
+      "bytes": 1009
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/source/apps/capture-pwa/tests/independent-v3-auth.test.tsx",
+      "sha256": "435a4ddb5e79135b97a831a9e5a5fc8c7b6107edb19844530bd8cf1eddcb58c2",
+      "bytes": 3539
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/source/apps/capture-pwa/independent.vitest.config.ts",
+      "sha256": "8244116e3b831b677e4861b72f100da20b43d6307a817276301622eced822bd1",
+      "bytes": 275
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/source/apps/capture-pwa/independent-source-tsconfig.json",
+      "sha256": "159a2f54410aa6f7f6f958710c2631e88120ff83a5cab2e9275453cba2af0c81",
+      "bytes": 81
+    }
+  ],
+  "scope": {
+    "git_mutations": false,
+    "author_or_shared_source_edits": false,
+    "network": false,
+    "production_actions": false,
+    "capture_activation": false,
+    "account_credentials": false,
+    "native_candidate_four_files_inspected": false,
+    "native_device_execution": false,
+    "approving_github_review_or_merge": false
+  },
+  "remaining_external_gates": [
+    "Full4native-audit independent closure remains separate; root reports an outstanding P2 under repair. No23file/fullWPreadiness claim.",
+    "Exact-head CI and actual APK/iOS registration/compiled permissions/backup/runtime-license/size/repeat-build receipts remain unverified here.",
+    "Synthetic real Android12/13+ and iPhone permission/denial/revocation/delivery/cancellation/background/killed/reboot/unlock/log/lifecycle/backup proof is absent.",
+    "iOS WebKit cloud-backup exclusion remains blocked/unverified.",
+    "OS/database atomicity, immediate remote closure/cancellation and guaranteed notification timing are not claimed; already-issued native calls and unknown/lost replies remain honest limits.",
+    "Store accounts/signing/submission, counsel/field calibration/capture/production/launch gates remain owner-controlled; COREclosure authorizes none."
+  ],
+  "review_conclusion": "All four concrete CORE P2s independently resolved; all57original behavioral probes, full product regressions and final source/static/closed artifact checks pass against these exact19frozen bytes. Scoped CORE code review is closed, with native/device/launch evidence explicitly external."
+}

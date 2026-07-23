@@ -1,0 +1,38 @@
+{
+  "DCO": {
+    "certification": false,
+    "conclusion": "skipped",
+    "run_id": 38505847283,
+    "status": "completed"
+  },
+  "GET_only": true,
+  "actual_checkout": "5d974ed24977e44026666ba8d3b2158b4a22dd06",
+  "attempt": 1,
+  "conclusion": "success",
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "job_id": 115663052772,
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "metrics": {
+    "bytes": 7372,
+    "path": "/private/tmp/gsip-faab-general-watch/GENERAL_TERMINAL_METRICS.json",
+    "sha256": "454e22c5aa256a1ddf78145b0b6b068b27e4c8edea1470875f0841296bdf0ad1"
+  },
+  "mutations": false,
+  "native_artifacts_or_actions_touched": false,
+  "rawlogs_saved": false,
+  "run_conclusion": "success",
+  "run_id": 38505847132,
+  "run_number": 256,
+  "run_status": "completed",
+  "scans": {
+    "bytes": 2149,
+    "path": "/private/tmp/gsip-faab-general-watch/SCAN_CLOSURE.json",
+    "sha256": "25f1bb889380e74dd5af9c2c9f0190c75d07f3810a08808e7182fce0599ffea0"
+  },
+  "source_binding": {
+    "bytes": 3848,
+    "path": "/private/tmp/gsip-faab-general-watch/SOURCE_BINDING.json",
+    "sha256": "ce30b32163ad2004453f50b530b5cabaf1171278b1f6a4d26aaf105f4970f8d9"
+  },
+  "status": "completed"
+}

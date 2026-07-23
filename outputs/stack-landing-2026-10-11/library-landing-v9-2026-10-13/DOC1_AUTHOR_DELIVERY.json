@@ -1,0 +1,62 @@
+{
+  "status": "prepared_frozen_source_only_doc_candidate_not_integrated",
+  "at": "2026-10-13T21:34:48.908759+00:00",
+  "work_package": "WP-DOC-1",
+  "base_commit": "710d144db94097be71989c67b5d3b4bb48135ad8",
+  "source_directory": "/private/tmp/gsip-doc1-source-author-hx5qe4ws/source",
+  "patch": {
+    "path": "/private/tmp/gsip-doc1-source-author-hx5qe4ws/wp-doc-1-source-status.patch",
+    "sha256": "a2ca6b7fdc9e14bff7d7022ddeb171516861a69250a7a312025f5169dadd13ef"
+  },
+  "manifest": {
+    "path": "/private/tmp/gsip-doc1-source-author-hx5qe4ws/wp-doc-1-source-status-manifest.json",
+    "sha256": "f29abd7a8f8ebe962a4a513fff96382249badd4e8be15c6a4ea9ca1117536eed"
+  },
+  "assessment": {
+    "path": "/private/tmp/gsip-main710-doc-consistency-w4s57c_1/DOC_CONSISTENCY_ASSESSMENT.json",
+    "sha256": "cbf5a11c3b02706affac374d04bed3095a34776a886eaa1994ff33b7ddcd6f7f"
+  },
+  "governing_reads": {
+    "path": "/private/tmp/gsip-doc1-source-author-hx5qe4ws/GOVERNING_READ_VERIFICATION.json",
+    "sha256": "6579b353b33e64e2bcc6cd81d26027537e08bdfc8369d9d5539e852308f2623c",
+    "all_nine_current_files_identical_to_prior_fully_read_copy": true
+  },
+  "verification": {
+    "existing_pytest_doc_contracts": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 <existing Python3.12.7> -m pytest -q -p no:cacheprovider tests/test_coding_guidance.py tests/test_spec_v4.py",
+      "cases_passed": 18,
+      "exit_code": 0
+    },
+    "language": {
+      "command": "<existing Node24.19.0> scripts/check-language.mjs",
+      "exit_code": 0
+    },
+    "format": {
+      "command": "<existing Node24.19.0> <existing Prettier3.9.9> --check README.md docs/SPEC.md docs/BUILD_ORDER.md",
+      "exit_code": 0
+    },
+    "mechanical_scope_gate_link_and_patch_validation": {
+      "path": "/private/tmp/gsip-doc1-source-author-hx5qe4ws/DOC_SCOPE_AND_LINK_VALIDATION.json",
+      "sha256": "9266a9bce6d2a64c77784c385e029e4ee84cf403d8bd6c7a3ae804644e4f3af1"
+    }
+  },
+  "assumptions": [
+    "Facts and three base hashes are bound to main710; later main integration must reverify them.",
+    "APP PR63 remains unmerged in this candidate. No APP-2B source-merged claim is made. If APP63 subsequently merges, a separately reviewed factual update may be needed while all physical-device, iOS backup, deployment and store gates stay held.",
+    "Historical proposal terminology remains where it describes still-unresolved policy/operational measurements; no blanket completion or checkbox conversion.",
+    "Existing checks validate documentation consistency and formatting only; no production/device/scientific validation was run or inferred."
+  ],
+  "invariants": [
+    "I1\u2013I15, L1\u2013L7 and B1\u2013B8 unchanged",
+    "All acceptance boxes unchanged",
+    "All code, tests, locks, dependencies and workflows unchanged",
+    "No real-data, credential, model selection/calibration approval, operator provisioning, deployment, photo publication, capture, real-peer sharing or phone-spectrum readiness claim"
+  ],
+  "authority": {
+    "own_tmp_source_edits_only": true,
+    "shared_source_git_github_or_production_mutations": false,
+    "new_dependency_or_install": false,
+    "new_text_mirroring_tests": false
+  },
+  "integration_state": "root and separate independent review pending; no branch/commit/push/PR created"
+}

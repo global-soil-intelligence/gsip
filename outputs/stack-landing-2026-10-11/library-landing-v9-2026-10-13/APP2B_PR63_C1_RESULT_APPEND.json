@@ -1,0 +1,10 @@
+{
+  "utc": "2026-10-13T22:28:54.127598+00:00",
+  "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "description_prefix_preserved": true,
+  "body_sha256": "318c375f12b1435b3d5776cf3ce3b52852dfdd399e7ca6ca4e10d11b719c3196",
+  "ci_ios_closure_sha256": "808a10031ba480c87f929a787a4740a08be7bf4f65393b2a7328352497021c09",
+  "android": "failure; BUILD_FAILURE/UNKNOWN; no APK",
+  "combined_native_acceptance": false,
+  "production_changes": false
+}

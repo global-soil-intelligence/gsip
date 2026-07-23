@@ -1,0 +1,3 @@
+Browser tab: 1234838671, Title: "Squarespace Domains — globalsoilintelligence.com — Domain Nameservers", URL: "https://account.squarespace.com/domains/managed/globalsoilintelligence.com/dns/domain-nameservers".
+There has been no change in the accessibility tree.
+The focused UI element is 33 link Description: Domain Nameservers Domain Nameservers, URL: account.squarespace.com/domains/managed/globalsoilintelligence.com/dns/domain-nameservers

@@ -1,0 +1,15 @@
+exit_code=1
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____________ test_camera_purpose_explains_the_reference_is_optional ____________
+
+    def test_camera_purpose_explains_the_reference_is_optional() -> None:
+        purpose = permissions.apply_ios(template_plist())["NSCameraUsageDescription"].lower()
+        assert "soil" in purpose
+>       assert "optional" in purpose
+E       AssertionError: assert 'optional' in 'gsip uses the camera to photograph soil beside the printed reference card.'
+
+tests/test_app_permissions.py:45: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_app_permissions.py::test_camera_purpose_explains_the_reference_is_optional
+

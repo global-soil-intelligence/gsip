@@ -1,0 +1,14 @@
+{
+  "bytes": 10469248,
+  "installed_tool_provenance_receipt_sha256": "a8a308183c0987df12dbc968c8814ae8ff916644b05864669620c3088ce3d606",
+  "key_APK_build_signing_operation": false,
+  "only_version_command_executed": true,
+  "original_official_distribution_archive_attestation_available": false,
+  "prior_artifact_or_run_proof_used": false,
+  "public_version": "Android Asset Packaging Tool (aapt) 2.19-11948202",
+  "raw_stream_sha256": "b456c2c4fa3006534da3cb71d3d148b64d3539141f65fcb01e24939cf32a041f",
+  "sha256": "729a6a8deba828992c50cb448d4ef3947003ec5a0d1deead7534897c8fc3486f",
+  "status": "VERSION_ONLY_BOUND_TOOL_PASS",
+  "stderr_bytes": 50,
+  "stdout_bytes": 0
+}

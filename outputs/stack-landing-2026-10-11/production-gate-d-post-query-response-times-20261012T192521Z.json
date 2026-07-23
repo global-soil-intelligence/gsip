@@ -1,0 +1,15 @@
+{
+  "started_at_utc": "2026-10-12 19:25:21 UTC",
+  "completed_at_utc": "2026-10-12 19:26:08 UTC",
+  "read_only_SQL": {
+    "capture": "2026-10-12 19:25:52 UTC",
+    "catalog": "2026-10-12 19:25:52 UTC",
+    "counts": "2026-10-12 19:25:52 UTC",
+    "ledger": "2026-10-12 19:25:52 UTC",
+    "supplement": "2026-10-12 19:25:52 UTC",
+    "table_inventory": "2026-10-12 19:25:52 UTC",
+    "default_acls": "2026-10-12 19:25:52 UTC",
+    "backfill": "2026-10-12 19:25:52 UTC",
+    "prior_k": "2026-10-12 19:25:52 UTC"
+  }
+}

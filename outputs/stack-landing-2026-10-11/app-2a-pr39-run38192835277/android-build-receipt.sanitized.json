@@ -1,0 +1,42 @@
+{
+  "source_commit": "2aab581c7b06960613436402f8115e7ab6b13b4d",
+  "source_tree_clean": true,
+  "platform": "android",
+  "marketing_version": "0.1.0",
+  "run_number": 6,
+  "android_version_code": 6,
+  "ios_build_version": "1.0.5",
+  "lockfile_sha256": {
+    "pnpm-lock.yaml": "141fe7fd542a08d39eee82085740d7ef64dea773933d744746fa3b36979ad097",
+    "uv.lock": "b985ee2c3c8fc0fa41c81e77b45371ed1ca23060f17e40e4617a962c5776535e",
+    "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435",
+    "apps/capture-pwa/android/build.gradle": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9",
+    "apps/capture-pwa/android/variables.gradle": "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88"
+  },
+  "comparison_scope": "same run/generated project; actual repeated native build; Android shared disposable debug key",
+  "artifact_sha256": "8be2464719d214be7862031e81866ded39758e3b7058de20a1b5d9648ac7dd33",
+  "reference_sha256": "8be2464719d214be7862031e81866ded39758e3b7058de20a1b5d9648ac7dd33",
+  "comparison": {
+    "byte_equal": true,
+    "entry_content_equal": true,
+    "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+    "changed_entries": [],
+    "first_only": [],
+    "second_only": []
+  },
+  "toolchain": {
+    "node": "v24.21.0",
+    "pnpm": "11.9.0",
+    "runner": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "runner_image": {
+      "ImageOS": "ubuntu24",
+      "ImageVersion": "20261004.327.1",
+      "RUNNER_OS": "Linux",
+      "RUNNER_ARCH": "X64"
+    },
+    "aapt2": "Android Asset Packaging Tool (aapt) 2.20-15087165",
+    "python": "3.12.15",
+    "gradle_version": "8.14.3",
+    "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS"
+  }
+}

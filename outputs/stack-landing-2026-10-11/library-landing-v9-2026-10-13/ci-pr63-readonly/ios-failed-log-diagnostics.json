@@ -1,0 +1,102 @@
+{
+  "observed_at_utc": "2026-10-13T16:23:43.640109+00:00",
+  "job_id": 115407346754,
+  "run_id": 38429415336,
+  "head": "bb3910164cc47eae72958ad521b2186684584978",
+  "log_sha256": "b9d0cf3abff77e1956daa9ae12225057d842a3ad986cb03a3085ae6f512b671b",
+  "log_bytes": 1817147,
+  "log_lines": 6875,
+  "read_full_log": true,
+  "scoped_diagnostics": [
+    {
+      "line": 2,
+      "text": "2026-10-13T16:18:35.4167390Z ##[group]Runner Image Provisioner"
+    },
+    {
+      "line": 10,
+      "text": "2026-10-13T16:18:35.4172280Z ##[group]Operating System"
+    },
+    {
+      "line": 15,
+      "text": "2026-10-13T16:18:35.4174160Z ##[group]Runner Image"
+    },
+    {
+      "line": 36,
+      "text": "2026-10-13T16:18:38.7417070Z ##[group]Run actions/checkout@v7"
+    },
+    {
+      "line": 126,
+      "text": "2026-10-13T16:18:40.9109320Z ##[group]Run pnpm/action-setup@v6"
+    },
+    {
+      "line": 161,
+      "text": "2026-10-13T16:18:45.8206660Z ##[group]Run actions/setup-node@v7"
+    },
+    {
+      "line": 187,
+      "text": "2026-10-13T16:18:47.0770810Z ##[group]Run actions/setup-python@v7"
+    },
+    {
+      "line": 208,
+      "text": "2026-10-13T16:18:47.2052700Z ##[group]Run newest=\"$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)\""
+    },
+    {
+      "line": 230,
+      "text": "2026-10-13T16:18:48.1799930Z ##[group]Run pnpm install --frozen-lockfile --package-import-method copy"
+    },
+    {
+      "line": 284,
+      "text": "2026-10-13T16:19:05.1670690Z ##[group]Run pnpm --filter @gsip/capture-pwa build:app"
+    },
+    {
+      "line": 328,
+      "text": "2026-10-13T16:19:06.7011900Z ##[group]Run pnpm exec cap add ios"
+    },
+    {
+      "line": 363,
+      "text": "2026-10-13T16:19:08.1724970Z ##[group]Run python scripts/app_permissions.py apply-ios apps/capture-pwa/ios/App/App/Info.plist"
+    },
+    {
+      "line": 382,
+      "text": "2026-10-13T16:19:08.4955860Z ##[group]Run python scripts/app_build.py apply-ios apps/capture-pwa/ios/App/App/Info.plist \"$GITHUB_RUN_NUMBER\" apps/capture-pwa/package.json"
+    },
+    {
+      "line": 401,
+      "text": "2026-10-13T16:19:08.7438180Z ##[group]Run xcodebuild -project App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO build"
+    },
+    {
+      "line": 3840,
+      "text": "2026-10-13T16:20:47.2855530Z ##[group]Run python scripts/app_permissions.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+    },
+    {
+      "line": 3859,
+      "text": "2026-10-13T16:20:47.9949100Z ##[group]Run python scripts/app_build.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist \"$GITHUB_RUN_NUMBER\" apps/capture-pwa/package.json"
+    },
+    {
+      "line": 3879,
+      "text": "2026-10-13T16:20:48.9448500Z ##[group]Run xcodebuild -project App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build"
+    },
+    {
+      "line": 6758,
+      "text": "2026-10-13T16:21:26.8828510Z ##[group]Run python scripts/app_permissions.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist"
+    },
+    {
+      "line": 6779,
+      "text": "2026-10-13T16:21:27.4493000Z ##[group]Run ditto -c -k --sequesterRsrc --keepParent App.app \"$GITHUB_WORKSPACE/gsip-capture-ios-simulator.zip\""
+    },
+    {
+      "line": 6797,
+      "text": "2026-10-13T16:21:28.0655420Z ##[group]Run python scripts/app_build.py receipt gsip-capture-ios-simulator.zip \"$GITHUB_RUN_NUMBER\" apps/capture-pwa/package.json \"$RUNNER_TEMP/gsip-ios-reference.zip\" gsip-ios-build-receipt.json ios"
+    },
+    {
+      "line": 6816,
+      "text": "2026-10-13T16:21:32.2877150Z ##[group]Run mkdir -p \"$RUNNER_TEMP/gsip-app2b-evidence/ios\""
+    },
+    {
+      "line": 6836,
+      "text": "2026-10-13T16:21:32.7474580Z ##[error]Process completed with exit code 1."
+    }
+  ],
+  "raw_log_persisted": false,
+  "mutations": []
+}

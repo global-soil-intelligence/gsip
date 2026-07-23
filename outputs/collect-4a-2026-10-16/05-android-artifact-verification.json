@@ -1,0 +1,21 @@
+{
+  "run": 38994200223,
+  "job": 117283131423,
+  "job_result": "success",
+  "artifact_id": 12086990876,
+  "artifact_archive_digest": "sha256:603a336ef349a4182b59cf2412e74206b70777add564303f9cced2c495e8e413",
+  "payload_sha256": "a3ffd990f1b1fe9992fb4f1246ad9fb9fe4d1b7df95b1257a9ee7e65baeca210",
+  "receipt_payload_hash_matches": true,
+  "pr_head": "9b5331569602db7f2a54b0748e03325f591ffa9d",
+  "tested_merge": "8088673afb4719290385d96c29850629294ad690",
+  "embedded_activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "repeat_entry_content_equal": true,
+  "repeat_complete_archive_byte_equal": true,
+  "limits": [
+    "Debug APK only; no release signing, actual device or backup qualification",
+    "Repeated entry contents match; complete archive equality is reported separately"
+  ]
+}

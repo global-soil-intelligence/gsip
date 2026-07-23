@@ -1,0 +1,57 @@
+{
+  "status": "PASS_READ_ONLY_PREFLIGHT_AUDIT_COLLECTION_REMAINS_TECHNICALLY_BLOCKED",
+  "audited_at_utc": "2026-10-16T22:17:26.911462+00:00",
+  "production_observed_at_utc": "2026-10-16T22:12:21.386632+00:00",
+  "project_ref": "toxldjgwkxtneoqsazym",
+  "command_receipt": "production-readonly-preflight-attempt2-command.json",
+  "command_receipt_sha256": "7007e53f751a64cdf8ec0d16874489f8ef908af138c5043884abc13a3decb61c",
+  "query_file": "production-readonly-preflight.sql",
+  "query_sha256": "6f86d5dea3629e3f42d366592dd5b88484b48d23c0aa44d3fbe0d70b5418a427",
+  "output_receipt": "production-readonly-preflight-attempt2-output.txt",
+  "output_sha256": "4b2c9dcb0073696a5e6c56f51f6f66caafcd8a4c46c52c7936026d6e0c4d9af9",
+  "query_review": "BEGIN READ ONLY, metadata/aggregate SELECT only, COMMIT; no private contributor contents",
+  "exit_code": 0,
+  "migration_count": 28,
+  "all_28_version_and_name_identities_match_source": true,
+  "source_migrations_absent_from_actual_ledger": [
+    "20261013030000_wp_lib4_private_intake.sql",
+    "20261014010000_wp6fa_private_photo_privacy.sql"
+  ],
+  "library_column_metadata": [],
+  "capture_open": false,
+  "counts": {
+    "auth_users": 0,
+    "contributors": 5,
+    "photos": 25,
+    "public_cells": 0,
+    "submissions": 25
+  },
+  "public_auth_and_worker_receipt": "public-auth-worker-holds-independent-20261016T221628Z.json",
+  "public_auth_and_worker_receipt_sha256": "59ace89312967541136131e7abe62124c70665ad7b282d26a5b56b90ce8a97e4",
+  "fresh_auth_summary": {
+    "signup_allowed": false,
+    "anonymous_signins_enabled": false,
+    "enabled_provider_names": [
+      "email"
+    ]
+  },
+  "fresh_schedule_summary": {
+    "all_five_schedule_variables_absent": true,
+    "all_five_scheduled_jobs_held": true,
+    "prior_qa_export_workflows_disabled": true,
+    "cleanup_rights_workflows_active_but_jobs_held": true
+  },
+  "technical_implications": [
+    "Hosted LIB-4 schema/RPC readiness is not present; private intake cannot begin merely by changing frontend copy or flags",
+    "There are zero current Auth users and both public signup and anonymous signin are closed; an explicitly selected account-entry path is needed",
+    "QA/sanitization, independent quarantine cleanup and rights handling need bounded operational preparation before real photo intake",
+    "Keep public export and photo publication held while preparing private intake"
+  ],
+  "limits": [
+    "This audit verifies the saved read-only execution result, not a second production database query",
+    "Migration identities were compared; this query does not compare installed migration statement hashes/effective catalogs or refresh the security advisor",
+    "Workflow state/schedule variables do not prove absence of manually dispatched or external worker activity",
+    "No sign-in, upload, contributor contents, private key, backend gate change or schedule change performed"
+  ],
+  "mutations": "Requested local audit receipts only; public Auth GET and GitHub metadata GETs only; no production mutations"
+}

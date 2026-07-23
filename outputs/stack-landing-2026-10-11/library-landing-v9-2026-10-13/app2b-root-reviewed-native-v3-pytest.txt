@@ -1,0 +1,52 @@
+........................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 16%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........................................................................ [ 29%]
+........................................................................ [ 33%]
+........................................................................ [ 37%]
+........................................................................ [ 42%]
+........................................................................ [ 46%]
+........................................................................ [ 50%]
+........................................................................ [ 54%]
+........................................................................ [ 58%]
+........................................................................ [ 63%]
+........................................................................ [ 67%]
+........................................................................ [ 71%]
+........................................................................ [ 75%]
+.......................................................................F [ 79%]
+........................................................................ [ 84%]
+........................................................................ [ 88%]
+........................................................................ [ 92%]
+........................................................................ [ 96%]
+.....................ssss...............................                 [100%]
+=================================== FAILURES ===================================
+________ test_every_external_host_in_the_code_is_in_the_privacy_notice _________
+
+    def test_every_external_host_in_the_code_is_in_the_privacy_notice() -> None:
+        listed = listed_hosts()
+        missing = {
+            host: sorted(paths)
+            for host, paths in code_hosts().items()
+            if host not in NOT_CONTACTED and not covered(host, listed)
+        }
+>       assert not missing, (
+            "List these hosts in docs/legal/PRIVACY.md (Processors and external services) "
+            f"or explain them in NOT_CONTACTED: {missing}"
+        )
+E       AssertionError: List these hosts in docs/legal/PRIVACY.md (Processors and external services) or explain them in NOT_CONTACTED: {'www.apache.org': ['scripts/app_notification_audit.py'], 'chromium.googlesource.com': ['scripts/app_notification_audit.py'], 'www.eclipse.org': ['scripts/app_notification_audit.py'], 'www.opensource.org': ['scripts/app_notification_audit.py']}
+E       assert not {'www.apache.org': ['scripts/app_notification_audit.py'], 'chromium.googlesource.com': ['scripts/app_notification_audi... 'www.eclipse.org': ['scripts/app_notification_audit.py'], 'www.opensource.org': ['scripts/app_notification_audit.py']}
+
+tests/test_processors.py:122: AssertionError
+=============================== warnings summary ===============================
+tests/test_node_exchange_simulator.py: 2 warnings
+tests/test_node_exchange_store.py: 35 warnings
+  /Users/justinhart/.local/share/uv/python/cpython-3.12.7-macos-aarch64-none/lib/python3.12/multiprocessing/popen_fork.py:66: DeprecationWarning: This process (pid=28633) is multi-threaded, use of fork() may lead to deadlocks in the child.
+    self.pid = os.fork()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_processors.py::test_every_external_host_in_the_code_is_in_the_privacy_notice
+1 failed, 1707 passed, 4 skipped, 37 warnings in 210.25s (0:03:30)

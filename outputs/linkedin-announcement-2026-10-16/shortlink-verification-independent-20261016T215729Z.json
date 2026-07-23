@@ -1,0 +1,41 @@
+{
+  "checked_at_utc": "2026-10-16T21:57:29.669420+00:00",
+  "completed_at_utc": "2026-10-16T21:57:30.163526+00:00",
+  "status": "SHORTLINK_VERIFICATION_INCOMPLETE",
+  "requests": "One standard unauthenticated public GET traversal per shortlink; system TLS trust and hostname validation enabled; no cookie handler, cookies, Authorization, login, retries or bypass attempts",
+  "results": [
+    {
+      "label": "website",
+      "short_url": "https://lnkd.in/eptbpgQn",
+      "expected_final_url": "https://globalsoilintelligence.com/",
+      "status": "UNVERIFIED_UNEXPECTED_DESTINATION_OR_STATUS",
+      "cookies_sent": false,
+      "authorization_sent": false,
+      "login_attempted": false,
+      "final_url": "https://lnkd.in/eptbpgQn",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_bytes_read": 5159,
+      "body_sha256": "470344cb800a325a747ad1dfd315edafc43eebbe445856de9aee949ad7e877d0",
+      "redirects": [],
+      "trusted_https_verified": true
+    },
+    {
+      "label": "github",
+      "short_url": "https://lnkd.in/eBs6Z5fy",
+      "expected_final_url": "https://github.com/global-soil-intelligence/gsip",
+      "status": "UNVERIFIED_UNEXPECTED_DESTINATION_OR_STATUS",
+      "cookies_sent": false,
+      "authorization_sent": false,
+      "login_attempted": false,
+      "final_url": "https://lnkd.in/eBs6Z5fy",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_bytes_read": 5185,
+      "body_sha256": "b2baac578c0f7cae57a558203b8de01b0d4c5bf3c263a6f9b6383d7b110547c2",
+      "redirects": [],
+      "trusted_https_verified": true
+    }
+  ],
+  "mutations": "NONE; public reads and local receipt only"
+}

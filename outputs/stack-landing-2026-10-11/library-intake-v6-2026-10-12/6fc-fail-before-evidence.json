@@ -1,0 +1,7 @@
+{
+  "base": "e98bdb9b806c4bb126b550ddd1376f427ed00cdc",
+  "default_gate_regression_fails_before": true,
+  "exact_byte_regression_fails_before": true,
+  "baseline_photos": 6,
+  "production_access": false
+}

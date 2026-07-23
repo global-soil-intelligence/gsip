@@ -1,0 +1,102 @@
+Browser tab: 1234838727, Title: "Methods — Global Soil Intelligence", URL: "https://globalsoilintelligence.com/methods/".
+1 AXWebArea Methods — Global Soil Intelligence, URL: globalsoilintelligence.com/methods/
+	2 container root
+		3 link Description: Skip to content, Value: globalsoilintelligence.com/methods/#main-content
+		4 container
+			5 link Description: GLOBAL SOIL INTELLIGENCE, Value: globalsoilintelligence.com/
+			6 container Primary navigation
+				7 link Description: Map, Value: globalsoilintelligence.com/map/
+				8 link Description: Library, Value: globalsoilintelligence.com/data/
+				9 link Description: Methods, Value: globalsoilintelligence.com/methods/
+				10 link Description: Public capture closed, Value: globalsoilintelligence.com/about/#launch-status
+		11 container main-content
+			12 container
+				13 text METHODS IN THE OPEN
+				14 heading Scientific honesty is part of the architecture., Value: 1
+					15 text Scientific honesty is part of the architecture.
+				16 text How phone images, measured spectra and laboratory evidence connect without overstating what they prove.
+			17 container
+				18 text CAPTURE AND RELEASE ARCHITECTURE
+				19 heading A fail-closed path from private capture to public context., Value: 2
+					20 text A fail-closed path from private capture to public context.
+				21 text 01
+				22 heading Capture PWA, Value: 3
+					23 text Capture PWA
+				24 text Photos, protocol context, private GPS
+				25 text 02
+				26 heading Private ingest, Value: 3
+					27 text Private ingest
+				28 text RLS, quarantine, immutable grant
+				29 text 03
+				30 heading Prior enrichment, Value: 3
+					31 text Prior enrichment
+				32 text SoilGrids, SSURGO, Open-Meteo
+				33 text 04
+				34 heading Deterministic QA, Value: 3
+					35 text Deterministic QA
+				36 text Sanitize, sharpness, card, GPS, duplicate
+				37 text 05
+				38 heading Gated public release, Value: 3
+					39 text Gated public release
+				40 text Eligible structured data; photos held pending screening
+			41 container
+				42 text DIFFERENT EVIDENCE, CONNECTED BY ONE SAMPLE
+				43 heading A photograph is an observation. A spectrum is a measurement., Value: 2
+					44 text A photograph is an observation. A spectrum is a measurement.
+				45 heading Phone images, Value: 3
+					46 text Phone images
+				47 text Ordinary phones record RGB images, not wavelength-resolved spectra. Extracted soil RGB is uncalibrated, even with the reference card.
+				48 heading Measured spectra, Value: 3
+					49 text Measured spectra
+				50 text A separate instrument records reflectance by wavelength. Pairing it with the same physical sample requires verified identity, method, calibration and uncertainty.
+				51 heading Laboratory evidence, Value: 3
+					52 text Laboratory evidence
+				53 text Verified assays provide separate reference labels. Biological relationships require actual assays and expert-reviewed terms; images or spectra alone do not establish soil microbial composition.
+				54 text The local RGB-to-reflectance demo uses invented samples and spectra. It demonstrates the software, not field accuracy. No independently validated soil reconstruction model is provided; real models need verified field pairs and independent spatial and device evaluation.
+			55 container
+				56 text EXISTING MAPS ARE PRIORS
+				57 heading Context helps. It does not get the final word., Value: 2
+					58 text Context helps. It does not get the final word.
+				59 text SoilGrids provides global soil context. SSURGO adds higher-resolution United States context. Open-Meteo contributes elevation and recent precipitation. These sources are stored as weak labels with uncertainty rather than treated as measured truth. Confirmed laboratory measurements are modeled separately as gold labels. Future estimators must report a basis and confidence interval for every output.
+			60 container
+				61 text DETERMINISTIC PHOTO QA
+				62 heading Quality checks are built; photo publication stays gated., Value: 2
+					63 text Quality checks are built; photo publication stays gated.
+				64 heading Metadata strip, Value: 3
+					65 text Metadata strip
+				66 text Orientation and colour profiles are applied to the pixels, then EXIF, GPS, XMP, ICC, comments, and residual segments are removed.
+				67 heading Image quality, Value: 3
+					68 text Image quality
+				69 text Sharpness and exposure are judged on the soil itself, with the reference card masked out.
+				70 heading Reference card, Value: 3
+					71 text Reference card
+				72 text Marker and patch extraction support geometry and image checks, not calibrated reflectance.
+				73 heading GPS plausibility, Value: 3
+					74 text GPS plausibility
+				75 text Accuracy and gross prior mismatches can trigger review.
+				76 heading Duplicate defense, Value: 3
+					77 text Duplicate defense
+				78 text Perceptual hashes flag repeated or near-repeated images.
+				79 heading Terminal outcome, Value: 3
+					80 text Terminal outcome
+				81 text Each submission settles to pass, fail, or flagged review from its two required photos.
+			82 container
+				83 text PUBLIC BY DESIGN, PRIVATE BY DEFAULT
+				84 heading Every public cell holds at least three contributors., Value: 2
+					85 text Every public cell holds at least three contributors.
+				86 text Exact geometry remains protected operational data. Public map and dataset records carry only H3 cells: resolution 8 (about 0.74 km²) where at least three people have contributed, otherwise the coarser resolution 6 or 4 cell. Anonymous public reads are limited to aggregate cells—not per-submission coordinates.
+				87 link Description: Read the governing specification ↗, Value: github.com/global-soil-intelligence/gsip/blob/main/docs/SPEC.md
+				88 link Description: Review the acceptance plan ↗, Value: github.com/global-soil-intelligence/gsip/blob/main/docs/BUILD_ORDER.md
+		89 container
+			90 link Description: GLOBAL SOIL INTELLIGENCE, Value: globalsoilintelligence.com/
+			91 text Building an open soil spectral library for future models and maps. EXPLORE
+			92 link Description: Public map, Value: globalsoilintelligence.com/map/
+			93 link Description: Reference card, Value: globalsoilintelligence.com/card/
+			94 link Description: Open data, Value: globalsoilintelligence.com/data/
+			95 text PROJECT
+			96 link Description: Methods, Value: globalsoilintelligence.com/methods/
+			97 link Description: About, Value: globalsoilintelligence.com/about/
+			98 link Description: Source code, Value: github.com/global-soil-intelligence/gsip
+			99 text Code MIT · structured data ODbL 1.0 · contributed photos CC BY-SA 4.0 GSIP is not a replacement for laboratory analysis. Estimates must carry uncertainty.
+
+The focused UI element is 1 AXWebArea Methods — Global Soil Intelligence, URL: globalsoilintelligence.com/methods/

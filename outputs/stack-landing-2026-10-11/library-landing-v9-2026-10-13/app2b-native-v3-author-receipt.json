@@ -1,0 +1,150 @@
+{
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "files": [
+    {
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "34ef744657c183a33f82ac98f429441e7184970f062db9f4170b7bf052691459",
+      "bytes": 56537,
+      "base_sha256": null,
+      "v2_sha256": "c05c7074035f8695d6f0df37e65449808e63396c7639ac79cd9f7f415ec75c65"
+    },
+    {
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "bb79f1e64bbf6406a7ab9244595eed0e425f938145d676a22f0a3029aaa100ca",
+      "bytes": 38933,
+      "base_sha256": null,
+      "v2_sha256": "a354bcee24ef7f3f21bd7f3c974a6aa04207c9cc386d6463794d46c981784076"
+    },
+    {
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "c0c4f4e7503106af28a258beb6e5078659cff44818ea3eeaa003565c28a57206",
+      "bytes": 17071,
+      "base_sha256": "095d621846723896e7fc9ba8cfe5fb0940af31b76b75c55299c78b2578e87ca4",
+      "v2_sha256": "f9e4c7fa2af71c63ad20ec501b55daaa329f03aa8bad4370588796dd7e4f10b5"
+    },
+    {
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "9707b4b623090c8e3ca1bedfcf783e43a3876d662b4b8d21e12f3e045d6ff6d6",
+      "bytes": 8252,
+      "base_sha256": null,
+      "v2_sha256": "c57c6748823f36ae8ae2fa986430bf0016d5a32dcc2d0355ae88df130af76d02"
+    }
+  ],
+  "checks": [
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_app_notification_audit.py",
+        "tests/test_app_build.py",
+        "tests/test_app_permissions.py",
+        "tests/test_processors.py",
+        "-q",
+        "--disable-warnings"
+      ],
+      "exit_code": 0,
+      "log_sha256": "b5d111785cd142d6898423f1543d1e9ecdf3fe8ab170cf39e39a55e418d4a43a"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "--collect-only",
+        "-q",
+        "tests/test_app_notification_audit.py",
+        "tests/test_app_build.py",
+        "tests/test_app_permissions.py",
+        "tests/test_processors.py"
+      ],
+      "exit_code": 0,
+      "log_sha256": "b2ccd932d5b9689116cd07d1280ae68f367b36000b13335475e73b933b7b8782"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "scripts/app_notification_audit.py",
+        "tests/test_app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "mypy",
+        "scripts/app_notification_audit.py",
+        "tests/test_app_notification_audit.py"
+      ],
+      "exit_code": 0,
+      "log_sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    {
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "node_modules/.pnpm/prettier@3.9.9/node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        ".github/workflows/app-build.yml",
+        "docs/APP_NOTIFICATION_NATIVE_AUDIT.md"
+      ],
+      "exit_code": 0,
+      "log_sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    }
+  ],
+  "focused_tests_passed": 88,
+  "current_core_permissions_build_tests": 81,
+  "processors_tests": 6,
+  "combined_tests_passed": 175,
+  "independent_baseline_note": "The reviewer v2 baseline integration had 130 =53native+71baseline build/permission+6processor; mutable approved core adds10 build/permission cases, explaining prior140. Current175 =88native+81current core+6processor. No core/processor file edited by this author.",
+  "workflow_bash_syntax_bodies": 11,
+  "dependency_pipe_first_failure_exit": 1,
+  "mutation_guards_or_families_detected": 12,
+  "references": {
+    "v2_freeze_receipt": {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-app2b-native-v2-nvc1tyq2/receipt.json",
+      "sha256": "1907c5ae2065402d773e3778a5a524d90a8ef6c14491fcd03a1c94035775cef4"
+    },
+    "independent_v2_review": {
+      "path": "/private/tmp/gsip-app2b-native-review-ua7je8j8/REVIEW_NATIVE_V2.md",
+      "sha256": "33ec41b60c75567a5895ee798b2d073c6ef71feb58b8e9e3b6a6038c0d35dab4"
+    },
+    "v3_fail_before": {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v3-fail-before-0eiu_lpa/receipt.json",
+      "sha256": "46c6b68dedb7c05036c4c4aff1d863b521dcb63ad9911d898b7d52f670a5bb40"
+    },
+    "v3_original_reviewer_replay": {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v3-reviewer-replay-0uamgovi/receipt.json",
+      "sha256": "2bf01bfa5acae47f9ee8c970f6e76be0ba452dafdf5a7f9d0c271ca692b9fde0"
+    },
+    "v3_mutations": {
+      "path": "/var/folders/84/yrd3lk3x6hv4hm_cj1955r9h0000gn/T/gsip-native-v3-mutations-lxurzf8v/receipt.json",
+      "sha256": "c7e1113929db09ba002435fce982e086a5a851178687dcad1790f9d84c71862c"
+    }
+  },
+  "patch_sha256": "b890dc40f8f554fc3b9cd995ce8d1057fa802cff6e5aecc8b314949166ab57e0",
+  "v2_to_v3_sha256": "919d9eebc8e46dc595dd96924f6b8c43c0eac57a8c90f404f4fcb33ccfe02760",
+  "fixes": [
+    "Traversal rejected before canonical containment; module/version and known project output bindings; canonical paths emitted by temporary task for legitimate pnpm links",
+    "Duplicate parent/identity/license containers/name/URL scalar fields rejected before inheritance; POM packaging retained",
+    "Strict complete native sidecars with nonempty graph/npm/POM/binary/SPM evidence and project/coordinate/source/lock/built-artifact hash binding; serialized tree hashes consistent",
+    "SPM pin read back against actual local checkout HEAD and8.5.2 release tag; mismatches refuse before archive access"
+  ],
+  "assumptions": [
+    "Local SwiftPM checkout contains the selected8.5.2 release tag; absent tags fail rather than invent a version claim, actual CI verification pending",
+    "Temporary canonical-path Gradle inspection remains Python-emitted build configuration, not maintained/shipped native app code",
+    "Fixed d7 parent rebuilt under the same runner/run number/package-copy configuration for an overall feature delta",
+    "Declared upstream licenses/provenance do not establish upstream binary reproducibility"
+  ],
+  "unverified": [
+    "Android SDK/Xcode native compilation and resolved real runtime graph/license list",
+    "Measured real native size/repeat result",
+    "Physical-device permission/delivery/cancellation/logging and iOS WebKit backup gates"
+  ],
+  "source_and_mutation_inputs_unchanged": true,
+  "scope": "Only4ownedfiles; no Git/PR/production/deployment/capture/signing/accounts/real contributor data"
+}

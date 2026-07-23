@@ -1,0 +1,41 @@
+{
+  "state": "PREPARED_READONLY_BASELINE_MATCHES_GATE_D",
+  "observed_at_utc": "2026-10-12 19:43:11 UTC",
+  "target": "toxldjgwkxtneoqsazym",
+  "edge_functions": [
+    {
+      "id": "be4b0424-e6a2-4ddf-9533-b9625f4be235",
+      "slug": "prior-attach",
+      "name": "prior-attach",
+      "status": "ACTIVE",
+      "version": 3,
+      "created_at": 1784747428489,
+      "updated_at": 1784783397734,
+      "verify_jwt": true,
+      "import_map": true,
+      "entrypoint_path": "file:///tmp/user_fn_toxldjgwkxtneoqsazym_be4b0424-e6a2-4ddf-9533-b9625f4be235_3/source/supabase/functions/prior-attach/index.ts",
+      "import_map_path": "file:///tmp/user_fn_toxldjgwkxtneoqsazym_be4b0424-e6a2-4ddf-9533-b9625f4be235_3/source/supabase/functions/deno.json",
+      "ezbr_sha256": "25d45a61e1032e4f6d47b695b2501bd434511f5a275b8a797907bb5c75c48499"
+    }
+  ],
+  "security_advisor": {
+    "lints": []
+  },
+  "counts": {
+    "migration_count": 28,
+    "service_state_count": 1,
+    "capture_open_count": 0,
+    "contributor_count": 5,
+    "submission_count": 25,
+    "photo_count": 25,
+    "auth_user_count": 0,
+    "public_cell_count": 0,
+    "dataset_release_count": 0
+  },
+  "production_mutations": [],
+  "deployment_commands_run": [],
+  "limits": [
+    "Preparation observation; refresh all required evidence after Justin's future go before any deployment.",
+    "Source CI proof and Auth/exposure evidence separately bound."
+  ]
+}

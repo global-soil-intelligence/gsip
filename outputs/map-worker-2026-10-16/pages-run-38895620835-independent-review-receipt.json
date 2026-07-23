@@ -1,0 +1,112 @@
+{
+  "status": "ACTUAL_PROTECTED_PAGES_ARTIFACT_REVIEW_COMPLETE_NOT_DEPLOYED",
+  "verified_at_utc": "2026-10-16T11:50:22Z",
+  "reviewer": "independent non-author Codex agent",
+  "repository": "global-soil-intelligence/gsip",
+  "source_commit": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+  "source_tree": "d49fa2ef6b31a0042db64d74e78b8a12df5b758b",
+  "reviewed_pr_commit": "d53eda2e835e57b4ee01dc922fb63d5ebdeceae0",
+  "entire_source_tree_identical_to_reviewed_pr": true,
+  "source_binding_evidence": "Live read-only GitHub commit and run APIs plus local git tree/diff readback",
+  "pages_run": {
+    "id": 38895620835,
+    "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835",
+    "head_branch": "main",
+    "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "run_attempt": 1,
+    "build": "success",
+    "deploy": "waiting"
+  },
+  "artifact": {
+    "id": 12043617713,
+    "name": "github-pages",
+    "official_zip_digest": "sha256:d818ff8663588d7eb12bdf691b92127ee6ca61495c4e6ab9c08eae1c596fbc0b",
+    "zip_file": "github-pages-run-38895620835.zip",
+    "zip_bytes": 3901961,
+    "zip_sha256": "d818ff8663588d7eb12bdf691b92127ee6ca61495c4e6ab9c08eae1c596fbc0b",
+    "tar_sha256": "bc5ab24a2ff6ca54c92cf09db589ac98a5233c7c101013fc1886c09e1605d769",
+    "all_40_file_names_sizes_hashes_match_parent_receipt_and_preview": true,
+    "parent_receipt": "pages-run-38895620835-artifact-verification.json",
+    "parent_receipt_sha256": "406c45b59328844d692a23cf262897d42990a702e139510c765fad6e0336f825",
+    "no_links_or_path_escapes": true,
+    "files_count": 40,
+    "files_bytes": 6623136,
+    "map_bytes": 2422310,
+    "map_budget_bytes": 5242880,
+    "activation": {
+      "capture_live": false,
+      "library_intake_live": false
+    },
+    "all_map_files_identical_to_premerge_preview": true,
+    "worker_bytes": 509702,
+    "worker_sha256": "096f3b4deeeaa7ed1372a96978bea3495b78250041df835fada34f12320e11d2",
+    "notice_bytes": 32566,
+    "notice_sha256": "9aa4807394e33c6a38be8c590001a791203e703d9afefa0e7c2f47b1655a1dce",
+    "notice_contains_exact_installed_maplibre_license_trimmed": true
+  },
+  "premerge_difference_assessment": {
+    "identical_files": 33,
+    "changed_or_renamed_files": 7,
+    "total_byte_delta": 8,
+    "unexplained_content_differences": 0,
+    "sole_source_value_change": "Existing GITHUB_SHA build define changes capture client version from 0.1.0 to 0.1.0+27c3d91",
+    "source_locations": [
+      "apps/capture-pwa/vite.config.ts:10",
+      "apps/capture-pwa/vite.config.ts:23",
+      "apps/capture-pwa/src/provenance.ts:19",
+      "apps/capture-pwa/src/App.tsx:863"
+    ],
+    "exact_comparisons": [
+      {
+        "before": "capture/assets/index-CMcpQaOK.js",
+        "after": "capture/assets/index-DEdswBKo.js",
+        "delta_bytes": 8,
+        "result": "Exact after normalizing one client-version suffix and generated filename references"
+      },
+      {
+        "before": "capture/assets/web-CfRXg3vD.js",
+        "after": "capture/assets/web-D_gpHZ_X.js",
+        "delta_bytes": 0,
+        "result": "Exact after normalizing generated import filename"
+      },
+      {
+        "before": "capture/assets/esm-BrAszanm.js",
+        "after": "capture/assets/esm-BzIFO2Az.js",
+        "delta_bytes": 0,
+        "result": "Exact after normalizing generated import filename"
+      },
+      {
+        "before": "capture/assets/esm-BWhgVwNs.js",
+        "after": "capture/assets/esm-Ca0FzJ8M.js",
+        "delta_bytes": 0,
+        "result": "Exact after normalizing generated import filename"
+      },
+      {
+        "before": "capture/assets/esm-CHVXGPPW.js",
+        "after": "capture/assets/esm-CPvYVprq.js",
+        "delta_bytes": 0,
+        "result": "Exact after normalizing generated import filename"
+      },
+      {
+        "before": "capture/index.html",
+        "after": "capture/index.html",
+        "delta_bytes": 0,
+        "result": "Exact after normalizing generated entry filename"
+      },
+      {
+        "before": "capture/sw.js",
+        "after": "capture/sw.js",
+        "delta_bytes": 0,
+        "result": "Same 15 precache entries after filename normalization and corresponding exact HTML MD5 revision; order-only manifest changes and equivalent two-local-variable alpha rename; remaining service-worker shell exact"
+      }
+    ],
+    "material_behavior_change": "Expected client provenance version stamp only; no changed upload authority, map code, worker, notice or data/privacy behavior"
+  },
+  "unresolved_findings": [],
+  "resolved_prior_findings": [
+    "P2 full BSD notice remains resolved in the actual protected Pages artifact"
+  ],
+  "deployment_authorized": false,
+  "mutations_by_reviewer": "Only requested local review evidence files written; no source edits, builds, server, approvals, merges, deployments or settings changes",
+  "remaining_gate": "Justin's separate Pages go, followed by completed deployment and live destination readback"
+}

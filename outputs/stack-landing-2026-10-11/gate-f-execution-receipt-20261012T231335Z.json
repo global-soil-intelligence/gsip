@@ -1,0 +1,87 @@
+{
+  "state": "PASS_GATE_F_TWO_VARIABLES_VERIFIED",
+  "repository": "global-soil-intelligence/gsip",
+  "authorization": "Justin: Gate F go; set only two new variables, retain existing key and old URL; no deployment, merge or capture opening.",
+  "started_at_utc": "2026-10-12T23:13:35.453213+00:00",
+  "commands": [
+    {
+      "argv": [
+        "/opt/homebrew/bin/gh",
+        "variable",
+        "set",
+        "SUPABASE_URL",
+        "--repo",
+        "global-soil-intelligence/gsip",
+        "--body",
+        "https://toxldjgwkxtneoqsazym.supabase.co"
+      ],
+      "started_at_utc": "2026-10-12T23:13:37.535168+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/bin/gh",
+        "variable",
+        "set",
+        "VITE_GSIP_PUBLIC_API",
+        "--repo",
+        "global-soil-intelligence/gsip",
+        "--body",
+        "https://toxldjgwkxtneoqsazym.supabase.co/functions/v1/gsip-public"
+      ],
+      "started_at_utc": "2026-10-12T23:13:38.174772+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "checks": {
+    "SUPABASE_URL_exact_readback_and_other_variables_unchanged": true,
+    "VITE_GSIP_PUBLIC_API_exact_readback_and_other_variables_unchanged": true,
+    "protection_workers_and_main_unchanged": true,
+    "existing_publishable_key_unchanged": true,
+    "old_url_unchanged": true
+  },
+  "deployments": [],
+  "merges": [],
+  "workflow_dispatches": [],
+  "secret_changes": [],
+  "preflight": {
+    "pages_admin_bypass": false,
+    "pages_required_reviewers": [
+      "jdhart81"
+    ],
+    "worker_states": {
+      "372625971": "disabled_manually",
+      "372626162": "disabled_manually",
+      "372626465": "disabled_manually"
+    },
+    "main": "7a2c082ced29a9da2e731484590ea5aedfe5a657"
+  },
+  "postflight": {
+    "pages_admin_bypass": false,
+    "pages_required_reviewers": [
+      "jdhart81"
+    ],
+    "worker_states": {
+      "372625971": "disabled_manually",
+      "372626162": "disabled_manually",
+      "372626465": "disabled_manually"
+    },
+    "main": "7a2c082ced29a9da2e731484590ea5aedfe5a657"
+  },
+  "verified_urls": {
+    "SUPABASE_URL": "https://toxldjgwkxtneoqsazym.supabase.co",
+    "VITE_GSIP_PUBLIC_API": "https://toxldjgwkxtneoqsazym.supabase.co/functions/v1/gsip-public"
+  },
+  "variable_names": [
+    "SUPABASE_URL",
+    "VITE_GSIP_PUBLIC_API",
+    "VITE_SUPABASE_PUBLISHABLE_KEY",
+    "VITE_SUPABASE_URL"
+  ],
+  "service_role_secret_present_name_only": false,
+  "completed_at_utc": "2026-10-12T23:13:40.762118+00:00"
+}

@@ -1,0 +1,44 @@
+{
+  "base_commit": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "base_tree": "9e78e72f441501a1bd56a15b07e4c30fe2cc5b64",
+  "source_root": "/private/tmp/gsip-lib5b-author-ovnn60yz/source",
+  "frozen_review_snapshot": "/private/tmp/gsip-lib5b-final-v2-frozen-du10bt69",
+  "source_prerequisites": {
+    "lib5a_merge": "333f1492713d41c0ade42d6b16c4453cdfb1b783",
+    "spec10_merge": "d7ed716ed0921381da04f542e90902ede36cb462"
+  },
+  "authored_files": [
+    {
+      "path": "pipeline/node_exchange_store.py",
+      "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+      "bytes": 39798
+    },
+    {
+      "path": "pipeline/node_exchange_simulator.py",
+      "sha256": "2601595ed7f862d2c0bc504e685daa83885ce830117e3e028ca93f7da9667d27",
+      "bytes": 83565
+    },
+    {
+      "path": "tests/test_node_exchange_store.py",
+      "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+      "bytes": 46450
+    },
+    {
+      "path": "tests/test_node_exchange_simulator.py",
+      "sha256": "47ae080056afd2e44e9100d1993aa04c9d461a90a8d6fc6ff5a8387fd7000067",
+      "bytes": 51165
+    },
+    {
+      "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+      "sha256": "da32982ad9c8c39f08b23e0bcf84e236b39ccddd1200fc1ca78d5c43db15a3c8",
+      "bytes": 19016
+    }
+  ],
+  "base_files_checked": 347,
+  "base_files_changed": [],
+  "patch": "/private/tmp/gsip-lib5b-private-exchange-ledger-v2.patch",
+  "patch_sha256": "d9aedeeb7952ee6109e40076a4c36eecc474e167b961bcea9179e9059e6cfdc3",
+  "scope": "one synthetic private local work package; no implementation outside the five files",
+  "version": "v2 corrections after independent full-package findings",
+  "preserved_v1_manifest_sha256": "d6384e0210d78c75f87c2ce8d4d78d1ffed43278e06a31230d454706fa73616f"
+}

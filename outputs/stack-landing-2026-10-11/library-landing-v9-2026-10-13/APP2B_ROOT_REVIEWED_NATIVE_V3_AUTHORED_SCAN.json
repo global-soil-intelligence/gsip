@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-13T23:49:04.705657+00:00",
+  "version": "8.21.2",
+  "source_manifest_sha256": "7c700bf3a139592748351eb5fbdcd273fdb48455aafc2ecc4a72266b7e9e0942",
+  "exit_code": 0,
+  "redacted_output_sha256": "614bd796e2d4fa49f152ef9d0d1cc4ffdad3c2388d87d920bdf72ff2846879f7",
+  "redacted_output_bytes": 98,
+  "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "findings": 0,
+  "inline_allow_annotations_ignored": true,
+  "new_suppressions": false,
+  "production_changes": false
+}

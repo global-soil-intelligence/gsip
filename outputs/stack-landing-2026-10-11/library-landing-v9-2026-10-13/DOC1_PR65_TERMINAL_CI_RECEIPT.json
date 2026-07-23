@@ -1,0 +1,259 @@
+{
+  "status": "finite_exact_head_doc_pr65_terminal_ci_verification_complete",
+  "at": "2026-10-13T21:59:36.492011+00:00",
+  "head": "a2ad2d80ea288b9e2de8c984dcee56fa4803a1bc",
+  "pull_request": 65,
+  "canonical_repository": "global-soil-intelligence/gsip",
+  "base_at_review": "710d144db94097be71989c67b5d3b4bb48135ad8",
+  "source_binding": {
+    "merge_checkout": "0b328ddbf1b2268c3fb0e2a50afb99bc89edd83d",
+    "merge_parents": [
+      "710d144db94097be71989c67b5d3b4bb48135ad8",
+      "a2ad2d80ea288b9e2de8c984dcee56fa4803a1bc"
+    ],
+    "merge_tree_sha": "51e7e9b5c0e00ae0d3eafbd8f77c75639f8bd549",
+    "exact_three_doc_changes": [
+      {
+        "path": "README.md",
+        "blob": "8bf8037196c45006331d384761e16ab7ec8e571f",
+        "source_sha256": "e730b652306926233acaf0ae68a2c5c03e342d4a09259c28fff357554a73b10a",
+        "status": "modified",
+        "additions": 7,
+        "deletions": 3,
+        "patch_sha256": "e857426f83ec4db6ad523a9683e0ceba92f3a748991fd6fe677e5b7fdec850af"
+      },
+      {
+        "path": "docs/BUILD_ORDER.md",
+        "blob": "4e5f66665bf5c603e2271f155bfc59fed04d2997",
+        "source_sha256": "7f243f4ce91cd2be9ba972fd1086ef02dee6a55bfd03436feca8058a71a4bd0a",
+        "status": "modified",
+        "additions": 17,
+        "deletions": 13,
+        "patch_sha256": "b225a4d976134d1867c8eb6bfe134bfb34a6a89c0e4362e813368a1a34003f4d"
+      },
+      {
+        "path": "docs/SPEC.md",
+        "blob": "6092aa9ae23760668123c756714c0ebd0429081a",
+        "source_sha256": "90642673b06d9d7acbef0736e301a227efb0fa6a0210118a0e2228fec3da7975",
+        "status": "modified",
+        "additions": 9,
+        "deletions": 9,
+        "patch_sha256": "f1215faebc518c6389ed510ae921909c746bcbf958b159a6a14e749ff7b128b2"
+      }
+    ],
+    "source_tree_files_bound": 11,
+    "checkout_commit_observed_in_actual_ci_log": true,
+    "initial_source_receipt_sha256": "92c379892e639a3cf7d5614ce812133bcdf3339c45bef0fc7af84d27d9dec179"
+  },
+  "terminal_checks": [
+    {
+      "id": 115556842966,
+      "label": "dco",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 115556841020,
+      "label": "validate",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 115556840797,
+      "label": "gitleaks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 115556813996,
+      "label": "gitleaks",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "general_ci": {
+    "run_id": 38473072529,
+    "job_id": 115556841020,
+    "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38473072529",
+    "conclusion": "success",
+    "actual_numeric_totals": {
+      "javascript_tests_passed": 529,
+      "javascript_files_passed": 39,
+      "browser": {
+        "passed": 12,
+        "seconds": 11.7
+      },
+      "python": {
+        "passed": 1136,
+        "skipped": 0,
+        "warnings": 37,
+        "seconds": 106.06
+      },
+      "pgTAP": {
+        "files": 11,
+        "tests": 593
+      },
+      "Deno_check_entrypoints_observed": 2,
+      "GDAL_required_flag_observed": true,
+      "migration_compatibility": {
+        "step_succeeded": true,
+        "case_total_reported": null
+      }
+    },
+    "static_build_budget_language_and_execution_evidence": {
+      "phase_evidence_rule": "actual command group observed; completion follows terminal successful validate and exact workflow has no continue-on-error",
+      "phases": {
+        "frozen_node_install": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "frozen_python_install": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "lint": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "typecheck": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "javascript_tests": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "workspace_build": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "map_budget": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "browser_tests": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "ruff": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "mypy": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "python_tests": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "deno_check": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "existing_data_migration": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "local_db_start": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "local_db_reset": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "local_db_tests": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        },
+        "local_db_stop": {
+          "command_group_observed": true,
+          "successful_completion_from_terminal_validate": true
+        }
+      },
+      "map_budget_measurements": [
+        {
+          "bytes": 1663811,
+          "limit_bytes": 5242880
+        }
+      ],
+      "mypy_source_file_counts": [
+        72
+      ],
+      "ruff_success_line_observed": true,
+      "formatter_success_line_observed": true,
+      "lint_script_command_chain_observed": true,
+      "language_check_in_successful_lint_source_chain": true,
+      "checkout_commits_observed": [
+        "0b328ddbf1b2268c3fb0e2a50afb99bc89edd83d"
+      ],
+      "authenticated_merge_checkout_observed": true,
+      "site_budget_direct_ci_step_declared": false,
+      "native_build_validation_claimed": false
+    },
+    "sanitized_log_metadata_sha256": "4795f3b01fa0a098a0fa6868a0ca73a790a005c0744d418d9e5e974e1c50d07e",
+    "job_step_details": "unavailable in metadata; no fabricated step count; command-group evidence recorded separately"
+  },
+  "secret_scans": [
+    {
+      "event": "pull_request",
+      "run_id": 38473072582,
+      "job_id": 115556840797,
+      "conclusion": "success",
+      "no_leaks_literal_observed": true,
+      "version_8_21_2_token_observed": true,
+      "observed_commits_scanned": [
+        148
+      ],
+      "log_bytes": 22000,
+      "log_sha256": "8703dcdde4f4c3240f79c0dd2bfb6d0df649ca61c4f13f46adbb90c7d09b7a3d",
+      "raw_log_persisted": false
+    },
+    {
+      "event": "push",
+      "run_id": 38473064508,
+      "job_id": 115556813996,
+      "conclusion": "success",
+      "no_leaks_literal_observed": true,
+      "version_8_21_2_token_observed": true,
+      "observed_commits_scanned": [
+        148
+      ],
+      "log_bytes": 20616,
+      "log_sha256": "3ad8abea65f795e24ee1fcbe2767c5e44f7d13e531148efa77f06c0f920e2257",
+      "raw_log_persisted": false
+    }
+  ],
+  "dco": {
+    "run_id": 38473072586,
+    "job_id": 115556842966,
+    "conclusion": "skipped",
+    "is_pass": false,
+    "certification_performed": false
+  },
+  "native": {
+    "job_observed": false,
+    "run_observed": false,
+    "expected_for_three_doc_scope": false,
+    "build_artifact_downloaded": false,
+    "native_build_or_app63_acceptance_claimed": false
+  },
+  "limits": [
+    "Only source byte binding and actual CI outcomes verified; separate independent documentation review is outside this receipt",
+    "DCO skip is not a pass; no skipped case is counted as passed",
+    "Migration compatibility succeeded but no numeric case total was reported",
+    "No direct site-budget CI step is declared; no separate site-budget pass is claimed",
+    "APP63 remains separate; no native, device, backup, deployment, scientific, sharing, capture or production readiness is inferred"
+  ],
+  "authority": {
+    "get_only": true,
+    "raw_full_logs_private_values_or_credentials_printed_or_persisted": false,
+    "source_git_github_dispatch_retry_ready_merge_deploy_or_production_mutations": false
+  },
+  "manifest": {
+    "path": "terminal-evidence-manifest.json",
+    "sha256": "0a93bcb33f833e41a6f4265ee01d327513b94f2ee92b5da88e2cb33381d01734",
+    "files": 20
+  }
+}

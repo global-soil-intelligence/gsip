@@ -1,0 +1,105 @@
+{
+  "actual_checkout": "5d974ed24977e44026666ba8d3b2158b4a22dd06",
+  "additional": [
+    {
+      "bytes": 1847,
+      "git_blob_sha1": "bda0a2ea433e40ee4a68d00900aa5814ebfa39c6",
+      "path": ".github/workflows/ci.yml",
+      "sha256": "534b60200b3b53e930713dae99ef46fc3dfbc2bf5dadd34952fdb3cb8d667e2c"
+    },
+    {
+      "bytes": 269106,
+      "git_blob_sha1": "2e1d5de092fb89607555ea47cda86e650216a4a7",
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "67d7f761d046c620b08b1982bbc38e1f3574f98355bd825ce9cfb15bf44a84d6"
+    },
+    {
+      "bytes": 44023,
+      "git_blob_sha1": "1c76e22b8a1f894736114f62097f6a17c4378c81",
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "feb569c51cd958260ae372bbe5f00edbb49003245c7cf55e771892ae9f0ec784"
+    },
+    {
+      "bytes": 1276,
+      "git_blob_sha1": "fc1a7495cc299c45ac519b35339d334e3dfb5fee",
+      "path": ".github/workflows/secret-scan.yml",
+      "sha256": "b29dc91eb6becb78672ddf5ca7e96133e4265d69a04610666c87aaa3fdace8f9"
+    },
+    {
+      "bytes": 788,
+      "git_blob_sha1": "6025bcd0c096132b43d5983ea3f8a8c5f8abcb6c",
+      "path": ".gitleaks.toml",
+      "sha256": "e846bacbb1ce5c41f571a10cdaf0e1fde7bfa399fc5c876480b57124059cc760"
+    },
+    {
+      "bytes": 465,
+      "git_blob_sha1": "c851f95dd88e01408728ac217978030b0f952951",
+      "path": ".gitleaksignore",
+      "sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5"
+    }
+  ],
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "head_and_virtual_merge_tree_equal": true,
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "parents": [
+    "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+    "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc"
+  ],
+  "primary9": [
+    {
+      "bytes": 97,
+      "git_blob_sha1": "6ebc171ce1535767da533c21f5adf55eeedf4e62",
+      "path": "scripts/__init__.py",
+      "sha256": "892aecd6894b5c07d02afcb4146d30d7fbab2b17493edc31cdf48d975c30f7c4"
+    },
+    {
+      "bytes": 225620,
+      "git_blob_sha1": "f64bacc4f6bdfe149c28f8d4b8776999cd7a3a3e",
+      "path": "pnpm-lock.yaml",
+      "sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19"
+    },
+    {
+      "bytes": 316516,
+      "git_blob_sha1": "ab95b0ba7eaf37b65391ee307fe02ccb63ea33a2",
+      "path": "uv.lock",
+      "sha256": "3711bd858b0698f83c4866bb7946725bb56f8a8271b130a583c98eddc8ffe912"
+    },
+    {
+      "bytes": 1081,
+      "git_blob_sha1": "7908d39eac6911ce9143d853242f57c39c4040e6",
+      "path": "apps/capture-pwa/package.json",
+      "sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115"
+    },
+    {
+      "bytes": 1112,
+      "git_blob_sha1": "c384197c85ba1b073e8f24c68f87a333333c7559",
+      "path": "apps/capture-pwa/capacitor.config.ts",
+      "sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69"
+    },
+    {
+      "bytes": 12571,
+      "git_blob_sha1": "c64d839388c0d9e8fba2d1086239c3fa4031e302",
+      "path": "scripts/app_permissions.py",
+      "sha256": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3"
+    },
+    {
+      "bytes": 17725,
+      "git_blob_sha1": "5388991b5a9f15b0a148009c2f91ab30340e7457",
+      "path": "scripts/app_build.py",
+      "sha256": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4"
+    },
+    {
+      "bytes": 144888,
+      "git_blob_sha1": "e69ae887c45b154bbf731d8ff0efa547281f3217",
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d"
+    },
+    {
+      "bytes": 17919,
+      "git_blob_sha1": "be1223fad90891c51486e3845a83ca78f8299f02",
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5"
+    }
+  ],
+  "tree_sha": "88baee8e3e9606b386fa011ac71f2d759cf20e50"
+}

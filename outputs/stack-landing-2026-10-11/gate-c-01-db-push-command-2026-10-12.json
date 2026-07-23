@@ -1,0 +1,46 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "gate": "C",
+  "started_at": "2026-10-12T13:39:19.528833+00:00",
+  "completed_at": "2026-10-12T13:39:21.847938+00:00",
+  "argv": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "db",
+    "push",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+    "--skip-vault"
+  ],
+  "source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "cli_version": "2.118.0",
+  "approved_files": [
+    "20261010120000_wp6b_capture_gate.sql",
+    "20261010120100_wp6b_path_binding.sql",
+    "20261010120200_wp6b_finalize_and_settle.sql",
+    "20261010120300_wp6b_k_anonymous_cells.sql",
+    "20261010120400_wp6b_attribution_and_metadata.sql",
+    "20261010130000_wp6c_priors.sql",
+    "20261010140000_wp6d_contributor_rights.sql",
+    "20261010150000_wp6e_provenance.sql",
+    "20261011090000_wp_agent1_releases.sql"
+  ],
+  "exit_code": 0,
+  "safe_output_lines": [
+    "Initialising login role...",
+    "Connecting to remote database...",
+    "Applying migration 20261010120000_wp6b_capture_gate.sql...",
+    "Applying migration 20261010120100_wp6b_path_binding.sql...",
+    "Applying migration 20261010120200_wp6b_finalize_and_settle.sql...",
+    "Applying migration 20261010120300_wp6b_k_anonymous_cells.sql...",
+    "Applying migration 20261010120400_wp6b_attribution_and_metadata.sql...",
+    "Applying migration 20261010130000_wp6c_priors.sql...",
+    "Applying migration 20261010140000_wp6d_contributor_rights.sql...",
+    "Applying migration 20261010150000_wp6e_provenance.sql...",
+    "Applying migration 20261011090000_wp_agent1_releases.sql..."
+  ],
+  "output_sha256": "0ae3fcc9d4fabe2b558ec1c73e02e84bcaff8d246ef423c50a86452ad901915c",
+  "safe_failure_categories": {},
+  "state": "COMMAND_COMPLETED_ALL_POSTCHECKS_REQUIRED"
+}

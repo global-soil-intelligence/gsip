@@ -1,0 +1,65 @@
+{
+  "current_helper_sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee",
+  "old_task74ad_preserved": true,
+  "prior_frozen_helper_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+  "raw_graphs": [
+    {
+      "bytes": 51387,
+      "label": "parent",
+      "raw_graph_sha256": "400a9c7892c1c0e4eb50bf9684a03c7803ba709bef0648848fbf98db2b74e5b4",
+      "runtime_evidence_sha256": "ac622df9cab41cd2fc06c363d33b8f5870e7159def460d8c305a41e25c408979",
+      "views": [
+        {
+          "complete_native_record_identical_groups": 5,
+          "configuration": "debugRuntimeClasspath",
+          "distinct_canonical_inputs": 73,
+          "duplicate_typed_identity_filename_groups": 5,
+          "raw_artifact_records": 78,
+          "raw_modules": 75,
+          "raw_projects_including_root": 5,
+          "same_literal_canonical_path_groups": 5
+        },
+        {
+          "complete_native_record_identical_groups": 5,
+          "configuration": "releaseRuntimeClasspath",
+          "distinct_canonical_inputs": 73,
+          "duplicate_typed_identity_filename_groups": 5,
+          "raw_artifact_records": 78,
+          "raw_modules": 75,
+          "raw_projects_including_root": 5,
+          "same_literal_canonical_path_groups": 5
+        }
+      ]
+    },
+    {
+      "bytes": 52079,
+      "label": "candidate",
+      "raw_graph_sha256": "24a5c9818def6b2cc23cfe81c095dd6707be7c9d536acf41b2ebd4f242b52832",
+      "runtime_evidence_sha256": "70f118a73c5b2c7d90be3cbeb0ef046c40f39b99e7d579a38d32172af5d1db33",
+      "views": [
+        {
+          "complete_native_record_identical_groups": 5,
+          "configuration": "debugRuntimeClasspath",
+          "distinct_canonical_inputs": 74,
+          "duplicate_typed_identity_filename_groups": 5,
+          "raw_artifact_records": 79,
+          "raw_modules": 75,
+          "raw_projects_including_root": 6,
+          "same_literal_canonical_path_groups": 5
+        },
+        {
+          "complete_native_record_identical_groups": 5,
+          "configuration": "releaseRuntimeClasspath",
+          "distinct_canonical_inputs": 74,
+          "duplicate_typed_identity_filename_groups": 5,
+          "raw_artifact_records": 79,
+          "raw_modules": 75,
+          "raw_projects_including_root": 6,
+          "same_literal_canonical_path_groups": 5
+        }
+      ]
+    }
+  ],
+  "runtime_evidence_function_text_exact": true,
+  "validate_android_function_text_exact": true
+}

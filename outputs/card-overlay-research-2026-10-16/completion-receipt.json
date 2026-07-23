@@ -1,0 +1,156 @@
+{
+  "recorded_at": "2026-10-17 00:02:17 UTC",
+  "task": "Merge approved source PRs, then research phone capture and optional on-screen reference guide.",
+  "main_head": "33260db1ce49c50600942694e43269759e554e66",
+  "merges": [
+    {
+      "number": 83,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/83",
+      "reviewed_head": "69b57a99c8e4b250b120a12824a377b255a94f98",
+      "merged": true,
+      "merge_commit_sha": "98e5ed58d960bcb52f6b80610ca184bc83722125"
+    },
+    {
+      "number": 84,
+      "url": "https://github.com/global-soil-intelligence/gsip/pull/84",
+      "reviewed_head": "273ba98704343339c174a31124b887e19ead3dca",
+      "merged": true,
+      "merge_commit_sha": "33260db1ce49c50600942694e43269759e554e66"
+    }
+  ],
+  "source_tree_matches_reviewed_pilot_branch": true,
+  "source_worktree_clean": true,
+  "postmerge_runs": [
+    {
+      "conclusion": "success",
+      "databaseId": 38983514988,
+      "event": "push",
+      "headSha": "33260db1ce49c50600942694e43269759e554e66",
+      "name": "Secret scan",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38983514988"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38983515022,
+      "event": "push",
+      "headSha": "33260db1ce49c50600942694e43269759e554e66",
+      "name": "App build",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38983515022"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38983514987,
+      "event": "push",
+      "headSha": "33260db1ce49c50600942694e43269759e554e66",
+      "name": "CI",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38983514987"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38983466013,
+      "event": "push",
+      "headSha": "98e5ed58d960bcb52f6b80610ca184bc83722125",
+      "name": "Secret scan",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38983466013"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 38983466047,
+      "event": "push",
+      "headSha": "98e5ed58d960bcb52f6b80610ca184bc83722125",
+      "name": "CI",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38983466047"
+    }
+  ],
+  "app_artifacts": [
+    {
+      "id": 12082052229,
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 13920236,
+      "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12082052229",
+      "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12082052229/zip",
+      "expired": false,
+      "created_at": "2026-10-16T23:55:58Z",
+      "expires_at": "2026-10-30T23:55:56Z",
+      "updated_at": "2026-10-16T23:55:58Z",
+      "digest": "sha256:bc391fc1754d9f1b37e910ee43aa073da5615aaee24d40c1aef899317ba35f21",
+      "workflow_run": {
+        "id": 38983515022,
+        "repository_id": 1308971325,
+        "head_repository_id": 1308971325,
+        "head_branch": "main",
+        "head_sha": "33260db1ce49c50600942694e43269759e554e66"
+      }
+    },
+    {
+      "id": 12081947720,
+      "name": "gsip-capture-android-debug",
+      "size_in_bytes": 29125288,
+      "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12081947720",
+      "archive_download_url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/artifacts/12081947720/zip",
+      "expired": false,
+      "created_at": "2026-10-16T23:59:06Z",
+      "expires_at": "2026-10-30T23:59:03Z",
+      "updated_at": "2026-10-16T23:59:06Z",
+      "digest": "sha256:32eed5a06e26e342f1fa98c58325100111fba70ab224098e59bc694cb0144db7",
+      "workflow_run": {
+        "id": 38983515022,
+        "repository_id": 1308971325,
+        "head_repository_id": 1308971325,
+        "head_branch": "main",
+        "head_sha": "33260db1ce49c50600942694e43269759e554e66"
+      }
+    }
+  ],
+  "research": {
+    "report": "RESEARCH_AND_RECOMMENDATION.md",
+    "proposal": "NEXT_BUILD_BRIEF-v2.md",
+    "capability_audit": "camera-overlay-capability-audit.md",
+    "independent_review": "independent-review.json",
+    "proposal_implementation": "not_started",
+    "new_source_changes": "none",
+    "dependencies_added": "none",
+    "card_policy": "physical card already optional; missing card remains uncalibrated",
+    "overlay": "framing aid only; not calibration or measured spectra",
+    "real_device_or_field_experiment": "not_run",
+    "node_assumption": "private linked observation/sample namespace, not a federation peer"
+  },
+  "held_pages": [
+    {
+      "conclusion": "cancelled",
+      "databaseId": 38983514973,
+      "event": "push",
+      "headSha": "33260db1ce49c50600942694e43269759e554e66",
+      "name": "Deploy GitHub Pages",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38983514973"
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 38983466011,
+      "event": "push",
+      "headSha": "98e5ed58d960bcb52f6b80610ca184bc83722125",
+      "name": "Deploy GitHub Pages",
+      "status": "completed",
+      "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38983466011"
+    }
+  ],
+  "production_changes": "none",
+  "capture_and_library_activation_evidence": "live-activation-readback.json",
+  "retained_boundaries": [
+    "No production migration/deployment, activation, invitation, worker dispatch or account changes.",
+    "No capture or library upload opening.",
+    "No further source feature implementation or PR in this research turn.",
+    "No physical camera or contributor data accessed."
+  ],
+  "assumptions": [
+    "The requested merge refers to prepared PRs #83 and #84 in order.",
+    "Research follow-ups are proposals; the next source package requires its own review.",
+    "Ordinary phone observations remain distinct from measured spectra and explicitly registered samples."
+  ]
+}

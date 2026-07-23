@@ -1,0 +1,124 @@
+{
+  "written_at_utc": "2026-10-16T11:53:48.538549+00:00",
+  "status": "EXACT_MAIN_CI_GREEN_PAGES_BUILT_AND_HELD_FOR_OWNER_APPROVAL",
+  "expected_main_head": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+  "all_observed_runs_match_exact_main_head": true,
+  "main_ci": {
+    "id": 38895620789,
+    "name": "CI",
+    "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "head_branch": "main",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "updated_at": "2026-10-16T11:52:32Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620789"
+  },
+  "main_secret_scan": {
+    "id": 38895620824,
+    "name": "Secret scan",
+    "event": "push",
+    "head_branch": "main",
+    "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "created_at": "2026-10-16T11:43:06Z",
+    "updated_at": "2026-10-16T11:43:17Z",
+    "run_started_at": "2026-10-16T11:43:06Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620824"
+  },
+  "pages": {
+    "id": 38895620835,
+    "name": "Deploy GitHub Pages",
+    "head_sha": "27c3d9143ff78dce65fa4d2e88e1660c79574232",
+    "head_branch": "main",
+    "event": "push",
+    "status": "waiting",
+    "conclusion": null,
+    "run_attempt": 1,
+    "updated_at": "2026-10-16T11:43:41Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835"
+  },
+  "pages_build": {
+    "id": 116955267851,
+    "name": "build",
+    "status": "completed",
+    "conclusion": "success",
+    "started_at": "2026-10-16T11:43:09Z",
+    "completed_at": "2026-10-16T11:43:40Z",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38895620835/job/116955267851"
+  },
+  "pending_approval_environment_ids": [
+    18657050755
+  ],
+  "pending_approval_reviewers": [
+    "jdhart81"
+  ],
+  "environment_readback_at_utc": "2026-10-16T11:44:16.008638+00:00",
+  "environment": {
+    "id": 18657050755,
+    "name": "github-pages",
+    "can_admins_bypass": false,
+    "required_reviewers": [
+      "jdhart81"
+    ],
+    "deployment_branch_policy": {
+      "protected_branches": false,
+      "custom_branch_policies": true
+    },
+    "protection_rules": [
+      {
+        "id": 60751762,
+        "node_id": "GA_kwDOTgVRPc4Dnv-S",
+        "type": "branch_policy"
+      },
+      {
+        "id": 68521163,
+        "node_id": "GA_kwDOTgVRPc4EFYzL",
+        "type": "required_reviewers",
+        "prevent_self_review": false,
+        "reviewers": [
+          {
+            "type": "User",
+            "reviewer": {
+              "login": "jdhart81",
+              "id": 179389866,
+              "node_id": "U_kgDOCrFFqg",
+              "avatar_url": "https://avatars.githubusercontent.com/u/179389866?v=4",
+              "gravatar_id": "",
+              "url": "https://api.github.com/users/jdhart81",
+              "html_url": "https://github.com/jdhart81",
+              "followers_url": "https://api.github.com/users/jdhart81/followers",
+              "following_url": "https://api.github.com/users/jdhart81/following{/other_user}",
+              "gists_url": "https://api.github.com/users/jdhart81/gists{/gist_id}",
+              "starred_url": "https://api.github.com/users/jdhart81/starred{/owner}{/repo}",
+              "subscriptions_url": "https://api.github.com/users/jdhart81/subscriptions",
+              "organizations_url": "https://api.github.com/users/jdhart81/orgs",
+              "repos_url": "https://api.github.com/users/jdhart81/repos",
+              "events_url": "https://api.github.com/users/jdhart81/events{/privacy}",
+              "received_events_url": "https://api.github.com/users/jdhart81/received_events",
+              "type": "User",
+              "user_view_type": "public",
+              "site_admin": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "allowed_branch_names": [
+    "gh-pages",
+    "main"
+  ],
+  "final_status_readback_at_utc": "2026-10-16T11:53:22.058588+00:00",
+  "artifact_validation": "Root handles actual Pages artifact verification; not independently certified by this watch receipt.",
+  "authorization": "Owner approved PR77 merge only and explicitly held Pages. No Pages go received or used by this agent.",
+  "watch_stopped": "Main CI completed success; no further polls after completion snapshot.",
+  "mutations": "NONE; no approval, dispatch, rerun, deployment, merge or setting change by this agent.",
+  "source_evidence": [
+    "pages-hold-watch-independent-20261016T114416Z.json",
+    "pages-hold-watch-independent-20261016T115322Z.json"
+  ]
+}

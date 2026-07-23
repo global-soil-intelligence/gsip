@@ -1,0 +1,61 @@
+{
+  "state": "PASS_ALL_GATE_D_PREFLIGHT_AUTHORIZED",
+  "completed_at_utc": "2026-10-12T19:25:02.936357+00:00",
+  "target": {
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "name": "gsip",
+    "region": "us-east-1"
+  },
+  "source_commit": "19e626c8a95fae32dbd8ad0ff96bc96aba541a0f",
+  "cli_version": "2.118.0",
+  "authorization": "Justin: Gate D: go. Refresh preflight, apply only the two migrations to toxldjgwkxtneoqsazym; stop on any mismatch. No other deployments or merges.",
+  "bound_inputs": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-pre-metadata-verification-20261012T191950Z.json",
+      "sha256": "a67e3166ed4bf0ef5e7f1a631e1d221a608ab71856666279d816ae162fdfd69f"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-pre-aggregate-verification-20261012T191950Z.json",
+      "sha256": "1c4697630bc51dc2094e2d5016cfd76128d63f37594ccda4153d27c699ffdf14"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-auth-api-pages-preflight-20261012T1920Z.json",
+      "sha256": "cd3380b8cabb36a130512c39ef5bc04caaf46ccbe56baf18bb2554dff081fc01"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-worker-native-readiness-20261012T192235Z.json",
+      "sha256": "af09b233e063133fdf677a24096dd2ba86a4f828ca2381c7b4c5ac8b8fef6d4b"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-fresh-migration-test-20261012T192201Z.json",
+      "sha256": "70a4c8158eb548da022b3671d22af2561b62759642b51edc87e5b5fff3c0a9b8"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-fresh-dry-run-20261012T192244Z.json",
+      "sha256": "9f79c4d11fa8e64bb71f11ade782eed0aa9a8b4beb0e2ed9ac963be7eed7055c"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/security-fix-all-pr-ci-20261012T192003Z.json",
+      "sha256": "4888cbb34f6fa159e9db9f0cb629de51c5fb50446c552729245ea70b063bde4b"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/gate-d-activity-preflight-20261012T1924Z.json",
+      "sha256": "2b66237740352e0bd03f96f0f647de047c7c0cb7f9a4d3083d35f54145ab783e"
+    }
+  ],
+  "pending_files": [
+    {
+      "name": "20261012141828_wp6b_invoker_boundary.sql",
+      "sha256": "afe4f698989729bd456fe763582f93042f58bf66a271704cdaa1c556eeb124d6"
+    },
+    {
+      "name": "20261012142348_wp6d_private_rights_boundary.sql",
+      "sha256": "27c0b1ae001351358b6a56490bc1389d1075dd62cbd6ffc4e6250943fa507260"
+    }
+  ],
+  "all26_executed_migration_blobs_unchanged": true,
+  "original_local_proof_sha256": "5f410d445a8b2926cec75dee3395ec539922fcceadac9645e943187715ed6083",
+  "limits": [
+    "Preflight is an observation, not a lock against externally initiated concurrent changes."
+  ]
+}

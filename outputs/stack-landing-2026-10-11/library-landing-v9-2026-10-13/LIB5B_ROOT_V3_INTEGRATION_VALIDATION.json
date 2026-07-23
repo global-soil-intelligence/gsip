@@ -1,0 +1,43 @@
+{
+  "utc": "2026-10-13T16:41:18.988204+00:00",
+  "state": "LOCAL_V3_CHECKS_PASS_FULL_REVIEW_NOT_CLOSED",
+  "source_integration": "LIB5B_ROOT_V3_LOCAL_INTEGRATION.json",
+  "python_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "4",
+      "tests": "1090",
+      "time": "77.023",
+      "timestamp": "2026-10-13T11:56:57.021784-04:00",
+      "hostname": "MacBook-Pro-6.local"
+    }
+  ],
+  "source_patch_sha256": "23eeb622fc92c5ac9f44214fbfd172ec79d8ee76fddc68a6d338606526ef8a38",
+  "authored_gitleaks": [],
+  "review_findings_sha256": "52fe8f94e7b0569f824e0ecd43de355ee21dfdc9c0ddf7924d561287a4c32e2f",
+  "logs": {
+    "lib5b-root-v3-authored-gitleaks.log": {
+      "sha256": "ae0bc6e5bbb78525daf356cb6448302931e21620d498b9f57505cef37aa84dc1",
+      "bytes": 100
+    },
+    "lib5b-root-v3-whole-python.log": {
+      "sha256": "f2da3eff1decd2ef25825b65fe89704e700b3d4b73a75b5a89cb904ebd4f7b14",
+      "bytes": 1796
+    },
+    "lib5b-root-v3-mypy.log": {
+      "sha256": "047be720f71ff6f55001ba8201472e4dca22eaa7f8ee244cbd28450c7224622f",
+      "bytes": 44
+    },
+    "lib5b-root-v3-ruff.log": {
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    "lib5b-root-v3-lint.log": {
+      "sha256": "8986dfcda5512e47b979aa7120521e228da209dd4c32cf7f8eec8d7ee49e4dfa",
+      "bytes": 134
+    }
+  },
+  "limits": "No commit/push/PR/native/device/production readiness; actual exit0 command results retained in root execution evidence; v4 repair pending"
+}

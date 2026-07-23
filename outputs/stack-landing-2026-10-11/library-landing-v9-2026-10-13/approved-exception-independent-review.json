@@ -1,0 +1,51 @@
+{
+  "schema_version": "gsip-independent-exact-exception-review-v1",
+  "reviewer": "/root/library_store_review",
+  "reviewed_at_utc": "2026-10-13T11:27:47.901484+00:00",
+  "candidate": "173e19363df60d029b2ffeb4a7df2e27d6ccd6b6",
+  "parent": "14c4188280025c274ac7c58d1fc40138ee3922bb",
+  "verdict": "No blocking finding in the narrow exact owner-authorized exception candidate",
+  "blocking_findings_remain": false,
+  "changed_files": [
+    ".gitleaksignore",
+    "AGENTS.md"
+  ],
+  "checks": {
+    "original_four_lines_byte_preserved": true,
+    "exactly_one_new_fingerprint": "bb9bd8a583231ff63ec14a7622532ddb869d7cde:scripts/e2e_server.py:generic-api-key:32",
+    "old_ignore_sha256": "da6c9aacdea6441282a5bbd70c37111e592e38d45cea08eeaac8964f5560d288",
+    "new_ignore_sha256": "bb3e40f995ae51b8e1b9300bd2d079aa5a1b482f259642f52074366b908310e5",
+    "AGENTS_after_sha256": "cc5a4ea13e2a389006a0a69c6986f5acc767f9c065131b70f078b8ca1580e180",
+    "future_exception_owner_approval_retained": true,
+    "scanner_configuration_rules_workflows_unchanged_by_candidate": true,
+    "normal_single_parent_commit_retains_previous_ancestry": true,
+    "original_historical_fixture_commit_retained": true,
+    "saved_before_findings": 1,
+    "saved_after_approved_file_findings": 0,
+    "saved_both_scans_commit_count": 135,
+    "saved_report_redaction_no_secret_output": true
+  },
+  "owner_authority": "Explicit human approval forwarded by parent and recorded in OWNER_AUTHORIZATION.json; exact one fixture only, ordered source merges after green checks, no production/capture or approving review",
+  "evidence_sha256": {
+    "OWNER_AUTHORIZATION.json": "2ea250f54b94a585bb0f75897c1781ec08dbb2d00753e6b8b5ff48b02fc23a7e",
+    "approved-exception-source.json": "9a7a8eea9319c453efe25d23d30afcfd78e2900a3ecbd72e5f66fa6a13265862",
+    "gitleaks-before.json": "d34add6d7ee8781483cdf4c55b5edb846a8fa90c8d2b88838c60e6b155c69426",
+    "gitleaks-after-approved-file.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "gitleaks-before.log": "081b31dce3df97f4340b25f3659a1944c67b093f384dd01cd59d13aa66aef827",
+    "gitleaks-after-approved-file.log": "43d89383114b4dcd73a7dbf44105c4e227273b808e55a156bc8cb57147a6108b"
+  },
+  "limits": [
+    "No scan/test or network/production call was executed by reviewer; local before/after scans were reported pinned8.21.2 full-history/redacted by parent, and their135-commit logs/results inspected",
+    "Saved precommit local scan does not replace required exact-head CI after candidate and merge-forward changes",
+    "This read-only conclusion is not a GitHub approving review, production/capture permission or authorization of any other fingerprint"
+  ],
+  "actions": {
+    "receipt_only_write": true,
+    "shared_source_edits": false,
+    "Git_mutation": false,
+    "network": false,
+    "production": false,
+    "tests_or_scans_rerun": false,
+    "approving_review": false
+  }
+}

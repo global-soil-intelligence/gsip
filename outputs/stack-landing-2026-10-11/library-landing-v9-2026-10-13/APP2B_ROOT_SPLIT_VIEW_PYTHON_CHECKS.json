@@ -1,0 +1,18 @@
+{
+  "utc": "2026-10-13T23:11:18.212196+00:00",
+  "source_helper_sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071",
+  "commands": [
+    {
+      "check": "pytest",
+      "exit_code": 0,
+      "seconds": 201.481,
+      "output_sha256": "14719b6ea7ba14e857112eeb1d22dfac6d5215b6f3e3fea9d70f92c5bf1e8b3c",
+      "output_bytes": 2413,
+      "output_file": "app2b-root-split-view-pytest.txt"
+    }
+  ],
+  "all_pass": true,
+  "verified_gradle_opt_in": true,
+  "HOME_inherited": true,
+  "production_changes": false
+}

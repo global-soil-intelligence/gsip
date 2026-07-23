@@ -1,0 +1,28 @@
+{
+  "retrieved_at": "2026-10-12T13:54:30.615315+00:00",
+  "official_repository": "https://github.com/supabase/splinter",
+  "source_commit": "fccca4b1c4d8b48b8ccd69bd6b30e84adcb92975",
+  "files": {
+    "splinter.sql": {
+      "url": "https://raw.githubusercontent.com/supabase/splinter/fccca4b1c4d8b48b8ccd69bd6b30e84adcb92975/splinter.sql",
+      "local_file": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/official-splinter-splinter.sql",
+      "sha256": "d8d558baad3e03832e521c527907fa50a9a172fabd899dd0f5c2504a5a0e9349"
+    },
+    "docs/0008_rls_enabled_no_policy.md": {
+      "url": "https://raw.githubusercontent.com/supabase/splinter/fccca4b1c4d8b48b8ccd69bd6b30e84adcb92975/docs/0008_rls_enabled_no_policy.md",
+      "local_file": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/official-splinter-docs-0008_rls_enabled_no_policy.md",
+      "sha256": "8f62e17fd904282d194901e0ee326ce8b2814273f47521708734055423857993"
+    },
+    "docs/0028_anon_security_definer_function_executable.md": {
+      "url": "https://raw.githubusercontent.com/supabase/splinter/fccca4b1c4d8b48b8ccd69bd6b30e84adcb92975/docs/0028_anon_security_definer_function_executable.md",
+      "local_file": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/official-splinter-docs-0028_anon_security_definer_function_executable.md",
+      "sha256": "0d0201659e5358b37c5d159931ed1ddca6dca188d34907ce442e4ee50b9dc299"
+    },
+    "docs/0029_authenticated_security_definer_function_executable.md": {
+      "url": "https://raw.githubusercontent.com/supabase/splinter/fccca4b1c4d8b48b8ccd69bd6b30e84adcb92975/docs/0029_authenticated_security_definer_function_executable.md",
+      "local_file": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/official-splinter-docs-0029_authenticated_security_definer_function_executable.md",
+      "sha256": "91e54c7f0a9c69ea03e49e305c5e51deac5bb1c3694fae6dc754569d85cf609f"
+    }
+  },
+  "scope": "Read-only public official-source retrieval; no credentials or Supabase project API calls."
+}

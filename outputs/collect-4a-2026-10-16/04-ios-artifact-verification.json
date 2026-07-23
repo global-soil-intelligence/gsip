@@ -1,0 +1,23 @@
+{
+  "run": 38994200223,
+  "job": 117283131624,
+  "job_result": "success",
+  "artifact_id": 12086123011,
+  "artifact_archive_digest": "sha256:f38aca3d8f28e330cb885f5244b799d845056a2f8929dcf21f4d9f70641126b7",
+  "payload_sha256": "fe6722ba627e46d460455f2d60be784e5369dd98a1152e3a1997aae014475212",
+  "receipt_payload_hash_matches": true,
+  "pr_head": "9b5331569602db7f2a54b0748e03325f591ffa9d",
+  "tested_merge": "8088673afb4719290385d96c29850629294ad690",
+  "tested_and_reviewed_tree": "ebad8683407010e1a7d24e2d07415061fbd67ce6",
+  "tested_tree_matches_reviewed_head": true,
+  "embedded_activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "repeat_entry_content_equal": true,
+  "repeat_complete_archive_byte_equal": false,
+  "limits": [
+    "Unsigned simulator artifact only; no physical-device or backup qualification",
+    "Repeated ZIP entry contents match; complete archive bytes differ"
+  ]
+}

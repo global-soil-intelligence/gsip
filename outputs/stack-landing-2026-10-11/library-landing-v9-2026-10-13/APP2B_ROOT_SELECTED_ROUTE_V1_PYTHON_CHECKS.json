@@ -1,0 +1,19 @@
+{
+  "utc": "2026-10-14T03:12:04.916826+00:00",
+  "source_helper_sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
+  "checks": [
+    {
+      "check": "pytest",
+      "exit_code": 0,
+      "seconds": 12.744,
+      "output_file": "app2b-root-selected_route_v1-pytest.txt",
+      "output_sha256": "087ca8c818485fbcc0fb1a62a67a6ec281b9fbadc279d124d7768f585f46a79d",
+      "output_bytes": 1076
+    }
+  ],
+  "all_pass": true,
+  "real_gradle_cases_deselected": true,
+  "real_gradle_runtime_task_changed": true,
+  "actual_metadata_probe_separate": true,
+  "production_changes": false
+}

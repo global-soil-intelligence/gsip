@@ -1,0 +1,411 @@
+{
+  "head": "d74ba2add9ce9bb5494be60c5f11883d3f5137ef",
+  "pr": 63,
+  "observed_at": "2026-10-13 19:10:12 UTC",
+  "pr_readback": {
+    "head": "d74ba2add9ce9bb5494be60c5f11883d3f5137ef",
+    "draft": true,
+    "state": "open",
+    "merged": false,
+    "updated_at": "2026-10-13T18:57:30Z"
+  },
+  "runs": [
+    {
+      "id": 38450974871,
+      "name": "DCO",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 38450975305,
+      "name": "Secret scan",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 38450975194,
+      "name": "CI",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 38450975177,
+      "name": "App build",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "jobs": [
+    {
+      "id": 115481485447,
+      "name": "android",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run actions/setup-java@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Run pnpm install --frozen-lockfile --package-import-method copy",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Run pnpm --filter @gsip/capture-pwa build:app",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Generate the Android project",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Apply the app's permissions",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Apply CI versions and Android backup rules",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Check the app ships no closed SDK",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Build the debug APK",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Check the APK's permissions",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Verify the first APK and preserve the comparison input",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Repeat the Android build with the same inputs",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Check repeated APK policy and record build evidence",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Audit exact Android runtime and license inputs",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "number": 19,
+          "name": "Build the exact APP-2B parent in an isolated checkout",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 20,
+          "name": "Run actions/upload-artifact@v7",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 36,
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 37,
+          "name": "Post Run actions/setup-java@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 38,
+          "name": "Post Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 39,
+          "name": "Post Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 40,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 41,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 115481486334,
+      "name": "ios",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Use the newest Xcode on the runner",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Run pnpm install --frozen-lockfile --package-import-method copy",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Run pnpm --filter @gsip/capture-pwa build:app",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Generate the iOS project",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Apply the app's permissions",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Apply CI versions to iOS",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Build for the iOS simulator",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Check the built app's permissions",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Verify the first iOS build and preserve the comparison input",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Repeat the iOS build with the same inputs",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Check the repeated iOS build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Package the simulator build",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 18,
+          "name": "Record iOS build evidence",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 19,
+          "name": "Audit actual iOS native selection and licenses",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 20,
+          "name": "Build the exact iOS parent in an isolated checkout",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 21,
+          "name": "Run actions/upload-artifact@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 39,
+          "name": "Post Run actions/setup-python@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 40,
+          "name": "Post Run actions/setup-node@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 41,
+          "name": "Post Run pnpm/action-setup@v6",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 42,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 43,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "android_failure": {
+    "head": "d74ba2add9ce9bb5494be60c5f11883d3f5137ef",
+    "run": 38450975177,
+    "job": 115481485447,
+    "status": "completed",
+    "conclusion": "failure",
+    "failed_step": 18,
+    "raw_log_sha256": "3d91931a52bf4448c2aaf59069289233da8a8ffcba5ca3de785940028ca827c4",
+    "raw_log_characters": 114554,
+    "diagnostics": [
+      {
+        "stage": "android-gradle-inspection",
+        "error_class": "BUILD_TOOL",
+        "source_line": 354,
+        "counts": {}
+      }
+    ]
+  },
+  "actual_artifacts": [
+    {
+      "id": 11841256545,
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 13914776,
+      "expired": false,
+      "created_at": "2026-10-13T19:08:13Z",
+      "expires_at": "2026-10-27T19:08:11Z",
+      "digest": "sha256:f3c1a9a30f02e5c158f6aaf648a7e2718ac7969d227ee5327ac079f6f20ff27a",
+      "run_id": 38450975177,
+      "head": "d74ba2add9ce9bb5494be60c5f11883d3f5137ef"
+    }
+  ],
+  "artifact_counts": {
+    "total": 1,
+    "accepted_ios": 1,
+    "accepted_apk": 0
+  },
+  "scope": "Finite GET-only watch; no source/Git/PR/CI dispatch/production mutation. Raw log read/classified/hashed in memory only, then discarded.",
+  "limitations": [
+    "Android underlying Gradle cause remains unconfirmed: fixed classifier returned BUILD_TOOL",
+    "Artifact metadata/nonempty/exact-head binding verified; archive contents not downloaded or inspected",
+    "iOS native CI source/build acceptance is distinct from device/iCloud backup/signing/store gates"
+  ],
+  "next_action": "Root owns any additional minimal diagnostic correction. Do not infer a variant producer or API failure from generic BUILD_TOOL."
+}

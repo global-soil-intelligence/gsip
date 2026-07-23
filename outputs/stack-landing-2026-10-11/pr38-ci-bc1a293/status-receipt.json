@@ -1,0 +1,110 @@
+{
+  "all_checks_exact_head_bound": true,
+  "base": "wp-app-1-phone-app",
+  "branch": "docs/spec-v4",
+  "check_count": 4,
+  "checks": [
+    {
+      "completed_at": "2026-10-12T12:23:21Z",
+      "conclusion": "skipped",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716399/job/114809119250",
+      "head_sha": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "id": 114809119250,
+      "name": "dco",
+      "started_at": "2026-10-12T12:23:22Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-12T12:23:30Z",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716442/job/114809117297",
+      "head_sha": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "id": 114809117297,
+      "name": "gitleaks",
+      "started_at": "2026-10-12T12:23:23Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-12T12:27:27Z",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716454/job/114809117255",
+      "head_sha": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "id": 114809117255,
+      "name": "validate",
+      "started_at": "2026-10-12T12:23:23Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-12T12:23:29Z",
+      "conclusion": "success",
+      "details_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248712971/job/114809109751",
+      "head_sha": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "id": 114809109751,
+      "name": "gitleaks",
+      "started_at": "2026-10-12T12:23:22Z",
+      "status": "completed"
+    }
+  ],
+  "dco_skip_is_not_agent_dco_certification": true,
+  "expected_head": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+  "mutations_performed": false,
+  "observed_at_utc": "2026-10-12T12:30:18.846130+00:00",
+  "observed_head": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+  "pr": 38,
+  "status": "GREEN",
+  "url": "https://github.com/global-soil-intelligence/gsip/pull/38",
+  "workflow_runs": [
+    {
+      "conclusion": "success",
+      "created_at": "2026-10-12T12:23:19Z",
+      "event": "push",
+      "head_branch": "docs/spec-v4",
+      "head_sha": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248712971",
+      "id": 38248712971,
+      "name": "Secret scan",
+      "run_number": 108,
+      "status": "completed",
+      "updated_at": "2026-10-12T12:23:30Z"
+    },
+    {
+      "conclusion": "skipped",
+      "created_at": "2026-10-12T12:23:21Z",
+      "event": "pull_request",
+      "head_branch": "docs/spec-v4",
+      "head_sha": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716399",
+      "id": 38248716399,
+      "name": "DCO",
+      "run_number": 53,
+      "status": "completed",
+      "updated_at": "2026-10-12T12:23:22Z"
+    },
+    {
+      "conclusion": "success",
+      "created_at": "2026-10-12T12:23:21Z",
+      "event": "pull_request",
+      "head_branch": "docs/spec-v4",
+      "head_sha": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716442",
+      "id": 38248716442,
+      "name": "Secret scan",
+      "run_number": 109,
+      "status": "completed",
+      "updated_at": "2026-10-12T12:23:31Z"
+    },
+    {
+      "conclusion": "success",
+      "created_at": "2026-10-12T12:23:21Z",
+      "event": "pull_request",
+      "head_branch": "docs/spec-v4",
+      "head_sha": "bc1a2938cbb17feaca44a611fe04fd406713f3d3",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38248716454",
+      "id": 38248716454,
+      "name": "CI",
+      "run_number": 112,
+      "status": "completed",
+      "updated_at": "2026-10-12T12:27:28Z"
+    }
+  ]
+}

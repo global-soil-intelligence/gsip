@@ -1,0 +1,86 @@
+{
+  "DCO": {
+    "certification": false,
+    "conclusion": "skipped",
+    "head": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+    "job_id": 115643738617,
+    "run_id": 38499782135,
+    "status": "completed"
+  },
+  "GET_only": true,
+  "attempt": 1,
+  "conclusion": "success",
+  "dispatch_source_Git_production_approvals_changes": false,
+  "general_metrics_sha256": "0084860024c4ea0481a20502ab969061e0a33bf8a054084e494dbe59e7b92f7e",
+  "head": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "job_id": 115643737496,
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "merge": "627d85a5874c355c76925452d04a3891f195f9e9",
+  "native_runs_or_artifacts_touched": false,
+  "observations": [
+    {
+      "completed_steps": 19,
+      "conclusion": null,
+      "current_steps": [
+        20
+      ],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T02:14:14Z",
+      "status": "in_progress"
+    },
+    {
+      "completed_steps": 22,
+      "conclusion": null,
+      "current_steps": [
+        23
+      ],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T02:17:51Z",
+      "status": "in_progress"
+    },
+    {
+      "completed_steps": 23,
+      "conclusion": null,
+      "current_steps": [
+        24
+      ],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T02:18:22Z",
+      "status": "in_progress"
+    },
+    {
+      "completed_steps": 24,
+      "conclusion": null,
+      "current_steps": [
+        25
+      ],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T02:20:25Z",
+      "status": "in_progress"
+    },
+    {
+      "completed_steps": 26,
+      "conclusion": null,
+      "current_steps": [
+        27
+      ],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T02:20:56Z",
+      "status": "in_progress"
+    },
+    {
+      "completed_steps": 34,
+      "conclusion": "success",
+      "current_steps": [],
+      "failed_steps": [],
+      "observed_at_utc": "2026-10-14T02:21:27Z",
+      "status": "completed"
+    }
+  ],
+  "run_id": 38499782028,
+  "run_number": 255,
+  "scan_closure_sha256": "8f92ad4f09b659de6dfd5005e7100540e7979c6ba78e4112f7a385e1be518fcc",
+  "schema": "gsip-exact623-finite-general-scan-closeout-v1",
+  "source_binding_sha256": "e5f8f1fcb08aa0ffb26cc79c95e48bf7f46290530c016f70300e3cad6cedc6ca",
+  "terminal": true
+}

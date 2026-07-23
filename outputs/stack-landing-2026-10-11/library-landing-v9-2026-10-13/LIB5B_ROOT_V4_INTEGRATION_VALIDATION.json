@@ -1,0 +1,94 @@
+{
+  "utc": "2026-10-13T16:54:53.402341+00:00",
+  "candidate": "lib5b-root-v4",
+  "root_actual_exit_codes": {
+    "whole_python": 0,
+    "ruff": 0,
+    "mypy": 0,
+    "lint": 0,
+    "pinned8_21_2_authored_scan": 0
+  },
+  "python_passed": 1108,
+  "python_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "4",
+      "tests": "1112",
+      "time": "78.484",
+      "timestamp": "2026-10-13T12:52:12.477756-04:00",
+      "hostname": "MacBook-Pro-6.local"
+    }
+  ],
+  "logs": {
+    "lib5b-root-v4-ruff.log": {
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    "lib5b-root-v4-mypy.log": {
+      "sha256": "047be720f71ff6f55001ba8201472e4dca22eaa7f8ee244cbd28450c7224622f",
+      "bytes": 44
+    },
+    "lib5b-root-v4-whole-python-cache-hold-first.log": {
+      "sha256": "220e57cd624d1decc97134cf886260964bc6f540ff35f45fd1a05e257eae2dc5",
+      "bytes": 110
+    },
+    "lib5b-root-v4-lint.log": {
+      "sha256": "8986dfcda5512e47b979aa7120521e228da209dd4c32cf7f8eec8d7ee49e4dfa",
+      "bytes": 134
+    },
+    "lib5b-root-v4-mypy-cache-hold-first.log": {
+      "sha256": "220e57cd624d1decc97134cf886260964bc6f540ff35f45fd1a05e257eae2dc5",
+      "bytes": 110
+    },
+    "lib5b-root-v4-ruff-cache-hold-first.log": {
+      "sha256": "220e57cd624d1decc97134cf886260964bc6f540ff35f45fd1a05e257eae2dc5",
+      "bytes": 110
+    },
+    "lib5b-root-v4-whole-python.log": {
+      "sha256": "c15b3290b8c01cb7213f84d3a378bf4272b418cf6d1b09db6cb730b02cde2bd1",
+      "bytes": 1796
+    },
+    "lib5b-root-v4-authored-gitleaks.log": {
+      "sha256": "b1a12f15b67f0f9f395182fca8e5b2b637864ebb2d88d082f7a95f3c4d4c3c66",
+      "bytes": 100
+    }
+  },
+  "scanner_findings": [],
+  "independent_final_review_pending": true,
+  "CI_artifacts_device_production": false,
+  "initial_failed_runtime_invocations": {
+    "exit": 2,
+    "cause": "default uv cache outside allowed write roots; checks did not execute; unchanged source rerun with task-specific /private/tmp/gsip-uv-cache",
+    "logs_retained": true
+  },
+  "exact_five": [
+    {
+      "path": "pipeline/node_exchange_store.py",
+      "sha256": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+      "bytes": 39798
+    },
+    {
+      "path": "pipeline/node_exchange_simulator.py",
+      "sha256": "8d205568d3948417dcb77437c6c047046c942addcb7ceba4122d0584bca32006",
+      "bytes": 86313
+    },
+    {
+      "path": "tests/test_node_exchange_store.py",
+      "sha256": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+      "bytes": 46450
+    },
+    {
+      "path": "tests/test_node_exchange_simulator.py",
+      "sha256": "ee1edb274c94441553d015efdfb939014fecfff74f27569f5376b6d90fecbccc",
+      "bytes": 77322
+    },
+    {
+      "path": "docs/LIBRARY_EXCHANGE_SIMULATOR.md",
+      "sha256": "c5aac985da4557bdbf80d6da6f7169de558acfb2abb02908a5de3ff382f28cbf",
+      "bytes": 22540
+    }
+  ],
+  "base347_unchanged": true
+}

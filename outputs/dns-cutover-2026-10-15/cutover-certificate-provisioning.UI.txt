@@ -1,0 +1,171 @@
+Browser tab: 1234838724, Title: "Pages", URL: "https://github.com/global-soil-intelligence/gsip/settings/pages".
+1 AXWebArea Pages, URL: github.com/global-soil-intelligence/gsip/settings/pages
+	2 container
+		3 link Description: Skip to content, Value: github.com/global-soil-intelligence/gsip/settings/pages#start-of-content
+		4 container Global navigation menu
+			5 pop up button Open menu
+			6 link Description: Homepage ( g then d ), Value: github.com/
+			7 container Breadcrumbs
+				8 content list
+					9 container
+						10 link Description: global-soil-intelligence, Value: github.com/global-soil-intelligence
+					11 container
+						12 link Description: gsip, Value: github.com/global-soil-intelligence/gsip
+						13 pop up button (collapsed) Switch repository ( option shift r ), Secondary Actions: Expand
+			14 button Open quick search dialog, type / to search
+				15 text Type 
+				16 text /
+				17 text  to search
+			18 pop up button (collapsed) Create new..., Secondary Actions: Expand
+			19 link Description: All issues, Value: github.com/issues
+			20 link Description: All pull requests, Value: github.com/pulls
+			21 link Description: All repositories, Value: github.com/repos
+			22 link Description: You have unread notifications ( g then n ), Value: github.com/notifications
+			23 pop up button Open user navigation menu
+				24 image Justin Hart
+			25 heading Repository navigation, Value: 2
+				26 text Repository navigation
+			27 container Repository
+				28 content list
+					29 link Description: Code, Value: github.com/global-soil-intelligence/gsip
+					30 link Description: Issues  (2), Value: github.com/global-soil-intelligence/gsip/issues
+					31 link Description: Pull requests  (1), Value: github.com/global-soil-intelligence/gsip/pulls
+					32 link Description: Actions, Value: github.com/global-soil-intelligence/gsip/actions
+					33 link Description: Projects, Value: github.com/global-soil-intelligence/gsip/projects
+					34 link Description: Wiki, Value: github.com/global-soil-intelligence/gsip/wiki
+					35 link Description: Security and quality, Value: github.com/global-soil-intelligence/gsip/security
+					36 link Description: Insights, Value: github.com/global-soil-intelligence/gsip/pulse
+					37 link Description: Settings, Value: github.com/global-soil-intelligence/gsip/settings
+	38 container
+		39 button Dismiss this message
+		40 text Requesting a certificate for globalsoilintelligence.com. It can take up to an hour to propagate.
+	41 container repo-content-pjax-container
+		42 heading Settings: global-soil-intelligence/gsip, Value: 1
+			43 text Settings: global-soil-intelligence/gsip
+		44 container General settings
+			45 content list
+				46 link Description: General, Value: github.com/global-soil-intelligence/gsip/settings, ID: item-f0ddb9f5-b1e1-4e06-85ac-109e7ab61605
+				47 container
+					48 heading Access, Value: 2, ID: heading-title-9966b2e6-15f3-4339-9176-9fd6a0bf1639
+						49 text Access
+					50 content list Access, ID: group-6b4d7b7c-f242-48fa-8962-6a063befd68d
+						51 link Description: Collaborators and teams, Value: github.com/global-soil-intelligence/gsip/settings/access, ID: item-41aee24b-6903-4580-b521-e37dd3d6dd8c
+						52 button (collapsed) Moderation, ID: item-389d6fd5-df1b-4959-beb2-090189266386, Secondary Actions: Expand
+				53 container
+					54 heading Code, planning, and automation, Value: 2, ID: heading-title-6be9136b-d950-47b2-b327-637368685068
+						55 text Code, planning, and automation
+					56 content list Code, planning, and automation, ID: group-5195b59b-c827-48c5-ab04-6f641f11f243
+						57 button (collapsed) Rulesets, ID: repo_rules, Secondary Actions: Expand
+						58 link Description: Custom properties, Value: github.com/global-soil-intelligence/gsip/settings/custom-properties, ID: item-222b81b3-041c-4d05-bf25-0c27e2ddaf1e
+						59 link Description: Branches, Value: github.com/global-soil-intelligence/gsip/settings/branches, ID: item-7e63b734-af96-4e15-8077-e0c7ee7e4e65
+						60 link Description: Tags, Value: github.com/global-soil-intelligence/gsip/settings/tag_protection, ID: item-47b8e595-e655-4289-82cf-269f3fbd1eac
+						61 button (collapsed) Actions, ID: item-e9c29c4e-c51d-4fd5-9fa9-fc7cb91ef84a, Secondary Actions: Expand
+						62 link Description: Webhooks, Value: github.com/global-soil-intelligence/gsip/settings/hooks, ID: item-f04a16fe-becf-40a3-86d0-57fe6858a94b
+						63 button (collapsed) Copilot, ID: item-b361e9de-a7d3-4575-8f68-26bf61bc93b9, Secondary Actions: Expand
+						64 button (collapsed) Planning, ID: repo_planning, Secondary Actions: Expand
+						65 link Description: Environments, Value: github.com/global-soil-intelligence/gsip/settings/environments, ID: item-0ed565e0-6ac7-4e3a-954c-0c919f0c0c0f
+						66 link Description: Pages, Value: github.com/global-soil-intelligence/gsip/settings/pages, ID: item-b2142404-2771-4318-bdae-8c978abecabe
+				67 container
+					68 heading Security and quality, Value: 2, ID: heading-title-eba93cd1-59b4-4883-8e15-0c20b8545ba2
+						69 text Security and quality
+					70 content list Security and quality, ID: group-b2570806-554c-438a-bbcf-12278a789900
+						71 link Description: Advanced Security, Value: github.com/global-soil-intelligence/gsip/settings/security_analysis, ID: item-1db1a1a0-a42d-4b06-b6f2-98cd16958a06
+						72 link Description: Code quality, Value: github.com/global-soil-intelligence/gsip/settings/code-quality, ID: item-a80e29ce-cea7-49bb-8e28-83720d4a5d77
+						73 link Description: Deploy keys, Value: github.com/global-soil-intelligence/gsip/settings/keys, ID: item-98cd51fd-2c7c-41d6-93a1-757184bc78f0
+						74 button (collapsed) Secrets and variables, ID: item-a480c439-bc23-43c3-bbad-488f913bc999, Secondary Actions: Expand
+				75 container
+					76 heading Integrations, Value: 2, ID: heading-title-62115a16-f035-4e66-8ab8-ebda5b14902e
+						77 text Integrations
+					78 content list Integrations, ID: group-c8e6c592-df31-446c-b65f-71a19c5c3c36
+						79 link Description: GitHub Apps, Value: github.com/global-soil-intelligence/gsip/settings/installations, ID: item-74ea72c6-0951-4db3-88b8-8610f89bc03a
+		80 heading GitHub Pages, Value: 2
+			81 text GitHub Pages
+		82 container
+			83 link Description: GitHub Pages, Value: pages.github.com/
+			84 text  is designed to host your personal, organization, or project pages from a GitHub repository.
+		85 text Your site is live at 
+		86 link Description: http://globalsoilintelligence.com/, Value: globalsoilintelligence.com/
+		87 text Last 
+		88 link Description: deployed, Value: github.com/global-soil-intelligence/gsip/actions/runs/38821460183
+		89 text  by 
+		90 image @jdhart81
+		91 link Description: jdhart81, Value: github.com/jdhart81
+		92 container Oct 15, 2026, 7:05 PM EDT
+			93 text 2 hours ago
+		94 link Description:  Visit site, Value: globalsoilintelligence.com/
+		95 button Unpublish site
+		96 heading Build and deployment, Value: 2
+			97 text Build and deployment
+		98 container
+			99 text Source
+			100 pop up button (collapsed) Source GitHub Actions, ID: action-menu-78552fb2-4698-4f83-88e2-78d394306fa6-button, Secondary Actions: Expand
+				101 text GitHub Actions
+		102 text Your site was last deployed to the 
+		103 link Description: github-pages, Value: github.com/global-soil-intelligence/gsip/deployments?environment=github-pages#activity-log
+		104 text  environment by the 
+		105 link Description: Deploy GitHub Pages, Value: github.com/global-soil-intelligence/gsip/actions/runs/38821460183
+		106 text  workflow.
+		107 link Description: Learn more about deploying to GitHub Pages using custom workflows, Value: docs.github.com/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow
+		108 heading Custom domain, Value: 3
+			109 text Custom domain
+		161 definition list
+			162 container Custom domain Custom domains allow you to serve your site from a domain other than global-soil-intelligence.github.io. Learn more about configuring custom domains.
+				163 text Custom domain
+				164 container
+					165 text Custom domains allow you to serve your site from a domain other than  global-soil-intelligence.github.io . 
+					166 link Description: Learn more about configuring custom domains, Value: docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site
+					167 text .
+			168 container
+				169 text field (settable) Custom domain, Value: globalsoilintelligence.com, ID: pages-cname-field
+				170 button (disabled) Save
+				171 button Remove
+				172 text DNS valid for primary
+		173 container
+			174 container pages-cname-field-error-message
+				175 text www.globalsoilintelligence.com is improperly configured
+				176 container
+					177 text Domain's DNS record could not be retrieved. For more information, see 
+					178 link Description: documentation, Value: docs.github.com/articles/setting-up-a-custom-domain-with-github-pages/
+					179 text  (InvalidDNSError).
+			180 button Check again
+		181 text TLS certificate is being provisioned. This may take up to 15 minutes to complete.
+		182 text 1 of 3
+		183 container
+			184 text Certificate Requested: Authorization created
+		126 container
+			127 checkbox (disabled, settable, integer) Value: 0, ID: pages-https-redirect-feature, Description: Enforce HTTPS — Not yet available for your site because the certificate has not finished being issued. Please allow 24 hours for this process to complete. (globalsoilintelligence.com)
+			128 text Enforce HTTPS  — Not yet available for your site because the certificate has not finished being issued.
+			129 text Please allow 24 hours for this process to complete. (
+			130 link Description: globalsoilintelligence.com, Value: globalsoilintelligence.com/
+			131 text ) 
+			132 text HTTPS provides a layer of encryption that prevents others from snooping on or tampering with traffic to your site.
+			133 text When HTTPS is enforced, your site will only be served over HTTPS. 
+			134 link Description: Learn more about securing your GitHub Pages site with HTTPS, Value: docs.github.com/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https
+			135 text .
+		136 heading Visibility, Value: 3
+			137 text Visibility
+		138 text GitHub Enterprise
+		139 container
+			140 text With a GitHub Enterprise account, you can restrict access to your GitHub Pages site by publishing it privately. You can use privately published sites to share your internal documentation or knowledge base with members of your enterprise. You can try GitHub Enterprise risk-free for 30 days. 
+			141 link Description: Learn more about the visibility of your GitHub Pages site., Value: docs.github.com/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site
+		142 link Description: Start free for 30 days, Value: github.com/account/enterprises/new
+	143 container
+		144 heading Footer, Value: 2
+			145 text Footer
+		146 link Description: GitHub Homepage, Value: github.com/
+		147 text © 2026 GitHub, Inc.
+		148 container Footer
+			149 heading Footer navigation, Value: 3, ID: sr-footer-heading
+				150 text Footer navigation
+			151 content list Footer navigation
+				152 link Description: Terms, Value: docs.github.com/site-policy/github-terms/github-terms-of-service
+				153 link Description: Privacy, Value: docs.github.com/site-policy/privacy-policies/github-privacy-statement
+				154 link Description: Security, Value: github.com/security
+				155 link Description: Status, Value: githubstatus.com/
+				156 link Description: Community, Value: github.community/
+				157 link Description: Docs, Value: docs.github.com/
+				158 link Description: Contact, Value: support.github.com/?tags=dotcom-footer
+				159 button Manage cookies
+				160 button Do not share my personal information
+
+The focused UI element is 39 button Dismiss this message

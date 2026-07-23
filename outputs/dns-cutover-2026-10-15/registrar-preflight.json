@@ -1,0 +1,14 @@
+{
+  "checked_at_utc": "2026-10-16T00:04:12.761495+00:00",
+  "source": "https://rdap.verisign.com/com/v1/domain/globalsoilintelligence.com",
+  "domain": "GLOBALSOILINTELLIGENCE.COM",
+  "registrars": [
+    "Squarespace Domains LLC"
+  ],
+  "nameservers": [
+    "NS-CLOUD-D1.GOOGLEDOMAINS.COM",
+    "NS-CLOUD-D2.GOOGLEDOMAINS.COM",
+    "NS-CLOUD-D3.GOOGLEDOMAINS.COM",
+    "NS-CLOUD-D4.GOOGLEDOMAINS.COM"
+  ]
+}

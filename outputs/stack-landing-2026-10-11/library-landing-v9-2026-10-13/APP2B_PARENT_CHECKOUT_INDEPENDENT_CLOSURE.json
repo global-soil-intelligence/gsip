@@ -1,0 +1,88 @@
+{
+  "accepted_behavior": "Each platform independently clones the canonical public GSIP repository, explicitly fetches exact d7 into that isolated parent, checks out detached and verifies HEAD before install/build. Candidate clone/objects are not borrowed. All other workflow lines are byte-preserved.",
+  "artifacts": {
+    "focused-command.json": "26c40c27a6ef5d9fdd7135d43252b5a6d936e0f6edfa0df69bcdf949df0aefa0",
+    "focused-delta.log": "7b6c68d5b37b75c90ed38c0fb0b91f8b98850fc9015ab203494a5b0c95e93d85",
+    "focused-delta.xml": "290cb4d0101cc2cfd61e215ecb98bebc8385e179bcd738f95ebb3f22a5f1f6e8",
+    "gitleaks-authored.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "gitleaks.log": "8df2dd3074a23652c165035ab0d9885b6ca64e0529f107480144a9872dbb87e8",
+    "independent-git-prefix-controls.json": "c7966021446d553ed27b832849f1fe15454d14b37be9a25d26c443eaf540d6c2",
+    "language.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-integrity.json": "94b43fe777cc523d8f9ed026f7f9fad7704e102dad0011e30ee1437158e7cba7",
+    "workflow-syntax.json": "9b7bcd871fb2325f7ff48e60f2e1e067c4be17ece5cf605a152ba0bbd7a844c0"
+  },
+  "author_delivery_sha256": "91a5a364bb30563694ea0be565ae6c074f30b2023b875b1921afe8ad65507031",
+  "authority": "Own temporary source/reports/synthetic local Git only; file protocol, disabled global/system configuration/hooks. No managed Git writes, GitHub/network/CI, native builds/signing/UI/device, real data/credentials/production or shared/author source edits.",
+  "base_head": "8130d0935ba355ce64309a39922ff6d0e458c422",
+  "counts": {
+    "author_new_git_controls": 8,
+    "errors": 0,
+    "failures": 0,
+    "independent_new_prefix_controls": 4,
+    "old_prefix_failure_controls": 2,
+    "pinned_authored_scan_findings": 0,
+    "retained_workflow_checks": 33,
+    "shell_bodies": 28,
+    "skipped": 0,
+    "tests": 41
+  },
+  "files": [
+    {
+      "baseline_sha256": "dae073aecac6026c26d65f214d4c2c0b7b7108a9d9cf56a561d924fe3f2d5c5d",
+      "bytes": 17963,
+      "path": ".github/workflows/app-build.yml",
+      "sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d"
+    },
+    {
+      "baseline_sha256": null,
+      "bytes": 7872,
+      "path": "tests/test_app_parent_checkout.py",
+      "sha256": "fe3e95e1163a77c1bbb408f073ffeb51037ec73cfe2380830e746c987339891d"
+    },
+    {
+      "baseline_sha256": null,
+      "bytes": 1793,
+      "path": "docs/APP_PARENT_CHECKOUT.md",
+      "sha256": "a8b4747574b199fe01608517780528cd70521db728ff80c14cf653aba9394e21"
+    }
+  ],
+  "frozen_manifest_sha256": "5243b811016cd3f4c63228b93bab89f4e582b46302e8a8dff8096e94f41ccbcb",
+  "frozen_patch_sha256": "21f5a4ec4207aacbb88670aa7fcbb142d2922c65d1eee57e56cb4bb422d6fac9",
+  "independent_execution": "Actual frozen Android+iOS setup prefixes on independently prepared owned file-protocol origin; exact immutable synthetic baseline value substitutes only the production baseline value once. Both pass, preserve all candidate bytes and use no alternates. Both unknown SHAs stop before build. Both original prefixes fail exit128 unable-read-tree.",
+  "limits": [
+    "Source/local fixture acceptance only; canonical public server availability and final exact-head hosted native CI remain unverified.",
+    "Actual Android failure cause is unknown; this parent repair supplies no Android producer/API correction.",
+    "Separate diagnostic classifier delta remains pending independent review.",
+    "Device/backup/logging/signing/store/production acceptance remain unverified."
+  ],
+  "managed_base_readback_unchanged": true,
+  "meaningful_mutations": "Actual author prefix controls reject removal of exact-parent fetch and a different existing checked-out ref via the retained HEAD guard (two platform cases each).",
+  "other_362_baseline_files_unchanged": true,
+  "preparation_receipt": {
+    "path": "/private/tmp/gsip-app-ci-delta-independent-8j6mb5jc/independent-delta-preparation.json",
+    "sha256": "4fce07b4ff1173d99079c69e01c23fbbf19bc2cc9d574084815d2803fc4d692b"
+  },
+  "preserved_invariants": [
+    "Exact production d7 baseline constant unchanged",
+    "Separate checkout and no candidate object borrowing",
+    "All source/license/permission/artifact checks, repeat commands and actual reference copies/uploads preserved byte-for-byte",
+    "Read-only GitHub permissions, same job/toolchain/build numbers/public configuration/closed flags unchanged",
+    "All native audit/diagnostic/13-field/ref validator code and existing secret-scan policy untouched"
+  ],
+  "preserved_native_v7_closure": {
+    "carry_boundary": "Native script/tests/audit doc unchanged; workflow has only reviewed isolated-parent Git setup delta",
+    "path": "/private/tmp/gsip-native-v7-independent-_vi1v9_e/independent-v7-closure.json",
+    "sha256": "5297ce5e3be9853b059204941e333629ad91d66fd0b7904b3d768179a9fb1783"
+  },
+  "scope": "Only two workflow Git-prefix replacements and new regression/doc, not renewed native495 acceptance or hosted CI",
+  "source_freeze_unchanged": true,
+  "static_checks": {
+    "language": "pass",
+    "mypy": "pass on one new test",
+    "pinned_Gitleaks": "8.21.2, three authored files, zero findings; full-history policy unchanged",
+    "prettier": "pass YAML and doc",
+    "ruff": "pass",
+    "ruff_format": "pass"
+  },
+  "status": "CLOSED: bounded exact parent-checkout source delta review; no material finding"
+}

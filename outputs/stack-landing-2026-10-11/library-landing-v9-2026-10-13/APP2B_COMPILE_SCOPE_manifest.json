@@ -1,0 +1,26 @@
+[
+  {
+    "base_e0_sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+    "bytes": 126055,
+    "path": "scripts/app_notification_audit.py",
+    "sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8"
+  },
+  {
+    "base_e0_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+    "bytes": 189650,
+    "path": "tests/test_app_notification_audit.py",
+    "sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99"
+  },
+  {
+    "base_e0_sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164",
+    "bytes": 32861,
+    "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+    "sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5"
+  },
+  {
+    "base_e0_sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d",
+    "bytes": 17983,
+    "path": ".github/workflows/app-build.yml",
+    "sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa"
+  }
+]

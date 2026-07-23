@@ -1,0 +1,61 @@
+{
+  "artifact": {
+    "bytes": 381,
+    "path": "/private/tmp/gsip-e195-ios-independent-056cxyli/FRESH_ARTIFACT_DOWNLOAD.json",
+    "sha256": "bc4addf83dc8d77c3f52c83be1e56e4c6c9b67adccda992482d49609b074ebe9"
+  },
+  "at_utc": "2026-10-14T01:07:31.025919+00:00",
+  "authority": {
+    "GET_only": true,
+    "arbitrary_raw_logs_private_values_printed": false,
+    "build_or_signing_or_device_actions": false,
+    "private_artifacts_retained_only_owned_tmp": true,
+    "shared_source_Git_GH_workflow_or_production_mutations": false
+  },
+  "combined_native_acceptance": false,
+  "four_zip_bounds": {
+    "bytes": 1122,
+    "path": "/private/tmp/gsip-e195-ios-independent-056cxyli/FRESH_FOUR_ZIP_BOUNDS.json",
+    "sha256": "62ae9d3b5b619453b7d9cfd5c6a0561e92da971268d3d0878572a7210eb7db77"
+  },
+  "head": "e19587b61d12322c2eabefbe8927ab99f85ab14f",
+  "ios_conclusion": "success",
+  "ios_job_id": 115623711908,
+  "main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "merge_binding": {
+    "bytes": 1264,
+    "path": "/private/tmp/gsip-e195-ios-independent-056cxyli/FRESH_MERGE_BINDING.json",
+    "sha256": "9985f1190278787e34ea4512774793a4cf7c1391958b07f88df60b24d049b0e5"
+  },
+  "native_run_id": 38493436921,
+  "native_run_number": 52,
+  "older_artifacts_or_old_reference_proofs_reused": false,
+  "original_hosted_cause_inferred": false,
+  "outer_tree": {
+    "bytes": 1767,
+    "path": "/private/tmp/gsip-e195-ios-independent-056cxyli/FRESH_OUTER_ARTIFACT_TREE.json",
+    "sha256": "89efd62d4f854d4c7f4ad065c7def69ccb7ec46642ec6eb30f7ac275e89391f2"
+  },
+  "pr": 63,
+  "remaining_gates": [
+    "Independent Android artifact verification",
+    "iOS cloud backup exclusion and physical device gates",
+    "Legal/distribution/store/production/capture gates"
+  ],
+  "run_attempt": 1,
+  "schema": "gsip-independent-exact-e195-ios-artifact-closure-v1",
+  "source_binding": {
+    "path": "/private/tmp/gsip-e195-ios-independent-056cxyli/FRESH_SOURCE_BINDING.json",
+    "sha256": "857e3b7c565d0a1b65788eadcd2e8b21f54cee7016665b811056517aa3d0612d"
+  },
+  "status": "FRESH_EXACT_HEAD_IOS_ARTIFACT_VERIFIED",
+  "strict_replay": {
+    "bytes": 1332,
+    "path": "/private/tmp/gsip-e195-ios-independent-056cxyli/FRESH_STRICT_IOS_REPLAY.json",
+    "sha256": "b5734ee2cbe30ffae96765a2614aed5aca4a5d01c381af479572c7f5cba5d1cd"
+  },
+  "terminal_snapshot": {
+    "path": "/private/tmp/gsip-e195-ios-independent-056cxyli/snapshot-20261014T010708Z.json",
+    "sha256": "e48a22bf41bd22c08c22b2bb95c3d24d8800d7a143d33d604ce6c85a5453fbe3"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "utc": "2026-10-13T23:07:11.907090+00:00",
+  "base_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "exact_frozen_files": [
+    {
+      "base_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 114131,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071"
+    },
+    {
+      "base_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 151583,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "de89652a0f0bb814ee68c7cc25f5bcf44db35e3440e7805e39c8a427b3c10450"
+    },
+    {
+      "base_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 24194,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "fdd8ddf980f2a1f565ff8c658809bf31c6620deebbd90272fb6605690435fb79"
+    }
+  ],
+  "unchanged_other_tracked_files": 362,
+  "old_prefix_exact": true,
+  "review_status": "independent review in progress; no commit or push",
+  "production_changes": false,
+  "native_acceptance": false
+}

@@ -1,0 +1,65 @@
+{
+  "utc": "2026-10-13T15:31:13.342529+00:00",
+  "base": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "candidate_patch_sha256": "d9aedeeb7952ee6109e40076a4c36eecc474e167b961bcea9179e9059e6cfdc3",
+  "candidate_files": {
+    "pipeline/node_exchange_store.py": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+    "pipeline/node_exchange_simulator.py": "2601595ed7f862d2c0bc504e685daa83885ce830117e3e028ca93f7da9667d27",
+    "tests/test_node_exchange_store.py": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+    "tests/test_node_exchange_simulator.py": "47ae080056afd2e44e9100d1993aa04c9d461a90a8d6fc6ff5a8387fd7000067",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md": "da32982ad9c8c39f08b23e0bcf84e236b39ccddd1200fc1ca78d5c43db15a3c8"
+  },
+  "actual_exit_codes": {
+    "whole_pytest": 0,
+    "whole_ruff": 0,
+    "whole_mypy": 0,
+    "pnpm_lint": 0,
+    "pinned_authored_gitleaks": 0
+  },
+  "python_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "4",
+      "tests": "1072",
+      "time": "72.740",
+      "timestamp": "2026-10-13T11:29:31.698211-04:00",
+      "hostname": "MacBook-Pro-6.local"
+    }
+  ],
+  "scan_result": [],
+  "logs": {
+    "lib5b-root-v2-whole-python.log": {
+      "bytes": 1716,
+      "sha256": "e1644f32845b3bb4935c19223bfc665e11eab23957604297dc5449e047332448"
+    },
+    "lib5b-root-v2-whole-python.xml": {
+      "bytes": 2166033,
+      "sha256": "5fa3d88ae90c1552b3a22e509f63e277577d95b5825d0f5d0c3d7b5e5ec49938"
+    },
+    "lib5b-root-v2-ruff.log": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "lib5b-root-v2-mypy.log": {
+      "bytes": 44,
+      "sha256": "047be720f71ff6f55001ba8201472e4dca22eaa7f8ee244cbd28450c7224622f"
+    },
+    "lib5b-root-v2-lint.log": {
+      "bytes": 134,
+      "sha256": "8986dfcda5512e47b979aa7120521e228da209dd4c32cf7f8eec8d7ee49e4dfa"
+    },
+    "lib5b-root-v2-authored-gitleaks.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "lib5b-root-v2-authored-gitleaks.log": {
+      "bytes": 100,
+      "sha256": "6a7bd8b05ba02600be95dd36aa04736cfa4e0b591f2198e7b51db99f81a9d4a9"
+    }
+  },
+  "independent_review": "pending",
+  "commit_or_push": false,
+  "production_changes": false
+}

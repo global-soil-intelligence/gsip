@@ -1,0 +1,24 @@
+{
+  "state": "INDEPENDENT_REVIEW_PASS_LOCAL_ONLY",
+  "files": {
+    "pipeline/export.py": "a39ae3f7c2fab8785c05d8fdb4c17f80bc5040b5d31fb667a825e21cca241a88",
+    "pipeline/photo_export_privacy.py": "53655a2ccc8f89c942ea4630ff827c9e0d10ded7755c9d684c85672fc60e621e",
+    "tests/test_export.py": "402d9767fef1fa31e96d532cd324646f94087150e5722875cce9d9fef3e0217e",
+    "tests/test_photo_export_privacy.py": "28e85d61e6fff0e539d80bd7ab462ad26dae9e10ed9d4b8730d5672fe1f6bfaf"
+  },
+  "patch_sha256": "8024fbc30445f1e0b323f06aed401f752cb5198f52f3808e63225df276224e67",
+  "independent_receipt_sha256": "3f50c3ec37eb4ffb8832f851be7deb8f9b6a2feea85552662dcd2c4f10af8443",
+  "focused_tests": 125,
+  "fail_before_cases": 41,
+  "full_python_previous_same_implementation": {
+    "passed": 539,
+    "skipped": 4,
+    "note": "Full suite preceded test-only refinement to mock upload hooks and deny-all link swap; focused tests reran after refinement"
+  },
+  "pending": [
+    "Ordered integration after SQL and worker",
+    "Exact-head CI",
+    "Historical fingerprint approval before merge",
+    "Separate production/model/calibration gates"
+  ]
+}

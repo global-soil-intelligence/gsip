@@ -1,0 +1,31 @@
+{
+  "actions": [
+    "navigate existing project selector",
+    "choose observed exact GSIP project card",
+    "navigate Authentication",
+    "navigate Sign In / Providers",
+    "read toggle state"
+  ],
+  "authentication_or_restore_actions_performed": false,
+  "mutation_actions_performed": false,
+  "observed_at_utc": "2026-10-12T02:45:49.607585+00:00",
+  "observed_setting": {
+    "accessibility_value": 0,
+    "enabled": false,
+    "label": "Allow anonymous sign-ins",
+    "role": "switch"
+  },
+  "save_changes_button_disabled": true,
+  "scope": "One target-bound current dashboard readback; no API configuration export or production mutation",
+  "screenshots_captured": false,
+  "secret_fields_read": false,
+  "source": "Existing authenticated Chrome tab, read-only Supabase dashboard accessibility state",
+  "status": "VERIFIED_DISABLED",
+  "supersedes_unavailable_receipt": "production-anonymous-auth-browser-readback-unavailable.json",
+  "target": {
+    "production_branch": "main",
+    "project_name": "gsip",
+    "project_ref": "toxldjgwkxtneoqsazym",
+    "url": "https://supabase.com/dashboard/project/toxldjgwkxtneoqsazym/auth/providers"
+  }
+}

@@ -1,0 +1,664 @@
+{
+  "agp_direct_api_runtime_dependency_presence": [
+    {
+      "artifact_count": 1,
+      "coordinate": "androidx.databinding:databinding-common:8.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "androidx.databinding:databinding-compiler-common:8.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.databinding:baseLibrary:8.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools:repository:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools:sdk-common:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools:sdklib:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.analytics-library:crash:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.analytics-library:shared:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build:aapt2-proto:8.13.0-13719691",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build:aaptcompiler:8.13.0",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build:builder:8.13.0",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build:builder-model:8.13.0",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build:builder-test-api:8.13.0",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build:bundletool:1.18.1",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build:gradle-api:8.13.0",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build:gradle-settings-api:8.13.0",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build:transform-api:2.0.0-deprecated-use-gradle-api",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build.jetifier:jetifier-core:1.0.0-beta10",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta10",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.ddms:ddmlib:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.layoutlib:layoutlib-api:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.lint:lint-model:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.lint:lint-typedef-remover:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.utp:android-device-provider-ddmlib-proto:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.utp:android-device-provider-profile-proto:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.utp:android-test-plugin-host-additional-test-output-proto:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.utp:android-test-plugin-host-apk-installer-proto:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.utp:android-test-plugin-host-coverage-proto:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.utp:android-test-plugin-host-emulator-control-proto:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.utp:android-test-plugin-host-logcat-proto:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.android.tools.utp:android-test-plugin-result-listener-gradle-proto:31.13.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.google.code.gson:gson:2.11.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.google.crypto.tink:tink:1.7.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.google.flatbuffers:flatbuffers-java:1.12.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.google.protobuf:protobuf-java:3.25.5",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.google.protobuf:protobuf-java-util:3.25.5",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.google.testing.platform:core-proto:0.0.9-alpha03",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "com.squareup:javapoet:1.10.0",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "commons-io:commons-io:2.16.1",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "io.grpc:grpc-core:1.69.1",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "io.grpc:grpc-inprocess:1.69.1",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "io.grpc:grpc-netty:1.69.1",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "io.grpc:grpc-protobuf:1.69.1",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "io.grpc:grpc-stub:1.69.1",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "net.sf.jopt-simple:jopt-simple:4.9",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "org.apache.httpcomponents:httpmime:4.5.6",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "org.bouncycastle:bcpkix-jdk18on:1.79",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "org.glassfish.jaxb:jaxb-runtime:2.3.2",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "org.jetbrains.kotlin:kotlin-stdlib:2.2.0",
+      "exists": true,
+      "metadata_count": 2
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "org.ow2.asm:asm:9.8",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "org.ow2.asm:asm-analysis:9.8",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "org.ow2.asm:asm-commons:9.8",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "org.ow2.asm:asm-util:9.8",
+      "exists": true,
+      "metadata_count": 1
+    },
+    {
+      "artifact_count": 1,
+      "coordinate": "org.tensorflow:tensorflow-lite-metadata:0.2.0",
+      "exists": true,
+      "metadata_count": 1
+    }
+  ],
+  "cache_files_root": "/Users/justinhart/.gradle/caches/modules-2/files-2.1",
+  "cache_metadata_directories": [
+    "metadata-2.107"
+  ],
+  "cached_declared_build_plugins": [
+    {
+      "exists": true,
+      "files": [
+        {
+          "bytes": 13567,
+          "executable": false,
+          "exists": true,
+          "relative_path": "com.android.tools.build/gradle/8.13.0/483da772ec4ed7b92eddd3f2723869c56c183a22/gradle-8.13.0.module",
+          "sha256": "1ffebc2634d322d5ff1646fb54aa9cdaaa00ab5eb3900a193fa561b23e031a77"
+        },
+        {
+          "bytes": 11773,
+          "executable": false,
+          "exists": true,
+          "relative_path": "com.android.tools.build/gradle/8.13.0/a21948f283ed704efc82671f3eacb36fbf4c971e/gradle-8.13.0.pom",
+          "sha256": "ee4182f4b5cb6544f36d23db5d159674ca9ea3db05a8e474295afcfc6cf510da"
+        },
+        {
+          "bytes": 13104135,
+          "executable": false,
+          "exists": true,
+          "relative_path": "com.android.tools.build/gradle/8.13.0/a8b3900300f530a0f0378f88b12711d39b142a02/gradle-8.13.0.jar",
+          "sha256": "d0195874497b4ac3eaeb3a8525bf794d3a5b63a9a01084ca9ac330fb63060d01"
+        }
+      ],
+      "module": "com.android.tools.build/gradle/8.13.0"
+    },
+    {
+      "exists": true,
+      "files": [
+        {
+          "bytes": 42747,
+          "executable": false,
+          "exists": true,
+          "relative_path": "com.google.gms/google-services/4.4.4/36530e49a6ab5ae88f518a63d31349e502cc6d17/google-services-4.4.4.jar",
+          "sha256": "7a6579dfee3aa1bd0564d72f9c91d75bde715b44bc484eefc984841c642540cd"
+        },
+        {
+          "bytes": 1535,
+          "executable": false,
+          "exists": true,
+          "relative_path": "com.google.gms/google-services/4.4.4/bb50bdc3130b688618c5c6df4ca4b5c2b8ca7dbe/google-services-4.4.4.pom",
+          "sha256": "2d83f74b5f51f488a5545313b1b76e25d3610fceb04b10f3b91825d6ddc95bfd"
+        },
+        {
+          "bytes": 4477,
+          "executable": false,
+          "exists": true,
+          "relative_path": "com.google.gms/google-services/4.4.4/d36e02eb599d50b5e43195be3e7c5d1adf26b1b6/google-services-4.4.4.module",
+          "sha256": "35eb3f788d6a079134bdaf315d514fd0852b6d360c31b8216b6dd98067b741ed"
+        }
+      ],
+      "module": "com.google.gms/google-services/4.4.4"
+    },
+    {
+      "exists": true,
+      "files": [
+        {
+          "bytes": 8034,
+          "executable": false,
+          "exists": true,
+          "relative_path": "com.android.tools.build/builder/8.13.0/6f27b90a09545766284d4abb91f0caff0b68871f/builder-8.13.0.module",
+          "sha256": "0fdb20c12f6592d808da6d0075ed34520f61c71936868b4bde39278bb1b7b59d"
+        },
+        {
+          "bytes": 5320,
+          "executable": false,
+          "exists": true,
+          "relative_path": "com.android.tools.build/builder/8.13.0/93c636a0b2f59f6dd91613bc9cdcb0f5f51ea26/builder-8.13.0.pom",
+          "sha256": "9f24359de3865896adb453928853572f52bfc664f3692df2a487e79f0d5c8a13"
+        },
+        {
+          "bytes": 15802104,
+          "executable": false,
+          "exists": true,
+          "relative_path": "com.android.tools.build/builder/8.13.0/d6c27fbcf3b96f30153c8ae51d4be386e36f6cf5/builder-8.13.0.jar",
+          "sha256": "464aea9ccbf200ded6597d2848254d95229e9782779ea67f972588340812a4a9"
+        }
+      ],
+      "module": "com.android.tools.build/builder/8.13.0"
+    }
+  ],
+  "constraints": {
+    "no_git_or_github_action": true,
+    "no_local_properties_content_read": true,
+    "no_network": true,
+    "no_raw_build_logs_read_or_written": true,
+    "no_sdk_service_or_package_installs": true,
+    "no_shared_or_global_writes": true,
+    "no_signing_keys_or_account_secrets_read": true
+  },
+  "created_at_utc": "2026-10-13T22:31:29.177667+00:00",
+  "declared_plugins": {
+    "@capacitor/camera": "8.2.4",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/filesystem": "8.1.3",
+    "@capacitor/geolocation": "8.2.2",
+    "@capacitor/local-notifications": "8.3.1"
+  },
+  "existing_generated_android_includes": [
+    "include ':capacitor-android'",
+    "include ':capacitor-camera'",
+    "include ':capacitor-filesystem'"
+  ],
+  "existing_generated_android_state": "STALE: geolocation and local-notifications declared and installed but missing generated include entries",
+  "gradle_distribution_prior_full_binding": {
+    "archive_bytes": 224584249,
+    "archive_sha256": "ed1a8d686605fd7c23bdf62c7fc7add1c5b23b2bbc3721e661934ef4a4911d7c",
+    "matched_files": 22432,
+    "not_repeated_this_inventory": true,
+    "source_receipt": "/private/tmp/gsip-observer-independent-q28lneo8/verified-primary-binding.json"
+  },
+  "gradle_home": "/private/tmp/gsip-marker-delta-independent-ir99l6vz/real-gradle/gradle-user-home/wrapper/dists/gradle-8.14.3-all/10utluxaxniiv4wxiphsi49nj/gradle-8.14.3",
+  "gradle_launcher": {
+    "bytes": 8817,
+    "executable": true,
+    "exists": true,
+    "relative_path": "bin/gradle",
+    "sha256": "4f4e6088759550eab2a3e7904265a3e9e3043d178e96ab169da0c7ea09795984"
+  },
+  "installed_packages": [
+    {
+      "manifest_sha256": "0f2a47b835f900bef22b1f40e369e33669bf112df89455a3164d5146aa2e7127",
+      "package": "@capacitor/android",
+      "package_manifest": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/node_modules/@capacitor/android/package.json",
+      "version": "8.5.2"
+    },
+    {
+      "manifest_sha256": "bad0fbf5d81a6e677cc98d64bc5c59872e8a77f6966d13e38392ffedda345504",
+      "package": "@capacitor/cli",
+      "package_manifest": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/node_modules/@capacitor/cli/package.json",
+      "version": "8.5.2"
+    },
+    {
+      "manifest_sha256": "11d1fd06941f61fe4bb8425ee08f53d573c899334ad9165501c029a5b3600646",
+      "package": "@capacitor/core",
+      "package_manifest": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/node_modules/@capacitor/core/package.json",
+      "version": "8.5.2"
+    },
+    {
+      "manifest_sha256": "ea6d757093daceecce569eb0947ce5af4547e5b8f581ddfcaa0c7b0a31891ed8",
+      "package": "@capacitor/local-notifications",
+      "package_manifest": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/node_modules/@capacitor/local-notifications/package.json",
+      "version": "8.3.1"
+    },
+    {
+      "manifest_sha256": "8f7a754bafafc26f46517e6b4d8785072d169aeff023c13dea1b6f6a324af929",
+      "package": "@capacitor/geolocation",
+      "package_manifest": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/node_modules/@capacitor/geolocation/package.json",
+      "version": "8.2.2"
+    },
+    {
+      "manifest_sha256": "fc4314691641ea524af59b7826843faa7d7eafdd76eadb6a2b7c5887d600911a",
+      "package": "@capacitor/camera",
+      "package_manifest": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/node_modules/@capacitor/camera/package.json",
+      "version": "8.2.4"
+    },
+    {
+      "manifest_sha256": "ac932596132560aecdafcfd1e0426facff6d819df0d2e5eb8371d6e927df201b",
+      "package": "@capacitor/filesystem",
+      "package_manifest": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/apps/capture-pwa/node_modules/@capacitor/filesystem/package.json",
+      "version": "8.1.3"
+    }
+  ],
+  "java_home": "/Users/justinhart/Library/Java/JavaVirtualMachines/openjdk-21.0.1/Contents/Home",
+  "java_launcher": {
+    "bytes": 69936,
+    "executable": true,
+    "exists": true,
+    "relative_path": "bin/java",
+    "sha256": "c44bb5e63341a3210c998cc953f25546f8474fa7d83044965af84889d4594159"
+  },
+  "kind": "read-only-installed-sdk-input-inventory",
+  "managed_source": "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0",
+  "offline_execution": "NOT_RUN; cache presence is not transitive resolution completeness",
+  "parent_reported_source_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "readiness": "CONCRETE_SDK_AND_DECLARED_PLUGIN_INPUTS_PRESENT; regenerate native project from current exact source in owned copy, then isolated offline execution must establish completeness",
+  "required_sdk_files": [
+    {
+      "bytes": 27768026,
+      "executable": false,
+      "exists": true,
+      "relative_path": "platforms/android-36/android.jar",
+      "sha256": "d9eb9da824d9e247a352f570f01e1169e725b2954bca9e283a71786c59b59f9a"
+    },
+    {
+      "bytes": 18646,
+      "executable": false,
+      "exists": true,
+      "relative_path": "platforms/android-36/package.xml",
+      "sha256": "0dc071809e3df6e8a1a98bbda66753722804737105f20cd75d1f3c33c4d772b9"
+    },
+    {
+      "bytes": 10469248,
+      "executable": true,
+      "exists": true,
+      "relative_path": "build-tools/35.0.0/aapt2",
+      "sha256": "729a6a8deba828992c50cb448d4ef3947003ec5a0d1deead7534897c8fc3486f"
+    },
+    {
+      "bytes": 2678,
+      "executable": true,
+      "exists": true,
+      "relative_path": "build-tools/35.0.0/d8",
+      "sha256": "b773a721be3d4988dea9660815a9e441b76100e5b0f5c72b5893cfadadc76c6f"
+    },
+    {
+      "bytes": 16614740,
+      "executable": false,
+      "exists": true,
+      "relative_path": "build-tools/35.0.0/lib/d8.jar",
+      "sha256": "305622ad00535684534eb8f742cbf5e628a9abc09d8ea4d39d1babb95bf0cee5"
+    },
+    {
+      "bytes": 18510,
+      "executable": false,
+      "exists": true,
+      "relative_path": "build-tools/35.0.0/package.xml",
+      "sha256": "96565a67f5284d269d044eb46f837900ba4f3cae324f887f75678af477f6a397"
+    },
+    {
+      "bytes": 13585104,
+      "executable": true,
+      "exists": true,
+      "relative_path": "platform-tools/adb",
+      "sha256": "1f8502fc0114e09354d16bc541309f5c82beb8e429e1ece396396946e1d63ab8"
+    }
+  ],
+  "schema": 1,
+  "sdk_root": "/Users/justinhart/Library/Android/sdk",
+  "source_head_independently_git_verified": false,
+  "source_inputs": [
+    {
+      "bytes": 225620,
+      "executable": false,
+      "exists": true,
+      "relative_path": "pnpm-lock.yaml",
+      "sha256": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19"
+    },
+    {
+      "bytes": 1175,
+      "executable": false,
+      "exists": true,
+      "relative_path": "package.json",
+      "sha256": "091768fd1ac0ffc68b08b4b121b64ee51ce3dfa87d4fbe1d3eb5818294d78c16"
+    },
+    {
+      "bytes": 1081,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/package.json",
+      "sha256": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115"
+    },
+    {
+      "bytes": 1112,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/capacitor.config.ts",
+      "sha256": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69"
+    },
+    {
+      "bytes": 110609,
+      "executable": false,
+      "exists": true,
+      "relative_path": "scripts/app_notification_audit.py",
+      "sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a"
+    },
+    {
+      "bytes": 17963,
+      "executable": false,
+      "exists": true,
+      "relative_path": ".github/workflows/app-build.yml",
+      "sha256": "59b422478e084cf69c179a3c16d64fe98c19ca0f165bb7fd591de7ec7ec4633d"
+    },
+    {
+      "bytes": 637,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/android/build.gradle",
+      "sha256": "46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9"
+    },
+    {
+      "bytes": 498,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/android/variables.gradle",
+      "sha256": "83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88"
+    },
+    {
+      "bytes": 253,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties",
+      "sha256": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435"
+    },
+    {
+      "bytes": 987,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/android/gradle.properties",
+      "sha256": "3bab15c5b8bc4c2f4b6cf525497d15ad4abca53a460e6dd2eb0f0135817d31e6"
+    },
+    {
+      "bytes": 208,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/android/settings.gradle",
+      "sha256": "6ce098d15ebd69b44c4ecd786bca1bdc366340d2459b2af4d7bb0ab317aa9669"
+    },
+    {
+      "bytes": 687,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/android/capacitor.settings.gradle",
+      "sha256": "b0de5228964cc9f91948cb0277688d377ad8ce9a9ed921c1e2009f03c7c292ea"
+    },
+    {
+      "bytes": 469,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/android/app/capacitor.build.gradle",
+      "sha256": "74310abc26144419455c1e6ff2e38dac2d3d476ab9e00671de009eaedea810de"
+    },
+    {
+      "bytes": 2162,
+      "executable": false,
+      "exists": true,
+      "relative_path": "apps/capture-pwa/android/app/build.gradle",
+      "sha256": "008bb6b474c5a7799b00fad25c51f75f5cb761a9a12a70b1781e4567e023be59"
+    }
+  ]
+}

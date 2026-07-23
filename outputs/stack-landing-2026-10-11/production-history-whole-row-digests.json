@@ -1,0 +1,97 @@
+{
+  "project": "toxldjgwkxtneoqsazym",
+  "query": "select version, name, encode(sha256(convert_to(to_jsonb(m)::text,'UTF8')),'hex') as history_row_sha256 from supabase_migrations.schema_migrations m order by version;",
+  "scope": "All migration-history fields hashed; only identities/digests returned",
+  "records": [
+    {
+      "version": "20260722164727",
+      "name": "wp1_extensions",
+      "history_row_sha256": "1a5fc646d6ab0bfbfa30d1d57a43e3bf4411995b31cf1327021f35e07cb9d8cd"
+    },
+    {
+      "version": "20260722164749",
+      "name": "wp1_schema",
+      "history_row_sha256": "fa375576da89ff3d5f70280cb24821faa729b3e06e7383691673462136756b98"
+    },
+    {
+      "version": "20260722164806",
+      "name": "wp1_rls",
+      "history_row_sha256": "62c149ef06ffe973b13022ce5886e6f3910ffc17584586d71d8fd87dd6b7502e"
+    },
+    {
+      "version": "20260722170020",
+      "name": "wp1_review_hardening",
+      "history_row_sha256": "714a4d8d7336b9a4b13e1aa004e8b323125cc0a779baeb2afda341ec4567b528"
+    },
+    {
+      "version": "20260722182403",
+      "name": "wp1_v22_privacy_and_grants",
+      "history_row_sha256": "17a8f4d9bd6468fe4eedde8e8240bef4a1dad2e4d1ae16a5de7e7aacfe7b1adf"
+    },
+    {
+      "version": "20260722182446",
+      "name": "wp1_performance_indexes",
+      "history_row_sha256": "003a39323960ba09331bd841771afa83f56a098c09956cce2fd6c58374f81eb4"
+    },
+    {
+      "version": "20260722190912",
+      "name": "wp4_prior_jobs",
+      "history_row_sha256": "d6c65f00e2a4c388019e6620450f91ae9acbc5a504a89437f948c283f319ded4"
+    },
+    {
+      "version": "20260722191140",
+      "name": "wp4_prior_jobs_hardening",
+      "history_row_sha256": "f93e9aa679b3312d2227bef8d21d49e5b8c65c3a7534008cc10214c973e069b5"
+    },
+    {
+      "version": "20260722191802",
+      "name": "wp4b_photo_qa",
+      "history_row_sha256": "e27f897f0fa6001cdf2c75eeb1df3e653f8962d2d0c3700df413b0ea5528e86d"
+    },
+    {
+      "version": "20260722194033",
+      "name": "wp6_export_guardrails",
+      "history_row_sha256": "1c924985720c5b95bd70f8af78d303a4b34e59730183431666b0f194c43f918f"
+    },
+    {
+      "version": "20260723011122",
+      "name": "phase1_actor_hardening",
+      "history_row_sha256": "c13c69037e91cd7740b7e28244f759333afc220c377a6264fc53fbdda407fbe3"
+    },
+    {
+      "version": "20260723011144",
+      "name": "qa_event_provenance",
+      "history_row_sha256": "a4e5586df3c0fd5bd8b2c5d33be86abaeefd0d44e9963be3786fff4ead08975c"
+    },
+    {
+      "version": "20260723011159",
+      "name": "public_h3_aggregates",
+      "history_row_sha256": "ff83a4d172d71ef33f65f21da24efb07a1c734acb859dea816739cd4ddbeae0e"
+    },
+    {
+      "version": "20260723011219",
+      "name": "atomic_public_h3_refresh",
+      "history_row_sha256": "bbbc40283421aae0b4527176cd4b8ff2798a9cc21083d57da85ad15ab483f1c6"
+    },
+    {
+      "version": "20260723050851",
+      "name": "atomic_prior_attempt_claim",
+      "history_row_sha256": "cf7aa67d5d8b2c7093fe24e206318e38fdf74774a7a103a1db542f14679f576d"
+    },
+    {
+      "version": "20260723050903",
+      "name": "document_authenticated_h3_role",
+      "history_row_sha256": "3d13a4ab768cdbdc9633de6efa9a68dbdd80bf5ef7c8d4ce696c17b863ff5dbf"
+    },
+    {
+      "version": "20260723050918",
+      "name": "remove_public_submission_residue",
+      "history_row_sha256": "67ef2ce2bc23d91f39ea696e1cb3dce31cded97ca0e5c8cf0031f9aa344a4898"
+    },
+    {
+      "version": "20260730174047",
+      "name": "wavefunction_beta_schema",
+      "history_row_sha256": "a2a70343791eb1b3266c82c96c83d49429b691c63a64c5b919f7fa2a7d38cb8d"
+    }
+  ]
+}

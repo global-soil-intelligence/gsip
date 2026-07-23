@@ -1,0 +1,14 @@
+{
+  "main_head": "b7107fe7a06b856a9ac5c137d0370db365009e27",
+  "run": 39038685787,
+  "platform": "ios",
+  "payload_sha256": "838a0c66f59f6b6a0d7201eb14bd13f4cf8c0c58407b0ab16632dc3e42f80992",
+  "receipt_hash_matches": true,
+  "embedded_activation": {
+    "capture_live": false,
+    "library_intake_live": false
+  },
+  "repeat_entry_contents_equal": true,
+  "repeat_archive_byte_equal": false,
+  "limits": "Unsigned simulator artifact; no physical-device or backup qualification"
+}

@@ -1,0 +1,31 @@
+{
+  "bound_inputs": [
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-pre-backfill-20261012T191950Z.json",
+      "sha256": "b824ec872bb6a07fa117d8e371ff5fefd7ba558b41563eeeb7a409a943796a69"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-gate-d-pre-prior_k-20261012T191950Z.json",
+      "sha256": "60e343e59aef95ffe2e8072b19635b72948d247ae15123dec9f2e09129c33621"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-post-gate-c-backfill-verification-2026-10-12.sql",
+      "sha256": "7d6a16ff997967ab1aacc4d436b533c765ed6d026f89c3e5d07ec5d84fe26b21"
+    },
+    {
+      "path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/production-post-c-prior-k-aggregates-2026-10-12.sql",
+      "sha256": "870f8febe86b5e472925276c8eeceffa810942ea32c857a2a62483103cae6612"
+    }
+  ],
+  "checks": {
+    "all16_backfill_anomalies_zero": true,
+    "all_backfill_aggregate_predicates_exact_post_c": true,
+    "all_prior_and_k_anonymity_aggregates_exact_post_c": true,
+    "all_prior_k_anomalies_zero": true
+  },
+  "completed_at_utc": "2026-10-12T19:23:33.868346+00:00",
+  "failed_checks": [],
+  "production_mutations_by_this_agent": 0,
+  "state": "PASS_READONLY_GATE_D_PRE_AGGREGATES",
+  "target_project_ref": "toxldjgwkxtneoqsazym"
+}

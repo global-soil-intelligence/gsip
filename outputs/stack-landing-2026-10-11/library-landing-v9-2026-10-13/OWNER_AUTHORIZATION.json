@@ -1,0 +1,16 @@
+{
+  "owner": "Justin Hart",
+  "instruction": "Approved. Apply only the exact one-fixture exception, get all checks green, then merge #51\u2013#56 in order and keep building. No production changes or capture opening.",
+  "fingerprint": "bb9bd8a583231ff63ec14a7622532ddb869d7cde:scripts/e2e_server.py:generic-api-key:32",
+  "initial_heads": {
+    "51": "14c4188280025c274ac7c58d1fc40138ee3922bb",
+    "52": "f1a644af2a78b1b9865385d603cb77ad156843eb",
+    "53": "af810bf1caa4a38408843897d2c281adc32145d7",
+    "54": "b0f8e0f808629754bc6f4213f9c94e3149adfe55",
+    "55": "fd5c44bd9e33ca741fc4ed59b4a362e960f3e30a",
+    "56": "db3a37062008c291b6e8aa491b99eab3e752fe16"
+  },
+  "production_allowed": false,
+  "capture_opening_allowed": false,
+  "GitHub_approving_review_allowed": false
+}

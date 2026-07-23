@@ -1,0 +1,19 @@
+{
+  "run": 38349093505,
+  "head_sha": "af810bf1caa4a38408843897d2c281adc32145d7",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11789279357,
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 3383551,
+      "expired": false
+    },
+    {
+      "id": 11789199688,
+      "name": "gsip-capture-android-debug",
+      "size_in_bytes": 7220043,
+      "expired": false
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-10-12T13:54:51.169323+00:00",
+  "status": "BLOCKED_SECURITY_GATE_C",
+  "target_project_ref": "toxldjgwkxtneoqsazym",
+  "scope": "Local status pointer only; no commands, smoke inputs, source, API, or production mutation.",
+  "edge_authorization": "NOT_REQUESTED_NOT_GRANTED_NOT_EXECUTED",
+  "advisor_receipt": {
+    "file": "production-post-c-security-advisor-2026-10-12.json",
+    "sha256": "395cfb65171df63342c756f9f7da823336d5516c608d51172f90f2b9b99f4165"
+  },
+  "finding_instances": 7,
+  "distinct_objects": 6,
+  "rules": {
+    "rls_enabled_no_policy": 2,
+    "anon_security_definer_function_executable": 1,
+    "authenticated_security_definer_function_executable": 4
+  },
+  "preserved_prepared_files": [
+    {
+      "file": "edge-next-deployment-prepared-plan-2026-10-12.json",
+      "sha256": "a2c1f3a2d73388d510b11663df31eb9e271145ad28318dfeb9909aab810c1269",
+      "unchanged": true
+    },
+    {
+      "file": "edge-next-deployment-commands-2026-10-12.md",
+      "sha256": "bf247947b71b501fb157d07104892c3356c3dbdb1251b19f0a6fd5719f265373",
+      "unchanged": true
+    },
+    {
+      "file": "edge-next-readonly-smoke-2026-10-12.py",
+      "sha256": "6d9ca0da3417241a73b008cc523ed57b2009196e8dbbd8f439378f0a18d86363",
+      "unchanged": true
+    }
+  ],
+  "resume_gate": "Reviewed security remediation, applicable tests and CI, separately approved production remediation, and zero hosted security findings before a new Edge deployment approval request."
+}

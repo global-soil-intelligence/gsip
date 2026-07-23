@@ -1,0 +1,70 @@
+{
+  "authenticated_login": "jdhart81",
+  "authenticated_user_id": 179389866,
+  "can_admins_bypass": true,
+  "deployment_branch_policies": {
+    "branch_policies": [
+      {
+        "id": 55456772,
+        "name": "gh-pages",
+        "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTQ1Njc3Mg==",
+        "type": "branch"
+      },
+      {
+        "id": 55456704,
+        "name": "main",
+        "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTQ1NjcwNA==",
+        "type": "branch"
+      }
+    ],
+    "total_count": 2
+  },
+  "deployment_branch_policy": {
+    "custom_branch_policies": true,
+    "protected_branches": false
+  },
+  "environment": "github-pages",
+  "environment_id": 18657050755,
+  "observed_at_utc": "2026-10-12T13:35:27.835748+00:00",
+  "protection_rules": [
+    {
+      "id": 60751762,
+      "node_id": "GA_kwDOTgVRPc4Dnv-S",
+      "type": "branch_policy"
+    },
+    {
+      "id": 68521163,
+      "node_id": "GA_kwDOTgVRPc4EFYzL",
+      "prevent_self_review": false,
+      "reviewers": [
+        {
+          "reviewer": {
+            "avatar_url": "https://avatars.githubusercontent.com/u/179389866?v=4",
+            "events_url": "https://api.github.com/users/jdhart81/events{/privacy}",
+            "followers_url": "https://api.github.com/users/jdhart81/followers",
+            "following_url": "https://api.github.com/users/jdhart81/following{/other_user}",
+            "gists_url": "https://api.github.com/users/jdhart81/gists{/gist_id}",
+            "gravatar_id": "",
+            "html_url": "https://github.com/jdhart81",
+            "id": 179389866,
+            "login": "jdhart81",
+            "node_id": "U_kgDOCrFFqg",
+            "organizations_url": "https://api.github.com/users/jdhart81/orgs",
+            "received_events_url": "https://api.github.com/users/jdhart81/received_events",
+            "repos_url": "https://api.github.com/users/jdhart81/repos",
+            "site_admin": false,
+            "starred_url": "https://api.github.com/users/jdhart81/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/jdhart81/subscriptions",
+            "type": "User",
+            "url": "https://api.github.com/users/jdhart81",
+            "user_view_type": "public"
+          },
+          "type": "User"
+        }
+      ],
+      "type": "required_reviewers"
+    }
+  ],
+  "read_only": true,
+  "repository": "global-soil-intelligence/gsip"
+}

@@ -1,0 +1,39 @@
+{
+  "checked_at_utc": "2026-10-16T01:17:02.452238+00:00",
+  "pages": {
+    "url": "https://api.github.com/repos/global-soil-intelligence/gsip/pages",
+    "status": "built",
+    "cname": "globalsoilintelligence.com",
+    "custom_404": false,
+    "html_url": "http://globalsoilintelligence.com/",
+    "build_type": "workflow",
+    "source": {
+      "branch": "gh-pages",
+      "path": "/"
+    },
+    "public": true,
+    "protected_domain_state": "verified",
+    "pending_domain_unverified_at": null,
+    "https_certificate": {
+      "state": "authorization_created",
+      "description": "Authorization created",
+      "domains": [
+        "globalsoilintelligence.com",
+        "www.globalsoilintelligence.com"
+      ]
+    },
+    "https_enforced": false
+  },
+  "tls_checks": [
+    {
+      "host": "globalsoilintelligence.com",
+      "trusted_hostname_valid": false,
+      "error_type": "SSLCertVerificationError"
+    },
+    {
+      "host": "www.globalsoilintelligence.com",
+      "trusted_hostname_valid": false,
+      "error_type": "SSLCertVerificationError"
+    }
+  ]
+}

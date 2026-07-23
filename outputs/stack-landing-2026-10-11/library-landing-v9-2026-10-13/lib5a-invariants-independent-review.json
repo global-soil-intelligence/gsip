@@ -1,0 +1,133 @@
+{
+  "schema_version": "gsip-lib5a-independent-invariant-review-v1",
+  "reviewer": "/root/library_store_review",
+  "reviewed_at_utc": "2026-10-13T11:36:47.939800+00:00",
+  "spec_commit_bound_by_prior_independent_receipt": "db3a37062008c291b6e8aa491b99eab3e752fe16",
+  "file_sha256": {
+    "docs/SPEC.md": "f50f56da1fb25c4a15f5496e6455811c82e40fe2e5cb9ed931de28b01df3c0ae",
+    "docs/BUILD_ORDER.md": "eff2434d700ee83669136d03efeaf973426b2452740301bbca357cc75734f0b2"
+  },
+  "scope": "Preimplementation review of approved-spec9 LIB5A pure contract invariants; no source or real transport implementation",
+  "outcome": "Coherent bounded LIB5A preparation requirements; no specification blocker identified",
+  "spec_blockers": [],
+  "required_invariants": [
+    {
+      "id": "A1",
+      "reference": "SPEC16.10 / BUILD375",
+      "rule": "Strict raw UTF8, maximum 2,000,000 bytes and 12 container levels checked before unsafe parse allocation; no duplicate decoded keys, unknown keys, nonfinite numbers, unsafe sequence or unsupported version. Errors never contain payload.",
+      "cases": [
+        "exact byte boundary/one over",
+        "12 / 13 container depth with quoted brackets/escapes",
+        "invalid UTF8 and unpaired surrogate handling",
+        "escaped duplicate keys",
+        "boolean/string/unsafe integer sequences",
+        "NaN/Infinity and overflowing exponent"
+      ]
+    },
+    {
+      "id": "A2",
+      "reference": "SPEC16.10 528 / BUILD376",
+      "rule": "Envelope has exactly9 specified fields; stream is normalized source-peer/destination-peer/scope tuple. All UUID references use canonical hyphenated case-insensitive text; opaque namespaces do not become peer credentials. Sequence 0 requires null predecessor; later sequence requires lowercase 64-hex predecessor.",
+      "cases": [
+        "missing/extra envelope fields",
+        "compact/URN/braced UUID refusal on every nested field",
+        "case-normalized identity/list duplicates",
+        "zero with digest/nonzero with null",
+        "unknown kind/version",
+        "uppercase or malformed predecessor digest"
+      ]
+    },
+    {
+      "id": "A3",
+      "reference": "SPEC16.10 532 / SPEC16.2",
+      "rule": "Declare payload has exactly sample_handle,measurement_handle,protocol_version,context,measurement,synthetic_claim. Context/protocol and camera/instrument retain existing bounded units. RGB never has wavelengths or certified calibration; instrument data stays declaration.",
+      "cases": [
+        "depth0<=top<bottom<=200 and known condition",
+        "camera 3 finite fraction means/std,positive bounded integer pixel count,strict card bool,uncalibrated only",
+        "instrument 3–10,000 aligned bands,strictly increasing 200–25,000 nm,fraction reflectance/uncertainty",
+        "no clipping/interpolation or percent/absorbance/radiance alias",
+        "labels,grant/consent/QA/holdout/provenance/verification,rawimage/file,location/time/serial/person/path/URL/credential fields refused at every level"
+      ]
+    },
+    {
+      "id": "A4",
+      "reference": "SPEC16.10 534 / BUILD378",
+      "rule": "Retire payload has exactly sample_handle and unique 0–100 normalized measurement_handles; sample-wide coverage is independent of list length. Parsing alone neither authenticates retirement nor performs erasure.",
+      "cases": [
+        "empty list valid but still sample-wide semantic",
+        "101 aliases refused",
+        "case-only duplicate refused",
+        "missing field/extra reason/status/credential refused",
+        "measurement list cannot narrow covered sample"
+      ]
+    },
+    {
+      "id": "A5",
+      "reference": "SPEC16.10 528 / BUILD377",
+      "rule": "Digest/idempotency covers exact owned UTF8 input bytes, separate from normalized typed data. Preserve bytes for retries; no cross-language canonicalJSON or signature claim. Same event identity cannot move streams/slots; same slot cannot change identity or bytes.",
+      "cases": [
+        "identical retry stable digest",
+        "UUID spelling/key-order/whitespace/float representation changes conflict for an existing ID",
+        "cross-stream sameID and differentID same-slot conflicts",
+        "input-buffer or nested model mutation cannot silently change the owned retry bytes"
+      ]
+    },
+    {
+      "id": "A6",
+      "reference": "SPEC16.10 530 / BUILD378-379",
+      "rule": "Pure helpers decide contiguous chain/conflict outcomes only from explicit supplied synthetic prior state. Gaps never advance head; retirement restriction is independent of chain progress. Real authority, durable tombstones and ledgers belong later packages.",
+      "cases": [
+        "wrong predecessor at contiguous slot",
+        "gap held without fabricated/reset head",
+        "authenticated fake retirement-before-declare restrains immediately with unchanged head",
+        "late covered declare never becomes scientific payload while in-memory chain validation may proceed",
+        "conflict stops normal progression but cannot disable restriction"
+      ]
+    },
+    {
+      "id": "A7",
+      "reference": "SPEC16.9 /16.11 /16.13",
+      "rule": "All received evidence stays private/unverified. synthetic_claim true is restrictive; false never verifies field data. Schema/digest success is not sender authentication, original-grant consent, physical pairing, scientific truth or publication eligibility.",
+      "cases": [
+        "no elevation from caller flags",
+        "no global digest index/cross-contributor matching/membership query",
+        "peer and phone/node identities remain distinct",
+        "no public API/app/photo/capture/baseline change"
+      ]
+    },
+    {
+      "id": "A8",
+      "reference": "SPEC16.10 538 / BUILD373-380",
+      "rule": "Only pure validation, exact-byte helpers and shared synthetic TS/Python corpus. No filesystem export, credentials, environment-based authority, HTTP/listener, migration, new dependency, actual node sender or field training. Durable quotas/fences/disk/cleanup simulation belong 5B; live authority/transport remain owner-held 5C.",
+      "cases": [
+        "strict conformance accepted/rejected parity in both languages",
+        "fixtures synthetic and private-purpose labelled",
+        "fail-before evidence for every refusal class",
+        "no successful source validation counted as peer permission or physical sample verification"
+      ]
+    }
+  ],
+  "implementation_alignment_points": [
+    "Settle strict integer lexeme policy identically in TS/Python: Python strict-int rejects 1.0 / 1e0 while JavaScript JSON.parse loses that distinction. Cover stream_sequence and camera pixel_count; document -0 behavior without assuming canonical-number hashing.",
+    "Define depth counting consistently at the root and both object/array containers; test exact 12 / 13 boundaries.",
+    "Do not reuse complete LIB1 records or lax UUID coercion; construct exact exchange allowlists and canonical text checks for nested references.",
+    "Use immutable/copy-owned raw input for digest/retry, with normalized identifiers kept separately; typed models or readonly annotations do not certify unchanged nested data.",
+    "Keep 5A pure chain/idempotency decisions distinct from 5B durable filesystem/fake-authority semantics and 5C real authority/credentials/transport."
+  ],
+  "authority_limit": "Owner architecture approval and actual specification merge are prerequisites for implementation. Ordered merge authorization does not open production, capture, real sharing or LIB5C decisions.",
+  "not_verified": [
+    "No implementation candidate, exported API names or actual conformance behavior was reviewed",
+    "No runtime, filesystem, transport, capacity or scientific/privacy performance measured"
+  ],
+  "actions": {
+    "source_edits": false,
+    "tests_run": false,
+    "real_transport": false,
+    "credentials_read": false,
+    "network": false,
+    "production": false,
+    "git_mutations": false,
+    "approval_review": false,
+    "receipt_only_write": true
+  }
+}

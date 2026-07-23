@@ -1,0 +1,246 @@
+{
+  "api_findings": [
+    "getVariants returns selected variants; externalVariant explicitly represents available-at; getDisplayName is diagnostic, not a public getName API",
+    "Pinned createVariantResult binds displayName to metadata.getName; current actual probe confirms exact selected names",
+    "CompleteComponentResultSerializer does not preserve externalVariant; missing bridge must refuse, never synthesize from GMM alone",
+    "Pinned parser preserves file.name/file.url separately; artifact resolver fetches by URL while resourceAccessor receives artifact ID filename derived from file.name",
+    "Pinned metadata parser component handling consumes attributes and ignores identity/backlink fields; finite exact context avoids generic exception",
+    "available-at source selected variant cannot declare files or dependency constraints; normal dependency presence does not prove redirect"
+  ],
+  "base_commit": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "harness_recovery": [
+    "Unqualified python unavailable; explicit project interpreter used",
+    "Initial evidence shape inspection used wrong views/binaries keys; corrected read-only keys; no affected assertions or retained claims",
+    "Initial URL-basename physical-name assumption failed against actual graphics file; corrected by primary parser/resolver and byte evidence before design closure; initial script preserved"
+  ],
+  "minimum_required_implementation_guards": [
+    "Only three exact source GAV contexts, each one selected source variant and one explicit external target; exactly two nodes, no branches/multihop/cycles",
+    "Exact six raw GMM documents supplied and recomputed bounded SHA256+size offline, unique selected names, exact source available-at GAV+relative URL, exact target known context",
+    "Exact selected target in same view and terminal selected target row; terminal exact pinned file.name+size+SHA256 equals complete audited binary; canonical file.url separately pinned",
+    "Preserve all selected module/POM chains and every binary safety/license proof; absent optional redirect never grants missing-binary exemption",
+    "No project names, arbitrary attrs/classes/messages/private paths exported; only fixed public coordinates/variant names/raw public pinned metadata",
+    "Unknown versions/docs/owners/names, missing edge/selected row/binary, extra route fields, conflicts/changed bytes/cross-view mismatches refuse",
+    "Existing final duplicate guard and all source/license/native/repeat/reference/permission/workflow/receipt guards remain"
+  ],
+  "primary_api_files": [
+    {
+      "bytes": 3983,
+      "path": "src/core-api/org/gradle/api/artifacts/result/ResolvedComponentResult.java",
+      "sha256": "225c3deecc46e2a13d3228865af572f4addeb1c91cfd9838c41d839750e68306"
+    },
+    {
+      "bytes": 1343,
+      "path": "src/core-api/org/gradle/api/artifacts/result/ResolvedDependencyResult.java",
+      "sha256": "61dbf8fe8a52ffbe6dcd79ae5ad923b68f5193e735b3371c78e69899f65abada"
+    },
+    {
+      "bytes": 1904,
+      "path": "src/core-api/org/gradle/api/artifacts/result/ResolvedVariantResult.java",
+      "sha256": "c419eff6c5ccab969aa26bf081acd9ad63a7e77a18a0d60bf6ff8d32dd9af74c"
+    },
+    {
+      "bytes": 3962,
+      "path": "src/dependency-management/org/gradle/api/internal/artifacts/result/DefaultResolvedVariantResult.java",
+      "sha256": "6c3c5c425d1d464b00de037d10f67e97672aa31f8be8d9a11763a2b6876e083f"
+    },
+    {
+      "bytes": 4887,
+      "path": "src/dependency-management/org/gradle/internal/component/model/AbstractComponentGraphResolveState.java",
+      "sha256": "867c9ff71f24ea4d40ac8ce0f0ed1dac3583aa97635e7f342db70f588ba44e90"
+    },
+    {
+      "bytes": 3657,
+      "path": "src/dependency-management/org/gradle/internal/component/external/model/UrlBackedArtifactMetadata.java",
+      "sha256": "948eae4b4049d18d3e1b68b61c600947b8b23d87650b2c6d161cf7e13eff6824"
+    },
+    {
+      "bytes": 9019,
+      "path": "src/dependency-management/org/gradle/api/internal/artifacts/repositories/resolver/DefaultExternalResourceArtifactResolver.java",
+      "sha256": "bb5dede92775e37ea3491236ac6e66b9509f0e1c23dae401bd46d0005c19bda8"
+    },
+    {
+      "bytes": 31957,
+      "path": "src/dependency-management/org/gradle/api/internal/artifacts/ivyservice/ivyresolve/parser/GradleModuleMetadataParser.java",
+      "sha256": "312b12889ab785ce7bdaad2127410d0a43cacc49020c6604440a767138f54c93"
+    },
+    {
+      "bytes": 5126,
+      "path": "src/dependency-management/org/gradle/api/internal/artifacts/ivyservice/resolveengine/result/ResolvedVariantResultSerializer.java",
+      "sha256": "2230bc32c1aadf3d12da967961316b3df82bef101fd7a76d0a4e175c84615986"
+    },
+    {
+      "bytes": 7105,
+      "path": "src/dependency-management/org/gradle/api/internal/artifacts/ivyservice/resolveengine/result/CompleteComponentResultSerializer.java",
+      "sha256": "b3fdde20677bac1def4d43bd544ba96525fad125e78c587eff685e6b5c4e846e"
+    }
+  ],
+  "probe_input_sha256": "2c4d2f8a25c79cb154e970ba41da92074876375f1d2f598a4a548b27a3d17856",
+  "probe_receipt_sha256": "aa8365fe5f465ab15a8333c57c71148485380ba01ed3eedc69d9d468ee0991b3",
+  "probe_routes_sha256": "ced7ffa6e2c67a1b4c30671ddb80efbe38f2a99fe923bdb0a04c58e0a65e2229",
+  "probe_task_sha256": "1708fed4dd233befb0cecc566b774283ebae89ef1cee1564f897eba62343bfeb",
+  "raw_streams_printed_or_saved": false,
+  "read_only_public_binary_reads": 3,
+  "retained_actual_terminal_evidence": [
+    {
+      "configurations": 2,
+      "fresh_collector_execution": false,
+      "retained_runtime_evidence_sha256": "70f118a73c5b2c7d90be3cbeb0ef046c40f39b99e7d579a38d32172af5d1db33",
+      "root_label": "candidate",
+      "selected_modules_each": 75,
+      "terminal_target_proofs_match_each": 3
+    },
+    {
+      "configurations": 2,
+      "fresh_collector_execution": false,
+      "retained_runtime_evidence_sha256": "ac622df9cab41cd2fc06c363d33b8f5870e7159def460d8c305a41e25c408979",
+      "root_label": "parent",
+      "selected_modules_each": 75,
+      "terminal_target_proofs_match_each": 3
+    }
+  ],
+  "schema": "gsip-independent-selected-route-design-v1",
+  "scope_limits": [
+    "No maintained implementation reviewed yet",
+    "No hosted actual redirect values established",
+    "No fresh native acceptance",
+    "No new SDK/key/APK/build/Git/GH/CI/network/production operations"
+  ],
+  "six_primary_module_pins": [
+    {
+      "bytes": 34460,
+      "content_address_sha1_matches": true,
+      "coordinate": [
+        "androidx.annotation",
+        "annotation",
+        "1.8.1"
+      ],
+      "saved_public_document": "androidx.annotation-annotation-1.8.1.module",
+      "sha256": "e6386e85afdd865044e216575e493ed39a63a6325bd925379a21429c3941c8b5"
+    },
+    {
+      "bytes": 3225,
+      "content_address_sha1_matches": true,
+      "coordinate": [
+        "androidx.annotation",
+        "annotation-jvm",
+        "1.8.1"
+      ],
+      "saved_public_document": "androidx.annotation-annotation-jvm-1.8.1.module",
+      "sha256": "c959e3b0cdc75c15efe01605fa56aa79f033e39238e150638b8fabde6aa121a0"
+    },
+    {
+      "bytes": 30696,
+      "content_address_sha1_matches": true,
+      "coordinate": [
+        "androidx.collection",
+        "collection",
+        "1.4.2"
+      ],
+      "saved_public_document": "androidx.collection-collection-1.4.2.module",
+      "sha256": "0326d2cf5adbe592312810ca1f71c6c0cc30f753c43f07c7402361b788a7784c"
+    },
+    {
+      "bytes": 4570,
+      "content_address_sha1_matches": true,
+      "coordinate": [
+        "androidx.collection",
+        "collection-jvm",
+        "1.4.2"
+      ],
+      "saved_public_document": "androidx.collection-collection-jvm-1.4.2.module",
+      "sha256": "aad6b3536c0f0e570aa733d5141d70fa6b9b3add370f73a311ca4ca5dee25448"
+    },
+    {
+      "bytes": 31934,
+      "content_address_sha1_matches": true,
+      "coordinate": [
+        "androidx.graphics",
+        "graphics-shapes",
+        "1.0.1"
+      ],
+      "saved_public_document": "androidx.graphics-graphics-shapes-1.0.1.module",
+      "sha256": "2d7f6d55042299f9c4f8478aa094bc4099a346902779ff3091fed1dfc2b62f53"
+    },
+    {
+      "bytes": 5754,
+      "content_address_sha1_matches": true,
+      "coordinate": [
+        "androidx.graphics",
+        "graphics-shapes-android",
+        "1.0.1"
+      ],
+      "saved_public_document": "androidx.graphics-graphics-shapes-android-1.0.1.module",
+      "sha256": "9a5508caf02d78fcf2729394e97e7b27a43786273e17ccb65bf8e1b00a598324"
+    }
+  ],
+  "status": "NO_DESIGN_BLOCKER_FINITE_SIX_CONTEXT_ADAPTER_IMPLEMENTATION_REVIEW_PENDING",
+  "verified_routes": [
+    {
+      "canonical_fetch_filename": "annotation-jvm-1.8.1.jar",
+      "exact_available_at_relative_url": "../../annotation-jvm/1.8.1/annotation-jvm-1.8.1.module",
+      "source": [
+        "androidx.annotation",
+        "annotation",
+        "1.8.1"
+      ],
+      "source_unique_and_fileless": true,
+      "target": [
+        "androidx.annotation",
+        "annotation-jvm",
+        "1.8.1"
+      ],
+      "target_component_root_backlink_exact_context": true,
+      "terminal_bytes": 56126,
+      "terminal_cache_bytes_independently_match": true,
+      "terminal_filename": "annotation-jvm-1.8.1.jar",
+      "terminal_name_differs_from_url": false,
+      "terminal_sha256": "9aab326d9492800991854360ac248f493ce7f7c3183519309b78ace9e240f6f6",
+      "variant": "jvmRuntimeElements-published"
+    },
+    {
+      "canonical_fetch_filename": "collection-jvm-1.4.2.jar",
+      "exact_available_at_relative_url": "../../collection-jvm/1.4.2/collection-jvm-1.4.2.module",
+      "source": [
+        "androidx.collection",
+        "collection",
+        "1.4.2"
+      ],
+      "source_unique_and_fileless": true,
+      "target": [
+        "androidx.collection",
+        "collection-jvm",
+        "1.4.2"
+      ],
+      "target_component_root_backlink_exact_context": true,
+      "terminal_bytes": 775789,
+      "terminal_cache_bytes_independently_match": true,
+      "terminal_filename": "collection-jvm-1.4.2.jar",
+      "terminal_name_differs_from_url": false,
+      "terminal_sha256": "984ce9bd780055eafb8a105aca3f514686bf7b1b6272ec7c645a98ce40fc7db4",
+      "variant": "jvmRuntimeElements-published"
+    },
+    {
+      "canonical_fetch_filename": "graphics-shapes-android-1.0.1.aar",
+      "exact_available_at_relative_url": "../../graphics-shapes-android/1.0.1/graphics-shapes-android-1.0.1.module",
+      "source": [
+        "androidx.graphics",
+        "graphics-shapes",
+        "1.0.1"
+      ],
+      "source_unique_and_fileless": true,
+      "target": [
+        "androidx.graphics",
+        "graphics-shapes-android",
+        "1.0.1"
+      ],
+      "target_component_root_backlink_exact_context": true,
+      "terminal_bytes": 88037,
+      "terminal_cache_bytes_independently_match": true,
+      "terminal_filename": "graphics-shapes-release.aar",
+      "terminal_name_differs_from_url": true,
+      "terminal_sha256": "7171269a4122feabb071768df46d10b362e47ac75fd0aa8dbcafa1f44f61b40c",
+      "variant": "releaseRuntimeElements-published"
+    }
+  ],
+  "writes_only_owned_tmp": true
+}

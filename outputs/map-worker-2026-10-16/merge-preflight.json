@@ -1,0 +1,50 @@
+{
+  "checked_at_utc": "2026-10-16T11:42:52.848589+00:00",
+  "owner_authority": "Merge #77; hold Pages for my approval",
+  "status": "EXACT_HEAD_GREEN_MERGE_PREFLIGHT_PASS",
+  "pr": {
+    "baseRefName": "main",
+    "headRefOid": "d53eda2e835e57b4ee01dc922fb63d5ebdeceae0",
+    "isDraft": false,
+    "mergeStateStatus": "CLEAN",
+    "mergeable": "MERGEABLE",
+    "state": "OPEN"
+  },
+  "main_before": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "checks": [
+    {
+      "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894216993/job/116950698453",
+      "name": "validate",
+      "state": "SUCCESS",
+      "workflow": "CI"
+    },
+    {
+      "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894217274/job/116950698986",
+      "name": "gitleaks",
+      "state": "SUCCESS",
+      "workflow": "Secret scan"
+    },
+    {
+      "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894216700/job/116950700125",
+      "name": "dco",
+      "state": "SKIPPED",
+      "workflow": "DCO"
+    },
+    {
+      "link": "https://github.com/global-soil-intelligence/gsip/actions/runs/38894212950/job/116950686124",
+      "name": "gitleaks",
+      "state": "SUCCESS",
+      "workflow": "Secret scan"
+    }
+  ],
+  "unresolved_review_threads": 0,
+  "pages_can_admins_bypass": false,
+  "pages_reviewers": [
+    "jdhart81"
+  ],
+  "pages_allowed_branches": [
+    "main",
+    "gh-pages"
+  ],
+  "required_validate_setting": "Known owner action remains pending; no rule change authorized or made"
+}

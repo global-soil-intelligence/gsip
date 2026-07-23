@@ -1,0 +1,35 @@
+{
+  "reviewed_at_utc": "2026-10-14T22:53:57.821289+00:00",
+  "scope": "Final source-fact accuracy only, IOS_NATIVE_STORAGE_DESIGN.md sections2\u20134; no mechanism or device acceptance",
+  "freeze": "/private/tmp/gsip-ios-v12-frozen-u83ntoxd",
+  "manifest_path": "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/ios-storage-design-2026-10-14/V3_MANIFEST.json",
+  "manifest_sha256": "bb928de44bf09547090ca51dfbe9441a9d82caea2ecde577657994d41953a948",
+  "document_path": "docs/IOS_NATIVE_STORAGE_DESIGN.md",
+  "document_sha256": "4aa3d99c9c098901f2e65e686313e0d5c6f1789a983abb8adeb5e212b03eb362",
+  "document_bytes": 29756,
+  "reviewed_lines": [
+    40,
+    172
+  ],
+  "reviewed_sections_sha256": "394aa187885b8156da7a7bbce650b929295e0fea26f8338250bf30cbf1821c25",
+  "primary_evidence_binding_sha256": "c09127a2292dab6e07a40adea2ddab0721e1fd03f183d342c7606ba7e585e3af",
+  "blocking_findings": [],
+  "unresolved_wording_findings": [],
+  "previous_clarification_resolved": "Anchor uses only ordinary default app access group; no sharing/additional access group",
+  "verified_facts": [
+    "Excluded root and protection readback precede SQLite open/recovery; descendant and platform behavior remain proof gates",
+    "DELETE+EXTRA is proposed; fullfsync readback not represented as effective iOS VFS or universal power-loss proof",
+    "Scratch/journal containment, no hot-journal deletion and error outcomes appropriately qualified",
+    "All-six-store transaction/fences and proposed chunk/quota/memory limits are future requirements, not verified implementation or capacity",
+    "Bounded counters hold on exhaustion rather than wrap/reuse",
+    "Passcode-specific anchor class and loss/reinstall implications are pending product decisions",
+    "No hardware-monotonic, cross-store CAS, SQLite+Keychain atomicity or crash-durability claim",
+    "Pending-oldDB and absent/mismatched states quarantine; no anchor regression, silent new account or destructive reset",
+    "Clean same-install offline restart is distinct from live server rights and hosted activation"
+  ],
+  "limitations": [
+    "No tests, prototype/native/Keychain calls, install/build, signing, physical device or backup experiment performed",
+    "No shared source/Git/GitHub/production mutation",
+    "Full implementation safety and liveness remain held; this closure assesses factual qualification only"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "01-merge-91-receipt.json": "148c2f820a4c8735a13a44c070551b3b2f489408840d208295d89ef119e78167",
+  "02-public-site-readback.json": "e41d71785edbf8617f44b1672f9a43a4765e01de52e5182bbc9e9220f01a5d4c",
+  "03-ios-main-artifact-verification.json": "bb4e1a120bd512497071b9ca2a53b02a35181c559d47cce787912d25422cea62",
+  "04-android-main-artifact-verification.json": "642e9547a5baf8fc82fd0dd22baf6fae41478dd5bfd9561471f93309df231039",
+  "05-final-closeout-receipt.json": "274d3026e4db06725f78735fd9cbb2e1db1ee81102725b814090b91ce2afa9f0",
+  "pr-91-body-before-closeout.md": "66ce5486420710e13fb512e9f01a14f89a4a6d8b372f53633a54c20e76e07d88",
+  "pr-91-body-closeout.md": "837f8fe64d1660f198f190ef4d47c322eae0f119cf204a1d88bd757c85b635e1"
+}

@@ -1,0 +1,3 @@
+ruff failed
+  Cause: Failed to create temporary file
+  Cause: Operation not permitted (os error 1) at path "/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/.ruff_cache/0.16.9/.tmpMreQas"

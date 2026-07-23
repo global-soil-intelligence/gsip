@@ -1,0 +1,209 @@
+{
+  "actual_evidence_scope": {
+    "author_actual_Gradle_XML_observed": {
+      "cases": 31,
+      "not_executed_by_reviewer": true,
+      "passed": 31,
+      "skip": 0
+    },
+    "author_final_verification": {
+      "bytes": 8588,
+      "path": "/private/tmp/gsip-gmm-adapter-author-ljzt5fi4/AUTHOR_FINAL_VERIFICATION.json",
+      "sha256": "0e9bca3cc82a433ebcf21f685a70ec2d0e8fce95afc6adc9ad4eac420def0ed9"
+    },
+    "final_metadata_only_probes_both_roots": "Hash-bound final production closure, both dry runs and metadata tasks exit0,75 selected modules and three scoped routes per configuration",
+    "hosted_actual_redirect_values_identified": false,
+    "new_complete_native_task_graph_or_artifact_not_claimed": true,
+    "runtime_join": "Author pure current collector/runtime-validator slice replays retained original graphs joined to fresh metadata-only selected-route observations, all75POM/module and complete nonduplicate binary/source proofs retained",
+    "runtime_join_sha256": "97490c4a86ec0d79aa60eaea1bfe99a7f4f19ed561ad15b574f789dc9d8e0af5"
+  },
+  "base_commit": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "effective_independent_mutations": {
+    "carry_basis": "All relevant final Python function TEXT is byte-exact to tested preliminary V2; task-only scope filter changed afterward; final54 controls rerun",
+    "mandatory_known_root_proof_removed": {
+      "cases": 51,
+      "unexpected_acceptance_failures": 1
+    },
+    "raw_pin_removed": {
+      "cases": 51,
+      "unexpected_acceptance_failures": 2
+    },
+    "terminal_content_binding_removed": {
+      "cases": 51,
+      "unexpected_acceptance_failures": 2
+    }
+  },
+  "evidence": {
+    "FINAL_AUTHOR_ACTUAL_SCOPE_READBACK.json": {
+      "bytes": 1313,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/FINAL_AUTHOR_ACTUAL_SCOPE_READBACK.json",
+      "sha256": "7fc1d7dd5144cbeff9c96559075bf4e0f30181d6517eb735dc54cc9f025a7215"
+    },
+    "FINAL_SOURCE_AND_PROBE_BINDING.json": {
+      "bytes": 3377,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/FINAL_SOURCE_AND_PROBE_BINDING.json",
+      "sha256": "1666ae08f819a9834e743df959c773a9aaf40030e026c1fa9e907af07f22c209"
+    },
+    "PRELIMINARY_SELECTED_ROUTE_PRIVACY_CHECKS.json": {
+      "bytes": 2725,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/PRELIMINARY_SELECTED_ROUTE_PRIVACY_CHECKS.json",
+      "sha256": "178246c2b8983884c91e8c7bdfba64fe77700f6623a5fdb75c6b2ad22090cfdb"
+    },
+    "bind-final-source.py": {
+      "bytes": 7249,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/bind-final-source.py",
+      "sha256": "323d16118987eb1a133b3531c3b10e62ed7c7fcabc1c08411cc5215b91b91489"
+    },
+    "coroutines-existing-pom-context.json": {
+      "bytes": 1517,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/coroutines-existing-pom-context.json",
+      "sha256": "cc19a5841292a5e7c55a2496b8e00d3701d25106bcfc7ed6fcd672004b3d2804"
+    },
+    "final-author50-execution.json": {
+      "bytes": 356,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/final-author50-execution.json",
+      "sha256": "9c6adcd128447657360cf73308778fa531c0538c987649555d1e30c9a8966d9c"
+    },
+    "final-author50-safe.json": {
+      "bytes": 34053,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/final-author50-safe.json",
+      "sha256": "0a4b3a2f94ec9702080d0c266c110db7718a865b20988ee8cfab27845238d003"
+    },
+    "final-mypy75-execution.json": {
+      "bytes": 329,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/final-mypy75-execution.json",
+      "sha256": "006b4525fbadaea638856a749d9ba240b3d14145ec4c9591ba9e7849d7634be2"
+    },
+    "final-old43-execution.json": {
+      "bytes": 353,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/final-old43-execution.json",
+      "sha256": "4bff7f6ab974f8be34a25f4522132b5fac201d47b9416961e19053c8753117fa"
+    },
+    "final-old43-safe.json": {
+      "bytes": 29728,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/final-old43-safe.json",
+      "sha256": "c0bbba59d52ee56d2d7f7218ad7da8416eba5d6e0757800fef2e7ffb5a863c48"
+    },
+    "final-own54-execution.json": {
+      "bytes": 319,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/final-own54-execution.json",
+      "sha256": "fee47db707eaa3db8b1b61e3e41fc2621d2e743fef3d42b8efc1ed4c32ad5820"
+    },
+    "final-own54.json": {
+      "bytes": 6135,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/final-own54.json",
+      "sha256": "bd8f993cc80d46f5aa5c4edccba6328b8bf588b6e885277c3b402d8696e1ddc9"
+    },
+    "mutants/mandatory-proof.json": {
+      "bytes": 5766,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/mutants/mandatory-proof.json",
+      "sha256": "cecd9f447665b4f43c42dc7aa255dd605ca108a639bce4b0019f225759db92f9"
+    },
+    "mutants/raw-pin.json": {
+      "bytes": 5767,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/mutants/raw-pin.json",
+      "sha256": "f8351758b06e3a7a39877525ad81d88d53b18827c3f13b89e3e1e85c3ea574ba"
+    },
+    "mutants/terminal-content.json": {
+      "bytes": 5767,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/mutants/terminal-content.json",
+      "sha256": "5ed26ca6d549323f690faa87210e3b66fe44fbd338bcf1ea4912c0baa1e49c64"
+    },
+    "own_route_controls.py": {
+      "bytes": 12013,
+      "path": "/private/tmp/gsip-gmm-route-privacy-independent-ohu11pqd/own_route_controls.py",
+      "sha256": "370af615a0ff433104238a293df7692993521cbad77819cbfe37816a8f531182"
+    }
+  },
+  "exact_three_files": {
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "bytes": 44023,
+      "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/source/docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "feb569c51cd958260ae372bbe5f00edbb49003245c7cf55e771892ae9f0ec784"
+    },
+    "scripts/app_notification_audit.py": {
+      "bytes": 144888,
+      "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/source/scripts/app_notification_audit.py",
+      "sha256": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d"
+    },
+    "tests/test_app_notification_audit.py": {
+      "bytes": 269106,
+      "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/source/tests/test_app_notification_audit.py",
+      "sha256": "67d7f761d046c620b08b1982bbc38e1f3574f98355bd825ce9cfb15bf44a84d6"
+    }
+  },
+  "fresh_reviewer_checks": {
+    "HTTP_denied_for_reviewer_fixture_controls": true,
+    "fail": 0,
+    "frozen_appended_pure_cases": 50,
+    "full_configured_mypy_source_files": 75,
+    "mypy_exit": 0,
+    "own_adversarial_cases": 54,
+    "skip": 0,
+    "total_pass": 147,
+    "unchanged_diagnostic_bank_cases": 43
+  },
+  "harness_recoveries": [
+    "Initial source binding used trailing marker LF in closure digest; corrected to documented exact2079B no-trailing-LF span, both complete blocks were byte-identical",
+    "Two exploratory actual-control globs failed count assertions; exact final XML instance path verified directly; no actual test failure",
+    "Prior generic emitter fourth-bridge observation and initial failed three-route assumption preserved; final scope intentionally three reviewed non-POM roots"
+  ],
+  "independent_primary_design_receipt": {
+    "path": "/private/tmp/gsip-selected-route-design-independent-095smwqn/INDEPENDENT_SELECTED_ROUTE_DESIGN_REVIEW.json",
+    "sha256": "ade13a219abcdeb9f28c157a78313526996348ae3a13f6412cac6ada6784e545"
+  },
+  "normalizer_base_helper_sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4",
+  "preserved_scope_limits": [
+    "No fresh hosted full native acceptance; new exact-head CI/artifacts still required",
+    "No new full native build, signing, real key/APK action by reviewer",
+    "No shared/author source, Git/GitHub/CI/production changes",
+    "Existing private cached public library binary/metadata reads and owned synthetic test files only",
+    "No legal/device/store/production approval inferred"
+  ],
+  "previous_normalizer_privacy_closure_retained": {
+    "path": "/private/tmp/gsip-runtime-duplicate-review-coa5tv_e/INDEPENDENT_NORMALIZER_PRIVACY_SLICE_CLOSURE.json",
+    "sha256": "87a28166f86d017b70985509008ab2773139a031c9ca6887204bcba711b53ee7"
+  },
+  "schema": "gsip-independent-selected-route-privacy-final-v1",
+  "schema_wording_correction": {
+    "native_audit_nested_proof_schema_extended": true,
+    "new_nested_field": "selected_variant_redirect",
+    "no_blanket_schema_unchanged_claim": true,
+    "product_API_unchanged": true,
+    "public_build_receipt_13fields_unchanged": true,
+    "workflow_permissions_backup_signing_equality_source_license_scanner_policy_unchanged": true
+  },
+  "scope_verification": {
+    "changed_existing_functions": [
+      "runtime_evidence",
+      "validate_android"
+    ],
+    "final_function_TEXT_exact_preliminary_V2": true,
+    "new_actual_Gradle_test_runner": "Appended fixture only; explicit verified launcher, private home/file repository, bounded captured streams and fixed failure text, exact canonical seven arguments, successful selected bridge in both configurations; production run() unchanged",
+    "new_python_helpers": 4,
+    "new_runtime_task_sha256": "f90e5f896bddf83530e304b315e79694c7992c87e79f3b53288b27067b66c856",
+    "old_Gradle_operation_bytes_preserved_by_erasure": true,
+    "only_prior_test_edit": "one authorized 64-byte expected task SHA replacement, assertions retained",
+    "retained_test_prefix_bytes": 232804,
+    "shared_functions_AST_unchanged": 65,
+    "source_files": 365,
+    "unrelated_byte_exact": 362,
+    "whole_helper_erasure_to_normalizer_base_exact": true
+  },
+  "source_manifest": {
+    "bytes": 98862,
+    "path": "/private/tmp/gsip-gmm-adapter-frozen-pdofe6bm/SOURCE_MANIFEST.json",
+    "sha256": "bf75009c671b84cc5b0366ecf25aabc78d9dca2c298888fcaee910047bc48deb"
+  },
+  "status": "CLOSED_NO_BLOCKER_SOURCE_PRIVACY_SCOPE_ONLY",
+  "verified_guards": [
+    "Exactly six reviewed public raw GMM byte contexts; strict canonical bounded base64, SHA256/size recomputation and exact two-document order",
+    "Exactly three fixed non-POM root observations; selected singleton owner/one-hop external target and singleton selected target; same-view target mandatory",
+    "Known roots require route proof even when a forged direct binary row is provided; unknown supplied route/proof/version refuses",
+    "Unique pinned GMM selected row and exact available-at target GAV/relative URL; fixed target backlink context; no generic URL/backlink/name fallback",
+    "Exact logical files.name/SHA256/size binds audited terminal binary; separately exact files.url fetch location retained",
+    "Every selected module and POM/license proof remains; all binary proofs/notice/duplicate/project/source checks retained; unknown non-POM missing binaries still refuse",
+    "Existing packaging=pom rule unchanged, independently verified exact coroutines primary POM against all four retained views; no new module exemption",
+    "Read descriptor/unsafe-file/bounds and four diagnostic fields remain unchanged; raw public pinned bytes only, no new arbitrary/private paths, messages, class names, attributes or trace fields accepted"
+  ]
+}

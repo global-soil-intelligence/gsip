@@ -1,0 +1,20 @@
+{
+  "baseline": "de9d1221b7c73e9be5c7e25ccaa24dcfa7903934",
+  "existing_files": 372,
+  "unchanged_existing_files": 370,
+  "existing_acceptance_lines_unchanged": 132,
+  "new_unchecked_criteria": 6,
+  "spec_1_through_13_unchanged": true,
+  "spec_15_1_through_15_10_unchanged": true,
+  "spec_entire_16_unchanged": true,
+  "baseline_new_tests": {
+    "failed_as_expected": 25,
+    "errors": 0,
+    "skipped": 0
+  },
+  "focused_tests": {
+    "passed": 78,
+    "skipped": 0
+  },
+  "manifest_sha256": "79c6d65ef192352b29799f9e11258a047b412604d86a53c455901e55fea406bc"
+}

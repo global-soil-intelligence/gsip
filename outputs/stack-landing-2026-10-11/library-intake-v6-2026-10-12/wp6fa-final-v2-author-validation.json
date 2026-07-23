@@ -1,0 +1,256 @@
+{
+  "applies_cleanly_to": "f1a644af2a78b1b9865385d603cb77ad156843eb",
+  "base": "e98bdb9b806c4bb126b550ddd1376f427ed00cdc",
+  "delta": "/private/tmp/gsip-6fa-concurrency-forward-delta.patch",
+  "delta_sha256": "146d6c71b3112adc5b1dab857ca3c9dcd1d19621982353ab7d114611fdfbc65c",
+  "files": {
+    "docs/PHOTO_PRIVACY_AUTHORITY.md": {
+      "bytes": 14935,
+      "sha256": "b4e430ba96f25383b2f236cc330be500b11429827b5efd45ba2d15bb22f808e6"
+    },
+    "packages/schema/src/database.types.ts": {
+      "bytes": 30994,
+      "sha256": "31fc12af09a8603a58fdf63fcbea6009f39f30804594fbece551bc2033a8e4b5"
+    },
+    "scripts/db-migration-test.sh": {
+      "bytes": 3649,
+      "sha256": "5c1a6e9bf44da31ae4af92b99b3a6d0eab32176620529e16309310637902afa7"
+    },
+    "scripts/test-photo-privacy-concurrency.py": {
+      "bytes": 30264,
+      "sha256": "dd150d14991e09670baa83cd273786453e1cb8d7c0720feae3aa58d5f5a99d5e"
+    },
+    "supabase/migration-tests/before_20261014010000_wp6fa_private_photo_privacy.sql": {
+      "bytes": 1829,
+      "sha256": "84b82d74a1428160fa1d6edc678ccec8b5c2d4e84d5723797955dc37c81353e0"
+    },
+    "supabase/migration-tests/wp6fa_photo_privacy.test.sql": {
+      "bytes": 3922,
+      "sha256": "43c06a56eee97f2a6f6357e72e024418d8ab7ea8e2b899ed312793cc0c632923"
+    },
+    "supabase/migrations/20261014010000_wp6fa_private_photo_privacy.sql": {
+      "bytes": 66343,
+      "sha256": "52ea34b5b20be0ccec307fdcab0d865f1b8f8a8826f420b26d7332d95630a9c9"
+    },
+    "supabase/tests/database/wp6fa_photo_privacy.test.sql": {
+      "bytes": 37151,
+      "sha256": "5215a264578bbd2a64342cab2fcdd7904c20aa7b397474f76947236f5015417f"
+    },
+    "supabase/tests/database/wp_lib4_private_intake.test.sql": {
+      "bytes": 28653,
+      "sha256": "dea41799405c9f5b3b8b762896a0a39455dee5144c4b08c95e00960f89264980"
+    }
+  },
+  "limitations": [
+    "no production migration or data",
+    "actual Supabase platform test is root integration step",
+    "SQL JSONB validation cannot detect original duplicate JSON keys/transport whitespace; typed uuid args arrive decoded",
+    "DB authorization cannot guarantee filesystem/Hub atomicity against a later rights withdrawal"
+  ],
+  "local_forward_repair": {
+    "no_history_or_activation_change": true,
+    "not_applied_to_shared_app_by_agent": true,
+    "path": "/private/tmp/gsip-6fa-local-forward-repair.sql",
+    "sha256": "98141eaa943a5f10c592ce8cddf149e3f8edeff1eb72706317d30a1dc5b61587",
+    "validated_on_agent_database": true
+  },
+  "local_review_environment": {
+    "container": "supabase_db_gsip",
+    "copied_supabase": "/tmp/gsip_6fa_2jc1xm3m_forward",
+    "database": "gsip_lib4b_6fa_2jc1xm3m",
+    "host_adapters": "/private/tmp/gsip-6fa-local-pg-adapters",
+    "preserved_for_review": true,
+    "shared_app_database_touched": false
+  },
+  "notes": [
+    "legacy LIB4B fresh-grant fixture creates fresh photo/object UUIDs only, preserving all 104 assertions",
+    "contributor/source/live-auth/private-content-policy lock order; auth-before-operator matches cascade",
+    "source cleanup does not add contributor locks",
+    "export requires an immutable current screen or supported flagged screen plus current clear audit",
+    "fixed plan-dependent parent/photo joined-lock inversion with explicit parent SHARE NOWAIT then photo SHARE NOWAIT",
+    "claim/export catch busy PP002 per-source and release skipped locks",
+    "early source BEFORE admission serializes optional photo insertion with both rights kinds before FK/private locks",
+    "all new API/source admission transactions fail closed outside READ COMMITTED"
+  ],
+  "original_patch_sha256": "f5397bbd702e594a93904d1e7d06ea1da649e05bbad2a288a54e8c86a91db835",
+  "patch": "/private/tmp/gsip-6fa-private-photo-privacy-v2.patch",
+  "patch_sha256": "2bcb4840770422e8bacbc1b9be114a9682ecbec4bc59ab7b535a6f306686edb8",
+  "revision": "v2 concurrency correction",
+  "snapshot": "/private/tmp/gsip-6fa-2jc1xm3m",
+  "supersedes_original_freeze": true,
+  "unchanged_gates": {
+    "calibration_approval": false,
+    "capture_opening": false,
+    "deployment": false,
+    "detector_selection": false,
+    "operator_provisioning": false,
+    "production_access": false,
+    "publication_activation": false
+  },
+  "validation": {
+    "all_database_tests": {
+      "environment": "final corrected SQL; agent-owned disposable database; stand_in.sql/all migrations/standard synthetic seed; all593pass; actual platform pass not claimed",
+      "passed": 593,
+      "suites": {
+        "prior_attempts": 30,
+        "rls": 42,
+        "wp6b_integrity": 51,
+        "wp6b_invoker_boundary": 16,
+        "wp6d_private_rights_boundary": 21,
+        "wp6d_rights": 70,
+        "wp6e_provenance": 57,
+        "wp6fa_photo_privacy": 143,
+        "wp_agent1_public": 14,
+        "wp_lib4_contract_conformance": 45,
+        "wp_lib4_private_intake": 104
+      },
+      "total": 593
+    },
+    "current_transaction_isolation": {
+      "all_nine_RPCs_and_source_admission_refuse_repeatable_read_and_serializable": true,
+      "checked_actual_local": true,
+      "default": "read committed",
+      "transaction": "read committed"
+    },
+    "gitleaks": {
+      "authored_files_dirscan": true,
+      "findings": 0,
+      "report": "/private/tmp/gsip-6fa-gitleaks-v2.json",
+      "suppression_changes": false,
+      "version": "8.21.2"
+    },
+    "independent_fail_before": {
+      "photo-insert-account-delete": {
+        "origin": "independent photo_sql_review on original freeze; superseded blocked behavior",
+        "receipt": "/private/tmp/gsip-6fa-photo-insert-account-delete-probe-receipt.json",
+        "sha256": "bd5c27e17ecd5ce73ed57fe929d32aca47696cc657cd93dc2ff329bb2c272c1e"
+      },
+      "photo-insert-withdrawal": {
+        "origin": "independent photo_sql_review on original freeze; superseded blocked behavior",
+        "receipt": "/private/tmp/gsip-6fa-photo-insert-withdrawal-probe-receipt.json",
+        "sha256": "bd5c27e17ecd5ce73ed57fe929d32aca47696cc657cd93dc2ff329bb2c272c1e"
+      },
+      "source-lock": {
+        "origin": "independent photo_sql_review on original freeze; superseded blocked behavior",
+        "receipt": "/private/tmp/gsip-6fa-source-lock-probe-receipt.json",
+        "sha256": "7ff7ebd4b6e547abba67fe79a64a741a5ee4a265f403288d95a1bf3b6eac8431"
+      }
+    },
+    "migration_runner": {
+      "assertions": 45,
+      "environment": "exact scripts/db-migration-test.sh with host Docker adapters, new disposable socket/port55492 cluster; native CI PostgreSQL execution remains CI authority",
+      "existing_library_races": 6,
+      "exit_code": 0,
+      "log": "/private/tmp/gsip-6fa-forward-migration-runner.log",
+      "photo_privacy_races": 31
+    },
+    "mypy_script": true,
+    "negative_before_witness": {
+      "assertions": [
+        "corrupted clear flag without supported screen/audit",
+        "old complete residual content",
+        "old complete orphan job",
+        "old complete orphan screen",
+        "old complete orphan human audit"
+      ],
+      "failures": 5,
+      "log": "/private/tmp/gsip-6fa-before-enforcement.log",
+      "method": "inside a rollback transaction only, disable additive completion guard and restore prior clear-flag-only authorizer; final functions/trigger restored by rollback"
+    },
+    "new_cases": [
+      {
+        "order": "mid_parent_delete_then_registration",
+        "other_source_lock_released": true,
+        "passed": true,
+        "prompt_busy_refusal": true,
+        "source_delete_committed": true
+      },
+      {
+        "order": "mid_photo_delete_then_registration",
+        "other_source_lock_released": true,
+        "passed": true,
+        "prompt_busy_refusal": true,
+        "source_delete_committed": true
+      },
+      {
+        "busy_source_skipped": true,
+        "order": "mid_photo_lock_then_claim_next_source",
+        "passed": true,
+        "skipped_contributor_lock_released": true,
+        "skipped_parent_lock_released": true
+      },
+      {
+        "busy_source_withheld": true,
+        "order": "mid_second_parent_lock_then_two_source_export",
+        "passed": true,
+        "reverse_parent_deletes_committed": true
+      },
+      {
+        "actual_contributor_wait": true,
+        "authenticated_allowed_columns_only": true,
+        "late_insert_refused": false,
+        "order": "mid_optional_C_insert_then_withdraw_contributions",
+        "passed": true,
+        "private_payloads": 0
+      },
+      {
+        "actual_contributor_wait": true,
+        "authenticated_allowed_columns_only": true,
+        "late_insert_refused": true,
+        "order": "mid_withdraw_contributions_then_optional_C_insert",
+        "passed": true,
+        "private_payloads": 0
+      },
+      {
+        "actual_contributor_wait": true,
+        "authenticated_allowed_columns_only": true,
+        "late_insert_refused": false,
+        "order": "mid_optional_C_insert_then_delete_account",
+        "passed": true,
+        "private_payloads": 0
+      },
+      {
+        "actual_contributor_wait": true,
+        "authenticated_allowed_columns_only": true,
+        "late_insert_refused": true,
+        "order": "mid_delete_account_then_optional_C_insert",
+        "passed": true,
+        "private_payloads": 0
+      },
+      {
+        "order": "repeatable_read_admission_and_nine_RPC_refusal",
+        "passed": true,
+        "private_RPCs_refused": 9,
+        "source_insert_refused": true
+      },
+      {
+        "order": "serializable_admission_and_nine_RPC_refusal",
+        "passed": true,
+        "private_RPCs_refused": 9,
+        "source_insert_refused": true
+      }
+    ],
+    "prettier": true,
+    "privacy_pgtap": {
+      "log": "/private/tmp/gsip-6fa-forward-pgtap.log",
+      "passed": 143,
+      "total": 143
+    },
+    "root_actual_platform_context": {
+      "capture_open": false,
+      "full_suite_pass": false,
+      "gates_changed_for_fixture": false,
+      "legacy_rls_positive_ingest_failures": [
+        25,
+        29,
+        33
+      ],
+      "new_privacy_passed": 143,
+      "source": "root report before corrected integration",
+      "total": 593
+    },
+    "ruff_check_format": true,
+    "schema_typecheck": true,
+    "shell_syntax": true
+  }
+}

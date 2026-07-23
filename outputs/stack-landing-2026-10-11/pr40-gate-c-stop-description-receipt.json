@@ -1,0 +1,11 @@
+{
+  "pr": 40,
+  "head": "cf063aa5865a86eb86250e3a1f8287545e51f037",
+  "updated_at": "2026-10-12T13:58:30.983532+00:00",
+  "original_prefix_preserved": true,
+  "body_sha256_before": "1f7fad1ad85b685b3167437a42c1022e9a3e26a84f1f7d10289c15a7599248a0",
+  "body_sha256_after": "3e2bda9b7cfc952df3d29068dabbdd4dff67771be08ce19b2e0f89cb4be2cdd3",
+  "source_unchanged": true,
+  "gate_c": "EXECUTED_SECURITY_STOP",
+  "state": "APPEND_VERIFIED"
+}

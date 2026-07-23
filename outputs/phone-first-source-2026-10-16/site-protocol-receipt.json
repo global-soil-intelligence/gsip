@@ -1,0 +1,46 @@
+{
+  "version": "gsip-collect3-site-protocol-v1",
+  "recorded_at_utc": "2026-10-17T00:23:26.468365+00:00",
+  "status": "source_frozen_scoped_checks_passed_independent_review_pending",
+  "source_sha256": {
+    "apps/site-web/src/App.tsx": "b5200ed290dbc27e0623b5d169c57262c44dc8236ca7ab1d258a83f7d9ee46c3",
+    "apps/site-web/card/index.html": "e67825f80c81cb1268a1ef845e414a2e71fcdb6770844b7f757e17fbb22176d9",
+    "apps/site-web/scripts/prerender.mjs": "cd2665fa3793179b442a6ccd4fa076592b6c413ad27e9abdf61528cbf5820db7",
+    "apps/site-web/tests/phone-first.test.tsx": "4bbc0313f80175fcbbe8e5a12815b5135d5d01bdae4d5c374e54ab0577577c73",
+    "packages/schema/src/protocol.ts": "7476f8d97041131e21a39680fa0447114438207b6c816f5a1b66f816cd82962a",
+    "packages/schema/src/agent/mcp.ts": "5910aa7d45585262a7752917b94c04325d89156f0cc478480b4ea93d1b48d7d7",
+    "packages/schema/src/agent/openapi.ts": "26dc0fd25ac0e7d3707f9569c9e56c123e6bac95326b7cd08dd6be9f3b902863",
+    "packages/schema/tests/protocol.test.ts": "ef44fe0fd9981de8e2c7aaa3dda9c1d6052b3b6b5044de6300f11b257b3c7912",
+    "packages/schema/tests/agent/rest.test.ts": "6dfbf820b1afc329984ff6cc94b3ac6e8a41c95404d977d1b853593d21ff29b6",
+    "packages/schema/tests/agent/mcp.test.ts": "538907a8011a67899028ca79c77b6c035d44a49f2dcd13971457ba3d1d313a34"
+  },
+  "negative_first": {
+    "site_failures": 8,
+    "protocol_failures": 5,
+    "protocol_existing_passes": 40
+  },
+  "passing": {
+    "site_tests": 41,
+    "schema_tests": 310,
+    "site_typecheck": true,
+    "schema_typecheck": true,
+    "scoped_lint": true,
+    "scoped_format": true,
+    "diff_check": true,
+    "closed_site_build": true,
+    "built_pages_checked": 5,
+    "llms_checked": true
+  },
+  "evidence_sha256": {
+    "site-protocol-red.txt": "c96c880c28ddd443a89d5471a352e741f37292439be4e4fcf0bf22389e6e8c31",
+    "site-protocol-green.txt": "f0145393868b59e425e27ce5bf7e2b39e014662b7055cb170db31eb75772e8b1",
+    "site-output-check.json": "e3d6d14a8bf7ee436b0e436360e4fa6bae5aa747654a1585354d0428fdebbe5a"
+  },
+  "limits": [
+    "No shared build/server after scoped verification; root owns global checks.",
+    "No commits, branch changes, GitHub writes, deployment, capture opening, schema, new camera implementation or new dependency.",
+    "Protocol1.1 shape and required A+B/optionalC unchanged; card was already optional.",
+    "Cardless photographs stay uncalibrated source evidence; no automatic extracted camera_rgb record or library sample.",
+    "Existing physical-card assets and printing instructions retained for optional use."
+  ]
+}

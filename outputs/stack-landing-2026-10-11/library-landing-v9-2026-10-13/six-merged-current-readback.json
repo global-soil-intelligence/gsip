@@ -1,0 +1,50 @@
+{
+  "56": {
+    "mergeCommit": {
+      "oid": "1d105bde4d009403d114c844c52d5bf6aaf4565e"
+    },
+    "mergedAt": "2026-10-13T11:50:45Z",
+    "number": 56,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/56"
+  },
+  "55": {
+    "mergeCommit": {
+      "oid": "c804e1516ccb29c3f2535bc0a685ab1a907a32fe"
+    },
+    "mergedAt": "2026-10-13T11:50:01Z",
+    "number": 55,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/55"
+  },
+  "54": {
+    "mergeCommit": {
+      "oid": "9a51ec4564358068d1ba245455f6f5d3ea68f286"
+    },
+    "mergedAt": "2026-10-13T11:49:16Z",
+    "number": 54,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/54"
+  },
+  "53": {
+    "mergeCommit": {
+      "oid": "1dc380a16f8d6494f20ac59901a5347e2f31b64a"
+    },
+    "mergedAt": "2026-10-13T11:48:26Z",
+    "number": 53,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/53"
+  },
+  "52": {
+    "mergeCommit": {
+      "oid": "ffd056dc506911a1a60541ceb2eedc668b7d1576"
+    },
+    "mergedAt": "2026-10-13T11:47:20Z",
+    "number": 52,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/52"
+  },
+  "51": {
+    "mergeCommit": {
+      "oid": "5a26ca2f1cb47233b8d82228d96d4df0aea9a4b3"
+    },
+    "mergedAt": "2026-10-13T11:45:50Z",
+    "number": 51,
+    "url": "https://github.com/global-soil-intelligence/gsip/pull/51"
+  }
+}

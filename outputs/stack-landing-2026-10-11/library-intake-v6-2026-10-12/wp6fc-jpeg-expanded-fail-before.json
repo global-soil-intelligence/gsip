@@ -1,0 +1,66 @@
+{
+  "base_commit": "e03e20457a11456d1cd3842caa224d049b44265f",
+  "qa_sha256": "1f12cffa0471d96742ae9e852f5f0ea840c0f5edb2a0e0d2ce87bfec0dbcbb0c",
+  "test_sha256": "6dcc5a197c4e8b8a82ee00451f1247eb26e624b9dd408fa64a8dffa245e898e9",
+  "patch_sha256": "85b1bcb2620732ef634e4ba3aa978db38ee171766d4aa8096462713856d82b95",
+  "results": {
+    "tests": 17,
+    "fail_before": 13,
+    "compatibility_first4": 4
+  },
+  "failure_classes": [
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[tail_dri_surplus]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[tail_dnl_surplus]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[tail_dqt_surplus]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[tail_dht_surplus]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[tail_unused_dri]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[tail_unused_dnl]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[tail_unused_dqt]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[tail_unused_dht]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[tail_unused_dac]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[prefix_unused_dqt]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[prefix_unused_dht]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[prefix_overwritten_dqt]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ],
+    [
+      "test_exact_clearance_cannot_publish_hidden_jpeg_payloads[prefix_overwritten_dht]",
+      "Failed: DID NOT RAISE ExportPrivacyError"
+    ]
+  ],
+  "scope": "Synthetic private build_export only, HF offline, private cache; no upload/database/live key"
+}

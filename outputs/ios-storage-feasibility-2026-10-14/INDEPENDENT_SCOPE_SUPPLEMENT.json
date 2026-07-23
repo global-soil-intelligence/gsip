@@ -1,0 +1,21 @@
+{
+  "base": "883c7ee51dcb6c58cb7f309b78a590ea684ba8c7",
+  "SPEC_from_line9_byte_equal": true,
+  "original_checkbox_lines": 132,
+  "only_APP2C1_three_checkboxes_checked": true,
+  "three_checkbox_changes": [
+    {
+      "old": "- [ ] Bind actual npm/native versions, source digests, licences/maintenance/size and relevant API semantics. Generated resolution is not a repository-native lock. Existing readback/error/transaction gaps remain explicit; no positive capability is inferred from a method name or promise.",
+      "new": "- [x] Bind actual npm/native versions, source digests, licences/maintenance/size and relevant API semantics. Generated resolution is not a repository-native lock. Existing readback/error/transaction gaps remain explicit; no positive capability is inferred from a method name or promise."
+    },
+    {
+      "old": "- [ ] Inventory all six queue/draft/library/generation/reminder stores, session/last UID/compatible SDK keys, WebKit/native cookies/caches/preferences, camera/picker and proposed staging/journal remnants. Classify sensitive vs generic state and known vs unverified coverage.",
+      "new": "- [x] Inventory all six queue/draft/library/generation/reminder stores, session/last UID/compatible SDK keys, WebKit/native cookies/caches/preferences, camera/picker and proposed staging/journal remnants. Classify sensitive vs generic state and known vs unverified coverage."
+    },
+    {
+      "old": "- [ ] Source/synthetic policy tests reject missing exclusion-before-write/readback/error propagation, unsafe replacement/transactions, implicit web fallback and false device proof. Record no-backend-selected/blocked results; choose no new language or dependency without its own required review.",
+      "new": "- [x] Source/synthetic policy tests reject missing exclusion-before-write/readback/error propagation, unsafe replacement/transactions, implicit web fallback and false device proof. Record no-backend-selected/blocked results; choose no new language or dependency without its own required review."
+    }
+  ],
+  "future_unbound_source_limit": "Fixed13-file evidence read set is not automatic discovery of future app persistence; new surfaces require renewed review"
+}

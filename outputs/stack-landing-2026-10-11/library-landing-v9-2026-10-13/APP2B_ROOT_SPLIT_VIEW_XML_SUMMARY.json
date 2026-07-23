@@ -1,0 +1,10 @@
+{
+  "total": 1587,
+  "passed": 1583,
+  "GDAL_skipped": 4,
+  "failure_or_error": 0,
+  "actual_real_gradle_controls": 30,
+  "real_gradle_skips": 0,
+  "source_helper_sha256": "f3287be8d298d31497353fa3057a09730504fbcfefa80740f17905770f632071",
+  "xml_sha256": "4e5d854401bc28f48d5009a55c88f40d0440a38d1395fb9eb8f1070282c3ddde"
+}

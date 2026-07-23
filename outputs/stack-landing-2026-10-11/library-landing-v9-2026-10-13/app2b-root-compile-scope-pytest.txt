@@ -1,0 +1,16 @@
+........................................................................ [ 11%]
+........................................................................ [ 22%]
+........................................................................ [ 33%]
+........................................................................ [ 44%]
+........................................................................ [ 55%]
+........................................................................ [ 67%]
+........................................................................ [ 78%]
+........................................................................ [ 89%]
+...................................................................      [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/_pytest/cacheprovider.py:469
+  /Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/.venv/lib/python3.12/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: cache could not write path /Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/.pytest_cache/v/cache/nodeids: [Errno 1] Operation not permitted: '/Users/justinhart/.codex/worktrees/gsip-sync-lock/GSIP 2.0/.pytest_cache/v/cache/nodeids'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+643 passed, 30 deselected, 1 warning in 9.12s

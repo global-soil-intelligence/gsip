@@ -1,0 +1,321 @@
+{
+  "started_at_utc": "2026-10-16T11:17:40.957982+00:00",
+  "completed_at_utc": "2026-10-16T11:17:42.305228+00:00",
+  "status": "PASS_EIGHT_TLS_ROUTES_CLOSED_FLAGS_AND_APPROVAL_PROTECTION",
+  "routes_passed": 8,
+  "routes_expected": 8,
+  "routes": [
+    {
+      "requested_url": "https://globalsoilintelligence.com/",
+      "expected_final_url": "https://globalsoilintelligence.com/",
+      "pass": true,
+      "status": 200,
+      "final_url": "https://globalsoilintelligence.com/",
+      "redirects": [],
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "matches_original_approved_artifact": true
+    },
+    {
+      "requested_url": "http://globalsoilintelligence.com/",
+      "expected_final_url": "https://globalsoilintelligence.com/",
+      "pass": true,
+      "status": 200,
+      "final_url": "https://globalsoilintelligence.com/",
+      "redirects": [
+        {
+          "source": "http://globalsoilintelligence.com/",
+          "status": 301,
+          "destination": "https://globalsoilintelligence.com/"
+        }
+      ],
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "matches_original_approved_artifact": true
+    },
+    {
+      "requested_url": "https://www.globalsoilintelligence.com/",
+      "expected_final_url": "https://globalsoilintelligence.com/",
+      "pass": true,
+      "status": 200,
+      "final_url": "https://globalsoilintelligence.com/",
+      "redirects": [
+        {
+          "source": "https://www.globalsoilintelligence.com/",
+          "status": 301,
+          "destination": "https://globalsoilintelligence.com/"
+        }
+      ],
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "matches_original_approved_artifact": true
+    },
+    {
+      "requested_url": "http://www.globalsoilintelligence.com/",
+      "expected_final_url": "https://globalsoilintelligence.com/",
+      "pass": true,
+      "status": 200,
+      "final_url": "https://globalsoilintelligence.com/",
+      "redirects": [
+        {
+          "source": "http://www.globalsoilintelligence.com/",
+          "status": 301,
+          "destination": "https://globalsoilintelligence.com/"
+        }
+      ],
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "matches_original_approved_artifact": true
+    },
+    {
+      "requested_url": "https://global-soil-intelligence.github.io/gsip/",
+      "expected_final_url": "https://globalsoilintelligence.com/",
+      "pass": true,
+      "status": 200,
+      "final_url": "https://globalsoilintelligence.com/",
+      "redirects": [
+        {
+          "source": "https://global-soil-intelligence.github.io/gsip/",
+          "status": 301,
+          "destination": "https://globalsoilintelligence.com/"
+        }
+      ],
+      "bytes": 12709,
+      "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b",
+      "matches_original_approved_artifact": true
+    },
+    {
+      "requested_url": "https://global-soil-intelligence.github.io/gsip/data/",
+      "expected_final_url": "https://globalsoilintelligence.com/data/",
+      "pass": true,
+      "status": 200,
+      "final_url": "https://globalsoilintelligence.com/data/",
+      "redirects": [
+        {
+          "source": "https://global-soil-intelligence.github.io/gsip/data/",
+          "status": 301,
+          "destination": "https://globalsoilintelligence.com/data/"
+        }
+      ],
+      "bytes": 9469,
+      "sha256": "81b85b0325047f66324696d002cc86a12e322aafad3453d5ee9e7422e6354fc3",
+      "matches_original_approved_artifact": true
+    },
+    {
+      "requested_url": "https://global-soil-intelligence.github.io/gsip/og-library.png",
+      "expected_final_url": "https://globalsoilintelligence.com/og-library.png",
+      "pass": true,
+      "status": 200,
+      "final_url": "https://globalsoilintelligence.com/og-library.png",
+      "redirects": [
+        {
+          "source": "https://global-soil-intelligence.github.io/gsip/og-library.png",
+          "status": 301,
+          "destination": "https://globalsoilintelligence.com/og-library.png"
+        }
+      ],
+      "bytes": 1965996,
+      "sha256": "07c99fc8d617edf3142267acf75ff9c39fcb88a5ad0f0fc06fb3824dad3785e0",
+      "matches_original_approved_artifact": true
+    },
+    {
+      "requested_url": "https://www.globalsoilintelligence.com/data/",
+      "expected_final_url": "https://globalsoilintelligence.com/data/",
+      "pass": true,
+      "status": 200,
+      "final_url": "https://globalsoilintelligence.com/data/",
+      "redirects": [
+        {
+          "source": "https://www.globalsoilintelligence.com/data/",
+          "status": 301,
+          "destination": "https://globalsoilintelligence.com/data/"
+        }
+      ],
+      "bytes": 9469,
+      "sha256": "81b85b0325047f66324696d002cc86a12e322aafad3453d5ee9e7422e6354fc3",
+      "matches_original_approved_artifact": true
+    }
+  ],
+  "activation": {
+    "requested_url": "https://globalsoilintelligence.com/capture/gsip-activation.json",
+    "expected_final_url": "https://globalsoilintelligence.com/capture/gsip-activation.json",
+    "pass": true,
+    "status": 200,
+    "final_url": "https://globalsoilintelligence.com/capture/gsip-activation.json",
+    "redirects": [],
+    "bytes": 50,
+    "sha256": "e79c9ca28c243929e0252ffd0b42c868560e17d293c225532d09410b92d04bdc",
+    "matches_original_approved_artifact": true,
+    "activation": {
+      "capture_live": false,
+      "library_intake_live": false
+    },
+    "closed_flags": true
+  },
+  "certificates": [
+    {
+      "hostname": "globalsoilintelligence.com",
+      "pass": true,
+      "trusted_and_hostname_valid": true,
+      "protocol": "TLSv1.3",
+      "expires": "Jan 14 00:32:32 2027 GMT",
+      "subject_alt_names": [
+        [
+          "DNS",
+          "globalsoilintelligence.com"
+        ],
+        [
+          "DNS",
+          "www.globalsoilintelligence.com"
+        ]
+      ]
+    },
+    {
+      "hostname": "www.globalsoilintelligence.com",
+      "pass": true,
+      "trusted_and_hostname_valid": true,
+      "protocol": "TLSv1.3",
+      "expires": "Jan 14 00:32:32 2027 GMT",
+      "subject_alt_names": [
+        [
+          "DNS",
+          "globalsoilintelligence.com"
+        ],
+        [
+          "DNS",
+          "www.globalsoilintelligence.com"
+        ]
+      ]
+    }
+  ],
+  "approval_environment_preserved": true,
+  "pages_https_domain_verified": true,
+  "github": {
+    "pages": {
+      "returncode": 0,
+      "data": {
+        "status": "built",
+        "cname": "globalsoilintelligence.com",
+        "html_url": "https://globalsoilintelligence.com/",
+        "build_type": "workflow",
+        "protected_domain_state": "verified",
+        "https_certificate": {
+          "state": "approved",
+          "description": "The certificate has been approved.",
+          "domains": [
+            "globalsoilintelligence.com",
+            "www.globalsoilintelligence.com"
+          ],
+          "expires_at": "2027-01-13"
+        },
+        "https_enforced": true
+      },
+      "stderr": ""
+    },
+    "environment": {
+      "returncode": 0,
+      "data": {
+        "id": 18657050755,
+        "node_id": "EN_kwDOTgVRPc8AAAAEWAwAgw",
+        "name": "github-pages",
+        "url": "https://api.github.com/repos/global-soil-intelligence/gsip/environments/github-pages",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/deployments/activity_log?environments_filter=github-pages",
+        "created_at": "2026-07-23T21:35:39Z",
+        "updated_at": "2026-10-12T13:37:08Z",
+        "can_admins_bypass": false,
+        "protection_rules": [
+          {
+            "id": 60751762,
+            "node_id": "GA_kwDOTgVRPc4Dnv-S",
+            "type": "branch_policy"
+          },
+          {
+            "id": 68521163,
+            "node_id": "GA_kwDOTgVRPc4EFYzL",
+            "type": "required_reviewers",
+            "prevent_self_review": false,
+            "reviewers": [
+              {
+                "type": "User",
+                "reviewer": {
+                  "login": "jdhart81",
+                  "id": 179389866,
+                  "node_id": "U_kgDOCrFFqg",
+                  "avatar_url": "https://avatars.githubusercontent.com/u/179389866?v=4",
+                  "gravatar_id": "",
+                  "url": "https://api.github.com/users/jdhart81",
+                  "html_url": "https://github.com/jdhart81",
+                  "followers_url": "https://api.github.com/users/jdhart81/followers",
+                  "following_url": "https://api.github.com/users/jdhart81/following{/other_user}",
+                  "gists_url": "https://api.github.com/users/jdhart81/gists{/gist_id}",
+                  "starred_url": "https://api.github.com/users/jdhart81/starred{/owner}{/repo}",
+                  "subscriptions_url": "https://api.github.com/users/jdhart81/subscriptions",
+                  "organizations_url": "https://api.github.com/users/jdhart81/orgs",
+                  "repos_url": "https://api.github.com/users/jdhart81/repos",
+                  "events_url": "https://api.github.com/users/jdhart81/events{/privacy}",
+                  "received_events_url": "https://api.github.com/users/jdhart81/received_events",
+                  "type": "User",
+                  "user_view_type": "public",
+                  "site_admin": false
+                }
+              }
+            ]
+          }
+        ],
+        "deployment_branch_policy": {
+          "protected_branches": false,
+          "custom_branch_policies": true
+        }
+      },
+      "stderr": ""
+    },
+    "branch_policies": {
+      "returncode": 0,
+      "data": {
+        "total_count": 2,
+        "branch_policies": [
+          {
+            "id": 55456772,
+            "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTQ1Njc3Mg==",
+            "name": "gh-pages",
+            "type": "branch"
+          },
+          {
+            "id": 55456704,
+            "node_id": "MDE2OkdhdGVCcmFuY2hQb2xpY3k1NTQ1NjcwNA==",
+            "name": "main",
+            "type": "branch"
+          }
+        ]
+      },
+      "stderr": ""
+    },
+    "workflow": {
+      "returncode": 0,
+      "data": {
+        "id": 372625331,
+        "node_id": "W_kwDOTgVRPc4WNc-z",
+        "name": "Deploy GitHub Pages",
+        "path": ".github/workflows/pages.yml",
+        "state": "active",
+        "created_at": "2026-10-01T18:44:05.000-04:00",
+        "updated_at": "2026-10-01T18:44:05.000-04:00",
+        "url": "https://api.github.com/repos/global-soil-intelligence/gsip/actions/workflows/372625331",
+        "html_url": "https://github.com/global-soil-intelligence/gsip/blob/main/.github/workflows/pages.yml",
+        "badge_url": "https://github.com/global-soil-intelligence/gsip/workflows/Deploy%20GitHub%20Pages/badge.svg"
+      },
+      "stderr": ""
+    },
+    "workflow_source": {
+      "returncode": 0,
+      "data": {
+        "path": ".github/workflows/pages.yml",
+        "sha": "841d52544f4e50c2dd54f78d42f3226d5784458f",
+        "ref": "main",
+        "source": "name: Deploy GitHub Pages\n\non:\n  push:\n    branches: [main]\n  workflow_dispatch:\n\nconcurrency:\n  group: pages\n  cancel-in-progress: true\n\njobs:\n  build:\n    permissions:\n      contents: read\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v7\n      - uses: pnpm/action-setup@v6\n        with:\n          version: 11.9.0\n      - uses: actions/setup-node@v7\n        with:\n          node-version: 24\n          cache: pnpm\n      - run: pnpm install --frozen-lockfile\n      - run: pnpm build:pages\n        env:\n          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}\n          VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL }}\n          VITE_PRIOR_TILES_BASE: ${{ vars.VITE_PRIOR_TILES_BASE }}\n          VITE_CAPTURE_LIVE: 'false'\n          VITE_LIBRARY_INTAKE_LIVE: 'false'\n          VITE_DATASET_URL: ${{ vars.VITE_DATASET_URL }}\n          # The deployed gsip-public function; unset until it answers (WP-AGENT-1).\n          VITE_GSIP_PUBLIC_API: ${{ vars.VITE_GSIP_PUBLIC_API }}\n          VITE_TERMS_URL: ${{ vars.VITE_TERMS_URL }}\n          VITE_PRIVACY_URL: ${{ vars.VITE_PRIVACY_URL }}\n          VITE_SAMPLING_RULES_URL: ${{ vars.VITE_SAMPLING_RULES_URL }}\n      - run: pnpm check:map-budget\n      # A legend must never disagree with its tiles: the archives for this palette version must\n      # exist and carry its stamp before the map that draws those legends is deployed.\n      - run: pnpm check:prior-tiles\n        env:\n          VITE_PRIOR_TILES_BASE: ${{ vars.VITE_PRIOR_TILES_BASE }}\n      - run: pnpm check:site-budget\n      - uses: actions/configure-pages@v6\n      - uses: actions/upload-pages-artifact@v5\n        with:\n          path: _site\n  deploy:\n    environment:\n      name: github-pages\n      url: ${{ steps.deployment.outputs.page_url }}\n    needs: build\n    permissions:\n      pages: write\n      id-token: write\n    runs-on: ubuntu-latest\n    steps:\n      - id: deployment\n        uses: actions/deploy-pages@v5\n"
+      },
+      "stderr": ""
+    }
+  },
+  "mutations": "NONE; public GET/TLS and GitHub read-only calls; local evidence write only"
+}

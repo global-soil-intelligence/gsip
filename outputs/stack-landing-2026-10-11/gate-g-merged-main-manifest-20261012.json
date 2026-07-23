@@ -1,0 +1,26 @@
+{
+  "commit": "665506fd7a2e4d972bb9fe03c4faf0f174c4675b",
+  "files": [
+    {
+      "path": ".github/workflows/rights-worker.yml",
+      "sha256": "67380c5662e03810fe3af67b955ed975c37e758ad0f7c0ceaa2b4e54582ed5c7"
+    },
+    {
+      "path": "pipeline/rights_worker.py",
+      "sha256": "9441ac3a4a41319d1d940d982d7491c1f2e614ea9b466e387e557017fcba5d09"
+    },
+    {
+      "path": "pipeline/storage.py",
+      "sha256": "26305d43be2b54e353f623d737e6da7997f9fa60e2ef255f46f6329a39db2f10"
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "b985ee2c3c8fc0fa41c81e77b45371ed1ca23060f17e40e4617a962c5776535e"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "6a1cf2367d909cd2fa89f3040f7972e4ba555856769ae9250d8181a6839aca27"
+    }
+  ],
+  "dispatched": false
+}

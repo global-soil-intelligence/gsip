@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.036" timestamp="2026-10-14T17:59:18.680574-04:00" hostname="MacBook-Pro-6.local"><testcase classname="tests.test_ios_storage_feasibility" name="test_documented_repository_evidence_ranges_point_to_real_lines" time="0.001"><failure message="AssertionError: assert 159 &lt;= 157&#10; +  where 159 = int('159')&#10; +  and   157 = len(['# iOS private storage: feasibility before migration', '', 'Status: v11 specification approved and merged in [#68](ht... dependency,', 'native code, account, signing material or service. It grants no deployment or capture authority.', ...])&#10; +    where ['# iOS private storage: feasibility before migration', '', 'Status: v11 specification approved and merged in [#68](ht... dependency,', 'native code, account, signing material or service. It grants no deployment or capture authority.', ...] = &lt;built-in method splitlines of str object at 0xaf1118000&gt;()&#10; +      where &lt;built-in method splitlines of str object at 0xaf1118000&gt; = '# iOS private storage: feasibility before migration\n\nStatus: v11 specification approved and merged in [#68](https:/...ce notification\nchecks, store/legal review, production and SPEC §11 launch/photo-publication gates remain separate.\n'.splitlines&#10; +        where '# iOS private storage: feasibility before migration\n\nStatus: v11 specification approved and merged in [#68](https:/...ce notification\nchecks, store/legal review, production and SPEC §11 launch/photo-publication gates remain separate.\n' = read_text()&#10; +          where read_text = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/source/docs/IOS_PRIVATE_STORAGE.md').read_text">def test_documented_repository_evidence_ranges_point_to_real_lines() -&gt; None:
+        import re
+    
+        document = ROOT / "docs/IOS_STORAGE_FEASIBILITY.md"
+        assert document.is_file()
+        references = re.findall(r"source:([^`:\s]+):(\d+)-(\d+)", document.read_text())
+        assert len(references) &gt;= 3
+        for relative, first, last in references:
+            target = ROOT / relative
+            assert target.is_file()
+&gt;           assert 1 &lt;= int(first) &lt;= int(last) &lt;= len(target.read_text().splitlines())
+E           AssertionError: assert 159 &lt;= 157
+E            +  where 159 = int('159')
+E            +  and   157 = len(['# iOS private storage: feasibility before migration', '', 'Status: v11 specification approved and merged in [#68](ht... dependency,', 'native code, account, signing material or service. It grants no deployment or capture authority.', ...])
+E            +    where ['# iOS private storage: feasibility before migration', '', 'Status: v11 specification approved and merged in [#68](ht... dependency,', 'native code, account, signing material or service. It grants no deployment or capture authority.', ...] = &lt;built-in method splitlines of str object at 0xaf1118000&gt;()
+E            +      where &lt;built-in method splitlines of str object at 0xaf1118000&gt; = '# iOS private storage: feasibility before migration\n\nStatus: v11 specification approved and merged in [#68](https:/...ce notification\nchecks, store/legal review, production and SPEC §11 launch/photo-publication gates remain separate.\n'.splitlines
+E            +        where '# iOS private storage: feasibility before migration\n\nStatus: v11 specification approved and merged in [#68](https:/...ce notification\nchecks, store/legal review, production and SPEC §11 launch/photo-publication gates remain separate.\n' = read_text()
+E            +          where read_text = PosixPath('/private/tmp/gsip-app2c1-author-6454jf_3/source/docs/IOS_PRIVATE_STORAGE.md').read_text
+
+tests/test_ios_storage_feasibility.py:366: AssertionError</failure></testcase></testsuite></testsuites>

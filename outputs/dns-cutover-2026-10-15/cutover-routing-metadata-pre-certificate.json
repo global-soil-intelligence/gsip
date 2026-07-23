@@ -1,0 +1,199 @@
+{
+  "status": "HTTP_ROUTING_AND_CANONICAL_METADATA_PASS",
+  "checked_at_utc": "2026-10-16T01:19:49.678295+00:00",
+  "scope": "Read-only HTTP checks while HTTPS certificate provisioning is pending; no HTTPS readiness claim",
+  "pages": [
+    {
+      "path": "",
+      "html_lang": "en",
+      "canonical": [
+        "https://globalsoilintelligence.com/"
+      ],
+      "expected_canonical": "https://globalsoilintelligence.com/",
+      "canonical_matches": true,
+      "insecure_resource_urls": [],
+      "links": [
+        "#main-content",
+        "./",
+        "./map/",
+        "./data/",
+        "./methods/",
+        "./about/#launch-status",
+        "https://github.com/global-soil-intelligence/gsip",
+        "https://github.com/global-soil-intelligence/gsip/blob/main/docs/SOIL_LIBRARY.md#run-the-complete-local-demo",
+        "./card/",
+        "./about/#launch-status",
+        "./methods/",
+        "./data/",
+        "./map/",
+        "./card/",
+        "./reference-card/gsip-reference-card-v1-color.pdf",
+        "./data/",
+        "./methods/",
+        "https://github.com/global-soil-intelligence/gsip#build-on-gsip",
+        "./about/",
+        "./",
+        "./map/",
+        "./card/",
+        "./data/",
+        "./methods/",
+        "./about/",
+        "https://github.com/global-soil-intelligence/gsip"
+      ]
+    },
+    {
+      "path": "about/",
+      "html_lang": "en",
+      "canonical": [
+        "https://globalsoilintelligence.com/about/"
+      ],
+      "expected_canonical": "https://globalsoilintelligence.com/about/",
+      "canonical_matches": true,
+      "insecure_resource_urls": [],
+      "links": [
+        "#main-content",
+        "../",
+        "../map/",
+        "../data/",
+        "../methods/",
+        "../about/#launch-status",
+        "https://github.com/global-soil-intelligence/gsip",
+        "https://github.com/global-soil-intelligence/gsip/issues",
+        "../",
+        "../map/",
+        "../card/",
+        "../data/",
+        "../methods/",
+        "../about/",
+        "https://github.com/global-soil-intelligence/gsip"
+      ]
+    },
+    {
+      "path": "card/",
+      "html_lang": "en",
+      "canonical": [
+        "https://globalsoilintelligence.com/card/"
+      ],
+      "expected_canonical": "https://globalsoilintelligence.com/card/",
+      "canonical_matches": true,
+      "insecure_resource_urls": [],
+      "links": [
+        "#main-content",
+        "../",
+        "../map/",
+        "../data/",
+        "../methods/",
+        "../about/#launch-status",
+        "../reference-card/gsip-reference-card-v1-color.pdf",
+        "../reference-card/gsip-reference-card-v1-bw.pdf",
+        "../about/#launch-status",
+        "../",
+        "../map/",
+        "../card/",
+        "../data/",
+        "../methods/",
+        "../about/",
+        "https://github.com/global-soil-intelligence/gsip"
+      ]
+    },
+    {
+      "path": "data/",
+      "html_lang": "en",
+      "canonical": [
+        "https://globalsoilintelligence.com/data/"
+      ],
+      "expected_canonical": "https://globalsoilintelligence.com/data/",
+      "canonical_matches": true,
+      "insecure_resource_urls": [],
+      "links": [
+        "#main-content",
+        "../",
+        "../map/",
+        "../data/",
+        "../methods/",
+        "../about/#launch-status",
+        "https://github.com/global-soil-intelligence/gsip",
+        "https://github.com/global-soil-intelligence/gsip/blob/main/docs/SOIL_LIBRARY.md",
+        "https://github.com/global-soil-intelligence/gsip/blob/main/docs/AGENTS.md",
+        "https://toxldjgwkxtneoqsazym.supabase.co/functions/v1/gsip-public/v1/openapi.json",
+        "../",
+        "../map/",
+        "../card/",
+        "../data/",
+        "../methods/",
+        "../about/",
+        "https://github.com/global-soil-intelligence/gsip"
+      ]
+    },
+    {
+      "path": "methods/",
+      "html_lang": "en",
+      "canonical": [
+        "https://globalsoilintelligence.com/methods/"
+      ],
+      "expected_canonical": "https://globalsoilintelligence.com/methods/",
+      "canonical_matches": true,
+      "insecure_resource_urls": [],
+      "links": [
+        "#main-content",
+        "../",
+        "../map/",
+        "../data/",
+        "../methods/",
+        "../about/#launch-status",
+        "https://github.com/global-soil-intelligence/gsip/blob/main/docs/SPEC.md",
+        "https://github.com/global-soil-intelligence/gsip/blob/main/docs/BUILD_ORDER.md",
+        "../",
+        "../map/",
+        "../card/",
+        "../data/",
+        "../methods/",
+        "../about/",
+        "https://github.com/global-soil-intelligence/gsip"
+      ]
+    }
+  ],
+  "internal_routes": [
+    {
+      "path": "/",
+      "status": 200,
+      "url": "http://globalsoilintelligence.com/"
+    },
+    {
+      "path": "/about/",
+      "status": 200,
+      "url": "http://globalsoilintelligence.com/about/"
+    },
+    {
+      "path": "/card/",
+      "status": 200,
+      "url": "http://globalsoilintelligence.com/card/"
+    },
+    {
+      "path": "/data/",
+      "status": 200,
+      "url": "http://globalsoilintelligence.com/data/"
+    },
+    {
+      "path": "/map/",
+      "status": 200,
+      "url": "http://globalsoilintelligence.com/map/"
+    },
+    {
+      "path": "/methods/",
+      "status": 200,
+      "url": "http://globalsoilintelligence.com/methods/"
+    },
+    {
+      "path": "/reference-card/gsip-reference-card-v1-bw.pdf",
+      "status": 200,
+      "url": "http://globalsoilintelligence.com/reference-card/gsip-reference-card-v1-bw.pdf"
+    },
+    {
+      "path": "/reference-card/gsip-reference-card-v1-color.pdf",
+      "status": 200,
+      "url": "http://globalsoilintelligence.com/reference-card/gsip-reference-card-v1-color.pdf"
+    }
+  ],
+  "mutations": "NONE"
+}

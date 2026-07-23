@@ -1,0 +1,46 @@
+{
+  "NEXT_BUILD_BRIEF-v2.md": {
+    "bytes": 5853,
+    "sha256": "00760ae0bfaf82b55a278e4c589da2329470de9f511c8afeacf16743245d441d"
+  },
+  "NEXT_BUILD_BRIEF.md": {
+    "bytes": 5646,
+    "sha256": "8b56566bc6250d286d53e776746f6736b5a9025410c4d78510fb30d2df62f615"
+  },
+  "RESEARCH_AND_RECOMMENDATION.md": {
+    "bytes": 11411,
+    "sha256": "cc1601321474d3c5e204816ecaae4f758a6c452fe44e644af93518b9b563f01a"
+  },
+  "camera-overlay-capability-audit.md": {
+    "bytes": 9929,
+    "sha256": "482f2f01ca8c520e1c05c8a038746d8313603edb9d47d7cd44dad82d90afdbc9"
+  },
+  "completion-receipt.json": {
+    "bytes": 6083,
+    "sha256": "9ca206a7898a95ae2aecad417626313cd2a12bd2f5428fba86e8edc8a953a1d7"
+  },
+  "independent-review.json": {
+    "bytes": 833,
+    "sha256": "6f33f76a459a9aa7a15de6e19cff2caa1b2b147439f5439b2b352974d1b82198"
+  },
+  "live-activation-readback.json": {
+    "bytes": 236,
+    "sha256": "166479be0ce3ae43535fa1041122b9a29aaf72098ec7706a7a76fcfd1f0918e5"
+  },
+  "merge-83-body.txt": {
+    "bytes": 234,
+    "sha256": "b52382becc1f7e066c10cff2a240729e9f02e290c4407bf0a125544133d0056c"
+  },
+  "merge-84-body.txt": {
+    "bytes": 335,
+    "sha256": "64c2ca327b03ce98bc072c7d7ae2b169a1d4a0c8f5c8cea9060117118ec7cf14"
+  },
+  "pages-hold-requests.json": {
+    "bytes": 480,
+    "sha256": "2e81274e3913264f99efbf656089e2a576f92fe6baf163a1f25156b8c943c83b"
+  },
+  "pages-holds-verified.json": {
+    "bytes": 699,
+    "sha256": "5c7324172c23f0f2bfdc4e4bd8e9eb3d6680758eec9b23772f93970cc33ee374"
+  }
+}

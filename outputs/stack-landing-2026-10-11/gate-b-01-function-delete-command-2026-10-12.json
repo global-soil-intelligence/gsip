@@ -1,0 +1,24 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "gate": "B",
+  "operation": "delete wavefunction-api only",
+  "started_at": "2026-10-12T12:46:49.765308+00:00",
+  "completed_at": "2026-10-12T12:46:50.894045+00:00",
+  "argv": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "functions",
+    "delete",
+    "wavefunction-api",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo"
+  ],
+  "confirmation": "y for already-authorized sole function deletion if prompted",
+  "exit_code": 0,
+  "output_sha256": "6f69c7edd78c184dfdf920311e79799e4fb8065274070630fe5126e5b16a523d",
+  "safe_output_lines": [
+    "{\"function_slug\":\"wavefunction-api\",\"project_ref\":\"toxldjgwkxtneoqsazym\",\"message\":\"Deleted Edge Function.\"}"
+  ],
+  "status": "COMMAND_COMPLETED_INVENTORY_REQUIRED"
+}

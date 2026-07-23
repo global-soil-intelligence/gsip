@@ -1,0 +1,101 @@
+{
+  "files": [
+    {
+      "bytes": 8594135,
+      "extracted": true,
+      "name": "app-debug.apk",
+      "sha256": "946e800de9826eabf5587c1544d35dd8049cde91f7a086a6adc003b1300f0c8c"
+    },
+    {
+      "bytes": 2656,
+      "extracted": true,
+      "name": "gsip-android-build-receipt.json",
+      "sha256": "19e46ae5066ac71e9a4df623654280fb2bccebd38ff13f1121426db099ab7075"
+    },
+    {
+      "bytes": 1113,
+      "extracted": false,
+      "name": "gsip-android-candidate-native-audit-build-environment.txt",
+      "sha256": "7810cdebe7caf237c139ef4ed51abfedea3726de11738ccd1ed525fcafa2df6b"
+    },
+    {
+      "bytes": 27721,
+      "extracted": false,
+      "name": "gsip-android-candidate-native-audit-debugRuntimeClasspath.txt",
+      "sha256": "826c37697155c1eaab221924a2e451f4d15a866ab4e1aee95eed3e9bc5c5c6f9"
+    },
+    {
+      "bytes": 27725,
+      "extracted": false,
+      "name": "gsip-android-candidate-native-audit-releaseRuntimeClasspath.txt",
+      "sha256": "83b171967fb2c767b1734d7ea1ec6edcac91e9293213712297f71d0cf03a8ba5"
+    },
+    {
+      "bytes": 503763,
+      "extracted": true,
+      "name": "gsip-android-candidate-native-audit.json",
+      "sha256": "d4ccd62c8bad87b79ea108e71df3432a33b9d7a92a362e123474f74d6a203f29"
+    },
+    {
+      "bytes": 8594135,
+      "extracted": true,
+      "name": "gsip-android-candidate-repeat-reference.apk",
+      "sha256": "946e800de9826eabf5587c1544d35dd8049cde91f7a086a6adc003b1300f0c8c"
+    },
+    {
+      "bytes": 11050,
+      "extracted": true,
+      "name": "gsip-android-feature-comparison.json",
+      "sha256": "1791d22af995ea4f3b98f56eae1ab6417108752b91248f2acba0b58de2c5c56f"
+    },
+    {
+      "bytes": 2656,
+      "extracted": true,
+      "name": "gsip-android-parent-build-receipt.json",
+      "sha256": "50fdce7d67356832d508a43ad187e2a7dc8829cd4e44a4517de92856227ebd05"
+    },
+    {
+      "bytes": 1113,
+      "extracted": false,
+      "name": "gsip-android-parent-native-audit-build-environment.txt",
+      "sha256": "03e970c66ee91762f83f36ebe50bce1ce5283630f99d7bfda1656682d2b18e1a"
+    },
+    {
+      "bytes": 27521,
+      "extracted": false,
+      "name": "gsip-android-parent-native-audit-debugRuntimeClasspath.txt",
+      "sha256": "bd7b96d191fbb683bccb10935a9da63f196f85b7de852c4854c092103889a83b"
+    },
+    {
+      "bytes": 27525,
+      "extracted": false,
+      "name": "gsip-android-parent-native-audit-releaseRuntimeClasspath.txt",
+      "sha256": "9723853be8f38e398eba5beba2ad96b633aa234a7ee6763988676fd0f2db74ea"
+    },
+    {
+      "bytes": 502272,
+      "extracted": true,
+      "name": "gsip-android-parent-native-audit.json",
+      "sha256": "909e3b0a55ebfeb778b71516b460fecffe268b0d8634acf78b4f06a651c8b12e"
+    },
+    {
+      "bytes": 8537416,
+      "extracted": true,
+      "name": "gsip-android-parent-repeat-reference.apk",
+      "sha256": "e6d144885fbc2c122a41a6e4099a23a9ca01915940caada5f1ab5c3d8ab301be"
+    },
+    {
+      "bytes": 8537416,
+      "extracted": true,
+      "name": "gsip-android-parent.apk",
+      "sha256": "e6d144885fbc2c122a41a6e4099a23a9ca01915940caada5f1ab5c3d8ab301be"
+    }
+  ],
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "path_type_size_CRC_bounds": "pass",
+  "raw_runtime_text_files_extracted": false,
+  "required_files": 15,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "uncompressed_bytes": 35398217
+}

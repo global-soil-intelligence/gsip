@@ -1,0 +1,9 @@
+{
+  "k_anonymity_violations": 0,
+  "observed_at_utc": "2026-10-12 13:47:04.713640 UTC",
+  "prior_cache_rows": 0,
+  "prior_jobs_nonempty_new_empty_sources": 0,
+  "public_cells": 0,
+  "upstream_bucket_config_mismatch": 0,
+  "upstream_bucket_rows": 3
+}

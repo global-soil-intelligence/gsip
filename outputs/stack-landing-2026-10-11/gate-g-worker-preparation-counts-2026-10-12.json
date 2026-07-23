@@ -1,0 +1,21 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "observed_at": "2026-10-12T23:16:17.750995+00:00",
+  "counts": [
+    {
+      "rights_requests_total": 0,
+      "rights_requests_open": 0,
+      "rights_requests_overdue": 0,
+      "canonical_orphans": 0,
+      "storage_objects": 0,
+      "contributors": 5,
+      "submissions": 25,
+      "photos": 25,
+      "auth_users": 0,
+      "ledger": 28,
+      "capture_open_rows": 0
+    }
+  ],
+  "query": "select (select count(*) from public.deletion_requests) as rights_requests_total, (select count(*) from public.deletion_requests where status <> 'completed') as rights_requests_open, (select count(*) from public.deletion_requests where status <> 'completed' and requested_at < now()-interval '25 days') as rights_requests_overdue, (select count(*) from storage.objects o where o.bucket_id='submission-photos' and not exists(select 1 from public.photos p where p.storage_path=o.name)) as canonical_orphans, (select count(*) from storage.objects) as storage_objects, (select count(*) from public.contributors) as contributors, (select count(*) from public.submissions) as submissions, (select count(*) from public.photos) as photos, (select count(*) from auth.users) as auth_users, (select count(*) from supabase_migrations.schema_migrations) as ledger, (select count(*) from public.service_state where capture_open) as capture_open_rows;",
+  "read_only": true
+}

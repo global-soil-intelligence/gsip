@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa
+
+ ❯ tests/library-app.test.tsx (17 tests | 1 failed | 16 skipped) 5006ms
+   × holds a restored library context with no original revision until explicit restart 5005ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/library-app.test.tsx > holds a restored library context with no original revision until explicit restart
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/library-app.test.tsx:264:1
+    262| })
+    263|
+    264| it('holds a restored library context with no original revision until e…
+       | ^
+    265|   const q = await import('../src/queue')
+    266|   await q.queueRevision()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  22:06:33
+   Duration  5.53s (transform 117ms, setup 56ms, import 35ms, tests 5.01s, environment 358ms)
+
+undefined
+/Users/justinhart/.codex/worktrees/gsip-spec-followups/GSIP 2.0/apps/capture-pwa:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run tests/library-app.test.tsx -t 'holds a restored library context'

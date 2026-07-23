@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-14T03:20:56.044942+00:00",
+  "initial_wrapper_sha256": "fbcc509767d2d4b4efbb9f297cef7850e173b4ff94bf0c77d8e81cb3d4d53696",
+  "corrected_wrapper_sha256": "df8b836e410e41596e13fd6bc972f07d6a1fd5a20ab1ecaf9fa96818b07b69ea",
+  "initial_failure": "Wrapper incorrectly required author receipt to repeat helper hash literally; author receipt instead binds the exact complete source manifest.",
+  "corrected_binding": "Both independent receipts still require exact helper hash; author receipt requires exact referenced manifest hash and unique helper row hash; complete working source is separately checked against all manifest rows.",
+  "initial_HEAD": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "staging_and_commit_before_failure": false,
+  "source_or_test_changes": false,
+  "production_changes": false
+}

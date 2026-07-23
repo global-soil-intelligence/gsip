@@ -1,0 +1,5 @@
+{
+  "environment_ids": [18657050755],
+  "state": "approved",
+  "comment": "Bounded Pages release: run 38895620835, source 27c3d9143ff78dce65fa4d2e88e1660c79574232, artifact sha256 d818ff8663588d7eb12bdf691b92127ee6ca61495c4e6ab9c08eae1c596fbc0b. Capture and library intake remain closed. Submit only after Justin's separate explicit go for this run."
+}

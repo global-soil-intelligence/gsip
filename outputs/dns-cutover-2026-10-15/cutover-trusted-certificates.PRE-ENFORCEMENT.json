@@ -1,0 +1,81 @@
+{
+  "checked_at_utc": "2026-10-16T01:31:49.457709+00:00",
+  "certificates": [
+    {
+      "hostname": "globalsoilintelligence.com",
+      "trusted_and_hostname_valid": true,
+      "tls_version": "TLSv1.3",
+      "not_before": "Oct 16 00:32:33 2026 GMT",
+      "not_after": "Jan 14 00:32:32 2027 GMT",
+      "subject_alt_names": [
+        [
+          "DNS",
+          "globalsoilintelligence.com"
+        ],
+        [
+          "DNS",
+          "www.globalsoilintelligence.com"
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "US"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "Let's Encrypt"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "YR1"
+          ]
+        ]
+      ]
+    },
+    {
+      "hostname": "www.globalsoilintelligence.com",
+      "trusted_and_hostname_valid": true,
+      "tls_version": "TLSv1.3",
+      "not_before": "Oct 16 00:32:33 2026 GMT",
+      "not_after": "Jan 14 00:32:32 2027 GMT",
+      "subject_alt_names": [
+        [
+          "DNS",
+          "globalsoilintelligence.com"
+        ],
+        [
+          "DNS",
+          "www.globalsoilintelligence.com"
+        ]
+      ],
+      "issuer": [
+        [
+          [
+            "countryName",
+            "US"
+          ]
+        ],
+        [
+          [
+            "organizationName",
+            "Let's Encrypt"
+          ]
+        ],
+        [
+          [
+            "commonName",
+            "YR1"
+          ]
+        ]
+      ]
+    }
+  ],
+  "both_trusted_and_hostname_valid": true,
+  "mutations": "NONE; trusted TLS handshakes only"
+}

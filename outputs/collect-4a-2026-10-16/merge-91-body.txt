@@ -1,0 +1,3 @@
+Merge the independently reviewed COLLECT-4A session and atomic queue foundation after Justin Hart's explicit merge go. Preserve the reviewed source tree and all collection, Pages, device and production holds. No human DCO certification is supplied by the agent.
+
+Co-Authored-By: Codex <codex@openai.com>

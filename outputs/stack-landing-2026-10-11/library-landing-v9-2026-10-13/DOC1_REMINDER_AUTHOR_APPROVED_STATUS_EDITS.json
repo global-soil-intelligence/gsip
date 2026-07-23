@@ -1,0 +1,28 @@
+{
+  "README.md": [
+    {
+      "baseline": "## Governing documents\n",
+      "candidate": "Source for opt-in local sync reminders is merged in [APP-2B (#63)](https://github.com/global-soil-intelligence/gsip/pull/63).\nThe device, backup, store, legal and production gates remain separate from source completion.\n\n## Governing documents\n"
+    }
+  ],
+  "docs/BUILD_ORDER.md": [
+    {
+      "baseline": "The following packages schedule SPEC §15 without claiming it has been approved or implemented.",
+      "candidate": "The following packages follow approved SPEC §15, merged in #38; their source status and remaining gates are recorded below."
+    },
+    {
+      "baseline": "Notification architecture remains a proposal",
+      "candidate": "APP-2B notification source is merged in [#63](https://github.com/global-soil-intelligence/gsip/pull/63)"
+    },
+    {
+      "baseline": "**WP-APP-2B: Local sync reminders in version 1 (proposal)**",
+      "candidate": "**WP-APP-2B: Local sync reminders in version 1 (source merged; device gates remain)**"
+    }
+  ],
+  "docs/SPEC.md": [
+    {
+      "baseline": "### 15.3 WP-APP-2B: local notifications in app version 1\n\n",
+      "candidate": "### 15.3 WP-APP-2B: local notifications in app version 1\n\n**Source status:** opt-in local sync reminder source is merged in [APP-2B (#63)](https://github.com/global-soil-intelligence/gsip/pull/63).\nImplementation and native dependency evidence are documented in [APP_SYNC_REMINDERS.md](APP_SYNC_REMINDERS.md) and\n[APP_NOTIFICATION_NATIVE_AUDIT.md](APP_NOTIFICATION_NATIVE_AUDIT.md). The existing device and launch requirements below remain unchanged.\n\n"
+    }
+  ]
+}

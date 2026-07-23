@@ -36,6 +36,7 @@ class WorkerHarness(SupabaseQaWorker):
             "coordinates": [-79.982, 40.446],
             "type": "Point",
         }
+        self.upload_complete = True
         self.job_states: dict[str, str] = {}
         self.prior_rows = prior_rows or []
         self.promotions: list[str] = []
@@ -80,6 +81,9 @@ class WorkerHarness(SupabaseQaWorker):
                 [
                     {
                         "geom_precise": self.geometry,
+                        "upload_completed_at": "2026-09-14T00:00:00Z"
+                        if self.upload_complete
+                        else None,
                         "gps_accuracy_m": 8,
                         "id": "submission",
                         "land_cover": "urban",
@@ -102,6 +106,14 @@ class WorkerHarness(SupabaseQaWorker):
         if method == "PATCH" and path.startswith("qa_jobs?photo_id=eq."):
             photo_id = path.rsplit(".", 1)[-1]
             self.job_states[photo_id] = str(kwargs["json"]["status"])
+        if method == "POST" and path == "rpc/reconcile_submission_qa":
+            payload = kwargs["json"]
+            self.submission_updates.append(
+                {
+                    "status": "qa_fail" if "dead_letter" in self.job_states.values() else "pending",
+                    "h3_r8": payload["p_h3_r8"],
+                }
+            )
         if method == "PATCH" and path.startswith("submissions?"):
             self.submission_updates.append(kwargs["json"])
         return self._response([])
@@ -117,7 +129,7 @@ class WorkerHarness(SupabaseQaWorker):
         return httpx.Response(200, json={})
 
 
-@pytest.mark.parametrize("hostile", [b"not-an-image", jpeg(20)])
+@pytest.mark.parametrize("hostile", [b"not-an-image", jpeg(20)], ids=["invalid", "oversized"])
 def test_hostile_images_dead_letter_and_do_not_block_following_jobs(
     hostile: bytes, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -130,7 +142,7 @@ def test_hostile_images_dead_letter_and_do_not_block_following_jobs(
     assert worker.job_states["good"] == "completed"
     assert len(worker.promotions) == 1
     assert "good.jpg" in worker.promotions[0]
-    assert worker.submission_updates[-1]["status"] == "qa_pass"
+    assert worker.submission_updates[-1]["status"] == "qa_fail"
     assert worker.submission_updates[-1]["h3_r8"].startswith("88")
 
 
@@ -151,6 +163,12 @@ def test_zero_valued_prior_reaches_gps_plausibility(
 
     assert worker.process_one("good", 0)
     assert captured_priors == {"sand": 0.0}
+
+
+def test_last_photo_failure_updates_submission_without_another_successful_job() -> None:
+    worker = WorkerHarness(b"not-an-image")
+    assert not worker.process_one("hostile", 3)
+    assert worker.submission_updates[-1]["status"] == "qa_fail"
 
 
 def test_out_of_range_geometry_dead_letters_without_h3_or_promotion() -> None:
@@ -231,3 +249,57 @@ def test_stale_processing_jobs_are_moved_back_to_retrying() -> None:
     assert "status=eq.processing" in worker.path
     assert "updated_at=lt." in worker.path
     assert worker.payload["status"] == "retrying"
+
+
+def test_incomplete_upload_does_not_consume_a_qa_attempt() -> None:
+    worker = WorkerHarness(b"unused")
+    worker.upload_complete = False
+    assert not worker.process_one("good", 0)
+    assert worker.job_states == {}
+    assert worker.promotions == []
+
+
+def test_failed_completion_write_preserves_raw_photo_for_retry() -> None:
+    class CompletionFailure(WorkerHarness):
+        def __init__(self) -> None:
+            super().__init__(b"unused")
+            self.failed_once = False
+            self.deleted = False
+
+        def _rest(self, method: str, path: str, **kwargs: Any) -> httpx.Response:
+            if (
+                method == "PATCH"
+                and path.startswith("qa_jobs?photo_id=")
+                and kwargs["json"]["status"] == "completed"
+                and not self.failed_once
+            ):
+                self.failed_once = True
+                response = httpx.Response(503, request=httpx.Request("PATCH", self.url))
+                response.raise_for_status()
+            return super()._rest(method, path, **kwargs)
+
+        def _http(self, request: httpx.Request) -> httpx.Response:
+            if request.method == "DELETE":
+                self.deleted = True
+            if request.method == "GET" and self.deleted:
+                return httpx.Response(404)
+            return super()._http(request)
+
+    worker = CompletionFailure()
+    assert not worker.process_one("good", 0)
+    assert not worker.deleted
+    assert worker.process_one("good", 1)
+    assert worker.deleted
+    assert worker.job_states["good"] == "completed"
+
+
+def test_cleanup_failure_does_not_repeat_successful_processing() -> None:
+    class CleanupFailure(WorkerHarness):
+        def _http(self, request: httpx.Request) -> httpx.Response:
+            if request.method == "DELETE":
+                return httpx.Response(503)
+            return super()._http(request)
+
+    worker = CleanupFailure(b"unused")
+    assert worker.process_one("good", 0)
+    assert worker.job_states["good"] == "completed"

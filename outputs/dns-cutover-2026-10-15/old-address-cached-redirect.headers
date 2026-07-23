@@ -1,0 +1,18 @@
+HTTP/2 301 
+server: GitHub.com
+content-type: text/html
+location: http://globalsoilintelligence.com/
+x-github-request-id: 71E0:35672A:BD81:D0A2:6AD17937
+x-github-edge-region: iad
+accept-ranges: bytes
+date: Fri, 16 Oct 2026 01:33:10 GMT
+via: 1.1 varnish
+age: 1439
+x-served-by: cache-lga-kjfk8660052-LGA
+x-cache: HIT
+x-cache-hits: 1
+x-timer: S1792114391.971528,VS0,VE1
+vary: Accept-Encoding
+x-fastly-request-id: c22fedaced970cfba8b5be2d91cce7bb5c594e89
+content-length: 162
+

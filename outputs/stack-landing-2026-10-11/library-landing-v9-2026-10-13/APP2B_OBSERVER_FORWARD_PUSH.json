@@ -1,0 +1,29 @@
+{
+  "utc": "2026-10-13T22:14:41.674165+00:00",
+  "head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "observer_commit": "7586e4b655551f05629bcf68a793bf3627916c42",
+  "previous_head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+  "merged_main": "7d6777fc219c48792b8e1e2f4912d5c276b477c1",
+  "immediate_pr_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "review_sha256": "afa31bddceaa3771cdd402f206e7dc686c1e39cb48e5db5bbca606c3991d71f6",
+  "body_sha256": "7799b83ca652add84e504dad4ae504d4d70402a92acc2b159313c7143ab61d9d",
+  "description_prefix_preserved": true,
+  "root_python_passed": 1568,
+  "root_GDAL_skips": 4,
+  "actual_gradle_controls_passed": 19,
+  "post_main_checks": [
+    {
+      "check": "documentation-contracts",
+      "exit_code": 0,
+      "output_sha256": "0616d6aa11496391686dcbd658123e51d8d057e1f02661af7ef8512554e404d8"
+    },
+    {
+      "check": "lint-language-format",
+      "exit_code": 0,
+      "output_sha256": "8185ff7bbf60b066e20260e56c4a3fd10de339d2124fc13559b612a19578a977"
+    }
+  ],
+  "full_history_commits_scanned": 149,
+  "leaks": 0,
+  "no_production_changes": true
+}

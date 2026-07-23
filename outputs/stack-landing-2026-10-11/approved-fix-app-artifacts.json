@@ -1,0 +1,48 @@
+{
+  "captured_at_utc": "2026-10-12T00:52:55.605523+00:00",
+  "repository": "global-soil-intelligence/gsip",
+  "app_build_run": {
+    "id": 38189449982,
+    "name": "App build",
+    "head_sha": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449982"
+  },
+  "current_head_matches": true,
+  "jobs": [
+    {
+      "id": 114618848698,
+      "name": "ios",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449982/job/114618848698"
+    },
+    {
+      "id": 114618848852,
+      "name": "android",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38189449982/job/114618848852"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 11720817326,
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 3323675,
+      "expired": false,
+      "created_at": "2026-10-12T00:51:11Z",
+      "expires_at": "2026-10-26T00:51:09Z"
+    },
+    {
+      "id": 11720633194,
+      "name": "gsip-capture-android-debug",
+      "size_in_bytes": 7144211,
+      "expired": false,
+      "created_at": "2026-10-12T00:52:06Z",
+      "expires_at": "2026-10-26T00:52:04Z"
+    }
+  ],
+  "superseded_cancelled_run": 38189449773
+}

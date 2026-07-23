@@ -1,0 +1,706 @@
+{
+  "checked_at_utc": "2026-10-15T23:16:03.403864+00:00",
+  "status": "MERGED_MAIN_GREEN_PAGES_WAITING_FOR_OWNER",
+  "pr_url": "https://github.com/global-soil-intelligence/gsip/pull/75",
+  "merge_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+  "source_tree": "43c74ca13b889a561e0e23463b9706c064cf48a8",
+  "main_ci": {
+    "conclusion": "success",
+    "headSha": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+    "jobs": [
+      {
+        "completedAt": "2026-10-15T23:15:06Z",
+        "conclusion": "success",
+        "databaseId": 116718754799,
+        "name": "validate",
+        "startedAt": "2026-10-15T23:05:50Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-15T23:05:53Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-15T23:05:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:05:54Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-10-15T23:05:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:02Z",
+            "conclusion": "success",
+            "name": "Run pnpm/action-setup@v6",
+            "number": 3,
+            "startedAt": "2026-10-15T23:05:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:09Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v7",
+            "number": 4,
+            "startedAt": "2026-10-15T23:06:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:11Z",
+            "conclusion": "success",
+            "name": "Run astral-sh/setup-uv@v7",
+            "number": 5,
+            "startedAt": "2026-10-15T23:06:09Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:11Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v7",
+            "number": 6,
+            "startedAt": "2026-10-15T23:06:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:13Z",
+            "conclusion": "success",
+            "name": "Run denoland/setup-deno@v2",
+            "number": 7,
+            "startedAt": "2026-10-15T23:06:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:34Z",
+            "conclusion": "success",
+            "name": "Install GDAL for the golden-tile tests",
+            "number": 8,
+            "startedAt": "2026-10-15T23:06:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:39Z",
+            "conclusion": "success",
+            "name": "Run pnpm install --frozen-lockfile",
+            "number": 9,
+            "startedAt": "2026-10-15T23:06:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:42Z",
+            "conclusion": "success",
+            "name": "Run uv sync --frozen --all-groups",
+            "number": 10,
+            "startedAt": "2026-10-15T23:06:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:50Z",
+            "conclusion": "success",
+            "name": "Run pnpm lint",
+            "number": 11,
+            "startedAt": "2026-10-15T23:06:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:59Z",
+            "conclusion": "success",
+            "name": "Run pnpm typecheck",
+            "number": 12,
+            "startedAt": "2026-10-15T23:06:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:07:21Z",
+            "conclusion": "success",
+            "name": "Run pnpm test",
+            "number": 13,
+            "startedAt": "2026-10-15T23:06:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:07:26Z",
+            "conclusion": "success",
+            "name": "Run pnpm build",
+            "number": 14,
+            "startedAt": "2026-10-15T23:07:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:07:27Z",
+            "conclusion": "success",
+            "name": "Run pnpm check:map-budget",
+            "number": 15,
+            "startedAt": "2026-10-15T23:07:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:07:43Z",
+            "conclusion": "success",
+            "name": "Run pnpm exec playwright install --with-deps chromium",
+            "number": 16,
+            "startedAt": "2026-10-15T23:07:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:08:01Z",
+            "conclusion": "success",
+            "name": "Run pnpm exec playwright test --project=desktop-chrome",
+            "number": 17,
+            "startedAt": "2026-10-15T23:07:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:08:01Z",
+            "conclusion": "success",
+            "name": "Run uv run ruff check .",
+            "number": 18,
+            "startedAt": "2026-10-15T23:08:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:08:15Z",
+            "conclusion": "success",
+            "name": "Run uv run mypy",
+            "number": 19,
+            "startedAt": "2026-10-15T23:08:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:11:38Z",
+            "conclusion": "success",
+            "name": "Run uv run pytest",
+            "number": 20,
+            "startedAt": "2026-10-15T23:08:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:11:40Z",
+            "conclusion": "success",
+            "name": "Run deno check --config supabase/functions/deno.json supabase/functions/*/index.ts",
+            "number": 21,
+            "startedAt": "2026-10-15T23:11:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:11:43Z",
+            "conclusion": "success",
+            "name": "Install PostgreSQL, PostGIS and pgTAP for the migration test",
+            "number": 22,
+            "startedAt": "2026-10-15T23:11:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:12:32Z",
+            "conclusion": "success",
+            "name": "Apply migrations to data written before them",
+            "number": 23,
+            "startedAt": "2026-10-15T23:11:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:14:02Z",
+            "conclusion": "success",
+            "name": "Run pnpm db:start",
+            "number": 24,
+            "startedAt": "2026-10-15T23:12:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:14:32Z",
+            "conclusion": "success",
+            "name": "Run pnpm db:reset",
+            "number": 25,
+            "startedAt": "2026-10-15T23:14:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:14:39Z",
+            "conclusion": "success",
+            "name": "Run pnpm db:test",
+            "number": 26,
+            "startedAt": "2026-10-15T23:14:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:15:00Z",
+            "conclusion": "success",
+            "name": "Run pnpm db:stop",
+            "number": 27,
+            "startedAt": "2026-10-15T23:14:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:15:00Z",
+            "conclusion": "success",
+            "name": "Post Run denoland/setup-deno@v2",
+            "number": 49,
+            "startedAt": "2026-10-15T23:15:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:15:01Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v7",
+            "number": 50,
+            "startedAt": "2026-10-15T23:15:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:15:01Z",
+            "conclusion": "success",
+            "name": "Post Run astral-sh/setup-uv@v7",
+            "number": 51,
+            "startedAt": "2026-10-15T23:15:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:15:01Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v7",
+            "number": 52,
+            "startedAt": "2026-10-15T23:15:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:15:01Z",
+            "conclusion": "success",
+            "name": "Post Run pnpm/action-setup@v6",
+            "number": 53,
+            "startedAt": "2026-10-15T23:15:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:15:01Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 54,
+            "startedAt": "2026-10-15T23:15:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:15:01Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 55,
+            "startedAt": "2026-10-15T23:15:01Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460088/job/116718754799"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460088"
+  },
+  "main_secret_scan": {
+    "run_id": 38821460068,
+    "conclusion": "success",
+    "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460068"
+  },
+  "pages": {
+    "conclusion": "",
+    "headSha": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+    "jobs": [
+      {
+        "completedAt": "2026-10-15T23:06:33Z",
+        "conclusion": "success",
+        "databaseId": 116718759284,
+        "name": "build",
+        "startedAt": "2026-10-15T23:05:51Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-15T23:05:55Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-15T23:05:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:05:56Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v7",
+            "number": 2,
+            "startedAt": "2026-10-15T23:05:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:07Z",
+            "conclusion": "success",
+            "name": "Run pnpm/action-setup@v6",
+            "number": 3,
+            "startedAt": "2026-10-15T23:05:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:16Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v7",
+            "number": 4,
+            "startedAt": "2026-10-15T23:06:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:21Z",
+            "conclusion": "success",
+            "name": "Run pnpm install --frozen-lockfile",
+            "number": 5,
+            "startedAt": "2026-10-15T23:06:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:27Z",
+            "conclusion": "success",
+            "name": "Run pnpm build:pages",
+            "number": 6,
+            "startedAt": "2026-10-15T23:06:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:28Z",
+            "conclusion": "success",
+            "name": "Run pnpm check:map-budget",
+            "number": 7,
+            "startedAt": "2026-10-15T23:06:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:28Z",
+            "conclusion": "success",
+            "name": "Run pnpm check:prior-tiles",
+            "number": 8,
+            "startedAt": "2026-10-15T23:06:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:29Z",
+            "conclusion": "success",
+            "name": "Run pnpm check:site-budget",
+            "number": 9,
+            "startedAt": "2026-10-15T23:06:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:29Z",
+            "conclusion": "success",
+            "name": "Run actions/configure-pages@v6",
+            "number": 10,
+            "startedAt": "2026-10-15T23:06:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-pages-artifact@v5",
+            "number": 11,
+            "startedAt": "2026-10-15T23:06:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v7",
+            "number": 20,
+            "startedAt": "2026-10-15T23:06:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Post Run pnpm/action-setup@v6",
+            "number": 21,
+            "startedAt": "2026-10-15T23:06:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v7",
+            "number": 22,
+            "startedAt": "2026-10-15T23:06:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-15T23:06:31Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 23,
+            "startedAt": "2026-10-15T23:06:31Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116718759284"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 116719022589,
+        "name": "deploy",
+        "startedAt": "2026-10-15T23:06:34Z",
+        "status": "waiting",
+        "steps": [],
+        "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183/job/116719022589"
+      }
+    ],
+    "status": "waiting",
+    "url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183"
+  },
+  "artifact": {
+    "status": "VERIFIED_CLOSED_ARTIFACT_NOT_DEPLOYED",
+    "run_id": 38821460183,
+    "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38821460183",
+    "source_commit": "73088050d6fc68baedf893990ab3fbe76d5e749c",
+    "reviewed_source_tree": "43c74ca13b889a561e0e23463b9706c064cf48a8",
+    "artifact_id": 12013740607,
+    "github_digest": "sha256:2bc0829549d98331c7a8dc5e451b6e5457125fd5863f166e63ce1ea90a4cde33",
+    "zip_sha256": "2bc0829549d98331c7a8dc5e451b6e5457125fd5863f166e63ce1ea90a4cde33",
+    "tar_sha256": "8d8bdb97140bfe65840db693ff6417c638381daa9e234c95c18574d37e8481f9",
+    "file_count": 38,
+    "total_bytes": 6080760,
+    "activation": {
+      "capture_live": false,
+      "library_intake_live": false
+    },
+    "prerendered_pages": [
+      "index.html",
+      "about/index.html",
+      "card/index.html",
+      "data/index.html",
+      "methods/index.html"
+    ],
+    "checks": [
+      "safe archive layout",
+      "GitHub artifact digest",
+      "closed activation",
+      "five prerendered headlines and Organization JSON-LD",
+      "gated Dataset JSON-LD",
+      "whole-stack builder copy",
+      "photo and spectral privacy boundaries",
+      "agent-readable library/terms copy",
+      "reviewed social image bytes",
+      "no synthetic capture fixture",
+      "map/capture/reference-card assets"
+    ],
+    "deployment_approval": "NOT_GRANTED",
+    "files": [
+      {
+        "path": "about/index.html",
+        "bytes": 6439,
+        "sha256": "e8da342605531cb4f9ac3fb0cfbcb25436360a899aa09a585944f86af443408d"
+      },
+      {
+        "path": "assets/main-CQunBpw7.js",
+        "bytes": 251852,
+        "sha256": "dc820ba75169e46200e1fbbeced3c807f4fca709341a630d8fd7dc4968c3bf6b"
+      },
+      {
+        "path": "assets/main-CdU0pfZy.css",
+        "bytes": 17223,
+        "sha256": "b1a3e832a29a6f2d40376eadc93db588ff419fe7d105b54b39118ec46168b898"
+      },
+      {
+        "path": "capture/assets/dist-DrwtsX7j.js",
+        "bytes": 7754,
+        "sha256": "3fb5ed5a936995d89004aa9688ea992482ec8320274d50feff3833f057740f11"
+      },
+      {
+        "path": "capture/assets/esm-CmDILqN6.js",
+        "bytes": 587,
+        "sha256": "d0e19e89da6ceefba6ff4ccc3a161c5e056cb658df61926421a939ba23e05381"
+      },
+      {
+        "path": "capture/assets/esm-DA9dRiza.js",
+        "bytes": 406,
+        "sha256": "06c6d8a4b2d4b8bb90ad7feefbfd95e790942d67e8ba533949968438b3316b79"
+      },
+      {
+        "path": "capture/assets/esm-DceqX21T.js",
+        "bytes": 819,
+        "sha256": "e9021c8aac3d064702503da0b5f8417f49cc26eb5c15a2b3c64ad51fd2f396df"
+      },
+      {
+        "path": "capture/assets/esm-YcB-ubya.js",
+        "bytes": 9834,
+        "sha256": "03dc21355112032d88a5be7f34462b9a29a69513e2779e5ba020f4e96fabfb8b"
+      },
+      {
+        "path": "capture/assets/index-DZ_h-Mw_.css",
+        "bytes": 7334,
+        "sha256": "359571ceba7714336ebbfcfec093e6001c5ae65f381084a27c1f7e8775b78e56"
+      },
+      {
+        "path": "capture/assets/index-E1VTHjAy.js",
+        "bytes": 806826,
+        "sha256": "95ec3771989c272bbe85d6d6b07f914a10312925c97b79bcabbb07c6d9a3d981"
+      },
+      {
+        "path": "capture/assets/synapse-D5y-aojA.js",
+        "bytes": 624,
+        "sha256": "db56839eb35756ad0bfa4aee4a008a1fe40b116ef3de989b872282682baa9653"
+      },
+      {
+        "path": "capture/assets/web-ClVSmdgs.js",
+        "bytes": 4439,
+        "sha256": "c7cb85c6e43daadbb6f3dffeb100ca91b6f5f9b4f7abfed57252a2dd7e781434"
+      },
+      {
+        "path": "capture/assets/web-XXcZAasd.js",
+        "bytes": 8475,
+        "sha256": "820c2bb9bacc60ece35135cd87470782849800b57b2dd3a1ac06c84bfc347295"
+      },
+      {
+        "path": "capture/assets/web-Z7Um3E4a.js",
+        "bytes": 2086,
+        "sha256": "f6f6c0067308a0d40aa744d6d9267fb1ca7e1c58f78ec042dbb81547edd511b7"
+      },
+      {
+        "path": "capture/gsip-activation.json",
+        "bytes": 50,
+        "sha256": "e79c9ca28c243929e0252ffd0b42c868560e17d293c225532d09410b92d04bdc"
+      },
+      {
+        "path": "capture/icon.svg",
+        "bytes": 370,
+        "sha256": "7bc121f182dfb271605723fd9e08db8be552b6aa1ba03d5ac249357dfd1c4e91"
+      },
+      {
+        "path": "capture/index.html",
+        "bytes": 577,
+        "sha256": "419cebeae7d7703b685a3089da751c753d7863730d0012ac4bb22036aa8cd62d"
+      },
+      {
+        "path": "capture/manifest.webmanifest",
+        "bytes": 325,
+        "sha256": "a3b1be7a5206677834f623191f7c4ae3daffdcf7fa38644498d1917cafabe0d8"
+      },
+      {
+        "path": "capture/registerSW.js",
+        "bytes": 136,
+        "sha256": "e12c8db54e3cc247034427f2b661b305a78fea7e7cdec1eac179fecec3da0fc7"
+      },
+      {
+        "path": "capture/sw.js",
+        "bytes": 1565,
+        "sha256": "16d61512a42f715c845c000b1201bd5aeb49a5f77c90246554353e43327d7d5a"
+      },
+      {
+        "path": "capture/workbox-9c191d2f.js",
+        "bytes": 15112,
+        "sha256": "04b086f1b2f4215ee4b659a7bc9c76162894abdb43fa876247bc7c0bd6fd1c37"
+      },
+      {
+        "path": "card-bw-preview.png",
+        "bytes": 37508,
+        "sha256": "e3c1a24795628a17438686056e61b98df0dd368485bde0f06ec3613308ad5383"
+      },
+      {
+        "path": "card-color-preview.png",
+        "bytes": 37527,
+        "sha256": "cdbb6289d3d7ae6ad88dbb2ff3037698f3a729b4308a8567242e823e8f3c9534"
+      },
+      {
+        "path": "card/index.html",
+        "bytes": 6147,
+        "sha256": "a2c51a4ca4896aff80e77fda49d7cbcb01c6d72dec108f2af46602fb971148f2"
+      },
+      {
+        "path": "data/index.html",
+        "bytes": 9469,
+        "sha256": "81b85b0325047f66324696d002cc86a12e322aafad3453d5ee9e7422e6354fc3"
+      },
+      {
+        "path": "favicon.svg",
+        "bytes": 370,
+        "sha256": "7bc121f182dfb271605723fd9e08db8be552b6aa1ba03d5ac249357dfd1c4e91"
+      },
+      {
+        "path": "index.html",
+        "bytes": 12709,
+        "sha256": "eefb281c6d234213c6f90407c9e4bf918f2d02776de5e43fdcbc6b8364435e5b"
+      },
+      {
+        "path": "llms.txt",
+        "bytes": 2389,
+        "sha256": "66a407dd647ae9fc22234d4469d01b76de459999491b6c23058a551c3ebcb6ee"
+      },
+      {
+        "path": "map/assets/index-BvpiT6QS.js",
+        "bytes": 1793664,
+        "sha256": "8f3c777c959b2a700d299dcd14c30b7d71c93edcff4d3339c5bb40010f44d7ca"
+      },
+      {
+        "path": "map/assets/index-gHsDz2RA.css",
+        "bytes": 85863,
+        "sha256": "2448caa8f5f478b0d524a632501bfc45a8c6f6ec8336ae39e7f8a72e3ff918cd"
+      },
+      {
+        "path": "map/index.html",
+        "bytes": 407,
+        "sha256": "d2520e23662ac7cfd0e0935cd5a52f47a8f849d28479e8a5cbd1e4df3b7762fd"
+      },
+      {
+        "path": "methods/index.html",
+        "bytes": 8184,
+        "sha256": "d4cb407020c1fc8c159e8277f029542a51f3e0d09ff07ef6195eb96eb7878d43"
+      },
+      {
+        "path": "og-library.png",
+        "bytes": 1965996,
+        "sha256": "07c99fc8d617edf3142267acf75ff9c39fcb88a5ad0f0fc06fb3824dad3785e0"
+      },
+      {
+        "path": "og.png",
+        "bytes": 965367,
+        "sha256": "66bd15c9c969bdfc21658ed9c5a7383eba5b4a7e73d135687109678cf112b81f"
+      },
+      {
+        "path": "reference-card/gsip-reference-card-v1-bw.pdf",
+        "bytes": 5851,
+        "sha256": "deb4a5db3aae33a03dc561a740b9924f6ad821113f85ca61012499f64021db42"
+      },
+      {
+        "path": "reference-card/gsip-reference-card-v1-color.pdf",
+        "bytes": 5898,
+        "sha256": "92e35f4cd226ed1d04c4d587ddfd5e07093735c748455ef8d92546bd608d0167"
+      },
+      {
+        "path": "robots.txt",
+        "bytes": 80,
+        "sha256": "e19486f8f74a744bdfe502c686b5ac8a28ec3d2f1a018d717a3fda76f7aba297"
+      },
+      {
+        "path": "sitemap.xml",
+        "bytes": 498,
+        "sha256": "01ee464f47f03ab941362bdb78a488721724c96a96c66dd3752b1197d8268842"
+      }
+    ]
+  },
+  "approval": {
+    "state": "PENDING_NOT_APPROVED",
+    "environment_id": 18657050755,
+    "environment": "github-pages",
+    "reviewers": [
+      "jdhart81"
+    ],
+    "admins_can_bypass": false
+  },
+  "independent_review": {
+    "file": "independent-artifact-review.md",
+    "sha256": "0d030dd756bb583774aba1a0c3cc8d66adef49525f537a725bb4117881a7ec5d",
+    "result": "no open artifact findings"
+  },
+  "scope_exclusions": [
+    "database",
+    "Edge Functions",
+    "workers",
+    "auth",
+    "DNS",
+    "signing",
+    "capture activation",
+    "library intake activation"
+  ]
+}

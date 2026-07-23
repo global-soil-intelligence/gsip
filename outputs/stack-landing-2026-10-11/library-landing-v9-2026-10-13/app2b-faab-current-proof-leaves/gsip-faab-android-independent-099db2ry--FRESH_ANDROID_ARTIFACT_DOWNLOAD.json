@@ -1,0 +1,12 @@
+{
+  "android_job_id": 115663053505,
+  "artifact_id": 11866754580,
+  "bytes": 29120989,
+  "download_count": 1,
+  "head": "faabfeb36eb2f8fbb475a03f5a8994f76dd970bc",
+  "older_artifact_reused": false,
+  "run_attempt": 1,
+  "run_id": 38505847255,
+  "run_number": 55,
+  "sha256": "e419071b02ccc8c469f9b00991d721535abcebf09fde36a64985597a97762d13"
+}

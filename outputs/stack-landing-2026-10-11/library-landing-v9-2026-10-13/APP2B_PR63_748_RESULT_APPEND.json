@@ -1,0 +1,9 @@
+{
+  "utc": "2026-10-13T21:53:24.144016+00:00",
+  "head": "748146da663e692f6637a5a11a43ad063c49cd4f",
+  "description_prefix_preserved": true,
+  "body_sha256": "2f3aaaa06c46588952270e0755004106f519934b30e1ab49965ed52723b6381f",
+  "Android": "failure; no APK; causeUNKNOWN",
+  "combined_native_acceptance": false,
+  "no_production_changes": true
+}

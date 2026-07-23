@@ -1,0 +1,77 @@
+{
+  "utc": "2026-10-14T04:02:20.953130+00:00",
+  "pr": 66,
+  "head": "8b8cc24841d58c231743ff69472d3354f612dcf3",
+  "state": "open",
+  "draft": true,
+  "base": "main",
+  "checks": [
+    {
+      "name": "dco",
+      "status": "completed",
+      "conclusion": "skipped",
+      "id": 115671290302
+    },
+    {
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115671288803
+    },
+    {
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115671288635
+    },
+    {
+      "name": "gitleaks",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 115671274912
+    }
+  ],
+  "runs": [
+    {
+      "id": 38508472579,
+      "workflow": ".github/workflows/dco.yml",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 38508472516,
+      "workflow": ".github/workflows/secret-scan.yml",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 38508472566,
+      "workflow": ".github/workflows/ci.yml",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 38508467962,
+      "workflow": ".github/workflows/secret-scan.yml",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "all_required_checks_green": true,
+  "response_bindings": {
+    "pr": {
+      "sha256": "c8e597f8226adb3f236a2f57e5d3412ab3567aa1eea2cd457e3093dec3ddd7b5",
+      "bytes": 20386
+    },
+    "checks": {
+      "sha256": "5aadcde28295d903493493917d11606fc41859e9b45f6e64fcf47850ddfc8609",
+      "bytes": 14323
+    },
+    "runs": {
+      "sha256": "da86c1cb8c543d6abcd766f7f3d9793e5b8ddcd39bda12a33f68a8bdb3c20832",
+      "bytes": 56289
+    }
+  },
+  "GET_only": true,
+  "production_queries": false
+}

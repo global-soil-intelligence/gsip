@@ -1,0 +1,49 @@
+{
+  "target": "toxldjgwkxtneoqsazym",
+  "source_head": "f9e1ac2f8a88671f99b959e476499392297bd30f",
+  "cli_version": "2.118.0",
+  "started_at": "2026-10-12T13:36:54.038630+00:00",
+  "completed_at": "2026-10-12T13:36:55.724544+00:00",
+  "argv": [
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase",
+    "db",
+    "push",
+    "--project-ref",
+    "toxldjgwkxtneoqsazym",
+    "--workdir",
+    "/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo",
+    "--dry-run",
+    "--skip-vault"
+  ],
+  "exit_code": 0,
+  "safe_output_lines": [
+    "Initialising login role...",
+    "DRY RUN: migrations will *not* be pushed to the database.",
+    "Connecting to remote database...",
+    "Would push these migrations:",
+    "\u2022 20261010120000_wp6b_capture_gate.sql",
+    "\u2022 20261010120100_wp6b_path_binding.sql",
+    "\u2022 20261010120200_wp6b_finalize_and_settle.sql",
+    "\u2022 20261010120300_wp6b_k_anonymous_cells.sql",
+    "\u2022 20261010120400_wp6b_attribution_and_metadata.sql",
+    "\u2022 20261010130000_wp6c_priors.sql",
+    "\u2022 20261010140000_wp6d_contributor_rights.sql",
+    "\u2022 20261010150000_wp6e_provenance.sql",
+    "\u2022 20261011090000_wp_agent1_releases.sql"
+  ],
+  "exact_pending_files": [
+    "20261010120000_wp6b_capture_gate.sql",
+    "20261010120100_wp6b_path_binding.sql",
+    "20261010120200_wp6b_finalize_and_settle.sql",
+    "20261010120300_wp6b_k_anonymous_cells.sql",
+    "20261010120400_wp6b_attribution_and_metadata.sql",
+    "20261010130000_wp6c_priors.sql",
+    "20261010140000_wp6d_contributor_rights.sql",
+    "20261010150000_wp6e_provenance.sql",
+    "20261011090000_wp_agent1_releases.sql"
+  ],
+  "raw_filename_occurrence_count": 18,
+  "output_sha256": "70a1a17fa9c631c66cbde4201dd13bb359506dbafdb39c7390c63e4be58569c5",
+  "state": "PASS_EXACT_NINE_OCTOBER_FILES",
+  "application_migrations_executed": false
+}

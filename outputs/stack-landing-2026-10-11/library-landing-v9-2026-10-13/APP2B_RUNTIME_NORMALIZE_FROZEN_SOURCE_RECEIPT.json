@@ -1,0 +1,34 @@
+{
+  "actual_hosted_duplicate_values_unknown": true,
+  "author_static_combined_mutation_evidence_pending": true,
+  "base_commit": "623a91aa50f06e2dd894e656b30ea0c17c2481c3",
+  "baseline_compatible_tests_passed": 18,
+  "baseline_tests_failed": 22,
+  "files": [
+    {
+      "base_sha256": "61cfd9178d4cecd817c4bcf845d51889a7754a861d06e802230d11caa368d3ee",
+      "bytes": 133966,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "430332f7e55f4f916ca73a3d3931c2dd615e40392828fabc303fa8dd4459dba4"
+    },
+    {
+      "base_sha256": "5e2db7a77923d6110ce2abcdfe6fc74fdb1abeb264c9d05c2d9fb4262cd12b27",
+      "bytes": 232804,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "d8e05f5fee70c9b90b41227b62094f2f8713f0850fc254fd7368a4c8744a7b25"
+    },
+    {
+      "base_sha256": "90be661ac7e140806378f701ce33052aab37a69199e1ea61e47c9502005a6136",
+      "bytes": 41478,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "1c9378c3ef3b79a1ca592e0c701827ea4fd02bb2c4a6346af5264dbdec0f5922"
+    }
+  ],
+  "hosted_native_acceptance": false,
+  "manifest_sha256": "5788468df3c0f44fe9d16703ed226778a172b68d7fe06239c5afd61c0c937580",
+  "new_tests_passed": 40,
+  "patch_sha256": "136f6877c3bd3b7ec10f14b8c62fbd16ec7e4bcbcb9704e3e7c628a472927874",
+  "projection_sha256": "ea1089857a2dd89f32fa907a1913deb00392ab26a653dc8dcebd236cf9cdd04b",
+  "schema": "gsip-runtime-input-normalizer-source-freeze-v1",
+  "source": "/private/tmp/gsip-runtime-normalize-frozen-71xk4_n0/source"
+}

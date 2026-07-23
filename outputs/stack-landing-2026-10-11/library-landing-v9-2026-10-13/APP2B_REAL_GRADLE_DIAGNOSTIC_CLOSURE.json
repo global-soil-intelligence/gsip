@@ -1,0 +1,61 @@
+{
+  "scope": "Bounded diagnostic reproduction only; no implementation or source patch.",
+  "source_head": "d74ba2add9ce9bb5494be60c5f11883d3f5137ef",
+  "manifest": "/private/tmp/gsip-real-gradle-task-rqn84l4h/reproduction-manifest.json",
+  "manifest_sha256": "6c9d3df69ff495c8859cfed058ef174c77af8125b58e2e1083e8423894fdceeb",
+  "source_files_unchanged": 365,
+  "actual_task_sha256": "046b625b8801375cf8af24a8fd473dd8cfba199b37b46d72fd8873c700a997b8",
+  "actual_native_helper_sha256": "0a24bd44e461c8ac72504bb73e0be7de1f03cc7df22951e093c283bd6d2e8715",
+  "tool": {
+    "gradle_version": "8.14.3",
+    "java_version": "21.0.1",
+    "distribution_primary_url": "https://services.gradle.org/distributions/gradle-8.14.3-all.zip",
+    "distribution_checksum_url": "https://services.gradle.org/distributions/gradle-8.14.3-all.zip.sha256",
+    "distribution_sha256": "ed1a8d686605fd7c23bdf62c7fc7add1c5b23b2bbc3721e661934ef4a4911d7c",
+    "distribution_bytes": 224584249,
+    "cached_complete_distribution_files_verified": 22432,
+    "license": "Apache-2.0",
+    "installed_capacitor_template_sha256": "5edb50a67a034556da8bb5fa54eb08211eaa952aac0949c75050ebcf0be97303",
+    "installed_wrapper_properties_sha256": "9a479a85aa879bb55284fc16d0de5b81a745c3854f4e2d88c42e7debaf007435"
+  },
+  "actual_controls": [
+    {
+      "case": "Exact unchanged task, module/project local fixture before Java producers",
+      "exit_code": 0,
+      "result": "Two configuration views; one module/two project components/two artifacts each. Only one artifact file initially exists, demonstrating raw task metadata alone is not complete native proof."
+    },
+    {
+      "case": "Actual Java library jar producers, then exact unchanged task",
+      "exit_code": 0,
+      "result": "Both views again valid; all four referenced artifact occurrences exist. No Android SDK or application SDK."
+    },
+    {
+      "case": "Missing releaseRuntimeClasspath in local fixture",
+      "exit_code": 1,
+      "result": "Actual task fails; no graph emitted."
+    },
+    {
+      "case": "Unresolved local Maven module in offline fixture",
+      "exit_code": 1,
+      "result": "Actual task fails; no graph emitted."
+    },
+    {
+      "case": "Actual installed-template gradlew, exact seven collector arguments, missing release configuration",
+      "exit_code": 1,
+      "result": "Actual CalledProcessError fed directly to unchanged gradle_failure_class -> GRADLE_CONFIGURATION_MISSING; real header/What/Try markers each exactly one, one prefixed reason, BUILD FAILED summary in stderr after Try."
+    }
+  ],
+  "finding": "No generic task/API/compile defect or controlled classifier stream-format defect reproduced. Hosted Android BUILD_TOOL cause remains unknown; no source fix justified by these controls.",
+  "next_step": "Root-owned fixed-stage instrumentation on actual CI may narrow the real failure while preserving every existing producer, coordinate, license/source, permission and binary proof gate.",
+  "privacy": "No raw subprocess stdout/stderr retained. Only hashes, bounded counts and fixed public diagnostic labels recorded. Temporary JSON task outputs were reduced to safe receipts and deleted; automatically emitted owned Gradle daemon logs were deleted after runs.",
+  "removed_owned_daemon_log_files": 6,
+  "authority": "Owned source/fixtures/caches only. Shared source/Git/GH/CI/production unchanged. No real data, secrets, signing, service/account/deployment or Android SDK inputs.",
+  "governing": "Nine current mandatory documents matched the prior fully read governed source before fixture work; exact hashes in source-binding.json. Current native evidence scope and safe diagnostics doc read.",
+  "limitations": [
+    "The fixture uses Java project/module components, not AGP/Android variants or the actual CI runtime graph.",
+    "Positive raw task output does not prove source-to-binary/license/permission/native acceptance; no fake APK/native artifact or sidecar was supplied.",
+    "First restricted local task attempt returned1 before task markers; repeated permitted local Java execution succeeded. The first local failure is not attributed to hosted CI.",
+    "Public checksum fetch needed approved network access after default DNS refusal; only fixed public Gradle distribution/checksum URLs were fetched.",
+    "No native/device/iOS backup/store/field readiness claim."
+  ]
+}

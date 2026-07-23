@@ -1,0 +1,5 @@
+Command/check: ruff
+Observed final exit_code: 0
+
+All checks passed!
+

@@ -1,0 +1,19 @@
+{
+  "reviewed_spec_head": "0b90464b95266135ecd851e0bfb230a3e0f3bd11",
+  "reviewed_implementation_head": "731a30ff6f8f3a90e0df31eb1d977edf1fcaf912",
+  "reviewed_initial_implementation_head": "0f0427b4a29435754a171cf82dee33d62a68b0ff",
+  "tracked_initial_diff_sha256": "4209939652129489fe4d8b5979b7216ae2b54d28d77191377b4dbe8c1bad4a53",
+  "new_site_test_sha256": "4bbc0313f80175fcbbe8e5a12815b5135d5d01bdae4d5c374e54ab0577577c73",
+  "initial_independent_tests": {
+    "capture": 27,
+    "site": 8,
+    "protocol_rest_mcp": 45,
+    "permissions": 29
+  },
+  "final_scope_permission_tests": 67,
+  "findings": [],
+  "resolved_spec_finding": "Distinguish source photographs from extracted summary records; source staged extraction supports cardless images while actual field extraction remains held.",
+  "resolved_integrity_failure": "Independently verified exactly two stale source bindings and source AST changes limited to one camera purpose string and one new test. Final two-hash/documentation follow-up preserves historical baseline, bindings, native scope, permission checks and all 34 scope-expansion rejection cases.",
+  "github_approval_submitted": false,
+  "physical_phone_or_scientific_experiment": false
+}

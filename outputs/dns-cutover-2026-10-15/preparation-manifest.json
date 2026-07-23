@@ -1,0 +1,181 @@
+{
+  "status": "TXT_ADDED_AND_OWNERSHIP_VERIFIED_CUTOVER_HELD",
+  "checked_at_utc": "2026-10-16T00:37:16.483061+00:00",
+  "files": [
+    {
+      "name": "DNS-CUTOVER-PROPOSAL.md",
+      "bytes": 15895,
+      "sha256": "e7c4c23863d4919f32b0aca3204fe566dd741539786016ca4e9f87e8eb6123b1"
+    },
+    {
+      "name": "authoritative-dns-preflight.json",
+      "bytes": 47391,
+      "sha256": "07e502505f069a26dc5cf47f39efa5b7f5e6a9949b7a782414fc538e51b88a19"
+    },
+    {
+      "name": "generated-code-independent-review.md",
+      "bytes": 235,
+      "sha256": "0249f11203bb322150feee549a1eb6cb21a81feb31e9167961488cc294ad96cc"
+    },
+    {
+      "name": "github-ownership-txt.GENERATED.json",
+      "bytes": 875,
+      "sha256": "43758ef1fb7acb9d46ae86af3c4f1b90dad7551fdffe46e08606baa4cf83480d"
+    },
+    {
+      "name": "github-ownership.VERIFIED.jpg",
+      "bytes": 54736,
+      "sha256": "1aecdbf8e8ebb53d75728be0d8ebf53ae3e0b1462ab6ffc52dcf4beeba157106"
+    },
+    {
+      "name": "github-ownership.VERIFIED.txt",
+      "bytes": 10390,
+      "sha256": "5a949fb43baf389f221cca0ab62d0befe82a327e360aee97f5f374cab37e45c6"
+    },
+    {
+      "name": "github-pages-preflight.json",
+      "bytes": 414,
+      "sha256": "ec7add6bdbdfa87ad5f23007e0bcac314fafdcee542281935201e0af2c1d9f87"
+    },
+    {
+      "name": "github-verification-code.GENERATED.jpg",
+      "bytes": 65943,
+      "sha256": "74d940742f41b69b93f41876ede46105ddd75f7bda2488a895fed3b3b3fcad7f"
+    },
+    {
+      "name": "github-verification-code.GENERATED.txt",
+      "bytes": 10338,
+      "sha256": "4fb51c498fe7b832f92c84f0234edc2f9ae62d6cb56cd5cddae51d061d89e228"
+    },
+    {
+      "name": "github-verification-request.UNSUBMITTED.jpg",
+      "bytes": 48493,
+      "sha256": "1271f6310f84620d6a0114ab28064dbb615fd9b897954ebb7ca3375d34df3e96"
+    },
+    {
+      "name": "github-verification-request.UNSUBMITTED.txt",
+      "bytes": 9372,
+      "sha256": "c238d06dbea0b4f22823ecd42448ea415f638e64be5a4c98f9ccb02f956d5dd3"
+    },
+    {
+      "name": "http-preflight.json",
+      "bytes": 797,
+      "sha256": "d1f5799d23e2cd7886891b2009fafa51355719cf66a664b88419a287e52b2af6"
+    },
+    {
+      "name": "independent-post-txt-dns-readback.json",
+      "bytes": 18098,
+      "sha256": "305546a7bc6816d877ee7d23eb05dedb90d54a00e63333f00238a6b32376f1b1"
+    },
+    {
+      "name": "independent-pre-txt-dns-readback.json",
+      "bytes": 16491,
+      "sha256": "cb05b54b1db92d4956f564bca79b9c61573c36a711e2581bf917930cad7fe473"
+    },
+    {
+      "name": "independent-review.md",
+      "bytes": 771,
+      "sha256": "c36a4e0c7ded0ee3a42e7772945aea2e0018c152683ad86fe831615519402282"
+    },
+    {
+      "name": "ownership-verification-final-receipt.json",
+      "bytes": 1754,
+      "sha256": "cbfc5d531e8845cda616cb4df95e7956b572b6b6f5390af13033ed0f6d129961"
+    },
+    {
+      "name": "ownership-verified-final-readback.json",
+      "bytes": 875,
+      "sha256": "764870e72d39cc8325cdd598d99509d263df2eac318f17445c1580e4951f2cba"
+    },
+    {
+      "name": "pages-custom-domain.PROPOSED.json",
+      "bytes": 44,
+      "sha256": "70b7dde6a1a80fe081f019d92ff4ec1942197e3d87cf04066dd03501947bc3e1"
+    },
+    {
+      "name": "pages-environment-preflight.json",
+      "bytes": 2110,
+      "sha256": "cd3c5a92df22459774f1e22dfbef4b495c025fe2a688524f8c5219fb8ee454e7"
+    },
+    {
+      "name": "pages-https.PROPOSED.json",
+      "bytes": 29,
+      "sha256": "d76c3f25e518323b8f5cb10a5aeee4532b9c18bfb7aae3cc302af50ec7d2d07e"
+    },
+    {
+      "name": "pages-remove-custom-domain.ROLLBACK-ONLY.json",
+      "bytes": 20,
+      "sha256": "33110191264d1f6856a9f09f003111d34276e38c336d98ae52001b625b3abdbe"
+    },
+    {
+      "name": "pages-run-preflight.json",
+      "bytes": 15412,
+      "sha256": "eae6541617c939620cff06e3d08f2f4c0f5e8d176f0efc3b98a9b1181e351794"
+    },
+    {
+      "name": "post-challenge-dns-readback.json",
+      "bytes": 12229,
+      "sha256": "7f3b9b20046e2d26492cbb444ccbb6a80c6b97a1bd2e543b384665dbb03875cb"
+    },
+    {
+      "name": "post-challenge-pages-activation-readback.json",
+      "bytes": 662,
+      "sha256": "6641c8bc64edc3bf8cc66e63964956af637c1f6d1171f1ea1cc0f67a5f86658c"
+    },
+    {
+      "name": "proposed-changes.json",
+      "bytes": 4788,
+      "sha256": "f297ef242571b7c3d613f59a30a67d8c91d50d67ecfcfa2f552824f0a98c5302"
+    },
+    {
+      "name": "registrar-preflight.json",
+      "bytes": 407,
+      "sha256": "42a56b244592afb68340f050d8ecd3b9160d93d0b7dbff6125db34291097d16f"
+    },
+    {
+      "name": "signed-in-account-readback.json",
+      "bytes": 1649,
+      "sha256": "74191b419cd1bdd85b68bf6dfa39cb4535c2402d3bed0bf7da1c98c6487a9965"
+    },
+    {
+      "name": "signed-in-activation-readback.json",
+      "bytes": 253,
+      "sha256": "46c09b5664a55025bdc0292fd1f4bd751da5cbce5b6e726e100ad9a7d1141684"
+    },
+    {
+      "name": "signed-in-dns-records.jpg",
+      "bytes": 103049,
+      "sha256": "f2a3da2dd03921873bf2c91c723ff3744a6de7c8256da891a1e2cb30eec29e6e"
+    },
+    {
+      "name": "signed-in-dns-records.txt",
+      "bytes": 6136,
+      "sha256": "6c762bd0f933f3751ca5825c4a37d3f4bdf7b47962c0e4ab2445cda59e37cd25"
+    },
+    {
+      "name": "signed-in-nameservers.txt",
+      "bytes": 447,
+      "sha256": "f43c14eab610fd71c7e4ebb0576102c3bab504ae6c86ee50e531681e1c959faf"
+    },
+    {
+      "name": "txt-added-authoritative-readback.ATTEMPT-1.json",
+      "bytes": 14972,
+      "sha256": "f8b6cd058b58163b8486d06126cf0d9c9032b1b44d35a40ef213cd7d80fff121"
+    },
+    {
+      "name": "txt-record.BEFORE-SAVE.txt",
+      "bytes": 6340,
+      "sha256": "4a61a87af926ca939821838ec46e53c818a9d75564a93f438ba2ffafd5c18e98"
+    },
+    {
+      "name": "txt-record.SAVED.jpg",
+      "bytes": 105182,
+      "sha256": "e426ff69849ef919aac953c25e8360b978d9aaa306b65898fd38d3a606f4b969"
+    },
+    {
+      "name": "txt-record.SAVED.txt",
+      "bytes": 6288,
+      "sha256": "54f4eee6f883759303b43e798492c3709af3003c88be9e48b894450135cc02cf"
+    }
+  ]
+}

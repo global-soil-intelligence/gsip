@@ -1,0 +1,10 @@
+{
+  "reviewer": "independent source audit agent",
+  "review_scope": "Repository factual claims only; external papers not independently re-reviewed in this pass.",
+  "finding": "The original proposed closed-route regression incorrectly grouped the explicit rights route with no-auth landing behavior. Rights recovery intentionally uses existing-account authentication while intake is closed.",
+  "correction": "NEXT_BUILD_BRIEF-v2.md replaces only that regression acceptance bullet. Original retained unchanged.",
+  "original_sha256": "8b56566bc6250d286d53e776746f6736b5a9025410c4d78510fb30d2df62f615",
+  "corrected_sha256": "00760ae0bfaf82b55a278e4c589da2329470de9f511c8afeacf16743245d441d",
+  "other_findings": "No other material repository factual errors identified.",
+  "source_head": "33260db1ce49c50600942694e43269759e554e66"
+}

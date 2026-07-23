@@ -1,0 +1,66 @@
+{
+  "observed_at": "2026-10-12T01:52:57.356368+00:00",
+  "pr_url": "https://github.com/global-soil-intelligence/gsip/pull/39",
+  "pr_head": "c64672468c2638b4d8b840ac5e280f68a6b3f3e6",
+  "base_branch": "docs/spec-v4",
+  "run_id": 38192835277,
+  "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38192835277",
+  "run_number": 6,
+  "checkout_merge_sha": "2aab581c7b06960613436402f8115e7ab6b13b4d",
+  "check_status": {
+    "validate": [
+      "SUCCESS"
+    ],
+    "gitleaks": [
+      "SUCCESS",
+      "SUCCESS"
+    ],
+    "android": [
+      "SUCCESS"
+    ],
+    "ios": [
+      "SUCCESS"
+    ],
+    "dco": [
+      "SKIPPED"
+    ]
+  },
+  "verified": [
+    "both clean-source receipts match checkout merge SHA and workflow input",
+    "both API archive digests and sizes independently verified",
+    "both payload artifact hashes match receipts",
+    "Android APK identity/versionCode6/versionName0.1.0 read back",
+    "Android compiled application bindings and all nine-domain cloud/D2D/legacy rules checked",
+    "Android APK permission guard passes",
+    "iOS built Info.plist0.1.0/1.0.5 read back",
+    "iOS built permission guard passes"
+  ],
+  "comparisons": {
+    "android": {
+      "byte_equal": true,
+      "entry_content_equal": true,
+      "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+      "changed_entries": [],
+      "first_only": [],
+      "second_only": []
+    },
+    "ios": {
+      "byte_equal": false,
+      "entry_content_equal": true,
+      "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+      "changed_entries": [],
+      "first_only": [],
+      "second_only": []
+    }
+  },
+  "limits": [
+    "same-run comparisons with one generated project; no cross-runner reproducibility claim",
+    "Android uses shared disposable debug key; iOS simulator signing disabled",
+    "entry-content view omits ZIP metadata/directory entries/container bytes including APK signing blocks; full hashes and byte_equal include all bytes",
+    "Android physical-device cloud backup/transfer behavior still requires synthetic device tests",
+    "iOS WebKit storage backup exclusion remains blocked/unverified; no device protection claimed",
+    "owner-controlled accounts/signing and store submission remain gated"
+  ],
+  "source_changes_after_ci": false,
+  "production_actions": false
+}

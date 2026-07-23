@@ -1,0 +1,55 @@
+{
+  "recorded_utc": "2026-10-13T15:02:58.860480+00:00",
+  "candidate_patch_sha256": "60438798022b84b489f6d80ec3b2e547b8f2f6f0e1f6ef6640435db4201a3f54",
+  "base": "d7ed716ed0921381da04f542e90902ede36cb462",
+  "branch": "wp-lib-5b-private-exchange-ledger",
+  "uncommitted": true,
+  "python_xml_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "4",
+      "tests": "1057",
+      "time": "71.489",
+      "timestamp": "2026-10-13T10:57:24.141166-04:00",
+      "hostname": "MacBook-Pro-6.local"
+    }
+  ],
+  "actual_exit_codes": {
+    "whole_pytest": 0,
+    "whole_ruff": 0,
+    "whole_mypy": 0,
+    "pnpm_lint": 0
+  },
+  "logs": {
+    "lib5b-root-whole-python.log": {
+      "sha256": "b17d1ec652e0ac2eba0ad010ad71807f4759c3b491bdb9b57f1e555a1b0f440a",
+      "bytes": 1716
+    },
+    "lib5b-root-whole-python.xml": {
+      "sha256": "222a2d2c3761d4886a2e054b9f7661f95c2a3bf16590fc8d80766da27772d2a5",
+      "bytes": 2163610
+    },
+    "lib5b-root-ruff.log": {
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    "lib5b-root-mypy.log": {
+      "sha256": "047be720f71ff6f55001ba8201472e4dca22eaa7f8ee244cbd28450c7224622f",
+      "bytes": 44
+    },
+    "lib5b-root-lint.log": {
+      "sha256": "8986dfcda5512e47b979aa7120521e228da209dd4c32cf7f8eec8d7ee49e4dfa",
+      "bytes": 134
+    }
+  },
+  "candidate_files": {
+    "pipeline/node_exchange_store.py": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+    "pipeline/node_exchange_simulator.py": "4e3f1eb4183205cb1705672f01547ab4d8aa8c78569a42a5cfc4af7579e4fa87",
+    "tests/test_node_exchange_store.py": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+    "tests/test_node_exchange_simulator.py": "20e8ac506071e994dccd7d93c8423c8cf573ca8087085b8ecd143390f7a4b830",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md": "81e6bd675e15dc8ded29e4e3d1891274b7cd27fa39915c49cbe3e09bdc7565c4"
+  },
+  "independent_review": "two P2 findings open; ordinary tests are not closure"
+}

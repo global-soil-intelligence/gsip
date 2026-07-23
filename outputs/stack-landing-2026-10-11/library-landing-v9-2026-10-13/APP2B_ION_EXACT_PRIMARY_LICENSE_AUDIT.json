@@ -1,0 +1,156 @@
+{
+  "primary_only": true,
+  "packages": [
+    {
+      "identity": "ion-ios-camera",
+      "version": "2.0.0",
+      "commit": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
+      "license": "MIT",
+      "archive_unpacked_bytes": 522080,
+      "archive_file_count": 110,
+      "prebundled_binary_names": [],
+      "tag_commit_time": "2026-08-28T09:15:24Z",
+      "repo_updated_at": "2026-10-08T14:16:13Z",
+      "repo_pushed_at": "2026-10-08T14:16:11Z",
+      "files": [
+        {
+          "label": "ref",
+          "url": "https://api.github.com/repos/ionic-team/ion-ios-camera/git/ref/tags/2.0.0",
+          "bytes": 348,
+          "sha256": "1201a5196e7e737abdc3ad9e62f4a44f86ee5321ec0f771c3b2e5c5ddbfcf044"
+        },
+        {
+          "label": "manifest",
+          "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-camera/2.0.0/Package.swift",
+          "bytes": 781,
+          "sha256": "9c996d5e3d272926b9ca7375db032769554479b39088f3c6261a9b6db3f0e398"
+        },
+        {
+          "label": "license",
+          "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-camera/2.0.0/LICENSE",
+          "bytes": 1063,
+          "sha256": "731d2fac39f3d6dc79c04f9a7d2e59c2999caa0dd1dbcf295f9c0e922580dacc"
+        },
+        {
+          "label": "repo",
+          "url": "https://api.github.com/repos/ionic-team/ion-ios-camera",
+          "bytes": 6527,
+          "sha256": "3f83b3066618f51521e481a26c0fba6ebc4d8ca253e39d1254fc0a34b7d79aad"
+        },
+        {
+          "label": "archive",
+          "url": "https://codeload.github.com/ionic-team/ion-ios-camera/tar.gz/refs/tags/2.0.0",
+          "bytes": 273170,
+          "sha256": "973aa971e499abe35869c939dddb31ebec2c11b1e646cda3c2eb3fe95329b322"
+        },
+        {
+          "label": "commit",
+          "url": "https://api.github.com/repos/ionic-team/ion-ios-camera/commits/00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
+          "bytes": 6782,
+          "sha256": "4381f8ede040c41b194dcd5ddf053e6c65663535666c066b65b34228a99900a1"
+        }
+      ]
+    },
+    {
+      "identity": "ion-ios-filesystem",
+      "version": "1.1.4",
+      "commit": "56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c",
+      "license": "MIT",
+      "archive_unpacked_bytes": 150959,
+      "archive_file_count": 36,
+      "prebundled_binary_names": [],
+      "tag_commit_time": "2026-09-08T16:27:10Z",
+      "repo_updated_at": "2026-10-07T13:30:16Z",
+      "repo_pushed_at": "2026-10-13T14:32:30Z",
+      "files": [
+        {
+          "label": "ref",
+          "url": "https://api.github.com/repos/ionic-team/ion-ios-filesystem/git/ref/tags/1.1.4",
+          "bytes": 356,
+          "sha256": "b2f127222280a0a618aab768749f3f2e2fd9ad2a7c4fb6a3224b47a2ea69ef9b"
+        },
+        {
+          "label": "manifest",
+          "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-filesystem/1.1.4/Package.swift",
+          "bytes": 558,
+          "sha256": "2af20bd56bf4fd79f19e89fcc8bf524c225edece060ea1e08d0970799481d465"
+        },
+        {
+          "label": "license",
+          "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-filesystem/1.1.4/LICENSE",
+          "bytes": 1062,
+          "sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d"
+        },
+        {
+          "label": "repo",
+          "url": "https://api.github.com/repos/ionic-team/ion-ios-filesystem",
+          "bytes": 6707,
+          "sha256": "6c4e74c48042f5a6dfe32f6cc3d0a3a12756974bece55bbaacb7cf12fd13d8b0"
+        },
+        {
+          "label": "archive",
+          "url": "https://codeload.github.com/ionic-team/ion-ios-filesystem/tar.gz/refs/tags/1.1.4",
+          "bytes": 31020,
+          "sha256": "8efe6d8d1dd40b6894d5c128e9bb81bc557f8d58d3c4c4f6dc12ab9ac5c891d9"
+        },
+        {
+          "label": "commit",
+          "url": "https://api.github.com/repos/ionic-team/ion-ios-filesystem/commits/56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c",
+          "bytes": 11447,
+          "sha256": "660b5a22a4e604db7edfe52fba78ca3e72754803271591cffdb25c3b936a04b3"
+        }
+      ]
+    },
+    {
+      "identity": "ion-ios-geolocation",
+      "version": "2.1.1",
+      "commit": "db363927d3a954e3ea24d2e72b6e9814769a84be",
+      "license": "MIT",
+      "archive_unpacked_bytes": 95915,
+      "archive_file_count": 35,
+      "prebundled_binary_names": [],
+      "tag_commit_time": "2026-03-10T21:54:24Z",
+      "repo_updated_at": "2026-10-07T13:31:00Z",
+      "repo_pushed_at": "2026-10-07T13:30:56Z",
+      "files": [
+        {
+          "label": "ref",
+          "url": "https://api.github.com/repos/ionic-team/ion-ios-geolocation/git/ref/tags/2.1.1",
+          "bytes": 358,
+          "sha256": "7f45031dcccaa3b7ed1a8bb234ee7eeefa358a2d61d7d618ec89f7c04bf39545"
+        },
+        {
+          "label": "manifest",
+          "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-geolocation/2.1.1/Package.swift",
+          "bytes": 565,
+          "sha256": "1afefd99f4747c429c71ccd2823a8623095da3b9a2fa0df7f341f31beb310245"
+        },
+        {
+          "label": "license",
+          "url": "https://raw.githubusercontent.com/ionic-team/ion-ios-geolocation/2.1.1/LICENSE",
+          "bytes": 1062,
+          "sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d"
+        },
+        {
+          "label": "repo",
+          "url": "https://api.github.com/repos/ionic-team/ion-ios-geolocation",
+          "bytes": 6749,
+          "sha256": "268a15792641658ef69c8c1ac8978b480d0fe9d69c4b774153f74473ab89d6f0"
+        },
+        {
+          "label": "archive",
+          "url": "https://codeload.github.com/ionic-team/ion-ios-geolocation/tar.gz/refs/tags/2.1.1",
+          "bytes": 23644,
+          "sha256": "bbff6b0ab17490d7ef80b18af0f520a83f4eee3c042fa980c0f60c234bff33fb"
+        },
+        {
+          "label": "commit",
+          "url": "https://api.github.com/repos/ionic-team/ion-ios-geolocation/commits/db363927d3a954e3ea24d2e72b6e9814769a84be",
+          "bytes": 9617,
+          "sha256": "d3253a51ec053fcd462ba9890e698f47b6bb3e7343d261bf8e698ae4c575ae43"
+        }
+      ]
+    }
+  ],
+  "scope": "Exact public selected tags. Source archives and license metadata; no unverified proprietary binary inherited from wrapper MIT."
+}

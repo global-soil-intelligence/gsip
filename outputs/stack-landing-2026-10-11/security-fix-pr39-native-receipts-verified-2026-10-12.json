@@ -1,0 +1,89 @@
+{
+  "observed_at": "2026-10-12T14:58:06.845107+00:00",
+  "status": "PASS",
+  "repository": "global-soil-intelligence/gsip",
+  "pr": 39,
+  "head": "d522c770c3a7fa490c6906817a7d3121842c365b",
+  "run_id": 38265400180,
+  "run_number": 11,
+  "run_url": "https://github.com/global-soil-intelligence/gsip/actions/runs/38265400180",
+  "ci_source_binding": {
+    "parents": [
+      "322ecd44fa20688b9c24229f719c5e8c6733aba8",
+      "d522c770c3a7fa490c6906817a7d3121842c365b"
+    ],
+    "sha": "b3155ee9776827a14d24cbb82284c2735d7096b5",
+    "tree": "2dbf601fe8a34d32618092fc9600c74b2e12a634"
+  },
+  "artifacts": [
+    {
+      "id": 11754910963,
+      "name": "gsip-capture-android-debug",
+      "size_in_bytes": 7147349,
+      "expired": false,
+      "digest": "sha256:1f2e937d788d8afb1b927e0c0e5cfc7d76138f93bd62632f078988459c2cbd89",
+      "expires_at": "2026-10-26T14:49:45Z"
+    },
+    {
+      "id": 11754178366,
+      "name": "gsip-capture-ios-simulator",
+      "size_in_bytes": 3324890,
+      "expired": false,
+      "digest": "sha256:00e9077da0576ed6cc5ad577cce10b444b6478b010607d662868c8d798dedb5c",
+      "expires_at": "2026-10-26T14:50:16Z"
+    }
+  ],
+  "local_verification": [
+    {
+      "platform": "android",
+      "receipt_sha256": "fc731f437adb6791706c63f2a7e6961f7285754dce0b759146a6d406ca235e6e",
+      "artifact_file": "security-fix-pr39-native-38265400180/gsip-capture-android-debug/app-debug.apk",
+      "artifact_file_sha256": "c542c46a3335136b19d648e822faeee64e49fe684eb444d0e67a0cbb800000f9",
+      "source_commit": "b3155ee9776827a14d24cbb82284c2735d7096b5",
+      "source_tree_clean": true,
+      "run_number": 11,
+      "marketing_version": "0.1.0",
+      "android_version_code": 11,
+      "ios_build_version": "1.0.10",
+      "embedded_version_and_compiled_checks": "PASS",
+      "comparison": {
+        "byte_equal": true,
+        "entry_content_equal": true,
+        "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+        "changed_entries": [],
+        "first_only": [],
+        "second_only": []
+      },
+      "comparison_scope": "same run/generated project; actual repeated native build; Android shared disposable debug key"
+    },
+    {
+      "platform": "ios",
+      "receipt_sha256": "effe321c819b114f083c2ba4cd1f0722d3275fc4f730cd75a7f4423efb851d0c",
+      "artifact_file": "security-fix-pr39-native-38265400180/gsip-capture-ios-simulator/gsip-capture-ios-simulator.zip",
+      "artifact_file_sha256": "cd4f84e2655b083f3c671e3cf60211cccd7f2c51b5e49ad1fe2fe06b77bbcff8",
+      "source_commit": "b3155ee9776827a14d24cbb82284c2735d7096b5",
+      "source_tree_clean": true,
+      "run_number": 11,
+      "marketing_version": "0.1.0",
+      "android_version_code": 11,
+      "ios_build_version": "1.0.10",
+      "embedded_version_and_compiled_checks": "PASS",
+      "comparison": {
+        "byte_equal": false,
+        "entry_content_equal": true,
+        "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+        "changed_entries": [],
+        "first_only": [],
+        "second_only": []
+      },
+      "comparison_scope": "same run/generated project; actual repeated native build; iOS unsigned simulator; signing disabled"
+    }
+  ],
+  "limits": [
+    "Android byte equality is a same-run repeated build with a shared disposable debug key; it is not independent cold-build or cross-run proof.",
+    "iOS unsigned simulator ZIP entry contents match but full archive bytes differ; entry view omits container metadata/signing blocks.",
+    "The download hashes above refer to inner APK/simulator files; GitHub digests refer to outer uploaded artifact archives.",
+    "iOS WebKit backup exclusion and physical-device behavior remain unverified launch gates."
+  ],
+  "production_mutations": []
+}

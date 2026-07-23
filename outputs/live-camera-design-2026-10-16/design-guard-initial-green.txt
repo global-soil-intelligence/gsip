@@ -1,0 +1,4 @@
+Command: uv run pytest -q tests/test_browser_camera_design.py
+Exit: 0
+
+................................                                         [100%]

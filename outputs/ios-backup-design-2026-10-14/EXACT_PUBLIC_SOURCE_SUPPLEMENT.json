@@ -1,0 +1,92 @@
+{
+  "public_source_files": [
+    {
+      "name": "capacitor-bridge.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/ios/Capacitor/Capacitor/CAPBridgeViewController.swift",
+      "bytes": 16487,
+      "sha256": "0485aee1f25b0ed028ce944fb98306e6a92330038ce7fd923aa87b4ada4bbfec",
+      "line_matches": [
+        {
+          "line": 120,
+          "text": "let webViewConfiguration = WKWebViewConfiguration()"
+        },
+        {
+          "line": 121,
+          "text": "webViewConfiguration.websiteDataStore.httpCookieStore.add(CapacitorWKCookieObserver())"
+        }
+      ]
+    },
+    {
+      "name": "capacitor-cookie.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/ios/Capacitor/Capacitor/Plugins/CapacitorCookieManager.swift",
+      "bytes": 4758,
+      "sha256": "57f0163dcf2e446a5d17fb96919b369479b1202f41bd77fa0f5f357e261f3def",
+      "line_matches": [
+        {
+          "line": 5,
+          "text": "public func cookiesDidChange(in cookieStore: WKHTTPCookieStore) {"
+        },
+        {
+          "line": 9,
+          "text": "HTTPCookieStorage.shared.setCookie(cookie)"
+        }
+      ]
+    },
+    {
+      "name": "capacitor-asset.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/ios/Capacitor/Capacitor/WebViewAssetHandler.swift",
+      "bytes": 22897,
+      "sha256": "5a7886af564e9891fb66aafbb890f8d2b6d6379d8b616aa34ad564c962813fc1",
+      "line_matches": [
+        {
+          "line": 62,
+          "text": "\"Cache-Control\": \"no-cache\""
+        }
+      ]
+    },
+    {
+      "name": "filesystem-converters.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor-filesystem/v8.1.3/ios/Sources/FilesystemPlugin/IONFileStructures+Converters.swift",
+      "bytes": 2112,
+      "sha256": "b4dd96f40a57dff5b43f9b93e208b5f64ae716bcda57378ca4f44a83b713c7c0",
+      "line_matches": [
+        {
+          "line": 21,
+          "text": "case Constants.DirectoryTypeValue.libraryNoCloud: .notSyncedLibrary"
+        }
+      ]
+    },
+    {
+      "name": "filesystem-call.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor-filesystem/v8.1.3/ios/Sources/FilesystemPlugin/CAPPluginCall+Accelerators.swift",
+      "bytes": 2485,
+      "sha256": "290d01b3dcdd8361c3656f6394cf6409eebf8d0ec14d28d010341b2168187a08",
+      "line_matches": [
+        {
+          "line": 5,
+          "text": "func getEncoding(_ key: String) -> IONFILEEncoding {"
+        },
+        {
+          "line": 21,
+          "text": "func getEncodingMapper() -> IONFILEEncodingValueMapper? {"
+        },
+        {
+          "line": 25,
+          "text": "return switch getEncoding(Constants.MethodParameter.encoding) {"
+        }
+      ]
+    },
+    {
+      "name": "filesystem-package.swift",
+      "url": "https://raw.githubusercontent.com/ionic-team/capacitor-filesystem/v8.1.3/Package.swift",
+      "bytes": 1048,
+      "sha256": "1e2799f6a21acc5707709e81de7682eff9fd3df294a80b0f1cb115f7093505f4",
+      "line_matches": [
+        {
+          "line": 14,
+          "text": ".package(url: \"https://github.com/ionic-team/ion-ios-filesystem.git\", from: \"1.1.1\")"
+        }
+      ]
+    }
+  ]
+}

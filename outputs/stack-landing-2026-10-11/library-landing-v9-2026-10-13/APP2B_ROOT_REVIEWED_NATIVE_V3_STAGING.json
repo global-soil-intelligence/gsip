@@ -1,0 +1,38 @@
+{
+  "utc": "2026-10-13T23:48:30.724959+00:00",
+  "base_head": "c1cb7e36087d7e20c2acd790106535d036d63d1d",
+  "files": [
+    {
+      "base_c1_sha256": "f7734fcf5160d5a2b8c38c1f4f9ad67c3a792e3e38982b00df588840d425071a",
+      "bytes": 125844,
+      "path": "scripts/app_notification_audit.py",
+      "sha256": "cd96580b81e7c354af6c779dc03fba94c73b1cb0ed6d503af880ccaf5297f8e4",
+      "v2b_sha256": "71425d41f957c8c5bee05acf2f2456b2fae181828f0384914f1e0f7c97864655",
+      "v3_sha256": "32a888e72f22dc160f244179701509baccf8cc04acb66e9ef0df70a8d7708bf4"
+    },
+    {
+      "base_c1_sha256": "cbda9d5bbbe0ff4700fa1963167f38297bf1809dee76c459b524fe8c53a9fde6",
+      "bytes": 185334,
+      "path": "tests/test_app_notification_audit.py",
+      "sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3",
+      "v2b_sha256": "e2fd5781cfc7169216cfb2bf2b3256137861fd0dadbb0e3a5a80fbb148be10ef",
+      "v3_sha256": "678c08d86c30b047030c1a80185492d322fca57d0b17ed545f7a6af1f5cf09b3"
+    },
+    {
+      "base_c1_sha256": "5884f43df1114e83c651156310cd2a7328d7989dace94f7e453012aeea203d8f",
+      "bytes": 31897,
+      "path": "docs/APP_NOTIFICATION_NATIVE_AUDIT.md",
+      "sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164",
+      "v2b_sha256": "ca0736fb18669534ffd7ef661c44f2c28968d483eebee31a5f19aea7a15cef76",
+      "v3_sha256": "6c9e92cbe78728ed62cb5f40bf99173e611c247062ceb604499f9e444fcfd164"
+    }
+  ],
+  "manifest_sha256": "7c700bf3a139592748351eb5fbdcd273fdb48455aafc2ecc4a72266b7e9e0942",
+  "guard_manifest_sha256": "16e01ad088d332c1ca39060e688a06f52d4983fc9536ce7958f258325df2a305",
+  "unchanged_other_tracked_files": 362,
+  "retained_v1_and_guard_test_prefixes": true,
+  "gradle_task_sha256": "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0",
+  "commit_or_push": false,
+  "production_changes": false,
+  "native_acceptance": false
+}

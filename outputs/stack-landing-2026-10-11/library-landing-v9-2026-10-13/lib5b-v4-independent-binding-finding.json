@@ -1,0 +1,407 @@
+{
+  "at_utc": "2026-10-13T17:03:50.981660+00:00",
+  "reviewer": "independent CORE reviewer, no LIB implementation authorship",
+  "status": "LIB5B_V4_INDEPENDENT_REVIEW_BLOCKED_CONCRETE_BINDING_FINDING",
+  "source_hashes": {
+    "pipeline/node_exchange_store.py": "78b161e27c23930ce6b346b2e18cf4b611d39726aa8e56fd0f0849dd5de357a9",
+    "pipeline/node_exchange_simulator.py": "8d205568d3948417dcb77437c6c047046c942addcb7ceba4122d0584bca32006",
+    "tests/test_node_exchange_store.py": "983a77af9cc93634fc3dc52313c7981231474dec555fa58eb274c28cb3142f17",
+    "tests/test_node_exchange_simulator.py": "ee1edb274c94441553d015efdfb939014fecfff74f27569f5376b6d90fecbccc",
+    "docs/LIBRARY_EXCHANGE_SIMULATOR.md": "c5aac985da4557bdbf80d6da6f7169de558acfb2abb02908a5de3ff382f28cbf"
+  },
+  "input_identities": {
+    "manifest": {
+      "path": "/private/tmp/gsip-lib5b-final-v4-file-manifest.json",
+      "sha256": "eee6aa63c4f5bd4ee4bcdaf3f2142c348b855f5c14311b2a80eddbc61f4d7456"
+    },
+    "patch": {
+      "path": "/private/tmp/gsip-lib5b-private-exchange-ledger-v4.patch",
+      "sha256": "92c7b415e94f0ca44b8ecdb974d0c38d6364511bda739a439ec95e1e69164014"
+    },
+    "delta": {
+      "path": "/private/tmp/gsip-lib5b-v3-to-v4.patch",
+      "sha256": "53c14e925aa8bd26ca1d664152425936166bd87678226b3224d9824675899f2e"
+    },
+    "delivery": {
+      "path": "/private/tmp/gsip-lib5b-final-v4-delivery-receipt.json",
+      "sha256": "16843fa48e0b768babee1ef25251f3f4846f90a6e6c20f39d9543e61c5f8c951"
+    }
+  },
+  "reconstruction": {
+    "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/reconstruction-receipt.json",
+    "sha256": "9fd6f8a62cf766c848a1fd23d1aa7add2d2c07ce2a302856c88dd48b349fbb93",
+    "bytes": 55048
+  },
+  "base_files_verified_against_git_object": 347,
+  "base_source_changed": false,
+  "governing_9_docs": "matched immutable d7 base and prior full reads; SPEC16.9-16.13/handoff/33 planning cards read in this turn",
+  "source_review": "complete store/simulator/doc; authored test cases reviewed by guard/card selectors and fresh v4 retirement tests; complete authored test line audit not claimed",
+  "finding": {
+    "id": "LIB5B-V4-R01-BINDING-COMPLETENESS",
+    "priority": "P2 conditional on explicitly required corrupted-metadata boundary",
+    "files": [
+      {
+        "path": "pipeline/node_exchange_simulator.py",
+        "lines": [
+          573,
+          611
+        ]
+      },
+      {
+        "path": "pipeline/node_exchange_simulator.py",
+        "lines": [
+          933,
+          967
+        ]
+      }
+    ],
+    "trigger": "One exact generated source declaration also recipient-admitted. Corrupt only state.json bindings: remove entries, or change each entry stream/key to another syntactically valid stream. Reopen succeeds. Submit a fresh consecutive event with unchanged known scoped sample/measurement and changed RGB measurement value.",
+    "actual": "Both cases recipient-stored and immediately available_for_synthetic_simulation. Original event files and blob refs/hash, aliases, origins, slots, source/recipient heads, fixture owner/grant all remain unchanged before new admission.",
+    "expected": "Contradictory/incomplete metadata refuses on reopen, or receiver derives complete same-measurement bindings from its own known event bytes and returns conflict/held; no charged/admitted changed scientific tuple.",
+    "scope_limit": "Intentional controlled corruption of owned fictional metadata, no backup rollback or actual attacker. No ordinary simulator API path causing this contradiction has been demonstrated. Root decides materiality against explicit corrupted-metadata/complete-facts card; no real field/science/privacy leakage claimed.",
+    "suggested_repair": "Validate binding stream against referenced admitted event slot; require complete binding coverage for every live declaration role/stream/measurement, or derive prior bindings from complete durable event/blob facts rather than trusting an incomplete map. Preserve all limits and generic errors."
+  },
+  "results": {
+    "scoped": {
+      "tests": 304,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fresh": {
+      "tests": 5,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fresh_positive_cases": 3,
+    "binding_witness": [
+      {
+        "corruption": "omitted_bindings",
+        "synthetic_only": true,
+        "changed_collections": [
+          "bindings"
+        ],
+        "existing_event_bytes_unchanged": true,
+        "existing_blob_references_unchanged_before_admission": true,
+        "changed_image_sha256": "e357dd40b03b50aac3d2b4788268afc0e98622cab531ff351af8b9c1f3058361",
+        "original_event_sha256": "f4fa4c2de479e183040080ff4b110c06415374b7c90afe0a26dc37c1c3853964",
+        "new_event_sha256": "9a8f97e6106d809f8bcaf1a402846c602eaa197fea1cbcd2736b1d3e2e3e2a85",
+        "reopen_accepted": true,
+        "received_status": "stored",
+        "recipient_admitted": true,
+        "gapped": false,
+        "payload_status": "available_for_synthetic_simulation",
+        "same_scoped_sample": true,
+        "same_scoped_measurement": true,
+        "original_generated_mean_rgb": [
+          0.1,
+          0.2,
+          0.3
+        ],
+        "admitted_changed_mean_rgb": [
+          0.11,
+          0.2,
+          0.3
+        ],
+        "counts": {
+          "synthetic_only": true,
+          "field_eligible": 0,
+          "verified_physical_pairs": 0,
+          "scopes": 3,
+          "fenced_scopes": 0,
+          "independent_fake_samples": 1,
+          "independent_fake_humans": 1,
+          "queued_declarations": 1,
+          "retained_slots": 3,
+          "refusals": 0,
+          "pending_cleanup": 0,
+          "retained_bytes": 2808
+        },
+        "quotas": [
+          2,
+          1
+        ]
+      },
+      {
+        "corruption": "wrong_binding_stream",
+        "synthetic_only": true,
+        "changed_collections": [
+          "bindings"
+        ],
+        "existing_event_bytes_unchanged": true,
+        "existing_blob_references_unchanged_before_admission": true,
+        "changed_image_sha256": "060f0ab8efa573de8eec53de55e0745e64ba3c737c82f656aa3b85e263db79ef",
+        "original_event_sha256": "63fbda70d2c77fa5fa6ed038b2fdce252abe97aa72a1a495a066e88c9e15833d",
+        "new_event_sha256": "8bc54f4bea821e2e10d4ab87d9761de17a47b2b76058eb4d499010249e305c73",
+        "reopen_accepted": true,
+        "received_status": "stored",
+        "recipient_admitted": true,
+        "gapped": false,
+        "payload_status": "available_for_synthetic_simulation",
+        "same_scoped_sample": true,
+        "same_scoped_measurement": true,
+        "original_generated_mean_rgb": [
+          0.1,
+          0.2,
+          0.3
+        ],
+        "admitted_changed_mean_rgb": [
+          0.11,
+          0.2,
+          0.3
+        ],
+        "counts": {
+          "synthetic_only": true,
+          "field_eligible": 0,
+          "verified_physical_pairs": 0,
+          "scopes": 3,
+          "fenced_scopes": 0,
+          "independent_fake_samples": 1,
+          "independent_fake_humans": 1,
+          "queued_declarations": 1,
+          "retained_slots": 3,
+          "refusals": 0,
+          "pending_cleanup": 0,
+          "retained_bytes": 2808
+        },
+        "quotas": [
+          2,
+          1
+        ]
+      }
+    ]
+  },
+  "acceptance_cards": {
+    "F01": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "F02": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "F03": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "F04": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "F05": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "F06": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "T01": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "T02": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "T03": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "T04": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "T05": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "C01": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "C02": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "C03": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "C04": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "C05": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "Q01": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "Q02": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "Q03": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "R01": {
+      "status": "blocked",
+      "reason": "Incomplete or rebound bindings survive _data validation; _prior_bindings treats that truncated map as complete authority and admits changed tuple."
+    },
+    "R02": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "R03": {
+      "status": "partially blocked by corrupted-state R01 witness",
+      "ordinary_flow": "immutable normal tuple probes pass"
+    },
+    "R04": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "R05": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "A01": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "A02": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "A03": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "A04": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "A05": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "A06": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "I01": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "I02": {
+      "status": "scoped source/probe evidence passed; full closure pending R01 correction and I03 mutation evidence"
+    },
+    "I03": {
+      "status": "pending",
+      "reason": "No new meaningful guard mutation set executed before concrete material witness; inherited original fail-before cases passed actual v4 but do not substitute full I03 closure."
+    }
+  },
+  "commands": [
+    {
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes",
+        "/private/tmp/gsip-lib5b-independent-v4-9duckoom/source/tests/test_node_exchange_store.py",
+        "/private/tmp/gsip-lib5b-independent-v4-9duckoom/source/tests/test_node_exchange_simulator.py",
+        "--tb=short",
+        "--junitxml=/private/tmp/gsip-lib5b-independent-v4-9duckoom/scoped.xml",
+        "--basetemp=/private/tmp/gsip-lib5b-independent-v4-9duckoom/scoped-roots"
+      ],
+      "cwd": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes",
+      "env_overrides": {
+        "PYTHONPATH": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/source",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0
+    },
+    {
+      "cwd": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes",
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes/test_v4_fresh_review.py",
+        "--tb=short",
+        "--junitxml=/private/tmp/gsip-lib5b-independent-v4-9duckoom/fresh.xml",
+        "--basetemp=/private/tmp/gsip-lib5b-independent-v4-9duckoom/fresh-roots"
+      ],
+      "env_overrides": {
+        "PYTHONPATH": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/source",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 1
+    },
+    {
+      "cwd": "/private/tmp/gsip-lib5b-independent-v4-9duckoom",
+      "argv": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-B",
+        "/private/tmp/gsip-lib5b-independent-v4-9duckoom/binding_witness.py"
+      ],
+      "env_overrides": {
+        "PYTHONPATH": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/source",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/scoped.log",
+      "sha256": "3e9130345fb4dd3fb8f5391421985e9249f255dd071031161be0625440bc9caa",
+      "bytes": 911
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/scoped.xml",
+      "sha256": "89a16d0ad43b00b80a6a835dad90f3389aea55e49fae1f2bf09f8029120c8d58",
+      "bytes": 2046110
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/scoped-command.json",
+      "sha256": "cfaa3d59cd2ce6c38a4129aa27f29ee6787f69dca616e5e430b460d7047f8c76",
+      "bytes": 784
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/fresh.log",
+      "sha256": "2e4f00fc951a2cc2436123cb04be0f27c0fe9d67b3139ad54d62a8788da8ae88",
+      "bytes": 1598
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/fresh.xml",
+      "sha256": "a7fcaec52b02eb3eb8c28d7f03f16f55bd0918be54098c0c00ca274d3cdf6840",
+      "bytes": 2472
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/initial-fresh.xml",
+      "sha256": "af4cc1b5fc3d702029438c55a86b2069f3dae4c4c943441e86100d6120dc3fdc",
+      "bytes": 2472
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/initial-fresh-probe-preserved.py",
+      "sha256": "08c3eb35e5fa7675aed1f98e40b23b899066d3c5a4d81a7ddace7fa4b6efe41b",
+      "bytes": 3790
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/probes/test_v4_fresh_review.py",
+      "sha256": "6f0f87b5035b11b6eff0af4da7f980be4ba6595ddf798a6c7dfe8b4c1e21e20a",
+      "bytes": 3861
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/binding_witness.py",
+      "sha256": "3d082cbc9234eab23c963efa027e6fae092f4963bf96154dc37db7d7f438871c",
+      "bytes": 3628
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/binding-witness.log",
+      "sha256": "01c55f9d05b16f3fbb0d969cef6abbc02a50a0410c8e973038bf1eb7c59f746a",
+      "bytes": 73
+    },
+    {
+      "path": "/private/tmp/gsip-lib5b-independent-v4-9duckoom/binding-witness.json",
+      "sha256": "8a781a7787d90ce5df9682798e72046c92fae440ebb33bb2a21a629e5d5c23e6",
+      "bytes": 2661
+    }
+  ],
+  "prior_bank_original_bytes_preserved": true,
+  "source_hashes_unchanged_after_checks": true,
+  "full_package_closed": false,
+  "limitations": [
+    "Local Darwin only; exact-head full CI/Linux/no-replace platform/GDAL unavailable to this verifier.",
+    "Many high logical-cardinality bounds are exact encoded projections with smaller end-to-end; actual200MB managed and32MB metadata cases passed.",
+    "No real authority, peer credential, retention purpose, rollback proof, physical pairing, scientific adoption, field training, production, capture or publication readiness.",
+    "APP CORE v4 and narrow formatted host disclosure receipts remain separate, unchanged."
+  ],
+  "actions": {
+    "shared_source_edits": false,
+    "Git_GH_mutations": false,
+    "network": false,
+    "production": false,
+    "credentials_or_real_data": false
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "synthetic_only": true,
+  "production_access": false,
+  "target": "gsip_lib4b_review_6fa_jmxl1zhj",
+  "rpc_waited_on_source": true,
+  "rpc_had_photo_lock_before_source": true,
+  "source_exit": 0,
+  "rpc_exit": 3,
+  "source_deadlock": false,
+  "rpc_deadlock": true,
+  "source_sqlstate": [],
+  "rpc_sqlstate": [
+    "40P01"
+  ]
+}

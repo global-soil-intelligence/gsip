@@ -1,0 +1,161 @@
+{
+  "schema": "gsip-app2b-independent-disclosure-addendum-v1",
+  "generated_utc": "2026-10-13T16:48:40.219854+00:00",
+  "status": "PREPARED_FORMATTED_CORE19_DISCLOSURE_BOUNDARY_CLOSED",
+  "actual_integrated_head_verified": false,
+  "verified_predecessor_pr_head": "bb3910164cc47eae72958ad521b2186684584978",
+  "predecessor_core19_closure": {
+    "path": "/private/tmp/gsip-app2b-independent-core-v4-0g3yd96y/independent-core-review-v4-closure.json",
+    "sha256": "f78f2fb3fa8547e4ae4d1f8bb873c84893520c58339aab03d09e1e7896eece60",
+    "preserved": true
+  },
+  "candidate_privacy": {
+    "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/formatted-privacy-candidate.md",
+    "sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+    "bytes": 19032,
+    "predecessor_privacy_sha256": "b5458b944ef3b1b9895ef9ac1870ecfbd94c8345aabd1644e54eae1e9654bf2d"
+  },
+  "candidate_core19_manifest": {
+    "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/core19-formatted-disclosure-manifest.json",
+    "sha256": "73381a16fd1102fb9c70629bff9616b4e8c032c7b76dc4de5b8e3468c378babf",
+    "unchanged18_exact_v4_hashes_verified": true
+  },
+  "assessment": {
+    "material_privacy_findings": [],
+    "exact_host_only": "codeload.github.com",
+    "existing_row": "Build dependency/licence repositories",
+    "purpose_unchanged": "CI-only public open build artifact and licence/notice evidence; no app runtime request",
+    "received_data_unchanged": "CI runner IP and public artifact coordinates; no contributor data/session/photo/location",
+    "all_notice_prose_and_nonhost_table_cell_semantics_preserved": true,
+    "outside_table_bytes_preserved": true,
+    "additional_table_changes": "Whitespace/separator alignment only, required by Prettier; original literal-only candidate failed formatting.",
+    "no_wildcard_or_NOT_CONTACTED_exception": true,
+    "licenses_and_counsel_status_unchanged": true
+  },
+  "verification": {
+    "existing_processor_guard_fail_before": {
+      "synthetic_unexecuted_public_url": "https://codeload.github.com/review-fixture/open-source/zip/refs/tags/v0",
+      "total": 6,
+      "passed": 5,
+      "failed": 1,
+      "exit_code": 1,
+      "actual_guard_assertion_failure": true
+    },
+    "formatted_candidate_processor_suite": {
+      "total": 6,
+      "passed": 6,
+      "exit_code": 0
+    },
+    "exact_domain_does_not_cover_unexpected_subdomain": true,
+    "formatted_candidate_prettier": {
+      "exit_code": 0
+    },
+    "other18_core_bytes_match_v4_and_actual_pr_predecessor": true
+  },
+  "commands": [
+    {
+      "cwd": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/source",
+      "command": [
+        "/Users/justinhart/Desktop/Cowork /GSIP 2.0/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-o",
+        "addopts=",
+        "tests/test_processors.py",
+        "-q"
+      ],
+      "exit_codes": [
+        1,
+        0,
+        0
+      ],
+      "logs": [
+        "fail-before-v4.log",
+        "pass-candidate.log",
+        "formatted-candidate-processors.log"
+      ]
+    },
+    {
+      "cwd": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/source",
+      "command": [
+        "/Users/justinhart/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "/private/tmp/gsip-app2b-author-lhe_vi2z/source/node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        "docs/legal/PRIVACY.md"
+      ],
+      "final_exit_code": 0,
+      "log": "formatted-candidate-check.log"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/formatted-privacy-candidate.md",
+      "sha256": "8b3f660c1a3d616360bcdff8d4db0c348b98bdbf830d104823c9e6525f9f5b00",
+      "bytes": 19032
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/core19-formatted-disclosure-manifest.json",
+      "sha256": "73381a16fd1102fb9c70629bff9616b4e8c032c7b76dc4de5b8e3468c378babf",
+      "bytes": 5936
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/formatted-privacy.diff",
+      "sha256": "8fcbfb397c68af888efdf2ee2ba7876727d93f54dcd1c386f2c96170f4b70461",
+      "bytes": 10464
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/preliminary-checks.json",
+      "sha256": "415c4befec37d0b75123e12ce5c67118ced0dd82d143a21e88d643f847e7eb65",
+      "bytes": 1884
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/fail-before-v4.log",
+      "sha256": "390702d8eca70772767785ba0a7f9f3c037398de1a23a5b4ff70bf9b60ec8913",
+      "bytes": 1292
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/pass-candidate.log",
+      "sha256": "4729102e59db75b5820273a0249979ca622611e03b653c221e4dadacd7a4b70d",
+      "bytes": 98
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/privacy-formatting.log",
+      "sha256": "ca9441d7e60f8267d3b9b54fbc4af8d0ca1ecd1126687629050d2383a827c1da",
+      "bytes": 136
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/format-write.log",
+      "sha256": "b93a5f2cd09d09b2547db1c461d977605b501be57d93bfdd555aed26f2ba7820",
+      "bytes": 27
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/formatted-candidate-check.log",
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "bytes": 66
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/formatted-candidate-processors.log",
+      "sha256": "d271bc4c61476139fa75efa8c67eb55e8dd295b53d6f286ec6f1c70f6a20e581",
+      "bytes": 98
+    },
+    {
+      "path": "/private/tmp/gsip-app2b-independent-privacy-host-gjmf1al9/source/scripts/independent_public_archive_host_probe.py",
+      "sha256": "a7e8e893ae9bccedac740c5138949da1989687796f8a8b57090052959d73b5b7",
+      "bytes": 174
+    }
+  ],
+  "scope": {
+    "original_v4_closure_edited": false,
+    "pr_or_author_source_edited": false,
+    "git_or_github_mutations": false,
+    "network_or_upstream_archive_fetch": false,
+    "credentials_or_production": false,
+    "ui": false,
+    "native4_candidate_inspected": false
+  },
+  "remaining": [
+    "Root must apply these exact formatted bytes with nativev5, then verify integrated CORE18/PRhead/native4 correspondence and required CI. This addendum closes the prepared source boundary only.",
+    "Native audit/source-license/archive/runtime graph/build artifacts/exact-head CI remain separate; no native proof supplied here.",
+    "Physical notification/log/reboot/backup evidence, iOS WebKit cloud-backup exclusion, counsel/store/capture/production gates remain unchanged."
+  ]
+}

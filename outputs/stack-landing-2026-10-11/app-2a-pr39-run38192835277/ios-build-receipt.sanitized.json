@@ -1,0 +1,41 @@
+{
+  "source_commit": "2aab581c7b06960613436402f8115e7ab6b13b4d",
+  "source_tree_clean": true,
+  "platform": "ios",
+  "marketing_version": "0.1.0",
+  "run_number": 6,
+  "android_version_code": 6,
+  "ios_build_version": "1.0.5",
+  "lockfile_sha256": {
+    "pnpm-lock.yaml": "141fe7fd542a08d39eee82085740d7ef64dea773933d744746fa3b36979ad097",
+    "uv.lock": "b985ee2c3c8fc0fa41c81e77b45371ed1ca23060f17e40e4617a962c5776535e",
+    "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "c1469e509371c8c989620e7d5d913349699d3255d442a02c3d0bb6d19385a4ac",
+    "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-filesystem/IONFilesystemLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767",
+    "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-geolocation/IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": "92ca893e080c681ea304d7b64fd1c42746286b0847d181d751b6d84b776d3767"
+  },
+  "comparison_scope": "same run/generated project; actual repeated native build; iOS unsigned simulator; signing disabled",
+  "artifact_sha256": "e99aef9fe1111c0a19c6e91a98224630dc85a5471f01198b0d41d1d57ae04a7d",
+  "reference_sha256": "aab96997a4068ee6bafe8fd200fd64f4455435df92c8bb32a1a5b5d55039468b",
+  "comparison": {
+    "byte_equal": false,
+    "entry_content_equal": true,
+    "normalization": "ZIP entry bytes only: excludes directory entries, archive metadata and container bytes including APK signing blocks; full hashes/byte_equal include everything",
+    "changed_entries": [],
+    "first_only": [],
+    "second_only": []
+  },
+  "toolchain": {
+    "node": "v24.20.0",
+    "pnpm": "11.9.0",
+    "runner": "macOS-26.6.2-arm64-arm-64bit",
+    "runner_image": {
+      "ImageOS": "macos26",
+      "ImageVersion": "20260907.0351.1",
+      "RUNNER_OS": "macOS",
+      "RUNNER_ARCH": "ARM64"
+    },
+    "xcode": "Xcode 26.6\nBuild version 17F113",
+    "sdk": "26.5",
+    "python": "3.12.10"
+  }
+}

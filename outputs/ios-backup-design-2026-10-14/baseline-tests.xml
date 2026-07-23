@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="15" skipped="0" tests="15" time="0.059" timestamp="2026-10-14T07:25:31.498919-04:00" hostname="MacBook-Pro-6.local"><testcase classname="tests.test_ios_backup_plan" name="test_backend_selection_is_held_and_implementation_is_not_claimed" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">def test_backend_selection_is_held_and_implementation_is_not_claimed() -&gt; None:
+&gt;       text = plan()
+               ^^^^^^
+
+tests/test_ios_backup_plan.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_inventory_covers_every_current_indexeddb_store" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">def test_inventory_covers_every_current_indexeddb_store() -&gt; None:
+        source = (ROOT / "apps/capture-pwa/src/queue.ts").read_text()
+        stores = set(re.findall(r"createObjectStore\('([^']+)'", source))
+        assert len(stores) == 6
+&gt;       text = plan()
+               ^^^^^^
+
+tests/test_ios_backup_plan.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_inventory_extends_beyond_photo_and_session_files[gsip-last-auth-uid]" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">surface = 'gsip-last-auth-uid'
+
+    @pytest.mark.parametrize(
+        "surface",
+        [
+            "gsip-last-auth-uid",
+            "pkce",
+            "user storage",
+            "cookie",
+            "cache",
+            "camera",
+            "notification",
+            "journal",
+        ],
+    )
+    def test_inventory_extends_beyond_photo_and_session_files(surface: str) -&gt; None:
+&gt;       assert surface in plan()
+                          ^^^^^^
+
+tests/test_ios_backup_plan.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_inventory_extends_beyond_photo_and_session_files[pkce]" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">surface = 'pkce'
+
+    @pytest.mark.parametrize(
+        "surface",
+        [
+            "gsip-last-auth-uid",
+            "pkce",
+            "user storage",
+            "cookie",
+            "cache",
+            "camera",
+            "notification",
+            "journal",
+        ],
+    )
+    def test_inventory_extends_beyond_photo_and_session_files(surface: str) -&gt; None:
+&gt;       assert surface in plan()
+                          ^^^^^^
+
+tests/test_ios_backup_plan.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_inventory_extends_beyond_photo_and_session_files[user storage]" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">surface = 'user storage'
+
+    @pytest.mark.parametrize(
+        "surface",
+        [
+            "gsip-last-auth-uid",
+            "pkce",
+            "user storage",
+            "cookie",
+            "cache",
+            "camera",
+            "notification",
+            "journal",
+        ],
+    )
+    def test_inventory_extends_beyond_photo_and_session_files(surface: str) -&gt; None:
+&gt;       assert surface in plan()
+                          ^^^^^^
+
+tests/test_ios_backup_plan.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_inventory_extends_beyond_photo_and_session_files[cookie]" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">surface = 'cookie'
+
+    @pytest.mark.parametrize(
+        "surface",
+        [
+            "gsip-last-auth-uid",
+            "pkce",
+            "user storage",
+            "cookie",
+            "cache",
+            "camera",
+            "notification",
+            "journal",
+        ],
+    )
+    def test_inventory_extends_beyond_photo_and_session_files(surface: str) -&gt; None:
+&gt;       assert surface in plan()
+                          ^^^^^^
+
+tests/test_ios_backup_plan.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_inventory_extends_beyond_photo_and_session_files[cache]" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">surface = 'cache'
+
+    @pytest.mark.parametrize(
+        "surface",
+        [
+            "gsip-last-auth-uid",
+            "pkce",
+            "user storage",
+            "cookie",
+            "cache",
+            "camera",
+            "notification",
+            "journal",
+        ],
+    )
+    def test_inventory_extends_beyond_photo_and_session_files(surface: str) -&gt; None:
+&gt;       assert surface in plan()
+                          ^^^^^^
+
+tests/test_ios_backup_plan.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_inventory_extends_beyond_photo_and_session_files[camera]" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">surface = 'camera'
+
+    @pytest.mark.parametrize(
+        "surface",
+        [
+            "gsip-last-auth-uid",
+            "pkce",
+            "user storage",
+            "cookie",
+            "cache",
+            "camera",
+            "notification",
+            "journal",
+        ],
+    )
+    def test_inventory_extends_beyond_photo_and_session_files(surface: str) -&gt; None:
+&gt;       assert surface in plan()
+                          ^^^^^^
+
+tests/test_ios_backup_plan.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_inventory_extends_beyond_photo_and_session_files[notification]" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">surface = 'notification'
+
+    @pytest.mark.parametrize(
+        "surface",
+        [
+            "gsip-last-auth-uid",
+            "pkce",
+            "user storage",
+            "cookie",
+            "cache",
+            "camera",
+            "notification",
+            "journal",
+        ],
+    )
+    def test_inventory_extends_beyond_photo_and_session_files(surface: str) -&gt; None:
+&gt;       assert surface in plan()
+                          ^^^^^^
+
+tests/test_ios_backup_plan.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_inventory_extends_beyond_photo_and_session_files[journal]" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">surface = 'journal'
+
+    @pytest.mark.parametrize(
+        "surface",
+        [
+            "gsip-last-auth-uid",
+            "pkce",
+            "user storage",
+            "cookie",
+            "cache",
+            "camera",
+            "notification",
+            "journal",
+        ],
+    )
+    def test_inventory_extends_beyond_photo_and_session_files(surface: str) -&gt; None:
+&gt;       assert surface in plan()
+                          ^^^^^^
+
+tests/test_ios_backup_plan.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_pinned_source_limitations_and_resolution_scope_are_explicit" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">def test_pinned_source_limitations_and_resolution_scope_are_explicit() -&gt; None:
+&gt;       text = plan()
+               ^^^^^^
+
+tests/test_ios_backup_plan.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_exclusion_precedes_private_writes_and_cannot_fall_back" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">def test_exclusion_precedes_private_writes_and_cannot_fall_back() -&gt; None:
+&gt;       text = plan()
+               ^^^^^^
+
+tests/test_ios_backup_plan.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_transactions_migration_and_restore_preserve_rights" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">def test_transactions_migration_and_restore_preserve_rights() -&gt; None:
+&gt;       text = plan()
+               ^^^^^^
+
+tests/test_ios_backup_plan.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_device_proof_and_language_exception_are_separate_gates" time="0.000"><failure message="AssertionError: iOS storage feasibility and owner gates must be documented&#10;assert False&#10; +  where False = is_file()&#10; +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file">def test_device_proof_and_language_exception_are_separate_gates() -&gt; None:
+&gt;       text = plan()
+               ^^^^^^
+
+tests/test_ios_backup_plan.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def plan() -&gt; str:
+        path = ROOT / "docs" / "IOS_PRIVATE_STORAGE.md"
+&gt;       assert path.is_file(), "iOS storage feasibility and owner gates must be documented"
+E       AssertionError: iOS storage feasibility and owner gates must be documented
+E       assert False
+E        +  where False = is_file()
+E        +    where is_file = PosixPath('/private/tmp/gsip-v11-ios-feasibility-r52unewv/baseline/docs/IOS_PRIVATE_STORAGE.md').is_file
+
+tests/test_ios_backup_plan.py:15: AssertionError</failure></testcase><testcase classname="tests.test_ios_backup_plan" name="test_spec_first_packages_hold_migration_until_mechanism_is_reviewed" time="0.001"><failure message="AssertionError: assert ('### 15.10' in '# GSIP v10 — Open Soil Spectral Library Specification\n\n**Project:** Global Soil Intelligence Project (globalsoilint... CC BY-SA 4.0 · models open weights with model cards. Contribution terms require legal review before public launch._\n')">def test_spec_first_packages_hold_migration_until_mechanism_is_reviewed() -&gt; None:
+        spec = (ROOT / "docs/SPEC.md").read_text()
+        build = (ROOT / "docs/BUILD_ORDER.md").read_text()
+&gt;       assert "### 15.10" in spec and "v11 amendment status" in spec
+E       AssertionError: assert ('### 15.10' in '# GSIP v10 — Open Soil Spectral Library Specification\n\n**Project:** Global Soil Intelligence Project (globalsoilint... CC BY-SA 4.0 · models open weights with model cards. Contribution terms require legal review before public launch._\n')
+
+tests/test_ios_backup_plan.py:102: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,138 @@
+{
+  "actual_new_native_CI_required": true,
+  "author_pnpm_wrapper_install_prompt_abort_not_treated_as_lint_pass": true,
+  "authority": {
+    "network_dependency_installs_SDK_Gradle_native_APK_key_real_data_activity": false,
+    "owned_tmp_only_writes": true,
+    "raw_private_or_test_tool_streams_persisted_or_printed": false,
+    "shared_source_Git_GH_PR_CI_or_production_mutations": false
+  },
+  "base_commit": "1385c3b09602ab0faa049b2b3fb2ceac5e1aaefb",
+  "carried_behavior_privacy_and_format_evidence": {
+    "prior_independent_v2_closure": {
+      "bytes": 7378,
+      "path": "/private/tmp/gsip-caller-line-v2-independent-ntc5j0sk/INDEPENDENT_FINAL_CALLER_LINE_V2_CLOSURE.json",
+      "sha256": "16a8267d9ed34525e29387c1558bfae42020323c83b3f8f03fc618183385b188"
+    },
+    "scope": "Exact helper/doc bytes and test-operational assertions preserved; carried as v2 behavioral evidence, not claimed as a fresh v3 test run.",
+    "v1_pinned_Pretty3_9_9_failure_and_v2_one_LF_correction_preserved": true,
+    "v2_baseline_new12": {
+      "failed": 7,
+      "passed": 5
+    },
+    "v2_effective_mutations": 4,
+    "v2_focused_passes": 55,
+    "v2_new_caller_cases_included": 12,
+    "v2_original_diagnostic_bank_included": 43,
+    "v3_behavioral_or_Gradle_tests_rerun_by_this_reviewer": false
+  },
+  "combined_native_acceptance": false,
+  "complete_root_pnpm_lint_not_claimed_here": true,
+  "created_at_utc": "2026-10-14T00:58:10.698129+00:00",
+  "earlier_v2_fullproject_mypy_failure_preserved": true,
+  "exact_scope": {
+    "added_bytes": 75,
+    "all_runtime_licence_source_permission_limits_guards_task_and_protocols_exact_v2": true,
+    "documentation_sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9",
+    "erasing_exact_additions_restores_entire_v2_test_bytes": true,
+    "helper_sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6",
+    "no_new_Any_type_ignore_config_ignore_or_assertion_change": true,
+    "only_additions": [
+      "local from collections.abc import Callable",
+      "calls: dict[str, Callable[[], object]]"
+    ],
+    "original189650_byte_prefix_exact": true,
+    "other_source_files_exact_v2": 364,
+    "projection": {
+      "bytes": 782,
+      "path": "/private/tmp/gsip-caller-v3-typing-independent-zrr3uc2x/EXACT_TYPING_ONLY_SCOPE.json",
+      "sha256": "e4782318a62af0377791f0a3a1803e2252537926bfce4e3412b19c117b1c72f3"
+    },
+    "workflow_sha256": "2175685ae9340b56f7be9e095c2656b9fe06f7f96e6e137bfd9a7f65d0dfb0fa"
+  },
+  "files": {
+    "docs/APP_NOTIFICATION_NATIVE_AUDIT.md": {
+      "base_bytes": 32861,
+      "base_sha256": "77915e79d7a172c8004dc27925375f4a40846b6626c5a6a310f3384b37bc97e5",
+      "bytes": 33577,
+      "sha256": "7226ca0cd6e020df05187586d6f5d661c906a10991fc45c4e743dfda112daca9"
+    },
+    "scripts/app_notification_audit.py": {
+      "base_bytes": 126055,
+      "base_sha256": "611f0970f6adeba9386fa57e50e1f43071f5d8ddea6c2b20d790d10db9708eb8",
+      "bytes": 126232,
+      "sha256": "164161f0fe9298abe2f1b63a1367d164068aced727005cd131a17cfa601445d6"
+    },
+    "tests/test_app_notification_audit.py": {
+      "base_bytes": 189650,
+      "base_sha256": "56ad025496b4cdc2650b3fdc998ae8a7a35faccd970cef69a04d1abebb7e7b99",
+      "bytes": 195244,
+      "sha256": "7d1f4c8a1d1556024a60cc6a9c26d1952081e6cf225cc36ee99573603acab373"
+    }
+  },
+  "findings": [],
+  "fresh_fullproject_type_check": {
+    "baseline": {
+      "error_code": "no-untyped-call",
+      "errors": 1,
+      "exitcode": 1,
+      "receipt": {
+        "bytes": 584,
+        "path": "/private/tmp/gsip-caller-v3-typing-independent-zrr3uc2x/baseline-full-mypy.json",
+        "sha256": "265369625746fff9cde4bd73ff239d0c0dc807a6553db80f6e7f18cc60e7f9a7"
+      }
+    },
+    "candidate": {
+      "errors": 0,
+      "exitcode": 0,
+      "receipt": {
+        "bytes": 559,
+        "path": "/private/tmp/gsip-caller-v3-typing-independent-zrr3uc2x/candidate-full-mypy.json",
+        "sha256": "74f5a7de57185b530d563b6439a03ddf49a85f915103dc83ab743ad771d44cac"
+      }
+    },
+    "checked_source_files_each": 75,
+    "configured_targets": [
+      "card",
+      "pipeline",
+      "ml",
+      "scripts",
+      "tests"
+    ],
+    "mypy_cache_only_in_owned_temporary_directory": true,
+    "no_file_list_or_target_narrowing": true,
+    "nonincremental": true,
+    "untracked_independent43_case_bank_kept_outside_tracked_project_copy": true
+  },
+  "frozen_directory": "/private/tmp/gsip-caller-line-v3-frozen-a1sqryhq",
+  "frozen_receipt": {
+    "bytes": 1450,
+    "path": "/private/tmp/gsip-caller-line-v3-frozen-a1sqryhq/FROZEN_CANDIDATE_RECEIPT.json",
+    "sha256": "81714399901bfaea02884263e9003d302552e5f649a5562e41dcf7778a2c3864"
+  },
+  "full_candidate_patch": {
+    "bytes": 7613,
+    "path": "/private/tmp/gsip-caller-line-v3-frozen-a1sqryhq/candidate.patch",
+    "sha256": "238e1479e93507917e7d65e72a4006094e259b4d01a7a5d949fc7ea50a27f4da"
+  },
+  "manifest": {
+    "bytes": 791,
+    "path": "/private/tmp/gsip-caller-line-v3-frozen-a1sqryhq/MANIFEST.json",
+    "sha256": "61ed15a246ecc2837955da2fdf64ead60473b982b3fbd575cbd063978bd91a45"
+  },
+  "not_claimed": [
+    "Specific missing path or default-key cause identified",
+    "Runtime file selection or signing behavior repaired",
+    "Fresh v3 native build/artifact/device acceptance",
+    "Legal/distribution/production/capture approval"
+  ],
+  "schema": "gsip-independent-caller-line-v3-typing-closure-v1",
+  "scope": "Final diagnostic candidate with a 75-byte test-only typing correction from v2. The helper/privacy behavior is exactly v2; no runtime path-selection or underlying cause fix.",
+  "status": "CLOSED_NO_BLOCKER",
+  "typing_delta_from_v2": {
+    "bytes": 588,
+    "path": "/private/tmp/gsip-caller-line-v3-frozen-a1sqryhq/delta-from-v2.patch",
+    "sha256": "ed9d8919ef8556da26386a6f6b4aeef11bad64e1bbb440fc89adb73a8247ee9e"
+  },
+  "underlying_missing_file": "unknown"
+}
