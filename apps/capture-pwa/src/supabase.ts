@@ -148,4 +148,11 @@ export async function submitQueued(
       if (created.error) throw created.error
     }
   }
+
+  // The durable prior_jobs row is created by the submission trigger. This
+  // best-effort invocation starts enrichment immediately; an upstream outage
+  // must not retain private capture data in the device queue after upload.
+  await client.functions.invoke('prior-attach', {
+    body: { submissionId: record.submissionId },
+  })
 }
