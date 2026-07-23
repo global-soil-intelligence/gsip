@@ -376,21 +376,21 @@ export type Database = {
       qa_events: {
         Row: {
           check_name: string
-          model_version: string | null
+          model_version: string
           passed: boolean
           score: number | null
           submission_id: string
         }
         Insert: {
           check_name: string
-          model_version?: string | null
+          model_version?: string
           passed: boolean
           score?: number | null
           submission_id: string
         }
         Update: {
           check_name?: string
-          model_version?: string | null
+          model_version?: string
           passed?: boolean
           score?: number | null
           submission_id?: string
@@ -457,8 +457,8 @@ export type Database = {
           geom_precise: unknown
           gps_accuracy_m: number | null
           grant_id: string
-          h3_r6: string
-          h3_r8: string
+          h3_r6: string | null
+          h3_r8: string | null
           id: string
           land_cover: string | null
           precip_flag: boolean | null
@@ -474,8 +474,8 @@ export type Database = {
           geom_precise: unknown
           gps_accuracy_m?: number | null
           grant_id: string
-          h3_r6: string
-          h3_r8: string
+          h3_r6?: string | null
+          h3_r8?: string | null
           id?: string
           land_cover?: string | null
           precip_flag?: boolean | null
@@ -491,8 +491,8 @@ export type Database = {
           geom_precise?: unknown
           gps_accuracy_m?: number | null
           grant_id?: string
-          h3_r6?: string
-          h3_r8?: string
+          h3_r6?: string | null
+          h3_r8?: string | null
           id?: string
           land_cover?: string | null
           precip_flag?: boolean | null

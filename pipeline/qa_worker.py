@@ -6,6 +6,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 from urllib.parse import quote
 
+import h3  # type: ignore[import-untyped]
 import httpx
 
 from pipeline.qa import aggregate_submission_status, evaluate_photo
@@ -27,7 +28,35 @@ class SupabaseQaWorker:
         response.raise_for_status()
         return response
 
+    def _paged_rows(self, path: str, page_size: int = 1000) -> list[dict[str, Any]]:
+        rows: list[dict[str, Any]] = []
+        start = 0
+        while True:
+            response = self._rest(
+                "GET",
+                path,
+                headers={"Range": f"{start}-{start + page_size - 1}", "Range-Unit": "items"},
+            )
+            page: list[dict[str, Any]] = response.json()
+            rows.extend(page)
+            if len(page) < page_size:
+                return rows
+            start += page_size
+
+    def requeue_stale_processing(self, older_than_minutes: int = 15) -> None:
+        cutoff = (datetime.now(UTC) - timedelta(minutes=older_than_minutes)).isoformat()
+        self._rest(
+            "PATCH",
+            f"qa_jobs?status=eq.processing&updated_at=lt.{quote(cutoff, safe='')}",
+            json={
+                "last_error": "stale_processing_requeued",
+                "status": "retrying",
+                "updated_at": datetime.now(UTC).isoformat(),
+            },
+        )
+
     def process_pending(self, limit: int = 25) -> int:
+        self.requeue_stale_processing()
         jobs = self._rest(
             "GET",
             f"qa_jobs?select=photo_id,attempts&status=in.(pending,retrying)&order=updated_at.asc&limit={limit}",
@@ -52,7 +81,7 @@ class SupabaseQaWorker:
             submission_id = str(photo["submission_id"])
             submission = self._rest(
                 "GET",
-                f"submissions?id=eq.{submission_id}&select=id,gps_accuracy_m,land_cover",
+                f"submissions?id=eq.{submission_id}&select=id,geom_precise,gps_accuracy_m,land_cover",
             ).json()[0]
             prior_rows = self._rest(
                 "GET",
@@ -61,10 +90,10 @@ class SupabaseQaWorker:
             priors = {
                 str(row["property"]): float(row["value"]) for row in prior_rows if row["value"]
             }
-            hashes = self._rest(
-                "GET",
-                f"photos?id=neq.{photo_id}&perceptual_hash=not.is.null&select=perceptual_hash",
-            ).json()
+            hashes = self._paged_rows(
+                f"photos?submission_id=neq.{submission_id}"
+                "&perceptual_hash=not.is.null&select=perceptual_hash"
+            )
             existing_hashes = tuple(str(row["perceptual_hash"]) for row in hashes)
             path = str(photo["storage_path"])
             incoming_url = (
@@ -109,6 +138,7 @@ class SupabaseQaWorker:
                         "check_name": f"{event.check_name}_{photo['shot_type']}",
                         "passed": event.passed,
                         "score": event.score,
+                        "model_version": "deterministic-v1",
                         "submission_id": submission_id,
                     }
                     for event in result.events
@@ -121,10 +151,15 @@ class SupabaseQaWorker:
             submission_status = aggregate_submission_status(
                 (str(event["check_name"]), bool(event["passed"])) for event in all_events
             )
+            latitude, longitude = _coordinates(submission["geom_precise"])
             self._rest(
                 "PATCH",
                 f"submissions?id=eq.{submission_id}",
-                json={"status": submission_status},
+                json={
+                    "h3_r6": h3.latlng_to_cell(latitude, longitude, 6),
+                    "h3_r8": h3.latlng_to_cell(latitude, longitude, 8),
+                    "status": submission_status,
+                },
             )
             removed = self.client.delete(
                 f"{self.url}/storage/v1/object/incoming-photos/{quote(path, safe='/')}"
@@ -141,42 +176,79 @@ class SupabaseQaWorker:
                 },
             )
             return True
-        except (httpx.HTTPError, KeyError, IndexError, TypeError, ValueError):
+        except Exception as error:
             next_status = "dead_letter" if attempts + 1 >= 4 else "retrying"
             self._rest(
                 "PATCH",
                 f"qa_jobs?photo_id=eq.{photo_id}",
                 json={
-                    "last_error": "qa_processing_failure",
+                    "last_error": f"qa_processing_failure:{type(error).__name__}"[:1000],
                     "status": next_status,
                     "updated_at": now,
                 },
             )
             return False
 
+    def _quarantine_objects(self, prefix: str = "", depth: int = 0) -> list[tuple[str, datetime]]:
+        if depth > 8:
+            raise ValueError("quarantine prefix depth exceeded")
+        objects: list[tuple[str, datetime]] = []
+        offset = 0
+        while True:
+            response = self.client.post(
+                f"{self.url}/storage/v1/object/list/incoming-photos",
+                json={
+                    "limit": 1000,
+                    "offset": offset,
+                    "prefix": prefix,
+                    "sortBy": {"column": "created_at", "order": "asc"},
+                },
+            )
+            response.raise_for_status()
+            page: list[dict[str, Any]] = response.json()
+            for item in page:
+                name = str(item.get("name") or "")
+                if not name:
+                    continue
+                full_name = (
+                    name
+                    if prefix and name.startswith(f"{prefix}/")
+                    else "/".join(part for part in (prefix, name) if part)
+                )
+                created_at = item.get("created_at")
+                if item.get("id") is None or created_at is None:
+                    objects.extend(self._quarantine_objects(full_name, depth + 1))
+                    continue
+                created = datetime.fromisoformat(str(created_at).replace("Z", "+00:00"))
+                objects.append((full_name, created))
+            if len(page) < 1000:
+                return objects
+            offset += 1000
+
     def cleanup_quarantine(self) -> int:
         cutoff = datetime.now(UTC) - timedelta(hours=24)
-        response = self.client.post(
-            f"{self.url}/storage/v1/object/list/incoming-photos",
-            json={
-                "limit": 1000,
-                "offset": 0,
-                "prefix": "",
-                "sortBy": {"column": "created_at", "order": "asc"},
-            },
-        )
-        response.raise_for_status()
         removed = 0
-        for item in response.json():
-            created = datetime.fromisoformat(str(item["created_at"]).replace("Z", "+00:00"))
+        for name, created in self._quarantine_objects():
             if created < cutoff:
-                object_path = quote(str(item["name"]), safe="/")
+                object_path = quote(name, safe="/")
                 deleted = self.client.delete(
                     f"{self.url}/storage/v1/object/incoming-photos/{object_path}"
                 )
                 deleted.raise_for_status()
                 removed += 1
         return removed
+
+
+def _coordinates(geometry: Any) -> tuple[float, float]:
+    if isinstance(geometry, dict):
+        values = geometry.get("coordinates")
+        if isinstance(values, list) and len(values) >= 2:
+            longitude, latitude = map(float, values[:2])
+            return latitude, longitude
+    if isinstance(geometry, str) and geometry.startswith("POINT(") and geometry.endswith(")"):
+        longitude, latitude = map(float, geometry[6:-1].split())
+        return latitude, longitude
+    raise ValueError("submission geometry is unavailable")
 
 
 def main() -> None:

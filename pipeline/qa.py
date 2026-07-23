@@ -12,6 +12,8 @@ from PIL import ExifTags, Image
 
 from card.validate import extract_patches
 
+Image.MAX_IMAGE_PIXELS = 40_000_000
+
 ALLOWED_EXIF = {
     "Make": "make",
     "Model": "model",
@@ -72,8 +74,10 @@ def sanitize_jpeg(raw: bytes) -> tuple[bytes, dict[str, float | int | str]]:
             if destination and normalized is not None:
                 metadata[destination] = normalized
         clean = source.convert("RGB")
+        clean.info.pop("comment", None)
+        clean.info.clear()
         output = io.BytesIO()
-        clean.save(output, format="JPEG", quality=92, optimize=True)
+        clean.save(output, format="JPEG", quality=92, optimize=True, comment=b"")
     sanitized = output.getvalue()
     if has_embedded_metadata(sanitized):
         raise ValueError("sanitized photo still contains metadata")
@@ -84,10 +88,48 @@ def has_embedded_metadata(image_bytes: bytes) -> bool:
     with Image.open(io.BytesIO(image_bytes)) as image:
         if image.getexif():
             return True
-        if any(key.lower() in {"exif", "xmp", "xml"} for key in image.info):
+        if any(
+            key.lower() in {"comment", "exif", "icc_profile", "xmp", "xml"} for key in image.info
+        ):
             return True
+    if _has_forbidden_jpeg_segment(image_bytes):
+        return True
     lowered = image_bytes.lower()
     return b"http://ns.adobe.com/xap/1.0/" in lowered or b"<x:xmpmeta" in lowered
+
+
+def _has_forbidden_jpeg_segment(image_bytes: bytes) -> bool:
+    if not image_bytes.startswith(b"\xff\xd8"):
+        return False
+    cursor = 2
+    while cursor < len(image_bytes):
+        if image_bytes[cursor] != 0xFF:
+            cursor += 1
+            continue
+        while cursor < len(image_bytes) and image_bytes[cursor] == 0xFF:
+            cursor += 1
+        if cursor >= len(image_bytes):
+            break
+        marker = image_bytes[cursor]
+        cursor += 1
+        if marker in {0x01, 0xD8, 0xD9} or 0xD0 <= marker <= 0xD7:
+            continue
+        if marker == 0xDA:
+            break
+        if cursor + 2 > len(image_bytes):
+            return True
+        length = int.from_bytes(image_bytes[cursor : cursor + 2], "big")
+        if length < 2 or cursor + length > len(image_bytes):
+            return True
+        payload = image_bytes[cursor + 2 : cursor + length]
+        if marker == 0xFE:
+            return True
+        if 0xE1 <= marker <= 0xEF:
+            return True
+        if marker == 0xE0 and not payload.startswith((b"JFIF\x00", b"JFXX\x00")):
+            return True
+        cursor += length
+    return False
 
 
 def _decode(image_bytes: bytes) -> np.ndarray:

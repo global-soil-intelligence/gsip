@@ -170,6 +170,7 @@ export function parseSsurgoResponse(input: unknown): PriorInput[] {
       let weighted = 0
       let totalWeight = 0
       for (const row of indexed) {
+        if (row[column] === null || row[column] === '') continue
         const top = Number(row.hzdept_r)
         const rowBottom = Number(row.hzdepb_r)
         const value = Number(row[column])

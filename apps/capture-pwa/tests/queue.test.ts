@@ -8,6 +8,7 @@ const record: QueueRecord = {
   accuracyM: 12,
   attributionName: 'Field contributor',
   capturedAt: '2026-07-22T00:00:00Z',
+  deviceModel: 'test device',
   disturbed: false,
   grantId: 'grant',
   landCover: 'cropland',
