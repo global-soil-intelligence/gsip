@@ -2,7 +2,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(39);
+select plan(44);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
@@ -46,6 +46,16 @@ select ok(
 select ok(
     not has_function_privilege('anon', 'public.enqueue_qa_job()', 'execute'),
     'anon cannot invoke the security-definer photo queue trigger directly'
+);
+select ok(
+    not has_function_privilege('anon', 'public.refresh_public_h3_cells(jsonb)', 'execute'),
+    'anon cannot replace public H3 aggregates'
+);
+select ok(
+    not has_function_privilege(
+        'authenticated', 'public.refresh_public_h3_cells(jsonb)', 'execute'
+    ),
+    'authenticated clients cannot replace public H3 aggregates'
 );
 
 insert into public.contributors (id, auth_uid, handle)
@@ -152,6 +162,10 @@ select throws_ok(
 reset role;
 
 set local role service_role;
+select lives_ok(
+    $$select public.refresh_public_h3_cells('[]'::jsonb)$$,
+    'service-role export worker can atomically refresh public H3 aggregates'
+);
 select lives_ok(
     $$update public.submissions
       set h3_r8 = '882a847149fffff', h3_r6 = '862a84737ffffff', status = 'qa_pass'

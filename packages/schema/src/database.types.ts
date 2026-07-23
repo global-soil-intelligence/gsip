@@ -566,6 +566,7 @@ export type Database = {
     }
     Functions: {
       current_contributor_id: { Args: never; Returns: string }
+      refresh_public_h3_cells: { Args: { payload: Json }; Returns: number }
     }
     Enums: {
       [_ in never]: never

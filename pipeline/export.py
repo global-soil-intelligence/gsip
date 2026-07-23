@@ -8,7 +8,7 @@ import shutil
 from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass
-from datetime import UTC, date, datetime
+from datetime import date
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote
@@ -81,7 +81,8 @@ def dataset_card(records: list[dict[str, Any]], export_date: date) -> str:
     )
     attribution_list = "\n".join(f"- {name}" for name in attributions) or "- None"
     return f"""---
-license: odbl
+license: other
+license_name: ODbL-1.0 structured data; CC-BY-SA-4.0 photographs
 language:
 - en
 pretty_name: Global Soil Intelligence Project public contributions
@@ -89,8 +90,9 @@ pretty_name: Global Soil Intelligence Project public contributions
 
 # GSIP public soil contributions
 
-Export date: {export_date.isoformat()}. This release contains only QA-passed, non-synthetic
-contributions with immutable contribution grants. Locations are H3 cells, never precise points.
+Export date: {export_date.isoformat()}. Rows: {len(records)}. This release contains only QA-passed,
+non-synthetic contributions with immutable contribution grants. Locations are H3 cells, never
+precise points.
 
 ## Licenses
 
@@ -143,8 +145,6 @@ def build_export(
         ),
         key=lambda submission: submission.id,
     )
-    if not qualifying:
-        raise ValueError("No non-synthetic QA-passed submissions are available for export")
     target = output_root / export_date.isoformat()
     temporary = output_root / f".{export_date.isoformat()}.building"
     if temporary.exists():
@@ -159,7 +159,10 @@ def build_export(
             for photo in sorted(submission.photos, key=lambda item: item.shot_type):
                 if submission.grant is None:
                     raise ValueError("Photo export requires a contribution grant")
-                sanitized, _ = sanitize_jpeg(photo_loader(photo.storage_path))
+                raw_photo = photo_loader(photo.storage_path)
+                if has_embedded_metadata(raw_photo):
+                    raise ValueError("Canonical export photo contains embedded metadata")
+                sanitized, _ = sanitize_jpeg(raw_photo)
                 if has_embedded_metadata(sanitized):
                     raise ValueError("Export photo metadata scan failed")
                 relative = Path("photos") / submission.id / f"{photo.shot_type}.jpg"
@@ -175,7 +178,7 @@ def build_export(
                     }
                 )
             record = {
-                "captured_at": submission.captured_at,
+                "captured_at": submission.captured_at[:10],
                 "disturbed": submission.disturbed,
                 "gold_labels": list(submission.gold_labels),
                 "h3_r6": submission.h3_r6,
@@ -192,11 +195,17 @@ def build_export(
             records.append(record)
         data_dir = temporary / "data"
         data_dir.mkdir()
-        parquet = data_dir / "train.parquet"
-        Dataset.from_list(records).to_parquet(str(parquet))
-        loaded = load_dataset("parquet", data_files=str(parquet), split="train")
-        if len(loaded) != len(records):
-            raise ValueError("Hugging Face Datasets round-trip changed the row count")
+        if records:
+            parquet = data_dir / "train.parquet"
+            Dataset.from_list(records).to_parquet(str(parquet))
+            loaded = load_dataset("parquet", data_files=str(parquet), split="train")
+            if len(loaded) != len(records):
+                raise ValueError("Hugging Face Datasets round-trip changed the row count")
+        else:
+            (data_dir / "EMPTY.md").write_text(
+                "No non-synthetic QA-passed contributions were available for this export.\n",
+                encoding="utf-8",
+            )
         (temporary / "README.md").write_text(dataset_card(records, export_date), encoding="utf-8")
         (temporary / "manifest.json").write_text(
             json.dumps(_manifest(temporary), indent=2, sort_keys=True) + "\n",
@@ -220,11 +229,36 @@ class SupabaseExportSource:
             headers={"Authorization": f"Bearer {service_key}", "apikey": service_key},
         )
 
-    def _rows(self, path: str) -> list[dict[str, Any]]:
-        response = self.client.get(f"{self.url}/rest/v1/{path}")
-        response.raise_for_status()
-        rows: list[dict[str, Any]] = response.json()
-        return rows
+    def _rows(self, path: str, page_size: int = 1000) -> list[dict[str, Any]]:
+        rows: list[dict[str, Any]] = []
+        expected_total: int | None = None
+        for start in range(0, 2_147_483_647, page_size):
+            response = self.client.get(
+                f"{self.url}/rest/v1/{path}",
+                headers={
+                    "Prefer": "count=exact",
+                    "Range": f"{start}-{start + page_size - 1}",
+                },
+            )
+            response.raise_for_status()
+            page: list[dict[str, Any]] = response.json()
+            content_range = response.headers.get("Content-Range")
+            if content_range and "/" in content_range:
+                total_text = content_range.rsplit("/", 1)[1]
+                if total_text != "*":
+                    expected_total = int(total_text)
+            rows.extend(page)
+            if expected_total is not None and len(rows) >= expected_total:
+                if len(rows) != expected_total:
+                    raise ValueError("PostgREST pagination returned an inconsistent row count")
+                return rows
+            if len(page) < page_size:
+                if expected_total is not None and len(rows) != expected_total:
+                    raise ValueError("PostgREST truncated a paginated export response")
+                return rows
+            if not page:
+                raise ValueError("PostgREST pagination made no progress")
+        raise ValueError("PostgREST pagination exceeded the supported row range")
 
     def photo(self, storage_path: str) -> bytes:
         path = quote(storage_path, safe="/")
@@ -288,22 +322,45 @@ class SupabaseExportSource:
 
     def refresh_h3_cells(self, submissions: list[ExportSubmission]) -> None:
         counts = Counter(submission.h3_r8 for submission in submissions)
+        latest_dates: dict[str, date] = {}
+        for submission in submissions:
+            captured_date = date.fromisoformat(submission.captured_at[:10])
+            latest_dates[submission.h3_r8] = max(
+                latest_dates.get(submission.h3_r8, captured_date), captured_date
+            )
         payload = [
             {
                 "h3_index": h3_index,
+                "latest_submission_date": latest_dates[h3_index].isoformat(),
                 "n_submissions": count,
-                "updated_at": datetime.now(UTC).isoformat(),
             }
             for h3_index, count in sorted(counts.items())
         ]
-        if not payload:
-            return
         response = self.client.post(
-            f"{self.url}/rest/v1/h3_cells?on_conflict=h3_index",
-            headers={"Prefer": "resolution=merge-duplicates"},
-            json=payload,
+            f"{self.url}/rest/v1/rpc/refresh_public_h3_cells",
+            json={"payload": payload},
         )
         response.raise_for_status()
+
+
+def publish_export(
+    source: SupabaseExportSource,
+    submissions: list[ExportSubmission],
+    target: Path,
+    export_date: date,
+    token: str,
+    repo_id: str,
+    api: HfApi | None = None,
+) -> None:
+    hub = api or HfApi(token=token)
+    hub.upload_folder(
+        repo_id=repo_id,
+        repo_type="dataset",
+        folder_path=target,
+        commit_message=f"GSIP public export {export_date.isoformat()}",
+        delete_patterns=["photos/**", "data/**"],
+    )
+    source.refresh_h3_cells(submissions)
 
 
 def main() -> None:
@@ -317,17 +374,19 @@ def main() -> None:
     )
     submissions = source.submissions()
     target = build_export(submissions, args.output, args.date, source.photo)
-    source.refresh_h3_cells(submissions)
     if args.push:
-        token = os.environ["HF_TOKEN"]
-        repo_id = os.environ["HF_DATASET_REPO"]
-        HfApi(token=token).upload_folder(
-            repo_id=repo_id,
-            repo_type="dataset",
-            folder_path=target,
-            commit_message=f"GSIP public export {args.date.isoformat()}",
+        publish_export(
+            source,
+            submissions,
+            target,
+            args.date,
+            os.environ["HF_TOKEN"],
+            os.environ["HF_DATASET_REPO"],
         )
-    print(json.dumps({"export": str(target), "rows": len(submissions), "pushed": args.push}))
+    row_count = sum(
+        submission.status == "qa_pass" and not submission.is_synthetic for submission in submissions
+    )
+    print(json.dumps({"export": str(target), "rows": row_count, "pushed": args.push}))
 
 
 if __name__ == "__main__":
