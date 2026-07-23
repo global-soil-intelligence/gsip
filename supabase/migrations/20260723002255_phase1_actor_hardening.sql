@@ -42,5 +42,28 @@ grant insert (
 revoke insert on public.photos from authenticated;
 grant insert (submission_id, shot_type, storage_path) on public.photos to authenticated;
 
+grant select, insert, update, delete on
+    public.contributors,
+    public.contribution_grants,
+    public.submissions,
+    public.photos,
+    public.priors,
+    public.gold_labels,
+    public.predictions,
+    public.qa_events,
+    public.h3_cells
+to service_role;
+
+do $$
+begin
+    if to_regclass('public.prior_jobs') is not null then
+        grant select, insert, update, delete on public.prior_jobs to service_role;
+    end if;
+    if to_regclass('public.qa_jobs') is not null then
+        grant select, insert, update, delete on public.qa_jobs to service_role;
+    end if;
+end;
+$$;
+
 comment on function private.clear_untrusted_submission_h3() is
     'I8 containment: client H3 assertions never persist; trusted QA derives H3 from private geometry.';
