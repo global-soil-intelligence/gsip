@@ -11,6 +11,7 @@ export type CaptureDraft = {
   accuracyM: number | null
   attributionName: string
   capturedAt: string
+  deviceModel: string
   disturbed: boolean
   grantId: string
   landCover: string
