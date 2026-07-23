@@ -51,11 +51,11 @@ with seed(id, contributor_id, grant_id, lat, lon, h3_r8, h3_r6, captured_at, lan
 )
 insert into public.submissions (
     id, contributor_id, grant_id, geom_precise, h3_r8, h3_r6, captured_at,
-    land_cover, surface_condition, disturbed, status
+    land_cover, surface_condition, disturbed, status, is_synthetic
 )
 select id, contributor_id, grant_id,
     extensions.st_setsrid(extensions.st_makepoint(lon, lat), 4326),
-    h3_r8, h3_r6, captured_at, land_cover, surface_condition, false, 'qa_pass'
+    h3_r8, h3_r6, captured_at, land_cover, surface_condition, false, 'qa_pass', true
 from seed
 on conflict (id) do nothing;
 
