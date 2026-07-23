@@ -45,17 +45,8 @@ function PhotoField({
 }
 
 async function photos(form: FormData): Promise<QueueRecord['photos']> {
-  const readBytes = (file: File) =>
-    new Promise<Uint8Array>((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onerror = () =>
-        reject(
-          reader.error ?? new Error('The selected photo could not be read.'),
-        )
-      reader.onload = () =>
-        resolve(new Uint8Array(reader.result as ArrayBuffer))
-      reader.readAsArrayBuffer(file)
-    })
+  const readBytes = async (file: File) =>
+    new Uint8Array(await file.arrayBuffer())
   const captured = await Promise.all(
     (['A', 'B', 'C'] as ShotType[]).map(async (shotType) => {
       const file = form.get(`shot-${shotType.toLowerCase()}`)
