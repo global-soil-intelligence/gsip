@@ -46,4 +46,4 @@ def test_validator_documents_color_recovery_under_adversarial_capture(
             for name, target in targets.items()
         ):
             successes += 1
-    assert successes >= 8
+    assert successes >= 9
