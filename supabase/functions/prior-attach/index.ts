@@ -58,7 +58,12 @@ Deno.serve(async (request: Request) => {
   const authorization = request.headers.get('Authorization')
   if (!authorization) return json({ error: 'Authentication required' }, 401)
 
-  const body = (await request.json()) as { submissionId?: unknown }
+  let body: { submissionId?: unknown }
+  try {
+    body = (await request.json()) as { submissionId?: unknown }
+  } catch {
+    return json({ error: 'Request body must be valid JSON' }, 400)
+  }
   if (typeof body.submissionId !== 'string')
     return json({ error: 'submissionId is required' }, 400)
 
@@ -74,14 +79,25 @@ Deno.serve(async (request: Request) => {
   if (owned.error || !owned.data)
     return json({ error: 'Submission not found' }, 404)
 
-  await serviceClient.from('prior_jobs').upsert({
-    attempts: 1,
+  const currentJob = await serviceClient
+    .from('prior_jobs')
+    .select('attempts')
+    .eq('submission_id', body.submissionId)
+    .maybeSingle()
+  if (currentJob.error)
+    return json({ error: 'Prior job state is unavailable' }, 503)
+  if ((currentJob.data?.attempts ?? 0) >= 32)
+    return json({ error: 'Prior job retry budget exhausted' }, 429)
+  const attempts = (currentJob.data?.attempts ?? 0) + 1
+  const started = await serviceClient.from('prior_jobs').upsert({
+    attempts,
     last_error: null,
     started_at: new Date().toISOString(),
     status: 'processing',
     submission_id: body.submissionId,
     updated_at: new Date().toISOString(),
   })
+  if (started.error) return json({ error: 'Prior job could not start' }, 503)
 
   try {
     const { latitude, longitude } = coordinates(owned.data.geom_precise)
@@ -89,27 +105,54 @@ Deno.serve(async (request: Request) => {
     const meteoBase =
       Deno.env.get('OPEN_METEO_BASE') ?? 'https://api.open-meteo.com'
     const meteo = openMeteoUrls(meteoBase, latitude, longitude)
-    const [soil, elevationResponse, weatherResponse] = await Promise.all([
-      fetchJsonWithRetry(fetch, soilGridsUrl(soilBase, latitude, longitude)),
-      fetchJsonWithRetry(fetch, meteo.elevation),
-      fetchJsonWithRetry(fetch, meteo.weather),
-    ])
-    const priors: PriorInput[] = parseSoilGridsResponse(soil)
+    const failures: string[] = []
+    const priors: PriorInput[] = []
+    let elevation: number | undefined
+    let precipFlag: boolean | undefined
+
+    try {
+      const soil = await fetchJsonWithRetry(
+        fetch,
+        soilGridsUrl(soilBase, latitude, longitude),
+      )
+      priors.push(...parseSoilGridsResponse(soil))
+    } catch {
+      failures.push('soilgrids')
+    }
 
     if (isConus(latitude, longitude)) {
-      const ssurgo = await fetchJsonWithRetry(
-        fetch,
-        'https://SDMDataAccess.sc.egov.usda.gov/Tabular/post.rest',
-        {
-          body: JSON.stringify({
-            format: 'JSON+COLUMNNAME',
-            query: ssurgoQuery(latitude, longitude),
-          }),
-          headers: { 'Content-Type': 'application/json' },
-          method: 'POST',
-        },
+      try {
+        const ssurgo = await fetchJsonWithRetry(
+          fetch,
+          'https://SDMDataAccess.sc.egov.usda.gov/Tabular/post.rest',
+          {
+            body: JSON.stringify({
+              format: 'JSON+COLUMNNAME',
+              query: ssurgoQuery(latitude, longitude),
+            }),
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+          },
+        )
+        priors.push(...parseSsurgoResponse(ssurgo))
+      } catch {
+        failures.push('ssurgo')
+      }
+    }
+
+    try {
+      elevation = parseElevation(
+        await fetchJsonWithRetry(fetch, meteo.elevation),
       )
-      priors.push(...parseSsurgoResponse(ssurgo))
+    } catch {
+      failures.push('elevation')
+    }
+    try {
+      precipFlag = parseRecentPrecipitation(
+        await fetchJsonWithRetry(fetch, meteo.weather),
+      )
+    } catch {
+      failures.push('precipitation')
     }
 
     const rows = priors.map((prior) => ({
@@ -117,34 +160,46 @@ Deno.serve(async (request: Request) => {
       retrieved_at: new Date().toISOString(),
       submission_id: body.submissionId,
     }))
-    const written = await serviceClient.from('priors').upsert(rows, {
-      onConflict: 'submission_id,source,property,depth_top_cm,depth_bottom_cm',
-    })
-    if (written.error) throw written.error
-    const enriched = await serviceClient
-      .from('submissions')
-      .update({
-        elevation: parseElevation(elevationResponse),
-        precip_flag: parseRecentPrecipitation(weatherResponse),
+    if (rows.length) {
+      const written = await serviceClient.from('priors').upsert(rows, {
+        onConflict:
+          'submission_id,source,property,depth_top_cm,depth_bottom_cm',
       })
-      .eq('id', body.submissionId)
-    if (enriched.error) throw enriched.error
-    await serviceClient
+      if (written.error) throw written.error
+    }
+    const enrichment: { elevation?: number; precip_flag?: boolean } = {}
+    if (elevation !== undefined) enrichment.elevation = elevation
+    if (precipFlag !== undefined) enrichment.precip_flag = precipFlag
+    if (Object.keys(enrichment).length) {
+      const enriched = await serviceClient
+        .from('submissions')
+        .update(enrichment)
+        .eq('id', body.submissionId)
+      if (enriched.error) throw enriched.error
+    }
+    const status = failures.length ? 'dead_letter' : 'completed'
+    const finished = await serviceClient
       .from('prior_jobs')
       .update({
-        attempts: 1,
-        completed_at: new Date().toISOString(),
-        last_error: null,
-        status: 'completed',
+        attempts,
+        completed_at: status === 'completed' ? new Date().toISOString() : null,
+        last_error: failures.length
+          ? `source_failure:${failures.join(',')}`
+          : null,
+        status,
         updated_at: new Date().toISOString(),
       })
       .eq('submission_id', body.submissionId)
-    return json({ priors: rows.length, status: 'completed' })
+    if (finished.error) throw finished.error
+    return json(
+      { failedSources: failures, priors: rows.length, status },
+      failures.length ? 502 : 200,
+    )
   } catch {
     await serviceClient
       .from('prior_jobs')
       .update({
-        attempts: 1,
+        attempts,
         last_error: 'upstream_or_parse_failure',
         status: 'dead_letter',
         updated_at: new Date().toISOString(),

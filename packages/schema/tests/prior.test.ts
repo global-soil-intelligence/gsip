@@ -61,6 +61,36 @@ describe('prior source mapping', () => {
     expect(priors.every((prior) => prior.uncertainty_lo === null)).toBe(true)
   })
 
+  it('gives null SSURGO horizons zero weight instead of a zero value', () => {
+    const priors = parseSsurgoResponse({
+      Table: [
+        [
+          'comppct_r',
+          'hzdept_r',
+          'hzdepb_r',
+          'ph',
+          'clay',
+          'sand',
+          'silt',
+          'bd',
+          'cec',
+        ],
+        ['90', '0', '20', '6.5', '32', '21', '47', null, '27.3'],
+        ['90', '20', '58', '6.9', '33', '25', '42', '1.25', '27.7'],
+      ],
+    })
+    expect(
+      priors.find(
+        (prior) => prior.property === 'bd' && prior.depth_bottom_cm === 30,
+      )?.value,
+    ).toBe(1.25)
+    expect(
+      priors.find(
+        (prior) => prior.property === 'bd' && prior.depth_bottom_cm === 5,
+      ),
+    ).toBeUndefined()
+  })
+
   it('detects the CONUS routing boundary without exposing coordinates', () => {
     expect(isConus(41.9483, -93.625)).toBe(true)
     expect(isConus(-9, -72)).toBe(false)

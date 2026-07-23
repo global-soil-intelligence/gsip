@@ -2,7 +2,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(30);
+select plan(36);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
@@ -87,6 +87,65 @@ select is(
     (select count(*) from public.submissions where contributor_id = '20000000-0000-4000-8000-000000000002'),
     0::bigint,
     'contributor A cannot read contributor B precise rows'
+);
+
+select lives_ok(
+    $$insert into public.submissions (
+        id, contributor_id, grant_id, geom_precise, h3_r8, h3_r6, captured_at,
+        land_cover, surface_condition, disturbed, device_model, gps_accuracy_m, status
+      ) values (
+        '50000000-0000-4000-8000-000000000003',
+        '20000000-0000-4000-8000-000000000001',
+        '40000000-0000-4000-8000-000000000001',
+        extensions.st_setsrid(extensions.st_makepoint(-79.982, 40.446), 4326),
+        '88fffffffffffff', '86fffffffffffff', now(),
+        'urban', 'moist', false, 'pgTap authenticated client', 8, 'pending'
+      )$$,
+    'authenticated client can insert the exact hosted submission payload'
+);
+select is(
+    (select h3_r8 from public.submissions where id = '50000000-0000-4000-8000-000000000003'),
+    null,
+    'a deliberately wrong client H3 cell cannot persist'
+);
+select is(
+    (select h3_r6 from public.submissions where id = '50000000-0000-4000-8000-000000000003'),
+    null,
+    'a structurally invalid client H3 cell cannot persist'
+);
+select throws_ok(
+    $$insert into public.submissions (
+        id, contributor_id, grant_id, geom_precise, h3_r8, h3_r6, captured_at, status
+      ) values (
+        '50000000-0000-4000-8000-000000000004',
+        '20000000-0000-4000-8000-000000000001',
+        '40000000-0000-4000-8000-000000000001',
+        extensions.st_setsrid(extensions.st_makepoint(-79.982, 40.446), 4326),
+        '882a84666bfffff', '862a84667ffffff', now(), 'qa_pass'
+      )$$,
+    '42501',
+    null,
+    'authenticated client cannot self-approve a submission'
+);
+select lives_ok(
+    $$insert into public.photos (submission_id, shot_type, storage_path)
+      values (
+        '50000000-0000-4000-8000-000000000003', 'A',
+        '30000000-0000-4000-8000-000000000001/submission/A/client.jpg'
+      )$$,
+    'authenticated client can insert only the public photo linkage fields'
+);
+select throws_ok(
+    $$insert into public.photos (
+        submission_id, shot_type, storage_path, camera_metadata_private
+      ) values (
+        '50000000-0000-4000-8000-000000000003', 'C',
+        '30000000-0000-4000-8000-000000000001/submission/C/client.jpg',
+        '{"make":"forged"}'
+      )$$,
+    '42501',
+    null,
+    'authenticated client cannot self-grade private photo QA fields'
 );
 reset role;
 
