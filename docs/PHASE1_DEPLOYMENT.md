@@ -3,26 +3,26 @@
 Updated 2026-07-23. The governing scope is `SPEC.md` v2.2 and the ordered implementation is
 `BUILD_ORDER.md`. Work packages are published as a protected, reviewable stack:
 
-| Package | Outcome                                    | Pull request | Runtime state                                                                 |
-| ------- | ------------------------------------------ | ------------ | ----------------------------------------------------------------------------- |
-| WP0     | Monorepo, CI, Pages, governance            | #2           | Published branch                                                              |
-| WP1     | PostGIS schema, RLS, private buckets, seed | #3           | Hosted actor grants, H3 containment, and service-role access active           |
-| WP2     | Deterministic A6 reference cards           | #4           | Pages artifact ready                                                          |
-| WP3     | Offline capture PWA                        | #5           | Pages artifact ready; anonymous auth awaits owner confirmation                |
-| WP4     | SoilGrids/SSURGO/Open-Meteo priors         | #6           | JWT Edge Function v2 active; scheduled drain awaits repository secret         |
-| WP4b    | Deterministic private photo QA             | #7           | Hosted provenance migration active; scheduled worker awaits repository secret |
-| WP5     | MapLibre public map and PMTiles path       | #8           | Hosted aggregate-only surface active; Pages artifact awaits protected merge   |
-| WP6     | Fail-closed Hugging Face export            | #9           | Hosted atomic aggregate refresh active; Hub push awaits destination/token     |
+| Package | Outcome                                    | Pull request | Runtime state                                                             |
+| ------- | ------------------------------------------ | ------------ | ------------------------------------------------------------------------- |
+| WP0     | Monorepo, CI, Pages, governance            | #2           | Published branch                                                          |
+| WP1     | PostGIS schema, RLS, private buckets, seed | #3           | Hosted actor grants, H3 containment, and role dependency documented       |
+| WP2     | Deterministic A6 reference cards           | #4           | Nonlinear correction passes 10/10 hardened fixtures                       |
+| WP3     | Offline capture PWA                        | #5           | Single-flight bounded retries and recovery UI ready for Pages             |
+| WP4     | SoilGrids/SSURGO/Open-Meteo priors         | #6           | JWT Edge Function v3 and atomic service-role attempt claims active        |
+| WP4b    | Deterministic private photo QA             | #7           | Six-field EXIF capture and coordinate guards ready; worker awaits secret  |
+| WP5     | MapLibre public map and PMTiles path       | #8           | Hosted aggregate-only surface active; per-submission residue removed      |
+| WP6     | Fail-closed Hugging Face export            | #9           | Hosted atomic refresh active; retries added; Hub awaits destination/token |
 
 ## Automated proof
 
-- Python: Ruff, strict mypy, 26 tests including hostile images, queue continuation, pagination,
-  atomic publication ordering, empty export, and Datasets round-trip.
-- Web: ESLint, language guard, Prettier, TypeScript, 23 unit tests, and production builds.
+- Python: Ruff, strict mypy over production and tests, 29 tests including hostile images, queue
+  continuation, coordinate bounds, EXIF SubIFD capture, refresh recovery, and Datasets round-trip.
+- Web: ESLint, language guard, Prettier, TypeScript, 27 unit tests, and production builds.
 - Browser: two CI-aligned desktop Chromium journeys covering the map and offline hosted-path sync.
-- Database: 44 pgTAP privacy, grant, RLS, queue, actor, worker, and export assertions.
+- Database: 48 pgTAP privacy, grant, RLS, queue, actor, worker, and export assertions.
 - Hosted Supabase security adviser: zero findings after all Phase 1 migrations.
-- Hosted prior worker: version 2 active with JWT verification; unauthenticated smoke returns 401.
+- Hosted prior worker: version 3 active with JWT verification; unauthenticated smoke returns 401.
 - Map initial bundle: 1,642,860 bytes against the 5,242,880-byte limit.
 
 ## Remaining launch gates
