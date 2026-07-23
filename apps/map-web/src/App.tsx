@@ -115,17 +115,23 @@ export function App() {
       map.on('mouseleave', 'contribution-density', () => {
         map.getCanvas().style.cursor = ''
       })
-      void loadContributionCells().then((cells) => {
-        const source = map.getSource(
-          'contributions',
-        ) as maplibregl.GeoJSONSource
-        source.setData(contributionFeatures(cells))
-        setMapStatus(
-          cells.length
-            ? `${cells.length} public H3 cells loaded. No precise points are shown.`
-            : 'No QA-passed public contributions yet.',
-        )
-      })
+      void loadContributionCells()
+        .then((cells) => {
+          const source = map.getSource(
+            'contributions',
+          ) as maplibregl.GeoJSONSource
+          source.setData(contributionFeatures(cells))
+          setMapStatus(
+            cells.length
+              ? `${cells.length} public H3 cells loaded. No precise points are shown.`
+              : 'No QA-passed public contributions yet.',
+          )
+        })
+        .catch(() => {
+          setMapStatus(
+            'Contribution layer unavailable. No placeholder data is shown.',
+          )
+        })
     })
     return () => {
       map.remove()

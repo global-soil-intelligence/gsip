@@ -143,6 +143,7 @@ export type Database = {
         Row: {
           acquisition_score: number | null
           h3_index: string
+          latest_submission_date: string | null
           model_disagreement: number | null
           n_gold: number
           n_submissions: number
@@ -152,6 +153,7 @@ export type Database = {
         Insert: {
           acquisition_score?: number | null
           h3_index: string
+          latest_submission_date?: string | null
           model_disagreement?: number | null
           n_gold?: number
           n_submissions?: number
@@ -161,6 +163,7 @@ export type Database = {
         Update: {
           acquisition_score?: number | null
           h3_index?: string
+          latest_submission_date?: string | null
           model_disagreement?: number | null
           n_gold?: number
           n_submissions?: number
@@ -376,21 +379,21 @@ export type Database = {
       qa_events: {
         Row: {
           check_name: string
-          model_version: string | null
+          model_version: string
           passed: boolean
           score: number | null
           submission_id: string
         }
         Insert: {
           check_name: string
-          model_version?: string | null
+          model_version?: string
           passed: boolean
           score?: number | null
           submission_id: string
         }
         Update: {
           check_name?: string
-          model_version?: string | null
+          model_version?: string
           passed?: boolean
           score?: number | null
           submission_id?: string
@@ -457,8 +460,8 @@ export type Database = {
           geom_precise: unknown
           gps_accuracy_m: number | null
           grant_id: string
-          h3_r6: string
-          h3_r8: string
+          h3_r6: string | null
+          h3_r8: string | null
           id: string
           is_synthetic: boolean
           land_cover: string | null
@@ -475,8 +478,8 @@ export type Database = {
           geom_precise: unknown
           gps_accuracy_m?: number | null
           grant_id: string
-          h3_r6: string
-          h3_r8: string
+          h3_r6?: string | null
+          h3_r8?: string | null
           id?: string
           is_synthetic?: boolean
           land_cover?: string | null
@@ -493,8 +496,8 @@ export type Database = {
           geom_precise?: unknown
           gps_accuracy_m?: number | null
           grant_id?: string
-          h3_r6?: string
-          h3_r8?: string
+          h3_r6?: string | null
+          h3_r8?: string | null
           id?: string
           is_synthetic?: boolean
           land_cover?: string | null

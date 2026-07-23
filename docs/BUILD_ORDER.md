@@ -152,7 +152,8 @@ Run by fresh-context adversarial review agents; findings are posted to the PR an
 
 ```
 SUPABASE_URL=                # project URL
-SUPABASE_ANON_KEY=           # client key (publishable)
+SUPABASE_PUBLISHABLE_KEY=    # server-side tools using the public client key
+VITE_SUPABASE_PUBLISHABLE_KEY= # browser-safe publishable key
 SUPABASE_SERVICE_ROLE_KEY=   # server-only: workers, exports — never shipped to client
 HF_TOKEN=                    # dataset push (CI secret)
 OPEN_METEO_BASE=https://api.open-meteo.com   # no key required; also serves the Elevation API
