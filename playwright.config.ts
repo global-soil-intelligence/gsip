@@ -6,6 +6,10 @@ export default defineConfig({
   use: { baseURL: 'http://127.0.0.1:4173', trace: 'retain-on-failure' },
   webServer: {
     command: 'pnpm build:pages && node scripts/serve-pages.mjs',
+    env: {
+      VITE_SUPABASE_PUBLISHABLE_KEY: 'e2e-publishable-key',
+      VITE_SUPABASE_URL: 'https://supabase.test',
+    },
     reuseExistingServer: true,
     url: 'http://127.0.0.1:4173/gsip/',
   },
