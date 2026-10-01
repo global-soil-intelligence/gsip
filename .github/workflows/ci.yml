@@ -33,6 +33,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm check:map-budget
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm exec playwright test --project=desktop-chrome
       - run: uv run ruff check .

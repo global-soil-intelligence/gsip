@@ -1,35 +1,240 @@
 :root {
-  color: #f3efdf;
+  color: #f4f0df;
   background: #10251f;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
 }
 
-main {
-  box-sizing: border-box;
-  min-height: 100vh;
-  padding: clamp(2rem, 8vw, 8rem);
+button,
+a {
+  font: inherit;
 }
 
-.eyebrow {
+.map-shell,
+.map-canvas {
+  min-height: 100vh;
+}
+
+.map-canvas {
+  position: fixed;
+  inset: 0;
+}
+
+.map-canvas::after {
+  position: absolute;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(9, 27, 22, 0.76), transparent 55%);
+  content: '';
+  inset: 0;
+  pointer-events: none;
+}
+
+.map-header {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem clamp(1rem, 3vw, 2.5rem);
+  border-bottom: 1px solid rgba(244, 240, 223, 0.18);
+  background: rgba(9, 27, 22, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.brand,
+.contribute {
+  color: inherit;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.brand-mark {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #d8e7ad;
+  border-radius: 50%;
+  color: #d8e7ad;
+  place-items: center;
+}
+
+.contribute {
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  background: #d8e7ad;
+  color: #10251f;
+}
+
+.map-intro,
+.layer-panel {
+  position: fixed;
+  z-index: 3;
+  left: clamp(1rem, 3vw, 2.5rem);
+  max-width: min(27rem, calc(100vw - 2rem));
+  border: 1px solid rgba(244, 240, 223, 0.18);
+  border-radius: 1.2rem;
+  background: rgba(12, 34, 28, 0.88);
+  box-shadow: 0 1.4rem 4rem rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(18px);
+}
+
+.map-intro {
+  top: 6rem;
+  padding: 1.4rem 1.5rem;
+}
+
+.eyebrow,
+.panel-label {
+  margin: 0 0 0.65rem;
   color: #c9d9a6;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 h1 {
-  max-width: 15ch;
+  margin: 0;
   font-family: Georgia, serif;
-  font-size: clamp(3rem, 9vw, 7rem);
-  line-height: 0.95;
+  font-size: clamp(2.2rem, 5vw, 4.1rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
 }
 
-a {
-  color: #d8e7ad;
-  font-weight: 700;
+.map-intro > p:last-child {
+  margin: 1rem 0 0;
+  color: #d6d7c9;
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.layer-panel {
+  bottom: 1.5rem;
+  padding: 1rem;
+}
+
+.layer-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+}
+
+.layer-buttons button {
+  padding: 0.7rem;
+  border: 1px solid rgba(244, 240, 223, 0.22);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f0df;
+  cursor: pointer;
+  text-align: left;
+}
+
+.layer-buttons button[aria-pressed='true'] {
+  border-color: #d8e7ad;
+  background: #d8e7ad;
+  color: #10251f;
+}
+
+.layer-buttons span,
+.layer-buttons small {
+  display: block;
+}
+
+.layer-buttons span {
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.layer-buttons small {
+  margin-top: 0.2rem;
+  opacity: 0.72;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+  color: #d6d7c9;
+  font-size: 0.68rem;
+}
+
+.legend i {
+  height: 0.55rem;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #ece6ba, #d09b4d, #73472e);
+}
+
+.legend-ph i {
+  background: linear-gradient(90deg, #e97664, #e7d676, #5a9faf);
+}
+
+.legend-clay i {
+  background: linear-gradient(90deg, #eee2b9, #c8794f, #793d35);
+}
+
+.map-status {
+  margin: 0.65rem 0 0;
+  color: #b9c2b4;
+  font-size: 0.72rem;
+}
+
+.maplibregl-popup-content {
+  border-radius: 0.7rem;
+  background: #f4f0df;
+  color: #10251f;
+  font:
+    0.85rem/1.4 Inter,
+    sans-serif;
+}
+
+@media (max-width: 620px) {
+  .brand > span:last-child {
+    display: none;
+  }
+
+  .contribute {
+    font-size: 0.78rem;
+  }
+
+  .map-intro {
+    top: 5rem;
+  }
+
+  .map-intro > p:last-child {
+    display: none;
+  }
+
+  .layer-panel {
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
 }

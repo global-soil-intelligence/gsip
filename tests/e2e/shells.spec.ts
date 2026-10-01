@@ -1,8 +1,27 @@
 import { expect, test } from '@playwright/test'
 
 test('map and capture shells are connected', async ({ page }) => {
+  await page.route('https://supabase.test/rest/v1/h3_cells**', (route) =>
+    route.fulfill({
+      body: JSON.stringify([
+        {
+          h3_index: '88262b2a37fffff',
+          latest_submission_date: '2026-07-23',
+          n_submissions: 1,
+        },
+      ]),
+      contentType: 'application/json',
+      status: 200,
+    }),
+  )
   await page.goto('/gsip/map/')
-  await expect(page.getByRole('heading')).toContainText('living map')
+  await expect(page.getByRole('heading')).toContainText('Read the ground')
+  await expect(page.getByText(/public H3 cells loaded/i)).toBeVisible()
+  await page.getByRole('button', { name: /Soil pH/i }).click()
+  await expect(page.getByRole('button', { name: /Soil pH/i })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
   await page.getByRole('link', { name: /contribute/i }).click()
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'Help map',
@@ -67,21 +86,12 @@ test('airplane-mode capture persists then syncs through the hosted path', async 
   await page.evaluate(() => navigator.serviceWorker.ready)
   await page.reload()
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller))
-  await page.evaluate(() => {
-    for (const [name, contents] of [
-      ['shot-a', 'context-photo'],
-      ['shot-b', 'fresh-photo'],
-    ]) {
-      const transfer = new DataTransfer()
-      transfer.items.add(
-        new File([contents], `${name}.jpg`, { type: 'image/jpeg' }),
-      )
-      const input = document.querySelector<HTMLInputElement>(`[name="${name}"]`)
-      if (!input) throw new Error(`Missing ${name} input`)
-      input.files = transfer.files
-      input.dispatchEvent(new Event('change', { bubbles: true }))
-    }
-  })
+  for (const name of ['shot-a', 'shot-b'])
+    await page.locator(`[name="${name}"]`).setInputFiles({
+      buffer: Buffer.from(`${name}-fixture`),
+      mimeType: 'image/jpeg',
+      name: `${name}.jpg`,
+    })
   await page.getByLabel('Land cover').selectOption('cropland')
   await page.getByLabel('Surface condition').selectOption('moist')
   await page.getByLabel('Latitude').fill('41.9483')
