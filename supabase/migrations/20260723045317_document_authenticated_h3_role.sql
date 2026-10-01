@@ -1,0 +1,2 @@
+comment on function private.clear_untrusted_submission_h3() is
+    'I8 containment: client H3 assertions never persist; trusted QA derives H3 from private geometry. This trigger intentionally recognizes the hosted Supabase production role name authenticated. A self-hosted deployment that renames the client role must update the current_user predicate and actor tests before accepting capture traffic.';
