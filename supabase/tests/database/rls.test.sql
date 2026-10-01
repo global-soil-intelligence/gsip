@@ -2,13 +2,14 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(38);
+select plan(42);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
 select is((select count(*) from public.prior_jobs), 25::bigint, 'seed submissions have durable prior jobs');
 select is((select count(*) from public.qa_jobs), 25::bigint, 'seed photos have durable QA jobs');
 select is((select count(*) from public.qa_events), 125::bigint, 'seed submissions have deterministic QA events');
+select is((select count(*) from public.submissions where is_synthetic), 25::bigint, 'all seeded rows are excluded from export');
 select is((select count(*) from storage.buckets where public), 0::bigint, 'all photo buckets are private');
 select hasnt_view(
     'public',
@@ -51,6 +52,16 @@ select ok(
 select ok(
     not has_function_privilege('anon', 'public.enqueue_qa_job()', 'execute'),
     'anon cannot invoke the security-definer photo queue trigger directly'
+);
+select ok(
+    not has_function_privilege('anon', 'public.refresh_public_h3_cells(jsonb)', 'execute'),
+    'anon cannot replace public H3 aggregates'
+);
+select ok(
+    not has_function_privilege(
+        'authenticated', 'public.refresh_public_h3_cells(jsonb)', 'execute'
+    ),
+    'authenticated clients cannot replace public H3 aggregates'
 );
 select ok(
     obj_description(
@@ -165,6 +176,10 @@ reset role;
 
 set local role service_role;
 select lives_ok(
+    $$select public.refresh_public_h3_cells('[]'::jsonb)$$,
+    'service-role export worker can atomically refresh public H3 aggregates'
+);
+select lives_ok(
     $$update public.submissions
       set h3_r8 = '882a847149fffff', h3_r6 = '862a84737ffffff', status = 'qa_pass'
       where id = '50000000-0000-4000-8000-000000000003'$$,
@@ -187,11 +202,7 @@ select col_not_null(
 
 set local role anon;
 set local "request.jwt.claims" = '{"role":"anon"}';
-select is(
-    (select count(*) from public.h3_cells),
-    25::bigint,
-    'anon reads only the aggregate surface'
-);
+select is((select count(*) from public.h3_cells), 0::bigint, 'anon sees only non-synthetic H3 aggregates');
 select throws_ok(
     'select geom_precise from public.submissions',
     '42501',

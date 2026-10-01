@@ -421,6 +421,7 @@ export type Database = {
           h3_r6: string | null
           h3_r8: string | null
           id: string
+          is_synthetic: boolean
           land_cover: string | null
           precip_flag: boolean | null
           status: string
@@ -438,6 +439,7 @@ export type Database = {
           h3_r6?: string | null
           h3_r8?: string | null
           id?: string
+          is_synthetic?: boolean
           land_cover?: string | null
           precip_flag?: boolean | null
           status?: string
@@ -455,6 +457,7 @@ export type Database = {
           h3_r6?: string | null
           h3_r8?: string | null
           id?: string
+          is_synthetic?: boolean
           land_cover?: string | null
           precip_flag?: boolean | null
           status?: string
@@ -487,6 +490,7 @@ export type Database = {
         Returns: number
       }
       current_contributor_id: { Args: never; Returns: string }
+      refresh_public_h3_cells: { Args: { payload: Json }; Returns: number }
     }
     Enums: {
       [_ in never]: never

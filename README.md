@@ -24,6 +24,7 @@ Run `pnpm --filter @gsip/capture-pwa dev` for capture or
 
 - [Architecture specification](docs/SPEC.md)
 - [Build order](docs/BUILD_ORDER.md)
+- [Phase 1 deployment handoff](docs/PHASE1_DEPLOYMENT.md)
 - [Archived v2.0 planning](docs/archive/v2.0/)
 
 Code is MIT. Databases and structured data are ODbL 1.0. Contributed photos are CC BY-SA 4.0 with recorded contributor grants and pre-launch legal review.
