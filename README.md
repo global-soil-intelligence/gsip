@@ -28,3 +28,11 @@ Run `pnpm --filter @gsip/capture-pwa dev` for capture or
 - [Archived v2.0 planning](docs/archive/v2.0/)
 
 Code is MIT. Databases and structured data are ODbL 1.0. Contributed photos are CC BY-SA 4.0 with recorded contributor grants and pre-launch legal review.
+
+## Contributing and security
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow and DCO sign-off requirements. Report vulnerabilities privately using [SECURITY.md](SECURITY.md).
+
+## Software and documentation licenses
+
+Software is MIT (see [LICENSE](LICENSE)). Documentation terms are recorded in [DOCUMENTATION_LICENSE.md](DOCUMENTATION_LICENSE.md).
