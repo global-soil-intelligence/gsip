@@ -179,6 +179,7 @@ describe('hosted submission paths', () => {
       'insert:submissions',
       'upload:photo',
       'insert:photos',
+      'invoke:prior-attach',
     ])
     expect(state.submissions.get(record.submissionId)).toMatchObject({
       device_model: 'Macintosh',

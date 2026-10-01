@@ -18,6 +18,7 @@ export default tseslint.config(
     languageOptions: {
       globals: {
         Blob: 'readonly',
+        Deno: 'readonly',
         File: 'readonly',
         IDBKeyRange: 'readonly',
         URL: 'readonly',
