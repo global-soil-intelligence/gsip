@@ -18,7 +18,6 @@ Never commit credentials, precise contributor locations, raw public image
 metadata, or fixtures containing real contributor information. Report security
 issues privately to the project owner rather than opening a public issue.
 
-
 ## Sign your commits (DCO)
 
 Pull requests from forks need a `Signed-off-by` line on every commit, matching the commit author's email:
