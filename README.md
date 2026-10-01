@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-# Global Soil Intelligence
-
-Citizen-science software for the Global Soil Intelligence Project.
-
-Software: MIT (see LICENSE). Documentation: CC-BY-4.0 (see DOCUMENTATION_LICENSE.md).
-
-The work-package stack contains the application and awaits review and merge.
-=======
 # Global Soil Intelligence Project
 
 GSIP is an open-source citizen-science project for building a living global soil map. A phone-friendly PWA guides contributors through privacy-safe soil photography with a printable reference card. GSIP combines those observations with public soil-map priors and later open models to produce probabilistic soil estimates with explicit uncertainty.
@@ -37,4 +28,11 @@ Run `pnpm --filter @gsip/capture-pwa dev` for capture or
 - [Archived v2.0 planning](docs/archive/v2.0/)
 
 Code is MIT. Databases and structured data are ODbL 1.0. Contributed photos are CC BY-SA 4.0 with recorded contributor grants and pre-launch legal review.
->>>>>>> origin/main
+
+## Contributing and security
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow and DCO sign-off requirements. Report vulnerabilities privately using [SECURITY.md](SECURITY.md).
+
+## Software and documentation licenses
+
+Software is MIT (see [LICENSE](LICENSE)). Documentation terms are recorded in [DOCUMENTATION_LICENSE.md](DOCUMENTATION_LICENSE.md).
