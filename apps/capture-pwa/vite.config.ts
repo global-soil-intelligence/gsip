@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/gsip/capture/',
+  base: './',
   plugins: [
     react(),
     VitePWA({
@@ -12,7 +12,7 @@ export default defineConfig({
         short_name: 'GSIP Capture',
         description: 'Contribute privacy-safe soil observations.',
         display: 'standalone',
-        start_url: '/gsip/capture/',
+        start_url: './',
         theme_color: '#123c2d',
         background_color: '#f4f0e5',
         icons: [

@@ -15,7 +15,10 @@ export default defineConfig({
   },
   projects: [
     { name: 'mobile-chrome', use: { ...devices['Pixel 7'] } },
-    { name: 'mobile-safari', use: { ...devices['iPhone 15'] } },
+    {
+      name: 'mobile-safari',
+      use: { ...devices['iPhone 15'], serviceWorkers: 'block' },
+    },
     { name: 'desktop-chrome', use: { ...devices['Desktop Chrome'] } },
   ],
 })
