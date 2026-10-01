@@ -2,11 +2,13 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(33);
+select plan(40);
 
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
 select is((select count(*) from public.prior_jobs), 25::bigint, 'seed submissions have durable prior jobs');
+select is((select count(*) from public.qa_jobs), 25::bigint, 'seed photos have durable QA jobs');
+select is((select count(*) from public.qa_events), 125::bigint, 'seed submissions have deterministic QA events');
 select is((select count(*) from storage.buckets where public), 0::bigint, 'all photo buckets are private');
 select hasnt_column('public', 'public_submissions', 'geom_precise', 'public view omits precise geometry');
 select hasnt_column('public', 'public_submissions', 'contributor_id', 'public view omits contributor id');
@@ -28,12 +30,20 @@ select ok(
     'prior job errors are server-only'
 );
 select ok(
+    not has_table_privilege('anon', 'public.qa_jobs', 'select'),
+    'photo QA job errors are server-only'
+);
+select ok(
     not has_function_privilege('anon', 'public.enqueue_prior_job()', 'execute'),
     'anon cannot invoke the security-definer queue trigger directly'
 );
 select ok(
     not has_function_privilege('authenticated', 'public.enqueue_prior_job()', 'execute'),
     'authenticated users cannot invoke the queue trigger directly'
+);
+select ok(
+    not has_function_privilege('anon', 'public.enqueue_qa_job()', 'execute'),
+    'anon cannot invoke the security-definer photo queue trigger directly'
 );
 select ok(
     obj_description(
@@ -145,6 +155,28 @@ select throws_ok(
     'authenticated client cannot self-grade private photo QA fields'
 );
 reset role;
+
+set local role service_role;
+select lives_ok(
+    $$update public.submissions
+      set h3_r8 = '882a847149fffff', h3_r6 = '862a84737ffffff', status = 'qa_pass'
+      where id = '50000000-0000-4000-8000-000000000003'$$,
+    'service-role QA can derive H3 and finalize a submission'
+);
+reset role;
+select is(
+    (select h3_r8 from public.submissions where id = '50000000-0000-4000-8000-000000000003'),
+    '882a847149fffff',
+    'the trusted H3 value is derived from private geometry'
+);
+update public.submissions
+set status = 'pending'
+where id = '50000000-0000-4000-8000-000000000003';
+
+select col_not_null(
+    'public', 'qa_events', 'model_version',
+    'every QA event records its deterministic model version'
+);
 
 set local role anon;
 set local "request.jwt.claims" = '{"role":"anon"}';
