@@ -1,0 +1,24 @@
+name: Specification gap
+description: Stop a work package and record a question that the governing spec does not answer.
+title: 'spec: '
+labels: [spec-gap]
+body:
+  - type: input
+    id: wp
+    attributes:
+      label: Work package
+      placeholder: WP-1
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Decision required
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options and consequences
+    validations:
+      required: true
