@@ -9,7 +9,7 @@ updates:
     groups:
       github-actions:
         patterns:
-          - "*"
+          - '*'
   - package-ecosystem: npm
     directories:
       - /
@@ -19,14 +19,14 @@ updates:
     cooldown:
       default-days: 7
     ignore:
-      - dependency-name: "*"
+      - dependency-name: '*'
         update-types:
           - version-update:semver-major
     groups:
       security:
         applies-to: security-updates
         patterns:
-          - "*"
+          - '*'
       minor-and-patch:
         update-types:
           - minor
@@ -40,14 +40,14 @@ updates:
     cooldown:
       default-days: 7
     ignore:
-      - dependency-name: "*"
+      - dependency-name: '*'
         update-types:
           - version-update:semver-major
     groups:
       security:
         applies-to: security-updates
         patterns:
-          - "*"
+          - '*'
       minor-and-patch:
         update-types:
           - minor
