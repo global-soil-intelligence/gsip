@@ -24,14 +24,14 @@
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.12.1",
+    "@axe-core/playwright": "4.13.0",
     "@eslint/js": "10.0.1",
-    "@playwright/test": "1.61.1",
-    "eslint": "10.7.0",
-    "prettier": "3.9.6",
-    "supabase": "2.109.1",
+    "@playwright/test": "1.63.0",
+    "eslint": "10.11.0",
+    "prettier": "3.9.9",
+    "supabase": "2.118.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.65.0",
-    "vitest": "4.1.10"
+    "typescript-eslint": "8.70.1",
+    "vitest": "4.1.11"
   }
 }
