@@ -83,3 +83,18 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    variable `VITE_PRIOR_TILES_BASE` to that base. The Pages deploy then checks that every archive
    exists and carries the palette version the legends use. Until the variable is set the map uses
    ISRIC's WMS with ISRIC's own legend.
+
+### WP-6d — contributor rights
+
+1. Apply the migrations. Requests withdraw grants from releases as soon as they are made; the
+   daily `Contributor rights requests` workflow (`pipeline.rights_worker`, service role) then deletes
+   rows and photos, deletes auth users for account deletions, and removes any canonical photo object
+   left without a photo row. Run it once by hand after deploying and confirm it succeeds.
+2. Review typed attribution names before launch and then weekly:
+   `uv run python -m pipeline.attribution_review list`, then `approve` or `reject` with
+   `--contributor`, `--name` and `--reviewer`. Until a name is approved its observations are
+   released without photos.
+3. The legal pack in `docs/legal/` is a draft. When counsel approves it, publish the approved
+   versions and set the repository variables `VITE_TERMS_URL`, `VITE_PRIVACY_URL` and
+   `VITE_SAMPLING_RULES_URL` (HTTPS or same-site paths); until then the capture app links to the
+   drafts in the repository. Capture stays closed until this is done.

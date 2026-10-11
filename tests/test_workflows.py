@@ -71,3 +71,12 @@ def test_pages_deploy_checks_the_prior_tiles_match_the_palette() -> None:
         if "pnpm check:prior-tiles" in block
     ]
     assert "VITE_PRIOR_TILES_BASE: ${{ vars.VITE_PRIOR_TILES_BASE }}" in gate
+
+
+def test_rights_requests_are_processed_daily_with_the_service_key() -> None:
+    rights = next(path for path in WORKFLOWS if path.name == "rights-worker.yml")
+    text = rights.read_text(encoding="utf-8")
+    assert re.search(r"cron: '\d+ \d+ \* \* \*'", text), "daily schedule"
+    assert "python -m pipeline.rights_worker" in text
+    assert "secrets.SUPABASE_SERVICE_ROLE_KEY" in text and "vars.SUPABASE_URL" in text
+    assert "cancel-in-progress: false" in text, "a run must never be cut off mid-deletion"

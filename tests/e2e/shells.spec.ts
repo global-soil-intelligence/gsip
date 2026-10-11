@@ -197,7 +197,8 @@ test('airplane-mode capture persists then syncs through the hosted path', async 
   await page.getByLabel('Surface condition').selectOption('moist')
   await page.getByLabel('Latitude').fill('41.9483')
   await page.getByLabel('Longitude').fill('-93.625')
-  await page.getByRole('checkbox').check()
+  await page.getByRole('checkbox', { name: /sampling rules/i }).check()
+  await page.getByRole('checkbox', { name: /I own these photos/i }).check()
   if (browserName === 'webkit') {
     // WebKit's Playwright transport cannot read a temporary camera file after
     // context.setOffline(true). Its browser project blocks service workers so

@@ -8,6 +8,7 @@ import {
 import { captureTime, isCaptureLive } from './capture'
 import { fuzzLocation } from './geo'
 import { HexPreview } from './HexPreview'
+import { legalLinks } from './legal'
 import { enqueue, indexedDbQueue, queued, retryDeadLettered } from './queue'
 import { drainQueue, isSyncEligible } from './sync'
 import {
@@ -18,6 +19,7 @@ import {
   submitQueued,
 } from './supabase'
 import type { QueueRecord, ShotType } from './types'
+import { YourData } from './YourData'
 
 const TERMS_VERSION = '2026-07-22-v1'
 const PAUSED_MESSAGE =
@@ -135,6 +137,7 @@ export function App() {
   const [email, setEmail] = useState('')
   const syncPromise = useRef<Promise<void> | null>(null)
   const syncAgain = useRef(false)
+  const links = legalLinks()
 
   const refreshQueueState = useCallback(async () => {
     const records = await queued()
@@ -300,6 +303,12 @@ export function App() {
       return
     }
     setAttributionError(null)
+    // WP-6d: the sampling and land-access rules are confirmed for every observation. The browser
+    // enforces the required checkbox; this check also covers scripted submits.
+    if (form.get('sampling-rules') !== 'on') {
+      setStatus('Confirm the sampling rules before queueing this observation.')
+      return
+    }
     let capturedPhotos: QueueRecord['photos']
     try {
       capturedPhotos = await photos(form)
@@ -551,12 +560,35 @@ export function App() {
                   'This name is published with your photo’s area and date. Keep the default to stay anonymous, or use a pseudonym rather than your real name.'}
               </p>
               <label className="terms">
-                <input type="checkbox" required />{' '}
+                <input type="checkbox" name="sampling-rules" required />{' '}
+                <span>
+                  I had permission to dig here and followed the{' '}
+                  <a
+                    href={links.samplingRules}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    sampling rules
+                  </a>
+                  : not in a protected area, on a grave or heritage site, or
+                  near buried utilities; soil replaced; no people in the photos.
+                </span>
+              </label>
+              <label className="terms">
+                <input type="checkbox" name="terms" required />{' '}
                 <span>
                   I own these photos and grant GSIP permission to include
                   structured contribution data in the ODbL 1.0 database and
-                  publish sanitized photos under CC BY-SA 4.0. I understand this
-                  is an immutable acceptance snapshot for this submission.
+                  publish sanitized photos under CC BY-SA 4.0, under the{' '}
+                  <a href={links.terms} target="_blank" rel="noreferrer">
+                    contribution terms
+                  </a>{' '}
+                  and{' '}
+                  <a href={links.privacy} target="_blank" rel="noreferrer">
+                    privacy notice
+                  </a>
+                  . I understand this is an immutable acceptance snapshot for
+                  this submission, and that I can withdraw it later.
                 </span>
               </label>
               <button className="submit-button" type="submit">
@@ -592,6 +624,10 @@ export function App() {
           </div>
           {publicCell && <HexPreview cell={publicCell} />}
         </section>
+
+        {live && client && (
+          <YourData client={client} onQueueCleared={refreshQueueState} />
+        )}
       </main>
       <footer>
         Open science · Privacy-safe by default · Estimates include uncertainty

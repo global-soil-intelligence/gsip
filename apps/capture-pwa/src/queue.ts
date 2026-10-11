@@ -31,6 +31,13 @@ export async function removeQueued(submissionId: string): Promise<void> {
   await (await database()).delete('submissions', submissionId)
 }
 
+/** Discards every observation still queued on this device (WP-6d withdrawal and deletion). */
+export async function clearQueue(): Promise<number> {
+  const records = await queued()
+  await (await database()).clear('submissions')
+  return records.length
+}
+
 export async function retryDeadLettered(): Promise<void> {
   for (const record of await queued()) {
     if (!record.deadLetteredAt) continue

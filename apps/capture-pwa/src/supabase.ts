@@ -185,3 +185,72 @@ export async function submitQueued(
     body: { submissionId: record.submissionId },
   })
 }
+
+export type DeletionKind = 'withdraw_contributions' | 'delete_account'
+export type DeletionStatus = {
+  completedAt: string | null
+  kind: DeletionKind
+  requestedAt: string
+  status: 'pending' | 'processing' | 'completed'
+}
+export type DeletionOutcome = 'requested' | 'already_open' | 'nothing_stored'
+
+/**
+ * The signed-in contributor, or null. Rights requests never sign in: creating an account in order
+ * to delete it would be absurd, and a device that never synced has nothing on our servers.
+ */
+async function existingContributor(client: GsipClient): Promise<string | null> {
+  const { data } = await client.auth.getSession()
+  const uid = data.session?.user.id
+  if (!uid) return null
+  const found = await client
+    .from('contributors')
+    .select('id')
+    .eq('auth_uid', uid)
+    .maybeSingle()
+  if (found.error) throw found.error
+  return found.data?.id ?? null
+}
+
+/** The contributor's latest withdrawal or deletion request, if they have one. */
+export async function latestDeletionRequest(
+  client: GsipClient,
+): Promise<DeletionStatus | null> {
+  if (!(await existingContributor(client))) return null
+  const { data, error } = await client
+    .from('deletion_requests')
+    .select('kind, status, requested_at, completed_at')
+    .order('requested_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  if (error) throw error
+  if (!data) return null
+  return {
+    completedAt: data.completed_at,
+    kind: data.kind as DeletionKind,
+    requestedAt: data.requested_at,
+    status: data.status as DeletionStatus['status'],
+  }
+}
+
+/**
+ * Files a withdrawal or account-deletion request (WP-6d). The database withdraws the person's
+ * grants in the same transaction, so publication stops at once; the daily rights worker deletes
+ * the data. After an account deletion this device signs out.
+ */
+export async function requestDeletion(
+  client: GsipClient,
+  kind: DeletionKind,
+): Promise<DeletionOutcome> {
+  const contributor = await existingContributor(client)
+  if (!contributor) return 'nothing_stored'
+  const { error } = await client
+    .from('deletion_requests')
+    .insert({ contributor_id: contributor, kind })
+  if (error) {
+    if (error.code === '23505') return 'already_open'
+    throw error
+  }
+  if (kind === 'delete_account') await client.auth.signOut({ scope: 'local' })
+  return 'requested'
+}

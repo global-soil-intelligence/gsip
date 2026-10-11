@@ -5,6 +5,8 @@ const roots = [
   new URL('../apps/capture-pwa/src/', import.meta.url),
   new URL('../apps/map-web/src/', import.meta.url),
   new URL('../apps/site-web/src/', import.meta.url),
+  // Contributor-facing legal copy (WP-6d) follows the same rule.
+  new URL('../docs/legal/', import.meta.url),
 ]
 const prohibited = /soil[\s-]+test/i
 
