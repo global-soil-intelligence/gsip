@@ -284,7 +284,7 @@ describe('hosted submission paths', () => {
         (item) => submitQueued(client, item),
         () => now,
       ),
-    ).toEqual({
+    ).toMatchObject({
       failed: 1,
       synced: 0,
     })
@@ -296,7 +296,7 @@ describe('hosted submission paths', () => {
         (item) => submitQueued(client, item),
         () => now,
       ),
-    ).toEqual({
+    ).toMatchObject({
       failed: 0,
       synced: 1,
     })

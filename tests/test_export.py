@@ -28,6 +28,7 @@ from pipeline.export import (
     SupabaseExportSource,
     assert_public_record,
     build_export,
+    honour_late_withdrawals,
     publish_export,
 )
 from pipeline.k_anonymity import Observation, PublishedCell, assign_cells
@@ -117,6 +118,7 @@ def submission(
             "2026-07-22-v1",
             withdrawn=withdrawn,
             attribution_review=review,
+            id=f"grant-{index}",
         )
         if grant
         else None,
@@ -605,7 +607,7 @@ def test_source_marks_withdrawn_grants_and_reads_the_review_for_that_contributor
                     "contributor_id": "c-1",
                     "decision": "approved",
                 },
-                # The same text approved for someone else does not approve it for c-1.
+                # An approval of a different name says nothing about this one.
                 {"attribution_name": "Other", "contributor_id": "c-1", "decision": "approved"},
             ],
         )
@@ -613,6 +615,7 @@ def test_source_marks_withdrawn_grants_and_reads_the_review_for_that_contributor
     assert approved.grant is not None and not approved.grant.withdrawn
     assert approved.grant.attribution_review == "approved" and approved.grant.photos_publishable
 
+    # The same text approved for someone else does not approve it for c-1.
     [elsewhere] = load_from(
         source_tables(
             "Jane Q Example",
@@ -627,6 +630,45 @@ def test_source_marks_withdrawn_grants_and_reads_the_review_for_that_contributor
         )
     )
     assert elsewhere.grant is not None and not elsewhere.grant.photos_publishable
+
+
+def test_a_withdrawal_filed_during_the_export_is_honoured_before_publishing(
+    tmp_path: Path,
+) -> None:
+    rows = [*three_contributors_in_one_cell(), submission(4)]
+    first = build(rows, tmp_path)
+    assert rows[3].id in {row["id"] for row in load_rows(first)}
+    reads = iter([{"grant-4"}, {"grant-4"}])
+    rebuilt: list[list[ExportSubmission]] = []
+
+    def rebuild(marked: list[ExportSubmission]) -> ExportResult:
+        rebuilt.append(marked)
+        return build(marked, tmp_path)
+
+    result = honour_late_withdrawals(rows, first, lambda: next(reads), rebuild)
+
+    assert len(rebuilt) == 1
+    assert rows[3].id not in {row["id"] for row in load_rows(result)}
+    assert len(load_rows(result)) == 3
+
+
+def test_an_export_without_late_withdrawals_is_published_as_built(tmp_path: Path) -> None:
+    rows = three_contributors_in_one_cell()
+    result = build(rows, tmp_path)
+
+    def rebuild(_: list[ExportSubmission]) -> ExportResult:
+        raise AssertionError("nothing to rebuild")
+
+    assert honour_late_withdrawals(rows, result, set, rebuild) is result
+
+
+def test_withdrawals_that_keep_arriving_stop_the_release(tmp_path: Path) -> None:
+    rows = [*three_contributors_in_one_cell(), submission(4), submission(5)]
+    first = build(rows, tmp_path)
+    reads = iter([{"grant-4"}, {"grant-4", "grant-5"}])
+
+    with pytest.raises(ExportHealthError, match="kept arriving"):
+        honour_late_withdrawals(rows, first, lambda: next(reads), lambda m: build(m, tmp_path))
 
 
 def test_withdrawn_grants_never_enter_a_release(tmp_path: Path) -> None:

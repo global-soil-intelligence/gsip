@@ -22,6 +22,8 @@ vi.mock('../src/supabase', () => ({
   createGsipClient: () => ({ hosted: true }),
   fetchServiceState: mocks.fetchServiceState,
   isServiceConfigured: () => true,
+  recordOwner: async () => undefined,
+  sendSignInLink: async () => 'sent',
   latestDeletionRequest: async () => null,
   requestDeletion: async () => 'requested',
   submitQueued: mocks.submitQueued,

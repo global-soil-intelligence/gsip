@@ -7,31 +7,52 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PRIVACY = ROOT / "docs" / "legal" / "PRIVACY.md"
-# Code that runs in production or in GSIP's workers and builds. Tests and fixtures are excluded.
+# Everything that ships or runs: app sources, pages, public assets and configs, the schema
+# package, workers, scripts, Edge Functions, Supabase config and workflows. Tests, fixtures and
+# build output are excluded.
 SOURCES = (
-    "apps/capture-pwa/src",
-    "apps/capture-pwa/index.html",
-    "apps/map-web/src",
-    "apps/map-web/index.html",
-    "apps/map-web/scripts",
-    "apps/site-web/src",
-    "apps/site-web/index.html",
+    "apps",
     "card",
     "packages/schema/src",
     "pipeline",
     "scripts",
     "supabase/functions",
+    "supabase/config.toml",
     ".github/workflows",
 )
-CODE_SUFFIXES = {".html", ".js", ".mjs", ".py", ".ts", ".tsx", ".yml"}
-URL = re.compile(r"https?://([A-Za-z0-9.-]+\.[A-Za-z]{2,}|127\.0\.0\.1|localhost)")
+SKIPPED_DIRECTORIES = {"node_modules", "dist", "tests", "test-results", "coverage", "__pycache__"}
+SUFFIXES = {
+    ".cjs",
+    ".css",
+    ".html",
+    ".js",
+    ".json",
+    ".mjs",
+    ".py",
+    ".svg",
+    ".toml",
+    ".ts",
+    ".tsx",
+    ".txt",
+    ".webmanifest",
+    ".xml",
+    ".yaml",
+    ".yml",
+}
+# Absolute (`https://host`) and protocol-relative (`//host`) references.
+URL = re.compile(
+    r"(?:https?:)?//([A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}|127\.0\.0\.1|localhost)"
+)
 # Strings that look like URLs but are never contacted.
 NOT_CONTACTED = {
     "127.0.0.1": "local development server",
     "localhost": "local development server",
     "ns.adobe.com": "XMP namespace identifier, matched when stripping metadata",
+    "same-site.invalid": "reserved .invalid origin used only to resolve relative links",
     "schema.org": "JSON-LD vocabulary identifier",
     "soilgrids.org": "citation link in the dataset card",
+    "www.sitemaps.org": "sitemap XML namespace identifier",
+    "www.w3.org": "SVG and XML namespace identifiers",
 }
 # Services the code reaches through configuration or a client library rather than a literal URL.
 CONFIGURED = {
@@ -47,7 +68,7 @@ def code_hosts() -> dict[str, set[str]]:
         base = ROOT / source
         files = [base] if base.is_file() else [p for p in base.rglob("*") if p.is_file()]
         for path in files:
-            if path.suffix not in CODE_SUFFIXES or "node_modules" in path.parts:
+            if path.suffix not in SUFFIXES or SKIPPED_DIRECTORIES.intersection(path.parts):
                 continue
             for host in URL.findall(path.read_text(encoding="utf-8", errors="ignore")):
                 found.setdefault(host.lower(), set()).add(str(path.relative_to(ROOT)))
@@ -99,6 +120,8 @@ def test_the_check_would_catch_a_new_upstream() -> None:
     assert not covered("api.example-weather.net", listed_hosts())
     assert covered("abcdefgh.supabase.co", listed_hosts())
     assert URL.findall("fetch('https://api.example-weather.net/v1')") == ["api.example-weather.net"]
+    assert URL.findall("@import url(//fonts.example.com/css);") == ["fonts.example.com"]
+    assert URL.findall("// a comment, not a host") == []
 
 
 def test_exemptions_are_only_for_hosts_the_code_mentions() -> None:

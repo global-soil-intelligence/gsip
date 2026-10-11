@@ -3,23 +3,22 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 from typing import Any
 
 import httpx
 import pytest
 
-from pipeline.rights_worker import (
-    BUCKETS,
-    SupabaseRightsWorker,
-    owning_submission,
-)
+from pipeline.rights_worker import RightsSummary, SupabaseRightsWorker, main
 from pipeline.storage import SupabaseStorage
 
 UID = "31600000-0000-4000-8000-00000000000a"
 CONTRIBUTOR = "21600000-0000-4000-8000-00000000000a"
 OLD = "51600000-0000-4000-8000-0000000000a1"
 NEWER = "51600000-0000-4000-8000-0000000000a3"
+BUCKETS = ("incoming-photos", "submission-photos")
 
 
 def path(submission: str, shot: str = "B", name: str = "x") -> str:
@@ -46,19 +45,20 @@ class FakeSupabase:
     failures: dict[str, int] = field(default_factory=dict)
     calls: list[str] = field(default_factory=list)
     orphans: list[str] = field(default_factory=list)
+    overdue: int = 0
+    stuck_deletes: bool = False
 
     def _request(self, request_id: str) -> Request:
         return next(r for r in self.requests if r.request_id == request_id)
 
-    def _children(self, bucket: str, prefix: str) -> list[dict[str, Any]]:
-        children: dict[str, dict[str, Any]] = {}
-        for name in sorted(self.objects[bucket]):
-            if not name.startswith(f"{prefix}/"):
-                continue
-            rest = name[len(prefix) + 1 :]
-            head, _, tail = rest.partition("/")
-            children.setdefault(head, {"id": "object" if not tail else None, "name": head})
-        return list(children.values())
+    def _orphaned(self, auth_uid: str) -> list[dict[str, str]]:
+        # One snapshot: objects under the folder whose submission row is gone.
+        return [
+            {"bucket_id": bucket, "name": name}
+            for bucket in BUCKETS
+            for name in sorted(self.objects.get(bucket, set()))
+            if name.startswith(f"{auth_uid}/") and name.split("/")[1] not in self.submissions
+        ]
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
         route = f"{request.method} {request.url.path}"
@@ -84,9 +84,6 @@ class FakeSupabase:
                         ],
                     )
             return httpx.Response(200, json=[])
-        if route == "POST /rest/v1/rpc/orphaned_photo_objects":
-            listed = [name for name in self.orphans if name in self.objects["submission-photos"]]
-            return httpx.Response(200, json=[{"name": name} for name in listed[: body["p_limit"]]])
         if route == "POST /rest/v1/rpc/apply_deletion_request":
             item = self._request(body["p_request_id"])
             covered = item.covered if item.kind == "withdraw_contributions" else self.submissions
@@ -95,18 +92,16 @@ class FakeSupabase:
             return httpx.Response(
                 200, json=[{"deleted_submissions": deleted, "withdrawn_grants": 0}]
             )
-        if route == "GET /rest/v1/submissions":
-            assert request.url.params["contributor_id"] == f"eq.{CONTRIBUTOR}"
-            return httpx.Response(200, json=[{"id": s} for s in sorted(self.submissions)])
-        if request.url.path.startswith("/storage/v1/object/list/"):
-            bucket = request.url.path.rsplit("/", 1)[1]
-            children = self._children(bucket, body["prefix"])
-            return httpx.Response(
-                200, json=children[body["offset"] : body["offset"] + body["limit"]]
-            )
+        if route == "POST /rest/v1/rpc/contributor_orphaned_objects":
+            listed = self._orphaned(body["p_auth_uid"])
+            return httpx.Response(200, json=listed[: body["p_limit"]])
+        if route == "POST /rest/v1/rpc/orphaned_photo_objects":
+            names = [name for name in self.orphans if name in self.objects["submission-photos"]]
+            return httpx.Response(200, json=[{"name": name} for name in names[: body["p_limit"]]])
         if request.method == "DELETE" and request.url.path.startswith("/storage/v1/object/"):
             bucket = request.url.path.rsplit("/", 1)[1]
-            self.objects[bucket] -= set(body["prefixes"])
+            if not self.stuck_deletes:
+                self.objects[bucket] -= set(body["prefixes"])
             return httpx.Response(200, json=[])
         if request.url.path.startswith("/auth/v1/admin/users/"):
             uid = request.url.path.rsplit("/", 1)[1]
@@ -116,8 +111,9 @@ class FakeSupabase:
             return httpx.Response(200, json={})
         if route == "POST /rest/v1/rpc/complete_deletion_request":
             item = self._request(body["p_request_id"])
-            if self.submissions & (
-                item.covered if item.kind == "withdraw_contributions" else self.submissions
+            remaining = item.covered if item.kind == "withdraw_contributions" else self.submissions
+            if self.submissions & remaining or (
+                item.kind == "delete_account" and UID in self.auth_users
             ):
                 return httpx.Response(400, json={"code": "55000"})
             item.status = "completed"
@@ -127,11 +123,32 @@ class FakeSupabase:
             # Released requests wait before their retry (not_before), so a run never re-claims them.
             item.status, item.last_error = "released", body["p_error"]
             return httpx.Response(204)
+        if route == "GET /rest/v1/deletion_requests":
+            assert request.url.params["status"] == "neq.completed"
+            assert re.match(r"lt\.2026-09-1\d", request.url.params["requested_at"])
+            return httpx.Response(
+                206 if self.overdue else 200,
+                headers={"Content-Range": f"0-0/{self.overdue}" if self.overdue else "*/0"},
+                json=[{"id": "r"}] if self.overdue else [],
+            )
         raise AssertionError(f"unexpected request {route}")
 
 
-def worker_for(fake: FakeSupabase) -> SupabaseRightsWorker:
-    worker = SupabaseRightsWorker("https://supabase.test", "service-key")
+class Clock:
+    def __init__(self) -> None:
+        self.now = 0.0
+
+    def __call__(self) -> float:
+        return self.now
+
+
+def worker_for(fake: FakeSupabase, clock: Clock | None = None) -> SupabaseRightsWorker:
+    worker = SupabaseRightsWorker(
+        "https://supabase.test",
+        "service-key",
+        clock=clock or Clock(),
+        now=lambda: datetime(2026, 10, 10, 12, tzinfo=UTC),
+    )
     worker.client = httpx.Client(transport=httpx.MockTransport(fake))
     return worker
 
@@ -149,7 +166,7 @@ def test_a_withdrawal_deletes_covered_rows_and_objects_but_keeps_newer_contribut
         submissions={OLD, NEWER},
         objects=contributor_objects(OLD, NEWER),
     )
-    fake.objects["incoming-photos"].add(f"{UID}/stray.jpg")  # an orphan with no submission
+    fake.objects["incoming-photos"].add(f"{UID}/stray/A/raw.jpg")  # no submission owns it
 
     summary = worker_for(fake).run()
 
@@ -198,7 +215,7 @@ def test_an_auth_user_that_is_already_gone_still_completes_the_request() -> None
 @pytest.mark.parametrize(
     ("failing", "step"),
     [
-        ("/storage/v1/object/list/", "storage:HTTPStatusError:500"),
+        ("rpc/contributor_orphaned_objects", "storage:HTTPStatusError:500"),
         ("/auth/v1/admin/users/", "auth:HTTPStatusError:500"),
         ("rpc/apply_deletion_request", "apply:HTTPStatusError:500"),
     ],
@@ -229,6 +246,21 @@ def test_a_failed_step_releases_the_request_and_never_reports_it_done(
     assert fake.auth_users == set()
 
 
+def test_deletions_that_never_take_effect_fail_the_step_instead_of_looping() -> None:
+    names = {f"{UID}/{OLD}/B/{index:04d}.jpg" for index in range(1000)}
+    fake = FakeSupabase(
+        requests=[Request("r9", "withdraw_contributions", covered={OLD})],
+        submissions={OLD},
+        objects={"incoming-photos": set(), "submission-photos": names},
+        stuck_deletes=True,
+    )
+
+    summary = worker_for(fake).run()
+
+    assert summary.failed == 1
+    assert fake.requests[0].last_error == "storage:RuntimeError"
+
+
 def test_a_failed_release_does_not_stop_the_run() -> None:
     fake = FakeSupabase(
         requests=[
@@ -246,7 +278,28 @@ def test_a_failed_release_does_not_stop_the_run() -> None:
     assert fake.calls.count("POST /rest/v1/rpc/claim_deletion_request") == 3
 
 
-def test_nothing_to_do_is_one_claim_and_one_orphan_check() -> None:
+def test_a_run_drains_the_queue_but_stops_claiming_when_its_budget_is_spent() -> None:
+    fake = FakeSupabase(
+        requests=[Request(f"q{index}", "withdraw_contributions", set()) for index in range(5)],
+        submissions=set(),
+        objects=contributor_objects(),
+    )
+    clock = Clock()
+    worker = worker_for(fake, clock)
+    original = worker.process
+
+    def slow_process(claim: Any) -> tuple[int, int]:
+        clock.now += 100
+        return original(claim)
+
+    worker.process = slow_process  # type: ignore[method-assign]
+    summary = worker.run(budget_seconds=250)
+
+    assert (summary.completed, summary.out_of_time) == (3, True)
+    assert [item.status for item in fake.requests] == ["completed"] * 3 + ["pending"] * 2
+
+
+def test_nothing_to_do_is_one_claim_one_orphan_check_and_the_overdue_check() -> None:
     fake = FakeSupabase(requests=[], submissions=set(), objects=contributor_objects())
 
     summary = worker_for(fake).run()
@@ -255,6 +308,7 @@ def test_nothing_to_do_is_one_claim_and_one_orphan_check() -> None:
     assert fake.calls == [
         "POST /rest/v1/rpc/claim_deletion_request",
         "POST /rest/v1/rpc/orphaned_photo_objects",
+        "GET /rest/v1/deletion_requests",
     ]
 
 
@@ -268,31 +322,29 @@ def test_every_run_removes_canonical_objects_that_no_photo_row_owns() -> None:
     assert fake.objects["submission-photos"] == {path(NEWER, "A"), path(NEWER, "B")}
 
 
+def test_requests_older_than_25_days_are_counted() -> None:
+    fake = FakeSupabase(requests=[], submissions=set(), objects=contributor_objects(), overdue=2)
+
+    assert worker_for(fake).run().overdue == 2
+
+
 @pytest.mark.parametrize(
-    ("object_path", "owner"),
+    ("summary", "message"),
     [
-        (f"{UID}/{OLD}/B/x.jpg", OLD),
-        (f"{UID}/stray.jpg", None),
-        (f"{UID}//B/x.jpg", None),
+        (RightsSummary(failed=1), "1 rights request(s) failed and will be retried"),
+        (RightsSummary(overdue=3), "3 rights request(s) are older than 25 days"),
     ],
 )
-def test_objects_are_owned_by_the_submission_in_their_path(
-    object_path: str, owner: str | None
+def test_failures_and_overdue_requests_fail_the_run(
+    summary: RightsSummary, message: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    assert owning_submission(object_path) == owner
+    monkeypatch.setenv("SUPABASE_URL", "https://supabase.test")
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "service-key")
+    monkeypatch.setattr("sys.argv", ["rights_worker"])
+    monkeypatch.setattr(SupabaseRightsWorker, "run", lambda self, budget: summary)
 
-
-def test_storage_listing_walks_folders_and_pages() -> None:
-    names = {f"{UID}/{OLD}/B/{index:04d}.jpg" for index in range(1001)}
-    fake = FakeSupabase(requests=[], submissions=set(), objects={"submission-photos": names})
-    storage = SupabaseStorage(httpx.Client(transport=httpx.MockTransport(fake)), "https://s.test")
-
-    listed = storage.list_objects("submission-photos", UID)
-
-    assert set(listed) == names
-    assert (
-        fake.calls.count("POST /storage/v1/object/list/submission-photos") == 4
-    )  # 3 levels, 2 pages
+    with pytest.raises(SystemExit, match=re.escape(message)):
+        main()
 
 
 def test_storage_deletes_in_batches() -> None:

@@ -9,12 +9,21 @@ import { captureTime, isCaptureLive } from './capture'
 import { fuzzLocation } from './geo'
 import { HexPreview } from './HexPreview'
 import { legalLinks } from './legal'
-import { enqueue, indexedDbQueue, queued, retryDeadLettered } from './queue'
+import {
+  discardHeld,
+  enqueue,
+  indexedDbQueue,
+  queued,
+  releaseHeld,
+  retryDeadLettered,
+} from './queue'
 import { drainQueue, isSyncEligible } from './sync'
 import {
   createGsipClient,
   fetchServiceState,
   isServiceConfigured,
+  recordOwner,
+  sendSignInLink,
   type ServiceState,
   submitQueued,
 } from './supabase'
@@ -132,6 +141,8 @@ export function App() {
   const [longitude, setLongitude] = useState('')
   const [queueCount, setQueueCount] = useState(0)
   const [deadLetterCount, setDeadLetterCount] = useState(0)
+  const [heldCount, setHeldCount] = useState(0)
+  const [emailInUse, setEmailInUse] = useState(false)
   const [status, setStatus] = useState('Ready for your first observation.')
   const [publicCell, setPublicCell] = useState<string | null>(null)
   const [email, setEmail] = useState('')
@@ -145,6 +156,7 @@ export function App() {
     setDeadLetterCount(
       records.filter((record) => Boolean(record.deadLetteredAt)).length,
     )
+    setHeldCount(records.filter((record) => Boolean(record.heldAt)).length)
     return records
   }, [])
   const drainOnce = useCallback(async () => {
@@ -171,7 +183,14 @@ export function App() {
     const deadLetters = remaining.filter((record) =>
       Boolean(record.deadLetteredAt),
     ).length
-    if (deadLetters) {
+    const withdrawn = result.discarded
+      ? ` ${result.discarded} observation${result.discarded > 1 ? 's' : ''} you had withdrawn ${result.discarded > 1 ? 'were' : 'was'} removed from this device.`
+      : ''
+    if (result.held) {
+      setStatus(
+        `${result.held} observation${result.held > 1 ? 's belong' : ' belongs'} to an account that is no longer signed in here, so ${result.held > 1 ? 'they were' : 'it was'} not sent.${withdrawn}`,
+      )
+    } else if (deadLetters) {
       setStatus(
         `${deadLetters} observation${deadLetters > 1 ? 's need' : ' needs'} attention before retrying.`,
       )
@@ -181,8 +200,10 @@ export function App() {
       )
     } else if (result.synced) {
       setStatus(
-        `${result.synced} observation${result.synced > 1 ? 's' : ''} synced.`,
+        `${result.synced} observation${result.synced > 1 ? 's' : ''} synced.${withdrawn}`,
       )
+    } else if (withdrawn) {
+      setStatus(withdrawn.trim())
     } else {
       setStatus('Ready for your next observation.')
     }
@@ -256,16 +277,29 @@ export function App() {
     )
   }
 
-  async function sendMagicLink() {
+  async function sendMagicLink(switchAccount = false) {
     if (!client || !email) return
-    const { error } = await client.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: window.location.href.split('#')[0] },
-    })
+    let outcome: Awaited<ReturnType<typeof sendSignInLink>>
+    try {
+      outcome = await sendSignInLink(
+        client,
+        email,
+        window.location.href.split('#')[0],
+        switchAccount,
+      )
+    } catch {
+      outcome = 'failed'
+    }
+    setEmailInUse(outcome === 'email_in_use')
     setStatus(
-      error
-        ? 'Magic link could not be sent. Try again.'
-        : 'Check your email for the secure sign-in link.',
+      {
+        confirm_sent:
+          'Check your email to confirm it. Your contributions from this device stay with your account.',
+        email_in_use:
+          'That email already has an account. Signing in to it here leaves this device’s anonymous contributions with the anonymous account: withdraw them first under Your data if you want them removed.',
+        failed: 'The sign-in link could not be sent. Try again.',
+        sent: 'Check your email for the secure sign-in link.',
+      }[outcome],
     )
   }
 
@@ -317,6 +351,8 @@ export function App() {
       return
     }
     const shotB = form.get('shot-b')
+    // WP-6d: an observation is only ever sent as the account it was made under.
+    const ownerUid = await recordOwner(client)
     const record: QueueRecord = {
       accuracyM: accuracy,
       acceptedAt: new Date().toISOString(),
@@ -328,6 +364,7 @@ export function App() {
       landCover: String(form.get('land-cover')),
       latitude: numericLatitude,
       longitude: numericLongitude,
+      ownerUid,
       photos: capturedPhotos,
       queuedAt: new Date().toISOString(),
       submissionId: crypto.randomUUID(),
@@ -428,6 +465,15 @@ export function App() {
               >
                 Send magic link
               </button>
+              {emailInUse && (
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() => void sendMagicLink(true)}
+                >
+                  Sign in to that account instead
+                </button>
+              )}
             </div>
           </section>
         )}
@@ -577,7 +623,8 @@ export function App() {
               <label className="terms">
                 <input type="checkbox" name="terms" required />{' '}
                 <span>
-                  I own these photos and grant GSIP permission to include
+                  I am at least 16, or a teacher contributing for my class. I
+                  own these photos and grant GSIP permission to include
                   structured contribution data in the ODbL 1.0 database and
                   publish sanitized photos under CC BY-SA 4.0, under the{' '}
                   <a href={links.terms} target="_blank" rel="noreferrer">
@@ -608,6 +655,41 @@ export function App() {
           <div>
             <p className="step-number">Status</p>
             <h2>{status}</h2>
+            {heldCount > 0 && (
+              <div
+                className="held-actions"
+                role="group"
+                aria-label="Observations from another account"
+              >
+                <p>
+                  {heldCount} observation{heldCount > 1 ? 's were' : ' was'}{' '}
+                  made under an account that is no longer signed in on this
+                  device. {heldCount > 1 ? 'They stay' : 'It stays'} here and{' '}
+                  {heldCount > 1 ? 'are' : 'is'} not sent unless you choose.
+                </p>
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() => {
+                    void discardHeld().then(refreshQueueState)
+                  }}
+                >
+                  Discard {heldCount > 1 ? 'them' : 'it'}
+                </button>
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() => {
+                    void releaseHeld()
+                      .then(refreshQueueState)
+                      .then(() => sync())
+                  }}
+                >
+                  Send {heldCount > 1 ? 'them' : 'it'} from this device’s
+                  account
+                </button>
+              </div>
+            )}
             {deadLetterCount > 0 && (
               <button
                 type="button"

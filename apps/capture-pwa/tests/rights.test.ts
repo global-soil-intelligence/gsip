@@ -3,6 +3,7 @@ import {
   type GsipClient,
   latestDeletionRequest,
   requestDeletion,
+  sendSignInLink,
 } from '../src/supabase'
 
 type Options = {
@@ -10,26 +11,46 @@ type Options = {
   insertError?: { code: string; message: string }
   latest?: Record<string, unknown> | null
   session?: boolean
+  sessionError?: Error
+  anonymous?: boolean
+  updateError?: { code?: string; message: string }
 }
 
 function fakeClient({
+  anonymous = false,
   contributor = true,
   insertError,
   latest = null,
   session = true,
+  sessionError,
+  updateError,
 }: Options) {
   const calls: string[] = []
   const client = {
     auth: {
       getSession: async () => ({
-        data: { session: session ? { user: { id: 'uid-1' } } : null },
+        data: {
+          session:
+            session && !sessionError
+              ? { user: { id: 'uid-1', is_anonymous: anonymous } }
+              : null,
+        },
+        error: sessionError ?? null,
       }),
       signInAnonymously: async () => {
         throw new Error('a rights request must never create an account')
       },
+      signInWithOtp: async () => {
+        calls.push('signInWithOtp')
+        return { error: null }
+      },
       signOut: async (options: { scope: string }) => {
         calls.push(`signOut:${options.scope}`)
         return { error: null }
+      },
+      updateUser: async (attributes: { email: string }) => {
+        calls.push(`updateUser:${attributes.email}`)
+        return { error: updateError ?? null }
       },
     },
     from(table: string) {
@@ -58,19 +79,31 @@ function fakeClient({
 }
 
 describe('rights requests', () => {
-  it('reports nothing stored, without signing in, when this device never synced', async () => {
+  it('reports no account, without signing in, when this device never had one', async () => {
     const { calls, client } = fakeClient({ session: false })
-    expect(await requestDeletion(client, 'delete_account')).toBe(
-      'nothing_stored',
-    )
+    expect(await requestDeletion(client, 'delete_account')).toBe('no_account')
     expect(await latestDeletionRequest(client)).toBeNull()
     expect(calls).toEqual([])
   })
 
-  it('reports nothing stored for a session that never became a contributor', async () => {
+  it('treats an unreadable session as a failure, never as "no account"', async () => {
+    // Offline with an expired access token, supabase-js returns no session and an error.
+    const { calls, client } = fakeClient({
+      sessionError: new Error('Failed to fetch'),
+    })
+    await expect(
+      requestDeletion(client, 'withdraw_contributions'),
+    ).rejects.toThrow('Failed to fetch')
+    await expect(latestDeletionRequest(client)).rejects.toThrow(
+      'Failed to fetch',
+    )
+    expect(calls).toEqual([])
+  })
+
+  it('reports no account for a session that never became a contributor', async () => {
     const { calls, client } = fakeClient({ contributor: false })
     expect(await requestDeletion(client, 'withdraw_contributions')).toBe(
-      'nothing_stored',
+      'no_account',
     )
     expect(calls.some((call) => call.startsWith('insert:'))).toBe(false)
   })
@@ -86,10 +119,10 @@ describe('rights requests', () => {
     expect(calls.some((call) => call.startsWith('signOut'))).toBe(false)
   })
 
-  it('signs this device out after filing an account deletion', async () => {
+  it('signs every device of the account out after filing an account deletion', async () => {
     const { calls, client } = fakeClient({})
     expect(await requestDeletion(client, 'delete_account')).toBe('requested')
-    expect(calls.at(-1)).toBe('signOut:local')
+    expect(calls.at(-1)).toBe('signOut:global')
   })
 
   it('recognizes a request that is already open', async () => {
@@ -124,5 +157,42 @@ describe('rights requests', () => {
       requestedAt: '2026-10-10T08:00:00Z',
       status: 'processing',
     })
+  })
+})
+
+describe('e-mail sign-in', () => {
+  it('upgrades an anonymous account in place, so its contributions stay withdrawable', async () => {
+    const { calls, client } = fakeClient({ anonymous: true })
+    expect(await sendSignInLink(client, 'a@example.org', 'https://x/')).toBe(
+      'confirm_sent',
+    )
+    expect(calls).toEqual(['updateUser:a@example.org'])
+  })
+
+  it('reports an e-mail that already has an account instead of switching silently', async () => {
+    const { calls, client } = fakeClient({
+      anonymous: true,
+      updateError: { code: 'email_exists', message: 'exists' },
+    })
+    expect(await sendSignInLink(client, 'a@example.org', 'https://x/')).toBe(
+      'email_in_use',
+    )
+    expect(calls).not.toContain('signInWithOtp')
+  })
+
+  it('switches account only when the person chooses to', async () => {
+    const { calls, client } = fakeClient({ anonymous: true })
+    expect(
+      await sendSignInLink(client, 'a@example.org', 'https://x/', true),
+    ).toBe('sent')
+    expect(calls).toEqual(['signInWithOtp'])
+  })
+
+  it('sends a normal sign-in link from a signed-out or permanent session', async () => {
+    const { calls, client } = fakeClient({ session: false })
+    expect(await sendSignInLink(client, 'a@example.org', 'https://x/')).toBe(
+      'sent',
+    )
+    expect(calls).toEqual(['signInWithOtp'])
   })
 })

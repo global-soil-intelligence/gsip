@@ -8,7 +8,7 @@ import os
 import shutil
 import time
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -90,6 +90,7 @@ class Grant:
     # WP-6d: a withdrawn grant never enters a release; photos need a publishable attribution.
     withdrawn: bool = False
     attribution_review: str | None = None
+    id: str = ""
 
     @property
     def photos_publishable(self) -> bool:
@@ -343,6 +344,43 @@ def _row(
     }
 
 
+def honour_late_withdrawals(
+    submissions: list[ExportSubmission],
+    result: ExportResult,
+    withdrawn_grant_ids: Callable[[], set[str]],
+    rebuild: Callable[[list[ExportSubmission]], ExportResult],
+) -> ExportResult:
+    """Withdrawals filed while a release was being built are honoured before it is published.
+
+    The export reads withdrawals when it starts. Just before publishing, it reads them again; if
+    any grant in the build has been withdrawn since, it rebuilds once without those observations,
+    and refuses to publish if more arrive during the rebuild (WP-6d).
+    """
+
+    def late(candidates: list[ExportSubmission], withdrawn: set[str]) -> set[str]:
+        return {
+            submission.grant.id
+            for submission in candidates
+            if submission.grant is not None
+            and not submission.grant.withdrawn
+            and submission.grant.id in withdrawn
+        }
+
+    newly_withdrawn = late(submissions, withdrawn_grant_ids())
+    if not newly_withdrawn:
+        return result
+    marked = [
+        replace(submission, grant=replace(submission.grant, withdrawn=True))
+        if submission.grant is not None and submission.grant.id in newly_withdrawn
+        else submission
+        for submission in submissions
+    ]
+    rebuilt = rebuild(marked)
+    if late(marked, withdrawn_grant_ids()):
+        raise ExportHealthError("withdrawals kept arriving during the export; refusing to publish")
+    return rebuilt
+
+
 def _write_report(
     output_root: Path,
     export_date: date,
@@ -517,11 +555,14 @@ class SupabaseExportSource:
         response.raise_for_status()
         return response.content
 
-    def submissions(self) -> list[ExportSubmission]:
-        withdrawn = {
+    def withdrawn_grant_ids(self) -> set[str]:
+        return {
             str(row["grant_id"])
             for row in self._rows("grant_withdrawals?select=grant_id&order=grant_id")
         }
+
+    def submissions(self) -> list[ExportSubmission]:
+        withdrawn = self.withdrawn_grant_ids()
         reviews = {
             (str(row["contributor_id"]), str(row["attribution_name"])): str(row["decision"])
             for row in self._rows(
@@ -539,11 +580,12 @@ class SupabaseExportSource:
             submission_id = str(row["id"])
             grants = self._rows(
                 "contribution_grants?"
-                f"id=eq.{row['grant_id']}&select=attribution_name,data_license,photo_license,terms_version"
+                f"id=eq.{row['grant_id']}"
+                "&select=id,attribution_name,data_license,photo_license,terms_version"
             )
             grant = (
                 Grant(
-                    **grants[0],
+                    **{**grants[0], "id": str(grants[0].get("id", row["grant_id"]))},
                     withdrawn=str(row["grant_id"]) in withdrawn,
                     attribution_review=reviews.get(
                         (str(row["contributor_id"]), str(grants[0]["attribution_name"]))
@@ -650,7 +692,14 @@ def main() -> None:
     source = SupabaseExportSource(
         os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"]
     )
-    result = build_export(source.submissions(), args.output, args.date, source.photo)
+    submissions = source.submissions()
+    result = build_export(submissions, args.output, args.date, source.photo)
+    result = honour_late_withdrawals(
+        submissions,
+        result,
+        source.withdrawn_grant_ids,
+        lambda marked: build_export(marked, args.output, args.date, source.photo),
+    )
     if args.push:
         publish_export(
             source,

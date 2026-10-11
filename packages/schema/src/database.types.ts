@@ -704,6 +704,7 @@ export type Database = {
           withdrawn_grants: number
         }[]
       }
+      auth_user_exists: { Args: { p_uid: string }; Returns: boolean }
       begin_prior_attempt: {
         Args: {
           p_costs: Json
@@ -731,6 +732,14 @@ export type Database = {
         Args: { p_request_id: string }
         Returns: undefined
       }
+      contributor_orphaned_objects: {
+        Args: { p_auth_uid: string; p_limit?: number }
+        Returns: {
+          bucket_id: string
+          name: string
+        }[]
+      }
+      current_auth_user_exists: { Args: never; Returns: boolean }
       current_contributor_id: { Args: never; Returns: string }
       fail_prior_job: {
         Args: { p_reason: string; p_submission_id: string }
@@ -739,6 +748,10 @@ export type Database = {
       finalize_submission: {
         Args: { p_submission_id: string }
         Returns: string
+      }
+      my_submission_accepts_uploads: {
+        Args: { p_submission: string }
+        Returns: boolean
       }
       orphaned_photo_objects: {
         Args: { p_limit?: number }

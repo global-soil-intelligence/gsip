@@ -39,7 +39,7 @@ describe('offline queue', () => {
       },
       () => now,
     )
-    expect(failed).toEqual({ failed: 1, synced: 0 })
+    expect(failed).toEqual({ discarded: 0, failed: 1, held: 0, synced: 0 })
     expect((await queued())[0]?.photos[0]?.bytes.byteLength).toBe(5)
     expect((await queued())[0]?.latitude).toBe(41.9483)
 
@@ -52,7 +52,7 @@ describe('offline queue', () => {
       },
       () => now,
     )
-    expect(succeeded).toEqual({ failed: 0, synced: 1 })
+    expect(succeeded).toEqual({ discarded: 0, failed: 0, held: 0, synced: 1 })
     expect(sent).toEqual(['submission'])
     expect(await queued()).toEqual([])
   })

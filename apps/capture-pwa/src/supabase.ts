@@ -1,5 +1,6 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@gsip/schema'
+import { AccountChanged, isWithdrawal, RecordWithdrawn } from './errors'
 import { fuzzLocation } from './geo'
 import type { QueueRecord } from './types'
 
@@ -54,13 +55,81 @@ export function createGsipClient(): GsipClient {
   })
 }
 
-async function userId(client: GsipClient): Promise<string> {
-  const { data } = await client.auth.getSession()
-  if (data.session?.user.id) return data.session.user.id
-  const { data: signedIn, error } = await client.auth.signInAnonymously()
-  if (error || !signedIn.user)
-    throw error ?? new Error('Anonymous sign-in failed')
+const LAST_UID_KEY = 'gsip-last-auth-uid'
+
+function rememberUid(uid: string): void {
+  try {
+    window.localStorage.setItem(LAST_UID_KEY, uid)
+  } catch {
+    // Storage can be unavailable (private mode); ownership then relies on the live session.
+  }
+}
+
+function forgetUid(): void {
+  try {
+    window.localStorage.removeItem(LAST_UID_KEY)
+  } catch {
+    // Nothing to forget.
+  }
+}
+
+function lastKnownUid(): string | undefined {
+  try {
+    return window.localStorage.getItem(LAST_UID_KEY) ?? undefined
+  } catch {
+    return undefined
+  }
+}
+
+/**
+ * The account a new observation belongs to: the signed-in user, or (offline, with a session that
+ * cannot refresh) the last account seen on this device. Undefined only on a device that has never
+ * signed in; its first sync creates the anonymous account.
+ */
+export async function recordOwner(
+  client: GsipClient | null,
+): Promise<string | undefined> {
+  if (!client) return undefined
+  try {
+    const { data } = await client.auth.getSession()
+    const uid = data.session?.user.id
+    if (uid) {
+      rememberUid(uid)
+      return uid
+    }
+  } catch {
+    // Fall back to the last account seen here.
+  }
+  return lastKnownUid()
+}
+
+/**
+ * The account to send a record as. A record queued under one account is never sent as another,
+ * and a device whose account is gone never silently creates a new one for it (WP-6d).
+ */
+async function senderUid(
+  client: GsipClient,
+  record: QueueRecord,
+): Promise<string> {
+  const { data, error } = await client.auth.getSession()
+  if (error) throw error
+  const uid = data.session?.user.id
+  if (uid) {
+    if (record.ownerUid && record.ownerUid !== uid) throw new AccountChanged()
+    rememberUid(uid)
+    return uid
+  }
+  if (record.ownerUid) throw new AccountChanged()
+  const { data: signedIn, error: signInError } =
+    await client.auth.signInAnonymously()
+  if (signInError || !signedIn.user)
+    throw signInError ?? new Error('Anonymous sign-in failed')
+  rememberUid(signedIn.user.id)
   return signedIn.user.id
+}
+
+function refusal(error: unknown): unknown {
+  return isWithdrawal(error) ? new RecordWithdrawn() : error
 }
 
 async function contributorId(client: GsipClient, uid: string): Promise<string> {
@@ -80,7 +149,7 @@ async function contributorId(client: GsipClient, uid: string): Promise<string> {
     })
     .select('id')
     .single()
-  if (created.error) throw created.error
+  if (created.error) throw refusal(created.error)
   return created.data.id
 }
 
@@ -98,7 +167,7 @@ export async function submitQueued(
   client: GsipClient,
   record: QueueRecord,
 ): Promise<void> {
-  const uid = await userId(client)
+  const uid = await senderUid(client, record)
   const contributor = await contributorId(client, uid)
   const grant = await client
     .from('contribution_grants')
@@ -115,7 +184,7 @@ export async function submitQueued(
       id: record.grantId,
       terms_version: record.termsVersion,
     })
-    if (created.error) throw created.error
+    if (created.error) throw refusal(created.error)
   }
 
   const location = fuzzLocation(record.latitude, record.longitude)
@@ -141,7 +210,7 @@ export async function submitQueued(
       status: 'pending',
       surface_condition: record.surfaceCondition,
     })
-    if (created.error) throw created.error
+    if (created.error) throw refusal(created.error)
   }
 
   for (const photo of record.photos) {
@@ -167,7 +236,7 @@ export async function submitQueued(
         storage_path: path,
         submission_id: record.submissionId,
       })
-      if (created.error) throw created.error
+      if (created.error) throw refusal(created.error)
     }
   }
 
@@ -193,14 +262,17 @@ export type DeletionStatus = {
   requestedAt: string
   status: 'pending' | 'processing' | 'completed'
 }
-export type DeletionOutcome = 'requested' | 'already_open' | 'nothing_stored'
+export type DeletionOutcome = 'requested' | 'already_open' | 'no_account'
 
 /**
- * The signed-in contributor, or null. Rights requests never sign in: creating an account in order
- * to delete it would be absurd, and a device that never synced has nothing on our servers.
+ * The signed-in contributor, or null when this device holds no account at all. Rights requests
+ * never sign in: creating an account in order to delete it would be absurd. A session that exists
+ * but cannot be read right now (offline with an expired token, an auth outage) is an error, never
+ * "no account": that would wrongly tell the person nothing of theirs is stored.
  */
 async function existingContributor(client: GsipClient): Promise<string | null> {
-  const { data } = await client.auth.getSession()
+  const { data, error } = await client.auth.getSession()
+  if (error) throw error
   const uid = data.session?.user.id
   if (!uid) return null
   const found = await client
@@ -235,15 +307,16 @@ export async function latestDeletionRequest(
 
 /**
  * Files a withdrawal or account-deletion request (WP-6d). The database withdraws the person's
- * grants in the same transaction, so publication stops at once; the daily rights worker deletes
- * the data. After an account deletion this device signs out.
+ * grants in the same transaction, so publication stops at once, and refuses anything queued
+ * before the request on any device; the hourly rights worker deletes the data. After an account
+ * deletion every session of the account is revoked, so no other device can keep sending.
  */
 export async function requestDeletion(
   client: GsipClient,
   kind: DeletionKind,
 ): Promise<DeletionOutcome> {
   const contributor = await existingContributor(client)
-  if (!contributor) return 'nothing_stored'
+  if (!contributor) return 'no_account'
   const { error } = await client
     .from('deletion_requests')
     .insert({ contributor_id: contributor, kind })
@@ -251,6 +324,43 @@ export async function requestDeletion(
     if (error.code === '23505') return 'already_open'
     throw error
   }
-  if (kind === 'delete_account') await client.auth.signOut({ scope: 'local' })
+  if (kind === 'delete_account') {
+    forgetUid()
+    // Global sign-out revokes the account's refresh tokens everywhere; this device's session is
+    // removed even if the revocation call fails.
+    await client.auth.signOut({ scope: 'global' })
+  }
   return 'requested'
+}
+
+export type SignInLinkOutcome =
+  'sent' | 'confirm_sent' | 'email_in_use' | 'failed'
+
+/**
+ * Sends an e-mail sign-in link. An anonymous account is upgraded in place (same user, so its
+ * contributions stay withdrawable from any device); otherwise this signs in to the e-mail's
+ * account. With `switchAccount`, the person chose to leave this device's anonymous account.
+ */
+export async function sendSignInLink(
+  client: GsipClient,
+  email: string,
+  redirectTo: string,
+  switchAccount = false,
+): Promise<SignInLinkOutcome> {
+  const { data } = await client.auth.getSession()
+  if (data.session?.user.is_anonymous && !switchAccount) {
+    const { error } = await client.auth.updateUser(
+      { email },
+      { emailRedirectTo: redirectTo },
+    )
+    if (!error) return 'confirm_sent'
+    return error.code === 'email_exists' || /already/i.test(error.message)
+      ? 'email_in_use'
+      : 'failed'
+  }
+  const { error } = await client.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: redirectTo },
+  })
+  return error ? 'failed' : 'sent'
 }

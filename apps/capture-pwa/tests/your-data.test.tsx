@@ -20,6 +20,8 @@ vi.mock('../src/supabase', () => ({
   createGsipClient: () => ({ hosted: true }),
   fetchServiceState: async () => 'open',
   isServiceConfigured: () => true,
+  recordOwner: async () => undefined,
+  sendSignInLink: async () => 'sent',
   latestDeletionRequest: mocks.latestDeletionRequest,
   requestDeletion: mocks.requestDeletion,
   submitQueued: mocks.submitQueued,
@@ -170,6 +172,51 @@ describe('your data', () => {
     fireEvent.click(confirmButton())
 
     expect(await screen.findByText(/could not be sent/i)).toBeDefined()
+  })
+})
+
+describe('your data accessibility and edge cases', () => {
+  it('moves focus to the confirmation field and back to the action', () => {
+    render(<App />)
+    choose(/delete my account/i)
+    const field = screen.getByLabelText(/type delete to confirm/i)
+    expect(document.activeElement).toBe(field)
+    expect(field.getAttribute('aria-describedby')).toMatch(/rights-consequence/)
+
+    fireEvent.click(screen.getByRole('button', { name: /^cancel$/i }))
+    expect(document.activeElement).toBe(
+      screen.getByRole('button', { name: /delete my account/i }),
+    )
+  })
+
+  it('says a device with no account has nothing stored, and clears its queue', async () => {
+    mocks.requestDeletion.mockResolvedValue('no_account')
+    await enqueue(record)
+    render(<App />)
+    choose(/withdraw my contributions/i)
+    type('WITHDRAW')
+    fireEvent.click(confirmButton())
+
+    expect(await screen.findByText(/this device has no account/i)).toBeDefined()
+    expect(await queued()).toEqual([])
+  })
+})
+
+describe('observations made under another account', () => {
+  it('are kept, not sent, until the person discards them', async () => {
+    await enqueue({
+      ...record,
+      heldAt: '2026-10-10T00:00:00Z',
+      ownerUid: 'deleted-account',
+    })
+    render(<App />)
+
+    expect(
+      await screen.findByText(/no longer signed in on this device/i),
+    ).toBeDefined()
+    fireEvent.click(screen.getByRole('button', { name: /^discard it$/i }))
+    await waitFor(async () => expect(await queued()).toEqual([]))
+    expect(mocks.submitQueued).not.toHaveBeenCalled()
   })
 })
 

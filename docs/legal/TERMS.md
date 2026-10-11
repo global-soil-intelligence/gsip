@@ -18,11 +18,11 @@ harm or loss.
 
 ## 3. Your account
 
-You may contribute without an e-mail address (an anonymous account on your device) or sign in with
-an e-mail link to use more than one device. You must be at least **[16 — DECISION]** years old, or
-the age of digital consent where you live if that is higher, to hold your own account. Younger
-people contribute only through a classroom under a teacher of record (see
-[Classroom and minors](CLASSROOM_AND_MINORS.md)).
+You may contribute without an e-mail address (an anonymous account on your device) and add an
+e-mail address later to use more than one device; the account stays the same. You must be at least
+**[16 — DECISION]** years old, or the age of digital consent where you live if that is higher, to
+hold your own account, and you confirm this each time you submit. Younger people contribute only
+through a classroom under a teacher of record (see [Classroom and minors](CLASSROOM_AND_MINORS.md)).
 
 An AI agent may contribute only under the grant of a human of record who has accepted these terms
 and is responsible for what the agent submits.
@@ -39,8 +39,9 @@ for that observation:
   attribution name you chose or to the default pseudonym "Anonymous soil contributor".
 
 We record this grant for each observation together with the version of these terms and the time
-you accepted them, and we never change it afterwards. If these terms change, later observations
-are made under a new grant. We will only ever relicense your contributions under licences that are
+you accepted them, and we never change it afterwards, except that if you delete your account, the
+attribution name on it is replaced with the default pseudonym. If these terms change, later
+observations are made under a new grant. We will only ever relicense your contributions under licences that are
 more open.
 
 You confirm that you took the photographs or have the right to grant these licences, and that they
@@ -49,9 +50,11 @@ show no people, faces or private information (see section 6).
 ## 5. Withdrawing and deleting
 
 You can withdraw all your contributions, or delete your account, at any time from **Your data** in
-the capture app. Withdrawal stops publication at once: the next release and every later one leave
-your observations out, and we delete them, with their photographs, from our private storage within
-30 days (normally within a day). See [Withdrawal and deletion](WITHDRAWAL_AND_DELETION.md).
+the capture app. A withdrawal covers everything you submitted up to that moment, including
+observations still waiting to sync on your other devices. It stops publication at once: no release
+built after your request contains those observations, and we delete them, with their photographs,
+from our private storage within 30 days (normally within the hour). See
+[Withdrawal and deletion](WITHDRAWAL_AND_DELETION.md).
 
 Open licences cannot be revoked for copies already released: people who downloaded an earlier
 release may keep using those copies under ODbL 1.0 and CC BY-SA 4.0.
@@ -64,8 +67,8 @@ release may keep using those copies under ODbL 1.0 and CC BY-SA 4.0.
   numbers, documents or anything else that identifies a person or a private address.
 - Attribution names must not be another person's name without their consent, impersonate anyone,
   contain insults, links or contact details, or advertise. We review typed names before publishing
-  them with photographs and may decline them; until then your observation is released without its
-  photographs.
+  them with photographs and may decline them; until we approve a name, your observation is released
+  without its photographs.
 - Do not try to identify other contributors, locate their observations more precisely than the
   published cells, overload the service, or work around its limits.
 

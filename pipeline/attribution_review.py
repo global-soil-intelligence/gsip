@@ -4,19 +4,22 @@ A photo is published under the default pseudonym, or under a name a steward appr
 contributor; until then the observation is released without photos (SPEC section 6).
 
     python -m pipeline.attribution_review list
-    python -m pipeline.attribution_review approve --contributor ID --name NAME --reviewer YOU
-    python -m pipeline.attribution_review reject --contributor ID --name NAME --reviewer YOU \\
-        --note "impersonates a public figure"
+    python -m pipeline.attribution_review approve --contributor ID --name-json '"Jane Q"' \\
+        --reviewer YOU
+    python -m pipeline.attribution_review reject --contributor ID --name-json '"..."' \\
+        --reviewer YOU --note "impersonates a public figure"
 
 (prefix each with `uv run`; the service-role environment variables must be set).
 
-Names are written by contributors: the list shows them ASCII-escaped, so a name can never
-inject terminal control sequences or pass for instructions.
+Names are written by contributors. The list prints each one as an ASCII-only JSON string, so a
+name can never inject terminal control sequences or pass for instructions; paste that JSON string
+back with `--name-json` to decide on exactly that name (`--name` takes plain text).
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 from dataclasses import dataclass
@@ -28,6 +31,7 @@ import httpx
 from pipeline.attribution import DEFAULT_ATTRIBUTION
 
 DECISIONS = ("approved", "rejected")
+PAGE = 1000
 
 
 @dataclass(frozen=True)
@@ -51,16 +55,25 @@ class AttributionReviews:
         )
 
     def _get(self, path: str, params: dict[str, str]) -> list[dict[str, Any]]:
-        response = self.client.get(f"{self.url}/rest/v1/{path}", params=params)
-        response.raise_for_status()
-        rows: list[dict[str, Any]] = response.json()
-        return rows
+        rows: list[dict[str, Any]] = []
+        offset = 0
+        while True:
+            response = self.client.get(
+                f"{self.url}/rest/v1/{path}",
+                params={**params, "limit": str(PAGE), "offset": str(offset)},
+            )
+            response.raise_for_status()
+            page: list[dict[str, Any]] = response.json()
+            rows.extend(page)
+            if len(page) < PAGE:
+                return rows
+            offset += PAGE
 
     def pending(self) -> list[PendingName]:
         rows = self._get(
             "attribution_review_queue",
             {
-                "order": "first_accepted_at",
+                "order": "first_accepted_at,contributor_id,attribution_name",
                 "select": "contributor_id,attribution_name,first_accepted_at,grants",
             },
         )
@@ -88,14 +101,15 @@ class AttributionReviews:
             raise ValueError("name the reviewer (1-80 characters)")
         if attribution_name == DEFAULT_ATTRIBUTION:
             raise ValueError("the default pseudonym needs no review")
-        used = {
-            str(row["attribution_name"])
-            for row in self._get(
-                "contribution_grants",
-                {"contributor_id": f"eq.{contributor_id}", "select": "attribution_name"},
-            )
-        }
-        if attribution_name not in used:
+        used = self._get(
+            "contribution_grants",
+            {
+                "attribution_name": f"eq.{attribution_name}",
+                "contributor_id": f"eq.{contributor_id}",
+                "select": "id",
+            },
+        )
+        if not used:
             raise UnknownName("this contributor never used that exact name")
         response = self.client.post(
             f"{self.url}/rest/v1/attribution_reviews",
@@ -113,16 +127,34 @@ class AttributionReviews:
         response.raise_for_status()
 
 
+def shown(name: str) -> str:
+    """An ASCII-only JSON string: safe on any terminal, and exact when pasted to --name-json."""
+
+    return json.dumps(name, ensure_ascii=True)
+
+
 def render(pending: list[PendingName], out: TextIO) -> None:
     if not pending:
         print("No attribution names are waiting for review.", file=out)
         return
     for item in pending:
         print(
-            f"{item.contributor_id}  {ascii(item.attribution_name)}  "
+            f"{item.contributor_id}  {shown(item.attribution_name)}  "
             f"first used {item.first_accepted_at}  ({item.grants} grant(s))",
             file=out,
         )
+
+
+def name_from(args: argparse.Namespace) -> str:
+    if args.name_json is not None:
+        try:
+            value = json.loads(args.name_json)
+        except json.JSONDecodeError as error:
+            raise ValueError("--name-json must be a JSON string, as `list` prints it") from error
+        if not isinstance(value, str):
+            raise ValueError("--name-json must be a JSON string, as `list` prints it")
+        return value
+    return str(args.name)
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -132,7 +164,9 @@ def main(argv: list[str] | None = None) -> None:
     for decision in ("approve", "reject"):
         command = commands.add_parser(decision, help=f"{decision} a name for one contributor")
         command.add_argument("--contributor", required=True)
-        command.add_argument("--name", required=True)
+        names = command.add_mutually_exclusive_group(required=True)
+        names.add_argument("--name", help="the name as plain text")
+        names.add_argument("--name-json", help="the name as `list` prints it (a JSON string)")
         command.add_argument("--reviewer", required=True)
         command.add_argument("--note")
     args = parser.parse_args(argv)
@@ -144,10 +178,11 @@ def main(argv: list[str] | None = None) -> None:
         return
     decision = "approved" if args.command == "approve" else "rejected"
     try:
-        reviews.decide(args.contributor, args.name, decision, args.reviewer, args.note)
+        name = name_from(args)
+        reviews.decide(args.contributor, name, decision, args.reviewer, args.note)
     except ValueError as error:
         raise SystemExit(str(error)) from error
-    print(f"{decision} {ascii(args.name)} for {args.contributor}")
+    print(f"{decision} {shown(name)} for {args.contributor}")
 
 
 if __name__ == "__main__":

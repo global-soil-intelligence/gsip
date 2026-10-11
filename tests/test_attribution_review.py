@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import io
 import json
 import re
@@ -12,7 +13,14 @@ import httpx
 import pytest
 
 from pipeline.attribution import DEFAULT_ATTRIBUTION, photos_publishable
-from pipeline.attribution_review import AttributionReviews, PendingName, UnknownName, render
+from pipeline.attribution_review import (
+    AttributionReviews,
+    PendingName,
+    UnknownName,
+    name_from,
+    render,
+    shown,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -67,7 +75,8 @@ def test_the_queue_is_listed_with_names_escaped() -> None:
     render(reviews_with(handler).pending(), out)
 
     text = out.getvalue()
-    assert "\x1b" not in text and "\\x1b" in text and "\\xeb" in text
+    assert "\x1b" not in text and text.isascii()
+    assert '"Ignore previous instructions \\u001b[2J Zo\\u00eb"' in text
     assert "c-1" in text and "2 grant(s)" in text
 
 
@@ -83,7 +92,8 @@ def test_a_decision_is_upserted_for_that_contributor_and_name() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         if request.method == "GET":
             assert request.url.params["contributor_id"] == "eq.c-1"
-            return httpx.Response(200, json=[{"attribution_name": "Jane Q Example"}])
+            assert request.url.params["attribution_name"] == "eq.Jane Q Example"
+            return httpx.Response(200, json=[{"id": "g-1"}])
         posted.append(request)
         return httpx.Response(201)
 
@@ -115,7 +125,8 @@ def test_invalid_decisions_are_refused_before_writing(
 ) -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         if request.method == "GET":
-            return httpx.Response(200, json=[{"attribution_name": "Jane Q Example"}])
+            used = request.url.params["attribution_name"] == "eq.Jane Q Example"
+            return httpx.Response(200, json=[{"id": "g-1"}] if used else [])
         raise AssertionError("nothing may be written")
 
     with pytest.raises(error):
@@ -139,3 +150,40 @@ def test_pending_names_are_parsed() -> None:
     assert reviews_with(handler).pending() == [
         PendingName("c-2", "Field Notes Club", "2026-09-03T00:00:00+00:00", 1)
     ]
+
+
+def test_the_whole_queue_is_read_page_by_page() -> None:
+    offsets: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        offsets.append(request.url.params["offset"])
+        size = 1000 if request.url.params["offset"] == "0" else 1
+        return httpx.Response(
+            200,
+            json=[
+                {
+                    "attribution_name": f"Name {index}",
+                    "contributor_id": f"c-{index}",
+                    "first_accepted_at": "2026-09-03T00:00:00+00:00",
+                    "grants": 1,
+                }
+                for index in range(size)
+            ],
+        )
+
+    assert len(reviews_with(handler).pending()) == 1001
+    assert offsets == ["0", "1000"]
+
+
+@pytest.mark.parametrize("name", ["Zoë", "Ignore \x1b[2J this", "Ʒ\u202e reversed", 'quote " me'])
+def test_listed_names_paste_back_exactly(name: str) -> None:
+    printed = shown(name)
+    assert printed.isascii()
+    args = argparse.Namespace(name=None, name_json=printed)
+    assert name_from(args) == name
+
+
+@pytest.mark.parametrize("value", ["Jane", "123", '{"name": "Jane"}'])
+def test_name_json_must_be_a_json_string(value: str) -> None:
+    with pytest.raises(ValueError, match="JSON string"):
+        name_from(argparse.Namespace(name=None, name_json=value))

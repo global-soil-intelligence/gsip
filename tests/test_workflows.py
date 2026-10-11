@@ -73,10 +73,13 @@ def test_pages_deploy_checks_the_prior_tiles_match_the_palette() -> None:
     assert "VITE_PRIOR_TILES_BASE: ${{ vars.VITE_PRIOR_TILES_BASE }}" in gate
 
 
-def test_rights_requests_are_processed_daily_with_the_service_key() -> None:
+def test_rights_requests_are_processed_hourly_and_failures_raise_an_alert() -> None:
     rights = next(path for path in WORKFLOWS if path.name == "rights-worker.yml")
     text = rights.read_text(encoding="utf-8")
-    assert re.search(r"cron: '\d+ \d+ \* \* \*'", text), "daily schedule"
-    assert "python -m pipeline.rights_worker" in text
+    assert re.search(r"cron: '\d+ \* \* \* \*'", text), "hourly schedule"
+    budget = re.search(r"pipeline\.rights_worker --budget-seconds (\d+)", text)
+    timeout = re.search(r"timeout-minutes: (\d+)", text)
+    assert budget and timeout and int(budget.group(1)) < int(timeout.group(1)) * 60
     assert "secrets.SUPABASE_SERVICE_ROLE_KEY" in text and "vars.SUPABASE_URL" in text
-    assert "cancel-in-progress: false" in text, "a run must never be cut off mid-deletion"
+    assert "cancel-in-progress: false" in text, "a new run never cancels one mid-deletion"
+    assert "if: failure()" in text and "issues: write" in text and "gh issue" in text

@@ -2,16 +2,20 @@
 
 Invariants:
   * a request withdraws the contributor's grants for publication the moment it is made (database
-    trigger); this worker makes the deletion physical within a day;
+    trigger); this worker, run hourly, makes the deletion physical;
   * every step is idempotent, and a failed step releases the request for a later run with the
     step and error kept for the operator; a request is reported done only when every step is;
-  * a Storage object is deleted only when no submission row owns it, so a contributor who keeps
-    contributing after a withdrawal never loses newer observations, while everything a request
-    covers (and any upload orphaned by a race) goes;
-  * for an account deletion the auth user is deleted before the contributor row loses its auth id,
-    so a retry can always finish the job;
+  * a Storage object is deleted only when no submission row owns it, decided in one database
+    snapshot, so a contributor who keeps contributing after a withdrawal never loses newer
+    observations, while everything a request covers (and any upload orphaned by a race) goes;
+  * for an account deletion the auth user is deleted before the contributor row loses its auth id
+    (the database refuses otherwise), so a retry can always finish the job;
+  * a run works until the queue is empty or its time budget is spent; requests with data are
+    claimed first, so empty requests cannot starve real ones;
   * catch-all: every run deletes canonical photo objects that no photo row owns, whatever race or
     failed compensation left them (`orphaned_photo_objects`);
+  * a request still open after 25 days fails the run, so the 30-day promise is never missed
+    silently;
   * workflow logs of a public repository are public: output is counts only.
 """
 
@@ -19,8 +23,11 @@ from __future__ import annotations
 
 import argparse
 import os
+import time
+from collections import defaultdict
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import UTC, datetime, timedelta
 from typing import Any, TypeVar
 from urllib.parse import quote
 
@@ -28,8 +35,10 @@ import httpx
 
 from pipeline.storage import SupabaseStorage
 
-BUCKETS = ("incoming-photos", "submission-photos")
 T = TypeVar("T")
+PAGE = 1000
+OVERDUE_AFTER = timedelta(days=25)
+DEFAULT_BUDGET_SECONDS = 20 * 60.0
 
 
 @dataclass(frozen=True)
@@ -47,6 +56,8 @@ class RightsSummary:
     failed: int = 0
     objects_deleted: int = 0
     orphans_deleted: int = 0
+    out_of_time: bool = False
+    overdue: int = 0
     submissions_deleted: int = 0
 
 
@@ -58,20 +69,22 @@ class StepFailed(Exception):  # noqa: N818 - carries the failed step's name to t
         super().__init__(f"{step}:{type(error).__name__}{status}")
 
 
-def owning_submission(path: str) -> str | None:
-    """`{auth_uid}/{submission_id}/...` -> submission_id; anything else has no owner."""
-
-    parts = path.split("/")
-    return parts[1] if len(parts) >= 3 and parts[1] else None
-
-
 class SupabaseRightsWorker:
-    def __init__(self, url: str, service_key: str) -> None:
+    def __init__(
+        self,
+        url: str,
+        service_key: str,
+        *,
+        clock: Callable[[], float] = time.monotonic,
+        now: Callable[[], datetime] = lambda: datetime.now(UTC),
+    ) -> None:
         self.url = url.rstrip("/")
         self.client = httpx.Client(
             timeout=60,
             headers={"Authorization": f"Bearer {service_key}", "apikey": service_key},
         )
+        self.clock = clock
+        self.now = now
 
     @property
     def storage(self) -> SupabaseStorage:
@@ -95,42 +108,29 @@ class SupabaseRightsWorker:
             attempts=int(row["attempts"]),
         )
 
-    def live_submission_ids(self, contributor_id: str) -> set[str]:
-        ids: set[str] = set()
-        offset = 0
-        while True:
-            response = self.client.get(
-                f"{self.url}/rest/v1/submissions",
-                params={
-                    "contributor_id": f"eq.{contributor_id}",
-                    "limit": "1000",
-                    "offset": str(offset),
-                    "order": "id",
-                    "select": "id",
-                },
-            )
-            response.raise_for_status()
-            page: list[dict[str, Any]] = response.json()
-            ids.update(str(row["id"]) for row in page)
-            if len(page) < 1000:
-                return ids
-            offset += 1000
+    def _delete_listed(self, rpc: str, payload: dict[str, Any], rounds: int) -> int:
+        """Deletes what an orphan-listing function returns, 1000 at a time, until it is empty."""
+
+        deleted = 0
+        for _ in range(rounds):
+            rows = self._rpc(rpc, {**payload, "p_limit": PAGE}) or []
+            by_bucket: dict[str, list[str]] = defaultdict(list)
+            for row in rows:
+                by_bucket[str(row.get("bucket_id", "submission-photos"))].append(str(row["name"]))
+            for bucket, names in sorted(by_bucket.items()):
+                deleted += self.storage.delete_objects(bucket, names)
+            if len(rows) < PAGE:
+                return deleted
+        raise RuntimeError(f"{rpc} still lists objects after {rounds} rounds")
 
     def sweep_storage(self, claim: Claim) -> int:
-        """Deletes every object under the contributor's prefix that no submission owns."""
+        """Deletes every object under the contributor's folder that no submission owns."""
 
         if not claim.auth_uid:
             return 0
-        live = self.live_submission_ids(claim.contributor_id)
-        deleted = 0
-        for bucket in BUCKETS:
-            orphans = [
-                path
-                for path in self.storage.list_objects(bucket, claim.auth_uid)
-                if owning_submission(path) not in live
-            ]
-            deleted += self.storage.delete_objects(bucket, orphans)
-        return deleted
+        return self._delete_listed(
+            "contributor_orphaned_objects", {"p_auth_uid": claim.auth_uid}, rounds=50
+        )
 
     def delete_auth_user(self, auth_uid: str) -> None:
         response = self.client.delete(f"{self.url}/auth/v1/admin/users/{quote(auth_uid, safe='')}")
@@ -166,23 +166,29 @@ class SupabaseRightsWorker:
             {"p_error": reason, "p_request_id": claim.request_id},
         )
 
-    def sweep_orphans(self, rounds: int = 10) -> int:
-        """Deletes canonical objects without a photo row, 1000 per round."""
+    def sweep_orphans(self) -> int:
+        """Deletes canonical objects without a photo row."""
 
-        deleted = 0
-        for _ in range(rounds):
-            rows = self._rpc("orphaned_photo_objects", {"p_limit": 1000}) or []
-            names = [str(row["name"]) for row in rows]
-            if not names:
-                break
-            deleted += self.storage.delete_objects("submission-photos", names)
-            if len(names) < 1000:
-                break
-        return deleted
+        return self._delete_listed("orphaned_photo_objects", {}, rounds=10)
 
-    def run(self, limit: int = 50) -> RightsSummary:
+    def overdue_requests(self) -> int:
+        cutoff = (self.now() - OVERDUE_AFTER).isoformat()
+        response = self.client.get(
+            f"{self.url}/rest/v1/deletion_requests",
+            params={"requested_at": f"lt.{cutoff}", "select": "id", "status": "neq.completed"},
+            headers={"Prefer": "count=exact", "Range": "0-0"},
+        )
+        response.raise_for_status()
+        total = response.headers.get("Content-Range", "*/0").rsplit("/", 1)[-1]
+        return int(total) if total.isdigit() else len(response.json())
+
+    def run(self, budget_seconds: float = DEFAULT_BUDGET_SECONDS) -> RightsSummary:
         summary = RightsSummary()
-        for _ in range(limit):
+        deadline = self.clock() + budget_seconds
+        while True:
+            if self.clock() >= deadline:
+                summary.out_of_time = True
+                break
             claim = self.claim()
             if claim is None:
                 break
@@ -199,24 +205,36 @@ class SupabaseRightsWorker:
             summary.submissions_deleted += deleted_rows
             summary.objects_deleted += objects
         summary.orphans_deleted = self.sweep_orphans()
+        summary.overdue = self.overdue_requests()
         return summary
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Process GSIP withdrawal and deletion requests")
-    parser.add_argument("--limit", type=int, default=50)
+    parser.add_argument(
+        "--budget-seconds",
+        type=float,
+        default=DEFAULT_BUDGET_SECONDS,
+        help="claim no new request after this long (keep below the schedule interval)",
+    )
     args = parser.parse_args()
     worker = SupabaseRightsWorker(
         os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"]
     )
-    summary = worker.run(args.limit)
+    summary = worker.run(args.budget_seconds)
     print(
         f"rights requests: {summary.completed} completed, {summary.failed} failed; "
         f"{summary.submissions_deleted} submissions and {summary.objects_deleted} objects deleted; "
         f"{summary.orphans_deleted} orphaned objects removed"
+        + ("; time budget spent, more requests wait" if summary.out_of_time else "")
     )
+    problems = []
     if summary.failed:
-        raise SystemExit(f"{summary.failed} rights request(s) failed and will be retried")
+        problems.append(f"{summary.failed} rights request(s) failed and will be retried")
+    if summary.overdue:
+        problems.append(f"{summary.overdue} rights request(s) are older than 25 days")
+    if problems:
+        raise SystemExit("; ".join(problems))
 
 
 if __name__ == "__main__":

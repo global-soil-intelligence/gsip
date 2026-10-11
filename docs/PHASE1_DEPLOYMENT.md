@@ -86,15 +86,21 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
 
 ### WP-6d — contributor rights
 
-1. Apply the migrations. Requests withdraw grants from releases as soon as they are made; the
-   daily `Contributor rights requests` workflow (`pipeline.rights_worker`, service role) then deletes
-   rows and photos, deletes auth users for account deletions, and removes any canonical photo object
-   left without a photo row. Run it once by hand after deploying and confirm it succeeds.
-2. Review typed attribution names before launch and then weekly:
+1. Apply the migrations. Requests withdraw grants from releases as soon as they are made, and the
+   database refuses anything a request covers; the hourly `Contributor rights requests` workflow
+   (`pipeline.rights_worker`, service role) then deletes rows and photos, deletes auth users for
+   account deletions, and removes any canonical photo object left without a photo row. Run it once
+   by hand after deploying and confirm it succeeds. A failed run opens an issue titled
+   "Contributor rights worker is failing"; watch the repository's issues, and check monthly that
+   GitHub has not disabled the schedule (it does after 60 days without repository activity).
+2. Anyone can create an anonymous account and file empty requests. The worker handles requests with
+   data first and completes empty withdrawals at once, but keep Supabase's anonymous sign-in rate
+   limit and add the CAPTCHA before launch (SPEC section 11).
+3. Review typed attribution names before launch and then weekly:
    `uv run python -m pipeline.attribution_review list`, then `approve` or `reject` with
-   `--contributor`, `--name` and `--reviewer`. Until a name is approved its observations are
-   released without photos.
-3. The legal pack in `docs/legal/` is a draft. When counsel approves it, publish the approved
+   `--contributor`, `--name-json` (paste the name exactly as `list` prints it) and `--reviewer`.
+   Until a name is approved its observations are released without photos.
+4. The legal pack in `docs/legal/` is a draft. When counsel approves it, publish the approved
    versions and set the repository variables `VITE_TERMS_URL`, `VITE_PRIVACY_URL` and
    `VITE_SAMPLING_RULES_URL` (HTTPS or same-site paths); until then the capture app links to the
    drafts in the repository. Capture stays closed until this is done.

@@ -2,13 +2,17 @@
 --   * deletion_requests: a contributor asks to withdraw their contributions or delete their
 --     account. Owners create and read only their own requests, with at most one open at a time.
 --   * grant_withdrawals: append-only. A request withdraws the contributor's grants the moment it
---     is made, so the next release already excludes them (SPEC section 6); the daily rights worker
+--     is made, so releases built after it leave them out (SPEC section 6); the hourly rights worker
 --     (pipeline/rights_worker.py) then deletes the rows and objects.
---   * A withdrawn grant can never gain a new submission.
+--   * Nothing a request covers can come back: a grant accepted at or before a withdrawal request,
+--     or any grant once an account deletion is requested, is refused; a withdrawn grant refuses new
+--     submissions and photos, and its uploads; a deleted auth user cannot recreate a contributor.
 --   * attribution_reviews: a typed attribution name is published with photos only once approved.
 --   * Grants stay immutable. The single exception is account deletion, which replaces the
 --     attribution names on the deleted account's (already withdrawn) grants with the default
 --     pseudonym; ids, terms version, dates and licences remain as the record of what was granted.
+-- Refusals caused by a withdrawal use SQLSTATE WD001, so the capture app can drop the observation
+-- from its queue instead of retrying it.
 
 create table public.deletion_requests (
     id uuid primary key default gen_random_uuid(),
@@ -29,9 +33,11 @@ create table public.deletion_requests (
 create unique index deletion_requests_one_open
     on public.deletion_requests (contributor_id) where status <> 'completed';
 create index deletion_requests_queue_idx on public.deletion_requests (status, requested_at);
+create index deletion_requests_contributor_idx
+    on public.deletion_requests (contributor_id, requested_at);
 
 comment on table public.deletion_requests is
-    'WP-6d: a contributor''s request to withdraw contributions or delete the account. Owners insert and read their own (at most one open); the rights worker processes them daily.';
+    'WP-6d: a contributor''s request to withdraw contributions or delete the account. Owners insert and read their own (at most one open); the rights worker processes them hourly.';
 
 alter table public.deletion_requests enable row level security;
 revoke all on public.deletion_requests from public, anon, authenticated;
@@ -46,9 +52,11 @@ create policy deletion_requests_insert_own on public.deletion_requests
     for insert to authenticated
     with check (contributor_id = public.current_contributor_id());
 
+-- request_id is a plain reference, not a foreign key: withdrawals are append-only and kept as the
+-- licence record, while request rows may be deleted under the retention policy.
 create table public.grant_withdrawals (
     grant_id uuid primary key references public.contribution_grants (id),
-    request_id uuid references public.deletion_requests (id),
+    request_id uuid,
     reason text not null
         check (reason in ('contributor_request', 'account_deletion', 'steward_action')),
     withdrawn_at timestamptz not null default now()
@@ -75,6 +83,54 @@ $$;
 create trigger grant_withdrawals_append_only
 before update or delete on public.grant_withdrawals
 for each row execute function private.reject_grant_withdrawal_mutation();
+
+-- TRUNCATE skips row triggers, so the licence record refuses it outright.
+create function private.reject_truncate()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+begin
+    raise exception '% cannot be truncated', tg_table_name;
+end;
+$$;
+
+revoke truncate on public.grant_withdrawals, public.contribution_grants
+    from public, anon, authenticated, service_role;
+create trigger grant_withdrawals_no_truncate
+before truncate on public.grant_withdrawals
+for each statement execute function private.reject_truncate();
+create trigger contribution_grants_no_truncate
+before truncate on public.contribution_grants
+for each statement execute function private.reject_truncate();
+
+-- A withdrawal from a contributor with no grants has nothing to withdraw or delete: it is complete
+-- when filed, so empty requests can never crowd out real ones in the worker's queue.
+create function private.complete_empty_withdrawal()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+    if new.kind = 'withdraw_contributions'
+        and not exists (
+            select 1 from public.contribution_grants g where g.contributor_id = new.contributor_id
+        )
+    then
+        new.status := 'completed';
+        new.completed_at := now();
+    end if;
+    return new;
+end;
+$$;
+
+revoke all on function private.complete_empty_withdrawal() from public, anon, authenticated;
+
+create trigger deletion_requests_complete_empty
+before insert on public.deletion_requests
+for each row execute function private.complete_empty_withdrawal();
 
 -- A request takes effect for publication at once: every grant the contributor holds is withdrawn
 -- in the same transaction as the request, whatever the worker's schedule.
@@ -103,8 +159,35 @@ create trigger deletion_requests_withdraw_grants
 after insert on public.deletion_requests
 for each row execute function private.withdraw_grants_on_request();
 
--- A device that queued an observation before its owner withdrew must not attach it to a withdrawn
--- grant: it would never be released, and no request would delete it.
+-- Observations queued on any device before a request belong to it, even if they sync later: their
+-- grants (accepted at or before the request) are refused, as is every grant once an account
+-- deletion has been requested.
+create function private.refuse_withdrawn_grant_insert()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+    if exists (
+        select 1 from public.deletion_requests r
+        where r.contributor_id = new.contributor_id
+          and (r.kind = 'delete_account' or r.requested_at >= new.accepted_at)
+    ) then
+        raise exception 'this contribution was withdrawn by its contributor'
+            using errcode = 'WD001';
+    end if;
+    return new;
+end;
+$$;
+
+revoke all on function private.refuse_withdrawn_grant_insert() from public, anon, authenticated;
+
+create trigger contribution_grants_refuse_withdrawn
+before insert on public.contribution_grants
+for each row execute function private.refuse_withdrawn_grant_insert();
+
+-- A withdrawn grant gains no submission and no photo.
 create function private.refuse_withdrawn_grant()
 returns trigger
 language plpgsql
@@ -114,7 +197,7 @@ as $$
 begin
     if exists (select 1 from public.grant_withdrawals w where w.grant_id = new.grant_id) then
         raise exception 'contribution grant % has been withdrawn', new.grant_id
-            using errcode = '42501';
+            using errcode = 'WD001';
     end if;
     return new;
 end;
@@ -125,6 +208,99 @@ revoke all on function private.refuse_withdrawn_grant() from public, anon, authe
 create trigger submissions_refuse_withdrawn_grant
 before insert or update of grant_id on public.submissions
 for each row execute function private.refuse_withdrawn_grant();
+
+create function private.refuse_photo_for_withdrawn_grant()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+    if exists (
+        select 1 from public.submissions s
+        join public.grant_withdrawals w on w.grant_id = s.grant_id
+        where s.id = new.submission_id
+    ) then
+        raise exception 'the contribution grant for this photo has been withdrawn'
+            using errcode = 'WD001';
+    end if;
+    return new;
+end;
+$$;
+
+revoke all on function private.refuse_photo_for_withdrawn_grant() from public, anon, authenticated;
+
+create trigger photos_refuse_withdrawn_grant
+before insert or update of submission_id on public.photos
+for each row execute function private.refuse_photo_for_withdrawn_grant();
+
+-- Uploads: the caller's own submission, under a grant that is still in force. Answers only for the
+-- caller's own submissions, so it reveals nothing about anyone else's.
+create function public.my_submission_accepts_uploads(p_submission text)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+    select exists (
+        select 1
+        from public.submissions s
+        join public.contributors c on c.id = s.contributor_id
+        where s.id::text = p_submission
+          and c.auth_uid = (select auth.uid())
+          and not exists (select 1 from public.grant_withdrawals w where w.grant_id = s.grant_id)
+    );
+$$;
+
+revoke all on function public.my_submission_accepts_uploads(text) from public, anon;
+grant execute on function public.my_submission_accepts_uploads(text) to authenticated;
+
+drop policy if exists incoming_photos_insert_own on storage.objects;
+create policy incoming_photos_insert_own on storage.objects
+    for insert to authenticated with check (
+        bucket_id = 'incoming-photos'
+        and name ~ (
+            '^' || (select auth.uid())::text
+            || '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/[ABC]/'
+            || '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.jpg$'
+        )
+        and public.my_submission_accepts_uploads((storage.foldername(name))[2])
+        and public.capture_is_open()
+    );
+
+-- A deleted auth user's access token stays valid until it expires; it must not recreate a
+-- contributor (with data nobody could ever withdraw again).
+create function public.current_auth_user_exists()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+    select exists (select 1 from auth.users u where u.id = (select auth.uid()));
+$$;
+
+revoke all on function public.current_auth_user_exists() from public, anon;
+grant execute on function public.current_auth_user_exists() to authenticated, service_role;
+
+drop policy if exists contributors_insert_self on public.contributors;
+create policy contributors_insert_self on public.contributors
+    for insert to authenticated
+    with check (auth_uid = (select auth.uid()) and public.current_auth_user_exists());
+
+create function public.auth_user_exists(p_uid uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+    select p_uid is not null and exists (select 1 from auth.users u where u.id = p_uid);
+$$;
+
+revoke all on function public.auth_user_exists(uuid) from public, anon, authenticated;
+grant execute on function public.auth_user_exists(uuid) to service_role;
 
 -- Grants remain immutable, except that account deletion may replace the attribution name of a
 -- withdrawn grant with the default pseudonym, through complete_deletion_request() only.
@@ -205,15 +381,22 @@ security invoker
 set search_path = ''
 as $$
 begin
+    -- Requests from contributors who hold grants come first, so a flood of empty requests (any
+    -- visitor can create an account) never delays a request with data behind it.
     return query
     with next_request as (
         select r.id
         from public.deletion_requests r
         where (r.status = 'pending' and (r.not_before is null or r.not_before <= now()))
            or (r.status = 'processing' and r.claimed_at < now() - p_stale)
-        order by r.requested_at
+        order by
+            exists (
+                select 1 from public.contribution_grants g
+                where g.contributor_id = r.contributor_id
+            ) desc,
+            r.requested_at
         limit 1
-        for update skip locked
+        for update of r skip locked
     ), claimed as (
         update public.deletion_requests r
         set status = 'processing', claimed_at = now(), attempts = r.attempts + 1
@@ -253,7 +436,8 @@ begin
         raise exception 'deletion request % is not claimed', p_request_id using errcode = '55000';
     end if;
 
-    -- An account deletion covers grants created after the request too.
+    -- An account deletion covers every grant, including any that slipped in before the request
+    -- was filed but after the device last synced.
     if request_kind = 'delete_account' then
         insert into public.grant_withdrawals (grant_id, request_id, reason)
         select g.id, p_request_id, 'account_deletion'
@@ -312,6 +496,14 @@ begin
         raise exception 'withdrawn contributions remain; apply the request first'
             using errcode = '55000';
     end if;
+    -- The auth id is cleared below, so the auth user must already be gone: otherwise nobody could
+    -- ever delete it.
+    if request_kind = 'delete_account' and public.auth_user_exists(
+        (select c.auth_uid from public.contributors c where c.id = request_contributor)
+    ) then
+        raise exception 'delete the auth user before completing an account deletion'
+            using errcode = '55000';
+    end if;
 
     if request_kind = 'delete_account' then
         perform set_config('gsip.redacting_attribution', 'on', true);
@@ -357,34 +549,45 @@ as $$
     where id = p_request_id and status = 'processing';
 $$;
 
-revoke all on function public.claim_deletion_request(interval) from public, anon, authenticated;
-revoke all on function public.apply_deletion_request(uuid) from public, anon, authenticated;
-revoke all on function public.complete_deletion_request(uuid) from public, anon, authenticated;
-revoke all on function public.release_deletion_request(uuid, text, interval) from public, anon, authenticated;
-grant execute on function public.claim_deletion_request(interval) to service_role;
-grant execute on function public.apply_deletion_request(uuid) to service_role;
-grant execute on function public.complete_deletion_request(uuid) to service_role;
-grant execute on function public.release_deletion_request(uuid, text, interval) to service_role;
-
-comment on function public.claim_deletion_request(interval) is
-    'Service role only: claims the oldest pending deletion request (or one stuck in processing) and returns what the worker needs, including the auth user id for Storage and Auth.';
-comment on function public.apply_deletion_request(uuid) is
-    'Service role only: withdraws any remaining grants of a deleted account and deletes every submission under a withdrawn grant (cascading). Idempotent.';
-comment on function public.complete_deletion_request(uuid) is
-    'Service role only: for an account deletion, replaces attribution names with the default pseudonym, removes attribution reviews and pseudonymizes the contributor; then marks the request completed. Refuses while withdrawn submissions remain.';
-comment on function public.release_deletion_request(uuid, text, interval) is
-    'Service role only: returns a claimed request to pending after a failed step, not to be retried before the given delay, keeping the error for the operator.';
+-- Objects under a contributor's Storage folder that no submission owns. One statement, one
+-- snapshot: an upload always follows its submission row, so a legitimate new upload is never
+-- listed (unlike listing objects and reading submissions separately).
+create or replace function public.contributor_orphaned_objects(
+    p_auth_uid uuid,
+    p_limit integer default 1000
+)
+returns table (bucket_id text, name text)
+language sql
+stable
+security invoker
+set search_path = ''
+as $$
+    select o.bucket_id, o.name
+    from storage.objects o
+    where o.bucket_id in ('incoming-photos', 'submission-photos')
+      and o.name like p_auth_uid::text || '/%'
+      and not exists (
+          select 1 from public.submissions s
+          where s.id = case
+              when split_part(o.name, '/', 2)
+                  ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+              then split_part(o.name, '/', 2)::uuid
+          end
+      )
+    order by o.bucket_id, o.name
+    limit greatest(1, least(coalesce(p_limit, 1000), 1000));
+$$;
 
 -- Catch-all for I7: no canonical photo object may outlive its photo row (a race with a withdrawal,
 -- or a failed compensating delete). Objects must be deleted through the Storage API, so this only
--- lists them; the rights worker deletes them daily.
+-- lists them; the rights worker deletes them on every run.
 create index if not exists photos_storage_path_idx on public.photos (storage_path);
 
 create or replace function public.orphaned_photo_objects(p_limit integer default 1000)
 returns table (name text)
 language sql
 stable
-security definer
+security invoker
 set search_path = ''
 as $$
     select o.name
@@ -395,8 +598,30 @@ as $$
     limit greatest(1, least(coalesce(p_limit, 1000), 1000));
 $$;
 
+revoke all on function public.claim_deletion_request(interval) from public, anon, authenticated;
+revoke all on function public.apply_deletion_request(uuid) from public, anon, authenticated;
+revoke all on function public.complete_deletion_request(uuid) from public, anon, authenticated;
+revoke all on function public.release_deletion_request(uuid, text, interval)
+    from public, anon, authenticated;
+revoke all on function public.contributor_orphaned_objects(uuid, integer)
+    from public, anon, authenticated;
 revoke all on function public.orphaned_photo_objects(integer) from public, anon, authenticated;
+grant execute on function public.claim_deletion_request(interval) to service_role;
+grant execute on function public.apply_deletion_request(uuid) to service_role;
+grant execute on function public.complete_deletion_request(uuid) to service_role;
+grant execute on function public.release_deletion_request(uuid, text, interval) to service_role;
+grant execute on function public.contributor_orphaned_objects(uuid, integer) to service_role;
 grant execute on function public.orphaned_photo_objects(integer) to service_role;
 
+comment on function public.claim_deletion_request(interval) is
+    'Service role only: claims the next deletion request (those with data first, then oldest; or one stuck in processing) and returns what the worker needs, including the auth user id for Storage and Auth.';
+comment on function public.apply_deletion_request(uuid) is
+    'Service role only: withdraws any remaining grants of a deleted account and deletes every submission under a withdrawn grant (cascading). Idempotent.';
+comment on function public.complete_deletion_request(uuid) is
+    'Service role only: for an account deletion (once its auth user is gone), replaces attribution names with the default pseudonym, removes attribution reviews and pseudonymizes the contributor; then marks the request completed. Refuses while withdrawn submissions remain.';
+comment on function public.release_deletion_request(uuid, text, interval) is
+    'Service role only: returns a claimed request to pending after a failed step, not to be retried before the given delay, keeping the error for the operator.';
+comment on function public.contributor_orphaned_objects(uuid, integer) is
+    'Service role only: objects in either photo bucket under a contributor''s folder whose submission no longer exists (at most 1000 per call), for deletion through the Storage API.';
 comment on function public.orphaned_photo_objects(integer) is
     'Service role only: canonical photo objects with no photo row (at most 1000 per call), for the rights worker to delete through the Storage API.';

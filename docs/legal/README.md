@@ -31,6 +31,8 @@ Each document marks open points as **[DECISION]**. In brief:
    request.
 8. **Governing law and venue**, warranty disclaimer and liability cap.
 
-The mechanisms these documents describe are implemented and tested: the capture gate (WP-6b),
-withdrawal, deletion and attribution review (WP-6d). `tests/test_processors.py` fails if the code
-calls an external host that the privacy notice does not list.
+Implemented and tested: the capture gate (WP-6b); withdrawal, deletion, the refusal of anything a
+request covers, attribution review and the age confirmation at submission (WP-6d). Not built yet:
+agent interfaces and their routing rules (WP-AGENT-1 and later) and any in-app data export (copies
+are answered by the privacy contact). `tests/test_processors.py` fails if the code names an
+external host that the privacy notice does not list.

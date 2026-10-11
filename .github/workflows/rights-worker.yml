@@ -2,9 +2,10 @@ name: Contributor rights requests
 
 on:
   schedule:
-    # Daily. Requests already withdraw grants from releases the moment they are made; this run
-    # deletes the rows, photos and (for account deletion) the auth user.
-    - cron: '17 3 * * *'
+    # Hourly. A request already withdraws its grants from releases the moment it is made; this run
+    # deletes the rows, photos and (for account deletion) the auth user, removes orphaned objects,
+    # and fails if any request is older than 25 days.
+    - cron: '47 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -28,7 +29,31 @@ jobs:
         with:
           python-version: '3.12'
       - run: uv sync --frozen --no-dev
-      - run: uv run python -m pipeline.rights_worker
+      # Claims no new request after 20 minutes, well inside the job timeout.
+      - run: uv run python -m pipeline.rights_worker --budget-seconds 1200
         env:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+
+  # GitHub e-mails only the last person who edited the schedule, so a failure also opens (or
+  # comments on) one issue the steward watches. The run log it links holds counts only.
+  alert:
+    needs: process
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title='Contributor rights worker is failing'
+          body="The rights run failed: ${RUN_URL}. Requests must complete within 30 days; follow the operator checklist in docs/legal/WITHDRAWAL_AND_DELETION.md."
+          existing="$(gh issue list --state open --search "\"${title}\" in:title" --json number --jq '.[0].number // empty')"
+          if [ -n "${existing}" ]; then
+            gh issue comment "${existing}" --body "${body}"
+          else
+            gh issue create --title "${title}" --body "${body}"
+          fi

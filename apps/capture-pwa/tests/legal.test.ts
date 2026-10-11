@@ -20,6 +20,10 @@ describe('legal links', () => {
     ['javascript:alert(1)', false],
     ['http://insecure.example/terms', false],
     ['//elsewhere.example/terms', false],
+    ['/\\elsewhere.example/terms', false],
+    ['/\t/elsewhere.example/terms', false],
+    ['terms.html', true],
+    ['data:text/html,hi', false],
     ['   ', false],
   ])('uses a configured link only when it is safe: %s', (value, used) => {
     vi.stubEnv('VITE_TERMS_URL', value)

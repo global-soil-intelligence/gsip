@@ -4,6 +4,8 @@
  */
 const REPOSITORY_DOCS =
   'https://github.com/global-soil-intelligence/gsip/blob/main/docs/legal'
+// A stand-in origin to resolve relative links against: a same-site link keeps this origin.
+const PROBE_ORIGIN = 'https://same-site.invalid'
 
 export type LegalLinks = {
   privacy: string
@@ -11,13 +13,21 @@ export type LegalLinks = {
   terms: string
 }
 
-/** A configured link is used only if it is same-site (relative) or HTTPS. */
+/**
+ * A configured link is used only if it is HTTPS or genuinely same-site. Relative values are
+ * resolved the way a browser would, so `/\\host`, `//host` or a path with a tab in it cannot turn
+ * into a link to another site.
+ */
 function safeLink(configured: string | undefined, fallback: string): string {
   const value = configured?.trim()
   if (!value) return fallback
-  if (/^\.{0,2}\//.test(value) && !value.startsWith('//')) return value
   try {
-    return new URL(value).protocol === 'https:' ? value : fallback
+    if (/^[a-z][a-z0-9+.-]*:/i.test(value))
+      return new URL(value).protocol === 'https:' ? value : fallback
+    const resolved = new URL(value, `${PROBE_ORIGIN}/app/`)
+    return resolved.origin === PROBE_ORIGIN && !/[\s\\]/.test(value)
+      ? value
+      : fallback
   } catch {
     return fallback
   }

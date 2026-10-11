@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { legalLinks } from './legal'
 import { clearQueue } from './queue'
 import {
@@ -16,14 +16,14 @@ const CHOICES: Record<
   delete_account: {
     action: 'Delete my account…',
     consequence:
-      'Your observations, photos, attribution names and account are deleted, and this device signs out. This cannot be undone.',
+      'Your observations, photos and account are deleted, your attribution names are replaced, and every device signs out. Observations still queued on your other devices will not be sent. This cannot be undone.',
     label: 'Account deletion',
     word: 'DELETE',
   },
   withdraw_contributions: {
     action: 'Withdraw my contributions…',
     consequence:
-      'Your observations leave every new release at once and are deleted, with their photos, within 30 days. Your account stays. This cannot be undone.',
+      'Every observation you have made so far, including any still queued on your other devices, is left out of releases from now on and deleted, with its photos, within 30 days. Your account stays. This cannot be undone.',
     label: 'Withdrawal',
     word: 'WITHDRAW',
   },
@@ -43,7 +43,8 @@ export function describeRequest(request: DeletionStatus): string {
 
 /**
  * WP-6d "Your data": withdraw contributions or delete the account. Destructive requests need the
- * confirmation word typed, so a stray tap can never file one.
+ * confirmation word typed, so a stray tap can never file one. Focus moves to the confirmation
+ * field and back, and outcomes are announced through live regions that are always present.
  */
 export function YourData({
   client,
@@ -54,9 +55,14 @@ export function YourData({
 }) {
   const [request, setRequest] = useState<DeletionStatus | null>(null)
   const [choice, setChoice] = useState<DeletionKind | null>(null)
+  const [lastChoice, setLastChoice] = useState<DeletionKind | null>(null)
   const [typed, setTyped] = useState('')
   const [busy, setBusy] = useState(false)
-  const [message, setMessage] = useState<string | null>(null)
+  const [message, setMessage] = useState('')
+  const confirmField = useRef<HTMLInputElement>(null)
+  const actionButtons = useRef<
+    Partial<Record<DeletionKind, HTMLButtonElement>>
+  >({})
   const links = legalLinks()
 
   useEffect(() => {
@@ -72,9 +78,20 @@ export function YourData({
     }
   }, [client])
 
+  useEffect(() => {
+    if (choice) confirmField.current?.focus()
+    else if (lastChoice) actionButtons.current[lastChoice]?.focus()
+  }, [choice, lastChoice])
+
   const selected = choice ? CHOICES[choice] : null
   const confirmed =
     selected !== null && typed.trim().toUpperCase() === selected.word
+
+  function close() {
+    setLastChoice(choice)
+    setChoice(null)
+    setTyped('')
+  }
 
   async function confirm() {
     if (!choice || !confirmed) return
@@ -91,9 +108,9 @@ export function YourData({
         const local = discarded
           ? ` ${discarded} observation${discarded > 1 ? 's' : ''} queued on this device ${discarded > 1 ? 'were' : 'was'} discarded.`
           : ''
-        if (outcome === 'nothing_stored') {
+        if (outcome === 'no_account') {
           setMessage(
-            `Nothing from this device is stored on our servers.${local}`,
+            `This device has no account, so nothing from it is stored on our servers.${local}`,
           )
         } else {
           const filed: DeletionStatus = {
@@ -106,8 +123,7 @@ export function YourData({
           setMessage(`${describeRequest(filed)}${local}`)
         }
       }
-      setChoice(null)
-      setTyped('')
+      close()
     } catch {
       setMessage(
         'The request could not be sent. Check your connection and try again.',
@@ -128,22 +144,23 @@ export function YourData({
         </a>{' '}
         for what we keep and why.
       </p>
-      {request && (
-        <p className="request-status" role="status">
-          {describeRequest(request)}
-        </p>
-      )}
+      <p className="request-status" role="status" hidden={!request}>
+        {request ? describeRequest(request) : ''}
+      </p>
       {!selected && (
         <div className="rights-actions">
           {(Object.keys(CHOICES) as DeletionKind[]).map((kind) => (
             <button
               key={kind}
+              ref={(element) => {
+                if (element) actionButtons.current[kind] = element
+              }}
               type="button"
               className="secondary"
               onClick={() => {
                 setChoice(kind)
                 setTyped('')
-                setMessage(null)
+                setMessage('')
               }}
             >
               {CHOICES[kind].action}
@@ -151,17 +168,19 @@ export function YourData({
           ))}
         </div>
       )}
-      {selected && (
+      {selected && choice && (
         <div
           className="rights-confirm"
           role="group"
-          aria-label="Confirm request"
+          aria-label={`Confirm ${selected.label.toLowerCase()}`}
         >
-          <p>{selected.consequence}</p>
+          <p id={`rights-consequence-${choice}`}>{selected.consequence}</p>
           <label>
             Type {selected.word} to confirm
             <input
+              ref={confirmField}
               autoComplete="off"
+              aria-describedby={`rights-consequence-${choice}`}
               value={typed}
               onChange={(event) => setTyped(event.target.value)}
             />
@@ -178,17 +197,14 @@ export function YourData({
               type="button"
               className="secondary"
               disabled={busy}
-              onClick={() => {
-                setChoice(null)
-                setTyped('')
-              }}
+              onClick={close}
             >
               Cancel
             </button>
           </div>
         </div>
       )}
-      {message && <p aria-live="polite">{message}</p>}
+      <p aria-live="polite">{message}</p>
     </section>
   )
 }

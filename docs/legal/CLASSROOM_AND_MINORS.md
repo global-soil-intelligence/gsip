@@ -29,8 +29,8 @@ observations, and:
 
 ## Agents and outreach
 
-GSIP's agent interfaces never route "Most Wanted" sampling targets to minors, and GSIP sends no
-marketing to minors.
+When GSIP's agent interfaces suggest "Most Wanted" sampling targets (planned for a later work
+package; not built yet), they will not route them to minors. GSIP sends no marketing to minors.
 
 ## If a child contributed on their own
 
