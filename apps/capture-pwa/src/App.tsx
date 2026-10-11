@@ -134,6 +134,7 @@ export function App() {
   const [publicCell, setPublicCell] = useState<string | null>(null)
   const [email, setEmail] = useState('')
   const syncPromise = useRef<Promise<void> | null>(null)
+  const syncAgain = useRef(false)
 
   const refreshQueueState = useCallback(async () => {
     const records = await queued()
@@ -143,59 +144,70 @@ export function App() {
     )
     return records
   }, [])
-  const sync = useCallback(() => {
-    if (syncPromise.current) return syncPromise.current
-    const run = (async () => {
-      if (!client || !navigator.onLine) return
-      const records = await indexedDbQueue.list()
-      if (!records.some((record) => isSyncEligible(record))) {
-        await refreshQueueState()
-        return
-      }
-      // Re-read the gate before every drain: capture can close or reopen while the app is
-      // open, and a closed gate must not burn the queued records' retry budget.
-      const state = await fetchServiceState(client)
-      setServiceState(state)
-      if (state === 'closed') {
-        await refreshQueueState()
-        setStatus(PAUSED_MESSAGE)
-        return
-      }
-      setStatus('Securely syncing queued observations…')
-      const result = await drainQueue(indexedDbQueue, (record) =>
-        submitQueued(client, record),
-      )
-      const remaining = await refreshQueueState()
-      const deadLetters = remaining.filter((record) =>
-        Boolean(record.deadLetteredAt),
-      ).length
-      if (deadLetters) {
-        setStatus(
-          `${deadLetters} observation${deadLetters > 1 ? 's need' : ' needs'} attention before retrying.`,
-        )
-      } else if (result.failed) {
-        setStatus(
-          'Sync paused. Your observation remains safely queued on this device.',
-        )
-      } else if (result.synced) {
-        setStatus(
-          `${result.synced} observation${result.synced > 1 ? 's' : ''} synced.`,
-        )
-      } else {
-        setStatus('Ready for your next observation.')
-      }
-    })()
-    syncPromise.current = run
-    void run.then(
-      () => {
-        if (syncPromise.current === run) syncPromise.current = null
-      },
-      () => {
-        if (syncPromise.current === run) syncPromise.current = null
-      },
+  const drainOnce = useCallback(async () => {
+    if (!client || !navigator.onLine) return
+    const records = await indexedDbQueue.list()
+    if (!records.some((record) => isSyncEligible(record))) {
+      await refreshQueueState()
+      return
+    }
+    // Re-read the gate before every drain: capture can close or reopen while the app is
+    // open, and a closed gate must not burn the queued records' retry budget.
+    const state = await fetchServiceState(client)
+    setServiceState(state)
+    if (state === 'closed') {
+      await refreshQueueState()
+      setStatus(PAUSED_MESSAGE)
+      return
+    }
+    setStatus('Securely syncing queued observations…')
+    const result = await drainQueue(indexedDbQueue, (record) =>
+      submitQueued(client, record),
     )
-    return run
+    const remaining = await refreshQueueState()
+    const deadLetters = remaining.filter((record) =>
+      Boolean(record.deadLetteredAt),
+    ).length
+    if (deadLetters) {
+      setStatus(
+        `${deadLetters} observation${deadLetters > 1 ? 's need' : ' needs'} attention before retrying.`,
+      )
+    } else if (result.failed) {
+      setStatus(
+        'Sync paused. Your observation remains safely queued on this device.',
+      )
+    } else if (result.synced) {
+      setStatus(
+        `${result.synced} observation${result.synced > 1 ? 's' : ''} synced.`,
+      )
+    } else {
+      setStatus('Ready for your next observation.')
+    }
   }, [client, refreshQueueState])
+
+  // One drain at a time. A trigger that arrives mid-drain (coming online, the gate reopening, the
+  // retry timer) is never dropped: it schedules exactly one follow-up drain, however many arrive.
+  const sync = useCallback(() => {
+    const start = (): Promise<void> => {
+      if (syncPromise.current) {
+        syncAgain.current = true
+        return syncPromise.current
+      }
+      const run = drainOnce()
+      syncPromise.current = run
+      const settle = () => {
+        if (syncPromise.current !== run) return
+        syncPromise.current = null
+        if (syncAgain.current) {
+          syncAgain.current = false
+          void start()
+        }
+      }
+      void run.then(settle, settle)
+      return run
+    }
+    return start()
+  }, [drainOnce])
 
   useEffect(() => {
     let cancelled = false

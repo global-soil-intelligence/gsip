@@ -145,6 +145,41 @@ describe('capture retry behavior', () => {
     expect(await screen.findByText(/1 observation synced/i)).toBeDefined()
   })
 
+  it('runs exactly one follow-up drain for triggers that arrive mid-drain', async () => {
+    let release: (() => void) | undefined
+    mocks.submitQueued.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          release = resolve
+        }),
+    )
+    await enqueue(record)
+    render(<App />)
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(1))
+
+    // Queued after the running drain listed its records, so only a follow-up drain can send it.
+    const second = { ...record, submissionId: 'mid-drain-submission' }
+    await enqueue(second)
+    act(() => {
+      for (let trigger = 0; trigger < 3; trigger += 1)
+        window.dispatchEvent(new Event('online'))
+    })
+    act(() => release?.())
+
+    await waitFor(() =>
+      expect(mocks.submitQueued).toHaveBeenLastCalledWith(
+        { hosted: true },
+        second,
+      ),
+    )
+    expect(mocks.submitQueued).toHaveBeenCalledTimes(2)
+    // Startup read, first drain, one follow-up: three triggers did not cause three drains.
+    await waitFor(() =>
+      expect(screen.getByText(/1 observation synced/i)).toBeDefined(),
+    )
+    expect(mocks.fetchServiceState).toHaveBeenCalledTimes(3)
+  })
+
   it('shows a recovery action for a dead-lettered observation', async () => {
     await enqueue({
       ...record,
