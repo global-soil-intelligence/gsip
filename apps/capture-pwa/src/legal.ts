@@ -1,3 +1,6 @@
+import { isNativeApp } from './platform'
+import { siteLink } from './platform/links'
+
 /**
  * Links to the contribution terms, privacy notice and sampling rules (WP-6d). Until counsel
  * approves hosted versions, they point at the drafts in the repository.
@@ -33,19 +36,19 @@ function safeLink(configured: string | undefined, fallback: string): string {
   }
 }
 
-export function legalLinks(): LegalLinks {
+/** In the phone app a same-site link points at the public site, where the documents live. */
+export function legalLinks(native: boolean = isNativeApp()): LegalLinks {
+  const link = (configured: string | undefined, fallback: string) =>
+    siteLink(safeLink(configured, fallback), native)
   return {
-    privacy: safeLink(
+    privacy: link(
       import.meta.env.VITE_PRIVACY_URL,
       `${REPOSITORY_DOCS}/PRIVACY.md`,
     ),
-    samplingRules: safeLink(
+    samplingRules: link(
       import.meta.env.VITE_SAMPLING_RULES_URL,
       `${REPOSITORY_DOCS}/SAMPLING_AND_LAND_ACCESS.md`,
     ),
-    terms: safeLink(
-      import.meta.env.VITE_TERMS_URL,
-      `${REPOSITORY_DOCS}/TERMS.md`,
-    ),
+    terms: link(import.meta.env.VITE_TERMS_URL, `${REPOSITORY_DOCS}/TERMS.md`),
   }
 }

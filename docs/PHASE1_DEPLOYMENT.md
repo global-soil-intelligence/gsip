@@ -156,3 +156,14 @@ The read-only interfaces touch no contributor data, so they may go live before c
    agent guide.
 5. Every Pages build now prerenders the site and fails unless each page carries its headline and
    JSON-LD. After WP-SITE-1D, check that `https://globalsoilintelligence.com/llms.txt` resolves.
+
+### WP-APP-1 — GSIP phone app
+
+1. Nothing to deploy: the app uses the same Supabase project, tables and storage as the website.
+   The `App build` workflow runs on pull requests and pushes that touch the capture app and keeps
+   an unsigned Android debug APK and an iOS simulator build as artifacts. It reads the same
+   repository variables as the Pages build.
+2. Install the APK on an Android phone (allow installs from this source) or drag the simulator
+   build onto an iOS simulator, and run the device checks in `docs/APP_STORE.md`.
+3. Store release (signing, icons, listings, deep-link e-mail sign-in) is WP-APP-2. Its open
+   decisions are listed in `docs/APP_STORE.md`.

@@ -10,8 +10,12 @@ export function isCaptureLive(): boolean {
  * The capture time of shot B as the device recorded it. A camera capture's file timestamp is
  * the moment of capture; a submit-time timestamp would skew the precipitation context for
  * every observation that waited in the offline queue. Implausible timestamps fall back to now.
+ * The phone app passes the moment its camera returned the photo.
  */
-export function captureTime(file: File | null, now: number): string {
+export function captureTime(
+  file: { lastModified?: number } | null,
+  now: number,
+): string {
   const modified = file?.lastModified
   if (
     typeof modified === 'number' &&

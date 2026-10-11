@@ -21,6 +21,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('../src/supabase', () => ({
   createGsipClient: () => ({ hosted: true }),
+  existingContributor: async () => null,
   fetchServiceState: mocks.fetchServiceState,
   isServiceConfigured: () => true,
   recordOwner: async () => undefined,

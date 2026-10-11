@@ -73,6 +73,14 @@ export function captureMethod(
   return method
 }
 
+/** An observation's claim is the weakest of its photos': unknown, then file, then camera. */
+export function weakestMethod(
+  methods: ReadonlyArray<CaptureMethod>,
+): CaptureMethod {
+  if (!methods.length || methods.includes('unknown')) return 'unknown'
+  return methods.includes('file') ? 'file' : 'camera'
+}
+
 /**
  * The claim columns to send. Records queued by older builds carry no claims and get the server
  * defaults; a value outside the known sets (a corrupted record) is left to the server default

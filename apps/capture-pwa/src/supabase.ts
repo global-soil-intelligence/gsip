@@ -336,7 +336,9 @@ export type DeletionOutcome = 'requested' | 'already_open' | 'no_account'
  * but cannot be read right now (offline with an expired token, an auth outage) is an error, never
  * "no account": that would wrongly tell the person nothing of theirs is stored.
  */
-async function existingContributor(client: GsipClient): Promise<string | null> {
+export async function existingContributor(
+  client: GsipClient,
+): Promise<string | null> {
   const { data, error } = await client.auth.getSession()
   if (error) throw error
   const uid = data.session?.user.id

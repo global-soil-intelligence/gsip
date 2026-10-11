@@ -83,3 +83,33 @@ def test_rights_requests_are_processed_hourly_and_failures_raise_an_alert() -> N
     assert "secrets.SUPABASE_SERVICE_ROLE_KEY" in text and "vars.SUPABASE_URL" in text
     assert "cancel-in-progress: false" in text, "a new run never cancels one mid-deletion"
     assert "if: failure()" in text and "issues: write" in text and "gh issue" in text
+
+
+def test_app_build_decides_permissions_in_one_script_and_signs_nothing() -> None:
+    app = next(path for path in WORKFLOWS if path.name == "app-build.yml")
+    text = app.read_text(encoding="utf-8")
+    steps = _step_blocks(text)
+    order = [
+        next(index for index, block in enumerate(steps) if needle in block)
+        for needle in (
+            "cap add android",
+            "app_permissions.py apply-android",
+            "assembleDebug",
+            "app_permissions.py check-apk",
+        )
+    ]
+    assert order == sorted(order), "permissions are applied before the build and checked after"
+    ios = [
+        next(index for index, block in enumerate(steps) if needle in block)
+        for needle in (
+            "cap add ios",
+            "app_permissions.py apply-ios",
+            "iphonesimulator",
+            "app_permissions.py check-ios",
+        )
+    ]
+    assert ios == sorted(ios)
+    # Unsigned builds only: no signing material, store credentials or write access.
+    assert "secrets." not in text
+    assert "contents: read" in text and "write" not in text
+    assert text.count("actions/upload-artifact") == 2

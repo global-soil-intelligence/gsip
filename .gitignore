@@ -24,5 +24,9 @@ output/pdf/*
 !output/pdf/*.pdf
 _site/
 
+# The phone app's native projects are generated from capacitor.config.ts (WP-APP-1).
+apps/capture-pwa/android/
+apps/capture-pwa/ios/
+
 # Agent worktrees (for example Claude Code subagents) are local scratch copies.
 .claude/worktrees/

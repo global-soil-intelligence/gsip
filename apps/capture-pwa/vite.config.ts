@@ -11,12 +11,16 @@ export default defineConfig(({ mode }) => {
   const clientVersion = /^[0-9a-f]{7}$/.test(sha)
     ? `${packageJson.version}+${sha}`
     : packageJson.version
+  // WP-APP-1: `vite build --mode app` builds the phone app's assets. They ship inside the app,
+  // so there is no service worker: one would keep serving an old version after an app update.
+  const app = mode === 'app'
   return {
     base: './',
     define: { __GSIP_CLIENT_VERSION__: JSON.stringify(clientVersion) },
     plugins: [
       react(),
       VitePWA({
+        disable: app,
         manifest: {
           name: 'GSIP Soil Capture',
           short_name: 'GSIP Capture',

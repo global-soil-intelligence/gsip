@@ -9,11 +9,24 @@ import { captureTime, isCaptureLive } from './capture'
 import { fuzzLocation } from './geo'
 import { HexPreview } from './HexPreview'
 import { legalLinks } from './legal'
+import { MySoil } from './MySoil'
+import { mySoil } from './mySoil'
+import {
+  type CapturedPhoto,
+  isNativeApp,
+  type LocationProblem,
+  nativePlatform,
+  type Platform,
+  type PhotoProblem,
+  PhotoRefused,
+  webPlatform,
+} from './platform'
+import { photoFromFile, queuedPhoto } from './platform/camera'
+import { siteLink } from './platform/links'
 import {
   CLIENT_VERSION,
-  captureMethod,
-  ingestPath,
   type LocationSource,
+  weakestMethod,
 } from './provenance'
 import {
   discardHeld,
@@ -45,6 +58,26 @@ const PAGE_LOADED_AT =
     : Date.now()
 const PAUSED_MESSAGE =
   'Capture is paused. Your observations stay safely on this device until it reopens.'
+const LOCATION_PROBLEMS: Record<LocationProblem, string> = {
+  denied:
+    'Location was not shared. Allow it in your settings, or use the manual fallback below.',
+  off: 'Location services are off on this device. Turn them on, or use the manual fallback below.',
+  timeout:
+    'Finding your location took too long. Try again in the open, or use the manual fallback below.',
+  unavailable: 'Location is unavailable. Enter a latitude and longitude below.',
+}
+const PHOTO_PROBLEMS: Record<PhotoProblem, string> = {
+  failed: 'The photo could not be taken. Try again.',
+  no_camera: 'This device has no camera. Use a saved photo instead.',
+  not_jpeg: 'Choose JPEG photos before continuing.',
+  permission_denied:
+    'Camera access is off for GSIP. Allow it in Settings, or use a saved photo.',
+  too_large:
+    'That photo is larger than 12 MB, so it could never upload. Take or choose a smaller one.',
+}
+const SHOTS: ShotType[] = ['A', 'B', 'C']
+type ShotPhotos = Record<ShotType, CapturedPhoto | null>
+const NO_PHOTOS: ShotPhotos = { A: null, B: null, C: null }
 const LAND_COVERS = [
   'cropland',
   'grassland',
@@ -82,10 +115,8 @@ function PhotoField({
   )
 }
 
-type SelectedPhotos = Record<ShotType, File | null>
-
 /** The photo chosen for each shot, read once from the form's own file inputs. */
-function selectedPhotos(form: HTMLFormElement): SelectedPhotos {
+function selectedFiles(form: HTMLFormElement): Record<ShotType, File | null> {
   const fileFor = (shotType: ShotType): File | null => {
     const input = form.elements.namedItem(`shot-${shotType.toLowerCase()}`)
     const file =
@@ -95,29 +126,98 @@ function selectedPhotos(form: HTMLFormElement): SelectedPhotos {
   return { A: fileFor('A'), B: fileFor('B'), C: fileFor('C') }
 }
 
-async function photos(
-  selected: SelectedPhotos,
-): Promise<QueueRecord['photos']> {
-  const readBytes = async (file: File) =>
-    new Uint8Array(await file.arrayBuffer())
-  const captured = await Promise.all(
-    (['A', 'B', 'C'] as ShotType[]).map(async (shotType) => {
-      const file = selected[shotType]
-      if (file && file.type !== 'image/jpeg') {
-        throw new Error('Only JPEG photos can be queued.')
-      }
-      return file
-        ? {
-            bytes: await readBytes(file),
-            mimeType: file.type || 'image/jpeg',
-            objectId: crypto.randomUUID(),
-            shotType,
-          }
-        : null
+/** A browser's chosen files as captured photos, with their timestamps and claims. */
+async function webPhotos(
+  form: HTMLFormElement,
+  now: number,
+): Promise<ShotPhotos> {
+  const files = selectedFiles(form)
+  const entries = await Promise.all(
+    SHOTS.map(async (shot) => {
+      const file = files[shot]
+      return [
+        shot,
+        file ? await photoFromFile(file, PAGE_LOADED_AT, now) : null,
+      ] as const
     }),
   )
-  return captured.filter(
-    (photo): photo is NonNullable<typeof photo> => photo !== null,
+  return Object.fromEntries(entries) as ShotPhotos
+}
+
+/** A preview of a photo the app took, for the person to check the card is in frame. */
+function usePreview(photo: CapturedPhoto | null): string | null {
+  const [url, setUrl] = useState<string | null>(null)
+  useEffect(() => {
+    if (!photo || typeof URL.createObjectURL !== 'function') {
+      setUrl(null)
+      return
+    }
+    const next = URL.createObjectURL(
+      new Blob([photo.bytes as Uint8Array<ArrayBuffer>], {
+        type: photo.mimeType,
+      }),
+    )
+    setUrl(next)
+    return () => URL.revokeObjectURL(next)
+  }, [photo])
+  return url
+}
+
+/** The phone app's shot: the native camera, or a saved photo from the system picker. */
+function NativePhotoField({
+  busy,
+  label,
+  onChoose,
+  onTake,
+  optional = false,
+  photo,
+  shot,
+}: {
+  busy: boolean
+  label: string
+  onChoose: () => void
+  onTake: () => void
+  optional?: boolean
+  photo: CapturedPhoto | null
+  shot: ShotType
+}) {
+  const preview = usePreview(photo)
+  return (
+    <div
+      className="photo-field"
+      role="group"
+      aria-labelledby={`shot-${shot}-label`}
+    >
+      <span id={`shot-${shot}-label`}>{label}</span>
+      <small>{optional ? 'Optional confidence boost' : 'Required'}</small>
+      {preview ? (
+        <img
+          className="photo-preview"
+          src={preview}
+          alt={`Photo ${shot} as taken`}
+        />
+      ) : (
+        <div className="camera-guide" aria-hidden="true">
+          <span>Keep card + soil inside the guide</span>
+        </div>
+      )}
+      <p className="photo-state" aria-live="polite">
+        {photo ? `Photo ${shot} ready` : `No photo ${shot} yet`}
+      </p>
+      <div className="photo-actions">
+        <button type="button" disabled={busy} onClick={onTake}>
+          {photo ? `Retake photo ${shot}` : `Take photo ${shot}`}
+        </button>
+        <button
+          type="button"
+          className="secondary"
+          disabled={busy}
+          onClick={onChoose}
+        >
+          Use a saved photo for {shot}
+        </button>
+      </div>
+    </div>
   )
 }
 
@@ -146,7 +246,7 @@ function CaptureClosed() {
         observations. You can print the reference card and explore the public
         map now.
       </p>
-      <a className="card-link" href="../map/">
+      <a className="card-link" href={siteLink('../map/')}>
         Explore the map ↗
       </a>
     </section>
@@ -156,6 +256,14 @@ function CaptureClosed() {
 export function App() {
   const formRef = useRef<HTMLFormElement>(null)
   const live = isCaptureLive()
+  // WP-APP-1: the phone app uses the native camera and location; browsers use the web ones.
+  const native = useMemo(() => isNativeApp(), [])
+  const [platform, setPlatform] = useState<Platform | null>(() =>
+    native ? null : webPlatform(),
+  )
+  const [nativePhotos, setNativePhotos] = useState<ShotPhotos>(NO_PHOTOS)
+  const [cameraBusy, setCameraBusy] = useState(false)
+  const [soilRefresh, setSoilRefresh] = useState(0)
   const client = useMemo(
     () =>
       isCaptureLive() && isServiceConfigured() ? createGsipClient() : null,
@@ -179,6 +287,29 @@ export function App() {
   const syncPromise = useRef<Promise<void> | null>(null)
   const syncAgain = useRef(false)
   const links = legalLinks()
+  const loadMySoil = useCallback(
+    () => (client ? mySoil(client) : Promise.resolve(null)),
+    [client],
+  )
+
+  useEffect(() => {
+    if (platform) return
+    let cancelled = false
+    nativePlatform().then(
+      (loaded) => {
+        if (!cancelled) setPlatform(loaded)
+      },
+      () => {
+        if (!cancelled)
+          setStatus(
+            'The camera and location could not start. Close and reopen the app.',
+          )
+      },
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [platform])
 
   const refreshQueueState = useCallback(async () => {
     const records = await queued()
@@ -212,6 +343,7 @@ export function App() {
     const result = await drainQueue(indexedDbQueue, (record) =>
       submitQueued(client, record),
     )
+    if (result.synced) setSoilRefresh((count) => count + 1)
     const remaining = await refreshQueueState()
     const deadLetters = remaining.filter((record) =>
       Boolean(record.deadLetteredAt),
@@ -291,28 +423,41 @@ export function App() {
     }
   }, [client, refreshQueueState, sync])
 
-  function locate() {
-    if (!navigator.geolocation) {
-      setStatus(
-        'Location is unavailable. Enter a latitude and longitude below.',
-      )
+  async function locate() {
+    if (!platform) return
+    setStatus('Requesting location permission…')
+    const result = await platform.location.locate()
+    if (!result.ok) {
+      setStatus(LOCATION_PROBLEMS[result.problem])
       return
     }
-    setStatus('Requesting location permission…')
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLatitude(position.coords.latitude.toFixed(6))
-        setLongitude(position.coords.longitude.toFixed(6))
-        setAccuracy(Math.round(position.coords.accuracy))
-        setLocationSource('device_gps')
-        setStatus(
-          'Location captured. It stays private; only a shared H3 cell can become public.',
-        )
-      },
-      () =>
-        setStatus('Location was not shared. Use the manual fallback below.'),
-      { enableHighAccuracy: true, maximumAge: 30_000, timeout: 15_000 },
+    setLatitude(result.fix.latitude.toFixed(6))
+    setLongitude(result.fix.longitude.toFixed(6))
+    setAccuracy(result.fix.accuracyM)
+    setLocationSource(result.fix.source)
+    setStatus(
+      'Location captured. It stays private; only a shared H3 cell can become public.',
     )
+  }
+
+  async function nativeShot(shot: ShotType, how: 'choose' | 'take') {
+    if (platform?.camera.kind !== 'native') return
+    setCameraBusy(true)
+    try {
+      const photo =
+        how === 'take'
+          ? await platform.camera.takePhoto()
+          : await platform.camera.choosePhoto()
+      if (photo) setNativePhotos((current) => ({ ...current, [shot]: photo }))
+    } catch (error) {
+      setStatus(
+        PHOTO_PROBLEMS[
+          error instanceof PhotoRefused ? error.problem : 'failed'
+        ],
+      )
+    } finally {
+      setCameraBusy(false)
+    }
   }
 
   async function sendMagicLink(switchAccount = false) {
@@ -354,8 +499,8 @@ export function App() {
       setStatus('Choose JPEG photos before continuing.')
       return
     }
-    const selected = selectedPhotos(event.currentTarget)
-    const form = new FormData(event.currentTarget)
+    const formElement = event.currentTarget
+    const form = new FormData(formElement)
     const numericLatitude = Number(latitude)
     const numericLongitude = Number(longitude)
     if (
@@ -382,30 +527,39 @@ export function App() {
       setStatus('Confirm the sampling rules before queueing this observation.')
       return
     }
-    let capturedPhotos: QueueRecord['photos']
+    const now = Date.now()
+    let shots: ShotPhotos
     try {
-      capturedPhotos = await photos(selected)
-    } catch {
-      setStatus('Choose JPEG photos before continuing.')
+      shots = native ? nativePhotos : await webPhotos(formElement, now)
+    } catch (error) {
+      setStatus(
+        PHOTO_PROBLEMS[
+          error instanceof PhotoRefused ? error.problem : 'not_jpeg'
+        ],
+      )
       return
     }
+    // SPEC I2: shots A and B are required; the browser's `required` covers only its own form.
+    if (!shots.A || !shots.B) {
+      setStatus('Add photos A and B before continuing.')
+      return
+    }
+    const capturedPhotos = SHOTS.flatMap((shot) => {
+      const photo = shots[shot]
+      return photo ? [queuedPhoto(photo, shot)] : []
+    })
     // WP-6d: an observation is only ever sent as the account it was made under.
     const ownerUid = await recordOwner(client)
-    const now = Date.now()
     const record: QueueRecord = {
       accuracyM: accuracy,
       acceptedAt: new Date(now).toISOString(),
       attributionName,
-      capturedAt: captureTime(selected.B, now),
+      capturedAt: captureTime({ lastModified: shots.B.takenAt }, now),
       // WP-6e: claims only. The server never lets them raise a provenance tier.
       claims: {
-        captureMethod: captureMethod(
-          [selected.A, selected.B],
-          PAGE_LOADED_AT,
-          now,
-        ),
+        captureMethod: weakestMethod([shots.A.method, shots.B.method]),
         clientVersion: CLIENT_VERSION,
-        ingestPath: ingestPath(),
+        ingestPath: platform?.ingestPath ?? (native ? 'app' : 'web'),
         locationSource,
       },
       deviceModel: coarseDeviceModel(),
@@ -424,6 +578,7 @@ export function App() {
     await enqueue(record)
     setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
     formRef.current?.reset()
+    setNativePhotos(NO_PHOTOS)
     setLatitude('')
     setLongitude('')
     setAccuracy(null)
@@ -439,7 +594,11 @@ export function App() {
   return (
     <div className="app-shell">
       <header>
-        <a className="brand" href="../map/" aria-label="GSIP public map">
+        <a
+          className="brand"
+          href={siteLink('../map/')}
+          aria-label="GSIP public map"
+        >
           <span className="brand-mark">G</span>
           <span>Global Soil Intelligence</span>
         </a>
@@ -465,7 +624,9 @@ export function App() {
           </p>
           <a
             className="card-link"
-            href="../reference-card/gsip-reference-card-v1-color.pdf"
+            href={siteLink(
+              '../reference-card/gsip-reference-card-v1-color.pdf',
+            )}
             download
           >
             Download the printable A6 card ↗
@@ -494,38 +655,47 @@ export function App() {
               <p className="step-number">Optional account</p>
               <h2 id="signin-heading">Keep contributing privately</h2>
               <p>
-                Submit anonymously now, or use a magic link to keep contributing
-                from more than one device.
+                {native
+                  ? 'Submit anonymously: no sign-up is needed.'
+                  : 'Submit anonymously now, or use a magic link to keep contributing from more than one device.'}
               </p>
             </div>
-            <div className="magic-link">
-              <label>
-                Email
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="you@example.com"
-                />
-              </label>
-              <button
-                type="button"
-                className="secondary"
-                disabled={!client || !email}
-                onClick={() => void sendMagicLink()}
-              >
-                Send magic link
-              </button>
-              {emailInUse && (
+            {native ? (
+              <p className="field-hint">
+                Your contributions belong to this phone’s private account.
+                E-mail sign-in, to use the same account on other devices, comes
+                in a later version of the app.
+              </p>
+            ) : (
+              <div className="magic-link">
+                <label>
+                  Email
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="you@example.com"
+                  />
+                </label>
                 <button
                   type="button"
                   className="secondary"
-                  onClick={() => void sendMagicLink(true)}
+                  disabled={!client || !email}
+                  onClick={() => void sendMagicLink()}
                 >
-                  Sign in to that account instead
+                  Send magic link
                 </button>
-              )}
-            </div>
+                {emailInUse && (
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() => void sendMagicLink(true)}
+                  >
+                    Sign in to that account instead
+                  </button>
+                )}
+              </div>
+            )}
           </section>
         )}
 
@@ -540,9 +710,36 @@ export function App() {
                 avoid glare.
               </p>
               <div className="photo-grid">
-                <PhotoField name="shot-a" label="A · Context / 30 cm" />
-                <PhotoField name="shot-b" label="B · Fresh face / 15 cm" />
-                <PhotoField name="shot-c" label="C · Moist texture" optional />
+                {native ? (
+                  (
+                    [
+                      ['A', 'A · Context / 30 cm', false],
+                      ['B', 'B · Fresh face / 15 cm', false],
+                      ['C', 'C · Moist texture', true],
+                    ] as const
+                  ).map(([shot, label, optional]) => (
+                    <NativePhotoField
+                      key={shot}
+                      busy={cameraBusy || platform === null}
+                      label={label}
+                      optional={optional}
+                      photo={nativePhotos[shot]}
+                      shot={shot}
+                      onChoose={() => void nativeShot(shot, 'choose')}
+                      onTake={() => void nativeShot(shot, 'take')}
+                    />
+                  ))
+                ) : (
+                  <>
+                    <PhotoField name="shot-a" label="A · Context / 30 cm" />
+                    <PhotoField name="shot-b" label="B · Fresh face / 15 cm" />
+                    <PhotoField
+                      name="shot-c"
+                      label="C · Moist texture"
+                      optional
+                    />
+                  </>
+                )}
               </div>
             </fieldset>
 
@@ -595,7 +792,8 @@ export function App() {
               <button
                 type="button"
                 className="location-button"
-                onClick={locate}
+                disabled={platform === null}
+                onClick={() => void locate()}
               >
                 Use my current location
               </button>
@@ -796,6 +994,10 @@ export function App() {
           </div>
           {publicCell && <HexPreview cell={publicCell} />}
         </section>
+
+        {live && client && (
+          <MySoil load={loadMySoil} refreshKey={soilRefresh} />
+        )}
 
         {live && client && (
           <YourData client={client} onQueueCleared={refreshQueueState} />

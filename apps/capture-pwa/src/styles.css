@@ -364,6 +364,56 @@ footer {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+/* WP-APP-1: the phone app's photo fields and My Soil. */
+.photo-preview {
+  width: 100%;
+  aspect-ratio: 4/3;
+  margin: 0.55rem 0;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+.photo-state {
+  margin: 0;
+  color: #53645c;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+.photo-actions {
+  display: grid;
+  gap: 0.5rem;
+}
+.photo-actions .secondary {
+  white-space: normal;
+}
+.my-soil {
+  margin-top: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: #f4f0e5;
+  border: 1px solid #18362b22;
+  border-radius: 1.4rem;
+}
+.my-soil h2 {
+  margin-bottom: 0.6rem;
+  font:
+    600 clamp(1.5rem, 3vw, 2rem)/1.1 Newsreader,
+    serif;
+}
+.my-soil-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.my-soil-list li {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #18362b2b;
+  border-radius: 0.8rem;
+  background: #fffdf5;
+  overflow-wrap: anywhere;
+}
 .your-data {
   margin-top: 1.25rem;
   padding: clamp(1.5rem, 4vw, 2.5rem);
