@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import shutil
 import time
 from collections.abc import Callable
@@ -68,6 +69,7 @@ RELEASABLE_TIERS = frozenset({0, 1, 2, 3})
 MAX_SET_ASIDE_SHARE = 0.10
 SET_ASIDE_ALLOWANCE = 3
 MISSING_OBJECT_STATUSES = {400, 404}
+HF_REVISION = re.compile(r"^[0-9a-f]{40}$")
 
 
 class ExportPrivacyError(ValueError):
@@ -156,12 +158,14 @@ class ExportResult:
     withheld: int
     set_aside: dict[str, int] = field(default_factory=dict)
     report: Path | None = None
+    photos: int = 0
 
     def summary(self) -> dict[str, Any]:
         """Counts only: workflow logs of a public repository are public."""
 
         return {
             "cells": len(self.cells),
+            "photos": self.photos,
             "rows": self.rows,
             "set_aside": dict(sorted(self.set_aside.items())),
             "withheld_for_k_anonymity": self.withheld,
@@ -562,6 +566,7 @@ def build_export(
         withheld=len(assignment.withheld),
         set_aside=counts,
         report=_write_report(output_root, export_date, set_aside, assignment.withheld),
+        photos=sum(len(record["photos"]) for record in records),
     )
 
 
@@ -727,6 +732,25 @@ class SupabaseExportSource:
             )
         return exported
 
+    def record_release(self, version: str, rows: int, photos: int, hf_revision: str | None) -> None:
+        """WP-AGENT-1: the public, append-only record of a successful push (dataset_releases).
+
+        Each pushed commit is recorded once, so a retry after a lost response changes nothing.
+        """
+
+        response = self.client.post(
+            f"{self.url}/rest/v1/dataset_releases",
+            params={"on_conflict": "version,hf_revision"},
+            headers={"Prefer": "resolution=ignore-duplicates,return=minimal"},
+            json={
+                "hf_revision": hf_revision,
+                "photos": photos,
+                "rows": rows,
+                "version": version,
+            },
+        )
+        response.raise_for_status()
+
     def refresh_h3_cells(self, cells: tuple[PublishedCell, ...]) -> None:
         response = self.client.post(
             f"{self.url}/rest/v1/rpc/refresh_public_h3_cells",
@@ -744,17 +768,32 @@ def publish_export(
     api: HfApi | None = None,
 ) -> None:
     hub = api or HfApi(token=token)
-    hub.upload_folder(
+    commit = hub.upload_folder(
         repo_id=repo_id,
         repo_type="dataset",
         folder_path=result.target,
         commit_message=f"GSIP public export {export_date.isoformat()}",
         delete_patterns=["photos/**", "data/**"],
     )
+    _with_retries(lambda: source.refresh_h3_cells(result.cells))
+    # The release is recorded last, once the data and the public cells agree. A failure here
+    # fails the run, and the next run pushes and records again.
+    revision = getattr(commit, "oid", None)
+    _with_retries(
+        lambda: source.record_release(
+            export_date.isoformat(),
+            result.rows,
+            result.photos,
+            revision if isinstance(revision, str) and HF_REVISION.match(revision) else None,
+        )
+    )
+
+
+def _with_retries(step: Callable[[], None]) -> None:
     for attempt in range(3):
         try:
-            source.refresh_h3_cells(result.cells)
-            break
+            step()
+            return
         except httpx.HTTPError:
             if attempt == 2:
                 raise

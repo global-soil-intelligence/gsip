@@ -740,28 +740,107 @@ def test_an_approved_name_publishes_photos_with_that_name(tmp_path: Path) -> Non
     }
 
 
-def test_hub_replacement_precedes_atomic_public_cell_refresh(tmp_path: Path) -> None:
+COMMIT = "0123456789abcdef0123456789abcdef01234567"
+
+
+class CommitInfo(str):
+    """What huggingface_hub's upload_folder returns: a URL string carrying the commit id."""
+
+    oid: str
+
+    def __new__(cls, oid: str) -> CommitInfo:
+        info = super().__new__(cls, f"https://huggingface.co/datasets/org/dataset/commit/{oid}")
+        info.oid = oid
+        return info
+
+
+def test_hub_replacement_precedes_atomic_public_cell_refresh_and_the_release_record(
+    tmp_path: Path,
+) -> None:
     events: list[str] = []
     upload: dict[str, Any] = {}
+    releases: list[tuple[str, int, int, str | None]] = []
     result = build(three_contributors_in_one_cell(), tmp_path)
 
     class FakeHub:
-        def upload_folder(self, **kwargs: Any) -> None:
+        def upload_folder(self, **kwargs: Any) -> CommitInfo:
             events.append("hub")
             upload.update(kwargs)
+            return CommitInfo(COMMIT)
 
     class RecordingSource(SupabaseExportSource):
         def refresh_h3_cells(self, cells: tuple[PublishedCell, ...]) -> None:
             events.append("cells")
+
+        def record_release(
+            self, version: str, rows: int, photos: int, hf_revision: str | None
+        ) -> None:
+            events.append("release")
+            releases.append((version, rows, photos, hf_revision))
 
     source = RecordingSource("https://supabase.test", "service-key")
     try:
         publish_export(source, result, EXPORT_DATE, "token", "org/dataset", cast(Any, FakeHub()))
     finally:
         source.client.close()
-    assert events == ["hub", "cells"]
+    assert events == ["hub", "cells", "release"]
     assert upload["delete_patterns"] == ["photos/**", "data/**"]
     assert upload["folder_path"] == result.target
+    # Three observations, each with its shots A and B published.
+    assert releases == [("2026-07-22", 3, 6, COMMIT)]
+
+
+def test_a_release_without_an_exact_commit_is_recorded_without_one(tmp_path: Path) -> None:
+    releases: list[str | None] = []
+    result = build(three_contributors_in_one_cell(), tmp_path)
+
+    class FakeHub:
+        def upload_folder(self, **kwargs: Any) -> str:
+            return "https://huggingface.co/datasets/org/dataset"
+
+    class RecordingSource(SupabaseExportSource):
+        def refresh_h3_cells(self, cells: tuple[PublishedCell, ...]) -> None:
+            pass
+
+        def record_release(
+            self, version: str, rows: int, photos: int, hf_revision: str | None
+        ) -> None:
+            releases.append(hf_revision)
+
+    source = RecordingSource("https://supabase.test", "service-key")
+    try:
+        publish_export(source, result, EXPORT_DATE, "token", "org/dataset", cast(Any, FakeHub()))
+    finally:
+        source.client.close()
+    assert releases == [None]
+
+
+def test_the_release_record_is_an_append_only_post_with_counts_only() -> None:
+    sent: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        sent.append(request)
+        return httpx.Response(201)
+
+    source = SupabaseExportSource("https://supabase.test", "service-key")
+    source.client.close()
+    source.client = httpx.Client(transport=httpx.MockTransport(handler))
+    try:
+        source.record_release("2026-07-22", 3, 6, COMMIT)
+    finally:
+        source.client.close()
+    [request] = sent
+    assert request.method == "POST"
+    assert request.url.path == "/rest/v1/dataset_releases"
+    # A retry after a lost response must not record the same push twice.
+    assert request.url.params["on_conflict"] == "version,hf_revision"
+    assert "resolution=ignore-duplicates" in request.headers["Prefer"]
+    assert json.loads(request.content) == {
+        "hf_revision": COMMIT,
+        "photos": 6,
+        "rows": 3,
+        "version": "2026-07-22",
+    }
 
 
 def test_failed_post_upload_refresh_is_retried_on_the_next_run(
@@ -779,6 +858,11 @@ def test_failed_post_upload_refresh_is_retried_on_the_next_run(
 
     class RecoveringSource(SupabaseExportSource):
         failures_remaining = 3
+
+        def record_release(
+            self, version: str, rows: int, photos: int, hf_revision: str | None
+        ) -> None:
+            pass
 
         def refresh_h3_cells(self, cells: tuple[PublishedCell, ...]) -> None:
             if self.failures_remaining:

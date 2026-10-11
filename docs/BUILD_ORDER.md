@@ -155,7 +155,7 @@ Acceptance: the canonical domain serves the Pages site; `robots.txt` allows craw
 **WP-AGENT-1: Agent-readable GSIP**
 Scope:
 
-1. **`gsip-public` Edge Function** (`verify_jwt = false`) using only the publishable key, so the anonymous role's grants bound every read (I12). REST: `GET /v1/protocol`, `GET /v1/cells/{h3}`, `GET /v1/cells?within={h3}&limit=`, `GET /v1/releases/latest`, `GET /v1/openapi.json`. MCP over Streamable HTTP at `POST /mcp` (stateless JSON responses) with tools `get_protocol`, `get_cell`, `list_cells` and `get_release`. Every response carries license, attribution and citation fields; free text appears only in fields marked untrusted. Best-effort per-client rate limit and cache headers. Request logic lives in `packages/schema/src/agent/`.
+1. **`gsip-public` Edge Function** (`verify_jwt = false`) using only the publishable key, so the anonymous role's grants bound every read (I12). REST: `GET /v1/protocol`, `GET /v1/cells/{h3}`, `GET /v1/cells?within={h3}&limit=`, `GET /v1/releases/latest`, `GET /v1/openapi.json`. Cells finer than resolution 8 are refused: GSIP publishes nothing finer, so a finer question only reveals more about where the asker is. MCP over Streamable HTTP at `POST /mcp` (stateless JSON responses) with tools `get_protocol`, `get_cell`, `list_cells` and `get_release`. Every response carries license, attribution and citation fields; free text appears only in fields marked untrusted. Best-effort per-client rate limit with a per-instance ceiling, and cache headers. Request logic lives in `packages/schema/src/agent/`.
 2. **Releases.** `dataset_releases` (public read, service-role insert), written by export after each successful push.
 3. **Site.** Prerender every page at build time and hydrate in the browser; static Dataset and Organization JSON-LD; `llms.txt` at the site root; `docs/AGENTS.md` for agent builders.
 
@@ -216,7 +216,10 @@ HF_DATASET_REPO=                 # e.g. global-soil-intelligence/gsip-observatio
 OPEN_METEO_BASE=https://api.open-meteo.com
 OPEN_METEO_ARCHIVE_BASE=https://archive-api.open-meteo.com
 SOILGRIDS_BASE=https://rest.isric.org
+VITE_GSIP_PUBLIC_API=            # deployed gsip-public URL for the site and llms.txt; empty until it answers
+GSIP_PUBLIC_BASE_URL=            # gsip-public function secret: its public URL (default SUPABASE_URL/functions/v1/gsip-public)
 GSIP_PUBLIC_RATE_LIMIT_PER_MINUTE=60   # gsip-public best-effort per-client limit
+GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function instance across clients
 ```
 
 ## 7. Sequencing

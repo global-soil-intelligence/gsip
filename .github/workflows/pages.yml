@@ -31,6 +31,8 @@ jobs:
           VITE_PRIOR_TILES_BASE: ${{ vars.VITE_PRIOR_TILES_BASE }}
           VITE_CAPTURE_LIVE: ${{ vars.VITE_CAPTURE_LIVE }}
           VITE_DATASET_URL: ${{ vars.VITE_DATASET_URL }}
+          # The deployed gsip-public function; unset until it answers (WP-AGENT-1).
+          VITE_GSIP_PUBLIC_API: ${{ vars.VITE_GSIP_PUBLIC_API }}
           VITE_TERMS_URL: ${{ vars.VITE_TERMS_URL }}
           VITE_PRIVACY_URL: ${{ vars.VITE_PRIVACY_URL }}
           VITE_SAMPLING_RULES_URL: ${{ vars.VITE_SAMPLING_RULES_URL }}

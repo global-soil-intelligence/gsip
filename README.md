@@ -1,6 +1,6 @@
 # Global Soil Intelligence Project
 
-GSIP is an open-source citizen-science project building a living global soil map with people and AI agents. A phone app (also a no-install web app) guides contributors through privacy-safe soil photography with a printable reference card. GSIP combines those observations with public soil-map priors and, later, open models to produce soil estimates with explicit uncertainty. Agents can read public cells, the protocol and dataset releases through a public API and an MCP server.
+GSIP is an open-source citizen-science project building a living global soil map with people and AI agents. A phone app (also a no-install web app) guides contributors through privacy-safe soil photography with a printable reference card. GSIP combines those observations with public soil-map priors and, later, open models to produce soil estimates with explicit uncertainty. Agents can read public cells, the protocol and dataset releases through a public API and an MCP server; see the [agent guide](docs/AGENTS.md).
 
 GSIP is not a laboratory replacement. Public outputs locate observations by k-anonymous H3 cells, never precise coordinates. Photos are sanitized before canonical storage and checked again before release.
 
@@ -24,6 +24,7 @@ Run `pnpm --filter @gsip/capture-pwa dev` for capture or
 
 - [Architecture specification](docs/SPEC.md)
 - [Build order](docs/BUILD_ORDER.md)
+- [Agent guide](docs/AGENTS.md)
 - [Governance and business guardrails](GOVERNANCE.md)
 - [Phase 1 deployment handoff](docs/PHASE1_DEPLOYMENT.md)
 - [Archived planning](docs/archive/)

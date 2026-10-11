@@ -11,15 +11,16 @@ required — DECISION.]**
 
 ## What we collect and why
 
-| Data                                                                                                                                      | Why                                                                      | Basis **[DECISION]**                |
-| ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------- |
-| Account: an anonymous account identifier, or your e-mail address if you add one                                                           | To let you contribute and manage your data from your devices             | Contract                            |
-| Observation: precise position (device GPS with its accuracy, or a pin you place), capture time, coarse device model, your one-tap answers | To place, check and use your observation scientifically                  | Contract                            |
-| Photographs: the originals until they are checked, then copies with all embedded metadata removed                                         | Soil estimates, quality checks and the open dataset                      | Contract                            |
-| Attribution name and grant: the name you chose (or the default pseudonym), the terms version and when you accepted it                     | To credit your photographs and keep a record of the licences you granted | Contract; consent for a typed name  |
-| Derived data: hexagonal map cells, quality checks, soil-map, elevation and rainfall values looked up for your area                        | Quality checks and estimates                                             | Legitimate interests (data quality) |
-| Rights requests: what you asked, when, and when it was done                                                                               | To carry out and evidence withdrawals and deletions                      | Legal obligation                    |
-| Technical and audit logs kept by our hosting providers (IP address, browser, sign-in events)                                              | Security and abuse prevention                                            | Legitimate interests (security)     |
+| Data                                                                                                                                                   | Why                                                                                                                                           | Basis **[DECISION]**                |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| Account: an anonymous account identifier, or your e-mail address if you add one                                                                        | To let you contribute and manage your data from your devices                                                                                  | Contract                            |
+| Observation: precise position (device GPS with its accuracy, or a pin you place), capture time, coarse device model, your one-tap answers              | To place, check and use your observation scientifically                                                                                       | Contract                            |
+| Photographs: the originals until they are checked, then copies with all embedded metadata removed                                                      | Soil estimates, quality checks and the open dataset                                                                                           | Contract                            |
+| Attribution name and grant: the name you chose (or the default pseudonym), the terms version and when you accepted it                                  | To credit your photographs and keep a record of the licences you granted                                                                      | Contract; consent for a typed name  |
+| Derived data: hexagonal map cells, quality checks, soil-map, elevation and rainfall values looked up for your area                                     | Quality checks and estimates                                                                                                                  | Legitimate interests (data quality) |
+| Rights requests: what you asked, when, and when it was done                                                                                            | To carry out and evidence withdrawals and deletions                                                                                           | Legal obligation                    |
+| Requests to GSIP's public data interface, from people or AI agents: the requester's IP address, and the map cell asked about (resolution 8 or coarser) | To share requests fairly and limit abuse. GSIP holds the address only in the interface's memory while it runs and never stores it or the cell | Legitimate interests (security)     |
+| Technical and audit logs kept by our hosting providers (IP address, browser, sign-in events)                                                           | Security and abuse prevention                                                                                                                 | Legitimate interests (security)     |
 
 We do not sell personal data, show advertising, or build profiles of contributors.
 
@@ -36,7 +37,8 @@ appears nowhere.
 Never public: your precise position, GPS accuracy, finer map cells, account identifiers, e-mail
 address, device model, original photographs or any photo metadata, and soil-map values looked up
 for your position. An observation that cannot yet meet the three-contributor rule is held back.
-The public map's counts are recomputed with each nightly release.
+The public map's counts are recomputed with each nightly release. GSIP's public data interface
+for people and AI agents serves the same published cells and release records, and nothing else.
 
 Photographs can show more than soil: please follow the rules on what to photograph.
 
