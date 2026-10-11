@@ -265,10 +265,32 @@ export type Database = {
           },
         ]
       }
+      prior_cell_cache: {
+        Row: {
+          h3_r9: string
+          payload: Json
+          retrieved_at: string
+          source: string
+        }
+        Insert: {
+          h3_r9: string
+          payload: Json
+          retrieved_at?: string
+          source: string
+        }
+        Update: {
+          h3_r9?: string
+          payload?: Json
+          retrieved_at?: string
+          source?: string
+        }
+        Relationships: []
+      }
       prior_jobs: {
         Row: {
           attempts: number
           completed_at: string | null
+          empty_sources: string[]
           last_error: string | null
           started_at: string | null
           status: string
@@ -278,6 +300,7 @@ export type Database = {
         Insert: {
           attempts?: number
           completed_at?: string | null
+          empty_sources?: string[]
           last_error?: string | null
           started_at?: string | null
           status?: string
@@ -287,6 +310,7 @@ export type Database = {
         Update: {
           attempts?: number
           completed_at?: string | null
+          empty_sources?: string[]
           last_error?: string | null
           started_at?: string | null
           status?: string
@@ -510,6 +534,30 @@ export type Database = {
           },
         ]
       }
+      upstream_buckets: {
+        Row: {
+          capacity: number
+          refill_per_minute: number
+          refilled_at: string
+          source: string
+          tokens: number
+        }
+        Insert: {
+          capacity: number
+          refill_per_minute: number
+          refilled_at?: string
+          source: string
+          tokens: number
+        }
+        Update: {
+          capacity?: number
+          refill_per_minute?: number
+          refilled_at?: string
+          source?: string
+          tokens?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -517,7 +565,7 @@ export type Database = {
     Functions: {
       capture_is_open: { Args: never; Returns: boolean }
       claim_prior_job_attempt: {
-        Args: { p_submission_id: string }
+        Args: { p_owner_request?: boolean; p_submission_id: string }
         Returns: number
       }
       current_contributor_id: { Args: never; Returns: string }
@@ -526,9 +574,17 @@ export type Database = {
         Returns: string
       }
       refresh_public_h3_cells: { Args: { payload: Json }; Returns: number }
+      requeue_stale_prior_jobs: {
+        Args: { p_older_than?: unknown }
+        Returns: number
+      }
       settle_submission: {
         Args: { p_submission_id: string }
         Returns: string
+      }
+      take_upstream_token: {
+        Args: { p_cost?: number; p_source: string }
+        Returns: boolean
       }
     }
     Enums: {

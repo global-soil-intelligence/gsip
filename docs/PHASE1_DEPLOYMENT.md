@@ -67,3 +67,14 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    ```
 
    Setting it back to `false` pauses capture immediately; queued observations wait on devices.
+
+### WP-6c — priors and tiles
+
+1. Apply the migrations, then redeploy the function so it picks up the new import map:
+   `supabase functions deploy prior-attach`. The function now needs no new secret; the optional
+   `OPEN_METEO_ARCHIVE_BASE` and `SOILGRIDS_BASE` variables override the public endpoints.
+2. Upstream buckets start full (SoilGrids 5 a minute, SSURGO 30, Open-Meteo 60). To pause all prior
+   lookups, set `refill_per_minute` very low in `upstream_buckets`; jobs simply defer.
+3. Build the prior archives (`uv run python -m pipeline.build_prior_tiles --max-zoom 8`), publish the
+   three `.pmtiles` files together, and set the repository variable `VITE_PRIOR_TILES_BASE`. Until
+   then the map uses ISRIC's WMS with ISRIC's own legend.

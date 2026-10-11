@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@gsip/schema'
 import {
@@ -26,7 +26,39 @@ vi.mock('pmtiles', () => ({
   },
 }))
 
-import { App } from '../src/App'
+import { App, Legend } from '../src/App'
+import { legendGradient } from '@gsip/schema'
+
+afterEach(() => {
+  cleanup()
+  vi.unstubAllEnvs()
+})
+
+describe('prior legends', () => {
+  it('draws every PMTiles legend from the palette that colours the tiles', () => {
+    vi.stubEnv('VITE_PRIOR_TILES_BASE', 'https://tiles.example/gsip/')
+    for (const layer of PRIOR_LAYERS) {
+      render(<Legend layer={layer} />)
+      const gradient = screen.getByTestId(`legend-gradient-${layer.id}`)
+      // jsdom normalizes colours, so compare against the same normalization.
+      const probe = document.createElement('i')
+      probe.style.background = legendGradient(layer.palette)
+      expect(gradient.style.background).toBe(probe.style.background)
+      expect(gradient.style.background).not.toBe('')
+      cleanup()
+    }
+  })
+
+  it('shows ISRIC’s own legend for the WMS fallback it does not colour', () => {
+    const soc = PRIOR_LAYERS[0]
+    render(<Legend layer={soc} />)
+    const image = screen.getByRole('img', {
+      name: /ISRIC legend for Organic carbon/i,
+    })
+    expect(image.getAttribute('src')).toContain('request=GetLegendGraphic')
+    expect(image.getAttribute('src')).toContain('layer=soc_0-5cm_mean')
+  })
+})
 
 describe('public map', () => {
   it('offers all Phase 1 layers, units, and a contribution path', () => {

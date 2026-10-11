@@ -2,3 +2,4 @@ docs/archive/
 output/
 pnpm-lock.yaml
 uv.lock
+supabase/functions/deno.lock

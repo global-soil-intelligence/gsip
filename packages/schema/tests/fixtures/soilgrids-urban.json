@@ -1,0 +1,339 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-73.2121, 44.4759]
+  },
+  "properties": {
+    "layers": [
+      {
+        "name": "bdod",
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 15,
+              "bottom_depth": 30,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          }
+        ]
+      },
+      {
+        "name": "cec",
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 15,
+              "bottom_depth": 30,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          }
+        ]
+      },
+      {
+        "name": "clay",
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 15,
+              "bottom_depth": 30,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          }
+        ]
+      },
+      {
+        "name": "nitrogen",
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 15,
+              "bottom_depth": 30,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          }
+        ]
+      },
+      {
+        "name": "phh2o",
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 15,
+              "bottom_depth": 30,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          }
+        ]
+      },
+      {
+        "name": "sand",
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 15,
+              "bottom_depth": 30,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          }
+        ]
+      },
+      {
+        "name": "silt",
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 15,
+              "bottom_depth": 30,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          }
+        ]
+      },
+      {
+        "name": "soc",
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          },
+          {
+            "range": {
+              "top_depth": 15,
+              "bottom_depth": 30,
+              "unit_depth": "cm"
+            },
+            "values": {
+              "Q0.05": null,
+              "Q0.95": null,
+              "mean": null
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

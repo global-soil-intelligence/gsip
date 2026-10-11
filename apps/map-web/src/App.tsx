@@ -2,17 +2,54 @@ import { useEffect, useRef, useState } from 'react'
 import * as maplibregl from 'maplibre-gl'
 import type { Map as MapLibreMap, MapLayerMouseEvent } from 'maplibre-gl'
 import { Protocol } from 'pmtiles'
+import { legendGradient, legendLabels } from '@gsip/schema'
 import {
   cellSummary,
   contributionFeatures,
   loadContributionCells,
   PRIOR_LAYERS,
   priorSource,
+  priorTilesBase,
+  type PriorLayer,
   type PriorLayerId,
+  wmsLegendUrl,
 } from './mapData'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 let protocolRegistered = false
+
+export function Legend({ layer }: { layer: PriorLayer }) {
+  const [legendFailed, setLegendFailed] = useState(false)
+  if (!priorTilesBase()) {
+    return (
+      <div
+        className="legend legend-wms"
+        aria-label={`${layer.label} legend from ISRIC`}
+      >
+        {legendFailed ? (
+          <span>Colours follow ISRIC&rsquo;s SoilGrids map service.</span>
+        ) : (
+          <img
+            alt={`ISRIC legend for ${layer.label} (${layer.unit})`}
+            onError={() => setLegendFailed(true)}
+            src={wmsLegendUrl(layer)}
+          />
+        )}
+      </div>
+    )
+  }
+  const labels = legendLabels(layer.palette)
+  return (
+    <div className="legend" aria-label={`${layer.label} legend`}>
+      <span>{labels.low}</span>
+      <i
+        data-testid={`legend-gradient-${layer.id}`}
+        style={{ background: legendGradient(layer.palette) }}
+      />
+      <span>{labels.high}</span>
+    </div>
+  )
+}
 
 function registerPmtiles() {
   if (protocolRegistered) return
@@ -219,14 +256,7 @@ export function App() {
             </button>
           ))}
         </div>
-        <div
-          className={`legend legend-${activeLayer}`}
-          aria-label={`${selected.label} legend`}
-        >
-          <span>{selected.low}</span>
-          <i />
-          <span>{selected.high}</span>
-        </div>
+        <Legend key={selected.id} layer={selected} />
         <p className="map-status" aria-live="polite">
           {mapStatus}
         </p>

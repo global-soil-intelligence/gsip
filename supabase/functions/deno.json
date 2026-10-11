@@ -3,6 +3,7 @@
     "strict": true
   },
   "imports": {
-    "zod": "npm:zod@4.3.6"
+    "h3-js": "npm:h3-js@4.5.0",
+    "zod": "npm:zod@4.6.5"
   }
 }
