@@ -112,11 +112,11 @@ Acceptance criteria:
 Fixes the mechanisms behind launch blocker 7; counsel still approves the text.
 Scope:
 
-1. **Requests.** `deletion_requests` (kinds `withdraw_contributions` and `delete_account`; owner insert and select; one open request per contributor) and append-only `grant_withdrawals` (service role).
-2. **Rights worker.** `pipeline/rights_worker.py` (service role, daily workflow) deletes the contributor's objects in both buckets and their submissions (cascading), appends withdrawals for their grants, and for `delete_account` pseudonymizes the contributor row and deletes the auth user through the Admin API. Idempotent; failures leave the request retryable.
+1. **Requests.** `deletion_requests` (kinds `withdraw_contributions` and `delete_account`; owner insert and select; one open request per contributor) and append-only `grant_withdrawals` (service role). Filing a request withdraws every grant the contributor holds in the same transaction, so publication stops at once; a withdrawn grant refuses new submissions.
+2. **Rights worker.** `pipeline/rights_worker.py` (service role, daily workflow) deletes every submission under a withdrawn grant (cascading) and every object under the contributor's Storage prefix that no remaining submission owns, and for `delete_account` also withdraws grants created after the request, deletes the auth user through the Admin API, pseudonymizes the contributor row and replaces the attribution names on its grants with the default pseudonym (the only change a grant ever undergoes). Idempotent; a failed step returns the request to the queue after a one-hour wait. Every run also deletes canonical photo objects that no photo row owns, and the QA worker undoes a promotion whose photo was withdrawn mid-check.
 3. **Export filters.** Withdrawn grants never export. Photos publish only under the default pseudonym or an approved attribution (`attribution_reviews`, service role, with a small review CLI); otherwise the row is released without photos until review.
 4. **Legal pack drafts** in `docs/legal/`, each marked "Draft — requires counsel review": terms, privacy notice with processor list, withdrawal and deletion procedure (including Hugging Face history), classroom and minors policy, sampling and land-access rules.
-5. **Capture.** A "Your data" panel to withdraw contributions or delete the account, with confirmation and status; acknowledgement of the sampling rules before queueing; terms and privacy links from `VITE_TERMS_URL` and `VITE_PRIVACY_URL`.
+5. **Capture.** A "Your data" panel to withdraw contributions or delete the account, with typed confirmation and status; acknowledgement of the sampling rules before queueing; terms, privacy and sampling-rules links from `VITE_TERMS_URL`, `VITE_PRIVACY_URL` and `VITE_SAMPLING_RULES_URL` (HTTPS or same-site only), defaulting to the drafts in the repository.
 
 Acceptance criteria:
 
@@ -207,6 +207,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=   # browser-safe publishable key
 VITE_CAPTURE_LIVE=false          # "true" opens capture in the site and the capture app
 VITE_TERMS_URL=                  # published contribution terms (WP-6d)
 VITE_PRIVACY_URL=                # published privacy notice (WP-6d)
+VITE_SAMPLING_RULES_URL=         # published sampling and land-access rules (WP-6d)
 VITE_PRIOR_TILES_BASE=           # PMTiles archive base URL; empty uses the ISRIC WMS fallback
 VITE_DATASET_URL=                # published Hugging Face dataset URL
 HF_TOKEN=                        # dataset push (CI secret)
