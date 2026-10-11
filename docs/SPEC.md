@@ -127,7 +127,7 @@ Before stripping, ingest applies the EXIF orientation and converts embedded colo
 | Either flagged for review, or QA errored                  | `flagged`         |
 | Both passed                                               | `qa_pass`         |
 
-**Upstream fair use (I14):** prior lookups are cached per resolution-9 cell; each upstream source has a database token bucket (SoilGrids: 5 calls a minute). A job that cannot get a token stays pending without consuming an attempt. Owners can start only their own unstarted job; only the service worker retries.
+**Upstream fair use (I14):** prior lookups are cached per resolution-9 cell; each upstream source has a database token bucket (SoilGrids: one call at a time, at most 5 a minute). Claiming a job and paying for its calls is one atomic step, so a request that cannot be claimed or must wait spends nothing and consumes no attempt. Owners can start only their own unstarted job; only the service worker retries.
 
 ## 6. Data schema (Postgres/PostGIS, canonical)
 
@@ -203,7 +203,7 @@ dataset_releases    version, released_at, rows, photos, hf_revision (public)
 
 Layers, all MapLibre + PMTiles, all reproducible from the pipeline:
 
-1. **Prior layers** — SoilGrids properties coloured with `gdaldem color-relief` from the versioned palette in `packages/schema`, with transparent nodata. Legends are drawn from the same palette. When no tile archive is configured, the map falls back to ISRIC's WMS and shows ISRIC's own legend.
+1. **Prior layers** — SoilGrids properties coloured with `gdaldem color-relief` from the versioned palette in `packages/schema`, with transparent nodata. Legends are drawn from the same palette. Archives are stamped with the palette version and published under it, and a deploy fails unless they match the palette the legends use. When no tile archive is configured, the map falls back to ISRIC's WMS and shows ISRIC's own legend.
 2. **Contribution layer** — k-anonymous H3 cells at resolutions 4, 6 and 8, finer cells drawn above coarser ones. Popups show the observation count, the resolution and the latest date; never a point.
 3. **Fused correction layer** (Phase 3) — where GSIP's model diverges from priors, with confidence. _This layer is the product._
 4. **Most Wanted layer** (Phase 2–3) — information-gain targets, excluding protected areas and framed as "if you have access" (§9).
