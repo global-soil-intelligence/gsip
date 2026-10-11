@@ -2,10 +2,12 @@ import { z } from 'zod'
 import {
   elevationUrl,
   isConus,
+  isDefinitiveRejection,
   parseElevation,
   parsePrecipitationWindow,
   parseSoilGridsResponse,
   parseSsurgoResponse,
+  precipitationSource,
   precipitationUrl,
   priorLookupPoint,
   type PriorInput,
@@ -20,13 +22,16 @@ import {
  * Invariants:
  *  - external services see only the resolution-9 cell centre (SPEC I7);
  *  - static lookups are cached per cell; a cache hit makes no upstream call;
- *  - every upstream call first takes a token from a shared bucket; without one the job is
- *    deferred before it is claimed, so it consumes no attempt (I14);
- *  - an empty answer completes the job ("no prior", I3); only failures dead-letter.
+ *  - claiming a job and paying for its upstream calls is one atomic database step
+ *    (`begin_prior_attempt`): a request that cannot be claimed, or must wait for tokens, spends
+ *    nothing and claims nothing (I14);
+ *  - one upstream call per token: no immediate retries; the job retry is the retry;
+ *  - an empty or definitive answer completes the job ("no prior", I3); only failures dead-letter.
  */
 
 export type StaticSource = 'soilgrids' | 'ssurgo' | 'elevation'
 export type UpstreamBucket = 'soilgrids' | 'ssurgo' | 'open_meteo'
+export type TokenCosts = Partial<Record<UpstreamBucket, number>>
 
 export type PriorJobSubmission = {
   capturedAt: string
@@ -37,13 +42,18 @@ export type PriorJobSubmission = {
 
 export type CachedEntry = { payload: unknown; retrievedAt: string }
 
+export type BeginResult =
+  | { attempts: number; outcome: 'claimed' }
+  | { outcome: 'deferred'; retryAfterSeconds: number }
+  | { outcome: 'not_claimable' }
+
 export type PriorJobDeps = {
-  claim: (submissionId: string, ownerRequest: boolean) => Promise<number | null>
-  fetchJson: (
-    url: string,
-    init: RequestInit,
-    attempts: number,
-  ) => Promise<unknown>
+  begin: (
+    submissionId: string,
+    ownerRequest: boolean,
+    costs: TokenCosts,
+  ) => Promise<BeginResult>
+  fetchJson: (url: string, init: RequestInit) => Promise<unknown>
   finish: (update: {
     attempts: number
     emptySources: string[]
@@ -54,7 +64,6 @@ export type PriorJobDeps = {
   readCache: (
     cell: string,
   ) => Promise<Partial<Record<StaticSource, CachedEntry>>>
-  takeToken: (bucket: UpstreamBucket, cost: number) => Promise<boolean>
   writeCache: (
     cell: string,
     source: StaticSource,
@@ -80,6 +89,7 @@ export type PriorJobOutcome = {
   emptySources: string[]
   failedSources: string[]
   priors: number
+  retryAfterSeconds: number | null
   status: 'completed' | 'dead_letter' | 'deferred' | 'not_claimable'
 }
 
@@ -89,6 +99,36 @@ export const DEFAULT_PRIOR_JOB_CONFIG: PriorJobConfig = {
   forecastBase: 'https://api.open-meteo.com',
   soilBase: 'https://rest.isric.org',
   ssurgoUrl: 'https://SDMDataAccess.sc.egov.usda.gov/Tabular/post.rest',
+}
+
+/** HTTP status for each outcome of the `prior-attach` function. */
+export const PRIOR_OUTCOME_HTTP_STATUS: Record<
+  PriorJobOutcome['status'],
+  number
+> = {
+  completed: 200,
+  dead_letter: 502,
+  deferred: 202,
+  not_claimable: 409,
+}
+
+/**
+ * Service mode (retries allowed) only for the exact service-role key the function runs with,
+ * compared in constant time. A decoded-but-unverified JWT claim is never trusted.
+ */
+export function isServiceRequest(
+  authorization: string | null,
+  serviceKey: string,
+): boolean {
+  if (!authorization || !serviceKey) return false
+  const token = authorization.replace(/^Bearer\s+/i, '')
+  const encoder = new TextEncoder()
+  const left = encoder.encode(token)
+  const right = encoder.encode(serviceKey)
+  let difference = left.length ^ right.length
+  for (let index = 0; index < Math.max(left.length, right.length); index += 1)
+    difference |= (left[index] ?? 0) ^ (right[index] ?? 0)
+  return difference === 0
 }
 
 const priorInputSchema = z.object({
@@ -126,6 +166,21 @@ function cachedElevation(payload: unknown): number | null | undefined {
   return parsed.success ? parsed.data.elevation : undefined
 }
 
+function outcome(
+  status: PriorJobOutcome['status'],
+  fields: Partial<PriorJobOutcome> = {},
+): PriorJobOutcome {
+  return {
+    attempts: null,
+    emptySources: [],
+    failedSources: [],
+    priors: 0,
+    retryAfterSeconds: null,
+    status,
+    ...fields,
+  }
+}
+
 export async function runPriorJob(
   deps: PriorJobDeps,
   submission: PriorJobSubmission,
@@ -144,44 +199,35 @@ export async function runPriorJob(
   let elevation = cachedElevation(
     fresh(cache.elevation, now, config.cacheTtlDays),
   )
+  const precipitation = precipitationSource(submission.capturedAt, now)
 
-  // Spend the scarcest tokens first so a deferral wastes as little as possible.
-  const openMeteoCalls = (elevation === undefined ? 1 : 0) + 1
-  const needed: Array<[UpstreamBucket, number]> = []
-  if (soilgrids === undefined) needed.push(['soilgrids', 1])
-  if (ssurgo === undefined) needed.push(['ssurgo', 1])
-  needed.push(['open_meteo', openMeteoCalls])
-  for (const [bucket, cost] of needed) {
-    if (!(await deps.takeToken(bucket, cost)))
-      return {
-        attempts: null,
-        emptySources: [],
-        failedSources: [],
-        priors: 0,
-        status: 'deferred',
-      }
-  }
+  const costs: TokenCosts = {}
+  if (soilgrids === undefined) costs.soilgrids = 1
+  if (ssurgo === undefined) costs.ssurgo = 1
+  const openMeteoCalls =
+    (elevation === undefined ? 1 : 0) +
+    (precipitation === 'unavailable' ? 0 : 1)
+  if (openMeteoCalls) costs.open_meteo = openMeteoCalls
 
-  const attempts = await deps.claim(submission.id, ownerRequest)
-  if (attempts === null)
-    return {
-      attempts: null,
-      emptySources: [],
-      failedSources: [],
-      priors: 0,
-      status: 'not_claimable',
-    }
+  const begun = await deps.begin(submission.id, ownerRequest, costs)
+  if (begun.outcome === 'deferred')
+    return outcome('deferred', { retryAfterSeconds: begun.retryAfterSeconds })
+  if (begun.outcome === 'not_claimable') return outcome('not_claimable')
+  const attempts = begun.attempts
 
   const failedSources: string[] = []
   const emptySources: string[] = []
+  // A failed cache write never fails a source: the fetched answer is still used.
+  const cacheQuietly = (source: StaticSource, payload: unknown) =>
+    deps.writeCache(point.cell, source, payload).catch(() => undefined)
+
   try {
     if (soilgrids === undefined) {
       try {
-        // ISRIC's fair-use limit applies to retries too: one call per claimed attempt.
         soilgrids = parseSoilGridsResponse(
-          await deps.fetchJson(soilGridsUrl(config.soilBase, point), {}, 1),
+          await deps.fetchJson(soilGridsUrl(config.soilBase, point), {}),
         )
-        await deps.writeCache(point.cell, 'soilgrids', { priors: soilgrids })
+        await cacheQuietly('soilgrids', { priors: soilgrids })
       } catch {
         failedSources.push('soilgrids')
       }
@@ -191,20 +237,16 @@ export async function runPriorJob(
     if (ssurgo === undefined) {
       try {
         ssurgo = parseSsurgoResponse(
-          await deps.fetchJson(
-            config.ssurgoUrl,
-            {
-              body: JSON.stringify({
-                format: 'JSON+COLUMNNAME',
-                query: ssurgoQuery(point),
-              }),
-              headers: { 'Content-Type': 'application/json' },
-              method: 'POST',
-            },
-            2,
-          ),
+          await deps.fetchJson(config.ssurgoUrl, {
+            body: JSON.stringify({
+              format: 'JSON+COLUMNNAME',
+              query: ssurgoQuery(point),
+            }),
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+          }),
         )
-        await deps.writeCache(point.cell, 'ssurgo', { priors: ssurgo })
+        await cacheQuietly('ssurgo', { priors: ssurgo })
       } catch {
         failedSources.push('ssurgo')
       }
@@ -214,35 +256,38 @@ export async function runPriorJob(
     if (elevation === undefined) {
       try {
         elevation = parseElevation(
-          await deps.fetchJson(elevationUrl(config.forecastBase, point), {}, 2),
+          await deps.fetchJson(elevationUrl(config.forecastBase, point), {}),
         )
-        await deps.writeCache(point.cell, 'elevation', { elevation })
-      } catch {
-        failedSources.push('elevation')
+        await cacheQuietly('elevation', { elevation })
+      } catch (error) {
+        if (isDefinitiveRejection(error)) elevation = null
+        else failedSources.push('elevation')
       }
     }
     if (elevation === null) emptySources.push('elevation')
 
-    let precipFlag: boolean | null | undefined
-    try {
-      precipFlag = parsePrecipitationWindow(
-        await deps.fetchJson(
-          precipitationUrl({
-            archiveBase: config.archiveBase,
-            capturedAt: submission.capturedAt,
-            forecastBase: config.forecastBase,
-            now,
-            point,
-          }),
-          {},
-          2,
-        ),
-        submission.capturedAt,
-      )
-    } catch {
-      failedSources.push('precipitation')
+    let precipFlag: boolean | null = null
+    if (precipitation !== 'unavailable') {
+      try {
+        precipFlag = parsePrecipitationWindow(
+          await deps.fetchJson(
+            precipitationUrl({
+              archiveBase: config.archiveBase,
+              capturedAt: submission.capturedAt,
+              forecastBase: config.forecastBase,
+              now,
+              point,
+            }),
+            {},
+          ),
+          submission.capturedAt,
+        )
+      } catch (error) {
+        if (!isDefinitiveRejection(error)) failedSources.push('precipitation')
+      }
     }
-    if (precipFlag === null) emptySources.push('precipitation')
+    if (precipFlag === null && !failedSources.includes('precipitation'))
+      emptySources.push('precipitation')
 
     const rows = [...(soilgrids ?? []), ...(ssurgo ?? [])]
     if (rows.length) await deps.writePriors(rows)
@@ -260,13 +305,12 @@ export async function runPriorJob(
         : null,
       status,
     })
-    return {
+    return outcome(status, {
       attempts,
       emptySources,
       failedSources,
       priors: rows.length,
-      status,
-    }
+    })
   } catch {
     await deps
       .finish({
@@ -276,12 +320,10 @@ export async function runPriorJob(
         status: 'dead_letter',
       })
       .catch(() => undefined)
-    return {
+    return outcome('dead_letter', {
       attempts,
       emptySources,
       failedSources: [...failedSources, 'internal'],
-      priors: 0,
-      status: 'dead_letter',
-    }
+    })
   }
 }

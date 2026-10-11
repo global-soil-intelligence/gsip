@@ -563,12 +563,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      capture_is_open: { Args: never; Returns: boolean }
-      claim_prior_job_attempt: {
-        Args: { p_owner_request?: boolean; p_submission_id: string }
-        Returns: number
+      begin_prior_attempt: {
+        Args: {
+          p_costs: Json
+          p_owner_request: boolean
+          p_submission_id: string
+        }
+        Returns: {
+          attempts: number | null
+          outcome: string
+          retry_after_seconds: number | null
+        }[]
       }
+      capture_is_open: { Args: never; Returns: boolean }
       current_contributor_id: { Args: never; Returns: string }
+      fail_prior_job: {
+        Args: { p_reason: string; p_submission_id: string }
+        Returns: undefined
+      }
       finalize_submission: {
         Args: { p_submission_id: string }
         Returns: string
@@ -581,10 +593,6 @@ export type Database = {
       settle_submission: {
         Args: { p_submission_id: string }
         Returns: string
-      }
-      take_upstream_token: {
-        Args: { p_cost?: number; p_source: string }
-        Returns: boolean
       }
     }
     Enums: {

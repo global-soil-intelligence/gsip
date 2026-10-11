@@ -157,9 +157,15 @@ export function parseElevation(input: unknown): number | null {
 export const PRECIPITATION_WINDOW_HOURS = 72
 export const PRECIPITATION_FLAG_MM = 1
 
+const HOUR_MS = 60 * 60_000
+
 /**
  * Whether at least 1 mm of rain fell in the 72 hours before capture (the main moisture
  * confounder for soil colour). Null when the window has no data.
+ *
+ * Open-Meteo's hourly `precipitation` labelled T is the sum over the preceding hour (T-1h, T], so
+ * an hour counts when that interval overlaps the window; an hour that starts at or after the
+ * capture moment does not.
  */
 export function parsePrecipitationWindow(
   input: unknown,
@@ -168,14 +174,15 @@ export function parsePrecipitationWindow(
   const { hourly } = hourlyPrecipitationSchema.parse(input)
   const end = Date.parse(capturedAt)
   if (!Number.isFinite(end)) throw new Error('capturedAt is not a timestamp')
-  const start = end - PRECIPITATION_WINDOW_HOURS * 60 * 60_000
+  const start = end - PRECIPITATION_WINDOW_HOURS * HOUR_MS
   let total = 0
   let observed = 0
   hourly.time.forEach((time, index) => {
     // Open-Meteo returns UTC hours without a zone suffix when timezone=UTC.
-    const hour = Date.parse(time.endsWith('Z') ? time : `${time}Z`)
+    const label = Date.parse(time.endsWith('Z') ? time : `${time}Z`)
     const value = hourly.precipitation[index]
-    if (!Number.isFinite(hour) || hour < start || hour >= end) return
+    if (!Number.isFinite(label) || label <= start || label - HOUR_MS >= end)
+      return
     if (value === null || value === undefined) return
     total += value
     observed += 1
@@ -194,12 +201,15 @@ const SSURGO_COLUMNS = [
   readonly [string, CanonicalProperty, CanonicalUnit, number]
 >
 
+// Soil Data Access answers an empty result set with `{}` (no Table): a definitive "no data".
 const ssurgoResponseSchema = z.object({
-  Table: z.array(z.array(z.union([z.string(), z.number(), z.null()]))),
+  Table: z
+    .array(z.array(z.union([z.string(), z.number(), z.null()])))
+    .optional(),
 })
 
 export function parseSsurgoResponse(input: unknown): PriorInput[] {
-  const rows = ssurgoResponseSchema.parse(input).Table
+  const rows = ssurgoResponseSchema.parse(input).Table ?? []
   if (rows.length < 2) return []
   const headers = rows[0].map(String)
   const indexed = rows
@@ -259,6 +269,28 @@ export function isConus(latitude: number, longitude: number): boolean {
   )
 }
 
+/** An upstream failure, with the HTTP status when there was one (null for network errors). */
+export class UpstreamError extends Error {
+  constructor(
+    message: string,
+    readonly status: number | null,
+  ) {
+    super(message)
+    this.name = 'UpstreamError'
+  }
+}
+
+/** A 4xx other than 429 is a definitive answer about the request, not a transient failure. */
+export function isDefinitiveRejection(error: unknown): boolean {
+  return (
+    error instanceof UpstreamError &&
+    error.status !== null &&
+    error.status >= 400 &&
+    error.status < 500 &&
+    error.status !== 429
+  )
+}
+
 export async function fetchJsonWithRetry(
   fetcher: typeof fetch,
   input: string,
@@ -279,20 +311,26 @@ export async function fetchJsonWithRetry(
     let response: Response
     try {
       response = await fetcher(input, init)
-    } catch (error) {
-      lastError = error
+    } catch {
+      lastError = new UpstreamError('Upstream request failed', null)
       if (attempt < attempts) await sleep(baseDelayMs * 2 ** (attempt - 1))
       continue
     }
     if (response.ok) return (await response.json()) as unknown
     if (response.status < 500 && response.status !== 429)
-      throw new Error(`Upstream request failed with status ${response.status}`)
-    lastError = new Error(`Retryable upstream status ${response.status}`)
+      throw new UpstreamError(
+        `Upstream request failed with status ${response.status}`,
+        response.status,
+      )
+    lastError = new UpstreamError(
+      `Retryable upstream status ${response.status}`,
+      response.status,
+    )
     if (attempt < attempts) await sleep(baseDelayMs * 2 ** (attempt - 1))
   }
   throw lastError instanceof Error
     ? lastError
-    : new Error('Upstream request failed')
+    : new UpstreamError('Upstream request failed', null)
 }
 
 export function soilGridsUrl(base: string, point: LookupPoint): string {
@@ -334,11 +372,43 @@ export function elevationUrl(base: string, point: LookupPoint): string {
   return url.toString()
 }
 
-/** The Open-Meteo forecast API serves roughly the last 92 days; older captures use the archive. */
+/** The Open-Meteo forecast API serves roughly the last 92 days; older windows use the archive. */
 export const FORECAST_HISTORY_DAYS = 90
+/** The ERA5-based archive starts in 1940. */
+export const ARCHIVE_START = Date.parse('1940-01-02T00:00:00Z')
+/**
+ * Capture clients never send a capture time older than a year; anything far older is a wrong
+ * device clock, and weather for it would be meaningless rather than missing.
+ */
+export const OLDEST_CAPTURE_DAYS = 400
+const FUTURE_TOLERANCE_MS = 60 * 60_000
 
 function isoDate(epochMs: number): string {
   return new Date(epochMs).toISOString().slice(0, 10)
+}
+
+/**
+ * Which Open-Meteo service covers the window before a capture, or `unavailable` when none can
+ * or should (a device clock in the future or implausibly old): that is "no data", never a
+ * retryable failure.
+ * The forecast cut-over is measured from the start of the window, not the capture moment.
+ */
+export function precipitationSource(
+  capturedAt: string,
+  now: Date,
+): 'archive' | 'forecast' | 'unavailable' {
+  const end = Date.parse(capturedAt)
+  if (!Number.isFinite(end)) return 'unavailable'
+  const start = end - PRECIPITATION_WINDOW_HOURS * HOUR_MS
+  if (
+    end > now.getTime() + FUTURE_TOLERANCE_MS ||
+    start < ARCHIVE_START ||
+    now.getTime() - end > OLDEST_CAPTURE_DAYS * 24 * HOUR_MS
+  )
+    return 'unavailable'
+  return now.getTime() - start > FORECAST_HISTORY_DAYS * 24 * HOUR_MS
+    ? 'archive'
+    : 'forecast'
 }
 
 export function precipitationUrl(options: {
@@ -349,10 +419,11 @@ export function precipitationUrl(options: {
   point: LookupPoint
 }): string {
   const end = Date.parse(options.capturedAt)
-  if (!Number.isFinite(end)) throw new Error('capturedAt is not a timestamp')
-  const start = end - PRECIPITATION_WINDOW_HOURS * 60 * 60_000
-  const archived =
-    options.now.getTime() - end > FORECAST_HISTORY_DAYS * 24 * 60 * 60_000
+  const source = precipitationSource(options.capturedAt, options.now)
+  if (source === 'unavailable')
+    throw new Error('No precipitation service covers this capture time')
+  const start = end - PRECIPITATION_WINDOW_HOURS * HOUR_MS
+  const archived = source === 'archive'
   const url = archived
     ? new URL('/v1/archive', options.archiveBase)
     : new URL('/v1/forecast', options.forecastBase)

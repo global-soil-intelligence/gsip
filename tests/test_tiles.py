@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import io
+import json
 import os
 import shutil
 import sqlite3
 import subprocess
+from contextlib import closing
 from pathlib import Path
 
 import numpy as np
@@ -15,11 +17,13 @@ from PIL import Image
 
 from pipeline.build_prior_tiles import (
     PALETTE_PATH,
+    archive_path,
     color_table,
     colorize,
     expected_rgb,
     load_palette,
     raw_value,
+    stamp_metadata,
     to_mbtiles,
 )
 
@@ -59,6 +63,55 @@ def test_color_tables_convert_canonical_stops_to_raw_soilgrids_units_exactly() -
         "90",
     ]
     assert raw_value(PALETTE["clay"], 350) == 350
+
+
+def test_archives_live_under_their_palette_version() -> None:
+    version = json.loads(PALETTE_PATH.read_text(encoding="utf-8"))["version"]
+    for name, layer in PALETTE.items():
+        assert layer.version == version
+        assert archive_path(Path("output/tiles"), layer) == Path(
+            "output", "tiles", version, f"{name}.pmtiles"
+        )
+
+
+@pytest.mark.parametrize("version", ["", "../tiles", "a/b", ".hidden"])
+def test_palette_versions_must_be_plain_directory_names(tmp_path: Path, version: str) -> None:
+    document = json.loads(PALETTE_PATH.read_text(encoding="utf-8"))
+    document["version"] = version
+    path = tmp_path / "palette.json"
+    path.write_text(json.dumps(document), encoding="utf-8")
+    with pytest.raises(ValueError, match="plain directory name"):
+        load_palette(path)
+
+
+def _metadata(mbtiles: Path) -> list[tuple[str, str]]:
+    with closing(sqlite3.connect(mbtiles)) as connection:
+        return sorted(connection.execute("select name, value from metadata"))
+
+
+def test_stamping_records_the_palette_version_once_and_keeps_other_rows(tmp_path: Path) -> None:
+    mbtiles = tmp_path / "stamp.mbtiles"
+    with closing(sqlite3.connect(mbtiles)) as connection, connection:
+        connection.execute("create table metadata (name text, value text)")
+        connection.executemany(
+            "insert into metadata (name, value) values (?, ?)",
+            [("format", "png"), ("name", "gdal default"), ("maxzoom", "8")],
+        )
+    layer = PALETTE["soc"]
+
+    stamp_metadata(mbtiles, layer)
+    stamp_metadata(mbtiles, layer)  # rebuilding never duplicates rows
+
+    rows = _metadata(mbtiles)
+    names = [name for name, _ in rows]
+    assert len(names) == len(set(names))
+    values = dict(rows)
+    assert values["gsip_palette_version"] == layer.version
+    assert values["gsip_layer"] == "soc"
+    assert values["name"] == "GSIP Organic carbon prior"
+    assert "CC BY 4.0" in values["attribution"] and "ISRIC" in values["attribution"]
+    assert layer.version in values["description"]
+    assert (values["format"], values["maxzoom"]) == ("png", "8")
 
 
 def test_expected_colours_interpolate_and_clamp() -> None:
@@ -158,9 +211,13 @@ def test_mbtiles_tiles_are_rgba_with_transparent_nodata(tmp_path: Path) -> None:
         colorize(str(source), layer, tmp_path / "tile.vrt"), tmp_path / "t.mbtiles"
     )
 
-    with sqlite3.connect(mbtiles) as connection:
+    stamp_metadata(mbtiles, layer)
+    with closing(sqlite3.connect(mbtiles)) as connection:
         blobs = [row[0] for row in connection.execute("select tile_data from tiles")]
     assert blobs
+    stamped = dict(_metadata(mbtiles))
+    assert stamped["gsip_palette_version"] == layer.version
+    assert stamped["format"] == "png"  # GDAL's own rows survive the stamp
     tile = np.asarray(Image.open(io.BytesIO(blobs[0])).convert("RGBA"))
     opaque = tile[tile[..., 3] == 255]
     transparent = tile[tile[..., 3] == 0]

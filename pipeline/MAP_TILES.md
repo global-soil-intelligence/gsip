@@ -17,9 +17,18 @@ The tile builder converts the stops to raw SoilGrids units and colours each rast
 - nodata is fully transparent, never opaque black;
 - tiles are RGBA PNG.
 
-The map's legends are drawn from the same JSON (`legendGradient`, `legendLabels`), so a legend cannot
-disagree with its tiles. Changing a palette means changing that file, rebuilding the archives and
-publishing them together.
+The map's legends are drawn from the same JSON (`legendGradient`, `legendLabels`). Three things keep
+a legend from ever disagreeing with its tiles:
+
+1. the builder stamps each archive's metadata with `gsip_palette_version`, `gsip_layer`, a name,
+   description and ISRIC attribution (CC BY 4.0), and writes it to `<output>/<palette version>/`;
+2. the map requests `${VITE_PRIOR_TILES_BASE}/<palette version>/<layer>.pmtiles`, the version it
+   draws its legends from;
+3. the Pages deploy runs `pnpm check:prior-tiles`, which reads each archive's metadata and fails if
+   any archive is missing, unstamped, holds another layer or carries another palette version.
+
+Changing a palette therefore means changing that file (and its `version`), rebuilding, and publishing
+the new version directory before the map that uses it can deploy.
 
 ## Build
 
@@ -29,8 +38,10 @@ Build all three release archives from the official SoilGrids global VRTs with on
 uv run python -m pipeline.build_prior_tiles --max-zoom 8 --output output/tiles
 ```
 
-The build requires GDAL (with `/vsicurl`) and the official `pmtiles` CLI. Publish `soc.pmtiles`,
-`ph.pmtiles`, and `clay.pmtiles` together, then set `VITE_PRIOR_TILES_BASE` to their public directory.
+The build requires GDAL (with `/vsicurl`) and the official `pmtiles` CLI. It writes
+`output/tiles/<palette version>/{soc,ph,clay}.pmtiles`. Publish that version directory under one public
+base, then set `VITE_PRIOR_TILES_BASE` to the base (without the version). Older version directories
+can stay published; nothing requests them.
 Initial browser payload is checked independently from archive size; MapLibre range-requests only the
 header, directory, and visible tiles.
 
@@ -39,5 +50,6 @@ header, directory, and visible tiles.
 `tests/test_tiles.py` checks the palette conversion exactly and runs a golden test through real GDAL:
 a synthetic Int16 raster with values above 255 and a nodata cell is coloured, and every pixel must
 match the palette within 2 levels per channel with transparent nodata; a second test builds an
-MBTiles tile and checks it is RGBA. CI installs `gdal-bin` and sets `GSIP_REQUIRE_GDAL=1`, so these
-tests cannot silently skip there.
+MBTiles tile, checks it is RGBA and stamped. CI installs `gdal-bin` and sets `GSIP_REQUIRE_GDAL=1`, so
+these tests cannot silently skip there. `apps/map-web/tests/check-prior-tiles.test.ts` covers the
+deploy gate, including a run of the command against a local server.

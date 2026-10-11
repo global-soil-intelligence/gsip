@@ -29,3 +29,10 @@ file_size_limit = "12MiB"
 [db.seed]
 enabled = true
 sql_paths = ["./seed.sql"]
+
+# WP-6c: the gateway verifies every caller's JWT before prior-attach runs. The function then picks
+# owner or service mode itself, from an exact service-role key match, never from token claims.
+[functions.prior-attach]
+enabled = true
+verify_jwt = true
+import_map = "./functions/deno.json"

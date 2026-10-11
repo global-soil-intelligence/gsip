@@ -1,7 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { cellToBoundary } from 'h3-js'
-import { type Database, type PaletteLayer, paletteLayer } from '@gsip/schema'
+import {
+  type Database,
+  type PaletteLayer,
+  paletteLayer,
+  SOILGRIDS_PALETTE,
+} from '@gsip/schema'
 import type { RasterSourceSpecification } from 'maplibre-gl'
 
 export type PriorLayerId = 'soc' | 'ph' | 'clay'
@@ -22,7 +27,9 @@ function priorLayer(
 ): PriorLayer {
   const palette = paletteLayer(id)
   return {
-    archive: `${id}.pmtiles`,
+    // Archives live under the palette version that coloured them (pipeline/build_prior_tiles.py),
+    // so the map only ever loads tiles that match the legend it draws.
+    archive: `${SOILGRIDS_PALETTE.version}/${id}.pmtiles`,
     id,
     label: palette.label,
     layer,

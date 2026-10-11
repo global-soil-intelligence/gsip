@@ -1,9 +1,11 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.110.8'
 import { fetchJsonWithRetry } from '../../../packages/schema/src/prior.ts'
 import {
+  type BeginResult,
   DEFAULT_PRIOR_JOB_CONFIG,
+  isServiceRequest,
+  PRIOR_OUTCOME_HTTP_STATUS,
   type PriorJobDeps,
-  type PriorJobOutcome,
   runPriorJob,
   type StaticSource,
 } from '../../../packages/schema/src/priorJob.ts'
@@ -12,8 +14,9 @@ import type {
   Json,
 } from '../../../packages/schema/src/database.types.ts'
 
-// WP-6c: a thin adapter. All decisions (cell-centre lookups, cache, token buckets, claim rules,
-// "no prior" as a terminal state) live in packages/schema/src/priorJob.ts, which is unit-tested.
+// WP-6c: a thin adapter. All decisions (cell-centre lookups, cache, atomic claim-and-spend,
+// "no prior" as a terminal state) live in packages/schema/src/priorJob.ts and the database
+// function begin_prior_attempt(), both of which are tested.
 
 const corsHeaders = {
   'Access-Control-Allow-Headers':
@@ -21,16 +24,13 @@ const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
 }
 
-const OUTCOME_STATUS: Record<PriorJobOutcome['status'], number> = {
-  completed: 200,
-  dead_letter: 502,
-  deferred: 202,
-  not_claimable: 409,
-}
-
-function json(body: unknown, status = 200): Response {
+function json(
+  body: unknown,
+  status = 200,
+  headers: Record<string, string> = {},
+): Response {
   return new Response(JSON.stringify(body), {
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    headers: { ...corsHeaders, 'Content-Type': 'application/json', ...headers },
     status,
   })
 }
@@ -48,26 +48,14 @@ function coordinates(geometry: unknown): {
   )
     throw new Error('Submission geometry is unavailable')
   const [longitude, latitude] = geometry.coordinates.map(Number)
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude))
+  if (
+    !Number.isFinite(latitude) ||
+    !Number.isFinite(longitude) ||
+    Math.abs(latitude) > 90 ||
+    Math.abs(longitude) > 180
+  )
     throw new Error('Submission geometry is invalid')
   return { latitude, longitude }
-}
-
-/**
- * The gateway has already verified the JWT signature (verify_jwt is on for this function), so
- * its role claim decides the mode: the service worker may retry; a contributor may only start
- * their own unstarted job.
- */
-function isServiceRole(token: string): boolean {
-  const [, payload] = token.split('.')
-  if (!payload) return false
-  try {
-    const normalized = payload.replace(/-/g, '+').replace(/_/g, '/')
-    const claims = JSON.parse(atob(normalized)) as { role?: unknown }
-    return claims.role === 'service_role'
-  } catch {
-    return false
-  }
 }
 
 Deno.serve(async (request: Request) => {
@@ -94,9 +82,11 @@ Deno.serve(async (request: Request) => {
     return json({ error: 'submissionId is required' }, 400)
   const submissionId = body.submissionId
 
-  const ownerRequest = !isServiceRole(authorization.replace(/^Bearer\s+/i, ''))
+  // Service mode (retries) only for the exact service-role key; never an unverified claim.
+  const ownerRequest = !isServiceRequest(authorization, serviceKey)
   const serviceClient = createClient<Database>(supabaseUrl, serviceKey)
-  // Contributors read through RLS, so they can only reach their own submission.
+  // Contributors read through RLS (PostgREST verifies their JWT), so they can only reach their
+  // own submission; this read is what stops anyone starting someone else's job.
   const reader = ownerRequest
     ? createClient<Database>(supabaseUrl, anonKey, {
         global: { headers: { Authorization: authorization } },
@@ -114,20 +104,35 @@ Deno.serve(async (request: Request) => {
   try {
     location = coordinates(found.data.geom_precise)
   } catch {
+    // This job can never succeed: end it so it cannot hold the drain's queue head forever.
+    await serviceClient.rpc('fail_prior_job', {
+      p_reason: 'invalid_geometry',
+      p_submission_id: submissionId,
+    })
     return json({ error: 'Submission geometry is unavailable' }, 422)
   }
 
   const deps: PriorJobDeps = {
-    claim: async (id, owner) => {
-      const claimed = await serviceClient.rpc('claim_prior_job_attempt', {
+    begin: async (id, owner, costs): Promise<BeginResult> => {
+      const begun = await serviceClient.rpc('begin_prior_attempt', {
+        p_costs: costs as Json,
         p_owner_request: owner,
         p_submission_id: id,
       })
-      if (claimed.error) throw claimed.error
-      return typeof claimed.data === 'number' ? claimed.data : null
+      if (begun.error) throw begun.error
+      const row = begun.data?.[0]
+      if (row?.outcome === 'claimed' && typeof row.attempts === 'number')
+        return { attempts: row.attempts, outcome: 'claimed' }
+      if (row?.outcome === 'deferred')
+        return {
+          outcome: 'deferred',
+          retryAfterSeconds: row.retry_after_seconds ?? 12,
+        }
+      return { outcome: 'not_claimable' }
     },
-    fetchJson: (url, init, attempts) =>
-      fetchJsonWithRetry(fetch, url, init, { attempts }),
+    // One call per token: the job retry is the retry (ISRIC counts retries too).
+    fetchJson: (url, init) =>
+      fetchJsonWithRetry(fetch, url, init, { attempts: 1 }),
     finish: async (update) => {
       const finished = await serviceClient
         .from('prior_jobs')
@@ -156,14 +161,6 @@ Deno.serve(async (request: Request) => {
           { payload: row.payload, retrievedAt: row.retrieved_at },
         ]),
       )
-    },
-    takeToken: async (bucket, cost) => {
-      const taken = await serviceClient.rpc('take_upstream_token', {
-        p_cost: cost,
-        p_source: bucket,
-      })
-      if (taken.error) throw taken.error
-      return taken.data === true
     },
     writeCache: async (cell, source, payload) => {
       const written = await serviceClient.from('prior_cell_cache').upsert(
@@ -231,7 +228,10 @@ Deno.serve(async (request: Request) => {
         priors: outcome.priors,
         status: outcome.status,
       },
-      OUTCOME_STATUS[outcome.status],
+      PRIOR_OUTCOME_HTTP_STATUS[outcome.status],
+      outcome.retryAfterSeconds === null
+        ? {}
+        : { 'Retry-After': String(outcome.retryAfterSeconds) },
     )
   } catch {
     return json({ error: 'Prior job could not start' }, 503)

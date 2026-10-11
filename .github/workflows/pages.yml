@@ -32,6 +32,11 @@ jobs:
           VITE_CAPTURE_LIVE: ${{ vars.VITE_CAPTURE_LIVE }}
           VITE_DATASET_URL: ${{ vars.VITE_DATASET_URL }}
       - run: pnpm check:map-budget
+      # A legend must never disagree with its tiles: the archives for this palette version must
+      # exist and carry its stamp before the map that draws those legends is deployed.
+      - run: pnpm check:prior-tiles
+        env:
+          VITE_PRIOR_TILES_BASE: ${{ vars.VITE_PRIOR_TILES_BASE }}
       - run: pnpm check:site-budget
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5

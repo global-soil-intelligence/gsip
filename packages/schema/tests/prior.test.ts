@@ -11,6 +11,7 @@ import {
   parsePrecipitationWindow,
   parseSoilGridsResponse,
   parseSsurgoResponse,
+  precipitationSource,
   precipitationUrl,
   priorLookupPoint,
   SOILGRIDS_PROPERTY_MAPPING,
@@ -94,6 +95,10 @@ describe('prior source mapping', () => {
         (prior) => prior.property === 'bd' && prior.depth_bottom_cm === 5,
       ),
     ).toBeUndefined()
+  })
+
+  it('treats an empty Soil Data Access answer as no data, not an error', () => {
+    expect(parseSsurgoResponse({})).toEqual([])
   })
 
   it('treats an all-null (urban) SoilGrids answer as no prior, not an error', () => {
@@ -186,6 +191,39 @@ describe('environment enrichment', () => {
         '2026-10-08T15:00:00Z',
       ),
     ).toBeNull()
+  })
+
+  it('counts the hour labelled at the capture time, which covers the hour before it', () => {
+    // Open-Meteo's value labelled 15:00 is the rain from 14:00 to 15:00.
+    expect(
+      parsePrecipitationWindow(
+        { hourly: { precipitation: [3], time: ['2026-10-08T15:00'] } },
+        '2026-10-08T15:00:00Z',
+      ),
+    ).toBe(true)
+    // The hour labelled 16:00 starts at the capture moment and does not count.
+    expect(
+      parsePrecipitationWindow(
+        {
+          hourly: {
+            precipitation: [0, 3],
+            time: ['2026-10-08T15:00', '2026-10-08T16:00'],
+          },
+        },
+        '2026-10-08T15:00:00Z',
+      ),
+    ).toBe(false)
+  })
+
+  it('measures the forecast cut-over from the start of the window', () => {
+    const now = new Date('2026-10-10T00:00:00Z')
+    // 90 days before 'now' is 2026-07-12; a capture at 2026-07-12T01:00 has a window starting
+    // 2026-07-09, beyond the forecast history, so it must use the archive.
+    expect(precipitationSource('2026-07-12T01:00:00Z', now)).toBe('archive')
+    expect(precipitationSource('2026-07-16T01:00:00Z', now)).toBe('forecast')
+    expect(precipitationSource('2027-01-01T00:00:00Z', now)).toBe('unavailable')
+    expect(precipitationSource('1970-01-01T00:00:00Z', now)).toBe('unavailable')
+    expect(precipitationSource('not a time', now)).toBe('unavailable')
   })
 
   it('chooses the forecast API for recent captures and the archive for old ones', () => {
