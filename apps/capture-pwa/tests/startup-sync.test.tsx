@@ -12,11 +12,15 @@ import { enqueue, queued, removeQueued } from '../src/queue'
 import type { QueueRecord } from '../src/types'
 
 const mocks = vi.hoisted(() => ({
+  fetchServiceState: vi.fn(
+    async (): Promise<'open' | 'closed' | 'unknown'> => 'open',
+  ),
   submitQueued: vi.fn(async (): Promise<void> => undefined),
 }))
 
 vi.mock('../src/supabase', () => ({
   createGsipClient: () => ({ hosted: true }),
+  fetchServiceState: mocks.fetchServiceState,
   isServiceConfigured: () => true,
   submitQueued: mocks.submitQueued,
 }))
@@ -42,6 +46,9 @@ const record: QueueRecord = {
 
 describe('capture retry behavior', () => {
   beforeEach(async () => {
+    vi.stubEnv('VITE_CAPTURE_LIVE', 'true')
+    mocks.fetchServiceState.mockReset()
+    mocks.fetchServiceState.mockResolvedValue('open')
     mocks.submitQueued.mockReset()
     mocks.submitQueued.mockResolvedValue(undefined)
     for (const queuedRecord of await queued()) {
@@ -53,7 +60,10 @@ describe('capture retry behavior', () => {
     })
   })
 
-  afterEach(() => cleanup())
+  afterEach(() => {
+    cleanup()
+    vi.unstubAllEnvs()
+  })
 
   it('syncs a queued observation when the app opens already online', async () => {
     await enqueue(record)
@@ -63,6 +73,24 @@ describe('capture retry behavior', () => {
       expect(mocks.submitQueued).toHaveBeenCalledWith({ hosted: true }, record),
     )
     expect(await screen.findByText(/1 observation synced/i)).toBeDefined()
+  })
+
+  it('pauses sync and keeps the observation queued while the database closes capture', async () => {
+    mocks.fetchServiceState.mockResolvedValue('closed')
+    await enqueue(record)
+    render(<App />)
+
+    expect(await screen.findAllByText(/capture is paused/i)).not.toHaveLength(0)
+    expect(screen.getByText('1 queued')).toBeDefined()
+    expect(mocks.submitQueued).not.toHaveBeenCalled()
+  })
+
+  it('still syncs when the capture state cannot be read', async () => {
+    mocks.fetchServiceState.mockResolvedValue('unknown')
+    await enqueue(record)
+    render(<App />)
+
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(1))
   })
 
   it('stays idle when the online queue is empty', async () => {

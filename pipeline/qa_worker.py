@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 from datetime import UTC, datetime, timedelta
 from typing import Any
 from urllib.parse import quote
@@ -9,7 +10,43 @@ from urllib.parse import quote
 import h3  # type: ignore[import-untyped]
 import httpx
 
-from pipeline.qa import aggregate_submission_status, evaluate_photo
+from pipeline.qa import evaluate_photo
+
+MAX_QA_ATTEMPTS = 4
+UUID_PATTERN = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+
+
+class StoragePathMismatch(ValueError):
+    """The stored path does not match the path the database facts require (WP-6b)."""
+
+
+def expected_photo_path_pattern(
+    auth_uid: str, submission_id: str, shot_type: str
+) -> re.Pattern[str]:
+    """The only object path a photo row may name: {auth_uid}/{submission_id}/{shot}/{uuid}.jpg."""
+
+    for value in (auth_uid, submission_id):
+        if not re.fullmatch(UUID_PATTERN, value):
+            raise StoragePathMismatch("database facts do not form a bindable path")
+    if shot_type not in {"A", "B", "C"}:
+        raise StoragePathMismatch("database facts do not form a bindable path")
+    return re.compile(
+        f"^{re.escape(auth_uid)}/{re.escape(submission_id)}/{shot_type}/{UUID_PATTERN}\\.jpg$"
+    )
+
+
+def verified_storage_path(photo: dict[str, Any], submission: dict[str, Any]) -> str:
+    """Re-derive the photo's storage path from database facts before touching Storage."""
+
+    contributor = submission.get("contributor") or {}
+    auth_uid = str(contributor.get("auth_uid") or "")
+    path = str(photo.get("storage_path") or "")
+    pattern = expected_photo_path_pattern(
+        auth_uid, str(photo["submission_id"]), str(photo["shot_type"])
+    )
+    if not pattern.fullmatch(path):
+        raise StoragePathMismatch("photo storage path does not match its owner and submission")
+    return path
 
 
 class SupabaseQaWorker:
@@ -55,6 +92,26 @@ class SupabaseQaWorker:
             },
         )
 
+    def settle(self, submission_id: str) -> str:
+        response = self._rest(
+            "POST", "rpc/settle_submission", json={"p_submission_id": submission_id}
+        )
+        return str(response.json())
+
+    def settle_finalized(self, limit: int = 200) -> int:
+        """Settle finalized submissions whose photos finished QA before finalize arrived."""
+
+        rows = self._rest(
+            "GET",
+            "submissions?status=eq.pending&finalized_at=not.is.null"
+            f"&select=id&order=finalized_at.asc&limit={limit}",
+        ).json()
+        settled = 0
+        for row in rows:
+            if self.settle(str(row["id"])) != "pending":
+                settled += 1
+        return settled
+
     def process_pending(self, limit: int = 25) -> int:
         self.requeue_stale_processing()
         jobs = self._rest(
@@ -65,7 +122,24 @@ class SupabaseQaWorker:
         for job in jobs:
             if self.process_one(str(job["photo_id"]), int(job["attempts"])):
                 completed += 1
+        self.settle_finalized()
         return completed
+
+    def _fail(self, photo_id: str, submission_id: str | None, reason: str, terminal: bool) -> None:
+        now = datetime.now(UTC).isoformat()
+        self._rest(
+            "PATCH",
+            f"qa_jobs?photo_id=eq.{photo_id}",
+            json={
+                "last_error": reason[:1000],
+                "status": "dead_letter" if terminal else "retrying",
+                "updated_at": now,
+            },
+        )
+        if terminal:
+            self._rest("PATCH", f"photos?id=eq.{photo_id}", json={"qa_status": "error"})
+            if submission_id:
+                self.settle(submission_id)
 
     def process_one(self, photo_id: str, attempts: int) -> bool:
         now = datetime.now(UTC).isoformat()
@@ -74,6 +148,7 @@ class SupabaseQaWorker:
             f"qa_jobs?photo_id=eq.{photo_id}",
             json={"attempts": attempts + 1, "status": "processing", "updated_at": now},
         )
+        submission_id: str | None = None
         try:
             photo = self._rest(
                 "GET", f"photos?id=eq.{photo_id}&select=id,submission_id,shot_type,storage_path"
@@ -81,8 +156,11 @@ class SupabaseQaWorker:
             submission_id = str(photo["submission_id"])
             submission = self._rest(
                 "GET",
-                f"submissions?id=eq.{submission_id}&select=id,geom_precise,gps_accuracy_m,land_cover",
+                f"submissions?id=eq.{submission_id}"
+                "&select=id,geom_precise,gps_accuracy_m,land_cover,contributor:contributors(auth_uid)",
             ).json()[0]
+            # WP-6b: never trust the stored path. A mismatch is terminal and touches no object.
+            path = verified_storage_path(photo, submission)
             latitude, longitude = _coordinates(submission["geom_precise"])
             prior_rows = self._rest(
                 "GET",
@@ -98,12 +176,10 @@ class SupabaseQaWorker:
                 "&perceptual_hash=not.is.null&select=perceptual_hash"
             )
             existing_hashes = tuple(str(row["perceptual_hash"]) for row in hashes)
-            path = str(photo["storage_path"])
-            incoming_url = (
-                f"{self.url}/storage/v1/object/authenticated/incoming-photos/"
-                f"{quote(path, safe='/')}"
+            object_path = quote(path, safe="/")
+            raw = self.client.get(
+                f"{self.url}/storage/v1/object/authenticated/incoming-photos/{object_path}"
             )
-            raw = self.client.get(incoming_url)
             raw.raise_for_status()
             result = evaluate_photo(
                 raw.content,
@@ -113,7 +189,7 @@ class SupabaseQaWorker:
                 priors=priors,
             )
             promoted = self.client.post(
-                f"{self.url}/storage/v1/object/submission-photos/{quote(path, safe='/')}",
+                f"{self.url}/storage/v1/object/submission-photos/{object_path}",
                 content=result.sanitized_jpeg,
                 headers={"Content-Type": "image/jpeg", "x-upsert": "true"},
             )
@@ -127,6 +203,7 @@ class SupabaseQaWorker:
                     "card_color_correction": result.card_color_correction,
                     "card_detected": result.card_color_correction is not None,
                     "perceptual_hash": result.perceptual_hash,
+                    "qa_status": result.status,
                     "sharpness_score": next(
                         event.score for event in result.events if event.check_name == "sharpness"
                     ),
@@ -141,18 +218,11 @@ class SupabaseQaWorker:
                         "check_name": f"{event.check_name}_{photo['shot_type']}",
                         "passed": event.passed,
                         "score": event.score,
-                        "model_version": "deterministic-v1",
+                        "model_version": result.model_version,
                         "submission_id": submission_id,
                     }
                     for event in result.events
                 ],
-            )
-            all_events = self._rest(
-                "GET",
-                f"qa_events?submission_id=eq.{submission_id}&select=check_name,passed",
-            ).json()
-            submission_status = aggregate_submission_status(
-                (str(event["check_name"]), bool(event["passed"])) for event in all_events
             )
             self._rest(
                 "PATCH",
@@ -160,11 +230,11 @@ class SupabaseQaWorker:
                 json={
                     "h3_r6": h3.latlng_to_cell(latitude, longitude, 6),
                     "h3_r8": h3.latlng_to_cell(latitude, longitude, 8),
-                    "status": submission_status,
                 },
             )
+            self.settle(submission_id)
             removed = self.client.delete(
-                f"{self.url}/storage/v1/object/incoming-photos/{quote(path, safe='/')}"
+                f"{self.url}/storage/v1/object/incoming-photos/{object_path}"
             )
             removed.raise_for_status()
             self._rest(
@@ -178,16 +248,15 @@ class SupabaseQaWorker:
                 },
             )
             return True
+        except StoragePathMismatch:
+            self._fail(photo_id, submission_id, "storage_path_mismatch", terminal=True)
+            return False
         except Exception as error:
-            next_status = "dead_letter" if attempts + 1 >= 4 else "retrying"
-            self._rest(
-                "PATCH",
-                f"qa_jobs?photo_id=eq.{photo_id}",
-                json={
-                    "last_error": f"qa_processing_failure:{type(error).__name__}"[:1000],
-                    "status": next_status,
-                    "updated_at": now,
-                },
+            self._fail(
+                photo_id,
+                submission_id,
+                f"qa_processing_failure:{type(error).__name__}",
+                terminal=attempts + 1 >= MAX_QA_ATTEMPTS,
             )
             return False
 
@@ -264,12 +333,19 @@ def main() -> None:
         description="Process GSIP's deterministic private photo QA queue"
     )
     parser.add_argument("--limit", type=int, default=25)
+    parser.add_argument(
+        "--cleanup-only",
+        action="store_true",
+        help="only delete quarantine objects older than 24 hours (runs on its own schedule)",
+    )
     args = parser.parse_args()
     url = os.environ["SUPABASE_URL"]
     key = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
     worker = SupabaseQaWorker(url, key)
-    worker.process_pending(args.limit)
-    worker.cleanup_quarantine()
+    if not args.cleanup_only:
+        worker.process_pending(args.limit)
+    removed = worker.cleanup_quarantine()
+    print(f"quarantine objects removed: {removed}")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,9 @@
 # Phase 1 deployment handoff
 
-Updated 2026-07-23. The governing scope is `SPEC.md` v2.2 and the ordered implementation is
-`BUILD_ORDER.md`. Work packages are published as a protected, reviewable stack:
+Updated 2026-10-10. The governing scope is `SPEC.md` v3.0 and the ordered implementation is
+`BUILD_ORDER.md` v3.0. Phase 1 work packages WP0 to WP6 merged on 2026-10-01; the Phase 1.1 launch
+hardening packages and their operator steps are listed at the end of this document. The original
+Phase 1 stack was published as:
 
 | Package | Outcome                                    | Pull request | Runtime state                                                             |
 | ------- | ------------------------------------------ | ------------ | ------------------------------------------------------------------------- |
@@ -43,3 +45,25 @@ These are intentionally not bypassed by code:
 
 Once those gates are satisfied, merge the stack in order, run the Pages workflow, dispatch the photo
 QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone launch test.
+
+## Phase 1.1 launch hardening: operator steps
+
+### WP-6b — ingest, QA and release integrity
+
+1. Create the repository variable `SUPABASE_URL`. Every worker workflow and the Pages build now read
+   only this variable; delete `VITE_SUPABASE_URL` afterwards.
+2. Apply the migrations (`supabase db push`). Capture is **closed** by default:
+   `service_state.capture_open` starts `false`, and every grant, submission, photo and quarantine
+   upload insert is refused until it is opened. Existing complete submissions are marked finalized
+   and their per-photo QA verdicts are backfilled; public cells are cleared until the next export.
+3. The `Quarantine cleanup` workflow runs hourly once merged. It needs the same
+   `SUPABASE_SERVICE_ROLE_KEY` secret as the QA worker.
+4. Add the CI `validate` job as a required status check in the `main` branch ruleset.
+5. Open capture only after the SPEC section 11 launch gates pass, in two steps: build Pages with the
+   repository variable `VITE_CAPTURE_LIVE=true`, then run, as the service role:
+
+   ```sql
+   update public.service_state set capture_open = true, updated_at = now() where singleton;
+   ```
+
+   Setting it back to `false` pauses capture immediately; queued observations wait on devices.

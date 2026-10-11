@@ -138,9 +138,11 @@ export type Database = {
           h3_index: string
           latest_submission_date: string | null
           model_disagreement: number | null
+          n_contributors: number
           n_gold: number
           n_submissions: number
           prior_uncertainty: number | null
+          resolution: number
           updated_at: string
         }
         Insert: {
@@ -148,9 +150,11 @@ export type Database = {
           h3_index: string
           latest_submission_date?: string | null
           model_disagreement?: number | null
+          n_contributors: number
           n_gold?: number
           n_submissions?: number
           prior_uncertainty?: number | null
+          resolution: number
           updated_at?: string
         }
         Update: {
@@ -158,9 +162,11 @@ export type Database = {
           h3_index?: string
           latest_submission_date?: string | null
           model_disagreement?: number | null
+          n_contributors?: number
           n_gold?: number
           n_submissions?: number
           prior_uncertainty?: number | null
+          resolution?: number
           updated_at?: string
         }
         Relationships: []
@@ -173,6 +179,7 @@ export type Database = {
           card_detected: boolean | null
           id: string
           perceptual_hash: string | null
+          qa_status: string | null
           sharpness_score: number | null
           shot_type: string
           storage_path: string
@@ -185,6 +192,7 @@ export type Database = {
           card_detected?: boolean | null
           id?: string
           perceptual_hash?: string | null
+          qa_status?: string | null
           sharpness_score?: number | null
           shot_type: string
           storage_path: string
@@ -197,6 +205,7 @@ export type Database = {
           card_detected?: boolean | null
           id?: string
           perceptual_hash?: string | null
+          qa_status?: string | null
           sharpness_score?: number | null
           shot_type?: string
           storage_path?: string
@@ -408,6 +417,24 @@ export type Database = {
           },
         ]
       }
+      service_state: {
+        Row: {
+          capture_open: boolean
+          singleton: boolean
+          updated_at: string
+        }
+        Insert: {
+          capture_open?: boolean
+          singleton?: boolean
+          updated_at?: string
+        }
+        Update: {
+          capture_open?: boolean
+          singleton?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       submissions: {
         Row: {
           captured_at: string
@@ -415,6 +442,7 @@ export type Database = {
           device_model: string | null
           disturbed: boolean | null
           elevation: number | null
+          finalized_at: string | null
           geom_precise: unknown
           gps_accuracy_m: number | null
           grant_id: string
@@ -433,6 +461,7 @@ export type Database = {
           device_model?: string | null
           disturbed?: boolean | null
           elevation?: number | null
+          finalized_at?: string | null
           geom_precise: unknown
           gps_accuracy_m?: number | null
           grant_id: string
@@ -451,6 +480,7 @@ export type Database = {
           device_model?: string | null
           disturbed?: boolean | null
           elevation?: number | null
+          finalized_at?: string | null
           geom_precise?: unknown
           gps_accuracy_m?: number | null
           grant_id?: string
@@ -485,12 +515,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      capture_is_open: { Args: never; Returns: boolean }
       claim_prior_job_attempt: {
         Args: { p_submission_id: string }
         Returns: number
       }
       current_contributor_id: { Args: never; Returns: string }
+      finalize_submission: {
+        Args: { p_submission_id: string }
+        Returns: string
+      }
       refresh_public_h3_cells: { Args: { payload: Json }; Returns: number }
+      settle_submission: {
+        Args: { p_submission_id: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

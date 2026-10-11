@@ -215,7 +215,7 @@ function HomePage() {
             <div className="hero-visual-card visual-phone">
               <span>01</span>
               <strong>Phone observation</strong>
-              <small>Two guided soil photos</small>
+              <small>Two guided photos, one optional</small>
             </div>
             <div className="hero-visual-card visual-cell">
               <span>08</span>
@@ -621,11 +621,11 @@ function MethodsPage() {
             {[
               [
                 'Metadata strip',
-                'EXIF, GPS, XMP, ICC, comments, and residual application segments.',
+                'Orientation and colour profiles are applied to the pixels, then EXIF, GPS, XMP, ICC, comments, and residual segments are removed.',
               ],
               [
                 'Image quality',
-                'Sharpness and exposure thresholds grade usable signal.',
+                'Sharpness and exposure are judged on the soil itself, with the reference card masked out.',
               ],
               [
                 'Reference card',
@@ -641,7 +641,7 @@ function MethodsPage() {
               ],
               [
                 'Terminal outcome',
-                'Each submission reaches pass, fail, or flagged review state.',
+                'Each submission settles to pass, fail, or flagged review from its two required photos.',
               ],
             ].map(([title, detail]) => (
               <article key={title}>
@@ -654,13 +654,15 @@ function MethodsPage() {
         <section className="interior-section privacy-method">
           <div>
             <p className="eyebrow">Public by design, private by default</p>
-            <h2>H3 resolution 8 is the public location boundary.</h2>
+            <h2>Every public cell holds at least three contributors.</h2>
           </div>
           <div>
             <p>
               Exact geometry remains protected operational data. Public map and
-              dataset records carry only H3 cells, and anonymous public reads
-              are limited to aggregate cells—not per-submission coordinates.
+              dataset records carry only H3 cells: resolution 8 (about 0.74 km²)
+              where at least three people have contributed, otherwise the
+              coarser resolution 6 or 4 cell. Anonymous public reads are limited
+              to aggregate cells—not per-submission coordinates.
             </p>
             <a
               className="text-link"
@@ -749,9 +751,9 @@ function DataPage() {
             <div>
               <h3>Public</h3>
               <ul>
-                <li>H3 resolution 8 and 6 cells</li>
+                <li>k-anonymous H3 cells (resolution 8, 6 or 4)</li>
                 <li>Date-truncated capture time</li>
-                <li>Protocol context and QA scores</li>
+                <li>Protocol context and per-photo QA checks</li>
                 <li>Weak priors and gold labels</li>
                 <li>Sanitized photos with attribution</li>
               </ul>

@@ -1,12 +1,27 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  ATTRIBUTION_MAX_LENGTH,
+  DEFAULT_ATTRIBUTION,
+  attributionProblem,
+  normalizeAttribution,
+} from '@gsip/schema'
+import { captureTime, isCaptureLive } from './capture'
 import { fuzzLocation } from './geo'
 import { HexPreview } from './HexPreview'
 import { enqueue, indexedDbQueue, queued, retryDeadLettered } from './queue'
 import { drainQueue, isSyncEligible } from './sync'
-import { createGsipClient, isServiceConfigured, submitQueued } from './supabase'
+import {
+  createGsipClient,
+  fetchServiceState,
+  isServiceConfigured,
+  type ServiceState,
+  submitQueued,
+} from './supabase'
 import type { QueueRecord, ShotType } from './types'
 
 const TERMS_VERSION = '2026-07-22-v1'
+const PAUSED_MESSAGE =
+  'Capture is paused. Your observations stay safely on this device until it reopens.'
 const LAND_COVERS = [
   'cropland',
   'grassland',
@@ -83,12 +98,34 @@ export function coarseDeviceModel(): string {
   return family ?? 'unknown device'
 }
 
+function CaptureClosed() {
+  return (
+    <section className="closed-card" aria-labelledby="closed-heading">
+      <p className="step-number">Opening soon</p>
+      <h2 id="closed-heading">Contributions open after our launch review.</h2>
+      <p>
+        GSIP is completing its privacy and legal review before accepting
+        observations. You can print the reference card and explore the public
+        map now.
+      </p>
+      <a className="card-link" href="../map/">
+        Explore the map ↗
+      </a>
+    </section>
+  )
+}
+
 export function App() {
   const formRef = useRef<HTMLFormElement>(null)
+  const live = isCaptureLive()
   const client = useMemo(
-    () => (isServiceConfigured() ? createGsipClient() : null),
+    () =>
+      isCaptureLive() && isServiceConfigured() ? createGsipClient() : null,
     [],
   )
+  const serviceStateRef = useRef<ServiceState>('unknown')
+  const [serviceState, setServiceState] = useState<ServiceState>('unknown')
+  const [attributionError, setAttributionError] = useState<string | null>(null)
   const [accuracy, setAccuracy] = useState<number | null>(null)
   const [latitude, setLatitude] = useState('')
   const [longitude, setLongitude] = useState('')
@@ -111,6 +148,11 @@ export function App() {
     if (syncPromise.current) return syncPromise.current
     const run = (async () => {
       if (!client || !navigator.onLine) return
+      if (serviceStateRef.current === 'closed') {
+        await refreshQueueState()
+        setStatus(PAUSED_MESSAGE)
+        return
+      }
       const records = await indexedDbQueue.list()
       if (!records.some((record) => isSyncEligible(record))) {
         await refreshQueueState()
@@ -153,15 +195,26 @@ export function App() {
   }, [client, refreshQueueState])
 
   useEffect(() => {
-    void refreshQueueState().then(() => sync())
+    let cancelled = false
+    void (async () => {
+      if (client) {
+        const state = await fetchServiceState(client)
+        if (cancelled) return
+        serviceStateRef.current = state
+        setServiceState(state)
+      }
+      await refreshQueueState()
+      if (!cancelled) await sync()
+    })()
     const onOnline = () => void sync()
     const retry = window.setInterval(() => void sync(), 30_000)
     window.addEventListener('online', onOnline)
     return () => {
+      cancelled = true
       window.clearInterval(retry)
       window.removeEventListener('online', onOnline)
     }
-  }, [refreshQueueState, sync])
+  }, [client, refreshQueueState, sync])
 
   function locate() {
     if (!navigator.geolocation) {
@@ -220,6 +273,17 @@ export function App() {
       setStatus('Add a valid location before continuing.')
       return
     }
+    const attributionName = normalizeAttribution(
+      String(form.get('attribution') ?? ''),
+    )
+    if (attributionProblem(attributionName)) {
+      setAttributionError(
+        'Use letters, numbers, spaces and simple punctuation, with no links or e-mail addresses.',
+      )
+      setStatus('Check the public attribution name before continuing.')
+      return
+    }
+    setAttributionError(null)
     let capturedPhotos: QueueRecord['photos']
     try {
       capturedPhotos = await photos(form)
@@ -227,12 +291,11 @@ export function App() {
       setStatus('Choose JPEG photos before continuing.')
       return
     }
+    const shotB = form.get('shot-b')
     const record: QueueRecord = {
       accuracyM: accuracy,
-      attributionName: String(
-        form.get('attribution') || 'Anonymous soil contributor',
-      ),
-      capturedAt: new Date().toISOString(),
+      attributionName,
+      capturedAt: captureTime(shotB instanceof File ? shotB : null, Date.now()),
       deviceModel: coarseDeviceModel(),
       disturbed: form.get('disturbed') === 'yes',
       grantId: crypto.randomUUID(),
@@ -280,7 +343,7 @@ export function App() {
 
       <main>
         <section className="hero">
-          <p className="eyebrow">Three photos. One living planet.</p>
+          <p className="eyebrow">Two photos. One card. One living planet.</p>
           <h1>Help map the ground beneath us.</h1>
           <p className="lede">
             Photograph soil with the free GSIP card. Your precise location stays
@@ -303,171 +366,193 @@ export function App() {
           </span>
         </aside>
 
-        <section className="signin-card" aria-labelledby="signin-heading">
-          <div>
-            <p className="step-number">Optional account</p>
-            <h2 id="signin-heading">Keep contributing privately</h2>
-            <p>
-              Submit anonymously now, or send yourself a magic link to return to
-              your history.
-            </p>
-          </div>
-          <div className="magic-link">
-            <label>
-              Email
-              <input
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@example.com"
-              />
-            </label>
-            <button
-              type="button"
-              className="secondary"
-              disabled={!client || !email}
-              onClick={() => void sendMagicLink()}
-            >
-              Send magic link
-            </button>
-          </div>
-        </section>
+        {!live && <CaptureClosed />}
 
-        <form ref={formRef} onSubmit={(event) => void submit(event)}>
-          <fieldset>
-            <legend>
-              <span>01</span> Capture the soil
-            </legend>
-            <p>
-              Use even daylight. Keep the whole reference card visible and avoid
-              glare.
-            </p>
-            <div className="photo-grid">
-              <PhotoField name="shot-a" label="A · Context / 30 cm" />
-              <PhotoField name="shot-b" label="B · Fresh face / 15 cm" />
-              <PhotoField name="shot-c" label="C · Moist texture" optional />
-            </div>
-          </fieldset>
+        {live && serviceState === 'closed' && (
+          <p className="config-warning" role="status">
+            {PAUSED_MESSAGE}
+          </p>
+        )}
 
-          <fieldset>
-            <legend>
-              <span>02</span> Describe the place
-            </legend>
-            <div className="field-grid">
-              <label>
-                Land cover
-                <select name="land-cover" required defaultValue="">
-                  <option value="" disabled>
-                    Choose one
-                  </option>
-                  {LAND_COVERS.map((cover) => (
-                    <option key={cover}>{cover}</option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Surface condition
-                <select name="surface-condition" required defaultValue="">
-                  <option value="" disabled>
-                    Choose one
-                  </option>
-                  <option>dry</option>
-                  <option>moist</option>
-                  <option>wet</option>
-                </select>
-              </label>
-              <label>
-                Recently disturbed?
-                <select name="disturbed" required defaultValue="no">
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select>
-              </label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>
-              <span>03</span> Add a private location
-            </legend>
-            <p>
-              We store the exact point privately for scientific processing. Only
-              its H3 resolution-8 cell is public.
-            </p>
-            <button type="button" className="location-button" onClick={locate}>
-              Use my current location
-            </button>
-            <div className="field-grid compact">
-              <label>
-                Latitude
-                <input
-                  aria-label="Latitude"
-                  inputMode="decimal"
-                  min="-90"
-                  max="90"
-                  type="number"
-                  step="any"
-                  required
-                  value={latitude}
-                  onChange={(event) => setLatitude(event.target.value)}
-                />
-              </label>
-              <label>
-                Longitude
-                <input
-                  aria-label="Longitude"
-                  inputMode="decimal"
-                  min="-180"
-                  max="180"
-                  type="number"
-                  step="any"
-                  required
-                  value={longitude}
-                  onChange={(event) => setLongitude(event.target.value)}
-                />
-              </label>
-              <div className="accuracy">
-                {accuracy
-                  ? `Accuracy ±${accuracy} m`
-                  : 'Manual pin fallback available'}
-              </div>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>
-              <span>04</span> Grant & submit
-            </legend>
-            <label>
-              Public photo attribution name or pseudonym
-              <input
-                name="attribution"
-                minLength={1}
-                maxLength={80}
-                required
-                defaultValue="Anonymous soil contributor"
-              />
-            </label>
-            <label className="terms">
-              <input type="checkbox" required />{' '}
-              <span>
-                I own these photos and grant GSIP permission to include
-                structured contribution data in the ODbL 1.0 database and
-                publish sanitized photos under CC BY-SA 4.0. I understand this
-                is an immutable acceptance snapshot for this submission.
-              </span>
-            </label>
-            <button className="submit-button" type="submit">
-              Queue observation securely
-            </button>
-            {!client && (
-              <p className="config-warning">
-                Preview mode: deployment configuration is not available, so
-                submissions remain on this device.
+        {live && (
+          <section className="signin-card" aria-labelledby="signin-heading">
+            <div>
+              <p className="step-number">Optional account</p>
+              <h2 id="signin-heading">Keep contributing privately</h2>
+              <p>
+                Submit anonymously now, or use a magic link to keep contributing
+                from more than one device.
               </p>
-            )}
-          </fieldset>
-        </form>
+            </div>
+            <div className="magic-link">
+              <label>
+                Email
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder="you@example.com"
+                />
+              </label>
+              <button
+                type="button"
+                className="secondary"
+                disabled={!client || !email}
+                onClick={() => void sendMagicLink()}
+              >
+                Send magic link
+              </button>
+            </div>
+          </section>
+        )}
+
+        {live && (
+          <form ref={formRef} onSubmit={(event) => void submit(event)}>
+            <fieldset>
+              <legend>
+                <span>01</span> Capture the soil
+              </legend>
+              <p>
+                Use even daylight. Keep the whole reference card visible and
+                avoid glare.
+              </p>
+              <div className="photo-grid">
+                <PhotoField name="shot-a" label="A · Context / 30 cm" />
+                <PhotoField name="shot-b" label="B · Fresh face / 15 cm" />
+                <PhotoField name="shot-c" label="C · Moist texture" optional />
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>
+                <span>02</span> Describe the place
+              </legend>
+              <div className="field-grid">
+                <label>
+                  Land cover
+                  <select name="land-cover" required defaultValue="">
+                    <option value="" disabled>
+                      Choose one
+                    </option>
+                    {LAND_COVERS.map((cover) => (
+                      <option key={cover}>{cover}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Surface condition
+                  <select name="surface-condition" required defaultValue="">
+                    <option value="" disabled>
+                      Choose one
+                    </option>
+                    <option>dry</option>
+                    <option>moist</option>
+                    <option>wet</option>
+                  </select>
+                </label>
+                <label>
+                  Recently disturbed?
+                  <select name="disturbed" required defaultValue="no">
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                  </select>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>
+                <span>03</span> Add a private location
+              </legend>
+              <p>
+                We store the exact point privately for scientific processing.
+                Only its H3 resolution-8 cell is public.
+              </p>
+              <button
+                type="button"
+                className="location-button"
+                onClick={locate}
+              >
+                Use my current location
+              </button>
+              <div className="field-grid compact">
+                <label>
+                  Latitude
+                  <input
+                    aria-label="Latitude"
+                    inputMode="decimal"
+                    min="-90"
+                    max="90"
+                    type="number"
+                    step="any"
+                    required
+                    value={latitude}
+                    onChange={(event) => setLatitude(event.target.value)}
+                  />
+                </label>
+                <label>
+                  Longitude
+                  <input
+                    aria-label="Longitude"
+                    inputMode="decimal"
+                    min="-180"
+                    max="180"
+                    type="number"
+                    step="any"
+                    required
+                    value={longitude}
+                    onChange={(event) => setLongitude(event.target.value)}
+                  />
+                </label>
+                <div className="accuracy">
+                  {accuracy
+                    ? `Accuracy ±${accuracy} m`
+                    : 'Manual pin fallback available'}
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>
+                <span>04</span> Grant & submit
+              </legend>
+              <label>
+                Public photo attribution name or pseudonym
+                <input
+                  name="attribution"
+                  minLength={1}
+                  maxLength={ATTRIBUTION_MAX_LENGTH}
+                  required
+                  defaultValue={DEFAULT_ATTRIBUTION}
+                  aria-describedby="attribution-hint"
+                  aria-invalid={attributionError ? true : undefined}
+                />
+              </label>
+              <p className="field-hint" id="attribution-hint">
+                {attributionError ??
+                  'This name is published with your photo’s area and date. Keep the default to stay anonymous, or use a pseudonym rather than your real name.'}
+              </p>
+              <label className="terms">
+                <input type="checkbox" required />{' '}
+                <span>
+                  I own these photos and grant GSIP permission to include
+                  structured contribution data in the ODbL 1.0 database and
+                  publish sanitized photos under CC BY-SA 4.0. I understand this
+                  is an immutable acceptance snapshot for this submission.
+                </span>
+              </label>
+              <button className="submit-button" type="submit">
+                Queue observation securely
+              </button>
+              {!client && (
+                <p className="config-warning">
+                  Preview mode: deployment configuration is not available, so
+                  submissions remain on this device.
+                </p>
+              )}
+            </fieldset>
+          </form>
+        )}
 
         <section className="status-card" aria-live="polite">
           <div>

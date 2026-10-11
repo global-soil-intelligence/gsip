@@ -81,14 +81,36 @@ export function priorSource(layer: PriorLayer): RasterSourceSpecification {
   }
 }
 
-export type ContributionCell = { count: number; h3: string; latest: string }
+export type ContributionCell = {
+  contributors: number
+  count: number
+  h3: string
+  latest: string
+  resolution: number
+}
 export type ContributionFeatureCollection = {
   features: Array<{
     geometry: { coordinates: number[][][]; type: 'Polygon' }
-    properties: { count: number; h3: string; latest: string }
+    properties: ContributionCell
     type: 'Feature'
   }>
   type: 'FeatureCollection'
+}
+
+/** Approximate H3 cell areas for the k-anonymous publication resolutions (SPEC I7). */
+export const RESOLUTION_AREAS: Record<number, string> = {
+  4: '1,770 km²',
+  6: '36 km²',
+  8: '0.74 km²',
+}
+
+export function cellSummary(cell: ContributionCell): string[] {
+  const area = RESOLUTION_AREAS[cell.resolution] ?? 'unknown area'
+  return [
+    `${cell.count} contribution${cell.count === 1 ? '' : 's'} from ${cell.contributors} contributors`,
+    `Resolution ${cell.resolution} cell, about ${area}`,
+    `Latest: ${cell.latest}`,
+  ]
 }
 
 export async function fetchContributionCells(
@@ -99,7 +121,9 @@ export async function fetchContributionCells(
   for (let start = 0; ; start += pageSize) {
     const response = await client
       .from('h3_cells')
-      .select('h3_index,n_submissions,latest_submission_date')
+      .select(
+        'h3_index,resolution,n_submissions,n_contributors,latest_submission_date',
+      )
       .gt('n_submissions', 0)
       .order('h3_index')
       .range(start, start + pageSize - 1)
@@ -107,9 +131,11 @@ export async function fetchContributionCells(
     if (!response.data) throw new Error('Public aggregate response was empty')
     cells.push(
       ...response.data.map((row) => ({
+        contributors: row.n_contributors,
         count: row.n_submissions,
         h3: row.h3_index,
         latest: row.latest_submission_date ?? 'Unknown',
+        resolution: row.resolution,
       })),
     )
     if (response.data.length < pageSize) return cells
@@ -124,18 +150,24 @@ export async function loadContributionCells(): Promise<ContributionCell[]> {
   return fetchContributionCells(createClient<Database>(url, key))
 }
 
+/** Coarse cells first, so finer published cells draw above the coarser ones. */
 export function contributionFeatures(
   cells: ContributionCell[],
 ): ContributionFeatureCollection {
   return {
-    features: cells.map((cell) => {
-      const ring = cellToBoundary(cell.h3, true)
-      return {
-        geometry: { coordinates: [[...ring, ring[0]]], type: 'Polygon' },
-        properties: { count: cell.count, h3: cell.h3, latest: cell.latest },
-        type: 'Feature',
-      }
-    }),
+    features: [...cells]
+      .sort(
+        (left, right) =>
+          left.resolution - right.resolution || left.h3.localeCompare(right.h3),
+      )
+      .map((cell) => {
+        const ring = cellToBoundary(cell.h3, true)
+        return {
+          geometry: { coordinates: [[...ring, ring[0]]], type: 'Polygon' },
+          properties: { ...cell },
+          type: 'Feature',
+        }
+      }),
     type: 'FeatureCollection',
   }
 }

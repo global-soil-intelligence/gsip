@@ -43,7 +43,7 @@ test('public hub explains the project and connects its core paths', async ({
     }),
   ).toBeVisible()
   await expect(
-    page.getByRole('link', { name: 'Capture opening soon' }).first(),
+    page.getByRole('link', { name: 'Contribute an observation' }).first(),
   ).toBeVisible()
   await page
     .getByRole('navigation', { name: 'Primary navigation' })
@@ -80,7 +80,16 @@ test('map and capture shells are connected', async ({ page }) => {
         {
           h3_index: '88262b2a37fffff',
           latest_submission_date: '2026-07-23',
-          n_submissions: 1,
+          n_contributors: 3,
+          n_submissions: 4,
+          resolution: 8,
+        },
+        {
+          h3_index: '86262b2a7ffffff',
+          latest_submission_date: '2026-07-20',
+          n_contributors: 3,
+          n_submissions: 3,
+          resolution: 6,
         },
       ]),
       contentType: 'application/json',
@@ -225,6 +234,7 @@ test('airplane-mode capture persists then syncs through the hosted path', async 
         'POST /auth/v1/signup',
         'POST /rest/v1/contribution_grants',
         'POST /rest/v1/submissions',
+        'POST /rest/v1/rpc/finalize_submission',
       ]),
     )
   await expect(page.getByText(/1 observation synced/i)).toBeVisible()

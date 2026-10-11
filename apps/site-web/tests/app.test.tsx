@@ -54,7 +54,7 @@ describe('public website', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: 'H3 resolution 8 is the public location boundary.',
+        name: 'Every public cell holds at least three contributors.',
       }),
     ).toBeTruthy()
     expect(

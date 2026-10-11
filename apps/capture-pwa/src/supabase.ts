@@ -13,6 +13,27 @@ export function photoStoragePath(
   return `${uid}/${record.submissionId}/${photo.shotType}/${photo.objectId}.jpg`
 }
 
+export type ServiceState = 'open' | 'closed' | 'unknown'
+
+/**
+ * Reads the database capture gate (WP-6b). The database enforces it on every insert; the app
+ * reads it only to pause sync and explain why, so any failure here is "unknown", not closed.
+ */
+export async function fetchServiceState(
+  client: GsipClient,
+): Promise<ServiceState> {
+  try {
+    const { data, error } = await client
+      .from('service_state')
+      .select('capture_open')
+      .maybeSingle()
+    if (error || !data) return 'unknown'
+    return data.capture_open ? 'open' : 'closed'
+  } catch {
+    return 'unknown'
+  }
+}
+
 export function isServiceConfigured(): boolean {
   return Boolean(
     import.meta.env.VITE_SUPABASE_URL &&
@@ -148,6 +169,13 @@ export async function submitQueued(
       if (created.error) throw created.error
     }
   }
+
+  // Shots A and B are uploaded: finalize so the server can settle QA status.
+  // Finalize is idempotent, so a retry after a lost response is safe.
+  const finalized = await client.rpc('finalize_submission', {
+    p_submission_id: record.submissionId,
+  })
+  if (finalized.error) throw finalized.error
 
   // The durable prior_jobs row is created by the submission trigger. This
   // best-effort invocation starts enrichment immediately; an upstream outage

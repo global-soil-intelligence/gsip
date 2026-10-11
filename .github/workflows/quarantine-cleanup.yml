@@ -1,0 +1,36 @@
+name: Quarantine cleanup
+
+# SPEC I7: raw uploads may exist only in a short-lived private quarantine. This job deletes
+# quarantine objects older than 24 hours on its own schedule, so cleanup never depends on the
+# photo QA queue running.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quarantine-cleanup
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          version: '0.5.5'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: uv sync --frozen --no-dev
+      - run: uv run python -m pipeline.qa_worker --cleanup-only
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

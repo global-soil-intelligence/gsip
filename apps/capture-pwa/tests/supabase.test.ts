@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { drainQueue } from '../src/sync'
 import {
+  fetchServiceState,
   type GsipClient,
   photoStoragePath,
   submitQueued,
@@ -95,6 +96,15 @@ function fakeClient(state: FakeState): GsipClient {
       }),
     },
     from: (table: string) => new FakeQuery(state, table),
+    rpc: async (name: string, args: Record<string, unknown>) => {
+      state.log.push(`rpc:${name}`)
+      if (
+        name === 'finalize_submission' &&
+        !state.submissions.has(String(args.p_submission_id))
+      )
+        return { data: null, error: new Error('submission not found') }
+      return { data: '2026-07-23T00:05:00Z', error: null }
+    },
     functions: {
       invoke: async () => {
         state.log.push('invoke:prior-attach')
@@ -179,6 +189,7 @@ describe('hosted submission paths', () => {
       'insert:submissions',
       'upload:photo',
       'insert:photos',
+      'rpc:finalize_submission',
       'invoke:prior-attach',
     ])
     expect(state.submissions.get(record.submissionId)).toMatchObject({
@@ -250,5 +261,47 @@ describe('hosted submission paths', () => {
       synced: 1,
     })
     expect(removed).toEqual(['submission-id'])
+  })
+})
+
+describe('capture gate state', () => {
+  function stateClient(result: { data: unknown; error: unknown } | Error) {
+    return {
+      from: () => ({
+        select: () => ({
+          maybeSingle: async () => {
+            if (result instanceof Error) throw result
+            return result
+          },
+        }),
+      }),
+    } as unknown as GsipClient
+  }
+
+  it('maps the database switch to open or closed', async () => {
+    expect(
+      await fetchServiceState(
+        stateClient({ data: { capture_open: true }, error: null }),
+      ),
+    ).toBe('open')
+    expect(
+      await fetchServiceState(
+        stateClient({ data: { capture_open: false }, error: null }),
+      ),
+    ).toBe('closed')
+  })
+
+  it('treats unreadable state as unknown, never as closed', async () => {
+    expect(
+      await fetchServiceState(stateClient({ data: null, error: null })),
+    ).toBe('unknown')
+    expect(
+      await fetchServiceState(
+        stateClient({ data: null, error: { message: 'offline' } }),
+      ),
+    ).toBe('unknown')
+    expect(await fetchServiceState(stateClient(new Error('network')))).toBe(
+      'unknown',
+    )
   })
 })
