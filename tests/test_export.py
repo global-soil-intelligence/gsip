@@ -104,11 +104,16 @@ def submission(
     synthetic: bool = False,
     photos: tuple[ExportPhoto, ...] | None = None,
     captured_at: str = "2026-07-22T12:00:00Z",
+    tier: int | None = 0,
+    location_source: str = "device_gps",
+    capture_method: str = "camera",
+    gold_labels: tuple[dict[str, Any], ...] = (),
 ) -> ExportSubmission:
     submission_id = f"73f0400e-5c64-5a6e-90d1-{index:012d}"
     person = contributor or f"contributor-{index}"
     return ExportSubmission(
         captured_at=captured_at,
+        capture_method=capture_method,
         contributor_id=person,
         disturbed=False,
         grant=Grant(
@@ -122,17 +127,20 @@ def submission(
         )
         if grant
         else None,
-        gold_labels=(),
+        gold_labels=gold_labels,
         h3_r6=h3.cell_to_parent(h3_r8, 6),
         h3_r8=h3_r8,
         id=submission_id,
         is_synthetic=synthetic,
         land_cover="cropland",
+        location_source=location_source,
         owner_uid=owner_uid(person),
         photos=photos
         if photos is not None
         else (photo("A", submission_id, person), photo("B", submission_id, person)),
         precip_flag=False,
+        # Synthetic rows sit at tier -1, as the database guarantees, unless a test says otherwise.
+        provenance_tier=-1 if synthetic and tier == 0 else tier,
         status="qa_pass",
         surface_condition="moist",
     )
@@ -481,6 +489,9 @@ def test_source_attaches_per_photo_qa_and_keeps_the_contributor_private() -> Non
                 "precip_flag": None,
                 "status": "qa_pass",
                 "surface_condition": "dry",
+                "provenance_tier": 1,
+                "location_source": "manual_pin",
+                "capture_method": "file",
                 "contributor": {"auth_uid": "30000000-0000-4000-8000-000000000001"},
             }
         ],
@@ -539,8 +550,12 @@ def test_source_attaches_per_photo_qa_and_keeps_the_contributor_private() -> Non
     assert {check.check for check in shot_b.qa_checks} == {"sharpness", "soil_region"}
 
 
-def load_from(tables: dict[str, list[dict[str, Any]]]) -> list[ExportSubmission]:
+def load_from(
+    tables: dict[str, list[dict[str, Any]]], seen: list[str] | None = None
+) -> list[ExportSubmission]:
     def handler(request: httpx.Request) -> httpx.Response:
+        if seen is not None:
+            seen.append(str(request.url))
         body = tables[request.url.path.rsplit("/", 1)[-1]]
         return httpx.Response(
             200, headers={"Content-Range": f"0-{len(body) - 1}/{len(body)}"}, json=body
@@ -573,6 +588,9 @@ def source_tables(
                 "precip_flag": None,
                 "status": "qa_pass",
                 "surface_condition": "dry",
+                "provenance_tier": 1,
+                "location_source": "manual_pin",
+                "capture_method": "file",
                 "contributor": {"auth_uid": "30000000-0000-4000-8000-000000000001"},
             }
         ],
@@ -819,3 +837,98 @@ def test_public_cell_refresh_sends_k_anonymous_cells_and_clears_an_empty_release
             }
         ]
     }
+
+
+# WP-6e: provenance tiers (I10), synthetic status (I11) and the sealed holdout (I15).
+
+
+def test_rows_carry_their_tier_and_the_contributors_claims(tmp_path: Path) -> None:
+    rows = [
+        submission(1, tier=1),
+        submission(2, location_source="manual_pin", capture_method="file"),
+        submission(3, location_source="unknown", capture_method="unknown"),
+    ]
+    result = build(rows, tmp_path)
+    loaded = {row["id"]: row for row in load_rows(result)}
+    assert [
+        (loaded[row.id]["provenance_tier"], loaded[row.id]["location_source"]) for row in rows
+    ] == [(1, "device_gps"), (0, "manual_pin"), (0, "unknown")]
+    assert [loaded[row.id]["capture_method"] for row in rows] == ["camera", "file", "unknown"]
+
+
+@pytest.mark.parametrize("tier", [-1, None, 4, True])
+def test_a_field_row_without_a_releasable_tier_aborts_before_any_public_artifact(
+    tmp_path: Path, tier: Any
+) -> None:
+    rows = [*three_contributors_in_one_cell(), submission(4, tier=tier)]
+    with pytest.raises(ExportPrivacyError, match="untiered"):
+        build(rows, tmp_path)
+    assert not (tmp_path / EXPORT_DATE.isoformat()).exists()
+
+
+def test_synthetic_rows_never_reach_a_release_whatever_their_tier(tmp_path: Path) -> None:
+    field = three_contributors_in_one_cell()
+    # Even a synthetic row mislabelled with a field tier is excluded, never published.
+    result = build([*field, submission(4, synthetic=True, tier=1)], tmp_path)
+    assert {row["id"] for row in load_rows(result)} == {row.id for row in field}
+
+
+def test_unknown_claim_values_are_set_aside(tmp_path: Path) -> None:
+    rows = [*three_contributors_in_one_cell(), submission(4, location_source="satellite")]
+    result = build(rows, tmp_path)
+    assert result.set_aside == {"unknown_claim": 1}
+    assert result.rows == 3
+
+
+def test_source_asks_only_for_field_data_at_tier_zero_or_above() -> None:
+    seen: list[str] = []
+    [loaded] = load_from(source_tables("Anonymous soil contributor", [], []), seen)
+    query = next(url for url in seen if "/rest/v1/submissions?" in url)
+    assert "is_synthetic=eq.false" in query
+    assert "provenance_tier=gte.0" in query
+    assert (loaded.provenance_tier, loaded.location_source, loaded.capture_method) == (
+        1,
+        "manual_pin",
+        "file",
+    )
+
+
+def test_source_drops_holdout_labels_and_never_carries_the_flag() -> None:
+    label = {
+        "lab_name": "Example Lab",
+        "method": "dry combustion",
+        "property": "soc",
+        "unit": "g/kg",
+        "uncertainty": None,
+        "depth_top_cm": 0,
+        "depth_bottom_cm": 5,
+    }
+    tables = source_tables("Anonymous soil contributor", [], [])
+    tables["gold_labels"] = [
+        {**label, "value": 21.5, "holdout": False},
+        {**label, "value": 30.0, "holdout": True},
+        # A label whose flag is missing is treated as held out.
+        {**label, "value": 40.0},
+    ]
+    seen: list[str] = []
+    [loaded] = load_from(tables, seen)
+    assert loaded.gold_labels == ({**label, "value": 21.5},)
+    assert any("/rest/v1/gold_labels?" in url and "holdout" in url for url in seen)
+
+
+def test_a_holdout_flag_that_reaches_a_row_aborts_the_release(tmp_path: Path) -> None:
+    leaked = {"property": "soc", "value": 21.5, "unit": "g/kg", "holdout": False}
+    rows = [*three_contributors_in_one_cell(), submission(4, gold_labels=(leaked,))]
+    with pytest.raises(ExportPrivacyError, match="holdout"):
+        build(rows, tmp_path)
+    assert not (tmp_path / EXPORT_DATE.isoformat()).exists()
+
+
+def test_dataset_card_explains_every_tier(tmp_path: Path) -> None:
+    result = build(three_contributors_in_one_cell(), tmp_path)
+    card = (result.target / "README.md").read_text()
+    assert "## Provenance" in card
+    for tier in ("- `0`:", "- `1`:", "- `2`:", "- `3`:"):
+        assert tier in card
+    assert "tier -1) is never included" in card
+    assert "never raise a tier" in card

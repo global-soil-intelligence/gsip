@@ -17,6 +17,19 @@ export class AccountChanged extends Error {
   }
 }
 
+/**
+ * The observation waited so long to sync that the server would no longer record its terms
+ * acceptance (I9: within 30 days). It is held until the person accepts the terms again.
+ */
+export class TermsReconfirmationNeeded extends Error {
+  constructor() {
+    super(
+      'The contribution terms must be accepted again to send this observation.',
+    )
+    this.name = 'TermsReconfirmationNeeded'
+  }
+}
+
 export function isWithdrawal(error: unknown): boolean {
   return (
     typeof error === 'object' &&

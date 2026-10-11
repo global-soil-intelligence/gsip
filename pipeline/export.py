@@ -34,7 +34,9 @@ from pipeline.qa import MetadataSurvived, has_embedded_metadata, sanitize_jpeg
 # here because, matched against public rasters, they locate an observation more precisely than
 # its published cell (SPEC I7).
 FORBIDDEN_PUBLIC_KEYS = {
+    "actor_id",
     "camera_metadata_private",
+    "capture_evidence_private",
     "contributor_id",
     "device_model",
     "elevation",
@@ -43,6 +45,8 @@ FORBIDDEN_PUBLIC_KEYS = {
     "grant_id",
     "h3_r6",
     "h3_r8",
+    # I15: a sealed holdout label never leaves the server, nor does the fact that one exists.
+    "holdout",
     "latitude",
     "longitude",
     "owner_uid",
@@ -54,6 +58,11 @@ PUBLIC_SCORE_CHECKS = frozenset(
     {"card_detection", "duplicate", "exposure", "is_soil", "sharpness", "soil_region"}
 )
 REQUIRED_SHOTS = ("A", "B")
+# WP-6e: the client's claims, published as stated; they never raise a tier.
+CAPTURE_METHODS = frozenset({"camera", "file", "unknown"})
+LOCATION_SOURCES = frozenset({"device_gps", "manual_pin", "unknown"})
+# Field data only (I11): -1 is synthetic and never released; 2 and 3 are reserved upstream.
+RELEASABLE_TIERS = frozenset({0, 1, 2, 3})
 # Set-asides beyond this share of candidate rows abort the release (SPEC section 6): an outage
 # or a systemic fault must never publish a hollowed-out release.
 MAX_SET_ASIDE_SHARE = 0.10
@@ -119,6 +128,7 @@ class ExportSubmission:
     """Everything the export needs about one submission. Private fields never reach a row."""
 
     captured_at: str
+    capture_method: str
     contributor_id: str
     disturbed: bool | None
     grant: Grant | None
@@ -128,9 +138,12 @@ class ExportSubmission:
     id: str
     is_synthetic: bool
     land_cover: str | None
+    location_source: str
     owner_uid: str | None
     photos: tuple[ExportPhoto, ...]
     precip_flag: bool | None
+    # Server-assigned (I10). None means the source did not supply one, which aborts a release.
+    provenance_tier: int | None
     status: str
     surface_condition: str | None
 
@@ -167,6 +180,18 @@ def assert_public_record(value: Any, path: str = "record") -> None:
     elif isinstance(value, (list, tuple)):
         for index, child in enumerate(value):
             assert_public_record(child, f"{path}[{index}]")
+
+
+def assert_field_data(submission: ExportSubmission) -> None:
+    """I10, I11: every released row is non-synthetic field data with a server-assigned tier.
+
+    The source already excludes synthetic rows and rows below tier 0; reaching this point with
+    one means a query or the database invariant broke, so the whole release aborts.
+    """
+
+    tier = submission.provenance_tier
+    if submission.is_synthetic or type(tier) is not int or tier not in RELEASABLE_TIERS:
+        raise ExportPrivacyError("A synthetic or untiered row reached the release")
 
 
 def dataset_card(records: list[dict[str, Any]], export_date: date, withheld: int) -> str:
@@ -208,10 +233,30 @@ instructions.
 
 Each row contains a submission ID; `h3_cell`, the finest H3 cell at resolution 8, 6 or 4 that
 aggregates at least {K_ANONYMITY} distinct contributors, and its `h3_resolution`; the capture date;
-protocol metadata; sanitized photo paths with each photo's calibration status and deterministic QA
-checks; and any verified gold labels. Location-derived QA checks carry pass or fail without a
-score. No precise geometry, finer H3 cell, GPS accuracy, contributor ID, device model, private
-camera metadata, EXIF, XMP or ICC profile is included. Photos are converted to sRGB before release.
+protocol metadata; `provenance_tier`, `location_source` and `capture_method` (see Provenance);
+sanitized photo paths with each photo's calibration status and deterministic QA checks; and any
+verified gold labels. Location-derived QA checks carry pass or fail without a score. No precise
+geometry, finer H3 cell, GPS accuracy, contributor ID, device model, private camera metadata,
+capture evidence, EXIF, XMP or ICC profile is included. Photos are converted to sRGB before
+release.
+
+## Provenance
+
+`provenance_tier` is assigned by the GSIP server, never by the contributor's app:
+
+- `0`: a field observation. The contributor's statements were recorded but not corroborated.
+- `1`: corroborated. Before metadata was stripped, both required photos' own capture time agreed
+  with the stated capture time, and any embedded position lay within 250 m of the stated
+  location. Capture metadata can be forged: this is corroboration, not proof.
+- `2`: reserved for attested capture (for example, signed by the capturing device). Not yet
+  assigned.
+- `3`: reserved for pairing with a laboratory result. Not yet assigned.
+
+An observation's tier is the lower of its two required photos' tiers. Synthetic, simulated or
+seeded data (tier -1) is never included in this dataset. `location_source` (`device_gps`,
+`manual_pin` or `unknown`) and `capture_method` (`camera`, `file` or `unknown`) are what the
+contributor's app reported; they are published as stated and never raise a tier. Laboratory
+labels held out for model evaluation are never included.
 
 Point-level soil-map priors are not included: sampled at an observation's position, they would
 locate it more precisely than its published cell. To use priors, sample SoilGrids
@@ -312,8 +357,14 @@ def _row(
     temporary: Path,
     photo_loader: Callable[[str], bytes],
 ) -> dict[str, Any]:
+    assert_field_data(submission)
     if submission.grant is None:
         raise RowSetAside("missing_grant")
+    if (
+        submission.capture_method not in CAPTURE_METHODS
+        or submission.location_source not in LOCATION_SOURCES
+    ):
+        raise RowSetAside("unknown_claim")
     if not is_resolution_8_cell(submission.h3_r8):
         raise RowSetAside("invalid_cell")
     passed = {photo.shot_type for photo in submission.photos if photo.qa_status == "pass"}
@@ -332,13 +383,16 @@ def _row(
     )
     photos = [_public_photo(submission, photo, temporary, photo_loader) for photo in releasable]
     return {
+        "capture_method": submission.capture_method,
         "captured_at": submission.captured_at[:10],
         "disturbed": submission.disturbed,
         "gold_labels": list(submission.gold_labels),
         "id": submission.id,
         "land_cover": submission.land_cover,
+        "location_source": submission.location_source,
         "photos": photos,
         "precip_flag": submission.precip_flag,
+        "provenance_tier": submission.provenance_tier,
         "status": submission.status,
         "surface_condition": submission.surface_condition,
     }
@@ -571,9 +625,11 @@ class SupabaseExportSource:
             )
         }
         rows = self._rows(
-            "submissions?status=eq.qa_pass&is_synthetic=eq.false&order=id&select="
+            "submissions?status=eq.qa_pass&is_synthetic=eq.false&provenance_tier=gte.0"
+            "&order=id&select="
             "id,contributor_id,h3_r8,h3_r6,captured_at,land_cover,surface_condition,disturbed,"
-            "precip_flag,status,is_synthetic,grant_id,contributor:contributors(auth_uid)"
+            "precip_flag,status,is_synthetic,grant_id,provenance_tier,location_source,"
+            "capture_method,contributor:contributors(auth_uid)"
         )
         exported: list[ExportSubmission] = []
         for row in rows:
@@ -621,16 +677,22 @@ class SupabaseExportSource:
                     "&select=shot_type,storage_path,qa_status,calibration_status"
                 )
             )
+            # I15: holdout labels are dropped here, and the flag itself is never carried on; a
+            # label whose flag is missing is treated as held out.
             gold = tuple(
-                self._rows(
+                {key: value for key, value in label.items() if key != "holdout"}
+                for label in self._rows(
                     f"gold_labels?submission_id=eq.{submission_id}&order=property,depth_top_cm"
-                    "&select=lab_name,method,property,value,uncertainty,unit,depth_top_cm,depth_bottom_cm"
+                    "&select=lab_name,method,property,value,uncertainty,unit,depth_top_cm,"
+                    "depth_bottom_cm,holdout"
                 )
+                if label.get("holdout") is False
             )
             contributor = row.get("contributor") or {}
             exported.append(
                 ExportSubmission(
                     captured_at=str(row["captured_at"]),
+                    capture_method=str(row["capture_method"]),
                     contributor_id=str(row["contributor_id"]),
                     disturbed=row["disturbed"],
                     grant=grant,
@@ -640,9 +702,11 @@ class SupabaseExportSource:
                     id=submission_id,
                     is_synthetic=bool(row["is_synthetic"]),
                     land_cover=row["land_cover"],
+                    location_source=str(row["location_source"]),
                     owner_uid=str(contributor["auth_uid"]) if contributor.get("auth_uid") else None,
                     photos=photos,
                     precip_flag=row["precip_flag"],
+                    provenance_tier=row["provenance_tier"],
                     status=str(row["status"]),
                     surface_condition=row["surface_condition"],
                 )

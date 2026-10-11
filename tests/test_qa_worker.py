@@ -8,7 +8,7 @@ from typing import Any
 import httpx
 import numpy as np
 import pytest
-from PIL import Image
+from PIL import ExifTags, Image
 
 from pipeline.qa import evaluate_photo
 from pipeline.qa_worker import (
@@ -28,6 +28,18 @@ def jpeg(size: int) -> bytes:
     image = Image.fromarray(np.repeat((grid * 220 + 20)[..., None], 3, axis=2).astype(np.uint8))
     output = io.BytesIO()
     image.save(output, format="JPEG", quality=94)
+    return output.getvalue()
+
+
+def jpeg_with_capture_time(size: int, local_time: str, offset: str) -> bytes:
+    grid = np.indices((size, size)).sum(axis=0) % 2
+    image = Image.fromarray(np.repeat((grid * 220 + 20)[..., None], 3, axis=2).astype(np.uint8))
+    exif = Image.Exif()
+    exif_ifd = exif.get_ifd(ExifTags.IFD.Exif)
+    exif_ifd[ExifTags.Base.DateTimeOriginal] = local_time
+    exif_ifd[ExifTags.Base.OffsetTimeOriginal] = offset
+    output = io.BytesIO()
+    image.save(output, format="JPEG", quality=94, exif=exif)
     return output.getvalue()
 
 
@@ -51,9 +63,14 @@ class WorkerHarness(SupabaseQaWorker):
         exhausted: list[str] | None = None,
         failing_settles: set[str] | None = None,
         withdrawn: set[str] | None = None,
+        good: bytes | None = None,
+        submission_fields: dict[str, Any] | None = None,
     ) -> None:
         super().__init__("https://supabase.test", "service-key")
         self.hostile = hostile
+        self.good = good if good is not None else jpeg(8)
+        self.submission_fields = submission_fields or {}
+        self.submission_selects: list[str] = []
         self.geometry = geometry or {
             "coordinates": [-79.982, 40.446],
             "type": "Point",
@@ -108,14 +125,18 @@ class WorkerHarness(SupabaseQaWorker):
             return self._response([{"id": value} for value in self.finalized_pending])
         if method == "GET" and path.startswith("submissions?"):
             assert "contributor:contributors(auth_uid)" in path
+            self.submission_selects.append(path)
             return self._response(
                 [
                     {
+                        "captured_at": "2026-10-11T12:00:00+00:00",
                         "contributor": {"auth_uid": AUTH_UID},
                         "geom_precise": self.geometry,
                         "gps_accuracy_m": 8,
                         "id": SUBMISSION,
+                        "is_synthetic": False,
                         "land_cover": "urban",
+                        **self.submission_fields,
                     }
                 ]
             )
@@ -150,7 +171,7 @@ class WorkerHarness(SupabaseQaWorker):
         if request.method == "GET" and HOSTILE_PATH in request.url.path:
             return httpx.Response(200, content=self.hostile)
         if request.method == "GET" and GOOD_PATH in request.url.path:
-            return httpx.Response(200, content=jpeg(8))
+            return httpx.Response(200, content=self.good)
         if request.method == "POST" and "/submission-photos/" in request.url.path:
             self.promotions.append(request.url.path)
             return httpx.Response(200, json={})
@@ -380,3 +401,59 @@ def test_one_failing_settlement_does_not_stop_the_sweep() -> None:
     )
     assert worker.settle_finalized() == 1
     assert worker.settled == ["50000000-0000-4000-8000-000000000012"]
+
+
+# WP-6e: capture evidence and photo tiers (I7, I10, I11).
+
+
+def test_a_photo_without_capture_metadata_is_recorded_at_tier_zero() -> None:
+    worker = WorkerHarness(b"unused")
+
+    assert worker.process_one("good", 0)
+    update = worker.photo_updates["good"]
+    assert update["provenance_tier"] == 0
+    assert update["capture_evidence_private"]["exif_time_present"] is False
+    assert update["capture_evidence_private"]["evidence_version"] == "exif-v1"
+
+
+def test_capture_metadata_read_before_stripping_corroborates_the_claimed_time() -> None:
+    worker = WorkerHarness(
+        b"unused", good=jpeg_with_capture_time(8, "2026:10:11 08:00:10", "-04:00")
+    )
+
+    assert worker.process_one("good", 0)
+    update = worker.photo_updates["good"]
+    assert update["provenance_tier"] == 1
+    assert update["capture_evidence_private"]["exif_time_delta_s"] == 10
+    # The evidence is private and coordinate-free; the promoted photo carries no metadata at all.
+    assert "40.446" not in json.dumps(update["capture_evidence_private"])
+
+
+def test_client_claims_are_never_read_and_never_raise_a_tier() -> None:
+    worker = WorkerHarness(
+        b"unused",
+        submission_fields={
+            "capture_method": "camera",
+            "ingest_path": "app",
+            "location_source": "device_gps",
+        },
+    )
+
+    assert worker.process_one("good", 0)
+    assert worker.photo_updates["good"]["provenance_tier"] == 0
+    select = worker.submission_selects[0]
+    for claim in ("ingest_path", "capture_method", "location_source"):
+        assert claim not in select
+
+
+def test_a_synthetic_submissions_photo_is_never_given_a_field_tier() -> None:
+    worker = WorkerHarness(
+        b"unused",
+        good=jpeg_with_capture_time(8, "2026:10:11 08:00:10", "-04:00"),
+        submission_fields={"is_synthetic": True},
+    )
+
+    assert worker.process_one("good", 0)
+    update = worker.photo_updates["good"]
+    assert "provenance_tier" not in update
+    assert update["capture_evidence_private"]["exif_time_absolute"] is True

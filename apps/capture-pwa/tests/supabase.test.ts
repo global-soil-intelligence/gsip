@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { TermsReconfirmationNeeded } from '../src/errors'
 import { drainQueue } from '../src/sync'
 import {
   fetchServiceState,
@@ -181,6 +182,16 @@ function fakeState(): FakeState {
 }
 
 describe('hosted submission paths', () => {
+  beforeEach(() => {
+    // The fixtures accepted the terms on 2026-07-23; pin the clock inside the 30-day window.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-07-23T01:00:00Z'))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('keeps uploads beneath the authenticated owner prefix', () => {
     const record = {
       photos: [{ objectId: 'photo-id', shotType: 'B' }],
@@ -301,6 +312,75 @@ describe('hosted submission paths', () => {
       synced: 1,
     })
     expect(removed).toEqual(['submission-id'])
+  })
+
+  it('sends the provenance claims with the submission, never a tier or an actor', async () => {
+    const state = fakeState()
+    const record = {
+      ...queuedRecord(),
+      claims: {
+        captureMethod: 'camera',
+        ingestPath: 'app',
+        locationSource: 'device_gps',
+      },
+    } satisfies QueueRecord
+    await submitQueued(fakeClient(state), record)
+
+    const payload = state.submissions.get(record.submissionId)
+    expect(payload).toMatchObject({
+      capture_method: 'camera',
+      ingest_path: 'app',
+      location_source: 'device_gps',
+    })
+    expect(payload).not.toHaveProperty('provenance_tier')
+    expect(payload).not.toHaveProperty('actor_id')
+  })
+
+  it('leaves the server defaults for records queued before claims existed', async () => {
+    const state = fakeState()
+    const record = queuedRecord()
+    await submitQueued(fakeClient(state), record)
+
+    const payload = state.submissions.get(record.submissionId)
+    for (const column of ['capture_method', 'ingest_path', 'location_source'])
+      expect(payload).not.toHaveProperty(column)
+  })
+
+  it('drops a corrupted claim instead of letting the database refuse the observation', async () => {
+    const state = fakeState()
+    const record = {
+      ...queuedRecord(),
+      claims: {
+        captureMethod: 'satellite',
+        ingestPath: 'app',
+        locationSource: 'device_gps',
+      },
+    } as unknown as QueueRecord
+    await submitQueued(fakeClient(state), record)
+
+    const payload = state.submissions.get(record.submissionId)
+    expect(payload).not.toHaveProperty('capture_method')
+    expect(payload).toMatchObject({ ingest_path: 'app' })
+  })
+
+  it('holds an observation an hour before the server would refuse its acceptance', async () => {
+    // Accepted 2026-07-23T00:10Z; the server refuses after 30 days, the client holds at 29d23h.
+    vi.setSystemTime(new Date('2026-08-21T23:10:01Z'))
+    const state = fakeState()
+    await expect(
+      submitQueued(fakeClient(state), queuedRecord()),
+    ).rejects.toBeInstanceOf(TermsReconfirmationNeeded)
+    // Nothing was written: the grant, the submission and the photos all wait for the person.
+    expect(state.log).toEqual([])
+  })
+
+  it('needs no new acceptance once the server has recorded the grant', async () => {
+    vi.setSystemTime(new Date('2026-09-30T00:00:00Z'))
+    const state = fakeState()
+    const record = queuedRecord()
+    state.grants.add(record.grantId)
+    await submitQueued(fakeClient(state), record)
+    expect(state.log).toContain('rpc:finalize_submission')
   })
 })
 

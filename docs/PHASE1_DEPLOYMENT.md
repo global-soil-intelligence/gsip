@@ -104,3 +104,24 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    versions and set the repository variables `VITE_TERMS_URL`, `VITE_PRIVACY_URL` and
    `VITE_SAMPLING_RULES_URL` (HTTPS or same-site paths); until then the capture app links to the
    drafts in the repository. Capture stays closed until this is done.
+
+### WP-6e — provenance
+
+1. Apply the migrations. Every contributor gets a human actor (new contributors get one by
+   trigger), every submission records its actor, synthetic seed rows sit at provenance tier -1 and
+   field rows start at 0. The QA worker now records private capture evidence from each original
+   upload before stripping it and sets photo tiers (0, or 1 when the photo's own capture time and
+   position agree with the claim). No new secret or variable is needed.
+2. The migration publishes the terms version the capture app has presented since July,
+   `2026-07-22-v1`, plus any version an existing grant already cites. Grants must cite a published,
+   unretired version, accepted within the last 30 days and not in the future; the server records
+   `received_at`. A device that waited more than 30 days to sync asks its person to accept the
+   terms again before sending.
+3. When counsel approves new terms: insert the version into `terms_versions` with its
+   `published_at` and hosted `url`, change `TERMS_VERSION` in `apps/capture-pwa/src/terms.ts`, and
+   deploy Pages. Retire the previous version (`retired_at`) only after the new build has been live
+   for at least a day: an acceptance given on an un-updated device after retirement is refused.
+4. When loading laboratory results, mark sealed evaluation labels `holdout = true` (service role
+   only). Exports drop them and owners never see the flag.
+5. Agents cannot write yet. An `actors` row for an agent, device or lab is created only by the
+   service role and must be operated by a human actor; deleting that person's account revokes it.

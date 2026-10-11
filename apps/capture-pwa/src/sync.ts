@@ -1,4 +1,8 @@
-import { AccountChanged, RecordWithdrawn } from './errors'
+import {
+  AccountChanged,
+  RecordWithdrawn,
+  TermsReconfirmationNeeded,
+} from './errors'
 import type { QueueRecord } from './types'
 
 export type QueueStore = {
@@ -13,6 +17,8 @@ export type SyncSummary = {
   discarded: number
   failed: number
   held: number
+  /** Held until the person accepts the contribution terms again (I9). */
+  reconfirm: number
   synced: number
 }
 
@@ -23,7 +29,8 @@ export function isSyncEligible(
   record: QueueRecord,
   now: number = Date.now(),
 ): boolean {
-  if (record.deadLetteredAt || record.heldAt) return false
+  if (record.deadLetteredAt || record.heldAt || record.termsExpiredAt)
+    return false
   if (!record.nextRetryAt) return true
   const retryAt = Date.parse(record.nextRetryAt)
   return !Number.isFinite(retryAt) || retryAt <= now
@@ -39,7 +46,13 @@ export async function drainQueue(
   send: (record: QueueRecord) => Promise<void>,
   now: () => number = Date.now,
 ): Promise<SyncSummary> {
-  const summary: SyncSummary = { discarded: 0, failed: 0, held: 0, synced: 0 }
+  const summary: SyncSummary = {
+    discarded: 0,
+    failed: 0,
+    held: 0,
+    reconfirm: 0,
+    synced: 0,
+  }
   const generation = store.generation?.()
   const cleared = () =>
     store.generation !== undefined && store.generation() !== generation
@@ -64,6 +77,14 @@ export async function drainQueue(
           heldAt: new Date(attemptStartedAt).toISOString(),
         })
         summary.held += 1
+        continue
+      }
+      if (error instanceof TermsReconfirmationNeeded) {
+        await store.put({
+          ...record,
+          termsExpiredAt: new Date(attemptStartedAt).toISOString(),
+        })
+        summary.reconfirm += 1
         continue
       }
       const syncAttempts = (record.syncAttempts ?? 0) + 1

@@ -13,6 +13,25 @@ comments and every non-JFIF APP segment by re-encoding. It keeps the schema allo
 camera fields plus a colour-space class (`srgb`, `display_p3`, `other`, `none`), verifies the
 sanitized bytes with an independent marker scan, and promotes them to `submission-photos`.
 
+## Capture evidence and provenance tiers (WP-6e)
+
+Before sanitizing, the worker reads the original upload's capture metadata and compares it with the
+submission's claimed capture time and private point (`pipeline/provenance.py`). It stores only
+`photos.capture_evidence_private`: whether an EXIF capture time is present and absolute (it carries
+a UTC offset, or is the GPS fix time), the difference from the claimed time in seconds, whether an
+EXIF position is present, and its distance from the claimed point in metres. Never coordinates or
+timestamps: the database refuses any other key (I7).
+
+A photo reaches provenance tier 1 when its absolute capture time is within 30 minutes of the claim
+and any EXIF position lies within 250 m of the claimed point; otherwise it stays at 0. A
+submission's tier is the lower of shots A and B, kept by the database. Unreadable or hostile
+metadata is no evidence (tier 0), never a QA failure. The client's claims (`ingest_path`,
+`capture_method`, `location_source`) are not even read here: they never raise a tier (I10). A
+synthetic submission's photos keep tier -1. Capture metadata can be forged, so tier 1 means
+corroborated, not proven; attestation (tier 2) and laboratory pairing (tier 3) are reserved.
+
+## Checks
+
 Checks run on the soil, not the card. When the ArUco marker is found, the card's outline is projected
 from the marker homography, enlarged by 12 % and masked out:
 

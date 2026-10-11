@@ -1,7 +1,14 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@gsip/schema'
-import { AccountChanged, isWithdrawal, RecordWithdrawn } from './errors'
+import {
+  AccountChanged,
+  isWithdrawal,
+  RecordWithdrawn,
+  TermsReconfirmationNeeded,
+} from './errors'
 import { fuzzLocation } from './geo'
+import { claimColumns } from './provenance'
+import { acceptanceExpired } from './terms'
 import type { QueueRecord } from './types'
 
 export type GsipClient = SupabaseClient<Database>
@@ -177,8 +184,13 @@ export async function submitQueued(
   if (grant.error) throw grant.error
   if (!grant.data) {
     // The grant records when the person accepted the terms, never the photo's own timestamp.
+    // WP-6e (I9): the server records an acceptance only within 30 days, so an older one is held
+    // for the person to accept again instead of failing until it is dead-lettered.
+    const acceptedAt = record.acceptedAt ?? record.queuedAt
+    if (acceptanceExpired(acceptedAt, Date.now()))
+      throw new TermsReconfirmationNeeded()
     const created = await client.from('contribution_grants').insert({
-      accepted_at: record.acceptedAt ?? record.queuedAt,
+      accepted_at: acceptedAt,
       attribution_name: record.attributionName,
       contributor_id: contributor,
       id: record.grantId,
@@ -209,6 +221,8 @@ export async function submitQueued(
       land_cover: record.landCover,
       status: 'pending',
       surface_condition: record.surfaceCondition,
+      // WP-6e: claims only; the server assigns the actor and the provenance tier.
+      ...claimColumns(record.claims),
     })
     if (created.error) throw refusal(created.error)
   }

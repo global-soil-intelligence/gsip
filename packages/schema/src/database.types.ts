@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      actors: {
+        Row: {
+          contributor_id: string | null
+          created_at: string
+          id: string
+          kind: string
+          model_family: string | null
+          model_version: string | null
+          operator_id: string | null
+          status: string
+        }
+        Insert: {
+          contributor_id?: string | null
+          created_at?: string
+          id?: string
+          kind: string
+          model_family?: string | null
+          model_version?: string | null
+          operator_id?: string | null
+          status?: string
+        }
+        Update: {
+          contributor_id?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          model_family?: string | null
+          model_version?: string | null
+          operator_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'actors_contributor_id_fkey'
+            columns: ['contributor_id']
+            isOneToOne: false
+            referencedRelation: 'contributors'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'actors_operator_id_fkey'
+            columns: ['operator_id']
+            isOneToOne: false
+            referencedRelation: 'actors'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       attribution_reviews: {
         Row: {
           attribution_name: string
@@ -57,6 +105,7 @@ export type Database = {
           data_license: string
           id: string
           photo_license: string
+          received_at: string | null
           terms_version: string
         }
         Insert: {
@@ -66,6 +115,7 @@ export type Database = {
           data_license?: string
           id?: string
           photo_license?: string
+          received_at?: string | null
           terms_version: string
         }
         Update: {
@@ -75,6 +125,7 @@ export type Database = {
           data_license?: string
           id?: string
           photo_license?: string
+          received_at?: string | null
           terms_version?: string
         }
         Relationships: [
@@ -84,6 +135,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: 'contributors'
             referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'contribution_grants_terms_version_fkey'
+            columns: ['terms_version']
+            isOneToOne: false
+            referencedRelation: 'terms_versions'
+            referencedColumns: ['version']
           },
         ]
       }
@@ -166,6 +224,7 @@ export type Database = {
           depth_bottom_cm: number
           depth_top_cm: number
           document_ref: string | null
+          holdout: boolean
           id: string
           lab_name: string
           method: string | null
@@ -180,6 +239,7 @@ export type Database = {
           depth_bottom_cm: number
           depth_top_cm: number
           document_ref?: string | null
+          holdout?: boolean
           id?: string
           lab_name: string
           method?: string | null
@@ -194,6 +254,7 @@ export type Database = {
           depth_bottom_cm?: number
           depth_top_cm?: number
           document_ref?: string | null
+          holdout?: boolean
           id?: string
           lab_name?: string
           method?: string | null
@@ -293,10 +354,12 @@ export type Database = {
         Row: {
           calibration_status: string | null
           camera_metadata_private: Json | null
+          capture_evidence_private: Json | null
           card_color_correction: Json | null
           card_detected: boolean | null
           id: string
           perceptual_hash: string | null
+          provenance_tier: number
           qa_status: string | null
           sharpness_score: number | null
           shot_type: string
@@ -306,10 +369,12 @@ export type Database = {
         Insert: {
           calibration_status?: string | null
           camera_metadata_private?: Json | null
+          capture_evidence_private?: Json | null
           card_color_correction?: Json | null
           card_detected?: boolean | null
           id?: string
           perceptual_hash?: string | null
+          provenance_tier?: number
           qa_status?: string | null
           sharpness_score?: number | null
           shot_type: string
@@ -319,10 +384,12 @@ export type Database = {
         Update: {
           calibration_status?: string | null
           camera_metadata_private?: Json | null
+          capture_evidence_private?: Json | null
           card_color_correction?: Json | null
           card_detected?: boolean | null
           id?: string
           perceptual_hash?: string | null
+          provenance_tier?: number
           qa_status?: string | null
           sharpness_score?: number | null
           shot_type?: string
@@ -579,6 +646,8 @@ export type Database = {
       }
       submissions: {
         Row: {
+          actor_id: string
+          capture_method: string
           captured_at: string
           contributor_id: string
           device_model: string | null
@@ -591,13 +660,19 @@ export type Database = {
           h3_r6: string | null
           h3_r8: string | null
           id: string
+          ingest_path: string
           is_synthetic: boolean
           land_cover: string | null
+          location_source: string
           precip_flag: boolean | null
+          provenance_tier: number
           status: string
           surface_condition: string | null
         }
         Insert: {
+          // Set by the server (trigger) from the contributor; clients cannot write it.
+          actor_id?: string
+          capture_method?: string
           captured_at: string
           contributor_id: string
           device_model?: string | null
@@ -610,13 +685,18 @@ export type Database = {
           h3_r6?: string | null
           h3_r8?: string | null
           id?: string
+          ingest_path?: string
           is_synthetic?: boolean
           land_cover?: string | null
+          location_source?: string
           precip_flag?: boolean | null
+          provenance_tier?: number
           status?: string
           surface_condition?: string | null
         }
         Update: {
+          actor_id?: string
+          capture_method?: string
           captured_at?: string
           contributor_id?: string
           device_model?: string | null
@@ -629,13 +709,23 @@ export type Database = {
           h3_r6?: string | null
           h3_r8?: string | null
           id?: string
+          ingest_path?: string
           is_synthetic?: boolean
           land_cover?: string | null
+          location_source?: string
           precip_flag?: boolean | null
+          provenance_tier?: number
           status?: string
           surface_condition?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: 'submissions_actor_id_fkey'
+            columns: ['actor_id']
+            isOneToOne: false
+            referencedRelation: 'actors'
+            referencedColumns: ['id']
+          },
           {
             foreignKeyName: 'submissions_contributor_id_fkey'
             columns: ['contributor_id']
@@ -651,6 +741,30 @@ export type Database = {
             referencedColumns: ['id', 'contributor_id']
           },
         ]
+      }
+      terms_versions: {
+        Row: {
+          published_at: string
+          retired_at: string | null
+          summary: string | null
+          url: string | null
+          version: string
+        }
+        Insert: {
+          published_at: string
+          retired_at?: string | null
+          summary?: string | null
+          url?: string | null
+          version: string
+        }
+        Update: {
+          published_at?: string
+          retired_at?: string | null
+          summary?: string | null
+          url?: string | null
+          version?: string
+        }
+        Relationships: []
       }
       upstream_buckets: {
         Row: {
