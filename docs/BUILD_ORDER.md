@@ -130,20 +130,21 @@ Acceptance criteria:
 Lands I9–I11 and the I15 holdout flag while production holds little or no real data.
 Scope:
 
-1. **Actors.** `actors` (`human|agent|device|lab`); a human actor per contributor (backfilled, then created by trigger); non-human actors require an operator. Clients read only their own actor and write none.
-2. **Submission provenance.** `actor_id` (server-set), client claims `ingest_path` (`web|app`), `capture_method` (`camera|file|unknown`) and `location_source` (`device_gps|manual_pin|unknown`), and server-only `provenance_tier` (-1 synthetic, 0 unattested, 1 corroborated, 2 attested, 3 lab-verified). Synthetic rows are exactly tier -1.
-3. **Photo evidence.** Before stripping, QA derives private `capture_evidence_private` (EXIF time present, time difference, EXIF GPS present, distance to the claimed point — never coordinates). A photo reaches tier 1 when its EXIF capture time agrees with the claim and any EXIF GPS agrees with the claimed point; a submission's tier is the minimum of shots A and B. Tiers 2 and 3 are reserved for attestation and lab pairing.
-4. **Grants under I9.** Published `terms_versions`; a grant must cite a published version, its client acceptance time must fall within the last 30 days and not in the future, and the server records `received_at`.
-5. **Holdout.** `gold_labels.holdout` (server-only); export drops holdout labels and asserts none remain.
+1. **Actors.** `actors` (`human|agent|device|lab`); a human actor per contributor (backfilled, then created by trigger; revoked when the contributor has no sign-in); non-human actors require an active human operator; revocation is final and reaches every actor the operator runs. A submission's actor is the contributor's human actor unless a server path names an active actor that human operates. Clients read only their own actor and write none.
+2. **Submission provenance.** `actor_id` (server-set), client claims `ingest_path` (`web|app`), `capture_method` (`camera|file|unknown`), `location_source` (`device_gps|manual_pin|unknown`) and `client_version`, and server-only `provenance_tier` (-1 synthetic, 0 unattested, 1 corroborated, 2 attested, 3 lab-verified). Synthetic rows are exactly tier -1 and never become field data again.
+3. **Photo evidence.** Before stripping, QA derives private `capture_evidence_private` (EXIF time present and absolute, its difference from the claimed capture time, its age when the terms were accepted, EXIF GPS present, distance to the claimed point — never coordinates or timestamps). The database derives every tier from that evidence; a direct write cannot set one. A photo reaches tier 1 when its absolute EXIF capture time agrees with the claimed capture time and was taken within the hour before the contributor accepted the terms for the observation (five minutes of clock skew allowed), and any EXIF GPS agrees with the claimed point; a submission's tier is the minimum of shots A and B. Tiers 2 and 3 are reserved for attestation and lab pairing.
+4. **Grants under I9.** Published `terms_versions` (versions recorded only from existing grants are retired); a grant must cite a published version, its client acceptance time must fall within the last 30 days and not in the future, and the server records `received_at`. A device holds an observation whose acceptance has expired, once the server has shown it was not withdrawn, until its person accepts the current terms again.
+5. **Holdout.** `gold_labels.holdout` (server-only); export drops holdout labels and aborts if one remains.
 6. **Export.** Rows require tier ≥ 0 and carry `provenance_tier`, `location_source` and `capture_method`; the dataset card documents tiers. The capture client sends its claims.
 
 Acceptance criteria:
 
-- [ ] pgTAP: every contributor has exactly one human actor; a non-human actor without an operator is rejected; clients cannot write `provenance_tier`, `actor_id`, `received_at` or `holdout`; synthetic rows are exactly tier -1.
-- [ ] pgTAP: grants citing an unpublished terms version or an out-of-window acceptance time are rejected.
-- [ ] pytest: capture evidence contains only allowlisted fields and no coordinates; tier 1 requires consistent EXIF evidence; client claims alone never raise a tier.
-- [ ] pytest: export refuses rows below tier 0 and drops holdout labels; the dataset card lists tiers.
-- [ ] vitest: the capture client sends `ingest_path`, `capture_method` and `location_source`.
+- [ ] pgTAP: every contributor has exactly one human actor; a non-human actor without an active human operator is rejected; clients cannot write `provenance_tier`, `actor_id`, `received_at` or `holdout`; tiers follow the evidence whatever is written; synthetic rows are exactly tier -1.
+- [ ] pgTAP: grants citing an unpublished terms version or an out-of-window acceptance time are rejected; a withdrawn acceptance is refused as withdrawn (`WD001`) even when it is also out of window.
+- [ ] A migration test applies WP-6e to a database holding pre-WP-6e rows and checks the backfill and the account-deletion flow on them.
+- [ ] pytest: capture evidence contains only allowlisted fields and no coordinates; hostile metadata yields empty evidence; client claims are never read when tiering.
+- [ ] pytest: export refuses rows below tier 0 and aborts on holdout labels; the dataset card lists tiers.
+- [ ] vitest: the capture client sends `ingest_path`, `capture_method`, `location_source` and `client_version`; an expired acceptance is held only after the server has not refused it as withdrawn.
 
 ### Phase 1.5 — App and agent readers
 
