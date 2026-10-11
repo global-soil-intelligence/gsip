@@ -649,6 +649,7 @@ export type Database = {
           actor_id: string
           capture_method: string
           captured_at: string
+          client_version: string | null
           contributor_id: string
           device_model: string | null
           disturbed: boolean | null
@@ -674,6 +675,7 @@ export type Database = {
           actor_id?: string
           capture_method?: string
           captured_at: string
+          client_version?: string | null
           contributor_id: string
           device_model?: string | null
           disturbed?: boolean | null
@@ -698,6 +700,7 @@ export type Database = {
           actor_id?: string
           capture_method?: string
           captured_at?: string
+          client_version?: string | null
           contributor_id?: string
           device_model?: string | null
           disturbed?: boolean | null

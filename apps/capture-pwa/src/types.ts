@@ -37,6 +37,13 @@ export type QueueRecord = CaptureDraft & {
   heldAt?: string
   nextRetryAt?: string
   queuedAt: string
+  /**
+   * When the person accepted the current terms again for an observation whose original acceptance
+   * expired (I9). The original `acceptedAt` is kept: it is always offered to the server first, so
+   * an observation its person withdrew is refused as withdrawn and dropped, never re-accepted.
+   */
+  reconfirmedAt?: string
+  reconfirmedTermsVersion?: string
   syncAttempts?: number
   /** Set when its terms acceptance is too old to record: kept, not sent, until accepted again. */
   termsExpiredAt?: string

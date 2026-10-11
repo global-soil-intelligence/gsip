@@ -21,6 +21,7 @@ from pipeline.qa_worker import (
 AUTH_UID = "30000000-0000-4000-8000-000000000001"
 OTHER_UID = "30000000-0000-4000-8000-000000000002"
 SUBMISSION = "50000000-0000-4000-8000-000000000001"
+GRANT = "40000000-0000-4000-8000-000000000001"
 
 
 def jpeg(size: int) -> bytes:
@@ -65,11 +66,15 @@ class WorkerHarness(SupabaseQaWorker):
         withdrawn: set[str] | None = None,
         good: bytes | None = None,
         submission_fields: dict[str, Any] | None = None,
+        grant_rows: list[dict[str, Any]] | None = None,
     ) -> None:
         super().__init__("https://supabase.test", "service-key")
         self.hostile = hostile
         self.good = good if good is not None else jpeg(8)
         self.submission_fields = submission_fields or {}
+        self.grant_rows = (
+            grant_rows if grant_rows is not None else [{"accepted_at": "2026-10-11T12:05:00+00:00"}]
+        )
         self.submission_selects: list[str] = []
         self.geometry = geometry or {
             "coordinates": [-79.982, 40.446],
@@ -133,13 +138,16 @@ class WorkerHarness(SupabaseQaWorker):
                         "contributor": {"auth_uid": AUTH_UID},
                         "geom_precise": self.geometry,
                         "gps_accuracy_m": 8,
+                        "grant_id": GRANT,
                         "id": SUBMISSION,
-                        "is_synthetic": False,
                         "land_cover": "urban",
                         **self.submission_fields,
                     }
                 ]
             )
+        if method == "GET" and path.startswith("contribution_grants?"):
+            assert path == f"contribution_grants?id=eq.{GRANT}&select=accepted_at"
+            return self._response(self.grant_rows)
         if method == "GET" and path.startswith("priors?"):
             return self._response(self.prior_rows)
         if method == "GET" and path.startswith("photos?submission_id=neq."):
@@ -403,57 +411,65 @@ def test_one_failing_settlement_does_not_stop_the_sweep() -> None:
     assert worker.settled == ["50000000-0000-4000-8000-000000000012"]
 
 
-# WP-6e: capture evidence and photo tiers (I7, I10, I11).
+# WP-6e: capture evidence (I7, I10). The database derives tiers from it; the worker writes none.
 
 
-def test_a_photo_without_capture_metadata_is_recorded_at_tier_zero() -> None:
+def test_a_photo_without_capture_metadata_is_recorded_with_empty_evidence() -> None:
     worker = WorkerHarness(b"unused")
 
     assert worker.process_one("good", 0)
     update = worker.photo_updates["good"]
-    assert update["provenance_tier"] == 0
-    assert update["capture_evidence_private"]["exif_time_present"] is False
-    assert update["capture_evidence_private"]["evidence_version"] == "exif-v1"
+    assert "provenance_tier" not in update
+    assert update["capture_evidence_private"] == {
+        "evidence_version": "exif-v1",
+        "exif_age_at_acceptance_s": None,
+        "exif_gps_distance_m": None,
+        "exif_gps_present": False,
+        "exif_time_absolute": False,
+        "exif_time_delta_s": None,
+        "exif_time_present": False,
+    }
 
 
-def test_capture_metadata_read_before_stripping_corroborates_the_claimed_time() -> None:
+def test_capture_metadata_is_read_before_stripping_and_measured_against_the_observation() -> None:
     worker = WorkerHarness(
         b"unused", good=jpeg_with_capture_time(8, "2026:10:11 08:00:10", "-04:00")
     )
 
     assert worker.process_one("good", 0)
     update = worker.photo_updates["good"]
-    assert update["provenance_tier"] == 1
-    assert update["capture_evidence_private"]["exif_time_delta_s"] == 10
+    assert "provenance_tier" not in update
+    evidence = update["capture_evidence_private"]
+    # Taken 12:00:10 UTC; claimed 12:00:00 UTC; terms accepted 12:05:00 UTC.
+    assert (evidence["exif_time_delta_s"], evidence["exif_age_at_acceptance_s"]) == (10, 290)
     # The evidence is private and coordinate-free; the promoted photo carries no metadata at all.
-    assert "40.446" not in json.dumps(update["capture_evidence_private"])
+    assert "40.446" not in json.dumps(evidence)
 
 
-def test_client_claims_are_never_read_and_never_raise_a_tier() -> None:
-    worker = WorkerHarness(
-        b"unused",
-        submission_fields={
-            "capture_method": "camera",
-            "ingest_path": "app",
-            "location_source": "device_gps",
-        },
-    )
-
-    assert worker.process_one("good", 0)
-    assert worker.photo_updates["good"]["provenance_tier"] == 0
-    select = worker.submission_selects[0]
-    for claim in ("ingest_path", "capture_method", "location_source"):
-        assert claim not in select
-
-
-def test_a_synthetic_submissions_photo_is_never_given_a_field_tier() -> None:
+def test_an_unreadable_acceptance_time_is_no_comparison() -> None:
     worker = WorkerHarness(
         b"unused",
         good=jpeg_with_capture_time(8, "2026:10:11 08:00:10", "-04:00"),
-        submission_fields={"is_synthetic": True},
+        grant_rows=[],
     )
 
     assert worker.process_one("good", 0)
-    update = worker.photo_updates["good"]
-    assert "provenance_tier" not in update
-    assert update["capture_evidence_private"]["exif_time_absolute"] is True
+    evidence = worker.photo_updates["good"]["capture_evidence_private"]
+    assert evidence["exif_time_delta_s"] == 10
+    assert evidence["exif_age_at_acceptance_s"] is None
+
+
+def test_client_claims_are_never_read() -> None:
+    claims = {
+        "capture_method": "camera",
+        "client_version": "9.9.9",
+        "ingest_path": "app",
+        "location_source": "device_gps",
+    }
+    worker = WorkerHarness(b"unused", submission_fields=claims)
+
+    assert worker.process_one("good", 0)
+    select = worker.submission_selects[0]
+    for claim in claims:
+        assert claim not in select
+    assert worker.photo_updates["good"]["capture_evidence_private"]["exif_time_present"] is False

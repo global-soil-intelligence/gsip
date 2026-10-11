@@ -8,6 +8,7 @@ import {
   waitFor,
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { CLIENT_VERSION } from '../src/provenance'
 import { enqueue, queued, removeQueued } from '../src/queue'
 import type { QueueRecord } from '../src/types'
 
@@ -306,6 +307,7 @@ describe('provenance claims and the terms window (WP-6e)', () => {
         accuracyM: null,
         claims: {
           captureMethod: 'file',
+          clientVersion: CLIENT_VERSION,
           ingestPath: 'web',
           locationSource: 'manual_pin',
         },
@@ -338,6 +340,7 @@ describe('provenance claims and the terms window (WP-6e)', () => {
         accuracyM: 6,
         claims: {
           captureMethod: 'camera',
+          clientVersion: CLIENT_VERSION,
           ingestPath: 'web',
           locationSource: 'device_gps',
         },
@@ -388,10 +391,13 @@ describe('provenance claims and the terms window (WP-6e)', () => {
       QueueRecord,
     ]
     expect(sent.termsExpiredAt).toBeUndefined()
-    expect(sent.termsVersion).toBe('2026-07-22-v1')
-    expect(Date.parse(sent.acceptedAt ?? '')).toBeGreaterThanOrEqual(
+    expect(sent.reconfirmedTermsVersion).toBe('2026-07-22-v1')
+    expect(Date.parse(sent.reconfirmedAt ?? '')).toBeGreaterThanOrEqual(
       before - 1000,
     )
+    // The original acceptance is kept: it is always offered to the server first.
+    expect(sent.acceptedAt).toBe('2026-01-01T00:00:00Z')
+    expect(sent.termsVersion).toBe('an-older-version')
     // Nothing else about the observation changes.
     expect(sent.grantId).toBe(record.grantId)
     expect(sent.capturedAt).toBe(record.capturedAt)

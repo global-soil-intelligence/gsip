@@ -893,27 +893,42 @@ def test_source_asks_only_for_field_data_at_tier_zero_or_above() -> None:
     )
 
 
-def test_source_drops_holdout_labels_and_never_carries_the_flag() -> None:
-    label = {
-        "lab_name": "Example Lab",
-        "method": "dry combustion",
-        "property": "soc",
-        "unit": "g/kg",
-        "uncertainty": None,
-        "depth_top_cm": 0,
-        "depth_bottom_cm": 5,
-    }
+HOLDOUT_LABEL = {
+    "lab_name": "Example Lab",
+    "method": "dry combustion",
+    "property": "soc",
+    "unit": "g/kg",
+    "uncertainty": None,
+    "depth_top_cm": 0,
+    "depth_bottom_cm": 5,
+}
+
+
+def test_source_asks_only_for_labels_not_held_out_and_never_carries_the_flag() -> None:
     tables = source_tables("Anonymous soil contributor", [], [])
-    tables["gold_labels"] = [
-        {**label, "value": 21.5, "holdout": False},
-        {**label, "value": 30.0, "holdout": True},
-        # A label whose flag is missing is treated as held out.
-        {**label, "value": 40.0},
-    ]
+    tables["gold_labels"] = [{**HOLDOUT_LABEL, "value": 21.5, "holdout": False}]
     seen: list[str] = []
     [loaded] = load_from(tables, seen)
-    assert loaded.gold_labels == ({**label, "value": 21.5},)
-    assert any("/rest/v1/gold_labels?" in url and "holdout" in url for url in seen)
+    assert loaded.gold_labels == ({**HOLDOUT_LABEL, "value": 21.5},)
+    query = next(url for url in seen if "/rest/v1/gold_labels?" in url)
+    assert "holdout=is.false" in query and "holdout" in query.rsplit("select=", 1)[1]
+
+
+@pytest.mark.parametrize(
+    "leaked",
+    [
+        {**HOLDOUT_LABEL, "value": 30.0, "holdout": True},
+        # A label whose flag did not arrive is not assumed to be releasable.
+        {**HOLDOUT_LABEL, "value": 40.0},
+    ],
+)
+def test_a_held_out_or_unflagged_label_from_the_source_aborts_the_export(
+    leaked: dict[str, Any],
+) -> None:
+    tables = source_tables("Anonymous soil contributor", [], [])
+    tables["gold_labels"] = [{**HOLDOUT_LABEL, "value": 21.5, "holdout": False}, leaked]
+    with pytest.raises(ExportPrivacyError, match="holdout"):
+        load_from(tables)
 
 
 def test_a_holdout_flag_that_reaches_a_row_aborts_the_release(tmp_path: Path) -> None:
@@ -931,4 +946,6 @@ def test_dataset_card_explains_every_tier(tmp_path: Path) -> None:
     for tier in ("- `0`:", "- `1`:", "- `2`:", "- `3`:"):
         assert tier in card
     assert "tier -1) is never included" in card
-    assert "never raise a tier" in card
+    assert "never raising a tier" in card
+    assert "within the hour before" in card
+    assert "not a verified" in card

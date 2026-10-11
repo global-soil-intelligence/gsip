@@ -1,4 +1,8 @@
-"""WP-6e capture evidence (I7, I10): allowlisted, coordinate-free, and the only path to tier 1."""
+"""WP-6e capture evidence (I7, I10): allowlisted, coordinate-free measurements, never a tier.
+
+The database derives tiers from this evidence; its rule and boundaries are tested in pgTAP
+(`supabase/tests/database/wp6e_provenance.test.sql`).
+"""
 
 from __future__ import annotations
 
@@ -15,8 +19,6 @@ from PIL import ExifTags, Image, TiffImagePlugin
 from pipeline.provenance import (
     EVIDENCE_KEYS,
     EVIDENCE_VERSION,
-    GPS_TOLERANCE_M,
-    TIME_TOLERANCE_S,
     CaptureEvidence,
     capture_evidence,
 )
@@ -24,8 +26,10 @@ from pipeline.provenance import (
 ROOT = Path(__file__).resolve().parents[1]
 R = TiffImagePlugin.IFDRational
 
-# The claimed capture: Burlington, Vermont, 12:00:00 UTC (08:00 local, UTC-4).
+# The claimed capture: Burlington, Vermont, 12:00:00 UTC (08:00 local, UTC-4); the person accepted
+# the terms five minutes later.
 CLAIMED_AT = datetime(2026, 10, 11, 12, 0, 0, tzinfo=UTC)
+ACCEPTED_AT = CLAIMED_AT + timedelta(minutes=5)
 LATITUDE = 44.4759
 LONGITUDE = -73.2121
 
@@ -71,11 +75,21 @@ def photo(
     return output.getvalue()
 
 
-def evidence(raw: bytes, claimed_at: datetime | None = CLAIMED_AT) -> CaptureEvidence:
-    return capture_evidence(raw, claimed_at=claimed_at, latitude=LATITUDE, longitude=LONGITUDE)
+def evidence(
+    raw: bytes,
+    claimed_at: datetime | None = CLAIMED_AT,
+    accepted_at: datetime | None = ACCEPTED_AT,
+) -> CaptureEvidence:
+    return capture_evidence(
+        raw,
+        claimed_at=claimed_at,
+        accepted_at=accepted_at,
+        latitude=LATITUDE,
+        longitude=LONGITUDE,
+    )
 
 
-def test_a_consistent_camera_photo_is_corroborated() -> None:
+def test_a_camera_photo_is_measured_against_the_claim_and_the_acceptance() -> None:
     found = evidence(
         photo(
             local_time="2026:10:11 08:00:42",
@@ -83,15 +97,12 @@ def test_a_consistent_camera_photo_is_corroborated() -> None:
             gps_position=(44.4762, -73.2125),
         )
     )
-    assert found == CaptureEvidence(
-        exif_time_present=True,
-        exif_time_absolute=True,
-        exif_time_delta_s=42,
-        exif_gps_present=True,
-        exif_gps_distance_m=found.exif_gps_distance_m,
-    )
+    assert found.exif_time_present and found.exif_time_absolute
+    assert found.exif_time_delta_s == 42
+    # Taken at 12:00:42 UTC, accepted at 12:05:00 UTC.
+    assert found.exif_age_at_acceptance_s == 258
+    assert found.exif_gps_present
     assert found.exif_gps_distance_m is not None and 30 <= found.exif_gps_distance_m <= 60
-    assert found.tier == 1
 
 
 def test_evidence_holds_only_allowlisted_fields_and_never_coordinates_or_times() -> None:
@@ -104,11 +115,9 @@ def test_evidence_holds_only_allowlisted_fields_and_never_coordinates_or_times()
     stored = evidence(raw).private_json()
     assert set(stored) == EVIDENCE_KEYS
     assert stored["evidence_version"] == EVIDENCE_VERSION
-    assert all(
-        isinstance(value, (bool, int, type(None)))
-        for key, value in stored.items()
-        if key != "evidence_version"
-    )
+    for key, value in stored.items():
+        if key != "evidence_version":
+            assert value is None or type(value) in (bool, int), key
     text = json.dumps(stored)
     for leak in ("44.47", "73.21", "2026", "08:00", "12:00"):
         assert leak not in text
@@ -121,23 +130,38 @@ def test_the_python_allowlist_is_the_database_allowlist() -> None:
     )
     assert block is not None
     assert set(re.findall(r"'([a-z_]+)'", block.group(1))) == EVIDENCE_KEYS
+    assert f"evidence ->> 'evidence_version' = '{EVIDENCE_VERSION}'" in migration
 
 
-def test_a_wall_clock_time_without_an_offset_corroborates_nothing() -> None:
+def test_a_wall_clock_time_without_an_offset_is_no_comparison() -> None:
     found = evidence(photo(local_time="2026:10:11 12:00:00"))
     assert found.exif_time_present and not found.exif_time_absolute
-    assert found.exif_time_delta_s is None
-    assert found.tier == 0
+    assert found.exif_time_delta_s is None and found.exif_age_at_acceptance_s is None
 
 
 def test_the_gps_fix_time_is_an_absolute_time() -> None:
     found = evidence(photo(gps_time=("2026:10:11", (11, 59, 30))))
-    assert found.exif_time_absolute and found.exif_time_delta_s == 30
+    assert found.exif_time_absolute
+    assert (found.exif_time_delta_s, found.exif_age_at_acceptance_s) == (30, 330)
     assert not found.exif_gps_present
-    assert found.tier == 1
 
 
-def test_an_embedded_position_far_from_the_claim_blocks_corroboration() -> None:
+def test_an_old_gallery_photo_shows_its_age_at_acceptance() -> None:
+    # A year-old photo whose file time became the claimed capture time agrees with the claim, but
+    # the acceptance a year later gives it away; the database keeps it at tier 0.
+    taken = datetime(2025, 10, 20, 13, 15, tzinfo=UTC)
+    found = evidence(photo(local_time="2025:10:20 09:15:00", offset="-04:00"), claimed_at=taken)
+    assert found.exif_time_delta_s == 0
+    assert found.exif_age_at_acceptance_s == round((ACCEPTED_AT - taken).total_seconds())
+    assert found.exif_age_at_acceptance_s > 300 * 24 * 3600
+
+
+def test_a_photo_taken_after_the_acceptance_has_a_negative_age() -> None:
+    found = evidence(photo(local_time="2026:10:11 08:06:00", offset="-04:00"))
+    assert found.exif_age_at_acceptance_s == -60
+
+
+def test_an_embedded_position_far_from_the_claim_is_measured() -> None:
     found = evidence(
         photo(
             local_time="2026:10:11 08:00:00",
@@ -145,33 +169,11 @@ def test_an_embedded_position_far_from_the_claim_blocks_corroboration() -> None:
             gps_position=(44.4859, -73.2121),  # about 1.1 km north
         )
     )
-    assert found.exif_gps_present
-    assert found.exif_gps_distance_m is not None and found.exif_gps_distance_m > GPS_TOLERANCE_M
-    assert found.tier == 0
-
-
-@pytest.mark.parametrize(
-    ("local_time", "offset", "tier"),
-    [
-        ("2026:10:11 08:29:59", "-04:00", 1),
-        ("2026:10:11 08:30:00", "-04:00", 1),
-        ("2026:10:11 08:30:01", "-04:00", 0),
-        # A mis-set time zone is off by whole hours and never corroborates.
-        ("2026:10:11 08:00:00", "-05:00", 0),
-        ("2026:10:10 08:00:00", "-04:00", 0),
-    ],
-)
-def test_the_time_tolerance_is_inclusive_at_half_an_hour(
-    local_time: str, offset: str, tier: int
-) -> None:
-    assert TIME_TOLERANCE_S == 1800
-    assert evidence(photo(local_time=local_time, offset=offset)).tier == tier
+    assert found.exif_gps_distance_m is not None and 1000 <= found.exif_gps_distance_m <= 1200
 
 
 def test_no_metadata_is_no_evidence() -> None:
-    found = evidence(photo())
-    assert found == CaptureEvidence()
-    assert found.tier == 0
+    assert evidence(photo()) == CaptureEvidence()
 
 
 @pytest.mark.parametrize(
@@ -183,49 +185,34 @@ def test_no_metadata_is_no_evidence() -> None:
         photo(local_time="2026:13:45 25:61:61", offset="-04:00"),
         photo(local_time="2026:10:11 08:00:00", offset="+99:00"),
         photo(local_time="    :  :     :  :  ", offset="      "),
+        # The last moment EXIF can express, plus a leap second, overflows datetime arithmetic.
+        photo(gps_time=("9999:12:31", (23, 59, 60))),
     ],
 )
 def test_hostile_or_malformed_metadata_is_no_evidence_and_never_raises(raw: bytes) -> None:
     found = evidence(raw)
     assert not found.exif_time_absolute
-    assert found.tier == 0
+    assert found.exif_time_delta_s is None and found.exif_age_at_acceptance_s is None
 
 
 def test_a_zero_zero_position_means_no_fix() -> None:
     found = evidence(
         photo(local_time="2026:10:11 08:00:00", offset="-04:00", gps_position=(0.0, 0.0))
     )
-    assert not found.exif_gps_present
-    assert found.tier == 1
+    assert not found.exif_gps_present and found.exif_gps_distance_m is None
 
 
-@pytest.mark.parametrize("claimed_at", [None, datetime(2026, 10, 11, 12, 0, 0)])
-def test_a_missing_or_naive_claim_corroborates_nothing(claimed_at: datetime | None) -> None:
-    found = evidence(photo(local_time="2026:10:11 08:00:00", offset="-04:00"), claimed_at)
-    assert found.exif_time_absolute and found.exif_time_delta_s is None
-    assert found.tier == 0
+@pytest.mark.parametrize("moment", [None, datetime(2026, 10, 11, 12, 0, 0)])
+def test_a_missing_or_naive_claim_or_acceptance_is_no_comparison(
+    moment: datetime | None,
+) -> None:
+    raw = photo(local_time="2026:10:11 08:00:00", offset="-04:00")
+    assert evidence(raw, claimed_at=moment).exif_time_delta_s is None
+    assert evidence(raw, accepted_at=moment).exif_age_at_acceptance_s is None
 
 
-def test_tiers_never_exceed_one() -> None:
-    best = CaptureEvidence(
-        exif_time_present=True,
-        exif_time_absolute=True,
-        exif_time_delta_s=0,
-        exif_gps_present=True,
-        exif_gps_distance_m=0,
-    )
-    assert best.tier == 1
-
-
-def test_the_claim_inputs_are_only_time_and_place() -> None:
-    # Client claims (ingest path, capture method, location source) are not parameters, so no
-    # claim can raise a tier: only the photo's own bytes and the claimed time and point count.
+def test_client_claims_are_not_inputs() -> None:
+    # Ingest path, capture method, location source and client version are not parameters, so no
+    # claim can influence the evidence a tier is derived from.
     parameters = set(inspect.signature(capture_evidence).parameters)
-    assert parameters == {"raw", "claimed_at", "latitude", "longitude"}
-
-
-def test_evidence_survives_a_later_offset_shift_only_within_tolerance() -> None:
-    # The claim is the file timestamp; a capture 29 minutes before it still corroborates.
-    claimed = CLAIMED_AT + timedelta(minutes=29)
-    found = evidence(photo(local_time="2026:10:11 08:00:00", offset="-04:00"), claimed)
-    assert found.exif_time_delta_s == 29 * 60 and found.tier == 1
+    assert parameters == {"raw", "claimed_at", "accepted_at", "latitude", "longitude"}

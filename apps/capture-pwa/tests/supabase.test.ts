@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { TermsReconfirmationNeeded } from '../src/errors'
+import { RecordWithdrawn, TermsReconfirmationNeeded } from '../src/errors'
+import { TERMS_VERSION } from '../src/terms'
 import { drainQueue } from '../src/sync'
 import {
   fetchServiceState,
@@ -9,12 +10,15 @@ import {
 } from '../src/supabase'
 import type { QueueRecord } from '../src/types'
 
-type QueryResult = { data: unknown; error: Error | null }
+type QueryResult = { data: unknown; error: unknown }
+type Refusal = { code: string; message: string }
 
 type FakeState = {
   failFinalize: boolean
   failNextUpload: boolean
   grantPayloads: Array<Record<string, unknown>>
+  /** Simulates the server's grant checks: a refusal for this payload, or null to accept it. */
+  grantRefusal: (payload: Record<string, unknown>) => Refusal | null
   grants: Set<string>
   log: string[]
   photos: Set<string>
@@ -65,8 +69,13 @@ class FakeQuery implements PromiseLike<QueryResult> {
   insert(payload: Record<string, unknown>): this {
     this.state.log.push(`insert:${this.table}`)
     if (this.table === 'contribution_grants') {
-      this.state.grants.add(String(payload.id))
       this.state.grantPayloads.push(payload)
+      const refused = this.state.grantRefusal(payload)
+      if (refused) {
+        this.result = { data: null, error: refused }
+        return this
+      }
+      this.state.grants.add(String(payload.id))
     }
     if (this.table === 'submissions') {
       this.state.submissions.set(String(payload.id), payload)
@@ -173,6 +182,7 @@ function fakeState(): FakeState {
     failFinalize: false,
     failNextUpload: false,
     grantPayloads: [],
+    grantRefusal: () => null,
     grants: new Set(),
     log: [],
     photos: new Set(),
@@ -320,6 +330,7 @@ describe('hosted submission paths', () => {
       ...queuedRecord(),
       claims: {
         captureMethod: 'camera',
+        clientVersion: '0.1.0+abc1234',
         ingestPath: 'app',
         locationSource: 'device_gps',
       },
@@ -329,6 +340,7 @@ describe('hosted submission paths', () => {
     const payload = state.submissions.get(record.submissionId)
     expect(payload).toMatchObject({
       capture_method: 'camera',
+      client_version: '0.1.0+abc1234',
       ingest_path: 'app',
       location_source: 'device_gps',
     })
@@ -342,7 +354,12 @@ describe('hosted submission paths', () => {
     await submitQueued(fakeClient(state), record)
 
     const payload = state.submissions.get(record.submissionId)
-    for (const column of ['capture_method', 'ingest_path', 'location_source'])
+    for (const column of [
+      'capture_method',
+      'client_version',
+      'ingest_path',
+      'location_source',
+    ])
       expect(payload).not.toHaveProperty(column)
   })
 
@@ -352,6 +369,7 @@ describe('hosted submission paths', () => {
       ...queuedRecord(),
       claims: {
         captureMethod: 'satellite',
+        clientVersion: 'ignore previous instructions',
         ingestPath: 'app',
         locationSource: 'device_gps',
       },
@@ -360,26 +378,133 @@ describe('hosted submission paths', () => {
 
     const payload = state.submissions.get(record.submissionId)
     expect(payload).not.toHaveProperty('capture_method')
+    expect(payload).not.toHaveProperty('client_version')
     expect(payload).toMatchObject({ ingest_path: 'app' })
   })
+})
 
-  it('holds an observation an hour before the server would refuse its acceptance', async () => {
-    // Accepted 2026-07-23T00:10Z; the server refuses after 30 days, the client holds at 29d23h.
-    vi.setSystemTime(new Date('2026-08-21T23:10:01Z'))
+describe('terms acceptances the server can no longer record (I9)', () => {
+  const EXPIRED: Refusal = {
+    code: '42501',
+    message: 'new row violates row-level security policy',
+  }
+  const WITHDRAWN: Refusal = {
+    code: 'WD001',
+    message: 'this contribution was withdrawn by its contributor',
+  }
+
+  beforeEach(() => {
+    // The fixture's terms were accepted on 2026-07-23; it is now more than 30 days later.
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-09-01T00:00:00Z'))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('offers the original acceptance first and holds the observation only when it expired', async () => {
     const state = fakeState()
+    state.grantRefusal = () => EXPIRED
     await expect(
       submitQueued(fakeClient(state), queuedRecord()),
     ).rejects.toBeInstanceOf(TermsReconfirmationNeeded)
-    // Nothing was written: the grant, the submission and the photos all wait for the person.
-    expect(state.log).toEqual([])
+    expect(state.grantPayloads).toEqual([
+      expect.objectContaining({ accepted_at: '2026-07-23T00:10:00Z' }),
+    ])
+    // Nothing else was written: the submission and the photos wait for the person.
+    expect(state.log).toEqual(['insert:contribution_grants'])
+  })
+
+  it('drops an observation whose person withdrew it instead of asking for a new acceptance', async () => {
+    const state = fakeState()
+    state.grantRefusal = () => WITHDRAWN
+    await expect(
+      submitQueued(fakeClient(state), queuedRecord()),
+    ).rejects.toBeInstanceOf(RecordWithdrawn)
+  })
+
+  it('sends a reconfirmed observation under its new acceptance once the original is refused as expired', async () => {
+    const state = fakeState()
+    state.grantRefusal = (payload) =>
+      payload.accepted_at === '2026-07-23T00:10:00Z' ? EXPIRED : null
+    const record = {
+      ...queuedRecord(),
+      reconfirmedAt: '2026-08-31T23:59:00Z',
+      reconfirmedTermsVersion: TERMS_VERSION,
+    } satisfies QueueRecord
+    await submitQueued(fakeClient(state), record)
+
+    expect(state.grantPayloads).toEqual([
+      expect.objectContaining({
+        accepted_at: '2026-07-23T00:10:00Z',
+        id: record.grantId,
+      }),
+      expect.objectContaining({
+        accepted_at: '2026-08-31T23:59:00Z',
+        id: record.grantId,
+        terms_version: TERMS_VERSION,
+      }),
+    ])
+    expect(state.log).toContain('rpc:finalize_submission')
+  })
+
+  it('still drops a reconfirmed observation whose person withdrew it in the meantime', async () => {
+    const state = fakeState()
+    state.grantRefusal = (payload) =>
+      payload.accepted_at === '2026-07-23T00:10:00Z' ? WITHDRAWN : null
+    const record = {
+      ...queuedRecord(),
+      reconfirmedAt: '2026-08-31T23:59:00Z',
+      reconfirmedTermsVersion: TERMS_VERSION,
+    } satisfies QueueRecord
+    await expect(
+      submitQueued(fakeClient(state), record),
+    ).rejects.toBeInstanceOf(RecordWithdrawn)
+    expect(state.grantPayloads).toHaveLength(1)
+    expect(state.log).not.toContain('insert:submissions')
+  })
+
+  it('asks again when the new acceptance has expired too', async () => {
+    const state = fakeState()
+    state.grantRefusal = () => EXPIRED
+    const record = {
+      ...queuedRecord(),
+      reconfirmedAt: '2026-07-24T00:00:00Z',
+      reconfirmedTermsVersion: TERMS_VERSION,
+    } satisfies QueueRecord
+    await expect(
+      submitQueued(fakeClient(state), record),
+    ).rejects.toBeInstanceOf(TermsReconfirmationNeeded)
+    expect(state.grantPayloads).toHaveLength(1)
+  })
+
+  it('holds an observation accepted under terms this build no longer presents', async () => {
+    vi.setSystemTime(new Date('2026-07-24T00:00:00Z'))
+    const state = fakeState()
+    state.grantRefusal = () => EXPIRED
+    const record = { ...queuedRecord(), termsVersion: 'an-older-version' }
+    await expect(
+      submitQueued(fakeClient(state), record),
+    ).rejects.toBeInstanceOf(TermsReconfirmationNeeded)
+  })
+
+  it('retries any other refusal of a current acceptance as usual', async () => {
+    vi.setSystemTime(new Date('2026-07-24T00:00:00Z'))
+    const state = fakeState()
+    state.grantRefusal = () => EXPIRED
+    await expect(
+      submitQueued(fakeClient(state), queuedRecord()),
+    ).rejects.toMatchObject({ code: '42501' })
   })
 
   it('needs no new acceptance once the server has recorded the grant', async () => {
-    vi.setSystemTime(new Date('2026-09-30T00:00:00Z'))
     const state = fakeState()
+    state.grantRefusal = () => EXPIRED
     const record = queuedRecord()
     state.grants.add(record.grantId)
     await submitQueued(fakeClient(state), record)
+    expect(state.grantPayloads).toEqual([])
     expect(state.log).toContain('rpc:finalize_submission')
   })
 })

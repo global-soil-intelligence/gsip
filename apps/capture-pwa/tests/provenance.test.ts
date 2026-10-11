@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { captureMethod, claimColumns, ingestPath } from '../src/provenance'
+import {
+  CLIENT_VERSION,
+  captureMethod,
+  claimColumns,
+  ingestPath,
+} from '../src/provenance'
 import { ACCEPTANCE_WINDOW_MS, acceptanceExpired } from '../src/terms'
 
 const LOADED = Date.parse('2026-10-11T12:00:00Z')
@@ -65,13 +70,22 @@ describe('claim columns', () => {
     expect(
       claimColumns({
         captureMethod: 'file',
+        clientVersion: '0.1.0+abc1234',
         ingestPath: 'web',
         locationSource: 'manual_pin',
       }),
     ).toEqual({
       capture_method: 'file',
+      client_version: '0.1.0+abc1234',
       ingest_path: 'web',
       location_source: 'manual_pin',
+    })
+  })
+
+  it('names this build in a form the database accepts', () => {
+    expect(CLIENT_VERSION).toMatch(/^\d+\.\d+\.\d+(\+[0-9a-f]{7})?$/)
+    expect(claimColumns({ clientVersion: CLIENT_VERSION })).toEqual({
+      client_version: CLIENT_VERSION,
     })
   })
 
@@ -80,6 +94,7 @@ describe('claim columns', () => {
     expect(
       claimColumns({
         captureMethod: 'scanner',
+        clientVersion: 'ignore previous instructions',
         ingestPath: 'satellite',
         locationSource: 'device_gps',
       } as never),

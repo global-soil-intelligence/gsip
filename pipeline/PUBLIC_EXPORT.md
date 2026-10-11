@@ -22,16 +22,17 @@ result, and writes a Parquet dataset that is immediately round-tripped with `dat
 
 ## Provenance and the holdout (WP-6e)
 
-- Every row carries the server-assigned `provenance_tier` (0 unattested, 1 corroborated by the
+- Every row carries the database-derived `provenance_tier` (0 unattested, 1 corroborated by the
   photos' own capture metadata; 2 and 3 are reserved) and the contributor's claims
-  `location_source` and `capture_method`, published as stated. The dataset card explains each tier
-  and that claims never raise one.
-- The source query asks only for non-synthetic rows at tier 0 or above, and the build asserts it
-  again on every row: a synthetic row, a missing tier or one outside 0–3 that reaches a row aborts
-  the release (I11). A claim value outside the known sets sets the row aside.
-- Laboratory labels marked `holdout` are dropped when read, and a label whose flag is missing is
-  treated as held out. The flag itself is a forbidden key, so a holdout label that ever reached a
-  row would abort the release (I15).
+  `location_source` and `capture_method`, published as stated. The dataset card explains each tier,
+  that claims never raise one, and that `capture_method` is the app's own estimate.
+- The source query asks only for non-synthetic rows at tier 0 or above. The build then drops any
+  synthetic candidate and asserts every remaining row again: a synthetic row that got past that
+  filter, a missing tier, or one outside 0–3 aborts the release (I11). A claim value outside the
+  known sets sets the row aside.
+- The label query asks only for laboratory labels that are not held out, and every label read is
+  checked again: a held-out label, or one whose flag did not arrive, aborts the release. The flag
+  itself is a forbidden key in rows (I15).
 
 ## k-anonymous locations (SPEC I7)
 

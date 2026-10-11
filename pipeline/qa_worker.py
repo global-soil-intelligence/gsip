@@ -189,7 +189,7 @@ class SupabaseQaWorker:
             submission = self._rest(
                 "GET",
                 f"submissions?id=eq.{submission_id}"
-                "&select=id,geom_precise,gps_accuracy_m,land_cover,captured_at,is_synthetic,"
+                "&select=id,geom_precise,gps_accuracy_m,land_cover,captured_at,grant_id,"
                 "contributor:contributors(auth_uid)",
             ).json()[0]
             # WP-6b: never trust the stored path. A mismatch is terminal and touches no object.
@@ -214,10 +214,12 @@ class SupabaseQaWorker:
                 f"{self.url}/storage/v1/object/authenticated/incoming-photos/{object_path}"
             )
             raw.raise_for_status()
-            # WP-6e: evidence comes from the original bytes, before sanitizing strips them.
+            # WP-6e: evidence comes from the original bytes, before sanitizing strips them. The
+            # database derives the photo's tier from it; the worker never writes a tier.
             evidence = capture_evidence(
                 raw.content,
                 claimed_at=_timestamp(submission.get("captured_at")),
+                accepted_at=self._accepted_at(submission.get("grant_id")),
                 latitude=latitude,
                 longitude=longitude,
             )
@@ -228,10 +230,6 @@ class SupabaseQaWorker:
                 land_cover=submission["land_cover"],
                 priors=priors,
             )
-            provenance: dict[str, Any] = {"capture_evidence_private": evidence.private_json()}
-            if not submission.get("is_synthetic"):
-                # A synthetic submission's photos stay at tier -1; the database refuses any other.
-                provenance["provenance_tier"] = evidence.tier
             promoted = self.client.post(
                 f"{self.url}/storage/v1/object/submission-photos/{object_path}",
                 content=result.sanitized_jpeg,
@@ -252,7 +250,7 @@ class SupabaseQaWorker:
                     "sharpness_score": next(
                         event.score for event in result.events if event.check_name == "sharpness"
                     ),
-                    **provenance,
+                    "capture_evidence_private": evidence.private_json(),
                 },
             ).json()
             if not updated:
@@ -310,6 +308,16 @@ class SupabaseQaWorker:
                 terminal=attempts + 1 >= MAX_QA_ATTEMPTS,
             )
             return False
+
+    def _accepted_at(self, grant_id: Any) -> datetime | None:
+        """When the person accepted the terms for the observation; None if it cannot be read."""
+
+        if not isinstance(grant_id, str) or not grant_id:
+            return None
+        rows = self._rest(
+            "GET", f"contribution_grants?id=eq.{quote(grant_id, safe='')}&select=accepted_at"
+        ).json()
+        return _timestamp(rows[0].get("accepted_at")) if rows else None
 
     def _discard_objects(self, object_path: str) -> None:
         for bucket in ("submission-photos", "incoming-photos"):

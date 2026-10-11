@@ -9,9 +9,15 @@ export type LocationSource = 'device_gps' | 'manual_pin' | 'unknown'
 
 export type ProvenanceClaims = {
   captureMethod: CaptureMethod
+  /** The app build that made the observation (I10 software version); older records lack it. */
+  clientVersion?: string
   ingestPath: IngestPath
   locationSource: LocationSource
 }
+
+/** This build's version, as the database accepts it (`submissions.client_version`). */
+export const CLIENT_VERSION = __GSIP_CLIENT_VERSION__
+const CLIENT_VERSION_PATTERN = /^[0-9A-Za-z][0-9A-Za-z.+_-]{0,63}$/
 
 const INGEST_PATHS: ReadonlySet<string> = new Set(['web', 'app'])
 const CAPTURE_METHODS: ReadonlySet<string> = new Set([
@@ -74,6 +80,7 @@ export function captureMethod(
  */
 export function claimColumns(claims: Partial<ProvenanceClaims> | undefined): {
   capture_method?: CaptureMethod
+  client_version?: string
   ingest_path?: IngestPath
   location_source?: LocationSource
 } {
@@ -81,6 +88,10 @@ export function claimColumns(claims: Partial<ProvenanceClaims> | undefined): {
   return {
     ...(claims.captureMethod && CAPTURE_METHODS.has(claims.captureMethod)
       ? { capture_method: claims.captureMethod }
+      : {}),
+    ...(typeof claims.clientVersion === 'string' &&
+    CLIENT_VERSION_PATTERN.test(claims.clientVersion)
+      ? { client_version: claims.clientVersion }
       : {}),
     ...(claims.ingestPath && INGEST_PATHS.has(claims.ingestPath)
       ? { ingest_path: claims.ingestPath }

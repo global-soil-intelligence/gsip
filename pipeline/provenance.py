@@ -1,14 +1,13 @@
-"""Capture evidence and photo provenance tiers (SPEC I7, I10; WP-6e).
+"""Capture evidence for photo provenance (SPEC I7, I10; WP-6e).
 
 The QA worker derives evidence from an upload's original bytes before sanitizing strips every
-metadata channel. The evidence is private and holds no coordinates or timestamps (I7): only
-booleans, a time difference and a distance. It is the only input that can raise a field photo
-above tier 0. The client's claims (ingest path, capture method, location source) are recorded on
-the submission but are never an input here, so a claim can never raise a tier (I10).
+metadata channel, and stores it in `photos.capture_evidence_private`. The evidence is private
+and holds no coordinates or timestamps (I7): only booleans, whole-second time differences and a
+whole-metre distance. The database derives every provenance tier from it
+(`private.photo_tier_from_evidence`), so this module measures and never decides a tier.
 
-Tier 1 ("corroborated") means the file's own capture metadata agreed with the claimed time and
-place. Capture metadata can be forged, so tier 1 is corroboration, not proof; tiers 2 (attested
-capture) and 3 (lab-verified) are reserved for later work packages.
+The client's claims (ingest path, capture method, location source, client version) are recorded
+on the submission but are never an input here, so a claim can never raise a tier (I10).
 """
 
 from __future__ import annotations
@@ -21,22 +20,15 @@ from datetime import UTC, datetime, timedelta, timezone
 
 from PIL import ExifTags, Image
 
+# The database derives tiers only from evidence of this version.
 EVIDENCE_VERSION = "exif-v1"
-# A camera writes its capture time within seconds of the file timestamp the client reports. Half
-# an hour absorbs clock drift but never a mis-set time zone, which is off by an hour or more.
-TIME_TOLERANCE_S = 1800
-# The QA gate's GPS accuracy ceiling (pipeline.qa.MAX_GPS_ACCURACY_M).
-GPS_TOLERANCE_M = 250.0
 EARTH_RADIUS_M = 6_371_008.8
-
-TIER_SYNTHETIC = -1
-TIER_UNATTESTED = 0
-TIER_CORROBORATED = 1
 
 # Must equal the database allowlist (photos_capture_evidence_allowlist); a test checks both.
 EVIDENCE_KEYS = frozenset(
     {
         "evidence_version",
+        "exif_age_at_acceptance_s",
         "exif_gps_distance_m",
         "exif_gps_present",
         "exif_time_absolute",
@@ -53,35 +45,28 @@ _MAX_OFFSET = timedelta(hours=14)
 
 @dataclass(frozen=True)
 class CaptureEvidence:
-    """What an original upload says about when and where it was taken, without the values."""
+    """What an original upload says about when and where it was taken, without the values.
+
+    - `exif_time_absolute`: the EXIF capture time carries its time zone, or is the GPS fix time.
+    - `exif_time_delta_s`: how far that time lies from the claimed capture time (absolute value).
+    - `exif_age_at_acceptance_s`: how long before the person accepted the terms for the
+      observation the photo was taken (negative if after, which only clock skew explains).
+    - `exif_gps_distance_m`: how far the embedded position lies from the claimed point.
+    """
 
     exif_time_present: bool = False
     exif_time_absolute: bool = False
     exif_time_delta_s: int | None = None
+    exif_age_at_acceptance_s: int | None = None
     exif_gps_present: bool = False
     exif_gps_distance_m: int | None = None
-
-    @property
-    def tier(self) -> int:
-        """1 when the capture time is absolute and agrees with the claim, and any EXIF position
-        lies near the claimed point; otherwise 0. Never above 1: higher tiers need attestation
-        or a laboratory result."""
-
-        time_agrees = (
-            self.exif_time_absolute
-            and self.exif_time_delta_s is not None
-            and self.exif_time_delta_s <= TIME_TOLERANCE_S
-        )
-        place_agrees = not self.exif_gps_present or (
-            self.exif_gps_distance_m is not None and self.exif_gps_distance_m <= GPS_TOLERANCE_M
-        )
-        return TIER_CORROBORATED if time_agrees and place_agrees else TIER_UNATTESTED
 
     def private_json(self) -> dict[str, bool | int | str | None]:
         """The `photos.capture_evidence_private` value: allowlisted keys only."""
 
         return {
             "evidence_version": EVIDENCE_VERSION,
+            "exif_age_at_acceptance_s": self.exif_age_at_acceptance_s,
             "exif_gps_distance_m": self.exif_gps_distance_m,
             "exif_gps_present": self.exif_gps_present,
             "exif_time_absolute": self.exif_time_absolute,
@@ -94,46 +79,75 @@ def capture_evidence(
     raw: bytes,
     *,
     claimed_at: datetime | None,
+    accepted_at: datetime | None,
     latitude: float,
     longitude: float,
 ) -> CaptureEvidence:
-    """Compare an original upload's EXIF capture time and position with the claimed ones.
+    """Compare an original upload's EXIF capture time and position with the observation's claims.
 
-    Total by design: unreadable, hostile or absent metadata is simply no evidence (tier 0) and
-    never fails a photo's QA. `claimed_at` must be timezone-aware; a naive or missing claim
-    cannot be compared and corroborates nothing.
+    `claimed_at` is the claimed capture time and `accepted_at` the moment the person accepted the
+    terms for the observation (the grant's acceptance time, which the server bounds to the 30 days
+    before it received the grant). Both must be timezone-aware; a naive or missing one is no
+    comparison. Total by design: unreadable, hostile or absent metadata is simply no evidence and
+    never fails a photo's QA.
     """
 
     try:
-        with Image.open(io.BytesIO(raw)) as image:
-            exif = image.getexif()
-            exif_ifd = dict(exif.get_ifd(ExifTags.IFD.Exif))
-            gps_ifd = dict(exif.get_ifd(ExifTags.IFD.GPSInfo))
-    except Exception:  # noqa: BLE001 - any metadata failure is "no evidence", never an error
+        return _capture_evidence(
+            raw,
+            claimed_at=_aware(claimed_at),
+            accepted_at=_aware(accepted_at),
+            latitude=latitude,
+            longitude=longitude,
+        )
+    except Exception:  # noqa: BLE001 - hostile metadata is "no evidence", never a QA failure
         return CaptureEvidence()
+
+
+def _aware(moment: datetime | None) -> datetime | None:
+    return moment if moment is not None and moment.utcoffset() is not None else None
+
+
+def _seconds(later: datetime, earlier: datetime) -> int:
+    return round((later - earlier).total_seconds())
+
+
+def _capture_evidence(
+    raw: bytes,
+    *,
+    claimed_at: datetime | None,
+    accepted_at: datetime | None,
+    latitude: float,
+    longitude: float,
+) -> CaptureEvidence:
+    with Image.open(io.BytesIO(raw)) as image:
+        exif = image.getexif()
+        exif_ifd = dict(exif.get_ifd(ExifTags.IFD.Exif))
+        gps_ifd = dict(exif.get_ifd(ExifTags.IFD.GPSInfo))
 
     local_time = _exif_datetime(exif_ifd.get(ExifTags.Base.DateTimeOriginal))
     gps_time = _gps_datetime(gps_ifd)
     absolute = _with_offset(local_time, exif_ifd.get(ExifTags.Base.OffsetTimeOriginal)) or gps_time
-    claim = claimed_at if claimed_at is not None and claimed_at.utcoffset() is not None else None
-    delta = (
-        round(abs((absolute - claim).total_seconds()))
-        if absolute is not None and claim is not None
-        else None
-    )
-
     position = _gps_position(gps_ifd)
-    distance = (
-        round(_haversine_m(position[0], position[1], latitude, longitude))
-        if position is not None
-        else None
-    )
     return CaptureEvidence(
         exif_time_present=local_time is not None or gps_time is not None,
         exif_time_absolute=absolute is not None,
-        exif_time_delta_s=delta,
+        exif_time_delta_s=(
+            abs(_seconds(absolute, claimed_at))
+            if absolute is not None and claimed_at is not None
+            else None
+        ),
+        exif_age_at_acceptance_s=(
+            _seconds(accepted_at, absolute)
+            if absolute is not None and accepted_at is not None
+            else None
+        ),
         exif_gps_present=position is not None,
-        exif_gps_distance_m=distance,
+        exif_gps_distance_m=(
+            round(_haversine_m(position[0], position[1], latitude, longitude))
+            if position is not None
+            else None
+        ),
     )
 
 

@@ -245,9 +245,11 @@ release.
 `provenance_tier` is assigned by the GSIP server, never by the contributor's app:
 
 - `0`: a field observation. The contributor's statements were recorded but not corroborated.
-- `1`: corroborated. Before metadata was stripped, both required photos' own capture time agreed
-  with the stated capture time, and any embedded position lay within 250 m of the stated
-  location. Capture metadata can be forged: this is corroboration, not proof.
+- `1`: corroborated. Before metadata was stripped, both required photos' own capture time (with
+  its time zone) lay within 30 minutes of the stated capture time and within the hour before the
+  contributor accepted the contribution terms for the observation in the app, and any position
+  embedded in the photos lay within 250 m of the stated location. Capture metadata can be
+  forged: this is corroboration, not proof.
 - `2`: reserved for attested capture (for example, signed by the capturing device). Not yet
   assigned.
 - `3`: reserved for pairing with a laboratory result. Not yet assigned.
@@ -255,8 +257,9 @@ release.
 An observation's tier is the lower of its two required photos' tiers. Synthetic, simulated or
 seeded data (tier -1) is never included in this dataset. `location_source` (`device_gps`,
 `manual_pin` or `unknown`) and `capture_method` (`camera`, `file` or `unknown`) are what the
-contributor's app reported; they are published as stated and never raise a tier. Laboratory
-labels held out for model evaluation are never included.
+contributor's app reported, published as stated and never raising a tier. `capture_method` is the
+app's own estimate (`camera` when the photo file was created during the visit), not a verified
+fact. Laboratory labels held out for model evaluation are never included.
 
 Point-level soil-map priors are not included: sampled at an observation's position, they would
 locate it more precisely than its published cell. To use priors, sample SoilGrids
@@ -562,6 +565,21 @@ def build_export(
     )
 
 
+def _releasable_labels(labels: list[dict[str, Any]]) -> tuple[dict[str, Any], ...]:
+    """I15: the query asks only for labels that are not held out; this checks every one again.
+
+    A held-out label, or one whose flag did not arrive, aborts the release instead of being
+    published; the flag itself is never carried into a row.
+    """
+
+    for label in labels:
+        if label.get("holdout") is not False:
+            raise ExportPrivacyError("A holdout or unflagged laboratory label reached the export")
+    return tuple(
+        {key: value for key, value in label.items() if key != "holdout"} for label in labels
+    )
+
+
 class SupabaseExportSource:
     def __init__(self, url: str, service_key: str) -> None:
         self.url = url.rstrip("/")
@@ -677,16 +695,12 @@ class SupabaseExportSource:
                     "&select=shot_type,storage_path,qa_status,calibration_status"
                 )
             )
-            # I15: holdout labels are dropped here, and the flag itself is never carried on; a
-            # label whose flag is missing is treated as held out.
-            gold = tuple(
-                {key: value for key, value in label.items() if key != "holdout"}
-                for label in self._rows(
-                    f"gold_labels?submission_id=eq.{submission_id}&order=property,depth_top_cm"
-                    "&select=lab_name,method,property,value,uncertainty,unit,depth_top_cm,"
-                    "depth_bottom_cm,holdout"
+            gold = _releasable_labels(
+                self._rows(
+                    f"gold_labels?submission_id=eq.{submission_id}&holdout=is.false"
+                    "&order=property,depth_top_cm&select=lab_name,method,property,value,"
+                    "uncertainty,unit,depth_top_cm,depth_bottom_cm,holdout"
                 )
-                if label.get("holdout") is False
             )
             contributor = row.get("contributor") or {}
             exported.append(

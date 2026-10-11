@@ -9,7 +9,12 @@ import { captureTime, isCaptureLive } from './capture'
 import { fuzzLocation } from './geo'
 import { HexPreview } from './HexPreview'
 import { legalLinks } from './legal'
-import { captureMethod, ingestPath, type LocationSource } from './provenance'
+import {
+  CLIENT_VERSION,
+  captureMethod,
+  ingestPath,
+  type LocationSource,
+} from './provenance'
 import {
   discardHeld,
   enqueue,
@@ -399,6 +404,7 @@ export function App() {
           PAGE_LOADED_AT,
           now,
         ),
+        clientVersion: CLIENT_VERSION,
         ingestPath: ingestPath(),
         locationSource,
       },
