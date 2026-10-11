@@ -4,7 +4,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(11);
+select plan(12);
 
 -- Every table and view in the public schema that the anonymous role can read, at table or column
 -- level. A new table readable by anon fails here until it is reviewed and listed.
@@ -72,6 +72,15 @@ select throws_ok(
     null,
     'a pushed commit is recorded once'
 );
+insert into public.dataset_releases (version, rows, photos) values ('2026-10-10', 5, 9)
+on conflict (version, hf_revision) do nothing;
+insert into public.dataset_releases (version, rows, photos) values ('2026-10-10', 5, 9)
+on conflict (version, hf_revision) do nothing;
+select is(
+    (select count(*) from public.dataset_releases where version = '2026-10-10'),
+    1::bigint,
+    'a push without a reported commit is recorded once too'
+);
 select throws_ok(
     $$insert into public.dataset_releases (version, rows, photos, hf_revision)
       values ('2026-10-11', 1, 1, 'main')$$,
@@ -89,8 +98,9 @@ reset role;
 set local role anon;
 set local "request.jwt.claims" = '{"role":"anon"}';
 select results_eq(
-    $$select version, rows, photos, hf_revision from public.dataset_releases$$,
-    $$values ('2026-10-11'::text, 120, 236, '0123456789abcdef0123456789abcdef01234567'::text)$$,
+    $$select version, rows, photos, hf_revision from public.dataset_releases order by version desc$$,
+    $$values ('2026-10-11'::text, 120, 236, '0123456789abcdef0123456789abcdef01234567'::text),
+             ('2026-10-10'::text, 5, 9, null::text)$$,
     'anyone reads the releases'
 );
 select throws_ok(

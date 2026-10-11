@@ -184,13 +184,24 @@ describe('agents see no more than the public (I12)', () => {
         /service[_-]?role|serviceKey|secret[_-]?keys?\b|sb_secret|SUPABASE_DB_URL/i,
       )
     }
-    // The function takes its key only through the publishable-key filter.
+    // The function's whole environment passes through publicFunctionConfig, and the only
+    // platform variables anything here names are the project URL and its publishable keys.
     const adapter = String(
       AGENT_SOURCES['../../../../supabase/functions/gsip-public/index.ts'],
     )
-    expect(adapter).toContain('publishableKeyFrom(')
-    expect(adapter.match(/Deno\.env\.get\('SUPABASE_[A-Z_]+'\)/g)).toEqual([
-      "Deno.env.get('SUPABASE_URL')",
+    expect(adapter).toContain('publicFunctionConfig(')
+    const named = new Set(
+      files.flatMap(([, source]) =>
+        [...String(source).matchAll(/SUPABASE_[A-Z_]+/g)].map(
+          (match) => match[0],
+        ),
+      ),
+    )
+    expect([...named].sort()).toEqual([
+      'SUPABASE_ANON_KEY',
+      'SUPABASE_PUBLISHABLE_KEY',
+      'SUPABASE_PUBLISHABLE_KEYS',
+      'SUPABASE_URL',
     ])
   })
 })

@@ -105,4 +105,20 @@ describe('public website with the read API deployed', () => {
       ).tagName,
     ).toBe('CODE')
   })
+
+  it('names the published dataset as the same thing, without claiming a download', async () => {
+    const hub = 'https://huggingface.co/datasets/global-soil-intelligence/gsip'
+    vi.stubEnv('VITE_DATASET_URL', hub)
+    vi.resetModules()
+    const { App: Configured } = await import('../src/App')
+    const { container } = render(<Configured page="data" />)
+
+    const graph = JSON.parse(
+      container.querySelector('script[type="application/ld+json"]')
+        ?.textContent ?? '{}',
+    )['@graph'] as Array<Record<string, unknown>>
+    const dataset = graph.find((node) => node['@type'] === 'Dataset')
+    expect(dataset?.sameAs).toBe(hub)
+    expect(dataset).not.toHaveProperty('distribution')
+  })
 })

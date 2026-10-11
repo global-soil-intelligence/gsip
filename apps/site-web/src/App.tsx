@@ -65,7 +65,13 @@ const datasetJsonLd = {
   description:
     'Soil photographs taken by citizen scientists beside a printed colour reference card, with protocol metadata, per-photo quality checks and provenance tiers. Locations are k-anonymous H3 cells shared by at least 3 contributors, never precise points. Values are observations and estimates, not laboratory results.',
   url: 'https://globalsoilintelligence.com/data/',
-  license: 'https://opendatacommons.org/licenses/odbl/1-0/',
+  // Two licences: the structured data and the photographs are licensed separately.
+  license: [
+    'https://opendatacommons.org/licenses/odbl/1-0/',
+    'https://creativecommons.org/licenses/by-sa/4.0/',
+  ],
+  conditionsOfAccess:
+    'Structured data under ODbL 1.0; contributed photographs under CC BY-SA 4.0, credited to their contributors.',
   isAccessibleForFree: true,
   creator: { '@id': 'https://globalsoilintelligence.com/#organization' },
   publisher: { '@id': 'https://globalsoilintelligence.com/#organization' },
@@ -80,18 +86,8 @@ const datasetJsonLd = {
   measurementTechnique:
     'Smartphone photographs with a printed colour reference card (GSIP capture protocol v1.1)',
   spatialCoverage: { '@type': 'Place', name: 'Global' },
-  ...(datasetUrl
-    ? {
-        distribution: [
-          {
-            '@type': 'DataDownload',
-            contentUrl: datasetUrl,
-            encodingFormat: 'application/vnd.apache.parquet',
-          },
-        ],
-        sameAs: datasetUrl,
-      }
-    : {}),
+  // The repository page, not a download: its files change with every release.
+  ...(datasetUrl ? { sameAs: datasetUrl } : {}),
 }
 
 function pathFrom(page: PageId, path: string) {

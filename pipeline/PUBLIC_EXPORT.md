@@ -82,9 +82,10 @@ then replaces the public cells through a service-role-only transaction.
 
 Last, it records the release in `dataset_releases` (WP-AGENT-1): the export date, the row and photo
 counts, and the Hub commit, so people and agents can cite the exact revision they used through the
-public read API. The table is public and append-only, and each pushed commit is recorded once, so
-retrying the record is safe. If recording still fails, the run fails after the push; the API keeps
-naming the previous release until the next successful run records its own.
+public read API. The table is public and append-only, and each pushed commit is recorded once (a
+push whose commit the Hub did not report, once per date), so retrying the record is safe. If
+recording still fails, the run fails after the push; the API keeps naming the previous release
+until the next successful run records its own.
 
 Hub deletion removes files from the current branch head, not Git history. A verified privacy takedown
 also requires the repository owner to squash or delete the affected Hub history before declaring

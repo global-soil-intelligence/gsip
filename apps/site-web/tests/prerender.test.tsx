@@ -59,10 +59,17 @@ describe('prerendered pages (WP-AGENT-1)', () => {
     )
     expect(dataset).toMatchObject({
       isAccessibleForFree: true,
-      license: 'https://opendatacommons.org/licenses/odbl/1-0/',
+      // Structured data and photographs carry different licences; both are declared.
+      license: [
+        'https://opendatacommons.org/licenses/odbl/1-0/',
+        'https://creativecommons.org/licenses/by-sa/4.0/',
+      ],
     })
+    expect(String(dataset?.conditionsOfAccess)).toMatch(/CC BY-SA 4\.0/)
     expect(String(dataset?.description)).toMatch(/not laboratory results/)
     expect(String(dataset?.description)).toMatch(/never precise points/)
+    // No download is claimed: the repository page is not a data file.
+    expect(dataset).not.toHaveProperty('distribution')
   })
 
   it.each(PAGES)(

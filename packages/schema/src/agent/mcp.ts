@@ -158,17 +158,62 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-/** RFC 6454 serialization of an http(s) origin; anything else in an Origin header is refused. */
-function validOrigin(origin: string): boolean {
-  if (origin === 'null') return false
+/**
+ * Whether an Origin header is a well-formed origin (RFC 6454): `null` for opaque origins
+ * (sandboxed frames, local files) or `scheme://host[:port]` with any scheme, so browser
+ * extensions and app webviews qualify. Every origin is welcome: the endpoint is public, read-only
+ * and uncredentialed, so DNS rebinding (the reason MCP servers check Origin) gains an attacker
+ * nothing. Only a malformed header is refused, with 403 as the transport specification asks.
+ */
+function wellFormedOrigin(origin: string): boolean {
+  if (origin === 'null') return true
   try {
     const url = new URL(origin)
     return (
-      (url.protocol === 'https:' || url.protocol === 'http:') &&
-      url.origin === origin
+      url.host !== '' &&
+      (url.origin === origin || `${url.protocol}//${url.host}` === origin)
     )
   } catch {
     return false
+  }
+}
+
+type Body = { text: string } | { error: 'too_large' | 'not_utf8' }
+
+/**
+ * Reads at most `limit` bytes of the request body. A declared length over the limit is refused
+ * before any byte is read, and an undeclared body is cancelled the moment it passes the limit, so
+ * one large POST cannot exhaust the function's memory.
+ */
+async function readBody(request: Request, limit: number): Promise<Body> {
+  const declared = Number(request.headers.get('content-length') ?? Number.NaN)
+  if (Number.isFinite(declared) && declared > limit) {
+    return { error: 'too_large' }
+  }
+  if (!request.body) return { text: '' }
+  const reader = request.body.getReader()
+  const chunks: Uint8Array[] = []
+  let size = 0
+  for (;;) {
+    const { done, value } = await reader.read()
+    if (done) break
+    size += value.byteLength
+    if (size > limit) {
+      await reader.cancel().catch(() => undefined)
+      return { error: 'too_large' }
+    }
+    chunks.push(value)
+  }
+  const bytes = new Uint8Array(size)
+  let offset = 0
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset)
+    offset += chunk.byteLength
+  }
+  try {
+    return { text: new TextDecoder('utf-8', { fatal: true }).decode(bytes) }
+  } catch {
+    return { error: 'not_utf8' }
   }
 }
 
@@ -255,16 +300,18 @@ export async function handleMcp(
     )
   }
   const origin = request.headers.get('origin')
-  if (origin !== null && !validOrigin(origin)) {
+  if (origin !== null && !wellFormedOrigin(origin)) {
     return rpcError(null, -32600, 'Invalid Origin header', 403)
   }
-  const text = await request.text()
-  if (new TextEncoder().encode(text).byteLength > MAX_BODY_BYTES) {
-    return rpcError(null, -32600, 'Request body too large', 413)
+  const body = await readBody(request, MAX_BODY_BYTES)
+  if ('error' in body) {
+    return body.error === 'too_large'
+      ? rpcError(null, -32600, 'Request body too large', 413)
+      : rpcError(null, -32700, 'Parse error: the body is not UTF-8', 400)
   }
   let message: unknown
   try {
-    message = JSON.parse(text)
+    message = JSON.parse(body.text)
   } catch {
     return rpcError(null, -32700, 'Parse error', 400)
   }
@@ -279,11 +326,24 @@ export async function handleMcp(
   if (!isObject(message) || message.jsonrpc !== '2.0') {
     return rpcError(null, -32600, 'Invalid Request', 400)
   }
-  // Notifications and responses carry nothing a stateless reader acts on.
-  if (typeof message.method !== 'string' || !('id' in message))
-    return empty(202)
-  const { id, method } = message
-  if (typeof id !== 'string' && typeof id !== 'number') {
+  const echoId =
+    typeof message.id === 'string' || typeof message.id === 'number'
+      ? message.id
+      : null
+  if (typeof message.method !== 'string') {
+    // A response to the server (it sends no requests, so there is nothing to match) is accepted
+    // and ignored; anything else without a method is malformed.
+    const response =
+      'id' in message && ('result' in message || 'error' in message)
+    return response
+      ? empty(202)
+      : rpcError(echoId, -32600, 'Invalid Request: method is required', 400)
+  }
+  // A notification carries nothing a stateless reader acts on.
+  if (!('id' in message)) return empty(202)
+  const { method } = message
+  const id = echoId
+  if (id === null) {
     return rpcError(
       null,
       -32600,

@@ -34,9 +34,10 @@ Machine-readable entry points:
    but clients should honour the rule now.
 6. **Keep the licences and cite GSIP.** Every response carries `license`, `attribution` and
    `citation`. Structured data is [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/),
-   photos are [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) and code is MIT. Both
-   data licences are share-alike: anything you publish from GSIP data carries the same licence and
-   the attribution.
+   photos are [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) and code is MIT. A
+   database adapted from GSIP data stays under ODbL 1.0 when it is shared, and an adapted photo
+   under CC BY-SA 4.0. A map, chart or answer produced from the data does not itself become ODbL,
+   but needs a notice that it uses GSIP data, available under ODbL 1.0 (ODbL section 4.3).
 7. **Be gentle.** For bulk use, download the dataset from Hugging Face instead of crawling cells.
 
 ## REST
@@ -146,9 +147,11 @@ parents are.
 
 Each client gets about 60 requests a minute, and each function instance a ceiling across all
 clients. The limits are best effort and per instance: they smooth bursts rather than enforce a
-quota. Honour `Retry-After` and the `Cache-Control` lifetimes above. The client address used for
-limiting is held only in the function's memory, briefly, and never stored (see the
-[privacy notice](legal/PRIVACY.md)).
+quota. Honour `Retry-After` and the `Cache-Control` lifetimes above. GSIP's code holds the client
+address used for limiting only in memory while it runs; the hosting platform's request logs record
+each request's address and URL for their retention period (see the
+[privacy notice](legal/PRIVACY.md)). Callers whose address the platform does not report share only
+the instance ceiling.
 
 ## Running your own
 

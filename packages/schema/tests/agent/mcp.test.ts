@@ -202,6 +202,25 @@ describe('MCP, earlier revisions (initialize handshake)', () => {
     expect(batch.json.error.code).toBe(-32600)
     const invalid = await post({ jsonrpc: '1.0', id: 11, method: 'ping' })
     expect(invalid.json.error.code).toBe(-32600)
+    // A request without a usable method is an error the client can see, never a silent 202.
+    for (const malformed of [
+      { jsonrpc: '2.0', id: 13, method: 5 },
+      { jsonrpc: '2.0', id: 13 },
+    ]) {
+      const answer = await post(malformed)
+      expect(answer.status).toBe(400)
+      expect(answer.json).toMatchObject({
+        id: 13,
+        error: { code: -32600 },
+      })
+    }
+    const unidentified = await post({ jsonrpc: '2.0', method: 7 })
+    expect(unidentified.status).toBe(400)
+    expect(unidentified.json.id).toBeUndefined()
+    // A response sent to the server has nothing to answer.
+    const reply = await post({ jsonrpc: '2.0', id: 14, result: {} })
+    expect(reply.status).toBe(202)
+    expect(reply.json).toBeNull()
     const badVersion = await post(
       { jsonrpc: '2.0', id: 12, method: 'tools/list' },
       { 'MCP-Protocol-Version': '1999-01-01' },
@@ -309,17 +328,30 @@ describe('MCP transport', () => {
     }
   })
 
-  it('refuses a malformed Origin but serves any web page', async () => {
-    const forged = await post(
-      { jsonrpc: '2.0', id: 30, method: 'ping' },
-      { Origin: 'null' },
-    )
-    expect(forged.status).toBe(403)
-    const site = await post(
-      { jsonrpc: '2.0', id: 31, method: 'ping' },
-      { Origin: 'https://example.org' },
-    )
-    expect(site.status).toBe(200)
+  it('serves every well-formed origin and refuses only a malformed header', async () => {
+    // Public, read-only and uncredentialed: sandboxed frames, local files, extensions and app
+    // webviews are all welcome.
+    for (const origin of [
+      'https://example.org',
+      'http://localhost:6274',
+      'null',
+      'chrome-extension://abcdefghijklmnop',
+      'tauri://localhost',
+    ]) {
+      const { status } = await post(
+        { jsonrpc: '2.0', id: 30, method: 'ping' },
+        { Origin: origin },
+      )
+      expect(status, origin).toBe(200)
+    }
+    for (const origin of ['https://example.org/path', 'not an origin', '']) {
+      const { status, json } = await post(
+        { jsonrpc: '2.0', id: 31, method: 'ping' },
+        { Origin: origin },
+      )
+      expect(status, origin).toBe(403)
+      expect(json.error.code).toBe(-32600)
+    }
   })
 
   it('refuses oversized bodies', async () => {
@@ -330,5 +362,71 @@ describe('MCP transport', () => {
       params: { pad: 'x'.repeat(70_000) },
     })
     expect(status).toBe(413)
+  })
+
+  it('refuses a declared oversized body without reading it', async () => {
+    let pulled = false
+    // highWaterMark 0: the stream is pulled only when someone reads it.
+    const body = new ReadableStream<Uint8Array>(
+      {
+        pull() {
+          pulled = true
+          throw new Error('the body must not be read')
+        },
+      },
+      { highWaterMark: 0 },
+    )
+    const response = await handle(
+      new Request(ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': String(100 * 1024 * 1024),
+        },
+        body,
+        duplex: 'half',
+      } as RequestInit),
+    )
+    expect(response.status).toBe(413)
+    expect(pulled).toBe(false)
+  })
+
+  it('stops reading an undeclared body once it passes the limit', async () => {
+    const chunk = new TextEncoder().encode('x'.repeat(16 * 1024))
+    let sent = 0
+    let cancelled = false
+    const body = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        sent += 1
+        controller.enqueue(chunk)
+      },
+      cancel() {
+        cancelled = true
+      },
+    })
+    const response = await handle(
+      new Request(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+        duplex: 'half',
+      } as RequestInit),
+    )
+    expect(response.status).toBe(413)
+    expect(cancelled).toBe(true)
+    // 64 KiB is four chunks; reading stops at the fifth, never draining the stream.
+    expect(sent).toBeLessThanOrEqual(6)
+  })
+
+  it('answers a body that is not UTF-8 as a parse error', async () => {
+    const response = await handle(
+      new Request(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: new Uint8Array([0x7b, 0xff, 0xfe, 0x7d]),
+      }),
+    )
+    expect(response.status).toBe(400)
+    expect((await response.json()).error.code).toBe(-32700)
   })
 })

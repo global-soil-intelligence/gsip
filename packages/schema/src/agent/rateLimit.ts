@@ -60,13 +60,15 @@ const MAX_KEY_LENGTH = 64
  * The caller's address as the platform reports it; never stored beyond the limiter's memory.
  * `CF-Connecting-IP` is set by the edge network in front of Supabase and preferred; the first
  * `X-Forwarded-For` entry is a fallback a caller may be able to forge, which the per-instance
- * ceiling in handler.ts bounds.
+ * ceiling in handler.ts bounds. Null when neither is present: such callers are not lumped into
+ * one shared allowance, and only the instance ceiling applies to them.
  */
-export function clientKey(request: Request): string {
+export function clientKey(request: Request): string | null {
   const edge = request.headers.get('cf-connecting-ip')?.trim()
   const forwarded = request.headers
     .get('x-forwarded-for')
     ?.split(',')[0]
     ?.trim()
-  return (edge || forwarded || 'unknown').slice(0, MAX_KEY_LENGTH)
+  const key = edge || forwarded
+  return key ? key.slice(0, MAX_KEY_LENGTH) : null
 }

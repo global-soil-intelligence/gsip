@@ -62,8 +62,11 @@ export function createPublicHandler(
   })
   return async (request) => {
     if (request.method === 'OPTIONS') return empty(204)
-    const client = limitClient(clientKey(request))
-    if (!client.allowed) return tooManyRequests(client.retryAfterSeconds)
+    const key = clientKey(request)
+    if (key !== null) {
+      const client = limitClient(key)
+      if (!client.allowed) return tooManyRequests(client.retryAfterSeconds)
+    }
     const instance = limitInstance('instance')
     if (!instance.allowed) return tooManyRequests(instance.retryAfterSeconds)
     const path = routePath(new URL(request.url).pathname)

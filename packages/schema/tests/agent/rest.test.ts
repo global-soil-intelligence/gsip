@@ -1,8 +1,9 @@
+import { cellToChildren } from 'h3-js'
 import { describe, expect, it } from 'vitest'
 import { createPublicHandler, routePath } from '../../src/agent/handler'
 import { clientKey } from '../../src/agent/rateLimit'
 import type { PublicReader } from '../../src/agent/reader'
-import { PublicReadUnavailable } from '../../src/agent/reader'
+import { postgrestReader, PublicReadUnavailable } from '../../src/agent/reader'
 import {
   BURLINGTON_R4,
   BURLINGTON_R6,
@@ -315,8 +316,118 @@ describe('REST routes', () => {
     const key = clientKey(
       new Request(BASE, { headers: { 'x-forwarded-for': 'a'.repeat(4096) } }),
     )
-    expect(key.length).toBeLessThanOrEqual(64)
-    expect(clientKey(new Request(BASE))).toBe('unknown')
+    expect(key?.length).toBeLessThanOrEqual(64)
+    expect(clientKey(new Request(BASE))).toBeNull()
+  })
+
+  it('never lumps callers without an address into one allowance', async () => {
+    const limited = createPublicHandler({
+      reader: fakeReader(PUBLISHED),
+      publicBaseUrl: BASE,
+      rateLimitPerMinute: 1,
+      instanceRateLimitPerMinute: 3,
+      now: () => 0,
+    })
+    const statuses = []
+    for (let n = 0; n < 4; n++) {
+      statuses.push((await limited(new Request(`${BASE}/v1/protocol`))).status)
+    }
+    // Only the instance ceiling applies to them.
+    expect(statuses).toEqual([200, 200, 200, 429])
+  })
+
+  it('sends PostgREST the exact range filter, cursor and page size', async () => {
+    const urls: URL[] = []
+    const reader = postgrestReader({
+      url: 'https://project.supabase.co',
+      publishableKey: 'sb_publishable_test',
+      fetch: async (input) => {
+        urls.push(new URL(input))
+        return new Response('[]', { status: 200 })
+      },
+    })
+    await handler(reader)(
+      new Request(`${BASE}/v1/cells?within=${BURLINGTON_R4}&limit=2`),
+    )
+    await handler(reader)(
+      new Request(
+        `${BASE}/v1/cells?within=${BURLINGTON_R4}&limit=2&after=${BURLINGTON_R6}`,
+      ),
+    )
+    // Derived independently of h3.ts: a hexagon's descendants at one resolution are exactly the
+    // indexes between the smallest and the largest of them.
+    const span = (resolution: number) => {
+      const cells = (
+        resolution === 4
+          ? [BURLINGTON_R4]
+          : cellToChildren(BURLINGTON_R4, resolution)
+      ).sort()
+      return `and(resolution.eq.${resolution},h3_index.gte.${cells[0]},h3_index.lte.${cells.at(-1)})`
+    }
+    const [first, second] = urls.map((url) => url.searchParams)
+    expect(urls.map((url) => url.pathname)).toEqual([
+      '/rest/v1/h3_cells',
+      '/rest/v1/h3_cells',
+    ])
+    expect(first?.get('or')).toBe(`(${[4, 6, 8].map(span).join(',')})`)
+    expect(first?.get('order')).toBe('h3_index.asc')
+    // One row more than a page, to learn whether another page follows.
+    expect(first?.get('limit')).toBe('3')
+    expect(first?.getAll('h3_index')).toEqual([])
+    expect(second?.get('or')).toBe(first?.get('or'))
+    expect(second?.getAll('h3_index')).toEqual([`gt.${BURLINGTON_R6}`])
+  })
+
+  it('ends with next = null when the last page is exactly full', async () => {
+    // Six published cells inside BURLINGTON_R4: two full pages of three.
+    const first = await get(`/v1/cells?within=${BURLINGTON_R4}&limit=3`)
+    expect(first.body.data.cells).toHaveLength(3)
+    expect(first.body.data.next).not.toBeNull()
+    const last = await get(
+      `/v1/cells?within=${BURLINGTON_R4}&limit=3&after=${first.body.data.next}`,
+    )
+    expect(last.body.data.cells).toHaveLength(3)
+    expect(last.body.data.next).toBeNull()
+  })
+
+  it('never lets a cache keep an error', async () => {
+    const failing: PublicReader = {
+      cells: async () => {
+        throw new PublicReadUnavailable()
+      },
+      cellsInRanges: async () => {
+        throw new PublicReadUnavailable()
+      },
+      latestRelease: async () => {
+        throw new PublicReadUnavailable()
+      },
+    }
+    const limited = createPublicHandler({
+      reader: fakeReader(PUBLISHED),
+      publicBaseUrl: BASE,
+      rateLimitPerMinute: 1,
+      now: () => 0,
+    })
+    const call = () =>
+      limited(
+        new Request(`${BASE}/v1/protocol`, {
+          headers: { 'x-forwarded-for': '203.0.113.9' },
+        }),
+      )
+    await call()
+    const answers = [
+      (await get('/v1/cells/not-a-cell')).response,
+      (await get('/v1/nowhere')).response,
+      (await get('/v1/protocol', undefined, { method: 'DELETE' })).response,
+      (await get(`/v1/cells/${BURLINGTON_R8}`, failing)).response,
+      await call(),
+    ]
+    expect(answers.map((answer) => answer.status)).toEqual([
+      400, 404, 405, 503, 429,
+    ])
+    for (const answer of answers) {
+      expect(answer.headers.get('cache-control')).toBe('no-store')
+    }
   })
 
   it('never builds its own URLs from forwarded headers', async () => {
