@@ -4,7 +4,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(42);
+select plan(51);
 
 -- Fixtures (as the migration owner): two contributors, each with a grant and a pending submission.
 insert into public.contributors (id, auth_uid, handle)
@@ -78,6 +78,31 @@ select lives_ok(
         '31000000-0000-4000-8000-000000000001/51000000-0000-4000-8000-000000000001/B/61000000-0000-4000-8000-00000000000b.jpg',
         '31000000-0000-4000-8000-000000000001')$$,
     'owner uploads to the bound quarantine path of their own submission'
+);
+select lives_ok(
+    $$insert into public.contribution_grants (id, contributor_id, terms_version, accepted_at, attribution_name)
+      values ('41000000-0000-4000-8000-000000000003', '21000000-0000-4000-8000-000000000001',
+        'test-v1', now(), 'Anonymous soil contributor')$$,
+    'open capture accepts an owner''s grant'
+);
+select lives_ok(
+    $$insert into public.submissions (id, contributor_id, grant_id, geom_precise, captured_at, status)
+      values ('51000000-0000-4000-8000-000000000003', '21000000-0000-4000-8000-000000000001',
+        '41000000-0000-4000-8000-000000000003',
+        extensions.st_setsrid(extensions.st_makepoint(-73.2, 44.5), 4326), now(), 'pending')$$,
+    'open capture accepts an owner''s submission'
+);
+select lives_ok(
+    $$insert into public.photos (submission_id, shot_type, storage_path) values (
+        '51000000-0000-4000-8000-000000000003', 'B',
+        '31000000-0000-4000-8000-000000000001/51000000-0000-4000-8000-000000000003/B/61000000-0000-4000-8000-0000000000c1.jpg')$$,
+    'owner adds only shot B to a second submission'
+);
+select throws_ok(
+    $$select public.finalize_submission('51000000-0000-4000-8000-000000000003')$$,
+    '23514',
+    'shots A and B are required before a submission can be finalized',
+    'finalize refuses a submission without shot A'
 );
 select throws_ok(
     $$insert into storage.objects (bucket_id, name, owner) values ('incoming-photos',
@@ -166,15 +191,20 @@ select throws_ok(
 reset role;
 
 set local role service_role;
-update public.submissions
-set h3_r8 = '882bac94b5fffff', h3_r6 = '862bac94fffffff'
-where id = '51000000-0000-4000-8000-000000000001';
 select is(
     public.settle_submission('51000000-0000-4000-8000-000000000001'),
     'pending',
     'a finalized submission stays pending while shots are in QA'
 );
 update public.photos set qa_status = 'pass' where submission_id = '51000000-0000-4000-8000-000000000001';
+select is(
+    public.settle_submission('51000000-0000-4000-8000-000000000001'),
+    'pending',
+    'a pass waits until the worker has derived the public H3 cells'
+);
+update public.submissions
+set h3_r8 = '882bac94b5fffff', h3_r6 = '862bac94fffffff'
+where id = '51000000-0000-4000-8000-000000000001';
 select is(
     public.settle_submission('51000000-0000-4000-8000-000000000001'),
     'qa_pass',
@@ -221,6 +251,30 @@ select is(
     'an unfinalized submission is never settled'
 );
 reset role;
+
+-- Pre-v3 statuses are re-derived: a legacy qa_pass without shot B reopens, and a legacy
+-- qa_pass whose shot B errored is routed to review.
+insert into public.submissions (id, contributor_id, grant_id, geom_precise, h3_r8, h3_r6, captured_at, status)
+values
+    ('51000000-0000-4000-8000-000000000007', '21000000-0000-4000-8000-000000000002', '41000000-0000-4000-8000-000000000002', extensions.st_setsrid(extensions.st_makepoint(-72.58, 44.26), 4326), '882bac94b5fffff', '862bac94fffffff', now(), 'qa_pass'),
+    ('51000000-0000-4000-8000-000000000008', '21000000-0000-4000-8000-000000000002', '41000000-0000-4000-8000-000000000002', extensions.st_setsrid(extensions.st_makepoint(-72.58, 44.26), 4326), '882bac94b5fffff', '862bac94fffffff', now(), 'qa_pass');
+insert into public.photos (submission_id, shot_type, storage_path, qa_status)
+values
+    ('51000000-0000-4000-8000-000000000007', 'A', '31000000-0000-4000-8000-000000000002/51000000-0000-4000-8000-000000000007/A/61000000-0000-4000-8000-0000000000d1.jpg', 'pass'),
+    ('51000000-0000-4000-8000-000000000008', 'A', '31000000-0000-4000-8000-000000000002/51000000-0000-4000-8000-000000000008/A/61000000-0000-4000-8000-0000000000d2.jpg', 'pass'),
+    ('51000000-0000-4000-8000-000000000008', 'B', '31000000-0000-4000-8000-000000000002/51000000-0000-4000-8000-000000000008/B/61000000-0000-4000-8000-0000000000d3.jpg', 'error');
+update public.submissions set finalized_at = now() where id = '51000000-0000-4000-8000-000000000008';
+select ok(private.resettle_all_submissions() >= 2, 'the v3 repair re-derives legacy statuses');
+select is(
+    (select status from public.submissions where id = '51000000-0000-4000-8000-000000000007'),
+    'pending',
+    'a legacy pass without shot B is no longer publishable'
+);
+select is(
+    (select status from public.submissions where id = '51000000-0000-4000-8000-000000000008'),
+    'flagged',
+    'a legacy pass whose shot B errored is routed to review'
+);
 
 -- ---------------------------------------------------------------------------------------------
 -- Capture gate (launch blocker 8)
@@ -334,6 +388,13 @@ select throws_ok(
     '23514',
     null,
     'e-mail addresses in an attribution name are rejected'
+);
+select throws_ok(
+    $$insert into public.contribution_grants (contributor_id, terms_version, accepted_at, attribution_name)
+      values ('21000000-0000-4000-8000-000000000001', 'test-v1', now(), E'Ana\u202eevil')$$,
+    '23514',
+    null,
+    'bidirectional and zero-width format characters are rejected'
 );
 select lives_ok(
     $$insert into public.contribution_grants (contributor_id, terms_version, accepted_at, attribution_name)

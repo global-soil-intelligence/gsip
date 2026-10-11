@@ -48,6 +48,8 @@ class WorkerHarness(SupabaseQaWorker):
         prior_rows: list[dict[str, Any]] | None = None,
         paths: dict[str, str] | None = None,
         finalized_pending: list[str] | None = None,
+        exhausted: list[str] | None = None,
+        failing_settles: set[str] | None = None,
     ) -> None:
         super().__init__("https://supabase.test", "service-key")
         self.hostile = hostile
@@ -57,6 +59,9 @@ class WorkerHarness(SupabaseQaWorker):
         }
         self.paths = {"hostile": HOSTILE_PATH, "good": GOOD_PATH, **(paths or {})}
         self.finalized_pending = finalized_pending or []
+        self.exhausted = exhausted or []
+        self.failing_settles = failing_settles or set()
+        self.calls: list[str] = []
         self.job_states: dict[str, str] = {}
         self.photo_updates: dict[str, dict[str, Any]] = {}
         self.prior_rows = prior_rows or []
@@ -78,13 +83,21 @@ class WorkerHarness(SupabaseQaWorker):
         }
 
     def _rest(self, method: str, path: str, **kwargs: Any) -> httpx.Response:
+        self.calls.append(f"{method} {path.split('?', 1)[0]}")
+        if method == "GET" and path.startswith("qa_jobs?") and "attempts=gte." in path:
+            if "status=eq.processing" in path:
+                return self._response([])
+            return self._response([{"photo_id": photo_id} for photo_id in self.exhausted])
         if method == "GET" and path.startswith("qa_jobs?"):
+            assert "attempts=lt.4" in path
             return self._response(
                 [
                     {"attempts": 3, "photo_id": "hostile"},
                     {"attempts": 0, "photo_id": "good"},
                 ]
             )
+        if method == "GET" and path.startswith("photos?id=eq.") and "select=submission_id" in path:
+            return self._response([{"submission_id": SUBMISSION}])
         if method == "GET" and path.startswith("photos?id=eq.hostile"):
             return self._response([self._photo("hostile", "A")])
         if method == "GET" and path.startswith("photos?id=eq.good"):
@@ -109,7 +122,13 @@ class WorkerHarness(SupabaseQaWorker):
         if method == "GET" and path.startswith("photos?submission_id=neq."):
             return self._response([])
         if method == "POST" and path == "rpc/settle_submission":
-            self.settled.append(str(kwargs["json"]["p_submission_id"]))
+            submission_id = str(kwargs["json"]["p_submission_id"])
+            if submission_id in self.failing_settles:
+                request = httpx.Request("POST", f"{self.url}/rest/v1/{path}")
+                raise httpx.HTTPStatusError(
+                    "settle failed", request=request, response=httpx.Response(500, request=request)
+                )
+            self.settled.append(submission_id)
             return self._response("qa_pass")
         if method == "PATCH" and path.startswith("qa_jobs?photo_id=eq."):
             photo_id = path.rsplit(".", 1)[-1]
@@ -305,3 +324,39 @@ def test_stale_processing_jobs_are_moved_back_to_retrying() -> None:
     assert "status=eq.processing" in worker.path
     assert "updated_at=lt." in worker.path
     assert worker.payload["status"] == "retrying"
+
+
+def test_terminal_failures_record_the_verdict_before_closing_the_job() -> None:
+    worker = WorkerHarness(b"not-an-image")
+
+    assert not worker.process_one("hostile", 3)
+    photo_patch = worker.calls.index("PATCH photos")
+    settle = worker.calls.index("POST rpc/settle_submission")
+    job_close = max(index for index, call in enumerate(worker.calls) if call == "PATCH qa_jobs")
+    assert photo_patch < settle < job_close
+    assert worker.job_states["hostile"] == "dead_letter"
+
+
+def test_jobs_with_no_attempts_left_are_dead_lettered_not_reclaimed() -> None:
+    worker = WorkerHarness(b"unused", exhausted=["stuck"])
+
+    assert worker.exhaust_stuck_jobs() == 1
+    assert worker.job_states["stuck"] == "dead_letter"
+    assert worker.photo_updates["stuck"] == {"qa_status": "error"}
+    assert worker.settled == [SUBMISSION]
+    # Claiming an exhausted job would violate the attempts constraint; it is never tried.
+    assert worker.process_one("good", 4) is False
+    assert "good" not in worker.job_states
+
+
+def test_one_failing_settlement_does_not_stop_the_sweep() -> None:
+    worker = WorkerHarness(
+        b"unused",
+        finalized_pending=[
+            "50000000-0000-4000-8000-000000000011",
+            "50000000-0000-4000-8000-000000000012",
+        ],
+        failing_settles={"50000000-0000-4000-8000-000000000011"},
+    )
+    assert worker.settle_finalized() == 1
+    assert worker.settled == ["50000000-0000-4000-8000-000000000012"]

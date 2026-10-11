@@ -123,7 +123,6 @@ export function App() {
       isCaptureLive() && isServiceConfigured() ? createGsipClient() : null,
     [],
   )
-  const serviceStateRef = useRef<ServiceState>('unknown')
   const [serviceState, setServiceState] = useState<ServiceState>('unknown')
   const [attributionError, setAttributionError] = useState<string | null>(null)
   const [accuracy, setAccuracy] = useState<number | null>(null)
@@ -148,14 +147,18 @@ export function App() {
     if (syncPromise.current) return syncPromise.current
     const run = (async () => {
       if (!client || !navigator.onLine) return
-      if (serviceStateRef.current === 'closed') {
-        await refreshQueueState()
-        setStatus(PAUSED_MESSAGE)
-        return
-      }
       const records = await indexedDbQueue.list()
       if (!records.some((record) => isSyncEligible(record))) {
         await refreshQueueState()
+        return
+      }
+      // Re-read the gate before every drain: capture can close or reopen while the app is
+      // open, and a closed gate must not burn the queued records' retry budget.
+      const state = await fetchServiceState(client)
+      setServiceState(state)
+      if (state === 'closed') {
+        await refreshQueueState()
+        setStatus(PAUSED_MESSAGE)
         return
       }
       setStatus('Securely syncing queued observations…')
@@ -200,7 +203,6 @@ export function App() {
       if (client) {
         const state = await fetchServiceState(client)
         if (cancelled) return
-        serviceStateRef.current = state
         setServiceState(state)
       }
       await refreshQueueState()
@@ -229,7 +231,9 @@ export function App() {
         setLatitude(position.coords.latitude.toFixed(6))
         setLongitude(position.coords.longitude.toFixed(6))
         setAccuracy(Math.round(position.coords.accuracy))
-        setStatus('Location captured. Only the fuzzed H3 cell becomes public.')
+        setStatus(
+          'Location captured. It stays private; only a shared H3 cell can become public.',
+        )
       },
       () =>
         setStatus('Location was not shared. Use the manual fallback below.'),
@@ -294,6 +298,7 @@ export function App() {
     const shotB = form.get('shot-b')
     const record: QueueRecord = {
       accuracyM: accuracy,
+      acceptedAt: new Date().toISOString(),
       attributionName,
       capturedAt: captureTime(shotB instanceof File ? shotB : null, Date.now()),
       deviceModel: coarseDeviceModel(),
@@ -466,7 +471,8 @@ export function App() {
               </legend>
               <p>
                 We store the exact point privately for scientific processing.
-                Only its H3 resolution-8 cell is public.
+                Public maps and data show only a broad H3 cell shared with at
+                least two other contributors.
               </p>
               <button
                 type="button"

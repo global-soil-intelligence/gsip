@@ -107,8 +107,9 @@ export async function submitQueued(
     .maybeSingle()
   if (grant.error) throw grant.error
   if (!grant.data) {
+    // The grant records when the person accepted the terms, never the photo's own timestamp.
     const created = await client.from('contribution_grants').insert({
-      accepted_at: record.capturedAt,
+      accepted_at: record.acceptedAt ?? record.queuedAt,
       attribution_name: record.attributionName,
       contributor_id: contributor,
       id: record.grantId,

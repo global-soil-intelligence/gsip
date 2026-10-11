@@ -16,18 +16,37 @@ contributors. Observations that qualify at no resolution are withheld until they
 card reports how many. The public `h3_cells` table receives exactly these cells, and the database
 refuses any cell below k = 3.
 
+## What a row never carries
+
+No precise geometry, raw `h3_r8`/`h3_r6` cell, GPS accuracy, contributor or grant identifier,
+device model or private camera metadata. Two less obvious exclusions follow from SPEC I7 ("by value
+as well as by name"): **point-level priors** (eight SoilGrids properties matched against the public
+rasters pinpoint a 250 m pixel, finer than any published cell) and the **GPS plausibility score**
+(it encodes the private GPS accuracy; the check is released as pass or fail only).
+
 ## Failures
 
-A row that cannot be released this time is set aside and the release continues: an unavailable or
-unreadable photo, a missing grant, an invalid cell, or no passing photo. k-anonymity is computed
-after set-asides, so a set-aside row can never leave a published cell below k. A privacy assertion
-failure still aborts the whole release: metadata found in a canonical photo, metadata surviving
-sanitization, or a forbidden field in a row. The workflow log prints counts only, because logs of a
-public repository are public.
+Before reading a photo, the export re-derives its owner path from database facts; a mismatch is a
+privacy failure. A row that cannot be released this time is set aside and the release continues:
+a missing photo object (HTTP 400 or 404), an unreadable photo, a missing grant, an invalid cell, or
+a `qa_pass` status without passing shots A and B (a pre-v3 artifact). k-anonymity is computed after
+set-asides, so a set-aside row can never leave a published cell below k.
+
+The whole release aborts, publishing nothing, on:
+
+- a privacy assertion: metadata in a canonical photo or surviving sanitization, a forbidden field
+  in a row, or a photo path that does not match its owner;
+- an infrastructure error: any other Storage or database failure (5xx, 429, timeouts), so an
+  outage can never publish a hollowed-out release that wipes the dataset and the map;
+- widespread set-asides: more than 3 rows or 10 % of candidates, whichever is larger.
+
+Set-aside and withheld submission IDs are written to a private report beside the release folder
+(`output/export/<date>.report.json`), never uploaded. The workflow log prints counts only, because
+logs of a public repository are public.
 
 Each dated build includes a manifest and a generated dataset card with separate ODbL 1.0 structured
 data and CC BY-SA 4.0 photo notices, attribution (marked as untrusted text), schema, per-photo QA
-checks and citation blocks. Capture timestamps are date-truncated. Empty nights produce an explicit
+checks, a note on how to sample priors for a published cell, and citation blocks. Capture timestamps are date-truncated. Empty nights produce an explicit
 valid snapshot instead of an alarm. Re-running the same date replaces that exact dated artifact. The
 scheduled workflow deletes stale Hub photo/data paths, publishes through Hugging Face Hub, and only
 then replaces the public cells through a service-role-only transaction.

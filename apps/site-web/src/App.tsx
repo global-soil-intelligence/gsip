@@ -754,7 +754,7 @@ function DataPage() {
                 <li>k-anonymous H3 cells (resolution 8, 6 or 4)</li>
                 <li>Date-truncated capture time</li>
                 <li>Protocol context and per-photo QA checks</li>
-                <li>Weak priors and gold labels</li>
+                <li>Verified gold labels</li>
                 <li>Sanitized photos with attribution</li>
               </ul>
             </div>
@@ -762,6 +762,7 @@ function DataPage() {
               <h3>Never public</h3>
               <ul>
                 <li>Precise geometry or GPS accuracy</li>
+                <li>Point-level soil-map priors, which pinpoint location</li>
                 <li>Contributor or grant identifiers</li>
                 <li>Device model or private camera fields</li>
                 <li>Raw uploads or embedded metadata</li>

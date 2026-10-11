@@ -342,6 +342,37 @@ def test_exif_orientation_is_applied_before_stripping() -> None:
     assert not has_embedded_metadata(sanitized)
 
 
+def test_type_mismatched_exif_tags_cannot_block_orientation_or_sanitization() -> None:
+    pixels = np.zeros((40, 60, 3), dtype=np.uint8)
+    pixels[:, :30] = (220, 30, 30)
+    pixels[:, 30:] = (30, 30, 220)
+    output = io.BytesIO()
+    Image.fromarray(pixels).save(output, format="JPEG", quality=95)
+    plain = output.getvalue()
+    # Orientation 6 plus ResolutionUnit stored as RATIONAL: Pillow's exif_transpose raises
+    # struct.error re-serializing this block, which would dead-letter a valid photo.
+    entries = struct.pack(">HHI", 0x0112, 3, 1) + struct.pack(">HH", 6, 0)
+    entries += struct.pack(">HHII", 0x0128, 5, 1, 38)
+    tiff = (
+        b"MM\x00\x2a"
+        + struct.pack(">I", 8)
+        + struct.pack(">H", 2)
+        + entries
+        + struct.pack(">I", 0)
+        + struct.pack(">II", 2, 1)
+    )
+    payload = b"Exif\x00\x00" + tiff
+    raw = plain[:2] + b"\xff\xe1" + struct.pack(">H", len(payload) + 2) + payload + plain[2:]
+
+    sanitized, metadata = sanitize_jpeg(raw)
+
+    assert metadata == {"color_space": "none"}
+    assert not has_embedded_metadata(sanitized)
+    with Image.open(io.BytesIO(sanitized)) as upright:
+        assert upright.size == (40, 60)
+        assert np.asarray(upright.convert("RGB"))[10, 20][0] > 180
+
+
 def test_display_p3_photos_are_converted_to_srgb_before_stripping() -> None:
     source_rgb = (200, 120, 60)
     pixels = np.full((64, 64, 3), source_rgb, dtype=np.uint8)

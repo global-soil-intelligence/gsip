@@ -14,8 +14,25 @@ export type AttributionProblem =
 const MARKUP_CHARACTERS = new Set('<>{}[]\\`|^~$*=#@')
 const LINK_PATTERN = /([a-z][a-z0-9+.-]*:\/\/|www\.)/i
 
+// Format characters that can hide or visually reorder text: soft hyphen, Arabic letter mark,
+// Mongolian vowel separator, zero-width and bidirectional controls, word joiner, BOM. Mirrors
+// the database constraint, which [[:cntrl:]] alone does not cover.
+const FORMAT_RANGES: ReadonlyArray<readonly [number, number]> = [
+  [0x00ad, 0x00ad],
+  [0x061c, 0x061c],
+  [0x180e, 0x180e],
+  [0x200b, 0x200f],
+  [0x202a, 0x202e],
+  [0x2060, 0x2069],
+  [0xfeff, 0xfeff],
+]
+
 function isControl(codePoint: number): boolean {
-  return codePoint < 0x20 || (codePoint >= 0x7f && codePoint <= 0x9f)
+  return (
+    codePoint < 0x20 ||
+    (codePoint >= 0x7f && codePoint <= 0x9f) ||
+    FORMAT_RANGES.some(([low, high]) => codePoint >= low && codePoint <= high)
+  )
 }
 
 export function attributionProblem(name: string): AttributionProblem | null {

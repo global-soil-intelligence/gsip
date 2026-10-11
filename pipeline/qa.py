@@ -8,7 +8,7 @@ from typing import Protocol
 
 import cv2
 import numpy as np
-from PIL import ExifTags, Image, ImageCms, ImageOps
+from PIL import ExifTags, Image, ImageCms
 
 from card.validate import card_corners, card_transform, extract_patches
 
@@ -37,6 +37,17 @@ CARD_MASK_SCALE = 1.12
 SHARPNESS_EROSION_PX = 7
 
 FAILING_CHECKS = ("soil_region", "sharpness", "exposure", "is_soil")
+EXIF_ORIENTATION_TAG = 0x0112
+# EXIF orientation -> the transpose that makes the pixels upright (as Pillow's exif_transpose).
+ORIENTATION_TRANSPOSE = {
+    2: Image.Transpose.FLIP_LEFT_RIGHT,
+    3: Image.Transpose.ROTATE_180,
+    4: Image.Transpose.FLIP_TOP_BOTTOM,
+    5: Image.Transpose.TRANSPOSE,
+    6: Image.Transpose.ROTATE_270,
+    7: Image.Transpose.TRANSVERSE,
+    8: Image.Transpose.ROTATE_90,
+}
 REVIEW_CHECKS = ("gps_plausibility", "duplicate")
 
 
@@ -87,6 +98,21 @@ def _number(value: object) -> float | int | str | None:
     if isinstance(numerator, int) and isinstance(denominator, int) and denominator:
         return numerator / denominator
     return None
+
+
+def _upright(image: Image.Image) -> Image.Image:
+    """Apply the EXIF orientation to the pixels without re-serializing the EXIF block.
+
+    Pillow's exif_transpose rewrites the EXIF data and raises on type-mismatched tags, which
+    would dead-letter a valid photo; reading one integer tag cannot.
+    """
+
+    try:
+        orientation = image.getexif().get(EXIF_ORIENTATION_TAG)
+    except Exception:  # hostile EXIF must never block sanitization; orientation is optional
+        orientation = None
+    method = ORIENTATION_TRANSPOSE.get(orientation) if isinstance(orientation, int) else None
+    return image.transpose(method) if method is not None else image
 
 
 def _color_space_class(description: str) -> str:
@@ -147,7 +173,7 @@ def sanitize_jpeg(raw: bytes) -> tuple[bytes, dict[str, float | int | str]]:
                 if destination and normalized is not None:
                     metadata[destination] = normalized
         icc_profile = source.info.get("icc_profile")
-        upright = ImageOps.exif_transpose(source)
+        upright = _upright(source)
         clean, color_space = _to_srgb(
             upright, icc_profile if isinstance(icc_profile, bytes) else None
         )

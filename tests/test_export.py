@@ -3,6 +3,7 @@ from __future__ import annotations
 import io
 import json
 import random
+import uuid
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
@@ -16,6 +17,8 @@ from datasets import load_dataset  # type: ignore[import-untyped]
 from PIL import Image
 
 from pipeline.export import (
+    ExportHealthError,
+    ExportInfrastructureError,
     ExportPhoto,
     ExportPrivacyError,
     ExportResult,
@@ -69,13 +72,21 @@ def dirty_photo() -> bytes:
     return raw[:2] + b"".join(segments) + raw[2:]
 
 
-def photo(shot: str, submission_id: str, qa_status: str = "pass") -> ExportPhoto:
+def owner_uid(contributor: str) -> str:
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, f"gsip-test-owner/{contributor}"))
+
+
+def photo(shot: str, submission_id: str, contributor: str, qa_status: str = "pass") -> ExportPhoto:
+    object_id = uuid.uuid5(uuid.NAMESPACE_URL, f"{submission_id}/{shot}")
     return ExportPhoto(
         shot_type=shot,
-        storage_path=f"private/{submission_id}/{shot}.jpg",
+        storage_path=f"{owner_uid(contributor)}/{submission_id}/{shot}/{object_id}.jpg",
         qa_status=qa_status,
         calibration_status="calibrated",
-        qa_checks=(QaCheck("sharpness", True, 120.5), QaCheck("gps_plausibility", True, None)),
+        qa_checks=(
+            QaCheck("sharpness", True, 120.5),
+            QaCheck("gps_plausibility", True, 0.9875),
+        ),
         qa_model_version="deterministic-v2",
     )
 
@@ -91,9 +102,10 @@ def submission(
     captured_at: str = "2026-07-22T12:00:00Z",
 ) -> ExportSubmission:
     submission_id = f"73f0400e-5c64-5a6e-90d1-{index:012d}"
+    person = contributor or f"contributor-{index}"
     return ExportSubmission(
         captured_at=captured_at,
-        contributor_id=contributor or f"contributor-{index}",
+        contributor_id=person,
         disturbed=False,
         grant=Grant("soil-friend", "ODbL-1.0", "CC-BY-SA-4.0", "2026-07-22-v1") if grant else None,
         gold_labels=(),
@@ -102,24 +114,24 @@ def submission(
         id=submission_id,
         is_synthetic=synthetic,
         land_cover="cropland",
+        owner_uid=owner_uid(person),
         photos=photos
         if photos is not None
-        else (photo("A", submission_id), photo("B", submission_id)),
+        else (photo("A", submission_id, person), photo("B", submission_id, person)),
         precip_flag=False,
-        priors=(
-            {
-                "depth_bottom_cm": 30,
-                "depth_top_cm": 0,
-                "property": "soc",
-                "source": "soilgrids",
-                "uncertainty_hi": 29.0,
-                "uncertainty_lo": 8.0,
-                "unit": "g/kg",
-                "value": 17.0,
-            },
-        ),
         status="qa_pass",
         surface_condition="moist",
+    )
+
+
+def with_photos(row: ExportSubmission, *photos: ExportPhoto) -> ExportSubmission:
+    return ExportSubmission(**{**row.__dict__, "photos": photos})
+
+
+def http_error(status: int) -> httpx.HTTPStatusError:
+    request = httpx.Request("GET", "https://supabase.test/storage")
+    return httpx.HTTPStatusError(
+        "storage", request=request, response=httpx.Response(status, request=request)
     )
 
 
@@ -142,7 +154,17 @@ def test_export_is_private_field_free_and_loads_with_datasets(tmp_path: Path) ->
     )
     assert len(loaded) == 3
     assert set(loaded.column_names).isdisjoint(
-        {"geom_precise", "latitude", "longitude", "contributor_id", "h3_r8", "h3_r6"}
+        {
+            "geom_precise",
+            "latitude",
+            "longitude",
+            "contributor_id",
+            "h3_r8",
+            "h3_r6",
+            "priors",
+            "elevation",
+            "owner_uid",
+        }
     )
     assert loaded[0]["captured_at"] == "2026-07-22"
     assert loaded[0]["h3_cell"] == BURLINGTON
@@ -150,6 +172,11 @@ def test_export_is_private_field_free_and_loads_with_datasets(tmp_path: Path) ->
     first_photo = loaded[0]["photos"][0]
     assert first_photo["qa"]["model_version"] == "deterministic-v2"
     assert {"check": "sharpness", "passed": True, "score": 120.5} in first_photo["qa"]["checks"]
+    # The GPS plausibility score encodes the private GPS accuracy: pass/fail only.
+    assert {"check": "gps_plausibility", "passed": True, "score": None} in first_photo["qa"][
+        "checks"
+    ]
+    assert "0.9875" not in json.dumps(loaded.to_list())
     assert not has_embedded_metadata((result.target / first_photo["path"]).read_bytes())
     card = (result.target / "README.md").read_text()
     assert "ODbL-1.0" in card
@@ -255,16 +282,85 @@ def test_an_unavailable_photo_is_set_aside_and_the_release_continues(tmp_path: P
 
     def loader(path: str) -> bytes:
         if broken in path:
-            request = httpx.Request("GET", "https://supabase.test/storage")
-            raise httpx.HTTPStatusError(
-                "missing", request=request, response=httpx.Response(404, request=request)
-            )
+            raise http_error(404)
         return clean_photo()
 
     result = build(rows, tmp_path, loader)
-    assert result.set_aside == {"photo_unavailable": 1}
+    assert result.set_aside == {"photo_missing": 1}
     assert result.rows == 4
     assert not (result.target / "photos" / broken).exists()
+    # The operator report names the row privately, beside (never inside) the release.
+    assert result.report is not None
+    assert result.report.parent == tmp_path
+    report = json.loads(result.report.read_text())
+    assert report["set_aside"] == [{"id": broken, "reason": "photo_missing"}]
+    assert broken not in "".join(
+        path.read_text(errors="ignore") for path in result.target.rglob("*") if path.is_file()
+    )
+
+
+@pytest.mark.parametrize(
+    "failure",
+    [http_error(503), http_error(429), httpx.ConnectTimeout("storage timed out")],
+    ids=["503", "429", "timeout"],
+)
+def test_a_storage_outage_aborts_instead_of_publishing_a_hollow_release(
+    tmp_path: Path, failure: Exception
+) -> None:
+    def loader(_: str) -> bytes:
+        raise failure
+
+    with pytest.raises(ExportInfrastructureError):
+        build([*three_contributors_in_one_cell(), submission(4)], tmp_path, loader)
+    assert not (tmp_path / "2026-07-22").exists()
+    assert not (tmp_path / ".2026-07-22.building").exists()
+
+
+def test_widespread_set_asides_abort_the_release(tmp_path: Path) -> None:
+    rows = [submission(index) for index in range(1, 8)]
+    missing = {row.id for row in rows[:4]}
+
+    def loader(path: str) -> bytes:
+        if any(submission_id in path for submission_id in missing):
+            raise http_error(404)
+        return clean_photo()
+
+    with pytest.raises(ExportHealthError, match="4 of 7 rows"):
+        build(rows, tmp_path, loader)
+    assert not (tmp_path / "2026-07-22").exists()
+
+
+def test_a_few_set_asides_within_the_allowance_do_not_block(tmp_path: Path) -> None:
+    rows = [submission(index) for index in range(1, 7)]
+    missing = {row.id for row in rows[:3]}
+
+    def loader(path: str) -> bytes:
+        if any(submission_id in path for submission_id in missing):
+            raise http_error(404)
+        return clean_photo()
+
+    result = build(rows, tmp_path, loader)
+    assert result.set_aside == {"photo_missing": 3}
+    assert result.rows == 3
+
+
+def test_a_photo_path_outside_its_owner_aborts(tmp_path: Path) -> None:
+    rows = three_contributors_in_one_cell()
+    first = rows[0]
+    stolen = photo("B", first.id, "someone-else")
+    rows[0] = with_photos(first, photo("A", first.id, "contributor-1"), stolen)
+    with pytest.raises(ExportPrivacyError, match="does not match its owner"):
+        build(rows, tmp_path)
+    assert not (tmp_path / "2026-07-22").exists()
+
+
+def test_a_legacy_pass_without_passing_shots_a_and_b_is_refused(tmp_path: Path) -> None:
+    rows = three_contributors_in_one_cell()
+    legacy = submission(4)
+    rows.append(with_photos(legacy, photo("A", legacy.id, "contributor-4")))
+    result = build(rows, tmp_path)
+    assert result.set_aside == {"required_shots_not_passed": 1}
+    assert result.rows == 3
 
 
 def test_a_set_aside_row_cannot_leave_a_published_cell_below_k(tmp_path: Path) -> None:
@@ -279,15 +375,11 @@ def test_a_set_aside_row_cannot_leave_a_published_cell_below_k(tmp_path: Path) -
 def test_only_photos_that_passed_qa_are_released(tmp_path: Path) -> None:
     rows = three_contributors_in_one_cell()
     first = rows[0]
-    rows[0] = ExportSubmission(
-        **{
-            **first.__dict__,
-            "photos": (
-                photo("A", first.id),
-                photo("B", first.id),
-                photo("C", first.id, qa_status="fail"),
-            ),
-        }
+    rows[0] = with_photos(
+        first,
+        photo("A", first.id, "contributor-1"),
+        photo("B", first.id, "contributor-1"),
+        photo("C", first.id, "contributor-1", qa_status="fail"),
     )
     result = build(rows, tmp_path)
     loaded = load_dataset(
@@ -310,6 +402,8 @@ def test_private_columns_are_refused() -> None:
         assert_public_record({"h3_cell": "safe", "geom_precise": "POINT(0 0)"})
     with pytest.raises(ExportPrivacyError, match="forbidden private fields"):
         assert_public_record({"h3_cell": "safe", "h3_r8": BURLINGTON})
+    with pytest.raises(ExportPrivacyError, match="forbidden private fields"):
+        assert_public_record({"h3_cell": "safe", "priors": [{"property": "soc"}]})
 
 
 def test_dirty_canonical_photo_aborts_before_any_public_artifact(tmp_path: Path) -> None:
@@ -366,6 +460,7 @@ def test_source_attaches_per_photo_qa_and_keeps_the_contributor_private() -> Non
                 "precip_flag": None,
                 "status": "qa_pass",
                 "surface_condition": "dry",
+                "contributor": {"auth_uid": "30000000-0000-4000-8000-000000000001"},
             }
         ],
         "contribution_grants": [
@@ -410,7 +505,6 @@ def test_source_attaches_per_photo_qa_and_keeps_the_contributor_private() -> Non
                 "storage_path": "p/B.jpg",
             },
         ],
-        "priors": [],
         "gold_labels": [],
     }
 
@@ -429,6 +523,7 @@ def test_source_attaches_per_photo_qa_and_keeps_the_contributor_private() -> Non
     finally:
         source.client.close()
     assert loaded.contributor_id == "c-1"
+    assert loaded.owner_uid == "30000000-0000-4000-8000-000000000001"
     shot_b = next(item for item in loaded.photos if item.shot_type == "B")
     assert shot_b.qa_status == "pass"
     assert shot_b.qa_model_version == "deterministic-v2"

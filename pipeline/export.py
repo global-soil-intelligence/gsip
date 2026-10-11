@@ -3,10 +3,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 import shutil
 import time
-from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import date
@@ -26,12 +26,17 @@ from pipeline.k_anonymity import (
     assign_cells,
     is_resolution_8_cell,
 )
+from pipeline.paths import StoragePathMismatch, verify_photo_path
 from pipeline.qa import MetadataSurvived, has_embedded_metadata, sanitize_jpeg
 
+# Keys that must never appear anywhere in a public row. Point-level priors and elevation are
+# here because, matched against public rasters, they locate an observation more precisely than
+# its published cell (SPEC I7).
 FORBIDDEN_PUBLIC_KEYS = {
     "camera_metadata_private",
     "contributor_id",
     "device_model",
+    "elevation",
     "geom_precise",
     "gps_accuracy_m",
     "grant_id",
@@ -39,11 +44,32 @@ FORBIDDEN_PUBLIC_KEYS = {
     "h3_r8",
     "latitude",
     "longitude",
+    "owner_uid",
+    "priors",
 }
+# QA checks whose scores are released. Location-derived scores (gps_plausibility encodes the
+# private GPS accuracy) are released as pass or fail only.
+PUBLIC_SCORE_CHECKS = frozenset(
+    {"card_detection", "duplicate", "exposure", "is_soil", "sharpness", "soil_region"}
+)
+REQUIRED_SHOTS = ("A", "B")
+# Set-asides beyond this share of candidate rows abort the release (SPEC section 6): an outage
+# or a systemic fault must never publish a hollowed-out release.
+MAX_SET_ASIDE_SHARE = 0.10
+SET_ASIDE_ALLOWANCE = 3
+MISSING_OBJECT_STATUSES = {400, 404}
 
 
 class ExportPrivacyError(ValueError):
     """A privacy assertion failed. The whole release aborts; nothing is published."""
+
+
+class ExportInfrastructureError(RuntimeError):
+    """Storage or the database is failing. The whole release aborts; retry tomorrow."""
+
+
+class ExportHealthError(RuntimeError):
+    """Too many rows were set aside to publish a trustworthy release."""
 
 
 class RowSetAside(Exception):  # noqa: N818 - a signal, not an error, for one row
@@ -81,6 +107,8 @@ class ExportPhoto:
 
 @dataclass(frozen=True)
 class ExportSubmission:
+    """Everything the export needs about one submission. Private fields never reach a row."""
+
     captured_at: str
     contributor_id: str
     disturbed: bool | None
@@ -91,9 +119,9 @@ class ExportSubmission:
     id: str
     is_synthetic: bool
     land_cover: str | None
+    owner_uid: str | None
     photos: tuple[ExportPhoto, ...]
     precip_flag: bool | None
-    priors: tuple[dict[str, Any], ...]
     status: str
     surface_condition: str | None
 
@@ -105,6 +133,7 @@ class ExportResult:
     rows: int
     withheld: int
     set_aside: dict[str, int] = field(default_factory=dict)
+    report: Path | None = None
 
     def summary(self) -> dict[str, Any]:
         """Counts only: workflow logs of a public repository are public."""
@@ -155,7 +184,7 @@ Observations withheld until they meet k-anonymity: {withheld}.
 
 Structured/database content is provided under the Open Database License 1.0 (ODbL-1.0).
 Sanitized contributed photographs are provided separately under CC BY-SA 4.0. Contributors retain
-ownership. SoilGrids-derived prior values retain ISRIC attribution and their source license.
+ownership.
 
 ## Photo attribution
 
@@ -169,9 +198,13 @@ instructions.
 Each row contains a submission ID; `h3_cell`, the finest H3 cell at resolution 8, 6 or 4 that
 aggregates at least {K_ANONYMITY} distinct contributors, and its `h3_resolution`; the capture date;
 protocol metadata; sanitized photo paths with each photo's calibration status and deterministic QA
-checks; canonical prior values with uncertainty; and any verified gold labels. No precise geometry,
-finer H3 cell, GPS accuracy, contributor ID, device model, private camera metadata, EXIF, XMP or
-ICC profile is included. Photos are converted to sRGB before release.
+checks; and any verified gold labels. Location-derived QA checks carry pass or fail without a
+score. No precise geometry, finer H3 cell, GPS accuracy, contributor ID, device model, private
+camera metadata, EXIF, XMP or ICC profile is included. Photos are converted to sRGB before release.
+
+Point-level soil-map priors are not included: sampled at an observation's position, they would
+locate it more precisely than its published cell. To use priors, sample SoilGrids
+(https://soilgrids.org, ISRIC, CC BY 4.0) for the published cell.
 
 ## Citation
 
@@ -194,6 +227,30 @@ def _manifest(target: Path) -> dict[str, str]:
     return files
 
 
+def _load_photo(photo_loader: Callable[[str], bytes], path: str) -> bytes:
+    """Missing objects set the row aside; every other failure is an outage and aborts."""
+
+    try:
+        return photo_loader(path)
+    except httpx.HTTPStatusError as error:
+        if error.response.status_code in MISSING_OBJECT_STATUSES:
+            raise RowSetAside("photo_missing") from error
+        raise ExportInfrastructureError("Storage failed while reading a photo") from error
+    except (httpx.HTTPError, OSError) as error:
+        raise ExportInfrastructureError("Storage failed while reading a photo") from error
+
+
+def _public_checks(photo: ExportPhoto) -> list[dict[str, Any]]:
+    return [
+        {
+            "check": check.check,
+            "passed": check.passed,
+            "score": check.score if check.check in PUBLIC_SCORE_CHECKS else None,
+        }
+        for check in photo.qa_checks
+    ]
+
+
 def _public_photo(
     submission: ExportSubmission,
     photo: ExportPhoto,
@@ -204,9 +261,12 @@ def _public_photo(
     if grant is None:
         raise RowSetAside("missing_grant")
     try:
-        raw_photo = photo_loader(photo.storage_path)
-    except (httpx.HTTPError, OSError) as error:
-        raise RowSetAside("photo_unavailable") from error
+        verify_photo_path(
+            photo.storage_path, submission.owner_uid or "", submission.id, photo.shot_type
+        )
+    except StoragePathMismatch as error:
+        raise ExportPrivacyError("A photo path does not match its owner and submission") from error
+    raw_photo = _load_photo(photo_loader, photo.storage_path)
     try:
         dirty = has_embedded_metadata(raw_photo)
     except (OSError, ValueError, Image.DecompressionBombError) as error:
@@ -231,13 +291,7 @@ def _public_photo(
         "calibration_status": photo.calibration_status,
         "license": grant.photo_license,
         "path": str(relative),
-        "qa": {
-            "checks": [
-                {"check": check.check, "passed": check.passed, "score": check.score}
-                for check in photo.qa_checks
-            ],
-            "model_version": photo.qa_model_version,
-        },
+        "qa": {"checks": _public_checks(photo), "model_version": photo.qa_model_version},
         "shot_type": photo.shot_type,
     }
 
@@ -251,12 +305,14 @@ def _row(
         raise RowSetAside("missing_grant")
     if not is_resolution_8_cell(submission.h3_r8):
         raise RowSetAside("invalid_cell")
+    passed = {photo.shot_type for photo in submission.photos if photo.qa_status == "pass"}
+    if not set(REQUIRED_SHOTS) <= passed:
+        # A qa_pass status without passing shots A and B predates settle_submission: refuse it.
+        raise RowSetAside("required_shots_not_passed")
     releasable = sorted(
         (photo for photo in submission.photos if photo.qa_status == "pass"),
         key=lambda item: item.shot_type,
     )
-    if not releasable:
-        raise RowSetAside("no_passed_photos")
     photos = [_public_photo(submission, photo, temporary, photo_loader) for photo in releasable]
     return {
         "captured_at": submission.captured_at[:10],
@@ -266,10 +322,36 @@ def _row(
         "land_cover": submission.land_cover,
         "photos": photos,
         "precip_flag": submission.precip_flag,
-        "priors": list(submission.priors),
         "status": submission.status,
         "surface_condition": submission.surface_condition,
     }
+
+
+def _write_report(
+    output_root: Path,
+    export_date: date,
+    set_aside: list[tuple[str, str]],
+    withheld: tuple[str, ...],
+) -> Path:
+    """Private operator report, kept beside (never inside) the release folder."""
+
+    report = output_root / f"{export_date.isoformat()}.report.json"
+    report.write_text(
+        json.dumps(
+            {
+                "export_date": export_date.isoformat(),
+                "set_aside": [
+                    {"id": submission_id, "reason": reason}
+                    for submission_id, reason in sorted(set_aside)
+                ],
+                "withheld_for_k_anonymity": list(withheld),
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return report
 
 
 def build_export(
@@ -291,7 +373,7 @@ def build_export(
     if temporary.exists():
         shutil.rmtree(temporary)
     temporary.mkdir(parents=True)
-    set_aside: Counter[str] = Counter()
+    set_aside: list[tuple[str, str]] = []
     built: dict[str, dict[str, Any]] = {}
     observations: list[Observation] = []
     try:
@@ -300,7 +382,7 @@ def build_export(
                 built[submission.id] = _row(submission, temporary, photo_loader)
             except RowSetAside as reason:
                 shutil.rmtree(temporary / "photos" / submission.id, ignore_errors=True)
-                set_aside[reason.code] += 1
+                set_aside.append((submission.id, reason.code))
                 continue
             observations.append(
                 Observation(
@@ -309,6 +391,12 @@ def build_export(
                     h3_r8=submission.h3_r8,
                     observed_on=date.fromisoformat(submission.captured_at[:10]),
                 )
+            )
+
+        allowance = max(SET_ASIDE_ALLOWANCE, math.floor(MAX_SET_ASIDE_SHARE * len(qualifying)))
+        if len(set_aside) > allowance:
+            raise ExportHealthError(
+                f"{len(set_aside)} of {len(qualifying)} rows were set aside; refusing to publish"
             )
 
         # k-anonymity is computed only over rows that will really be released, so that a set-
@@ -350,12 +438,16 @@ def build_export(
         if temporary.exists():
             shutil.rmtree(temporary)
         raise
+    counts: dict[str, int] = {}
+    for _, code in set_aside:
+        counts[code] = counts.get(code, 0) + 1
     return ExportResult(
         target=target,
         cells=assignment.cells,
         rows=len(records),
         withheld=len(assignment.withheld),
-        set_aside=dict(set_aside),
+        set_aside=counts,
+        report=_write_report(output_root, export_date, set_aside, assignment.withheld),
     )
 
 
@@ -410,7 +502,7 @@ class SupabaseExportSource:
         rows = self._rows(
             "submissions?status=eq.qa_pass&is_synthetic=eq.false&order=id&select="
             "id,contributor_id,h3_r8,h3_r6,captured_at,land_cover,surface_condition,disturbed,"
-            "precip_flag,status,is_synthetic,grant_id"
+            "precip_flag,status,is_synthetic,grant_id,contributor:contributors(auth_uid)"
         )
         exported: list[ExportSubmission] = []
         for row in rows:
@@ -447,18 +539,13 @@ class SupabaseExportSource:
                     "&select=shot_type,storage_path,qa_status,calibration_status"
                 )
             )
-            priors = tuple(
-                self._rows(
-                    f"priors?submission_id=eq.{submission_id}&order=source,property,depth_top_cm"
-                    "&select=source,property,value,uncertainty_lo,uncertainty_hi,unit,depth_top_cm,depth_bottom_cm"
-                )
-            )
             gold = tuple(
                 self._rows(
                     f"gold_labels?submission_id=eq.{submission_id}&order=property,depth_top_cm"
                     "&select=lab_name,method,property,value,uncertainty,unit,depth_top_cm,depth_bottom_cm"
                 )
             )
+            contributor = row.get("contributor") or {}
             exported.append(
                 ExportSubmission(
                     captured_at=str(row["captured_at"]),
@@ -471,9 +558,9 @@ class SupabaseExportSource:
                     id=submission_id,
                     is_synthetic=bool(row["is_synthetic"]),
                     land_cover=row["land_cover"],
+                    owner_uid=str(contributor["auth_uid"]) if contributor.get("auth_uid") else None,
                     photos=photos,
                     precip_flag=row["precip_flag"],
-                    priors=priors,
                     status=str(row["status"]),
                     surface_condition=row["surface_condition"],
                 )

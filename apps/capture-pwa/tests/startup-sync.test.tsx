@@ -85,6 +85,22 @@ describe('capture retry behavior', () => {
     expect(mocks.submitQueued).not.toHaveBeenCalled()
   })
 
+  it('resumes without a reload once the database reopens capture', async () => {
+    mocks.fetchServiceState
+      .mockResolvedValueOnce('closed')
+      .mockResolvedValueOnce('closed')
+      .mockResolvedValue('open')
+    await enqueue(record)
+    render(<App />)
+    expect(await screen.findAllByText(/capture is paused/i)).not.toHaveLength(0)
+    expect(mocks.submitQueued).not.toHaveBeenCalled()
+
+    act(() => {
+      window.dispatchEvent(new Event('online'))
+    })
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(1))
+  })
+
   it('still syncs when the capture state cannot be read', async () => {
     mocks.fetchServiceState.mockResolvedValue('unknown')
     await enqueue(record)

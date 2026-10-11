@@ -17,41 +17,6 @@ comment on column public.photos.qa_status is
 create index submissions_settle_queue_idx on public.submissions (finalized_at)
     where status = 'pending' and finalized_at is not null;
 
--- Existing rows predate finalize. Treat complete pre-v3 submissions as finalized and derive the
--- per-photo verdict from completed QA, so nothing already settled is reopened.
-update public.submissions s
-set finalized_at = now()
-where s.finalized_at is null
-  and (
-      select count(distinct p.shot_type)
-      from public.photos p
-      where p.submission_id = s.id and p.shot_type in ('A', 'B')
-  ) = 2;
-
-update public.photos p
-set qa_status = case
-    when exists (
-        select 1 from public.qa_events e
-        where e.submission_id = p.submission_id
-          and not e.passed
-          and e.check_name in ('sharpness_' || p.shot_type, 'exposure_' || p.shot_type, 'is_soil_' || p.shot_type)
-    ) then 'fail'
-    when exists (
-        select 1 from public.qa_events e
-        where e.submission_id = p.submission_id
-          and not e.passed
-          and e.check_name in ('gps_plausibility_' || p.shot_type, 'duplicate_' || p.shot_type)
-    ) then 'flagged'
-    else 'pass'
-end
-where p.qa_status is null
-  and exists (select 1 from public.qa_jobs j where j.photo_id = p.id and j.status = 'completed');
-
-update public.photos p
-set qa_status = 'error'
-where p.qa_status is null
-  and exists (select 1 from public.qa_jobs j where j.photo_id = p.id and j.status = 'dead_letter');
-
 create or replace function public.finalize_submission(p_submission_id uuid)
 returns timestamptz
 language plpgsql
@@ -116,8 +81,10 @@ declare
     shot_a text;
     shot_b text;
     next_status text;
+    has_cells boolean;
 begin
-    select s.status, s.finalized_at into current_status, finalized
+    select s.status, s.finalized_at, s.h3_r8 is not null and s.h3_r6 is not null
+    into current_status, finalized, has_cells
     from public.submissions s
     where s.id = p_submission_id
     for update;
@@ -140,6 +107,8 @@ begin
         when shot_a is null or shot_b is null then 'pending'
         when shot_a = 'fail' or shot_b = 'fail' then 'qa_fail'
         when shot_a in ('flagged', 'error') or shot_b in ('flagged', 'error') then 'flagged'
+        -- The worker derives the H3 cells before settling; without them a pass must wait.
+        when not has_cells then 'pending'
         else 'qa_pass'
     end;
 
@@ -155,3 +124,75 @@ grant execute on function public.settle_submission(uuid) to service_role;
 
 comment on function public.settle_submission(uuid) is
     'Service role only: the single source of truth for submission status (SPEC section 5). Shot C never changes it.';
+
+-- Existing rows predate finalize. Treat complete pre-v3 submissions as finalized and derive the
+-- per-photo verdict from completed QA, so nothing already settled is reopened.
+update public.submissions s
+set finalized_at = now()
+where s.finalized_at is null
+  and (
+      select count(distinct p.shot_type)
+      from public.photos p
+      where p.submission_id = s.id and p.shot_type in ('A', 'B')
+  ) = 2;
+
+update public.photos p
+set qa_status = case
+    when exists (
+        select 1 from public.qa_events e
+        where e.submission_id = p.submission_id
+          and not e.passed
+          and e.check_name in ('sharpness_' || p.shot_type, 'exposure_' || p.shot_type, 'is_soil_' || p.shot_type)
+    ) then 'fail'
+    when exists (
+        select 1 from public.qa_events e
+        where e.submission_id = p.submission_id
+          and not e.passed
+          and e.check_name in ('gps_plausibility_' || p.shot_type, 'duplicate_' || p.shot_type)
+    ) then 'flagged'
+    else 'pass'
+end
+where p.qa_status is null
+  and exists (select 1 from public.qa_jobs j where j.photo_id = p.id and j.status = 'completed');
+
+update public.photos p
+set qa_status = 'error'
+where p.qa_status is null
+  and exists (select 1 from public.qa_jobs j where j.photo_id = p.id and j.status = 'dead_letter');
+
+-- Re-settle every pre-v3 decision under the v3 rules: a status the old per-photo logic set without
+-- passing shots A and B must not stay publishable.
+create or replace function private.resettle_all_submissions()
+returns integer
+language plpgsql
+volatile
+security invoker
+set search_path = ''
+as $$
+declare
+    changed integer := 0;
+    reopened integer;
+    item record;
+    before text;
+begin
+    update public.submissions
+    set status = 'pending'
+    where finalized_at is null and status <> 'pending';
+    get diagnostics reopened = row_count;
+
+    for item in select s.id, s.status from public.submissions s where s.finalized_at is not null loop
+        before := item.status;
+        if public.settle_submission(item.id) is distinct from before then
+            changed := changed + 1;
+        end if;
+    end loop;
+    return reopened + changed;
+end;
+$$;
+
+revoke all on function private.resettle_all_submissions() from public, anon, authenticated;
+
+comment on function private.resettle_all_submissions() is
+    'WP-6b one-off repair: re-derives every submission status under the v3 settlement rules.';
+
+select private.resettle_all_submissions();

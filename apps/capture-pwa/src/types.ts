@@ -8,6 +8,8 @@ export type QueuedPhoto = {
 }
 
 export type CaptureDraft = {
+  /** When the person accepted the terms (submit time); records from older builds lack it. */
+  acceptedAt?: string
   accuracyM: number | null
   attributionName: string
   capturedAt: string
