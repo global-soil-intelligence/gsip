@@ -76,9 +76,12 @@ export function webLocation(
 const DENIED = new Set([
   'OS-PLUG-GLOC-0003', // permission denied
   'OS-PLUG-GLOC-0008', // restricted (iOS)
-  'OS-PLUG-GLOC-0009', // the request to enable location was denied (Android)
 ])
-const OFF = new Set(['OS-PLUG-GLOC-0007', 'OS-PLUG-GLOC-0017'])
+const OFF = new Set([
+  'OS-PLUG-GLOC-0007', // location services are off
+  'OS-PLUG-GLOC-0009', // the person declined turning location on (Android)
+  'OS-PLUG-GLOC-0017', // network and location both off (Android)
+])
 const TIMEOUT = 'OS-PLUG-GLOC-0010'
 
 function nativeProblem(error: unknown): LocationProblem {
@@ -90,8 +93,9 @@ function nativeProblem(error: unknown): LocationProblem {
 }
 
 /**
- * The phone app: @capacitor/geolocation, which asks only for location while the app is in use
- * (iOS when-in-use authorization; Android foreground location).
+ * The iPhone app: @capacitor/geolocation over Core Location, which asks only for location while
+ * the app is in use. The Android app uses the web view's own location API instead (see
+ * capacitor.config.ts), which asks for the same foreground permissions.
  */
 export function nativeLocation(
   plugin: Pick<GeolocationPlugin, 'getCurrentPosition'>,

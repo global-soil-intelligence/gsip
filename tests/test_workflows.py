@@ -94,6 +94,7 @@ def test_app_build_decides_permissions_in_one_script_and_signs_nothing() -> None
         for needle in (
             "cap add android",
             "app_permissions.py apply-android",
+            "app_permissions.py check-dependencies",
             "assembleDebug",
             "app_permissions.py check-apk",
         )

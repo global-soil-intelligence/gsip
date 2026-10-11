@@ -15,10 +15,10 @@ import {
   type CapturedPhoto,
   isNativeApp,
   type LocationProblem,
-  nativePlatform,
   type Platform,
   type PhotoProblem,
   PhotoRefused,
+  selectPlatform,
   webPlatform,
 } from './platform'
 import { photoFromFile, queuedPhoto } from './platform/camera'
@@ -29,13 +29,16 @@ import {
   weakestMethod,
 } from './provenance'
 import {
+  clearDraftPhotos,
   discardHeld,
+  draftPhotos,
   enqueue,
   indexedDbQueue,
   queued,
   reconfirmTerms,
   releaseHeld,
   retryDeadLettered,
+  saveDraftPhoto,
 } from './queue'
 import { drainQueue, isSyncEligible } from './sync'
 import {
@@ -163,19 +166,22 @@ function usePreview(photo: CapturedPhoto | null): string | null {
   return url
 }
 
-/** The phone app's shot: the native camera, or a saved photo from the system picker. */
+/**
+ * The phone app's shot: the native camera, or a saved photo through the web view's file input,
+ * whose system picker needs no permission and converts iPhone HEIC photos to JPEG.
+ */
 function NativePhotoField({
-  busy,
+  disabled,
   label,
-  onChoose,
+  onChooseFile,
   onTake,
   optional = false,
   photo,
   shot,
 }: {
-  busy: boolean
+  disabled: boolean
   label: string
-  onChoose: () => void
+  onChooseFile: (file: File) => void
   onTake: () => void
   optional?: boolean
   photo: CapturedPhoto | null
@@ -205,17 +211,23 @@ function NativePhotoField({
         {photo ? `Photo ${shot} ready` : `No photo ${shot} yet`}
       </p>
       <div className="photo-actions">
-        <button type="button" disabled={busy} onClick={onTake}>
+        <button type="button" disabled={disabled} onClick={onTake}>
           {photo ? `Retake photo ${shot}` : `Take photo ${shot}`}
         </button>
-        <button
-          type="button"
-          className="secondary"
-          disabled={busy}
-          onClick={onChoose}
-        >
+        <label className="file-button">
           Use a saved photo for {shot}
-        </button>
+          <input
+            className="visually-hidden"
+            type="file"
+            accept="image/jpeg"
+            disabled={disabled}
+            onChange={(event) => {
+              const file = event.currentTarget.files?.[0]
+              event.currentTarget.value = ''
+              if (file) onChooseFile(file)
+            }}
+          />
+        </label>
       </div>
     </div>
   )
@@ -262,7 +274,8 @@ export function App() {
     native ? null : webPlatform(),
   )
   const [nativePhotos, setNativePhotos] = useState<ShotPhotos>(NO_PHOTOS)
-  const [cameraBusy, setCameraBusy] = useState(false)
+  // The latest camera request; a result from an older one (never settled, or superseded) is ignored.
+  const shotRequest = useRef(0)
   const [soilRefresh, setSoilRefresh] = useState(0)
   const client = useMemo(
     () =>
@@ -286,6 +299,9 @@ export function App() {
   const [email, setEmail] = useState('')
   const syncPromise = useRef<Promise<void> | null>(null)
   const syncAgain = useRef(false)
+  // True while this screen is open. A closed screen starts no drain and sends nothing more, so
+  // it never races the next screen (or a reopened app) for the same queued record.
+  const open = useRef(false)
   const links = legalLinks()
   const loadMySoil = useCallback(
     () => (client ? mySoil(client) : Promise.resolve(null)),
@@ -295,7 +311,7 @@ export function App() {
   useEffect(() => {
     if (platform) return
     let cancelled = false
-    nativePlatform().then(
+    selectPlatform().then(
       (loaded) => {
         if (!cancelled) setPlatform(loaded)
       },
@@ -311,6 +327,26 @@ export function App() {
     }
   }, [platform])
 
+  // Photos taken before Android ended the app (it may, while the camera is open) come back.
+  useEffect(() => {
+    if (!native) return
+    let cancelled = false
+    draftPhotos().then(
+      (saved) => {
+        if (cancelled) return
+        setNativePhotos((current) => ({
+          A: current.A ?? saved.A ?? null,
+          B: current.B ?? saved.B ?? null,
+          C: current.C ?? saved.C ?? null,
+        }))
+      },
+      () => undefined,
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [native])
+
   const refreshQueueState = useCallback(async () => {
     const records = await queued()
     setQueueCount(records.length)
@@ -324,8 +360,10 @@ export function App() {
     return records
   }, [])
   const drainOnce = useCallback(async () => {
-    if (!client || !navigator.onLine) return
+    const closed = () => !open.current
+    if (!client || !navigator.onLine || closed()) return
     const records = await indexedDbQueue.list()
+    if (closed()) return
     if (!records.some((record) => isSyncEligible(record))) {
       await refreshQueueState()
       return
@@ -333,6 +371,7 @@ export function App() {
     // Re-read the gate before every drain: capture can close or reopen while the app is
     // open, and a closed gate must not burn the queued records' retry budget.
     const state = await fetchServiceState(client)
+    if (closed()) return
     setServiceState(state)
     if (state === 'closed') {
       await refreshQueueState()
@@ -340,8 +379,11 @@ export function App() {
       return
     }
     setStatus('Securely syncing queued observations…')
-    const result = await drainQueue(indexedDbQueue, (record) =>
-      submitQueued(client, record),
+    const result = await drainQueue(
+      indexedDbQueue,
+      (record) => submitQueued(client, record),
+      () => Date.now(),
+      closed,
     )
     if (result.synced) setSoilRefresh((count) => count + 1)
     const remaining = await refreshQueueState()
@@ -382,6 +424,7 @@ export function App() {
   // retry timer) is never dropped: it schedules exactly one follow-up drain, however many arrive.
   const sync = useCallback(() => {
     const start = (): Promise<void> => {
+      if (!open.current) return Promise.resolve()
       if (syncPromise.current) {
         syncAgain.current = true
         return syncPromise.current
@@ -401,6 +444,13 @@ export function App() {
     }
     return start()
   }, [drainOnce])
+
+  useEffect(() => {
+    open.current = true
+    return () => {
+      open.current = false
+    }
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -440,24 +490,52 @@ export function App() {
     )
   }
 
-  async function nativeShot(shot: ShotType, how: 'choose' | 'take') {
+  function keepNativePhoto(shot: ShotType, photo: CapturedPhoto) {
+    setNativePhotos((current) => ({ ...current, [shot]: photo }))
+    void saveDraftPhoto(shot, photo).catch(() => undefined)
+    setStatus(`Photo ${shot} is ready.`)
+  }
+
+  async function takeNativePhoto(shot: ShotType) {
     if (platform?.camera.kind !== 'native') return
-    setCameraBusy(true)
+    const request = ++shotRequest.current
+    setStatus('Opening the camera… If it does not open, use a saved photo.')
     try {
-      const photo =
-        how === 'take'
-          ? await platform.camera.takePhoto()
-          : await platform.camera.choosePhoto()
-      if (photo) setNativePhotos((current) => ({ ...current, [shot]: photo }))
+      const photo = await platform.camera.takePhoto()
+      if (request !== shotRequest.current) return
+      if (photo) keepNativePhoto(shot, photo)
+      else setStatus('No photo was taken.')
     } catch (error) {
+      if (request !== shotRequest.current) return
       setStatus(
         PHOTO_PROBLEMS[
           error instanceof PhotoRefused ? error.problem : 'failed'
         ],
       )
-    } finally {
-      setCameraBusy(false)
     }
+  }
+
+  async function chooseNativePhoto(shot: ShotType, file: File) {
+    shotRequest.current += 1
+    try {
+      keepNativePhoto(
+        shot,
+        await photoFromFile(file, PAGE_LOADED_AT, Date.now()),
+      )
+    } catch (error) {
+      setStatus(
+        PHOTO_PROBLEMS[
+          error instanceof PhotoRefused ? error.problem : 'not_jpeg'
+        ],
+      )
+    }
+  }
+
+  function discardNativePhotos() {
+    shotRequest.current += 1
+    setNativePhotos(NO_PHOTOS)
+    void clearDraftPhotos().catch(() => undefined)
+    setStatus('Photos discarded.')
   }
 
   async function sendMagicLink(switchAccount = false) {
@@ -579,6 +657,7 @@ export function App() {
     setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
     formRef.current?.reset()
     setNativePhotos(NO_PHOTOS)
+    await clearDraftPhotos().catch(() => undefined)
     setLatitude('')
     setLongitude('')
     setAccuracy(null)
@@ -720,13 +799,15 @@ export function App() {
                   ).map(([shot, label, optional]) => (
                     <NativePhotoField
                       key={shot}
-                      busy={cameraBusy || platform === null}
+                      disabled={platform === null}
                       label={label}
                       optional={optional}
                       photo={nativePhotos[shot]}
                       shot={shot}
-                      onChoose={() => void nativeShot(shot, 'choose')}
-                      onTake={() => void nativeShot(shot, 'take')}
+                      onChooseFile={(file) =>
+                        void chooseNativePhoto(shot, file)
+                      }
+                      onTake={() => void takeNativePhoto(shot)}
                     />
                   ))
                 ) : (
@@ -741,6 +822,16 @@ export function App() {
                   </>
                 )}
               </div>
+              {native &&
+                (nativePhotos.A || nativePhotos.B || nativePhotos.C) && (
+                  <button
+                    type="button"
+                    className="secondary discard-photos"
+                    onClick={discardNativePhotos}
+                  >
+                    Discard these photos
+                  </button>
+                )}
             </fieldset>
 
             <fieldset>
@@ -1000,7 +1091,15 @@ export function App() {
         )}
 
         {live && client && (
-          <YourData client={client} onQueueCleared={refreshQueueState} />
+          <YourData
+            client={client}
+            onQueueCleared={async () => {
+              // The queue and any photos taken here are gone; My Soil changes too.
+              setNativePhotos(NO_PHOTOS)
+              setSoilRefresh((count) => count + 1)
+              await refreshQueueState()
+            }}
+          />
         )}
       </main>
       <footer>

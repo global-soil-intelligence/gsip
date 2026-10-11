@@ -170,7 +170,7 @@ Acceptance criteria:
 **WP-APP-1: GSIP phone app**
 Scope:
 
-1. **Capacitor** in `apps/capture-pwa` (`appId com.globalsoilintelligence.app`, web directory `dist`) with the core, camera and geolocation plugins.
+1. **Capacitor** in `apps/capture-pwa` (`appId com.globalsoilintelligence.app`, web directory `dist`) with the core, camera and geolocation plugins. The geolocation plugin is included on iOS only: on Android it compiles in Google's closed Play services location SDK (guardrail 6), so the Android app uses the web view's location API, which asks for the same permissions.
 2. **Platform layer** (`src/platform/`): native or web camera (normalized to the queue's JPEG photo shape), geolocation (accuracy and source), an attestation-provider interface (`none` until a server verifier exists), and the `app` ingest-path claim.
 3. **My Soil**: the signed-in contributor's submissions with date, status, shots and public cell, read through RLS; never coordinates.
 4. **Builds.** `app-build.yml` generates the iOS and Android projects from the Capacitor config, applies permission strings with a checked-in script, and builds an unsigned Android debug APK and an iOS simulator build as artifacts. Signing and store upload are out of scope.

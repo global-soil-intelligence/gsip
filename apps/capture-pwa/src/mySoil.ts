@@ -1,5 +1,9 @@
 import { cellToParent, getResolution, isValidCell } from 'h3-js'
-import { existingContributor, type GsipClient } from './supabase'
+import {
+  existingContributor,
+  type GsipClient,
+  latestDeletionRequest,
+} from './supabase'
 import type { ShotType } from './types'
 
 /**
@@ -10,7 +14,7 @@ import type { ShotType } from './types'
  */
 
 export type MySoilStatus =
-  'checking' | 'failed' | 'passed' | 'review' | 'uploading'
+  'checking' | 'failed' | 'passed' | 'review' | 'uploading' | 'withdrawn'
 export type ShotState = 'failed' | 'missing' | 'passed' | 'pending' | 'review'
 
 export type PublicArea = { cell: string; resolution: 4 | 6 | 8 }
@@ -20,8 +24,13 @@ export type MySoilEntry = {
   capturedAt: string
   status: MySoilStatus
   shots: Record<ShotType, ShotState>
-  /** The published cell this observation is counted in; null until it is public. */
-  publicArea: PublicArea | null
+  /**
+   * The finest cell of the latest release that contains a passed observation: where the next
+   * release will most likely count it. Every release places observations afresh
+   * (pipeline/k_anonymity.py), so this is an expectation, not a record. Null until such a cell
+   * is published.
+   */
+  likelyPublicArea: PublicArea | null
 }
 
 /** The columns read, and nothing more: no geometry, accuracy, device or metadata. */
@@ -40,6 +49,7 @@ type Row = {
   photos: Array<{ shot_type: string; qa_status: string | null }> | null
 }
 
+/** The submission's status as settle_submission() leaves it (WP-6b settlement table). */
 function statusOf(row: Row): MySoilStatus {
   switch (row.status) {
     case 'qa_pass':
@@ -88,8 +98,8 @@ function ancestry(h3R8: string | null): string[] {
 
 /**
  * The contributor's latest submissions, newest first, or null when this device has no account.
- * A passed observation is counted in the finest published cell containing it (SPEC I7: the
- * export places it at resolution 8 if that cell is published, else 6, else 4).
+ * Observations made before a withdrawal or deletion request that is still being processed show as
+ * withdrawn: they are already left out of releases and are being deleted.
  */
 export async function mySoil(
   client: GsipClient,
@@ -108,9 +118,16 @@ export async function mySoil(
     (row) => row.contributor_id === contributor,
   )
 
+  const request = await latestDeletionRequest(client)
+  const withdrawnBefore =
+    request && request.status !== 'completed'
+      ? Date.parse(request.requestedAt)
+      : Number.NEGATIVE_INFINITY
+  const withdrawn = (row: Row) => Date.parse(row.captured_at) <= withdrawnBefore
+
   const candidates = new Set(
     rows
-      .filter((row) => row.status === 'qa_pass')
+      .filter((row) => row.status === 'qa_pass' && !withdrawn(row))
       .flatMap((row) => ancestry(row.h3_r8)),
   )
   const published = new Map<string, PublicArea['resolution']>()
@@ -131,19 +148,18 @@ export async function mySoil(
   }
 
   return rows.map((row) => {
-    const status = statusOf(row)
-    const area =
+    const status = withdrawn(row) ? 'withdrawn' : statusOf(row)
+    const cell =
       status === 'passed'
-        ? ancestry(row.h3_r8).find((cell) => published.has(cell))
+        ? ancestry(row.h3_r8).find((candidate) => published.has(candidate))
         : undefined
+    const resolution = cell ? published.get(cell) : undefined
     return {
       id: row.id,
       capturedAt: row.captured_at,
       status,
       shots: shotsOf(row),
-      publicArea: area
-        ? { cell: area, resolution: published.get(area) ?? 8 }
-        : null,
+      likelyPublicArea: cell && resolution ? { cell, resolution } : null,
     }
   })
 }

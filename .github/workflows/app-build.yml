@@ -66,10 +66,20 @@ jobs:
         run: pnpm exec cap add android
       - name: Apply the app's permissions
         run: python scripts/app_permissions.py apply-android apps/capture-pwa/android/app/src/main/AndroidManifest.xml
+      - name: Check the app ships no closed SDK
+        working-directory: apps/capture-pwa/android
+        # bash -eo pipefail: a failed Gradle run fails the step, never passes it with no input.
+        shell: bash
+        run: |
+          {
+            ./gradlew --no-daemon -q :app:dependencies --configuration debugRuntimeClasspath
+            ./gradlew --no-daemon -q :app:dependencies --configuration releaseRuntimeClasspath
+          } | python ../../../scripts/app_permissions.py check-dependencies -
       - name: Build the debug APK
         working-directory: apps/capture-pwa/android
         run: ./gradlew --no-daemon assembleDebug
       - name: Check the APK's permissions
+        shell: bash
         run: |
           aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2"
           "$aapt2" dump permissions apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk \

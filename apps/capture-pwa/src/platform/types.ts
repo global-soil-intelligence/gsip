@@ -27,12 +27,14 @@ export class PhotoRefused extends Error {
   }
 }
 
+/**
+ * The phone app's camera. Saved photos are chosen through the web view's file input on every
+ * platform: the system picker needs no permission and converts iPhone HEIC photos to JPEG.
+ */
 export type NativeCamera = {
   readonly kind: 'native'
   /** Opens the device camera. Null when the person cancels. */
   takePhoto(): Promise<CapturedPhoto | null>
-  /** Opens the system photo picker, which needs no permission. Null when the person cancels. */
-  choosePhoto(): Promise<CapturedPhoto | null>
 }
 
 /** Browsers take photos through the form's own file inputs (`capture="environment"`). */

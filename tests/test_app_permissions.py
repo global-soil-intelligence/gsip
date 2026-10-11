@@ -56,6 +56,13 @@ def test_ios_drops_other_usages_and_background_location() -> None:
     assert "UIBackgroundModes" not in only_location
 
 
+def test_ios_check_refuses_background_location_alone() -> None:
+    applied = permissions.apply_ios(template_plist())
+    assert permissions.ios_problems(applied | {"UIBackgroundModes": ["location"]}) == [
+        "UIBackgroundModes includes background location"
+    ]
+
+
 def test_ios_check_reads_the_built_apps_binary_plist(tmp_path: Path) -> None:
     built = tmp_path / "Info.plist"
     built.write_bytes(
@@ -85,10 +92,11 @@ def test_android_requests_location_while_in_use_and_removes_the_rest() -> None:
         "android.permission.ACCESS_FINE_LOCATION",
     }
     assert permissions.android_permission_problems(granted) == []
-    # Any library that declares these loses them in the merged manifest.
+    # Any library that declares these loses them in the merged manifest, the camera included:
+    # without it, the camera plugin opens the system camera app without asking.
     for name in permissions.ANDROID_REMOVED:
         assert f'android:name="{name}" tools:node="remove"' in applied
-    assert "android.permission.CAMERA" not in applied
+    assert 'android:name="android.permission.CAMERA" tools:node="remove"' in applied
     # The prefixes Android tooling expects, and the template's application, survive.
     assert 'xmlns:android="http://schemas.android.com/apk/res/android"' in applied
     assert 'xmlns:tools="http://schemas.android.com/tools"' in applied
@@ -128,6 +136,8 @@ def test_the_built_apk_holds_no_sensitive_permission_beyond_location() -> None:
 @pytest.mark.parametrize(
     "extra",
     [
+        "uses-permission: name='android.permission.CAMERA'",
+        "uses-permission: name='com.google.android.gms.permission.AD_ID'",
         "uses-permission: name='android.permission.ACCESS_BACKGROUND_LOCATION'",
         "uses-permission: name='android.permission.READ_MEDIA_IMAGES'",
         "uses-permission-sdk-23: name='android.permission.RECORD_AUDIO'",
@@ -150,3 +160,40 @@ def test_the_apk_check_reads_standard_input(
     monkeypatch.setattr("sys.stdin", io.StringIO(APK_DUMP))
     assert permissions.main(["app_permissions.py", "check-apk", "-"]) == 0
     assert "android.permission.ACCESS_FINE_LOCATION" in capsys.readouterr().out
+
+
+GRADLE_TREE = """
+debugRuntimeClasspath - Runtime classpath of /debug.
++--- project :capacitor-android
+|    +--- androidx.webkit:webkit:1.14.0
+|    \\--- org.apache.cordova:framework:14.0.1
++--- project :capacitor-camera
+|    +--- io.ionic.libs:ioncamera-android:1.0.2
+|    |    \\--- androidx.camera:camera-core:1.4.2
+|    \\--- androidx.exifinterface:exifinterface:1.4.1
+\\--- project :capacitor-filesystem
+     \\--- io.ionic.libs:ionfilesystem-android:1.1.0
+"""
+
+
+def test_the_android_app_ships_no_closed_sdk(tmp_path: Path) -> None:
+    assert permissions.closed_dependencies(GRADLE_TREE) == []
+    with_play = GRADLE_TREE + (
+        "+--- project :capacitor-geolocation\n"
+        "|    +--- com.google.android.gms:play-services-location:21.3.0\n"
+        "|    |    \\--- com.google.android.gms:play-services-base:18.5.0 (*)\n"
+        "|    \\--- com.google.firebase:firebase-analytics -> 22.1.0\n"
+    )
+    assert permissions.closed_dependencies(with_play) == [
+        "com.google.android.gms:play-services-base",
+        "com.google.android.gms:play-services-location",
+        "com.google.firebase:firebase-analytics",
+    ]
+    tree = tmp_path / "dependencies.txt"
+    tree.write_text(GRADLE_TREE, encoding="utf-8")
+    assert permissions.main(["app_permissions.py", "check-dependencies", str(tree)]) == 0
+    tree.write_text(with_play, encoding="utf-8")
+    assert permissions.main(["app_permissions.py", "check-dependencies", str(tree)]) == 1
+    # An empty or failed Gradle run is not a pass.
+    tree.write_text("", encoding="utf-8")
+    assert permissions.main(["app_permissions.py", "check-dependencies", str(tree)]) == 2

@@ -164,6 +164,8 @@ The read-only interfaces touch no contributor data, so they may go live before c
    an unsigned Android debug APK and an iOS simulator build as artifacts. It reads the same
    repository variables as the Pages build.
 2. Install the APK on an Android phone (allow installs from this source) or drag the simulator
-   build onto an iOS simulator, and run the device checks in `docs/APP_STORE.md`.
+   build onto an iOS simulator, and run the device checks in `docs/APP_STORE.md`. Each CI build
+   is signed with a fresh debug key, so uninstall an older build first; that deletes the
+   device's anonymous account and queue, so withdraw or delete test contributions before.
 3. Store release (signing, icons, listings, deep-link e-mail sign-in) is WP-APP-2. Its open
    decisions are listed in `docs/APP_STORE.md`.

@@ -41,6 +41,10 @@ export default defineConfig(({ mode }) => {
         registerType: 'autoUpdate',
       }),
     ],
-    test: { environment: 'jsdom', globals: true },
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      setupFiles: ['./tests/setup.ts'],
+    },
   }
 })

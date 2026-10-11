@@ -40,11 +40,14 @@ export function isSyncEligible(
  * Sends every eligible record once. A record its contributor withdrew is dropped (the server
  * refuses it for good); a record whose account is no longer signed in here is held for the
  * person to decide; anything else is retried with backoff and dead-lettered after five attempts.
+ * Once `stopped` reports true (the screen that started the drain has closed), nothing more is
+ * sent: the drain ends before its next record and leaves it queued.
  */
 export async function drainQueue(
   store: QueueStore,
   send: (record: QueueRecord) => Promise<void>,
   now: () => number = Date.now,
+  stopped: () => boolean = () => false,
 ): Promise<SyncSummary> {
   const summary: SyncSummary = {
     discarded: 0,
@@ -57,7 +60,7 @@ export async function drainQueue(
   const cleared = () =>
     store.generation !== undefined && store.generation() !== generation
   for (const record of await store.list()) {
-    if (cleared()) break
+    if (cleared() || stopped()) break
     const attemptStartedAt = now()
     if (!isSyncEligible(record, attemptStartedAt)) continue
     try {

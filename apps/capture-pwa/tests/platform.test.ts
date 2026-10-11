@@ -3,13 +3,14 @@ import { describe, expect, it, vi } from 'vitest'
 import { legalLinks } from '../src/legal'
 import {
   isNativeApp,
+  type NativeOs,
   type NativePlugins,
+  nativeOs,
   noAttestation,
   PhotoRefused,
   selectPlatform,
 } from '../src/platform'
 import {
-  CHOOSE_PHOTO_OPTIONS,
   isJpeg,
   MAX_PHOTO_BYTES,
   nativeCamera,
@@ -26,36 +27,42 @@ import { siteLink } from '../src/platform/links'
 
 const JPEG = new Uint8Array([0xff, 0xd8, 0xff, 0xe1, 0x00, 0x10, 0x45, 0x78])
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
-const NATIVE = { Capacitor: { isNativePlatform: () => true } }
-const BROWSER_WRAPPED = { Capacitor: { isNativePlatform: () => false } }
+const OUTPUT =
+  'file:///data/user/0/com.globalsoilintelligence.app/cache/PIC.jpg'
+const NOW = Date.parse('2026-10-11T12:00:00Z')
 
-function media(webPath = 'https://localhost/_capacitor_file_/photo.jpg') {
-  return { type: 0, saved: false, webPath } as unknown as MediaResult
+function app(os: NativeOs) {
+  return {
+    Capacitor: { getPlatform: () => os, isNativePlatform: () => true },
+  }
 }
 
-function fakePlugins(overrides: Partial<NativePlugins> = {}): NativePlugins {
+function media(webPath = 'https://localhost/_capacitor_file_/PIC.jpg') {
+  return { type: 0, saved: false, uri: OUTPUT, webPath } as MediaResult
+}
+
+function position(accuracy = 4.6, latitude = 44.4759, longitude = -73.2121) {
+  return { timestamp: 0, coords: { accuracy, latitude, longitude } } as never
+}
+
+function fakePlugins(os: NativeOs): NativePlugins {
   return {
-    camera: {
-      takePhoto: vi.fn(async () => media()),
-      chooseFromGallery: vi.fn(async () => ({ results: [media()] })),
-    },
-    geolocation: {
-      getCurrentPosition: vi.fn(async () => ({
-        timestamp: 0,
-        coords: {
-          latitude: 44.4759,
-          longitude: -73.2121,
-          accuracy: 4.6,
-          altitude: null,
-          altitudeAccuracy: null,
-          heading: null,
-          magneticHeading: null,
-          speed: null,
-        },
-      })),
-    } as unknown as NativePlugins['geolocation'],
-    ...overrides,
+    camera: { takePhoto: vi.fn(async () => media()) },
+    files: { deleteFile: vi.fn(async () => undefined) },
+    geolocation:
+      os === 'ios'
+        ? { getCurrentPosition: vi.fn(async () => position()) }
+        : undefined,
   }
+}
+
+function browserGeolocation(accuracy = 12.2) {
+  const getCurrentPosition = vi.fn((success: PositionCallback) =>
+    success({
+      coords: { accuracy, latitude: 1, longitude: 2 },
+    } as GeolocationPosition),
+  )
+  return { getCurrentPosition } as unknown as Geolocation
 }
 
 function refusal(code: string) {
@@ -72,45 +79,59 @@ async function problem(promise: Promise<unknown>) {
 }
 
 describe('the platform layer (WP-APP-1)', () => {
-  it('selects the native implementations inside the phone app', async () => {
-    const plugins = fakePlugins()
+  it('selects the native camera and Core Location in the iPhone app', async () => {
+    const plugins = fakePlugins('ios')
     const load = vi.fn(async () => plugins)
-    const platform = await selectPlatform(NATIVE, load)
+    const platform = await selectPlatform(app('ios'), load)
 
-    expect(load).toHaveBeenCalledTimes(1)
+    expect(load).toHaveBeenCalledWith('ios')
     expect(platform.ingestPath).toBe('app')
     expect(platform.camera.kind).toBe('native')
     expect(platform.attestation.name).toBe('none')
-    const located = await platform.location.locate()
-    expect(plugins.geolocation.getCurrentPosition).toHaveBeenCalledTimes(1)
-    expect(located).toMatchObject({ ok: true })
+    expect(await platform.location.locate()).toMatchObject({ ok: true })
+    expect(plugins.geolocation?.getCurrentPosition).toHaveBeenCalledTimes(1)
+  })
+
+  it('uses the web view’s location in the Android app, so no Google location SDK ships', async () => {
+    const plugins = fakePlugins('android')
+    const load = vi.fn(async () => plugins)
+    const geolocation = browserGeolocation()
+    const platform = await selectPlatform(
+      { ...app('android'), navigator: { geolocation } },
+      load,
+    )
+
+    expect(load).toHaveBeenCalledWith('android')
+    expect(plugins.geolocation).toBeUndefined()
+    expect(platform.ingestPath).toBe('app')
+    expect(platform.camera.kind).toBe('native')
+    expect(await platform.location.locate()).toEqual({
+      ok: true,
+      fix: { latitude: 1, longitude: 2, accuracyM: 12, source: 'device_gps' },
+    })
+    expect(geolocation.getCurrentPosition).toHaveBeenCalledTimes(1)
   })
 
   it('selects the web implementations everywhere else, without loading native code', async () => {
-    const load = vi.fn(async () => fakePlugins())
-    const getCurrentPosition = vi.fn((success: PositionCallback) =>
-      success({
-        coords: { accuracy: 12.2, latitude: 1, longitude: 2 },
-      } as GeolocationPosition),
-    )
-    for (const scope of [{}, BROWSER_WRAPPED]) {
+    const load = vi.fn(async () => fakePlugins('android'))
+    const geolocation = browserGeolocation()
+    for (const scope of [
+      {},
+      { Capacitor: { isNativePlatform: () => false } },
+    ]) {
       const platform = await selectPlatform(
-        {
-          ...scope,
-          navigator: { geolocation: { getCurrentPosition } as never },
-        },
+        { ...scope, navigator: { geolocation } },
         load,
       )
       expect(platform.ingestPath).toBe('web')
       expect(platform.camera.kind).toBe('web')
-      expect(await platform.location.locate()).toEqual({
-        ok: true,
-        fix: { latitude: 1, longitude: 2, accuracyM: 12, source: 'device_gps' },
-      })
+      expect(await platform.location.locate()).toMatchObject({ ok: true })
     }
     expect(load).not.toHaveBeenCalled()
     expect(isNativeApp({})).toBe(false)
-    expect(isNativeApp(NATIVE)).toBe(true)
+    expect(isNativeApp(app('ios'))).toBe(true)
+    expect(nativeOs(app('ios'))).toBe('ios')
+    expect(nativeOs({})).toBe('android')
   })
 
   it('attests nothing until a server can verify it', async () => {
@@ -119,23 +140,38 @@ describe('the platform layer (WP-APP-1)', () => {
 })
 
 describe('the native camera', () => {
-  const now = Date.parse('2026-10-11T12:00:00Z')
+  function camera(
+    plugin: NativePlugins['camera'],
+    bytes: Uint8Array = JPEG,
+    discard = vi.fn(async () => undefined),
+  ) {
+    return nativeCamera(plugin, {
+      readBytes: async () => bytes,
+      discard,
+      now: () => NOW,
+    })
+  }
 
-  it('turns a camera photo into a JPEG queue photo taken now', async () => {
-    const plugins = fakePlugins()
+  it('turns a camera photo into a JPEG queue photo taken now, and deletes the plugin’s copy', async () => {
+    const plugin = { takePhoto: vi.fn(async () => media()) }
     const readBytes = vi.fn(async () => JPEG)
-    const camera = nativeCamera(plugins.camera, { readBytes, now: () => now })
-    const photo = await camera.takePhoto()
+    const discard = vi.fn(async () => undefined)
+    const photo = await nativeCamera(plugin, {
+      readBytes,
+      discard,
+      now: () => NOW,
+    }).takePhoto()
 
     expect(readBytes).toHaveBeenCalledWith(
-      'https://localhost/_capacitor_file_/photo.jpg',
+      'https://localhost/_capacitor_file_/PIC.jpg',
     )
     expect(photo).toEqual({
       bytes: JPEG,
       mimeType: 'image/jpeg',
-      takenAt: now,
+      takenAt: NOW,
       method: 'camera',
     })
+    expect(discard).toHaveBeenCalledWith(OUTPUT)
     expect(queuedPhoto(photo!, 'B', 'object-1')).toEqual({
       bytes: JPEG,
       mimeType: 'image/jpeg',
@@ -148,68 +184,28 @@ describe('the native camera', () => {
   })
 
   it('asks the camera for its own JPEG, unedited, unrotated and kept out of the library', async () => {
-    const plugins = fakePlugins()
-    const camera = nativeCamera(plugins.camera, {
-      readBytes: async () => JPEG,
-      now: () => now,
-    })
-    await camera.takePhoto()
-    await camera.choosePhoto()
-    expect(plugins.camera.takePhoto).toHaveBeenCalledWith(TAKE_PHOTO_OPTIONS)
+    const plugin = { takePhoto: vi.fn(async () => media()) }
+    await camera(plugin).takePhoto()
+    expect(plugin.takePhoto).toHaveBeenCalledWith(TAKE_PHOTO_OPTIONS)
     expect(TAKE_PHOTO_OPTIONS).toMatchObject({
       correctOrientation: false,
       editable: 'no',
       saveToGallery: false,
     })
     expect(TAKE_PHOTO_OPTIONS).not.toHaveProperty('targetWidth')
-    expect(plugins.camera.chooseFromGallery).toHaveBeenCalledWith(
-      CHOOSE_PHOTO_OPTIONS,
-    )
-    expect(CHOOSE_PHOTO_OPTIONS).toMatchObject({
-      allowMultipleSelection: false,
-      editable: 'no',
-    })
   })
 
-  it('marks a saved photo as a file, dated by its creation time', async () => {
-    const plugins = fakePlugins({
-      camera: {
-        takePhoto: vi.fn(),
-        chooseFromGallery: vi.fn(async () => ({
-          results: [
-            {
-              ...media(),
-              metadata: {
-                format: 'jpeg',
-                creationDate: '2026-10-01T09:15:00Z',
-              },
-            } as MediaResult,
-          ],
-        })),
-      },
-    })
-    const camera = nativeCamera(plugins.camera, {
-      readBytes: async () => JPEG,
-      now: () => now,
-    })
-    expect(await camera.choosePhoto()).toMatchObject({
-      method: 'file',
-      takenAt: Date.parse('2026-10-01T09:15:00Z'),
-    })
-  })
-
-  it('refuses what could not be queued, with a reason the person can act on', async () => {
+  it('refuses what could not be queued, with a reason, and still deletes the copy', async () => {
     const tooLarge = new Uint8Array(MAX_PHOTO_BYTES + 1)
     tooLarge.set(JPEG)
     const cases: Array<[NativePlugins['camera'], Uint8Array, string]> = [
-      [fakePlugins().camera, PNG, 'not_jpeg'],
-      [fakePlugins().camera, tooLarge, 'too_large'],
+      [{ takePhoto: vi.fn(async () => media()) }, PNG, 'not_jpeg'],
+      [{ takePhoto: vi.fn(async () => media()) }, tooLarge, 'too_large'],
       [
         {
           takePhoto: vi.fn(async () => {
             throw refusal('OS-PLUG-CAMR-0003')
           }),
-          chooseFromGallery: vi.fn(),
         },
         JPEG,
         'permission_denied',
@@ -219,15 +215,15 @@ describe('the native camera', () => {
           takePhoto: vi.fn(async () => {
             throw refusal('OS-PLUG-CAMR-0007')
           }),
-          chooseFromGallery: vi.fn(),
         },
         JPEG,
         'no_camera',
       ],
       [
         {
-          takePhoto: vi.fn(async () => ({ type: 0, saved: false }) as never),
-          chooseFromGallery: vi.fn(),
+          takePhoto: vi.fn(
+            async () => ({ type: 0, saved: false, uri: OUTPUT }) as never,
+          ),
         },
         JPEG,
         'failed',
@@ -237,43 +233,50 @@ describe('the native camera', () => {
           takePhoto: vi.fn(async () => {
             throw new Error('the bridge broke')
           }),
-          chooseFromGallery: vi.fn(),
         },
         JPEG,
         'failed',
       ],
     ]
     for (const [plugin, bytes, expected] of cases) {
-      const camera = nativeCamera(plugin, {
-        readBytes: async () => bytes,
-        now: () => now,
-      })
-      expect(await problem(camera.takePhoto())).toBe(expected)
+      const discard = vi.fn(async () => undefined)
+      expect(await problem(camera(plugin, bytes, discard).takePhoto())).toBe(
+        expected,
+      )
+      if (expected === 'not_jpeg' || expected === 'too_large')
+        expect(discard).toHaveBeenCalledWith(OUTPUT)
     }
+    const unreadable = nativeCamera(
+      { takePhoto: vi.fn(async () => media()) },
+      {
+        readBytes: async () => {
+          throw new Error('gone')
+        },
+        discard: async () => undefined,
+        now: () => NOW,
+      },
+    )
+    expect(await problem(unreadable.takePhoto())).toBe('failed')
   })
 
-  it('treats a cancelled camera or picker as no photo, not an error', async () => {
-    const camera = nativeCamera(
-      {
-        takePhoto: vi.fn(async () => {
-          throw refusal('OS-PLUG-CAMR-0006')
-        }),
-        chooseFromGallery: vi.fn(async () => {
-          throw refusal('OS-PLUG-CAMR-0020')
-        }),
-      },
-      { readBytes: async () => JPEG, now: () => now },
-    )
-    expect(await camera.takePhoto()).toBeNull()
-    expect(await camera.choosePhoto()).toBeNull()
-    const empty = nativeCamera(
-      {
-        takePhoto: vi.fn(),
-        chooseFromGallery: vi.fn(async () => ({ results: [] })),
-      },
-      { readBytes: async () => JPEG, now: () => now },
-    )
-    expect(await empty.choosePhoto()).toBeNull()
+  it('keeps the photo when deleting the plugin’s copy fails', async () => {
+    const photo = await camera(
+      { takePhoto: vi.fn(async () => media()) },
+      JPEG,
+      vi.fn(async () => {
+        throw new Error('already gone')
+      }),
+    ).takePhoto()
+    expect(photo?.method).toBe('camera')
+  })
+
+  it('treats a cancelled camera as no photo, not an error', async () => {
+    const cancelled = camera({
+      takePhoto: vi.fn(async () => {
+        throw refusal('OS-PLUG-CAMR-0006')
+      }),
+    })
+    expect(await cancelled.takePhoto()).toBeNull()
   })
 
   it('recognizes JPEG bytes', () => {
@@ -283,9 +286,9 @@ describe('the native camera', () => {
   })
 })
 
-describe('browser photos', () => {
+describe('photos chosen through a file input', () => {
   it('keep their timestamp and are claimed by their age against the page load', async () => {
-    const loaded = Date.parse('2026-10-11T12:00:00Z')
+    const loaded = NOW
     const fresh = new File([JPEG], 'a.jpg', {
       type: 'image/jpeg',
       lastModified: loaded + 60_000,
@@ -320,8 +323,8 @@ describe('browser photos', () => {
 
 describe('location', () => {
   it('maps the device fix to the point, whole-metre accuracy and the device source', async () => {
-    const plugins = fakePlugins()
-    expect(await nativeLocation(plugins.geolocation).locate()).toEqual({
+    const plugin = { getCurrentPosition: vi.fn(async () => position()) }
+    expect(await nativeLocation(plugin).locate()).toEqual({
       ok: true,
       fix: {
         latitude: 44.4759,
@@ -330,7 +333,7 @@ describe('location', () => {
         source: 'device_gps',
       },
     })
-    expect(plugins.geolocation.getCurrentPosition).toHaveBeenCalledWith({
+    expect(plugin.getCurrentPosition).toHaveBeenCalledWith({
       enableHighAccuracy: true,
       maximumAge: 30_000,
       timeout: 15_000,
@@ -348,22 +351,21 @@ describe('location', () => {
           throw refusal(code)
         }),
       }).locate()
-    expect(await failing('OS-PLUG-GLOC-0003')).toEqual({
-      ok: false,
-      problem: 'denied',
-    })
-    expect(await failing('OS-PLUG-GLOC-0007')).toEqual({
-      ok: false,
-      problem: 'off',
-    })
-    expect(await failing('OS-PLUG-GLOC-0010')).toEqual({
-      ok: false,
-      problem: 'timeout',
-    })
-    expect(await failing('OS-PLUG-GLOC-0002')).toEqual({
-      ok: false,
-      problem: 'unavailable',
-    })
+    const problems: Record<string, string> = {
+      'OS-PLUG-GLOC-0003': 'denied',
+      'OS-PLUG-GLOC-0008': 'denied',
+      'OS-PLUG-GLOC-0007': 'off',
+      'OS-PLUG-GLOC-0009': 'off',
+      'OS-PLUG-GLOC-0017': 'off',
+      'OS-PLUG-GLOC-0010': 'timeout',
+      'OS-PLUG-GLOC-0002': 'unavailable',
+    }
+    for (const [code, expected] of Object.entries(problems)) {
+      expect(await failing(code), code).toEqual({
+        ok: false,
+        problem: expected,
+      })
+    }
 
     const web = (code: number) =>
       webLocation(
@@ -386,10 +388,7 @@ describe('location', () => {
 
   it('never records an impossible point', async () => {
     const impossible = nativeLocation({
-      getCurrentPosition: vi.fn(async () => ({
-        timestamp: 0,
-        coords: { latitude: 91, longitude: 0, accuracy: 3 },
-      })) as never,
+      getCurrentPosition: vi.fn(async () => position(3, 91, 0)),
     })
     expect(await impossible.locate()).toEqual({
       ok: false,
@@ -415,9 +414,11 @@ describe('links from the phone app', () => {
     vi.stubEnv('VITE_TERMS_URL', '/legal/terms/')
     vi.stubEnv('VITE_PRIVACY_URL', 'https://example.org/privacy')
     try {
-      const app = legalLinks(true)
-      expect(app.terms).toBe('https://globalsoilintelligence.com/legal/terms/')
-      expect(app.privacy).toBe('https://example.org/privacy')
+      const inApp = legalLinks(true)
+      expect(inApp.terms).toBe(
+        'https://globalsoilintelligence.com/legal/terms/',
+      )
+      expect(inApp.privacy).toBe('https://example.org/privacy')
       expect(legalLinks(false).terms).toBe('/legal/terms/')
     } finally {
       vi.unstubAllEnvs()

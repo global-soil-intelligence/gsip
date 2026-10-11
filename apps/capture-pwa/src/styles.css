@@ -382,8 +382,34 @@ footer {
   display: grid;
   gap: 0.5rem;
 }
-.photo-actions .secondary {
-  white-space: normal;
+.file-button {
+  display: grid;
+  place-items: center;
+  min-height: 3.15rem;
+  padding: 0.75rem 1rem;
+  color: #18362b;
+  border: 1px solid #18362b;
+  border-radius: 0.65rem;
+  font-size: 0.85rem;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: none;
+  cursor: pointer;
+}
+.file-button:focus-within {
+  outline: 2px solid #18362b;
+  outline-offset: 2px;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.discard-photos {
+  margin-top: 1rem;
 }
 .my-soil {
   margin-top: 1.25rem;

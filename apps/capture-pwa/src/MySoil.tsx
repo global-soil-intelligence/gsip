@@ -8,6 +8,7 @@ const STATUS: Record<MySoilStatus, string> = {
   passed: 'Passed the quality checks',
   review: 'Held for review',
   uploading: 'Waiting for its photos',
+  withdrawn: 'Withdrawn: left out of releases and being deleted',
 }
 
 const SHOT: Record<ShotState, string> = {
@@ -37,9 +38,10 @@ function day(iso: string): string {
 
 function publicAreaText(entry: MySoilEntry): string | null {
   if (entry.status !== 'passed') return null
-  if (!entry.publicArea)
+  if (!entry.likelyPublicArea)
     return 'Not public yet: it appears once at least 3 contributors share its area.'
-  return `Public area: hexagon ${entry.publicArea.cell} (${AREA[entry.publicArea.resolution]}).`
+  const { cell, resolution } = entry.likelyPublicArea
+  return `Likely public area: hexagon ${cell} (${AREA[resolution]}). Areas are recalculated with each nightly release.`
 }
 
 type State =
@@ -60,6 +62,14 @@ export function MySoil({
   refreshKey: number
 }) {
   const [state, setState] = useState<State>({ kind: 'loading' })
+  const [onlineAgain, setOnlineAgain] = useState(0)
+
+  // Coming back online is a reason to look again.
+  useEffect(() => {
+    const reload = () => setOnlineAgain((count) => count + 1)
+    window.addEventListener('online', reload)
+    return () => window.removeEventListener('online', reload)
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -79,7 +89,7 @@ export function MySoil({
     return () => {
       cancelled = true
     }
-  }, [load, refreshKey])
+  }, [load, refreshKey, onlineAgain])
 
   return (
     <section className="my-soil" aria-labelledby="my-soil-heading">
