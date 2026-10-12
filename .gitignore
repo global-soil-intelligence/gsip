@@ -22,3 +22,6 @@ output/*
 output/pdf/*
 !output/pdf/*.pdf
 _site/
+
+# Agent worktrees (for example Claude Code subagents) are local scratch copies.
+.claude/worktrees/

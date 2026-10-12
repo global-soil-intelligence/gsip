@@ -1,8 +1,8 @@
 # Global Soil Intelligence Project
 
-GSIP is an open-source citizen-science project for building a living global soil map. A phone-friendly PWA guides contributors through privacy-safe soil photography with a printable reference card. GSIP combines those observations with public soil-map priors and later open models to produce probabilistic soil estimates with explicit uncertainty.
+GSIP is an open-source citizen-science project building a living global soil map with people and AI agents. A phone app (also a no-install web app) guides contributors through privacy-safe soil photography with a printable reference card. GSIP combines those observations with public soil-map priors and, later, open models to produce soil estimates with explicit uncertainty. Agents can read public cells, the protocol and dataset releases through a public API and an MCP server.
 
-GSIP is not a laboratory-test replacement. Public outputs use H3-resolution locations, never precise contributor coordinates. Photos are sanitized before canonical storage and checked again before public release.
+GSIP is not a laboratory replacement. Public outputs locate observations by k-anonymous H3 cells, never precise coordinates. Photos are sanitized before canonical storage and checked again before release.
 
 ## Start locally
 
@@ -24,14 +24,15 @@ Run `pnpm --filter @gsip/capture-pwa dev` for capture or
 
 - [Architecture specification](docs/SPEC.md)
 - [Build order](docs/BUILD_ORDER.md)
+- [Governance and business guardrails](GOVERNANCE.md)
 - [Phase 1 deployment handoff](docs/PHASE1_DEPLOYMENT.md)
-- [Archived v2.0 planning](docs/archive/v2.0/)
+- [Archived planning](docs/archive/)
 
-Code is MIT. Databases and structured data are ODbL 1.0. Contributed photos are CC BY-SA 4.0 with recorded contributor grants and pre-launch legal review.
+Code is MIT. Databases and structured data are ODbL 1.0. Contributed photos are CC BY-SA 4.0 with recorded contributor grants and pre-launch legal review. Names and marks are covered by [TRADEMARKS.md](TRADEMARKS.md).
 
 ## Contributing and security
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow and DCO sign-off requirements. Report vulnerabilities privately using [SECURITY.md](SECURITY.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow, DCO sign-off and rules for agent-written contributions. Report vulnerabilities privately using [SECURITY.md](SECURITY.md).
 
 ## Software and documentation licenses
 

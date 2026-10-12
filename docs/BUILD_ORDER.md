@@ -1,175 +1,239 @@
 # GSIP Build Order — Work Plan
 
-**Project:** Global Soil Intelligence Project v2 (citizen-science soil mapping flywheel)
-**Version:** 2.2 — 2026-07-22
-**Builder:** Claude (Cowork build sessions). _Sol is retired as of v2.1; the Sol kickoff prompt is void._
-**Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) run against the §5 review gates; findings and their resolutions are posted to the PR. The GitHub approval required by branch protection must come from a non-author maintainer account. Justin Hart provides the final product-owner go/no-go; when his account authors a PR, that go/no-go cannot also satisfy GitHub's non-author approval.
+**Project:** Global Soil Intelligence Project (citizen-science soil mapping flywheel for people and agents)
+**Version:** 3.0 — 2026-10-10
+**Builder:** Claude (build sessions), acting for the product owner as human of record.
+**Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) against the §5 review gates; findings and resolutions are posted to the PR. Justin Hart provides the final product-owner go/no-go. On 2026-10-12 he approved an owner exception: the extra non-author GitHub approval is no longer required for this owner-operated repository. Independent adversarial review and green CI remain required; an agent never submits an approving review or certifies the human DCO.
 **Product owner:** Justin Hart
-**Governing document:** `docs/SPEC.md` (GSIP v2 Spec, v2.2). This build order operationalizes that spec. If this document and the spec conflict, the spec wins; flag the conflict instead of guessing.
+**Governing document:** `docs/SPEC.md` (v3.0). If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
 
 ---
 
 ## 1. Roles and workflow
 
-- The builder implements **one work package (WP) per pull request**, on a feature branch named `wp-<number>-<slug>` (e.g. `wp-3-capture-pwa`).
-- **No direct commits to `main` after the authorized repository seed.** Main is protected; merges happen only after (a) CI green, (b) adversarial review findings resolved, (c) one approving GitHub review from a non-author maintainer, and (d) the product owner's go/no-go.
-- Every PR description must contain: the WP number, a checklist of that WP's acceptance criteria with each item checked or explained, which spec invariants (I1–I8) the change touches, and any deviation from this build order with justification.
-- Commits: Conventional Commits format, DCO sign-off (`git commit -s`).
-- If a WP turns out to be under-specified, the builder opens a GitHub issue stating the question and stops on that WP — spec gaps are not filled with assumptions. Other WPs may proceed if independent.
+- The builder implements **one work package (WP) per pull request**, on a branch named `wp-<id>-<slug>` (e.g. `wp-6b-launch-hardening`). Specification updates use `docs/spec-v<version>`.
+- **No direct commits to `main`.** Merges happen only after (a) CI green, (b) adversarial review findings resolved, (c) the product owner's explicit go/no-go. An authorised agent may execute an ordered merge after these gates, but never bypass a protection or approve its own work.
+- Work packages that depend on each other are opened as **stacked pull requests**: each PR targets its predecessor's branch and is retargeted to `main` when the predecessor merges. Merge in the order of §7.
+- Every PR description contains: the WP id, the WP's acceptance criteria checked or explained, the spec invariants (I1–I15) and business guardrails (B1–B8) it touches, and any deviation from this build order with justification.
+- Commits use Conventional Commits. Human commits carry a DCO sign-off (`git commit -s`). Agent-authored commits carry a `Co-Authored-By` trailer for the agent and are signed off by the human of record who adopts them; an agent never certifies the DCO itself.
+- If a WP is under-specified, the builder opens an issue stating the question and stops on that WP. Spec gaps are not filled with assumptions; assumptions that must be made to proceed are listed in the PR.
 
 ## 2. Hard guardrails (violations = automatic PR rejection)
 
-1. **Languages: TypeScript and Python only.** No Dart/Flutter, no Go, no Rust. TS strict mode on. Python 3.11+, fully type-hinted.
-2. **No license changes.** Code is MIT; databases and structured data are ODbL 1.0; contributed photos are CC BY-SA 4.0. No dependency with a license incompatible with MIT distribution (GPL-linked libs need reviewer sign-off). The contribution terms and attribution flow require legal review before public launch.
-3. **No schema changes outside a migration file**, and no migration that contradicts `docs/SPEC.md` §6 without a spec-update PR first.
-4. **Never store or export precise contributor coordinates in any public path** (spec I7) — including image EXIF/XMP metadata. Original uploads may exist only in a short-lived private ingest bucket; canonical photos are metadata-sanitized and remain private. Public artifacts get H3-r8 fuzzing and metadata-free images only. Database and Storage RLS enforce this, and export assertions fail closed.
-5. **UI and API copy never says "soil test."** Always "estimate" with uncertainty (spec I5).
-6. **No paid/closed services** in the default deployment path. Supabase free tier, GitHub Actions, GitHub Pages, Hugging Face free tier, Open-Meteo, SoilGrids REST. Anything with a bill or a proprietary SDK needs product-owner sign-off first. _Known upcoming decision:_ Supabase free tier (500 MB database / 1 GB storage / 7-day inactivity pause) suffices for Phase 0 development; a Pro-tier upgrade decision is expected before the Phase 1 public launch — product owner signs off.
-7. **No secrets in the repo.** All config via environment variables; `.env.example` documents every variable.
-8. **Every WP ships with tests.** A PR with production code and no tests is incomplete regardless of how well it works.
+1. **Languages: TypeScript and Python only.** TS strict mode; Python 3.11+, fully type-hinted.
+2. **No license changes.** Code MIT; databases and structured data ODbL 1.0; photos CC BY-SA 4.0. No dependency with a license incompatible with MIT distribution without reviewer sign-off.
+3. **No schema change outside a migration**, and no migration that contradicts `docs/SPEC.md` §6 without a spec update first.
+4. **Never store or export precise contributor coordinates in any public path** (I7), including image metadata, logs, URLs, analytics and calls to external services. Public artifacts use k-anonymous H3 cells only.
+5. **UI and API copy never says "soil test."** Always "estimate" with uncertainty (I5).
+6. **No paid or closed services in the default deployment path.** Anything with a bill or a proprietary SDK needs product-owner sign-off. Known decisions: Supabase Pro before public launch; Apple ($99 a year) and Google Play ($25 once) developer accounts for WP-APP-1; CAPTCHA provider for anonymous sign-in (Turnstile and hCaptcha are both closed services).
+7. **No secrets in the repo.** All configuration via environment variables; `.env.example` documents every variable.
+8. **Every WP ships with tests.** A PR with production code and no tests is incomplete.
+9. **Agents see no more than the public (I12).** No agent-facing interface may use the service role key or a contributor's session.
+10. **Business guardrails B1–B8** in `GOVERNANCE.md` hold: no paywall on contribution or released data, no embargo fields, no trackers or advertising SDKs, no payment input to QA, consensus or evaluation code.
 
 ## 3. Repository
 
-The repository exists at `https://github.com/global-soil-intelligence/gsip`, public, with branch protection active on `main` (PR + 1 approval required, stale approvals dismissed, conversation resolution required, force-push/deletion blocked). Because a pull request cannot target a branch that does not yet exist, the product owner authorizes exactly one signed, empty seed commit to create `main`. The v2.1 governing documents then land through the repository's first pull request; all later changes also use pull requests. After WP-0 lands CI workflows, "require status checks to pass" is added to the ruleset.
+`https://github.com/global-soil-intelligence/gsip`, public, with branch protection on `main` (PR required, zero extra approving reviews under the owner exception, stale approvals dismissed, conversation resolution, no force-push or deletion). The product owner adds the CI `validate` job as a required status check.
 
-**GitHub Pages note:** Pages serves one site per repo. Both apps deploy under subpaths (`/capture`, `/map`) from a single combined Pages artifact built in CI; the custom domain (globalsoilintelligence.com) can front the Pages site later.
-
-Monorepo layout (spec §4):
+GitHub Pages serves one site per repository: the site at `/`, capture at `/capture/`, the map at `/map/`, and the reference card PDFs at `/reference-card/`, from one combined artifact. The canonical domain fronts it after WP-SITE-1D.
 
 ```
 gsip/
-├── docs/                 SPEC.md, this file (BUILD_ORDER.md), ADRs
+├── docs/                 SPEC.md, BUILD_ORDER.md, AGENTS.md, legal/ drafts, archive/
 ├── apps/
-│   ├── capture-pwa/      TS + Vite + React + vite-plugin-pwa
-│   └── map-web/          TS + Vite + MapLibre GL
-├── packages/
-│   └── schema/           shared TS types, zod schemas, generated DB types
-├── supabase/             migrations/, RLS policies, edge functions (TS), seed
-├── pipeline/             Python: prior-attach, H3 aggregation, exports
-├── ml/                   Python: QA gate + estimator (Phase 2, stub now)
-├── card/                 reference-card generator + print PDFs
-└── .github/              workflows/, PR template, issue templates
+│   ├── capture-pwa/      capture app (web PWA; Capacitor phone app from WP-APP-1)
+│   ├── map-web/          MapLibre map
+│   └── site-web/         public site (prerendered from WP-AGENT-1)
+├── packages/schema/      shared TS types, zod schemas, prior logic, palettes, agent API logic
+├── supabase/             migrations, pgTAP tests, Edge Functions (TS), seed
+├── pipeline/             Python workers: QA, priors drain, export, rights, tiles
+├── ml/                   Python models (Phase 2)
+├── card/                 reference-card generator and validation
+└── .github/              workflows, PR and issue templates
 ```
 
-Tooling baseline: pnpm workspaces; ESLint + Prettier; Vitest + Playwright; Python via uv, ruff, mypy --strict, pytest. One `pnpm test` / `uv run pytest` from the root must run everything.
+Tooling: pnpm workspaces; ESLint + Prettier; Vitest + Playwright; uv, ruff, mypy --strict, pytest; pgTAP via `supabase test db`. `pnpm test`, `uv run pytest` and `pnpm db:test` from the root run everything.
 
 ## 4. Work packages
 
-### Phase 0 — Foundation
+### Completed (Phase 0 and Phase 1 code)
 
-**WP-0: Repo bootstrap**
-Scope: monorepo scaffold per §3; CI workflows (lint + typecheck + tests on PR; deploy PWA and map site to GitHub Pages on main, combined-artifact subpath layout); `LICENSE` (MIT), `DATA_LICENSE` (ODbL 1.0), photo-license notice (CC BY-SA 4.0), `README.md` (project pitch + quickstart), `CONTRIBUTING.md` (DCO, WP workflow), `CODE_OF_CONDUCT.md`; PR and issue templates embedding the acceptance-criteria checklist format; preserve `docs/SPEC.md` (v2.2) and `docs/BUILD_ORDER.md` (this file) as the governing documents.
+WP-0 repository bootstrap · WP-1 schema and RLS · WP-2 reference card · WP-3 capture PWA · WP-4 prior-attach worker · WP-4b deterministic ingest QA · WP-5 map site · WP-6 nightly export · public website. All merged on 2026-10-01; acceptance criteria in `docs/archive/v2.2/BUILD_ORDER.md`.
+
+### Phase 1.1 — Launch hardening (before the first real contribution)
+
+**WP-6b: Ingest, QA and release integrity**
+Fixes launch blockers 1, 4, 5, 6 and 8 from the 2026-10-10 review.
+Scope:
+
+1. **Path binding.** A trigger binds `photos.storage_path` to `{auth_uid}/{submission_id}/{shot_type}/{uuid}.jpg` for every role, using the submission contributor's `auth_uid`. The `incoming-photos` insert policy requires the same full pattern. The QA worker re-derives the expected prefix from database facts and refuses any mismatch before touching Storage.
+2. **Finalize and settle.** `submissions.finalized_at`; `finalize_submission(uuid)` for the owner, requiring photo rows for shots A and B, idempotent. `photos.qa_status` (`pass|fail|flagged|error`) written by the QA worker. `settle_submission(uuid)` (service role) implements the SPEC §5 settlement table; the worker settles every finalized, pending submission each run. The capture client finalizes after its last photo insert.
+3. **Soil-region QA.** Locate the card from the marker homography and mask it with a margin; require at least 20 % soil (`soil_region` check); compute sharpness, exposure and the perceptual hash on the soil region. Apply EXIF orientation and convert embedded ICC profiles to sRGB before stripping, recording only a colour-space class (`srgb|display_p3|other|none`) in private metadata. Missing GPS accuracy scores as unknown (null) and passes. QA version `deterministic-v2`.
+4. **Release integrity.** Export selects `qa_pass` submissions with passing shots A and B and, within them, photos with `qa_status = 'pass'`, re-deriving each photo's owner path. A per-row data failure (a missing photo object, for example) is set aside in a private `export_report.json` and the release continues. A privacy assertion failure, an infrastructure error (Storage or database 5xx, timeouts) or more than 10 % of rows set aside aborts the release. Rows carry per-photo QA checks; location-derived scores and point-level priors are never released (SPEC I7).
+5. **k-anonymous publication.** Export assigns each row the finest published cell (r8, then r6, then r4) aggregating at least 3 distinct contributors, or withholds it. Rows carry `h3_cell` and `h3_resolution` instead of `h3_r8`/`h3_r6`. `h3_cells` gains `resolution` and `n_contributors`; `refresh_public_h3_cells` rejects any item with fewer than 3 contributors or a resolution that does not match its index. The map draws all three resolutions, finer above coarser, with popups showing count, resolution and latest date.
+6. **Capture gate.** `service_state` (one row; `capture_open` defaults to false; readable by everyone; writable only by the service role). Insert policies on `contribution_grants`, `submissions`, `photos` and `incoming-photos` require it. The capture app renders an "opening soon" state unless built with `VITE_CAPTURE_LIVE=true`, and pauses sync while the database reports capture closed.
+7. **Quarantine cleanup** runs hourly on its own schedule (`quarantine-cleanup.yml`, `python -m pipeline.qa_worker --cleanup-only`).
+8. **Attribution.** New grants reject attribution names containing control characters, markup characters or URLs; existing rows are not revalidated. Capture warns that a typed name is published with the observation's area and date.
+9. **Workflow hygiene.** Every workflow reads `vars.SUPABASE_URL`; uv and Python versions are pinned in every workflow.
+10. **Copy.** "Two required photos, one optional" everywhere; the capture app stops promising a history view until WP-APP-1 ships My Soil.
+11. **Client function boundary (SPEC §6).** An additive migration makes `capture_is_open()` an invoker function reading only the already-readable gate column and moves the guarded finalization body to `private`. Its unchanged public signature uses a definition-time bound SQL-standard invoker wrapper; caller ACLs and client table, column and private-schema privileges stay unchanged.
+
 Acceptance criteria:
 
-- [ ] Fresh clone + documented setup commands → all linters, typecheckers, and (empty) test suites pass locally and in CI.
-- [ ] CI blocks a PR that fails lint or typecheck (demonstrate with a deliberately failing draft PR, then close it).
-- [ ] README explains the project accurately in ≤ 300 words, consistent with spec §1 and I5 language rules.
+- [ ] pgTAP: a photo row naming another user, another submission, another shot, a non-UUID object or a `..` segment is rejected for both `authenticated` and `service_role`; incoming uploads outside the pattern are rejected.
+- [ ] pgTAP: `finalize_submission` refuses non-owners and submissions missing shot A or B, and is idempotent; `settle_submission` produces every row of the settlement table; a failed shot C leaves a passing submission at `qa_pass`.
+- [ ] pgTAP: with capture closed, authenticated inserts into grants, submissions, photos and incoming storage fail; with it open they succeed; clients cannot change `service_state`.
+- [ ] pgTAP: anonymous and authenticated gate reads need no singleton-column privilege; an absent singleton row returns false. Finalization retains owner, required-shot and idempotence checks through the invoker wrapper; its private dependency is recorded, direct private name resolution is denied, and only authenticated callers can execute the private finalizer. Existing ACLs and service operations remain unchanged.
+- [ ] pgTAP: `refresh_public_h3_cells` rejects fewer than 3 contributors and mismatched resolutions.
+- [ ] pytest: blurred soil beside a sharp card fails sharpness; sharp soil beside a card passes; a card-only frame fails `soil_region`; different soils photographed with the card at one pose are not near-duplicates; orientation and Display P3 conversion are applied; missing accuracy is unknown and passes.
+- [ ] pytest: the QA worker refuses a mismatched storage path before any Storage request.
+- [ ] pytest: no exported cell aggregates fewer than 3 distinct contributors; sparse rows roll up to r6, then r4, else are withheld; one missing photo is set aside and the release completes; a metadata finding, a Storage outage or widespread set-asides abort; only `qa_status = 'pass'` photos are exported; no row carries priors or a GPS-derived score.
+- [ ] vitest: capture shows the closed state without `VITE_CAPTURE_LIVE`; sync finalizes after the last photo insert; the attribution warning is visible; the map renders cells of all three resolutions.
+- [ ] A test fails if any workflow reads `vars.VITE_SUPABASE_URL` or runs `setup-uv` without a pinned version.
 
-**WP-1: Database schema + RLS**
-Scope: Supabase migrations implementing spec §6 (v2.2) exactly — contributors, immutable contribution_grants, submissions, photos, priors, gold_labels, predictions, qa_events, h3_cells; canonical unit/depth constraints; PostGIS + pgcrypto extensions; a short-lived private `incoming-photos` bucket and a canonical private `submission-photos` bucket; Database and Storage RLS policies — contributors read/write own rows and objects; `submissions.geom_precise` and `photos.camera_metadata_private` readable only by owner and service role; public-key users can read only safe H3-fuzzed columns and aggregates; a `public_submissions` view exposing safe columns only; seed script with 25 synthetic submissions spanning 3 continents; generated TS types into `packages/schema`.
+**WP-6c: Priors and tiles**
+Fixes launch blockers 2 and 3.
+Scope:
+
+1. **No-prior is terminal.** The SoilGrids parser accepts null values; a property with a null mean yields no row. A definitive empty answer completes the job and records the source in `prior_jobs.empty_sources`; it never dead-letters.
+2. **Cell-centre lookups and cache.** All upstream lookups use the centre of the submission's resolution-9 cell. Static sources (SoilGrids, SSURGO, elevation) are cached in the server-only `prior_cell_cache` keyed by cell and source for 365 days. Precipitation covers the 3 days ending at `captured_at`: the forecast API for captures within 90 days, the archive API before that.
+3. **Upstream token buckets, claimed and paid atomically.** `upstream_buckets` holds one bucket per source: SoilGrids one token refilled five times a minute (calls at least 12 s apart, never more than five in 60 s), SSURGO 30 a minute, Open-Meteo 60. `begin_prior_attempt(submission, owner_request, costs)` (service role) claims a job and spends the tokens for its cache misses in one transaction: a request that cannot be claimed, or must wait, claims and spends nothing, and a deferral returns its wait (202 with `Retry-After`). Each upstream call is made once; the job retry is the retry.
+4. **Job claims.** `verify_jwt` is pinned on for `prior-attach`. A contributor's request reads the submission through RLS and can start only their own `pending` job with zero attempts; service mode needs the exact service-role key, never a token claim. Only the service role retries `pending` and `dead_letter` jobs, up to 32 attempts; `requeue_stale_prior_jobs()` returns `processing` claims older than 15 minutes to `pending`, or to `dead_letter` once the attempts are spent; `fail_prior_job()` ends a job that can never succeed. The drain waits out `Retry-After` within a 240-second budget and moves failed, unclaimed jobs behind the queue. Orchestration lives in a tested module in `packages/schema`; the Edge Function is a thin adapter.
+5. **Tiles.** A versioned palette file in `packages/schema/src/palettes/` holds stops in canonical units plus each SoilGrids scale factor. The builder converts stops to raw units, colours with `gdaldem color-relief -alpha` (nodata transparent), tiles RGBA PNG, stamps each archive with the palette version and writes it under that version's directory, the path the map requests. Map legends render from the same file, and the Pages deploy fails unless every archive for the current palette version exists and carries its stamp. The WMS fallback shows ISRIC's legend graphic. CI installs GDAL.
+
 Acceptance criteria:
 
-- [ ] `supabase db reset` builds the schema from migrations with zero errors.
-- [ ] Automated RLS tests prove: anon cannot read `geom_precise`, private camera metadata, or either photo bucket; contributor A cannot read contributor B's precise geometry or objects; the public view contains no coordinate more precise than H3-r8 centroid. **(spec I7 — this is the most important test in Phase 0)**
-- [ ] Seed script is idempotent.
+- [ ] vitest: an all-null SoilGrids response (urban fixture) parses to zero rows without throwing; a mixed response keeps the non-null properties; lookups use the r9 cell centre, never the input point; precipitation windows end at `captured_at` and use the archive API for old captures.
+- [ ] vitest: a cache hit makes no upstream call; a deferred or unclaimable request makes no upstream call and consumes no attempt; empty answers complete the job.
+- [ ] pgTAP: claiming and spending are atomic (unclaimable and deferred requests spend no tokens); the SoilGrids bucket never banks a burst and refills every 12 s; contributors cannot restart completed jobs or claim others' jobs; stale `processing` jobs requeue, or end once their attempts are spent.
+- [ ] pytest: the drain waits for `Retry-After` within its budget and never touches a `processing` claim.
+- [ ] pytest: palette conversion to `gdaldem` stops is exact; a golden-tile test colours a synthetic Int16 raster with nodata to the palette (±2 per channel), with alpha 0 at nodata and correct colours above 255; archives are stamped with the palette version.
+- [ ] vitest: every prior layer's legend is generated from the palette file; the deploy gate rejects archives that are missing or carry another palette version.
 
-**WP-2: Reference card**
-Scope: Python generator (`card/generate.py`) producing print-ready A6 PDFs — color edition (8 calibrated patches + neutral gray + ArUco 4x4 marker + protocol text) and B&W-printer edition (grayscale patches + marker); patch color values documented in `card/CARD_SPEC.md` with sRGB targets; a validation script that, given a photo of a printed card, detects the marker and extracts patch values via OpenCV.
+**WP-6d: Contributor rights and launch paperwork**
+Fixes the mechanisms behind launch blocker 7; counsel still approves the text.
+Scope:
+
+1. **Requests.** `deletion_requests` (kinds `withdraw_contributions` and `delete_account`; owner insert and select; one open request per contributor; an empty withdrawal completes when filed) and append-only, untruncatable `grant_withdrawals` (service role). Filing a request withdraws every grant the contributor holds in the same transaction, so publication stops at once. Nothing a request covers comes back: a grant accepted at or before a request, or any grant once an account deletion is requested, is refused with SQLSTATE `WD001`, as are submissions, photo rows and uploads under a withdrawn grant; a contributor can be created only for an auth user that exists.
+2. **Rights worker.** `pipeline/rights_worker.py` (service role, hourly workflow, 20-minute budget, requests with data first) deletes every submission under a withdrawn grant (cascading) and every object in either bucket under the contributor's folder that no remaining submission owns (one database snapshot), and for `delete_account` also withdraws any remaining grant, deletes the auth user through the Admin API and only then pseudonymizes the contributor row and replaces the attribution names on its grants with the default pseudonym (the only change a grant ever undergoes). Idempotent; a failed step returns the request to the queue after a one-hour wait; a failed run opens an issue, and a request older than 25 days fails the run. Every run also deletes canonical photo objects that no photo row owns, and the QA worker undoes a promotion whose photo was withdrawn mid-check.
+3. **Export filters.** Withdrawn grants never export, and the export re-reads withdrawals just before publishing, rebuilding once without late ones (or refusing to publish if they keep arriving). Photos publish only under the default pseudonym or an approved attribution (`attribution_reviews`, service role, with a small review CLI); otherwise the row is released without photos until review.
+4. **Legal pack drafts** in `docs/legal/`, each marked "Draft — requires counsel review": terms, privacy notice with processor list, withdrawal and deletion procedure (including Hugging Face history), classroom and minors policy, sampling and land-access rules.
+5. **Capture.** A "Your data" panel to withdraw contributions or delete the account, with typed confirmation and status (account deletion revokes every session); queued observations record their account and are never sent as another or a new account (held for the person to discard or release); `WD001` refusals drop the observation; adding an e-mail upgrades an anonymous account in place; acknowledgement of the sampling rules and the age statement before queueing; terms, privacy and sampling-rules links from `VITE_TERMS_URL`, `VITE_PRIVACY_URL` and `VITE_SAMPLING_RULES_URL` (HTTPS or same-site only), defaulting to the drafts in the repository.
+6. **Rights function boundary (SPEC §6).** A later additive migration moves the guarded auth-existence and upload-check bodies to `private` behind unchanged public invoker signatures with definition-time bound SQL-standard bodies. It preserves authenticated and service-role execution, including the upload-helper grant, and adds restrictive false policies to the two service-only rights tables without granting client access.
+
 Acceptance criteria:
 
-- [ ] PDFs generate deterministically from the script (no binary blobs committed except the released PDFs).
-- [ ] Validation script detects the marker and recovers all patches from ≥ 9 of 10 test photos (fixtures included: varied angle/lighting, ≤ 30° skew).
-- [ ] Card fits A6, prints legibly at 300 dpi on a consumer printer.
+- [ ] pgTAP: owners create and read only their own requests, with at most one open; clients cannot write withdrawals or attribution reviews; grants stay immutable and untruncatable; grants accepted before a request, grants during an account deletion, and submissions, photos and uploads under withdrawn grants are refused; a deleted auth user cannot recreate a contributor; the orphan listing never lists a live submission's object.
+- [ ] pgTAP: rights wrappers record their private dependencies, refuse missing auth UIDs and preserve deleted-user and withdrawn-grant checks. Anonymous callers cannot execute their private callees, and client private-schema and table privileges remain denied. In a rolled-back synthetic fixture, restrictive false policies defeat temporary permissive policies plus SELECT grants; service-role rights operations still succeed.
+- [ ] pytest: the rights worker removes both buckets' objects and the rows, pseudonymizes only after the auth user is gone, is idempotent, and stays within its budget; Storage or Auth failures leave the request retryable.
+- [ ] pytest: export excludes withdrawn grants, including withdrawals filed during the export; pending or rejected attributions release rows without photos; default and approved attributions publish photos.
+- [ ] vitest: deletion requires confirmation and shows status; an unreadable session is a failure, not "no account"; records are never sent as another account; `WD001` records are dropped; sampling rules must be acknowledged before queueing.
+- [ ] A test checks that every external host the code calls appears in the privacy notice's processor list.
 
-### Phase 1 — Capture + Map (public launch, zero ML)
+**WP-6e: Provenance foundation**
+Lands I9–I11 and the I15 holdout flag while production holds little or no real data.
+Scope:
 
-**WP-3: Capture PWA**
-Scope: `apps/capture-pwa` — Supabase auth (email magic link + Supabase Anonymous Sign-Ins); guided capture flow per spec §5 (Shot A → B → optional C, on-screen card-placement overlay, one-tap metadata prompts); geolocation with accuracy display + manual pin fallback; offline queue in IndexedDB with background retry and local cleanup after confirmed sync; immutable `contribution_grants` creation; upload to the private owner-prefixed `incoming-photos` path + pending submission insert; contribution-terms screen explaining the ODbL 1.0 structured-data license, CC BY-SA 4.0 photo license, and public attribution choice; post-submit confirmation showing the fuzzed H3 cell on a minimap.
+1. **Actors.** `actors` (`human|agent|device|lab`); a human actor per contributor (backfilled, then created by trigger; revoked when the contributor has no sign-in); non-human actors require an active human operator; revocation is final and reaches every actor the operator runs. A submission's actor is the contributor's human actor unless a server path names an active actor that human operates. Clients read only their own actor and write none.
+2. **Submission provenance.** `actor_id` (server-set), client claims `ingest_path` (`web|app`), `capture_method` (`camera|file|unknown`), `location_source` (`device_gps|manual_pin|unknown`) and `client_version`, and server-only `provenance_tier` (-1 synthetic, 0 unattested, 1 corroborated, 2 attested, 3 lab-verified). Synthetic rows are exactly tier -1 and never become field data again.
+3. **Photo evidence.** Before stripping, QA derives private `capture_evidence_private` (EXIF time present and absolute, its difference from the claimed capture time, its age when the terms were accepted, EXIF GPS present, distance to the claimed point — never coordinates or timestamps). The database derives every tier from that evidence; a direct write cannot set one. A photo reaches tier 1 when its absolute EXIF capture time agrees with the claimed capture time and was taken within the hour before the contributor accepted the terms for the observation (five minutes of clock skew allowed), and any EXIF GPS agrees with the claimed point; a submission's tier is the minimum of shots A and B. Tiers 2 and 3 are reserved for attestation and lab pairing.
+4. **Grants under I9.** Published `terms_versions` (versions recorded only from existing grants are retired); a grant must cite a published version, its client acceptance time must fall within the last 30 days and not in the future, and the server records `received_at`. A device holds an observation whose acceptance has expired, once the server has shown it was not withdrawn, until its person accepts the current terms again.
+5. **Holdout.** `gold_labels.holdout` (server-only); export drops holdout labels and aborts if one remains.
+6. **Export.** Rows require tier ≥ 0 and carry `provenance_tier`, `location_source` and `capture_method`; the dataset card documents tiers. The capture client sends its claims.
+
 Acceptance criteria:
 
-- [ ] Lighthouse PWA installable score passes; capture flow works on iOS Safari and Android Chrome (Playwright mobile emulation + documented manual test protocol).
-- [ ] Airplane-mode submission queues locally and syncs on reconnect (automated test with network mocking).
-- [ ] A first-time user completes a submission in ≤ 3 minutes (scripted walkthrough, timed in the PR description).
-- [ ] No precise coordinate ever appears in client-side logs, URLs, or analytics.
-- [ ] A confirmed sync removes the local queued photo and precise location; automated tests cover success and retry behavior.
-- [ ] All copy passes the I5 language rule (estimate, not test) — grep-able lint rule included.
+- [ ] pgTAP: every contributor has exactly one human actor; a non-human actor without an active human operator is rejected; clients cannot write `provenance_tier`, `actor_id`, `received_at` or `holdout`; tiers follow the evidence whatever is written; synthetic rows are exactly tier -1.
+- [ ] pgTAP: grants citing an unpublished terms version or an out-of-window acceptance time are rejected; a withdrawn acceptance is refused as withdrawn (`WD001`) even when it is also out of window.
+- [ ] A migration test applies WP-6e to a database holding pre-WP-6e rows and checks the backfill and the account-deletion flow on them.
+- [ ] pytest: capture evidence contains only allowlisted fields and no coordinates; hostile metadata yields empty evidence; client claims are never read when tiering.
+- [ ] pytest: export refuses rows below tier 0 and aborts on holdout labels; the dataset card lists tiers.
+- [ ] vitest: the capture client sends `ingest_path`, `capture_method`, `location_source` and `client_version`; an expired acceptance is held only after the server has not refused it as withdrawn.
 
-**WP-4: Prior-attach worker**
-Scope: on submission insert, fetch weak labels — SoilGrids v2 REST (soc, phh2o, clay, sand, silt, bdod, cec, nitrogen; mean + q05 + q95 at 0–5 cm and 0–30 cm) and, when inside CONUS, SSURGO via Soil Data Access; enrich with Open-Meteo recent-precip flag and elevation via the Open-Meteo Elevation API (Copernicus GLO-90 — free, no key, already an approved service); write to `priors` using canonical GSIP property names per spec §6 (mapping table in `packages/schema`); retries with exponential backoff; dead-letter status on repeated failure. Implement as Supabase edge function (TS) with the fetch logic in `packages/schema`-typed pure functions, or Python worker in `pipeline/` — builder proposes in the PR, reviewer approves.
+### Phase 1.5 — App and agent readers
+
+**WP-SITE-1D: Canonical domain cutover** (product-owner action)
+Point `globalsoilintelligence.com` at GitHub Pages, set the Pages custom domain, enforce HTTPS and retire the Squarespace page.
+Acceptance: the canonical domain serves the Pages site; `robots.txt` allows crawlers; canonical URLs and the sitemap resolve.
+
+**WP-AGENT-1: Agent-readable GSIP**
+Scope:
+
+1. **`gsip-public` Edge Function** (`verify_jwt = false`) using only the publishable key, so the anonymous role's grants bound every read (I12). REST: `GET /v1/protocol`, `GET /v1/cells/{h3}`, `GET /v1/cells?within={h3}&limit=`, `GET /v1/releases/latest`, `GET /v1/openapi.json`. MCP over Streamable HTTP at `POST /mcp` (stateless JSON responses) with tools `get_protocol`, `get_cell`, `list_cells` and `get_release`. Every response carries license, attribution and citation fields; free text appears only in fields marked untrusted. Best-effort per-client rate limit and cache headers. Request logic lives in `packages/schema/src/agent/`.
+2. **Releases.** `dataset_releases` (public read, service-role insert), written by export after each successful push.
+3. **Site.** Prerender every page at build time and hydrate in the browser; static Dataset and Organization JSON-LD; `llms.txt` at the site root; `docs/AGENTS.md` for agent builders.
+
 Acceptance criteria:
 
-- [ ] Unit tests run against recorded HTTP fixtures (no live API calls in CI).
-- [ ] A seeded submission gets fully populated priors within 60 s in the dev environment.
-- [ ] SoilGrids uncertainty (q05/q95) is stored, not just the mean (spec I3 depends on this).
-- [ ] Worker is idempotent per (submission, source, property).
-- [ ] Property names stored in canonical GSIP form; the source-code→canonical mapping is unit-tested.
+- [ ] vitest: REST handlers validate H3 input, return only public fields with license and citation, and answer unknown cells with "no published observations" without distinguishing withheld from empty.
+- [ ] vitest: MCP `initialize` negotiates a supported protocol version; `tools/list` returns four tools with JSON Schemas; `tools/call` returns structured and text content; malformed requests return JSON-RPC errors; notifications return 202.
+- [ ] vitest: people-written text appears only inside untrusted fields.
+- [ ] pgTAP: the anonymous role can read `dataset_releases` and `h3_cells` and nothing private; a test fails if the function source references the service role.
+- [ ] Build check: every built site page contains its headline and JSON-LD without JavaScript, and `llms.txt` is published at the root.
 
-**WP-4b: Ingest QA gate (non-ML)**
-Scope: deterministic QA pipeline at ingest implementing spec §5 checks 2–5 — server-side EXIF/XMP stripping before promotion from the short-lived `incoming-photos` bucket to canonical private `submission-photos` storage; allowlisted non-location camera fields written to `photos.camera_metadata_private`; sharpness/exposure thresholds (reusing `card/` validation code where applicable); card detection + color-patch extraction recorded to `photos.card_detected` / `card_color_correction`; GPS plausibility (accuracy-radius sanity + gross prior mismatch → human-review flag); duplicate/near-duplicate perceptual-hash check; writes a `qa_events` row per check; sets `submissions.status` → `qa_pass|qa_fail|flagged`; card-less submissions pass but are marked "uncalibrated" per §5. Exposes a stubbed interface where the Phase 2 is-soil classifier (WP-7) will slot in.
+**WP-APP-1: GSIP phone app**
+Scope:
+
+1. **Capacitor** in `apps/capture-pwa` (`appId com.globalsoilintelligence.app`, web directory `dist`) with the core, camera and geolocation plugins.
+2. **Platform layer** (`src/platform/`): native or web camera (normalized to the queue's JPEG photo shape), geolocation (accuracy and source), an attestation-provider interface (`none` until a server verifier exists), and the `app` ingest-path claim.
+3. **My Soil**: the signed-in contributor's submissions with date, status, shots and public cell, read through RLS; never coordinates.
+4. **Builds.** `app-build.yml` generates the iOS and Android projects from the Capacitor config, applies permission strings with a checked-in script, and builds an unsigned Android debug APK and an iOS simulator build as artifacts. Signing and store upload are out of scope.
+5. **`docs/APP_STORE.md`**: permissions text, privacy labels, the in-app deletion path (WP-6d), no in-app purchase for physical goods, review notes.
+
 Acceptance criteria:
 
-- [ ] Every seeded submission reaches a terminal QA status with a `qa_events` row per executed check.
-- [ ] Fixture set covers: sharp/blurry, card/no-card, GPS-implausible, and near-duplicate pairs — each routed to the correct status.
-- [ ] Gate is deterministic: identical input produces identical status and scores across two runs (asserted in tests).
-- [ ] Canonical photo fixtures contain no EXIF/XMP; raw quarantine objects are deleted after successful promotion and expire fail-safe if processing stalls.
-- [ ] No ML dependency anywhere in this WP.
+- [ ] vitest: the platform layer selects native implementations on native platforms and web ones otherwise; native camera output becomes a JPEG queue photo; geolocation maps accuracy and source.
+- [ ] vitest: My Soil lists only the signed-in contributor's submissions and renders no coordinates.
+- [ ] `app-build.yml` produces the Android debug APK and the iOS simulator build.
+- [ ] The app requests only camera and when-in-use location permissions, each with a purpose string.
 
-**WP-5: Map site**
-Scope: `apps/map-web` — MapLibre GL; prior layers from SoilGrids restyled as PMTiles (build script in `pipeline/` converts SoilGrids COGs → PMTiles for an initial property set: SOC, pH, clay); contribution-density layer from `h3_cells` (live from Supabase public view); layer switcher, legend, property units; deployed to GitHub Pages. **Native tile zoom is capped at z8; deeper zoom levels render via overzoom.** Global native-z12 raster builds are out of scope (multi-GB archives).
-Acceptance criteria:
+### Phase 1.5b and Phase 2+ (specified after launch review)
 
-- [ ] Map loads globally with SOC/pH/clay layers and correct legends at zoom 2–12 (overzoom beyond native z8).
-- [ ] Seeded submissions appear as H3 hexes; clicking a hex shows count + latest date, never a precise point.
-- [ ] Total tile payload for initial view ≤ 5 MB; PMTiles build is reproducible via one documented command.
-
-**WP-6: Nightly public export**
-Scope: scheduled GitHub Action → `pipeline/export.py`: pull QA-passed submissions, apply H3-r8 fuzzing, **strip all EXIF/XMP metadata from photo binaries again**, bundle photos (with recorded contributor grant only) + metadata + priors + gold labels into a versioned Hugging Face Dataset push; dataset card auto-generated with an ODbL 1.0 notice for the database/structured data and a CC BY-SA 4.0 notice plus attribution for photos; refresh `h3_cells` aggregates.
-Acceptance criteria:
-
-- [ ] Export contains zero precise coordinates in tabular data **or image metadata** — the automated assertion scans both columns and the EXIF of every exported image binary, and the job fails loudly if violated.
-- [ ] Dataset loads via `datasets.load_dataset()` round-trip test.
-- [ ] Dataset card renders with separate database/data and photo licenses, photo attribution, schema, and citation blocks.
-- [ ] Job is idempotent per day; re-runs don't duplicate rows.
-- [ ] No photo whose submission lacks an immutable `contribution_grants` row is exported (spec I6).
-
-### Phase 2+ (spec §10 — do not start without a new build order)
-
-WP-7 QA gate model (is-soil, slots into the WP-4b interface) · WP-8 estimator v0 (color/texture/SOM, uncertainty-aware) · WP-9 nightly retrain + model cards · WP-10 on-demand estimate API · WP-11 gold-label bulk ingestion · WP-12 fused correction + Most Wanted layers. These will be specified after Phase 1 review.
+WP-AGENT-2 delegated capture for assistants (scoped tokens, consent screen, path-bound upload URLs) · WP-7 QA gate model (slots into the WP-4b/6b interface) · WP-8 estimator v0 · WP-9 nightly retrain and model cards · WP-10 estimate API · WP-11 gold-label bulk ingestion and gold kits · WP-12 fused correction and Most Wanted layers with information-gain credit · WP-13 SoilGrids file sampler replacing the REST dependency · WP-14 silver-label protocols · WP-AGENT-3 verifier task API with I13 consensus · WP-AGENT-4 evaluation service (I15) · WP-DATA-1 Parquet photo shards, Croissant metadata and PROV provenance · WP-OPS-1 event-driven worker queue.
 
 ## 5. Review gates (checked on every PR)
 
-Run by fresh-context adversarial review agents; findings are posted to the PR and resolved before the non-author maintainer's GitHub approval and the product owner's go/no-go.
-
-1. Acceptance criteria all demonstrably met (CI evidence or reproducible commands, not claims).
-2. Guardrails §2 — automatic rejection on violation.
-3. Invariant impact honestly declared; I5 (language) and I7 (privacy, including database rows, Storage policies, image metadata, and offline cleanup) checked on every PR regardless of declaration.
-4. Tests actually test behavior (reviewer may run mutation spot-checks).
-5. No scope creep — code outside the WP scope goes to a separate PR.
-6. Dependencies: each new one justified in the PR description (license, maintenance status, size).
-7. Licensing boundaries remain explicit: ODbL 1.0 for the database/structured data, CC BY-SA 4.0 for contributed photos, and MIT for code. Public launch remains blocked until contribution terms receive legal review.
+1. Acceptance criteria demonstrably met (CI evidence or reproducible commands, not claims).
+2. Guardrails §2: automatic rejection on violation.
+3. Invariant and guardrail impact honestly declared. I5 (language), I7 (privacy in rows, Storage, image bytes, logs and external calls) and I12 (agent surfaces) are checked on every PR regardless of declaration.
+4. Tests test behavior (reviewers may run mutation spot-checks).
+5. No scope creep: work outside the WP goes to a separate PR.
+6. Each new dependency justified in the PR (license, maintenance, size).
+7. Licensing boundaries explicit: ODbL 1.0 data, CC BY-SA 4.0 photos, MIT code. Public launch stays blocked until counsel approves the legal pack.
 
 ## 6. Environment variables (`.env.example`)
 
 ```
-SUPABASE_URL=                # project URL
-SUPABASE_PUBLISHABLE_KEY=    # server-side tools using the public client key
-VITE_SUPABASE_PUBLISHABLE_KEY= # browser-safe publishable key
-SUPABASE_SERVICE_ROLE_KEY=   # server-only: workers, exports — never shipped to client
-HF_TOKEN=                    # dataset push (CI secret)
-OPEN_METEO_BASE=https://api.open-meteo.com   # no key required; also serves the Elevation API
-SOILGRIDS_BASE=https://rest.isric.org/soilgrids/v2.0
+SUPABASE_URL=                    # project URL (GitHub variable: vars.SUPABASE_URL)
+SUPABASE_PUBLISHABLE_KEY=        # public client key for server-side tools
+SUPABASE_SERVICE_ROLE_KEY=       # server-only: workers and export; never in clients or agent interfaces
+VITE_SUPABASE_URL=               # browser build of SUPABASE_URL
+VITE_SUPABASE_PUBLISHABLE_KEY=   # browser-safe publishable key
+VITE_CAPTURE_LIVE=false          # "true" opens capture in the site and the capture app
+VITE_TERMS_URL=                  # published contribution terms (WP-6d)
+VITE_PRIVACY_URL=                # published privacy notice (WP-6d)
+VITE_SAMPLING_RULES_URL=         # published sampling and land-access rules (WP-6d)
+VITE_PRIOR_TILES_BASE=           # PMTiles archive base URL; empty uses the ISRIC WMS fallback
+VITE_DATASET_URL=                # published Hugging Face dataset URL
+HF_TOKEN=                        # dataset push (CI secret)
+HF_DATASET_REPO=                 # e.g. global-soil-intelligence/gsip-observations
+OPEN_METEO_BASE=https://api.open-meteo.com
+OPEN_METEO_ARCHIVE_BASE=https://archive-api.open-meteo.com
+SOILGRIDS_BASE=https://rest.isric.org
+GSIP_PUBLIC_RATE_LIMIT_PER_MINUTE=60   # gsip-public best-effort per-client limit
 ```
 
 ## 7. Sequencing
 
-WP-0 → WP-1 → (WP-2 ∥ WP-3 ∥ WP-4) → (WP-4b ∥ WP-5) → WP-6. WP-2/3/4 are parallelizable after the schema lands; WP-4b needs WP-2's validation code; WP-6 needs WP-4b (it exports QA-passed rows only). Phase 1 launch review happens after WP-6 merges: the full "stranger with a phone and a printed card" test from spec §10 Phase 1 runs before public announcement.
+`docs/spec-v3` → WP-6b → WP-6c → WP-6d → WP-6e → WP-AGENT-1 → WP-APP-1, as stacked pull requests merged in that order. WP-SITE-1D can happen at any time. The launch gates of SPEC §11 are checked after WP-6e merges; the product owner then sets `service_state.capture_open`. The read-only parts of WP-AGENT-1 may deploy before launch because they touch no contributor data.
 
 ## 8. Changelog
 
-- **v2.2 (2026-07-22):** anonymous contribution pinned to Supabase Anonymous Sign-Ins; WP-1 gains immutable per-submission grants and canonical unit/depth constraints; WP-3 records the grant and uses owner-prefixed quarantine paths; WP-6 checks the referenced immutable grant.
-- **v2.1 (2026-07-22):** builder changed from Sol to Claude; review workflow now requires a non-author GitHub approver plus product-owner go/no-go; one signed empty-repository seed commit is authorized; WP-4b (ingest QA, non-ML) added with private quarantine, ingest-time metadata sanitization, and fail-safe cleanup; WP-4 elevation source pinned to Open-Meteo Elevation API and canonical property-name mapping required; WP-5 native zoom capped at z8; WP-6 repeats EXIF stripping, asserts image safety, separates ODbL data from CC BY-SA photos, and checks recorded grants; guardrails cover Database and Storage privacy; guardrail 6 gains the Supabase-tier upgrade note; WP-0 preserves the v2.1 governing docs.
-- **v2.0 (2026-07-22):** initial build order for Sol, WP-0–WP-6.
+- **v3.0 (2026-10-10):** follows SPEC v3.0. Completed WP-0 to WP-6 summarized and archived. Added Phase 1.1 launch hardening (WP-6b ingest, QA and release integrity; WP-6c priors and tiles; WP-6d contributor rights; WP-6e provenance), Phase 1.5 (WP-SITE-1D, WP-AGENT-1, WP-APP-1) and the Phase 2+ outline. Added stacked-PR workflow, human-of-record DCO rule, guardrails 9 (I12) and 10 (B1–B8), updated environment variables, and review gates for I12.
+- **v2.2 (2026-07-22):** anonymous sign-ins; immutable per-submission grants; canonical units and depth constraints; owner-prefixed quarantine paths.
+- **v2.1 (2026-07-22):** builder changed to Claude; non-author approval plus product-owner go/no-go; WP-4b ingest QA; z8 native tiles; export metadata assertions.
+- **v2.0 (2026-07-22):** initial build order, WP-0 to WP-6.
 
 ---
 
-_Builder: read `docs/SPEC.md` in full before WP-0. When in doubt, open an issue — a question costs minutes; an assumption costs a rebuild._
+_Builder: read `docs/SPEC.md` in full before starting a WP. When in doubt, open an issue: a question costs minutes; an assumption costs a rebuild._
