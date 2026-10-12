@@ -306,6 +306,26 @@ button:disabled {
   color: #8b4a20;
   font-size: 0.8rem;
 }
+.field-hint {
+  margin: -0.4rem 0 1rem;
+  color: #3f5148;
+  font-size: 0.8rem;
+}
+input[aria-invalid='true'] {
+  border-color: #8b4a20;
+}
+.closed-card {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: #e5e3cf;
+  border: 1px solid #18362b22;
+  border-radius: 1.4rem;
+}
+.closed-card h2 {
+  margin-bottom: 0.6rem;
+  font:
+    600 clamp(1.8rem, 4vw, 2.7rem)/1 Newsreader,
+    serif;
+}
 .status-card {
   background: #ced9b9;
 }

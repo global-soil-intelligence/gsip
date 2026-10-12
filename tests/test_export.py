@@ -2,10 +2,14 @@ from __future__ import annotations
 
 import io
 import json
+import random
+import uuid
+from collections import defaultdict
 from datetime import date
 from pathlib import Path
 from typing import Any, cast
 
+import h3  # type: ignore[import-untyped]
 import httpx
 import numpy as np
 import pytest
@@ -13,15 +17,28 @@ from datasets import load_dataset  # type: ignore[import-untyped]
 from PIL import Image
 
 from pipeline.export import (
+    ExportHealthError,
+    ExportInfrastructureError,
     ExportPhoto,
+    ExportPrivacyError,
+    ExportResult,
     ExportSubmission,
     Grant,
+    QaCheck,
     SupabaseExportSource,
     assert_public_record,
     build_export,
     publish_export,
 )
+from pipeline.k_anonymity import Observation, PublishedCell, assign_cells
 from pipeline.qa import has_embedded_metadata, sanitize_jpeg
+
+BURLINGTON = h3.latlng_to_cell(44.4759, -73.2121, 8)
+R6_PARENT = h3.cell_to_parent(BURLINGTON, 6)
+R4_PARENT = h3.cell_to_parent(BURLINGTON, 4)
+SIBLINGS_R8 = sorted(h3.cell_to_children(R6_PARENT, 8))
+OTHER_R6_CELLS = sorted(set(h3.cell_to_children(R4_PARENT, 6)) - {R6_PARENT})
+EXPORT_DATE = date(2026, 7, 22)
 
 
 def raw_photo() -> bytes:
@@ -55,85 +72,352 @@ def dirty_photo() -> bytes:
     return raw[:2] + b"".join(segments) + raw[2:]
 
 
-def submission(*, grant: bool = True, synthetic: bool = False) -> ExportSubmission:
+def owner_uid(contributor: str) -> str:
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, f"gsip-test-owner/{contributor}"))
+
+
+def photo(shot: str, submission_id: str, contributor: str, qa_status: str = "pass") -> ExportPhoto:
+    object_id = uuid.uuid5(uuid.NAMESPACE_URL, f"{submission_id}/{shot}")
+    return ExportPhoto(
+        shot_type=shot,
+        storage_path=f"{owner_uid(contributor)}/{submission_id}/{shot}/{object_id}.jpg",
+        qa_status=qa_status,
+        calibration_status="calibrated",
+        qa_checks=(
+            QaCheck("sharpness", True, 120.5),
+            QaCheck("gps_plausibility", True, 0.9875),
+        ),
+        qa_model_version="deterministic-v2",
+    )
+
+
+def submission(
+    index: int = 1,
+    *,
+    contributor: str | None = None,
+    h3_r8: str = BURLINGTON,
+    grant: bool = True,
+    synthetic: bool = False,
+    photos: tuple[ExportPhoto, ...] | None = None,
+    captured_at: str = "2026-07-22T12:00:00Z",
+) -> ExportSubmission:
+    submission_id = f"73f0400e-5c64-5a6e-90d1-{index:012d}"
+    person = contributor or f"contributor-{index}"
     return ExportSubmission(
-        captured_at="2026-07-22T12:00:00Z",
+        captured_at=captured_at,
+        contributor_id=person,
         disturbed=False,
         grant=Grant("soil-friend", "ODbL-1.0", "CC-BY-SA-4.0", "2026-07-22-v1") if grant else None,
         gold_labels=(),
-        h3_r6="86262b287ffffff",
-        h3_r8="88262b2a37fffff",
-        id="73f0400e-5c64-5a6e-90d1-6a7686935317",
+        h3_r6=h3.cell_to_parent(h3_r8, 6),
+        h3_r8=h3_r8,
+        id=submission_id,
         is_synthetic=synthetic,
         land_cover="cropland",
-        photos=(ExportPhoto("B", "private/raw.jpg"),),
+        owner_uid=owner_uid(person),
+        photos=photos
+        if photos is not None
+        else (photo("A", submission_id, person), photo("B", submission_id, person)),
         precip_flag=False,
-        priors=(
-            {
-                "depth_bottom_cm": 30,
-                "depth_top_cm": 0,
-                "property": "soc",
-                "source": "soilgrids",
-                "uncertainty_hi": 29.0,
-                "uncertainty_lo": 8.0,
-                "unit": "g/kg",
-                "value": 17.0,
-            },
-        ),
         status="qa_pass",
         surface_condition="moist",
     )
 
 
-def test_export_is_private_field_free_and_loads_with_datasets(tmp_path: Path) -> None:
-    target = build_export([submission()], tmp_path, date(2026, 7, 22), lambda _: clean_photo())
-    loaded = load_dataset(
-        "parquet", data_files=str(target / "data" / "train.parquet"), split="train"
+def with_photos(row: ExportSubmission, *photos: ExportPhoto) -> ExportSubmission:
+    return ExportSubmission(**{**row.__dict__, "photos": photos})
+
+
+def http_error(status: int) -> httpx.HTTPStatusError:
+    request = httpx.Request("GET", "https://supabase.test/storage")
+    return httpx.HTTPStatusError(
+        "storage", request=request, response=httpx.Response(status, request=request)
     )
-    assert len(loaded) == 1
+
+
+def three_contributors_in_one_cell() -> list[ExportSubmission]:
+    return [submission(index) for index in (1, 2, 3)]
+
+
+def build(
+    submissions: list[ExportSubmission],
+    root: Path,
+    loader: Any = None,
+) -> ExportResult:
+    return build_export(submissions, root, EXPORT_DATE, loader or (lambda _: clean_photo()))
+
+
+def test_export_is_private_field_free_and_loads_with_datasets(tmp_path: Path) -> None:
+    result = build(three_contributors_in_one_cell(), tmp_path)
+    loaded = load_dataset(
+        "parquet", data_files=str(result.target / "data" / "train.parquet"), split="train"
+    )
+    assert len(loaded) == 3
     assert set(loaded.column_names).isdisjoint(
-        {"geom_precise", "latitude", "longitude", "contributor_id"}
+        {
+            "geom_precise",
+            "latitude",
+            "longitude",
+            "contributor_id",
+            "h3_r8",
+            "h3_r6",
+            "priors",
+            "elevation",
+            "owner_uid",
+        }
     )
     assert loaded[0]["captured_at"] == "2026-07-22"
-    exported_photo = target / loaded[0]["photos"][0]["path"]
-    assert not has_embedded_metadata(exported_photo.read_bytes())
-    card = (target / "README.md").read_text()
+    assert loaded[0]["h3_cell"] == BURLINGTON
+    assert loaded[0]["h3_resolution"] == 8
+    first_photo = loaded[0]["photos"][0]
+    assert first_photo["qa"]["model_version"] == "deterministic-v2"
+    assert {"check": "sharpness", "passed": True, "score": 120.5} in first_photo["qa"]["checks"]
+    # The GPS plausibility score encodes the private GPS accuracy: pass/fail only.
+    assert {"check": "gps_plausibility", "passed": True, "score": None} in first_photo["qa"][
+        "checks"
+    ]
+    assert "0.9875" not in json.dumps(loaded.to_list())
+    assert not has_embedded_metadata((result.target / first_photo["path"]).read_bytes())
+    card = (result.target / "README.md").read_text()
     assert "ODbL-1.0" in card
     assert "CC BY-SA 4.0" in card
     assert "soil-friend" in card
+    assert "untrusted text" in card
+    assert result.cells == (PublishedCell(BURLINGTON, 8, 3, 3, date(2026, 7, 22)),)
 
 
 def test_export_is_idempotent_per_day(tmp_path: Path) -> None:
-    first = build_export([submission()], tmp_path, date(2026, 7, 22), lambda _: clean_photo())
-    first_manifest = json.loads((first / "manifest.json").read_text())
-    second = build_export([submission()], tmp_path, date(2026, 7, 22), lambda _: clean_photo())
-    assert json.loads((second / "manifest.json").read_text()) == first_manifest
-    assert len(list((second / "photos").rglob("*.jpg"))) == 1
+    first = build(three_contributors_in_one_cell(), tmp_path)
+    first_manifest = json.loads((first.target / "manifest.json").read_text())
+    second = build(three_contributors_in_one_cell(), tmp_path)
+    assert json.loads((second.target / "manifest.json").read_text()) == first_manifest
+    assert len(list((second.target / "photos").rglob("*.jpg"))) == 6
 
 
-def test_export_rejects_missing_grant_and_private_columns(tmp_path: Path) -> None:
-    with pytest.raises(ValueError, match="no immutable grant"):
-        build_export(
-            [submission(grant=False)], tmp_path, date(2026, 7, 22), lambda _: clean_photo()
+def test_sparse_cells_roll_up_to_resolution_6(tmp_path: Path) -> None:
+    rows = [
+        submission(1, h3_r8=SIBLINGS_R8[0]),
+        submission(2, h3_r8=SIBLINGS_R8[0]),
+        submission(3, h3_r8=SIBLINGS_R8[5]),
+    ]
+    result = build(rows, tmp_path)
+    loaded = load_dataset(
+        "parquet", data_files=str(result.target / "data" / "train.parquet"), split="train"
+    )
+    assert {row["h3_cell"] for row in loaded} == {R6_PARENT}
+    assert {row["h3_resolution"] for row in loaded} == {6}
+    assert result.cells == (PublishedCell(R6_PARENT, 6, 3, 3, date(2026, 7, 22)),)
+
+
+def test_sparser_cells_roll_up_to_resolution_4(tmp_path: Path) -> None:
+    rows = [
+        submission(1, h3_r8=SIBLINGS_R8[0]),
+        submission(2, h3_r8=h3.cell_to_center_child(OTHER_R6_CELLS[0], 8)),
+        submission(3, h3_r8=h3.cell_to_center_child(OTHER_R6_CELLS[1], 8)),
+    ]
+    result = build(rows, tmp_path)
+    assert result.rows == 3
+    assert result.cells == (PublishedCell(R4_PARENT, 4, 3, 3, date(2026, 7, 22)),)
+
+
+def test_observations_below_k_everywhere_are_withheld(tmp_path: Path) -> None:
+    rows = [submission(1), submission(2)]
+    result = build(rows, tmp_path)
+    assert result.rows == 0
+    assert result.withheld == 2
+    assert result.cells == ()
+    assert (result.target / "data" / "EMPTY.md").is_file()
+    assert not (result.target / "photos").exists() or not any((result.target / "photos").iterdir())
+    assert "withheld until they meet k-anonymity: 2" in (result.target / "README.md").read_text()
+
+
+def test_one_contributor_never_counts_as_several(tmp_path: Path) -> None:
+    rows = [submission(index, contributor="same-person") for index in range(1, 6)]
+    result = build(rows, tmp_path)
+    assert result.rows == 0
+    assert result.withheld == 5
+
+
+def test_a_published_fine_cell_does_not_lend_contributors_to_a_coarse_one(tmp_path: Path) -> None:
+    rows = [
+        *three_contributors_in_one_cell(),
+        submission(4, h3_r8=SIBLINGS_R8[7]),
+    ]
+    result = build(rows, tmp_path)
+    assert result.rows == 3
+    assert result.withheld == 1
+    assert [cell.resolution for cell in result.cells] == [8]
+
+
+def test_random_populations_never_publish_a_cell_below_k() -> None:
+    generator = random.Random(20261010)  # noqa: S311 - deterministic test data
+    candidates = [
+        *SIBLINGS_R8[:12],
+        *(h3.cell_to_center_child(cell, 8) for cell in OTHER_R6_CELLS[:10]),
+    ]
+    observations = [
+        Observation(
+            key=f"obs-{index:04d}",
+            contributor=f"person-{generator.randrange(40)}",
+            h3_r8=generator.choice(candidates),
+            observed_on=date(2026, 7, 1 + generator.randrange(28)),
         )
-    with pytest.raises(ValueError, match="forbidden private fields"):
-        assert_public_record({"h3_r8": "safe", "geom_precise": "POINT(0 0)"})
+        for index in range(400)
+    ]
+    assignment = assign_cells(observations)
+    members: dict[tuple[str, int], set[str]] = defaultdict(set)
+    by_key = {observation.key: observation for observation in observations}
+    for key, placed in assignment.placement.items():
+        members[placed].add(by_key[key].contributor)
+    assert members
+    assert all(len(contributors) >= 3 for contributors in members.values())
+    assert {(cell.h3_index, cell.resolution) for cell in assignment.cells} == set(members)
+    assert set(assignment.placement) | set(assignment.withheld) == set(by_key)
+    assert set(assignment.placement).isdisjoint(assignment.withheld)
+
+
+def test_an_unavailable_photo_is_set_aside_and_the_release_continues(tmp_path: Path) -> None:
+    rows = [*three_contributors_in_one_cell(), submission(4), submission(5)]
+    broken = rows[0].id
+
+    def loader(path: str) -> bytes:
+        if broken in path:
+            raise http_error(404)
+        return clean_photo()
+
+    result = build(rows, tmp_path, loader)
+    assert result.set_aside == {"photo_missing": 1}
+    assert result.rows == 4
+    assert not (result.target / "photos" / broken).exists()
+    # The operator report names the row privately, beside (never inside) the release.
+    assert result.report is not None
+    assert result.report.parent == tmp_path
+    report = json.loads(result.report.read_text())
+    assert report["set_aside"] == [{"id": broken, "reason": "photo_missing"}]
+    assert broken not in "".join(
+        path.read_text(errors="ignore") for path in result.target.rglob("*") if path.is_file()
+    )
+
+
+@pytest.mark.parametrize(
+    "failure",
+    [http_error(503), http_error(429), httpx.ConnectTimeout("storage timed out")],
+    ids=["503", "429", "timeout"],
+)
+def test_a_storage_outage_aborts_instead_of_publishing_a_hollow_release(
+    tmp_path: Path, failure: Exception
+) -> None:
+    def loader(_: str) -> bytes:
+        raise failure
+
+    with pytest.raises(ExportInfrastructureError):
+        build([*three_contributors_in_one_cell(), submission(4)], tmp_path, loader)
+    assert not (tmp_path / "2026-07-22").exists()
+    assert not (tmp_path / ".2026-07-22.building").exists()
+
+
+def test_widespread_set_asides_abort_the_release(tmp_path: Path) -> None:
+    rows = [submission(index) for index in range(1, 8)]
+    missing = {row.id for row in rows[:4]}
+
+    def loader(path: str) -> bytes:
+        if any(submission_id in path for submission_id in missing):
+            raise http_error(404)
+        return clean_photo()
+
+    with pytest.raises(ExportHealthError, match="4 of 7 rows"):
+        build(rows, tmp_path, loader)
+    assert not (tmp_path / "2026-07-22").exists()
+
+
+def test_a_few_set_asides_within_the_allowance_do_not_block(tmp_path: Path) -> None:
+    rows = [submission(index) for index in range(1, 7)]
+    missing = {row.id for row in rows[:3]}
+
+    def loader(path: str) -> bytes:
+        if any(submission_id in path for submission_id in missing):
+            raise http_error(404)
+        return clean_photo()
+
+    result = build(rows, tmp_path, loader)
+    assert result.set_aside == {"photo_missing": 3}
+    assert result.rows == 3
+
+
+def test_a_photo_path_outside_its_owner_aborts(tmp_path: Path) -> None:
+    rows = three_contributors_in_one_cell()
+    first = rows[0]
+    stolen = photo("B", first.id, "someone-else")
+    rows[0] = with_photos(first, photo("A", first.id, "contributor-1"), stolen)
+    with pytest.raises(ExportPrivacyError, match="does not match its owner"):
+        build(rows, tmp_path)
+    assert not (tmp_path / "2026-07-22").exists()
+
+
+def test_a_legacy_pass_without_passing_shots_a_and_b_is_refused(tmp_path: Path) -> None:
+    rows = three_contributors_in_one_cell()
+    legacy = submission(4)
+    rows.append(with_photos(legacy, photo("A", legacy.id, "contributor-4")))
+    result = build(rows, tmp_path)
+    assert result.set_aside == {"required_shots_not_passed": 1}
+    assert result.rows == 3
+
+
+def test_a_set_aside_row_cannot_leave_a_published_cell_below_k(tmp_path: Path) -> None:
+    rows = three_contributors_in_one_cell()
+    corrupt = rows[0].id
+    result = build(rows, tmp_path, lambda path: b"not a jpeg" if corrupt in path else clean_photo())
+    assert result.set_aside == {"photo_unreadable": 1}
+    assert result.rows == 0
+    assert result.withheld == 2
+
+
+def test_only_photos_that_passed_qa_are_released(tmp_path: Path) -> None:
+    rows = three_contributors_in_one_cell()
+    first = rows[0]
+    rows[0] = with_photos(
+        first,
+        photo("A", first.id, "contributor-1"),
+        photo("B", first.id, "contributor-1"),
+        photo("C", first.id, "contributor-1", qa_status="fail"),
+    )
+    result = build(rows, tmp_path)
+    loaded = load_dataset(
+        "parquet", data_files=str(result.target / "data" / "train.parquet"), split="train"
+    )
+    released = next(row for row in loaded if row["id"] == first.id)
+    assert [item["shot_type"] for item in released["photos"]] == ["A", "B"]
+    assert not (result.target / "photos" / first.id / "C.jpg").exists()
+
+
+def test_missing_grant_is_set_aside_not_published(tmp_path: Path) -> None:
+    rows = [*three_contributors_in_one_cell(), submission(4, grant=False)]
+    result = build(rows, tmp_path)
+    assert result.set_aside == {"missing_grant": 1}
+    assert result.rows == 3
+
+
+def test_private_columns_are_refused() -> None:
+    with pytest.raises(ExportPrivacyError, match="forbidden private fields"):
+        assert_public_record({"h3_cell": "safe", "geom_precise": "POINT(0 0)"})
+    with pytest.raises(ExportPrivacyError, match="forbidden private fields"):
+        assert_public_record({"h3_cell": "safe", "h3_r8": BURLINGTON})
+    with pytest.raises(ExportPrivacyError, match="forbidden private fields"):
+        assert_public_record({"h3_cell": "safe", "priors": [{"property": "soc"}]})
 
 
 def test_dirty_canonical_photo_aborts_before_any_public_artifact(tmp_path: Path) -> None:
-    with pytest.raises(ValueError, match="embedded metadata"):
-        build_export([submission()], tmp_path, date(2026, 7, 22), lambda _: dirty_photo())
+    with pytest.raises(ExportPrivacyError, match="embedded metadata"):
+        build(three_contributors_in_one_cell(), tmp_path, lambda _: dirty_photo())
     assert not (tmp_path / "2026-07-22").exists()
     assert not (tmp_path / ".2026-07-22.building").exists()
 
 
 def test_synthetic_only_export_is_an_explicit_empty_success(tmp_path: Path) -> None:
-    target = build_export(
-        [submission(synthetic=True)], tmp_path, date(2026, 7, 22), lambda _: clean_photo()
-    )
-    assert (target / "data" / "EMPTY.md").is_file()
-    assert not (target / "data" / "train.parquet").exists()
-    assert "Rows: 0" in (target / "README.md").read_text()
+    result = build([submission(synthetic=True)], tmp_path)
+    assert (result.target / "data" / "EMPTY.md").is_file()
+    assert not (result.target / "data" / "train.parquet").exists()
+    assert "Rows: 0" in (result.target / "README.md").read_text()
 
 
 def test_postgrest_reads_all_1001_rows() -> None:
@@ -159,9 +443,97 @@ def test_postgrest_reads_all_1001_rows() -> None:
     assert ranges == ["0-999", "1000-1999"]
 
 
+def test_source_attaches_per_photo_qa_and_keeps_the_contributor_private() -> None:
+    submission_id = "73f0400e-5c64-5a6e-90d1-000000000001"
+    tables: dict[str, list[dict[str, Any]]] = {
+        "submissions": [
+            {
+                "captured_at": "2026-07-22T12:00:00+00:00",
+                "contributor_id": "c-1",
+                "disturbed": False,
+                "grant_id": "g-1",
+                "h3_r6": R6_PARENT,
+                "h3_r8": BURLINGTON,
+                "id": submission_id,
+                "is_synthetic": False,
+                "land_cover": "cropland",
+                "precip_flag": None,
+                "status": "qa_pass",
+                "surface_condition": "dry",
+                "contributor": {"auth_uid": "30000000-0000-4000-8000-000000000001"},
+            }
+        ],
+        "contribution_grants": [
+            {
+                "attribution_name": "Anonymous soil contributor",
+                "data_license": "ODbL-1.0",
+                "photo_license": "CC-BY-SA-4.0",
+                "terms_version": "v1",
+            }
+        ],
+        "qa_events": [
+            {
+                "check_name": "sharpness_B",
+                "passed": True,
+                "score": 88.0,
+                "model_version": "deterministic-v2",
+            },
+            {
+                "check_name": "soil_region_B",
+                "passed": True,
+                "score": 0.8,
+                "model_version": "deterministic-v2",
+            },
+            {
+                "check_name": "sharpness_A",
+                "passed": False,
+                "score": 3.0,
+                "model_version": "deterministic-v2",
+            },
+        ],
+        "photos": [
+            {
+                "calibration_status": "calibrated",
+                "qa_status": "fail",
+                "shot_type": "A",
+                "storage_path": "p/A.jpg",
+            },
+            {
+                "calibration_status": "uncalibrated",
+                "qa_status": "pass",
+                "shot_type": "B",
+                "storage_path": "p/B.jpg",
+            },
+        ],
+        "gold_labels": [],
+    }
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        table = request.url.path.rsplit("/", 1)[-1]
+        body = tables[table]
+        return httpx.Response(
+            200, headers={"Content-Range": f"0-{len(body) - 1}/{len(body)}"}, json=body
+        )
+
+    source = SupabaseExportSource("https://supabase.test", "service-key")
+    source.client.close()
+    source.client = httpx.Client(transport=httpx.MockTransport(handler))
+    try:
+        [loaded] = source.submissions()
+    finally:
+        source.client.close()
+    assert loaded.contributor_id == "c-1"
+    assert loaded.owner_uid == "30000000-0000-4000-8000-000000000001"
+    shot_b = next(item for item in loaded.photos if item.shot_type == "B")
+    assert shot_b.qa_status == "pass"
+    assert shot_b.qa_model_version == "deterministic-v2"
+    assert {check.check for check in shot_b.qa_checks} == {"sharpness", "soil_region"}
+
+
 def test_hub_replacement_precedes_atomic_public_cell_refresh(tmp_path: Path) -> None:
     events: list[str] = []
     upload: dict[str, Any] = {}
+    result = build(three_contributors_in_one_cell(), tmp_path)
 
     class FakeHub:
         def upload_folder(self, **kwargs: Any) -> None:
@@ -169,24 +541,17 @@ def test_hub_replacement_precedes_atomic_public_cell_refresh(tmp_path: Path) -> 
             upload.update(kwargs)
 
     class RecordingSource(SupabaseExportSource):
-        def refresh_h3_cells(self, submissions: list[ExportSubmission]) -> None:
+        def refresh_h3_cells(self, cells: tuple[PublishedCell, ...]) -> None:
             events.append("cells")
 
     source = RecordingSource("https://supabase.test", "service-key")
     try:
-        publish_export(
-            source,
-            [submission()],
-            tmp_path,
-            date(2026, 7, 22),
-            "token",
-            "org/dataset",
-            cast(Any, FakeHub()),
-        )
+        publish_export(source, result, EXPORT_DATE, "token", "org/dataset", cast(Any, FakeHub()))
     finally:
         source.client.close()
     assert events == ["hub", "cells"]
     assert upload["delete_patterns"] == ["photos/**", "data/**"]
+    assert upload["folder_path"] == result.target
 
 
 def test_failed_post_upload_refresh_is_retried_on_the_next_run(
@@ -194,7 +559,8 @@ def test_failed_post_upload_refresh_is_retried_on_the_next_run(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     uploads = 0
-    refreshed: list[list[ExportSubmission]] = []
+    refreshed: list[tuple[PublishedCell, ...]] = []
+    result = build(three_contributors_in_one_cell(), tmp_path)
 
     class FakeHub:
         def upload_folder(self, **kwargs: Any) -> None:
@@ -204,7 +570,7 @@ def test_failed_post_upload_refresh_is_retried_on_the_next_run(
     class RecoveringSource(SupabaseExportSource):
         failures_remaining = 3
 
-        def refresh_h3_cells(self, submissions: list[ExportSubmission]) -> None:
+        def refresh_h3_cells(self, cells: tuple[PublishedCell, ...]) -> None:
             if self.failures_remaining:
                 self.failures_remaining -= 1
                 request = httpx.Request("POST", f"{self.url}/rest/v1/rpc/refresh_public_h3_cells")
@@ -214,38 +580,26 @@ def test_failed_post_upload_refresh_is_retried_on_the_next_run(
                     request=request,
                     response=response,
                 )
-            refreshed.append(submissions)
+            refreshed.append(cells)
 
     monkeypatch.setattr("pipeline.export.time.sleep", lambda _: None)
     source = RecoveringSource("https://supabase.test", "service-key")
     try:
         with pytest.raises(httpx.HTTPStatusError):
             publish_export(
-                source,
-                [submission()],
-                tmp_path,
-                date(2026, 7, 22),
-                "token",
-                "org/dataset",
-                cast(Any, FakeHub()),
+                source, result, EXPORT_DATE, "token", "org/dataset", cast(Any, FakeHub())
             )
         publish_export(
-            source,
-            [submission()],
-            tmp_path,
-            date(2026, 7, 23),
-            "token",
-            "org/dataset",
-            cast(Any, FakeHub()),
+            source, result, date(2026, 7, 23), "token", "org/dataset", cast(Any, FakeHub())
         )
     finally:
         source.client.close()
 
     assert uploads == 2
-    assert refreshed == [[submission()]]
+    assert refreshed == [result.cells]
 
 
-def test_public_cell_refresh_includes_dates_and_clears_an_empty_release() -> None:
+def test_public_cell_refresh_sends_k_anonymous_cells_and_clears_an_empty_release() -> None:
     requests: list[dict[str, Any]] = []
 
     def handler(request: httpx.Request) -> httpx.Response:
@@ -257,17 +611,19 @@ def test_public_cell_refresh_includes_dates_and_clears_an_empty_release() -> Non
     source.client.close()
     source.client = httpx.Client(transport=httpx.MockTransport(handler))
     try:
-        source.refresh_h3_cells([])
-        source.refresh_h3_cells([submission()])
+        source.refresh_h3_cells(())
+        source.refresh_h3_cells((PublishedCell(R6_PARENT, 6, 4, 3, date(2026, 7, 22)),))
     finally:
         source.client.close()
     assert requests[0] == {"payload": []}
     assert requests[1] == {
         "payload": [
             {
-                "h3_index": "88262b2a37fffff",
+                "h3_index": R6_PARENT,
                 "latest_submission_date": "2026-07-22",
-                "n_submissions": 1,
+                "n_contributors": 3,
+                "n_submissions": 4,
+                "resolution": 6,
             }
         ]
     }

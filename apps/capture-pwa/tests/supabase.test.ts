@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { drainQueue } from '../src/sync'
 import {
+  fetchServiceState,
   type GsipClient,
   photoStoragePath,
   submitQueued,
@@ -10,7 +11,9 @@ import type { QueueRecord } from '../src/types'
 type QueryResult = { data: unknown; error: Error | null }
 
 type FakeState = {
+  failFinalize: boolean
   failNextUpload: boolean
+  grantPayloads: Array<Record<string, unknown>>
   grants: Set<string>
   log: string[]
   photos: Set<string>
@@ -62,6 +65,7 @@ class FakeQuery implements PromiseLike<QueryResult> {
     this.state.log.push(`insert:${this.table}`)
     if (this.table === 'contribution_grants') {
       this.state.grants.add(String(payload.id))
+      this.state.grantPayloads.push(payload)
     }
     if (this.table === 'submissions') {
       this.state.submissions.set(String(payload.id), payload)
@@ -95,6 +99,16 @@ function fakeClient(state: FakeState): GsipClient {
       }),
     },
     from: (table: string) => new FakeQuery(state, table),
+    rpc: async (name: string, args: Record<string, unknown>) => {
+      state.log.push(`rpc:${name}`)
+      if (
+        name === 'finalize_submission' &&
+        (state.failFinalize ||
+          !state.submissions.has(String(args.p_submission_id)))
+      )
+        return { data: null, error: new Error('submission not found') }
+      return { data: '2026-07-23T00:05:00Z', error: null }
+    },
     functions: {
       invoke: async () => {
         state.log.push('invoke:prior-attach')
@@ -122,9 +136,10 @@ function fakeClient(state: FakeState): GsipClient {
 
 function queuedRecord(): QueueRecord {
   return {
+    acceptedAt: '2026-07-23T00:10:00Z',
     accuracyM: 8,
     attributionName: 'Field contributor',
-    capturedAt: '2026-07-23T00:00:00Z',
+    capturedAt: '2026-07-01T08:00:00Z',
     deviceModel: 'Macintosh',
     disturbed: false,
     grantId: 'grant-id',
@@ -135,8 +150,14 @@ function queuedRecord(): QueueRecord {
       {
         bytes: new TextEncoder().encode('jpeg'),
         mimeType: 'image/jpeg',
-        objectId: 'photo-id',
+        objectId: 'photo-a',
         shotType: 'A',
+      },
+      {
+        bytes: new TextEncoder().encode('jpeg'),
+        mimeType: 'image/jpeg',
+        objectId: 'photo-b',
+        shotType: 'B',
       },
     ],
     queuedAt: '2026-07-23T00:00:00Z',
@@ -148,7 +169,9 @@ function queuedRecord(): QueueRecord {
 
 function fakeState(): FakeState {
   return {
+    failFinalize: false,
     failNextUpload: false,
+    grantPayloads: [],
     grants: new Set(),
     log: [],
     photos: new Set(),
@@ -179,8 +202,15 @@ describe('hosted submission paths', () => {
       'insert:submissions',
       'upload:photo',
       'insert:photos',
+      'upload:photo',
+      'insert:photos',
+      'rpc:finalize_submission',
       'invoke:prior-attach',
     ])
+    // The grant records when the terms were accepted, never the photo's timestamp.
+    expect(state.grantPayloads[0]).toMatchObject({
+      accepted_at: '2026-07-23T00:10:00Z',
+    })
     expect(state.submissions.get(record.submissionId)).toMatchObject({
       device_model: 'Macintosh',
       gps_accuracy_m: 8,
@@ -206,7 +236,28 @@ describe('hosted submission paths', () => {
     expect(
       state.log.filter((event) => event === 'insert:contribution_grants'),
     ).toHaveLength(1)
-    expect(state.photos).toEqual(new Set(['submission-id:A']))
+    expect(state.photos).toEqual(
+      new Set(['submission-id:A', 'submission-id:B']),
+    )
+  })
+
+  it('falls back to the queue time for records queued by older builds', async () => {
+    const state = fakeState()
+    const record = queuedRecord()
+    delete record.acceptedAt
+    await submitQueued(fakeClient(state), record)
+    expect(state.grantPayloads[0]).toMatchObject({
+      accepted_at: record.queuedAt,
+    })
+  })
+
+  it('keeps the record queued when finalize fails', async () => {
+    const state = fakeState()
+    state.failFinalize = true
+    await expect(
+      submitQueued(fakeClient(state), queuedRecord()),
+    ).rejects.toThrow('submission not found')
+    expect(state.log).not.toContain('invoke:prior-attach')
   })
 
   it('removes a queue record only after the complete hosted path succeeds', async () => {
@@ -250,5 +301,47 @@ describe('hosted submission paths', () => {
       synced: 1,
     })
     expect(removed).toEqual(['submission-id'])
+  })
+})
+
+describe('capture gate state', () => {
+  function stateClient(result: { data: unknown; error: unknown } | Error) {
+    return {
+      from: () => ({
+        select: () => ({
+          maybeSingle: async () => {
+            if (result instanceof Error) throw result
+            return result
+          },
+        }),
+      }),
+    } as unknown as GsipClient
+  }
+
+  it('maps the database switch to open or closed', async () => {
+    expect(
+      await fetchServiceState(
+        stateClient({ data: { capture_open: true }, error: null }),
+      ),
+    ).toBe('open')
+    expect(
+      await fetchServiceState(
+        stateClient({ data: { capture_open: false }, error: null }),
+      ),
+    ).toBe('closed')
+  })
+
+  it('treats unreadable state as unknown, never as closed', async () => {
+    expect(
+      await fetchServiceState(stateClient({ data: null, error: null })),
+    ).toBe('unknown')
+    expect(
+      await fetchServiceState(
+        stateClient({ data: null, error: { message: 'offline' } }),
+      ),
+    ).toBe('unknown')
+    expect(await fetchServiceState(stateClient(new Error('network')))).toBe(
+      'unknown',
+    )
   })
 })

@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   drain:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && vars.GSIP_PRIOR_SCHEDULE_ENABLED == 'true') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

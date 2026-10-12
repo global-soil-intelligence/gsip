@@ -7,8 +7,8 @@ select plan(42);
 select is((select count(*) from public.submissions), 25::bigint, 'seed has 25 submissions');
 select is((select count(*) from public.contribution_grants), 5::bigint, 'seed has immutable grants');
 select is((select count(*) from public.prior_jobs), 25::bigint, 'seed submissions have durable prior jobs');
-select is((select count(*) from public.qa_jobs), 25::bigint, 'seed photos have durable QA jobs');
-select is((select count(*) from public.qa_events), 125::bigint, 'seed submissions have deterministic QA events');
+select is((select count(*) from public.qa_jobs), 50::bigint, 'seed photos (shots A and B) have durable QA jobs');
+select is((select count(*) from public.qa_events), 300::bigint, 'seed submissions have deterministic QA events per shot');
 select is((select count(*) from public.submissions where is_synthetic), 25::bigint, 'all seeded rows are excluded from export');
 select is((select count(*) from storage.buckets where public), 0::bigint, 'all photo buckets are private');
 select hasnt_view(
@@ -94,8 +94,8 @@ select is((select count(*) from public.prior_jobs), 27::bigint, 'submission inse
 
 insert into public.photos (submission_id, shot_type, storage_path, camera_metadata_private)
 values
-    ('50000000-0000-4000-8000-000000000001', 'B', 'owner-a/photo.jpg', '{"make":"Test"}'),
-    ('50000000-0000-4000-8000-000000000002', 'B', 'owner-b/photo.jpg', '{"iso":100}');
+    ('50000000-0000-4000-8000-000000000001', 'B', '30000000-0000-4000-8000-000000000001/50000000-0000-4000-8000-000000000001/B/60000000-0000-4000-8000-000000000001.jpg', '{"make":"Test"}'),
+    ('50000000-0000-4000-8000-000000000002', 'B', '30000000-0000-4000-8000-000000000002/50000000-0000-4000-8000-000000000002/B/60000000-0000-4000-8000-000000000002.jpg', '{"iso":100}');
 
 insert into storage.objects (bucket_id, name, owner)
 values
@@ -156,7 +156,7 @@ select lives_ok(
     $$insert into public.photos (submission_id, shot_type, storage_path)
       values (
         '50000000-0000-4000-8000-000000000003', 'A',
-        '30000000-0000-4000-8000-000000000001/submission/A/client.jpg'
+        '30000000-0000-4000-8000-000000000001/50000000-0000-4000-8000-000000000003/A/60000000-0000-4000-8000-000000000003.jpg'
       )$$,
     'authenticated client can insert only the public photo linkage fields'
 );
@@ -165,7 +165,7 @@ select throws_ok(
         submission_id, shot_type, storage_path, camera_metadata_private
       ) values (
         '50000000-0000-4000-8000-000000000003', 'C',
-        '30000000-0000-4000-8000-000000000001/submission/C/client.jpg',
+        '30000000-0000-4000-8000-000000000001/50000000-0000-4000-8000-000000000003/C/60000000-0000-4000-8000-000000000004.jpg',
         '{"make":"forged"}'
       )$$,
     '42501',
@@ -227,9 +227,13 @@ select throws_ok(
 );
 select throws_ok(
     $$insert into public.photos (submission_id, shot_type, storage_path, camera_metadata_private)
-      values ('50000000-0000-4000-8000-000000000001', 'C', 'bad.jpg', '{"GPSLatitude":41.9}')$$,
+      values (
+        '50000000-0000-4000-8000-000000000001', 'C',
+        '30000000-0000-4000-8000-000000000001/50000000-0000-4000-8000-000000000001/C/60000000-0000-4000-8000-000000000005.jpg',
+        '{"GPSLatitude":41.9}'
+      )$$,
     '23514',
-    null,
+    'new row for relation "photos" violates check constraint "photos_camera_metadata_allowlist"',
     'location metadata is rejected'
 );
 select throws_ok(

@@ -1,13 +1,15 @@
 -- Deterministic, idempotent development seed: 25 synthetic submissions across
 -- North America, South America, Africa, Europe, and Australia.
 
-insert into public.contributors (id, handle)
+-- Synthetic contributors carry deterministic auth identities (with no auth.users rows) so that
+-- their photo storage paths satisfy the WP-6b path binding.
+insert into public.contributors (id, auth_uid, handle)
 values
-    ('c6f3acc2-1ace-589c-9a02-4c015178914d', 'iowa-farmer'),
-    ('1a4068aa-af34-5ce0-b4e9-e8e8fd2db974', 'kenya-agronomist'),
-    ('071846b8-b76f-5fa6-be6c-e557fe9766df', 'brandenburg-gardener'),
-    ('0ade88d1-f13d-56e2-80ed-65a0743d677e', 'cerrado-ranger'),
-    ('c57529e0-2790-5e7b-9c83-f09d0e9c4f2a', 'murray-viticulturist')
+    ('c6f3acc2-1ace-589c-9a02-4c015178914d', 'a0000000-0000-4000-8000-000000000001', 'iowa-farmer'),
+    ('1a4068aa-af34-5ce0-b4e9-e8e8fd2db974', 'a0000000-0000-4000-8000-000000000002', 'kenya-agronomist'),
+    ('071846b8-b76f-5fa6-be6c-e557fe9766df', 'a0000000-0000-4000-8000-000000000003', 'brandenburg-gardener'),
+    ('0ade88d1-f13d-56e2-80ed-65a0743d677e', 'a0000000-0000-4000-8000-000000000004', 'cerrado-ranger'),
+    ('c57529e0-2790-5e7b-9c83-f09d0e9c4f2a', 'a0000000-0000-4000-8000-000000000005', 'murray-viticulturist')
 on conflict (id) do nothing;
 
 insert into public.contribution_grants (
@@ -51,42 +53,58 @@ with seed(id, contributor_id, grant_id, lat, lon, h3_r8, h3_r6, captured_at, lan
 )
 insert into public.submissions (
     id, contributor_id, grant_id, geom_precise, h3_r8, h3_r6, captured_at,
-    land_cover, surface_condition, disturbed, status, is_synthetic
+    land_cover, surface_condition, disturbed, status, is_synthetic, finalized_at
 )
 select id, contributor_id, grant_id,
     extensions.st_setsrid(extensions.st_makepoint(lon, lat), 4326),
-    h3_r8, h3_r6, captured_at, land_cover, surface_condition, false, 'qa_pass', true
+    h3_r8, h3_r6, captured_at, land_cover, surface_condition, false, 'qa_pass', true,
+    captured_at + interval '5 minutes'
 from seed
 on conflict (id) do nothing;
 
-insert into public.photos (submission_id, shot_type, storage_path, card_detected, sharpness_score)
-select id, 'B', 'seed/' || id::text || '-shot-b.jpg', true, 0.85
-from public.submissions
-where contributor_id in (
+-- Shots A and B per synthetic submission, with bound storage paths and settled QA verdicts.
+insert into public.photos (
+    submission_id, shot_type, storage_path, card_detected, sharpness_score,
+    calibration_status, qa_status
+)
+select s.id, shot.shot_type,
+    c.auth_uid::text || '/' || s.id::text || '/' || shot.shot_type || '/'
+        || md5(s.id::text || '-' || shot.shot_type)::uuid::text || '.jpg',
+    true, 85, 'calibrated', 'pass'
+from public.submissions s
+join public.contributors c on c.id = s.contributor_id
+cross join (values ('A'), ('B')) as shot(shot_type)
+where s.is_synthetic
+  and s.contributor_id in (
     'c6f3acc2-1ace-589c-9a02-4c015178914d',
     '1a4068aa-af34-5ce0-b4e9-e8e8fd2db974',
     '071846b8-b76f-5fa6-be6c-e557fe9766df',
     '0ade88d1-f13d-56e2-80ed-65a0743d677e',
     'c57529e0-2790-5e7b-9c83-f09d0e9c4f2a'
-)
+  )
 on conflict (submission_id, shot_type) do nothing;
 
-insert into public.qa_events (submission_id, check_name, passed, score)
-select s.id, checks.name, true, checks.score
+-- Synthetic photos have no Storage objects; their QA is already settled.
+update public.qa_jobs j
+set status = 'completed', completed_at = coalesce(j.completed_at, now()), updated_at = now()
+from public.photos p
+join public.submissions s on s.id = p.submission_id
+where j.photo_id = p.id and s.is_synthetic and j.status <> 'completed';
+
+insert into public.qa_events (submission_id, check_name, passed, score, model_version)
+select s.id, checks.name || '_' || shot.shot_type, true, checks.score, 'deterministic-v2'
 from public.submissions s
+cross join (values ('A'), ('B')) as shot(shot_type)
 cross join (values
-    ('sharpness_B', 0.85::double precision),
-    ('exposure_B', 0.80::double precision),
-    ('card_detection_B', 1.0::double precision),
-    ('gps_plausibility_B', 1.0::double precision),
-    ('duplicate_B', 1.0::double precision)
+    ('soil_region', 0.62::double precision),
+    ('sharpness', 85::double precision),
+    ('exposure', 0.80::double precision),
+    ('card_detection', 1.0::double precision),
+    ('gps_plausibility', 0.99::double precision),
+    ('duplicate', 1.0::double precision)
 ) as checks(name, score)
-where s.status = 'qa_pass'
+where s.is_synthetic and s.status = 'qa_pass'
 on conflict (submission_id, check_name) do nothing;
 
-insert into public.h3_cells (h3_index, n_submissions, updated_at)
-select h3_r8, count(*)::integer, now()
-from public.submissions
-group by h3_r8
-on conflict (h3_index) do update
-set n_submissions = excluded.n_submissions, updated_at = excluded.updated_at;
+-- Development-only switch: local capture is open. Production starts closed (WP-6b capture gate).
+update public.service_state set capture_open = true, updated_at = now() where singleton;

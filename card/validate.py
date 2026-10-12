@@ -45,13 +45,15 @@ def _estimate_gamma(
     return gamma if np.isfinite(gamma) and 0.25 <= gamma <= 4.0 else 1.0
 
 
-def extract_patches(image: np.ndarray) -> dict[str, tuple[int, int, int]]:
+def card_transform(image: np.ndarray) -> np.ndarray | None:
+    """Return the homography from image pixels to canonical card pixels, or None."""
+
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
     detector = cv2.aruco.ArucoDetector(dictionary, cv2.aruco.DetectorParameters())
     corners, ids, _ = detector.detectMarkers(gray)
     if ids is None or MARKER_ID not in ids.flatten():
-        raise ValueError(f"ArUco marker {MARKER_ID} was not detected")
+        return None
 
     marker_index = int(np.where(ids.flatten() == MARKER_ID)[0][0])
     source = corners[marker_index].reshape(4, 2).astype(np.float32)
@@ -64,7 +66,28 @@ def extract_patches(image: np.ndarray) -> dict[str, tuple[int, int, int]]:
         ],
         dtype=np.float32,
     )
-    transform = cv2.getPerspectiveTransform(source, destination)
+    return cast(np.ndarray, cv2.getPerspectiveTransform(source, destination))
+
+
+def card_corners(transform: np.ndarray) -> np.ndarray:
+    """Project the four card corners into image pixels (clockwise from top-left)."""
+
+    width = CARD_WIDTH_MM * PIXELS_PER_MM
+    height = CARD_HEIGHT_MM * PIXELS_PER_MM
+    canonical = np.array(
+        [[[0.0, 0.0]], [[width, 0.0]], [[width, height]], [[0.0, height]]], dtype=np.float32
+    )
+    projected = cv2.perspectiveTransform(canonical, np.linalg.inv(transform).astype(np.float32))
+    return cast(np.ndarray, projected.reshape(4, 2))
+
+
+def extract_patches(
+    image: np.ndarray, transform: np.ndarray | None = None
+) -> dict[str, tuple[int, int, int]]:
+    if transform is None:
+        transform = card_transform(image)
+    if transform is None:
+        raise ValueError(f"ArUco marker {MARKER_ID} was not detected")
     warped = cv2.warpPerspective(
         image,
         transform,

@@ -3,6 +3,7 @@ import * as maplibregl from 'maplibre-gl'
 import type { Map as MapLibreMap, MapLayerMouseEvent } from 'maplibre-gl'
 import { Protocol } from 'pmtiles'
 import {
+  cellSummary,
   contributionFeatures,
   loadContributionCells,
   PRIOR_LAYERS,
@@ -57,7 +58,7 @@ export function App() {
       new maplibregl.AttributionControl({
         compact: true,
         customAttribution:
-          'SoilGrids © ISRIC, CC BY 4.0 · Contributions are H3-fuzzed',
+          'SoilGrids © ISRIC, CC BY 4.0 · Contributions are k-anonymous H3 cells',
       }),
       'bottom-right',
     )
@@ -91,22 +92,42 @@ export function App() {
             20,
             '#cf4d3f',
           ],
-          'fill-opacity': 0.78,
+          'fill-opacity': [
+            'match',
+            ['get', 'resolution'],
+            4,
+            0.35,
+            6,
+            0.55,
+            0.78,
+          ],
           'fill-outline-color': '#fff4c2',
         },
         source: 'contributions',
         type: 'fill',
       })
       map.on('click', 'contribution-density', (event: MapLayerMouseEvent) => {
+        // Rendered features come topmost first: the finest cell under the pointer.
         const feature = event.features?.[0]
         if (!feature) return
-        const count = Number(feature.properties?.count ?? 0)
-        const latest = String(feature.properties?.latest ?? 'Unknown')
+        const lines = cellSummary({
+          contributors: Number(feature.properties?.contributors ?? 0),
+          count: Number(feature.properties?.count ?? 0),
+          h3: String(feature.properties?.h3 ?? ''),
+          latest: String(feature.properties?.latest ?? 'Unknown'),
+          resolution: Number(feature.properties?.resolution ?? 0),
+        })
+        // Text nodes only: aggregate values never become markup.
+        const content = document.createElement('div')
+        const heading = document.createElement('strong')
+        heading.textContent = lines[0]
+        content.append(heading)
+        for (const line of lines.slice(1)) {
+          content.append(document.createElement('br'), line)
+        }
         new maplibregl.Popup({ closeButton: false })
           .setLngLat(event.lngLat)
-          .setHTML(
-            `<strong>${count} contribution${count === 1 ? '' : 's'}</strong><br>Latest: ${latest}`,
-          )
+          .setDOMContent(content)
           .addTo(map)
       })
       map.on('mouseenter', 'contribution-density', () => {
@@ -123,7 +144,7 @@ export function App() {
           source.setData(contributionFeatures(cells))
           setMapStatus(
             cells.length
-              ? `${cells.length} public H3 cells loaded. No precise points are shown.`
+              ? `${cells.length} public H3 cells loaded. Each holds at least three contributors; no precise points are shown.`
               : 'No QA-passed public contributions yet.',
           )
         })

@@ -7,6 +7,7 @@ export default defineConfig({
   webServer: {
     command: 'pnpm build:pages && node scripts/serve-pages.mjs',
     env: {
+      VITE_CAPTURE_LIVE: 'true',
       VITE_SUPABASE_PUBLISHABLE_KEY: 'e2e-publishable-key',
       VITE_SUPABASE_URL: 'https://supabase.test',
     },
