@@ -31,8 +31,9 @@ Phase 1 stack was published as:
 
 These are intentionally not bypassed by code:
 
-1. A non-author maintainer approves the stacked pull requests before protected `main` can merge;
-   Justin then gives the product-owner go/no-go. No work package has been self-merged.
+1. Independent review findings are resolved and CI passes before protected `main` can merge;
+   Justin gives the product-owner go/no-go. His 2026-10-12 owner exception removes the additional
+   non-author GitHub approval requirement. No agent submits an approving review.
 2. Complete legal review of the ODbL 1.0 / CC BY-SA 4.0 contribution terms, then confirm enabling
    anonymous sign-in in production Supabase.
 3. Add `SUPABASE_SERVICE_ROLE_KEY` as a GitHub secret for the scheduled prior, photo-QA, and export
@@ -83,3 +84,15 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    variable `VITE_PRIOR_TILES_BASE` to that base. The Pages deploy then checks that every archive
    exists and carries the palette version the legends use. Until the variable is set the map uses
    ISRIC's WMS with ISRIC's own legend.
+
+
+## Production worker schedule holds
+
+Merging a workflow or adding its credential must not authorise production work. Scheduled worker
+jobs skip unless Justin has approved that worker's production gate and explicitly set its repository
+variable to `true`: `GSIP_PRIOR_SCHEDULE_ENABLED`, `GSIP_QA_SCHEDULE_ENABLED`,
+`GSIP_EXPORT_SCHEDULE_ENABLED`, or `GSIP_CLEANUP_SCHEDULE_ENABLED`. Missing variables hold the jobs.
+Manual dispatch remains available for a separately approved, bounded one-off run; it does not enable
+the schedule. Existing disabled workflows stay disabled until their own gate. Do not set any schedule
+variable while capture, photo publication or export still has an unmet gate. Restore a hold by removing
+the relevant variable or setting it to `false`; this does not cancel an already running job.

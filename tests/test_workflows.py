@@ -71,3 +71,29 @@ def test_pages_deploy_checks_the_prior_tiles_match_the_palette() -> None:
         if "pnpm check:prior-tiles" in block
     ]
     assert "VITE_PRIOR_TILES_BASE: ${{ vars.VITE_PRIOR_TILES_BASE }}" in gate
+
+
+@pytest.mark.parametrize(
+    ("filename", "job", "variable"),
+    [
+        ("prior-enrichment.yml", "drain", "GSIP_PRIOR_SCHEDULE_ENABLED"),
+        ("photo-qa.yml", "process", "GSIP_QA_SCHEDULE_ENABLED"),
+        ("nightly-export.yml", "export", "GSIP_EXPORT_SCHEDULE_ENABLED"),
+        ("quarantine-cleanup.yml", "cleanup", "GSIP_CLEANUP_SCHEDULE_ENABLED"),
+    ],
+)
+def test_production_worker_schedule_requires_explicit_opt_in(
+    filename: str, job: str, variable: str
+) -> None:
+    workflow = next(path for path in WORKFLOWS if path.name == filename)
+    text = workflow.read_text(encoding="utf-8")
+    # A job-level gate runs before checkout, dependency setup or secret-bearing steps.
+    # A step gate alone could leave another step free to mutate production.
+    expected = (
+        "    if: ${{ github.event_name == 'workflow_dispatch' || "
+        f"(github.event_name == 'schedule' && vars.{variable} == 'true') "
+        "}}"
+    )
+    assert f"  {job}:\n{expected}\n" in text, filename
+    assert "workflow_dispatch:" in text and "schedule:" in text
+    assert "secrets.SUPABASE_SERVICE_ROLE_KEY" in text
