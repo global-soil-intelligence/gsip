@@ -1,7 +1,7 @@
 # Nightly public export
 
-`pipeline.export` selects only non-synthetic `qa_pass` submissions and, within them, only photos
-whose own QA verdict is `pass`. It constructs every public row from an allowlisted schema, scans for
+`pipeline.export` selects only non-synthetic `qa_pass` submissions at provenance tier 0 or above
+and, within them, only photos whose own QA verdict is `pass`. It constructs every public row from an allowlisted schema, scans for
 forbidden precise or private keys (including the raw `h3_r8` and `h3_r6` cells), requires the
 immutable grant, downloads only canonical private photos, strips metadata again, verifies the
 result, and writes a Parquet dataset that is immediately round-tripped with `datasets.load_dataset()`.
@@ -20,6 +20,20 @@ result, and writes a Parquet dataset that is immediately round-tripped with `dat
   without photos, so the name appears nowhere; such photos are never read from Storage. Review names
   with `uv run python -m pipeline.attribution_review list|approve|reject`.
 
+## Provenance and the holdout (WP-6e)
+
+- Every row carries the database-derived `provenance_tier` (0 unattested, 1 corroborated by the
+  photos' own capture metadata; 2 and 3 are reserved) and the contributor's claims
+  `location_source` and `capture_method`, published as stated. The dataset card explains each tier,
+  that claims never raise one, and that `capture_method` is the app's own estimate.
+- The source query asks only for non-synthetic rows at tier 0 or above. The build then drops any
+  synthetic candidate and asserts every remaining row again: a synthetic row that got past that
+  filter, a missing tier, or one outside 0–3 aborts the release (I11). A claim value outside the
+  known sets sets the row aside.
+- The label query asks only for laboratory labels that are not held out, and every label read is
+  checked again: a held-out label, or one whose flag did not arrive, aborts the release. The flag
+  itself is a forbidden key in rows (I15).
+
 ## k-anonymous locations (SPEC I7)
 
 Rows carry `h3_cell` and `h3_resolution` instead of the private cells. Each observation is placed in
@@ -32,8 +46,8 @@ refuses any cell below k = 3.
 
 ## What a row never carries
 
-No precise geometry, raw `h3_r8`/`h3_r6` cell, GPS accuracy, contributor or grant identifier,
-device model or private camera metadata. Two less obvious exclusions follow from SPEC I7 ("by value
+No precise geometry, raw `h3_r8`/`h3_r6` cell, GPS accuracy, contributor, grant or actor
+identifier, device model, private camera metadata, capture evidence or holdout flag. Two less obvious exclusions follow from SPEC I7 ("by value
 as well as by name"): **point-level priors** (eight SoilGrids properties matched against the public
 rasters pinpoint a 250 m pixel, finer than any published cell) and the **GPS plausibility score**
 (it encodes the private GPS accuracy; the check is released as pass or fail only).
@@ -49,7 +63,8 @@ set-asides, so a set-aside row can never leave a published cell below k.
 The whole release aborts, publishing nothing, on:
 
 - a privacy assertion: metadata in a canonical photo or surviving sanitization, a forbidden field
-  in a row, or a photo path that does not match its owner;
+  in a row (including a holdout flag), a synthetic or untiered row, or a photo path that does not
+  match its owner;
 - an infrastructure error: any other Storage or database failure (5xx, 429, timeouts), so an
   outage can never publish a hollowed-out release that wipes the dataset and the map;
 - widespread set-asides: more than 3 rows or 10 % of candidates, whichever is larger.

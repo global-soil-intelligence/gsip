@@ -1,5 +1,5 @@
 import 'fake-indexeddb/auto'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AccountChanged, RecordWithdrawn } from '../src/errors'
 import {
   clearQueue,
@@ -77,8 +77,15 @@ function client(
 }
 
 beforeEach(async () => {
+  // Records were accepted on 2026-10-01; the clock is pinned inside the 30-day window (I9).
+  vi.useFakeTimers({ toFake: ['Date'] })
+  vi.setSystemTime(new Date('2026-10-02T00:00:00Z'))
   await clearQueue()
   window.localStorage.clear()
+})
+
+afterEach(() => {
+  vi.useRealTimers()
 })
 
 describe('records are only ever sent as the account they were made under', () => {
@@ -148,7 +155,13 @@ describe('the drain', () => {
       if (item.submissionId === 'elsewhere') throw new AccountChanged()
     })
 
-    expect(summary).toEqual({ discarded: 1, failed: 0, held: 1, synced: 1 })
+    expect(summary).toEqual({
+      discarded: 1,
+      failed: 0,
+      held: 1,
+      reconfirm: 0,
+      synced: 1,
+    })
     const [held] = await queued()
     expect(held.submissionId).toBe('elsewhere')
     expect(held.heldAt).toBeDefined()

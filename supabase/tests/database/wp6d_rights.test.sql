@@ -4,6 +4,8 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
+insert into public.terms_versions (version, published_at)
+values ('test-v1', '2026-01-01T00:00:00Z') on conflict (version) do nothing;
 
 select plan(70);
 

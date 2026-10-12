@@ -12,6 +12,10 @@ values
     ('c57529e0-2790-5e7b-9c83-f09d0e9c4f2a', 'a0000000-0000-4000-8000-000000000005', 'murray-viticulturist')
 on conflict (id) do nothing;
 
+insert into public.terms_versions (version, published_at, summary)
+values ('2026-07-22', '2026-07-22T00:00:00Z', 'Synthetic seed terms (development only).')
+on conflict (version) do nothing;
+
 insert into public.contribution_grants (
     id, contributor_id, terms_version, accepted_at, attribution_name
 )

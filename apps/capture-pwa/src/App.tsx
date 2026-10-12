@@ -10,10 +10,17 @@ import { fuzzLocation } from './geo'
 import { HexPreview } from './HexPreview'
 import { legalLinks } from './legal'
 import {
+  CLIENT_VERSION,
+  captureMethod,
+  ingestPath,
+  type LocationSource,
+} from './provenance'
+import {
   discardHeld,
   enqueue,
   indexedDbQueue,
   queued,
+  reconfirmTerms,
   releaseHeld,
   retryDeadLettered,
 } from './queue'
@@ -27,10 +34,15 @@ import {
   type ServiceState,
   submitQueued,
 } from './supabase'
+import { TERMS_VERSION } from './terms'
 import type { QueueRecord, ShotType } from './types'
 import { YourData } from './YourData'
 
-const TERMS_VERSION = '2026-07-22-v1'
+// Files created after this moment were taken with the camera during this visit (WP-6e claim).
+const PAGE_LOADED_AT =
+  typeof performance !== 'undefined' && performance.timeOrigin > 0
+    ? performance.timeOrigin
+    : Date.now()
 const PAUSED_MESSAGE =
   'Capture is paused. Your observations stay safely on this device until it reopens.'
 const LAND_COVERS = [
@@ -70,16 +82,31 @@ function PhotoField({
   )
 }
 
-async function photos(form: FormData): Promise<QueueRecord['photos']> {
+type SelectedPhotos = Record<ShotType, File | null>
+
+/** The photo chosen for each shot, read once from the form's own file inputs. */
+function selectedPhotos(form: HTMLFormElement): SelectedPhotos {
+  const fileFor = (shotType: ShotType): File | null => {
+    const input = form.elements.namedItem(`shot-${shotType.toLowerCase()}`)
+    const file =
+      input instanceof HTMLInputElement ? input.files?.[0] : undefined
+    return file && file.size ? file : null
+  }
+  return { A: fileFor('A'), B: fileFor('B'), C: fileFor('C') }
+}
+
+async function photos(
+  selected: SelectedPhotos,
+): Promise<QueueRecord['photos']> {
   const readBytes = async (file: File) =>
     new Uint8Array(await file.arrayBuffer())
   const captured = await Promise.all(
     (['A', 'B', 'C'] as ShotType[]).map(async (shotType) => {
-      const file = form.get(`shot-${shotType.toLowerCase()}`)
-      if (file instanceof File && file.size && file.type !== 'image/jpeg') {
+      const file = selected[shotType]
+      if (file && file.type !== 'image/jpeg') {
         throw new Error('Only JPEG photos can be queued.')
       }
-      return file instanceof File && file.size
+      return file
         ? {
             bytes: await readBytes(file),
             mimeType: file.type || 'image/jpeg',
@@ -139,9 +166,12 @@ export function App() {
   const [accuracy, setAccuracy] = useState<number | null>(null)
   const [latitude, setLatitude] = useState('')
   const [longitude, setLongitude] = useState('')
+  const [locationSource, setLocationSource] =
+    useState<LocationSource>('unknown')
   const [queueCount, setQueueCount] = useState(0)
   const [deadLetterCount, setDeadLetterCount] = useState(0)
   const [heldCount, setHeldCount] = useState(0)
+  const [reconfirmCount, setReconfirmCount] = useState(0)
   const [emailInUse, setEmailInUse] = useState(false)
   const [status, setStatus] = useState('Ready for your first observation.')
   const [publicCell, setPublicCell] = useState<string | null>(null)
@@ -157,6 +187,9 @@ export function App() {
       records.filter((record) => Boolean(record.deadLetteredAt)).length,
     )
     setHeldCount(records.filter((record) => Boolean(record.heldAt)).length)
+    setReconfirmCount(
+      records.filter((record) => Boolean(record.termsExpiredAt)).length,
+    )
     return records
   }, [])
   const drainOnce = useCallback(async () => {
@@ -186,7 +219,11 @@ export function App() {
     const withdrawn = result.discarded
       ? ` ${result.discarded} observation${result.discarded > 1 ? 's' : ''} you had withdrawn ${result.discarded > 1 ? 'were' : 'was'} removed from this device.`
       : ''
-    if (result.held) {
+    if (result.reconfirm) {
+      setStatus(
+        `${result.reconfirm} observation${result.reconfirm > 1 ? 's' : ''} waited more than 30 days to sync. Accept the contribution terms again to send ${result.reconfirm > 1 ? 'them' : 'it'}.${withdrawn}`,
+      )
+    } else if (result.held) {
       setStatus(
         `${result.held} observation${result.held > 1 ? 's belong' : ' belongs'} to an account that is no longer signed in here, so ${result.held > 1 ? 'they were' : 'it was'} not sent.${withdrawn}`,
       )
@@ -267,6 +304,7 @@ export function App() {
         setLatitude(position.coords.latitude.toFixed(6))
         setLongitude(position.coords.longitude.toFixed(6))
         setAccuracy(Math.round(position.coords.accuracy))
+        setLocationSource('device_gps')
         setStatus(
           'Location captured. It stays private; only a shared H3 cell can become public.',
         )
@@ -316,6 +354,7 @@ export function App() {
       setStatus('Choose JPEG photos before continuing.')
       return
     }
+    const selected = selectedPhotos(event.currentTarget)
     const form = new FormData(event.currentTarget)
     const numericLatitude = Number(latitude)
     const numericLongitude = Number(longitude)
@@ -345,19 +384,30 @@ export function App() {
     }
     let capturedPhotos: QueueRecord['photos']
     try {
-      capturedPhotos = await photos(form)
+      capturedPhotos = await photos(selected)
     } catch {
       setStatus('Choose JPEG photos before continuing.')
       return
     }
-    const shotB = form.get('shot-b')
     // WP-6d: an observation is only ever sent as the account it was made under.
     const ownerUid = await recordOwner(client)
+    const now = Date.now()
     const record: QueueRecord = {
       accuracyM: accuracy,
-      acceptedAt: new Date().toISOString(),
+      acceptedAt: new Date(now).toISOString(),
       attributionName,
-      capturedAt: captureTime(shotB instanceof File ? shotB : null, Date.now()),
+      capturedAt: captureTime(selected.B, now),
+      // WP-6e: claims only. The server never lets them raise a provenance tier.
+      claims: {
+        captureMethod: captureMethod(
+          [selected.A, selected.B],
+          PAGE_LOADED_AT,
+          now,
+        ),
+        clientVersion: CLIENT_VERSION,
+        ingestPath: ingestPath(),
+        locationSource,
+      },
       deviceModel: coarseDeviceModel(),
       disturbed: form.get('disturbed') === 'yes',
       grantId: crypto.randomUUID(),
@@ -377,6 +427,7 @@ export function App() {
     setLatitude('')
     setLongitude('')
     setAccuracy(null)
+    setLocationSource('unknown')
     await refreshQueueState()
     if (navigator.onLine && client) await sync()
     else
@@ -560,7 +611,12 @@ export function App() {
                     step="any"
                     required
                     value={latitude}
-                    onChange={(event) => setLatitude(event.target.value)}
+                    onChange={(event) => {
+                      // A typed coordinate is a manual location; a GPS accuracy no longer applies.
+                      setLatitude(event.target.value)
+                      setLocationSource('manual_pin')
+                      setAccuracy(null)
+                    }}
                   />
                 </label>
                 <label>
@@ -574,7 +630,11 @@ export function App() {
                     step="any"
                     required
                     value={longitude}
-                    onChange={(event) => setLongitude(event.target.value)}
+                    onChange={(event) => {
+                      setLongitude(event.target.value)
+                      setLocationSource('manual_pin')
+                      setAccuracy(null)
+                    }}
                   />
                 </label>
                 <div className="accuracy">
@@ -687,6 +747,36 @@ export function App() {
                 >
                   Send {heldCount > 1 ? 'them' : 'it'} from this device’s
                   account
+                </button>
+              </div>
+            )}
+            {reconfirmCount > 0 && (
+              <div
+                className="held-actions"
+                role="group"
+                aria-label="Observations waiting for the contribution terms"
+              >
+                <p>
+                  {reconfirmCount} observation
+                  {reconfirmCount > 1 ? 's' : ''} waited more than 30 days to
+                  sync, so the{' '}
+                  <a href={links.terms} target="_blank" rel="noreferrer">
+                    contribution terms
+                  </a>{' '}
+                  must be accepted again before{' '}
+                  {reconfirmCount > 1 ? 'they are' : 'it is'} sent. Nothing else
+                  about {reconfirmCount > 1 ? 'them' : 'it'} changes.
+                </p>
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() => {
+                    void reconfirmTerms(new Date().toISOString(), TERMS_VERSION)
+                      .then(refreshQueueState)
+                      .then(() => sync())
+                  }}
+                >
+                  Accept the terms again and send
                 </button>
               </div>
             )}

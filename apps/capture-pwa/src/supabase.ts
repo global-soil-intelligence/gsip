@@ -1,7 +1,14 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@gsip/schema'
-import { AccountChanged, isWithdrawal, RecordWithdrawn } from './errors'
+import {
+  AccountChanged,
+  isWithdrawal,
+  RecordWithdrawn,
+  TermsReconfirmationNeeded,
+} from './errors'
 import { fuzzLocation } from './geo'
+import { claimColumns } from './provenance'
+import { acceptanceExpired, TERMS_VERSION } from './terms'
 import type { QueueRecord } from './types'
 
 export type GsipClient = SupabaseClient<Database>
@@ -132,6 +139,42 @@ function refusal(error: unknown): unknown {
   return isWithdrawal(error) ? new RecordWithdrawn() : error
 }
 
+function insertGrant(
+  client: GsipClient,
+  record: QueueRecord,
+  contributor: string,
+  acceptedAt: string,
+  termsVersion: string,
+) {
+  return client.from('contribution_grants').insert({
+    accepted_at: acceptedAt,
+    attribution_name: record.attributionName,
+    contributor_id: contributor,
+    id: record.grantId,
+    terms_version: termsVersion,
+  })
+}
+
+/**
+ * A row-level refusal (42501) of an acceptance that is too old, or under terms this build no
+ * longer presents, which only a new acceptance can fix. Any other failure is retried as usual.
+ */
+function needsNewAcceptance(
+  error: unknown,
+  record: QueueRecord,
+  now: number,
+): boolean {
+  const code =
+    typeof error === 'object' && error !== null && 'code' in error
+      ? (error as { code?: unknown }).code
+      : undefined
+  return (
+    code === '42501' &&
+    (acceptanceExpired(record.acceptedAt ?? record.queuedAt, now) ||
+      record.termsVersion !== TERMS_VERSION)
+  )
+}
+
 async function contributorId(client: GsipClient, uid: string): Promise<string> {
   const existing = await client
     .from('contributors')
@@ -177,14 +220,35 @@ export async function submitQueued(
   if (grant.error) throw grant.error
   if (!grant.data) {
     // The grant records when the person accepted the terms, never the photo's own timestamp.
-    const created = await client.from('contribution_grants').insert({
-      accepted_at: record.acceptedAt ?? record.queuedAt,
-      attribution_name: record.attributionName,
-      contributor_id: contributor,
-      id: record.grantId,
-      terms_version: record.termsVersion,
-    })
-    if (created.error) throw refusal(created.error)
+    // WP-6e (I9): the original acceptance always goes first. The server refuses a withdrawn one
+    // as withdrawn (WD001) before it checks its age, so an observation its person withdrew is
+    // dropped, never re-accepted. Only an acceptance it refused as expired, or under terms this
+    // build no longer presents, is held for the person to accept the current terms again.
+    const original = await insertGrant(
+      client,
+      record,
+      contributor,
+      record.acceptedAt ?? record.queuedAt,
+      record.termsVersion,
+    )
+    if (original.error) {
+      if (isWithdrawal(original.error)) throw new RecordWithdrawn()
+      if (!needsNewAcceptance(original.error, record, Date.now()))
+        throw original.error
+      if (
+        !record.reconfirmedAt ||
+        acceptanceExpired(record.reconfirmedAt, Date.now())
+      )
+        throw new TermsReconfirmationNeeded()
+      const renewed = await insertGrant(
+        client,
+        record,
+        contributor,
+        record.reconfirmedAt,
+        record.reconfirmedTermsVersion ?? TERMS_VERSION,
+      )
+      if (renewed.error) throw refusal(renewed.error)
+    }
   }
 
   const location = fuzzLocation(record.latitude, record.longitude)
@@ -209,6 +273,8 @@ export async function submitQueued(
       land_cover: record.landCover,
       status: 'pending',
       surface_condition: record.surfaceCondition,
+      // WP-6e: claims only; the server assigns the actor and the provenance tier.
+      ...claimColumns(record.claims),
     })
     if (created.error) throw refusal(created.error)
   }

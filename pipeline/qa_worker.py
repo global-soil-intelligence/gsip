@@ -10,6 +10,7 @@ import h3  # type: ignore[import-untyped]
 import httpx
 
 from pipeline.paths import StoragePathMismatch, expected_photo_path_pattern, verify_photo_path
+from pipeline.provenance import capture_evidence
 from pipeline.qa import evaluate_photo
 
 __all__ = [
@@ -183,10 +184,13 @@ class SupabaseQaWorker:
                 "GET", f"photos?id=eq.{photo_id}&select=id,submission_id,shot_type,storage_path"
             ).json()[0]
             submission_id = str(photo["submission_id"])
+            # WP-6e: the client's provenance claims are deliberately not read; they never raise a
+            # tier. Only the claimed time and point are compared with the photo's own evidence.
             submission = self._rest(
                 "GET",
                 f"submissions?id=eq.{submission_id}"
-                "&select=id,geom_precise,gps_accuracy_m,land_cover,contributor:contributors(auth_uid)",
+                "&select=id,geom_precise,gps_accuracy_m,land_cover,captured_at,grant_id,"
+                "contributor:contributors(auth_uid)",
             ).json()[0]
             # WP-6b: never trust the stored path. A mismatch is terminal and touches no object.
             path = verified_storage_path(photo, submission)
@@ -210,6 +214,15 @@ class SupabaseQaWorker:
                 f"{self.url}/storage/v1/object/authenticated/incoming-photos/{object_path}"
             )
             raw.raise_for_status()
+            # WP-6e: evidence comes from the original bytes, before sanitizing strips them. The
+            # database derives the photo's tier from it; the worker never writes a tier.
+            evidence = capture_evidence(
+                raw.content,
+                claimed_at=_timestamp(submission.get("captured_at")),
+                accepted_at=self._accepted_at(submission.get("grant_id")),
+                latitude=latitude,
+                longitude=longitude,
+            )
             result = evaluate_photo(
                 raw.content,
                 accuracy_m=submission["gps_accuracy_m"],
@@ -237,6 +250,7 @@ class SupabaseQaWorker:
                     "sharpness_score": next(
                         event.score for event in result.events if event.check_name == "sharpness"
                     ),
+                    "capture_evidence_private": evidence.private_json(),
                 },
             ).json()
             if not updated:
@@ -295,6 +309,16 @@ class SupabaseQaWorker:
             )
             return False
 
+    def _accepted_at(self, grant_id: Any) -> datetime | None:
+        """When the person accepted the terms for the observation; None if it cannot be read."""
+
+        if not isinstance(grant_id, str) or not grant_id:
+            return None
+        rows = self._rest(
+            "GET", f"contribution_grants?id=eq.{quote(grant_id, safe='')}&select=accepted_at"
+        ).json()
+        return _timestamp(rows[0].get("accepted_at")) if rows else None
+
     def _discard_objects(self, object_path: str) -> None:
         for bucket in ("submission-photos", "incoming-photos"):
             removed = self.client.delete(f"{self.url}/storage/v1/object/{bucket}/{object_path}")
@@ -349,6 +373,18 @@ class SupabaseQaWorker:
                 deleted.raise_for_status()
                 removed += 1
         return removed
+
+
+def _timestamp(value: Any) -> datetime | None:
+    """A timestamptz from PostgREST, or None when it is absent, unreadable or has no zone."""
+
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed if parsed.utcoffset() is not None else None
 
 
 def _coordinates(geometry: Any) -> tuple[float, float]:

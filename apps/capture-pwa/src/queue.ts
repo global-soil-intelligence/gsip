@@ -57,6 +57,30 @@ export async function releaseHeld(): Promise<void> {
   }
 }
 
+/**
+ * The person accepted the current contribution terms again for observations that waited too long
+ * to sync (I9). Each keeps its own grant identifier, which the server has not recorded yet, and its
+ * original acceptance, which is still offered first (see submitQueued).
+ */
+export async function reconfirmTerms(
+  reconfirmedAt: string,
+  reconfirmedTermsVersion: string,
+): Promise<number> {
+  let count = 0
+  for (const record of await queued()) {
+    if (!record.termsExpiredAt) continue
+    await enqueue({
+      ...record,
+      nextRetryAt: undefined,
+      reconfirmedAt,
+      reconfirmedTermsVersion,
+      termsExpiredAt: undefined,
+    })
+    count += 1
+  }
+  return count
+}
+
 export async function retryDeadLettered(): Promise<void> {
   for (const record of await queued()) {
     if (!record.deadLetteredAt) continue

@@ -47,6 +47,14 @@ jobs:
         env:
           GSIP_REQUIRE_GDAL: '1'
       - run: deno check --config supabase/functions/deno.json supabase/functions/*/index.ts
+      - name: Install PostgreSQL, PostGIS and pgTAP for the migration test
+        run: >-
+          sudo apt-get install -y --no-install-recommends
+          postgresql-16 postgresql-16-postgis-3 postgresql-16-pgtap
+      - name: Apply migrations to data written before them
+        run: scripts/db-migration-test.sh
+        env:
+          PG_BIN: /usr/lib/postgresql/16/bin
       - run: pnpm db:start
       - run: pnpm db:reset
       - run: pnpm db:test

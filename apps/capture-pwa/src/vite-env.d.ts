@@ -1,5 +1,8 @@
 /// <reference types="vite/client" />
 
+/** The capture app build, e.g. `0.1.0+abc1234` (WP-6e client_version claim). */
+declare const __GSIP_CLIENT_VERSION__: string
+
 interface ImportMetaEnv {
   readonly VITE_CAPTURE_LIVE?: string
   readonly VITE_PRIVACY_URL?: string

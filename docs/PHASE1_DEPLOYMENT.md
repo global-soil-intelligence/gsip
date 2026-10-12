@@ -106,6 +106,31 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    `VITE_SAMPLING_RULES_URL` (HTTPS or same-site paths); until then the capture app links to the
    drafts in the repository. Capture stays closed until this is done.
 
+### WP-6e — provenance
+
+1. Apply the migrations. Every contributor gets a human actor (revoked for accounts already
+   deleted), every submission records its actor, synthetic rows sit at provenance tier -1 and field
+   rows start at 0. The QA worker now records private capture evidence from each original upload
+   before stripping it, and the database derives every tier from that evidence. No new secret or
+   variable is needed. `scripts/db-migration-test.sh` (run in CI) applies this migration to
+   pre-WP-6e data and runs an account deletion on it; run it before applying migrations to a
+   database that holds real rows.
+2. The migration publishes the terms version the capture app has presented since July,
+   `2026-07-22-v1`. Any other version an existing grant cites (the development seed's `2026-07-22`,
+   or text an early client wrote) is recorded as retired, so existing grants stay valid and no new
+   grant can cite it. Grants must cite a published, unretired version, accepted within the last 30
+   days and not in the future; the server records `received_at`. A device whose observation waited
+   more than 30 days first offers the original acceptance (so a withdrawn observation is dropped),
+   and only then asks its person to accept the current terms again.
+3. When counsel approves new terms: insert the version into `terms_versions` with its
+   `published_at` and hosted `url`, change `TERMS_VERSION` in `apps/capture-pwa/src/terms.ts`, and
+   deploy Pages. Retire the previous version (`retired_at`) only after the new build has been live
+   for at least a day: an acceptance given on an un-updated device after retirement is refused.
+4. When loading laboratory results, mark sealed evaluation labels `holdout = true` (service role
+   only). Exports drop them and owners never see the flag.
+5. Agents cannot write yet. An `actors` row for an agent, device or lab is created only by the
+   service role and must be operated by a human actor; deleting that person's account revokes it.
+
 ## Production worker schedule holds
 
 Merging a workflow or adding its credential must not authorise production work. Scheduled worker

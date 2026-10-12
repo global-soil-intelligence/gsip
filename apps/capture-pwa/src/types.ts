@@ -1,3 +1,5 @@
+import type { ProvenanceClaims } from './provenance'
+
 export type ShotType = 'A' | 'B' | 'C'
 
 export type QueuedPhoto = {
@@ -13,6 +15,8 @@ export type CaptureDraft = {
   accuracyM: number | null
   attributionName: string
   capturedAt: string
+  /** WP-6e: how the app says the observation was made; records from older builds lack it. */
+  claims?: ProvenanceClaims
   deviceModel: string
   disturbed: boolean
   grantId: string
@@ -33,5 +37,14 @@ export type QueueRecord = CaptureDraft & {
   heldAt?: string
   nextRetryAt?: string
   queuedAt: string
+  /**
+   * When the person accepted the current terms again for an observation whose original acceptance
+   * expired (I9). The original `acceptedAt` is kept: it is always offered to the server first, so
+   * an observation its person withdrew is refused as withdrawn and dropped, never re-accepted.
+   */
+  reconfirmedAt?: string
+  reconfirmedTermsVersion?: string
   syncAttempts?: number
+  /** Set when its terms acceptance is too old to record: kept, not sent, until accepted again. */
+  termsExpiredAt?: string
 }

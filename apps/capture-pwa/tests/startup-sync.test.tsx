@@ -8,6 +8,7 @@ import {
   waitFor,
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { CLIENT_VERSION } from '../src/provenance'
 import { enqueue, queued, removeQueued } from '../src/queue'
 import type { QueueRecord } from '../src/types'
 
@@ -233,5 +234,172 @@ describe('capture retry behavior', () => {
     )
 
     expect(await screen.findByText(/choose jpeg photos/i)).toBeDefined()
+  })
+})
+
+describe('provenance claims and the terms window (WP-6e)', () => {
+  beforeEach(async () => {
+    vi.stubEnv('VITE_CAPTURE_LIVE', 'true')
+    mocks.fetchServiceState.mockReset()
+    mocks.fetchServiceState.mockResolvedValue('open')
+    mocks.submitQueued.mockReset()
+    mocks.submitQueued.mockResolvedValue(undefined)
+    for (const queuedRecord of await queued()) {
+      await removeQueued(queuedRecord.submissionId)
+    }
+    Object.defineProperty(window.navigator, 'onLine', {
+      configurable: true,
+      value: true,
+    })
+  })
+
+  afterEach(() => {
+    cleanup()
+    vi.unstubAllEnvs()
+  })
+
+  function choosePhotos(lastModified: number) {
+    const jpeg = new File(['jpeg'], 'soil.jpg', {
+      type: 'image/jpeg',
+      lastModified,
+    })
+    fireEvent.change(screen.getByLabelText(/A · Context/i), {
+      target: { files: [jpeg] },
+    })
+    fireEvent.change(screen.getByLabelText(/B · Fresh face/i), {
+      target: { files: [jpeg] },
+    })
+  }
+
+  function describeAndSubmit() {
+    fireEvent.change(screen.getByLabelText('Land cover'), {
+      target: { value: 'cropland' },
+    })
+    fireEvent.change(screen.getByLabelText('Surface condition'), {
+      target: { value: 'moist' },
+    })
+    fireEvent.click(screen.getByRole('checkbox', { name: /sampling rules/i }))
+    fireEvent.click(
+      screen.getByRole('checkbox', { name: /I own these photos/i }),
+    )
+    fireEvent.submit(
+      screen
+        .getByRole('button', { name: /queue observation/i })
+        .closest('form')!,
+    )
+  }
+
+  it('queues a typed location and gallery photos as such', async () => {
+    render(<App />)
+    choosePhotos(Date.parse('2020-01-01T00:00:00Z'))
+    fireEvent.change(screen.getByLabelText('Latitude'), {
+      target: { value: '44.4759' },
+    })
+    fireEvent.change(screen.getByLabelText('Longitude'), {
+      target: { value: '-73.2121' },
+    })
+    describeAndSubmit()
+
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(1))
+    expect(mocks.submitQueued).toHaveBeenCalledWith(
+      { hosted: true },
+      expect.objectContaining({
+        accuracyM: null,
+        claims: {
+          captureMethod: 'file',
+          clientVersion: CLIENT_VERSION,
+          ingestPath: 'web',
+          locationSource: 'manual_pin',
+        },
+      }),
+    )
+  })
+
+  it('queues the device location and fresh camera photos as such, until a coordinate is typed', async () => {
+    Object.defineProperty(window.navigator, 'geolocation', {
+      configurable: true,
+      value: {
+        getCurrentPosition: (success: PositionCallback) =>
+          success({
+            coords: { accuracy: 6.4, latitude: 44.4759, longitude: -73.2121 },
+          } as GeolocationPosition),
+      },
+    })
+    render(<App />)
+    choosePhotos(Date.now())
+    fireEvent.click(
+      screen.getByRole('button', { name: /use my current location/i }),
+    )
+    expect(await screen.findByText(/accuracy ±6 m/i)).toBeDefined()
+    describeAndSubmit()
+
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(1))
+    expect(mocks.submitQueued).toHaveBeenLastCalledWith(
+      { hosted: true },
+      expect.objectContaining({
+        accuracyM: 6,
+        claims: {
+          captureMethod: 'camera',
+          clientVersion: CLIENT_VERSION,
+          ingestPath: 'web',
+          locationSource: 'device_gps',
+        },
+      }),
+    )
+
+    // A coordinate typed after the device fix is a manual location with no GPS accuracy.
+    choosePhotos(Date.now())
+    fireEvent.click(
+      screen.getByRole('button', { name: /use my current location/i }),
+    )
+    fireEvent.change(screen.getByLabelText('Longitude'), {
+      target: { value: '-73.2200' },
+    })
+    expect(screen.queryByText(/accuracy ±6 m/i)).toBeNull()
+    describeAndSubmit()
+
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(2))
+    expect(mocks.submitQueued).toHaveBeenLastCalledWith(
+      { hosted: true },
+      expect.objectContaining({
+        accuracyM: null,
+        claims: expect.objectContaining({ locationSource: 'manual_pin' }),
+      }),
+    )
+  })
+
+  it('asks for the terms again before sending an observation that waited too long', async () => {
+    await enqueue({
+      ...record,
+      acceptedAt: '2026-01-01T00:00:00Z',
+      termsExpiredAt: '2026-02-01T00:00:00Z',
+      termsVersion: 'an-older-version',
+    })
+    render(<App />)
+
+    const accept = await screen.findByRole('button', {
+      name: /accept the terms again and send/i,
+    })
+    expect(screen.getByText(/waited more than 30 days/i)).toBeDefined()
+    expect(mocks.submitQueued).not.toHaveBeenCalled()
+
+    const before = Date.now()
+    fireEvent.click(accept)
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(1))
+    const [, sent] = mocks.submitQueued.mock.calls[0] as unknown as [
+      unknown,
+      QueueRecord,
+    ]
+    expect(sent.termsExpiredAt).toBeUndefined()
+    expect(sent.reconfirmedTermsVersion).toBe('2026-07-22-v1')
+    expect(Date.parse(sent.reconfirmedAt ?? '')).toBeGreaterThanOrEqual(
+      before - 1000,
+    )
+    // The original acceptance is kept: it is always offered to the server first.
+    expect(sent.acceptedAt).toBe('2026-01-01T00:00:00Z')
+    expect(sent.termsVersion).toBe('an-older-version')
+    // Nothing else about the observation changes.
+    expect(sent.grantId).toBe(record.grantId)
+    expect(sent.capturedAt).toBe(record.capturedAt)
   })
 })
