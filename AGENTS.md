@@ -104,14 +104,15 @@ needed for the corresponding checks. State missing tools and rely on CI for thos
 Never report a check as passing unless it ran. Preserve command outcomes, run links and
 artifact evidence; a local pass does not prove a deployment or production health.
 
-Before browser verification, inspect the Playwright setup. If it builds Pages with
-`VITE_CAPTURE_LIVE=true`, flag that conflict with the closed-capture rule and leave that
-setup unrun until Justin resolves it. Browser fixtures must use synthetic data and local
-mock services.
+The prescribed Playwright command uses a local synthetic/mock capture-live test build.
+Keep that test output local: never upload or publish it. Rebuild the actual Pages deployment
+artifact with `VITE_CAPTURE_LIVE=false` after browser verification. This test harness does not
+authorize production capture or anonymous sign-in.
 
 ## Production is gated, one step at a time
 
-Never set `service_state.capture_open = true`, build Pages with `VITE_CAPTURE_LIVE=true` or
+Never set `service_state.capture_open = true`, build a deployable Pages artifact with
+`VITE_CAPTURE_LIVE=true` or
 enable anonymous sign-in in production. Only Justin may open these gates after SPEC section
 11 is satisfied. Owner-controlled Apple/Google accounts, signing, CAPTCHA, paid tiers and
 new paid or closed services remain Justin's decisions.
