@@ -57,8 +57,8 @@ additional suppression requires Justin's explicit approval.
   use the publishable key and anonymous database role. Never weaken RLS.
 - Secrets live only in GitHub or Supabase secret stores. Never commit, print or paste them;
   Justin supplies credentials through `supabase login` and the secret stores.
-- I5: UI and API copy describes estimates with uncertainty; follow the terminology enforced
-  by `scripts/check-language.mjs`.
+- I5: UI and API copy never says "soil test". Describe estimates with uncertainty and follow
+  the terminology enforced by `scripts/check-language.mjs`.
 - TypeScript and Python only. No paid or closed service or proprietary SDK in the default
   deployment path without Justin's sign-off (BUILD_ORDER guardrail 6). Android's permission
   and closed-SDK checks must stay effective. For every new dependency, document its licence,
