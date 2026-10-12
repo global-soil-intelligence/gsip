@@ -1,5 +1,7 @@
 # Production reconciliation (WP-OPS-2)
 
+> **Execution update — 2026-10-12.** Gates A and B were executed and verified under separate owner approvals. Gate C applied exactly its nine October migrations once; its zero-security-findings postcheck failed with seven findings. Production is at the canonical 26-entry ledger, capture closed, sign-up and anonymous sign-in disabled. The original preparation below is preserved as historical evidence. The separately gated correction is described at the end; neither this document nor its merge authorizes it.
+
 **Prepared, not executed.** Target: `toxldjgwkxtneoqsazym` (`gsip`, `us-east-1`). Justin identified an accidental Wavefunction deployment and requested this separate package before any migration go. No foreign application SQL belongs in GSIP. No production history repair, function deletion, new migration or deployment is authorized by this document or its merge.
 
 ## Invariants
@@ -153,3 +155,46 @@ After Gates A/B are verified, present their exact plan and `db push --skip-vault
 ## Assumptions and limits
 
 Justin's target and foreign-deployment attribution are authoritative owner decisions. Seed classification is his statement; independent evidence establishes aggregate counts, not contributor-row provenance. No concurrent application or ledger writer is assumed, and fresh checks must invalidate this plan if state changes. Strict effective-schema equality does not reconstruct past DML effects or prove the complete hosted platform identical to local stand-ins. Platform extensions/grants stay intact. History repair, function deletion, nine new migrations, anonymous-auth readback and physical-device backup tests remain unexecuted gates. No new dependency, service, licence or architecture is introduced.
+
+## Gate D: client database function boundary
+
+**Prepared, not executed.** This is a new production gate after the recorded Gate C stop. The nine-file approval does not authorize these two files. Keep all existing 26 migration blobs and ledger records intact; never repair, replay or reset them.
+
+The specification clarification was committed first on `docs/spec-v3`. The additive correction lives on the owning branches: WP-6b makes the capture query use its existing column-only access and preserves finalization behind a bound public invoker adapter; WP-6d preserves auth-user and withdrawal checks behind bound invoker adapters and adds restrictive deny-all policies on the two service-only tables. Guarded privileged bodies remain unchanged in `private`, outside the exposed API schemas. No client schema, table or column grant is added. Existing public signatures, owners and complete caller ACLs remain unchanged, including the service-role upload-helper grant. New private dispatch grants are limited to the corresponding existing callers.
+
+| File                                              | SHA-256                                                            | Expected effect                                                                                       |
+| ------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `20261012141828_wp6b_invoker_boundary.sql`        | `afe4f698989729bd456fe763582f93042f58bf66a271704cdaa1c556eeb124d6` | Capture invoker; private guarded finalizer and definition-time bound public invoker adapter.          |
+| `20261012142348_wp6d_private_rights_boundary.sql` | `27c0b1ae001351358b6a56490bc1389d1075dd62cbd6ffc4e6250943fa507260` | Two private guarded rights helpers, bound public invoker adapters and two restrictive false policies. |
+
+The candidate application source is `19e626c8a95fae32dbd8ad0ff96bc96aba541a0f`. Do not substitute a newer source without reviewing its complete delta and repeating the proof. Its only differences from Gate C's source are the specification/build-order clarification, these two migrations and two pgTAP files. All 26 executed migration blobs are unchanged. Local owner-branch tests failed before and passed after; existing suites and original permissions stayed intact. Independent local HTTP tests cover owner/other/anonymous/service callers, stale and missing auth identity, withdrawal refusal, pooled identity isolation, private route denial, callee privilege revocation, replacement/dependency behavior and schema-cache reload. These are disposable synthetic proofs, not a hosted zero-findings result.
+
+Before asking for Gate D's exact-target go:
+
+1. Require fresh green checks on the current #28–#40 heads, including current-head APK and simulator artifacts for #34 and #39. Preserve all PR bodies and append the fixes under Changes after review.
+2. Run `scripts/db-migration-test.sh` from the candidate source using local PostGIS and pgTAP. Compare a fresh ordered 28-file installation with an existing-row 26-to-28 upgrade: exact primary/supplement catalogs, existing ACLs/owners, storage policies and aggregate counts must match. Run the complete candidate pgTAP suite, including both new suites. Save immutable coordinate-free receipts and strict target-28 reference metadata outside Git.
+3. Refresh production evidence: all 61 table identities/counts; exact 26-entry ledger and full-row hashes; current catalog against the verified target-26 baseline; seven expected advisor instances; unchanged function inventory; capture singleton false; sign-up/anonymous off. Stop on any mismatch or overlapping writer. Keep prior/QA/export workflows quiescent.
+4. Verify `private` is absent from Data API exposure. The 2026-10-12 read-only settings view showed only `public` and `graphql_public`. Inspect the verified migration owner's global/private default function ACLs without fetching keys. The read-only `postgres` query returned no custom entries; refresh it before execution. Unexpected owners, private names or default grantees stop the plan.
+5. Require the dry run to list only the two files above, in that order. No other migration, auth change, Vault operation, worker, release or deployment belongs in this gate.
+
+Exact dry-run command (read-only application preflight):
+
+```sh
+GSIP_DEPLOY_SOURCE="/Users/justinhart/.codex/worktrees/gsip-coding-guidance/GSIP 2.0"
+GSIP_CLI="/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11/repo/node_modules/.bin/supabase"
+git -C "$GSIP_DEPLOY_SOURCE" rev-parse HEAD
+git -C "$GSIP_DEPLOY_SOURCE" status --porcelain
+"$GSIP_CLI" db push --project-ref toxldjgwkxtneoqsazym --workdir "$GSIP_DEPLOY_SOURCE" --skip-vault --dry-run
+```
+
+Expected source: exact candidate commit above, empty status, CLI 2.118.0, only the two named pending files. The CLI may initialize its temporary database login role during read-only preflight; this is not an application migration.
+
+**After Justin's separate Gate D go only**, execute once:
+
+```sh
+"$GSIP_CLI" db push --project-ref toxldjgwkxtneoqsazym --workdir "$GSIP_DEPLOY_SOURCE" --skip-vault
+```
+
+Stop on a failed/partial push, any unexpected file or any readback mismatch. Do not automatically retry or roll back. Read back the exact canonical 28-entry ledger, preserving all 26 previous complete record hashes. Require the complete hosted security advisor to report zero findings. Compare exact target-28 catalogs with the same previously bound platform additions and surviving ownership-expression aliases; do not broaden the comparator. Assert the three new private helpers are owned by the verified owner with exactly the reviewed EXECUTE ACLs, no new private schema/table/column client grants, and unchanged public caller ACLs. Confirm every table count is unchanged except the ledger's two new records, capture is false, sign-up/anonymous are off, and original backfill/k-anonymity checks still pass. Verify hosted API dispatch reflects the unchanged signatures and anonymous `capture_is_open` returns false without retrieving private rows or creating production synthetic contributors. If a cache reload is needed, stop and present that exact additional action for approval; do not issue an extra SQL command under this two-file gate. The Data API's private schema remains unexposed. Further Edge deployment or worker/publication steps need their own exact-target gates after this passes.
+
+**Assumptions and limits:** the verified migration owner and exposed-schema settings remain unchanged; there is no overlapping writer; PostgreSQL supports SQL-standard definition-time bound function bodies (local/hosted 17, CI 16). Local stand-ins and loopback PostgREST are not complete hosted-platform proof. Existing seed counts establish current state, not historical contributor provenance. Advisor remediation is an architecture correction, not a suppression; no detector rule, redaction, full-history secret scan or RLS boundary is weakened.
