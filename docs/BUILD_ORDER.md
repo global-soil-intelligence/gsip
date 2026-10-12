@@ -2,6 +2,7 @@
 
 **Project:** Global Soil Intelligence Project (citizen-science soil mapping flywheel for people and agents)
 **Version:** 3.0 — 2026-10-10
+**Pending amendment:** v4.0 draft — 2026-10-11. The additional packages below are proposed under SPEC §15; the reviewed v3.0 plan remains the baseline until Justin approves and merges the specification PR.
 **Builder:** Claude (build sessions), acting for the product owner as human of record.
 **Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) against the §5 review gates; findings and resolutions are posted to the PR. The GitHub approval required by branch protection must come from a non-author maintainer account. Justin Hart provides the final product-owner go/no-go; when his account authors a PR, that go/no-go cannot also satisfy GitHub's non-author approval.
 **Product owner:** Justin Hart
@@ -183,6 +184,53 @@ Acceptance criteria:
 - [ ] `app-build.yml` produces the Android debug APK and the iOS simulator build.
 - [ ] The app requests only camera and when-in-use location permissions, each with a purpose string.
 
+### Pending v4.0 follow-ups — separate implementation PRs
+
+The following packages schedule SPEC §15 without claiming it has been approved or implemented. Owner-approved policy decisions are recorded there. Capture and production anonymous sign-in remain closed. The specification PR carries no code, dependencies or migrations. Follow-up branches stack after WP-APP-1 until the existing stack merges, with this specification amendment as the first change for the new architecture. Already-authorized WP-APP-2A CI/Android backup preparation may be built and reviewed against this proposal after its specification commit; its merge follows specification approval. Notification architecture remains a proposal, and screening implementation has the stronger explicit approval-and-merge gate below. No agent merges or approves a PR.
+
+**WP-APP-2A: Account-free app build readiness and private backup exclusions**
+
+Branch: `wp-app-2a-build-readiness`. Scope: validated CI build numbers and one marketing-version source; source/toolchain/lockfile/artifact receipts and honest reproducibility comparisons; Android exclusion of private queue, photo and session stores from cloud backup, with direct device transfer allowed only under tested cloud/transfer separation; otherwise exclude both. Update the app-store checklist to distinguish Android artifact evidence from iOS readiness. No signing, store accounts, keystores, deep-link account setup or store submission.
+
+Acceptance criteria:
+
+- [ ] Tests reject invalid/out-of-range build numbers and verify that both generated platform configurations use the declared marketing/build versions; CI reads the values back from the built APK and simulator app.
+- [ ] CI records input versions/digests and artifact hashes. A repeated build with the same inputs records either byte equality or explicit normalized-content differences; do not call an ordinary successful build reproducible.
+- [ ] Tests cover legacy Android backup rules, current cloud-backup/device-transfer rules and effective manifest wiring. The compiled app excludes WebView private storage and draft photos from cloud backup; a synthetic device backup/transfer check is required before claiming device protection.
+- [ ] Android 12+ direct device transfer may preserve private queue/session storage only if cloud and transfer rules are cleanly separated and synthetic checks prove the cloud channel excludes all private stores. Legacy Android or unproven separation excludes both. A fresh install/cloud restore starts a new anonymous account; verified direct transfer may preserve it.
+- [ ] iOS backup protection is marked **blocked/unverified** until a separately specified reliable method passes synthetic real-device backup/restore checks. A no-cloud filesystem directory does not exclude existing IndexedDB/localStorage. Any storage migration requires its own architecture review and regression tests; any new native-language code requires Justin's exception first.
+- [ ] Existing permission and Android `check-dependencies` checks pass unchanged in strength; no new dependency/service or signing secret is needed.
+
+**WP-APP-2B: Local sync and nearby-coverage notifications (proposal)**
+
+Branch: `wp-app-2b-local-notifications`. Depends on approved SPEC §15 and WP-APP-2A. Scope: opt-in on-device sync reminders and nearby public coverage suggestions using `@capacitor/local-notifications`, with no push service. Foreground permissioned location stays on-device, nearby targets obey SPEC §9 and suggestions remain disabled when public inputs cannot prove eligibility. Notifications contain no private payload and do not invite contribution with capture closed. [The proposed plugin audit](PHOTO_PRIVACY_SCREENING.md#notification-candidate) must be refreshed for the pinned version in the implementation PR.
+
+Acceptance criteria:
+
+- [ ] Behavior tests cover opt-in, denial, unsupported/web fallback, queue-empty/no-repeat behavior, cancellation after sync/deletion/withdrawal/sign-out, capture-closed behavior and notification actions through existing access checks.
+- [ ] Tests prove nearby computation uses only public coverage and local consented position; no coordinate upload, background geolocation or unsupported land-access/minor targeting is introduced.
+- [ ] Generic notification text and opaque identifiers contain no location, photo, contributor name, token or private queue metadata; copy does not equate a withheld public cell with an unobserved cell.
+- [ ] Inexact scheduling works without `SCHEDULE_EXACT_ALARM` or `USE_EXACT_ALARM`; compiled-permission tests cover removal of plugin defaults and only needed notification/boot/wake additions.
+- [ ] Android `check-dependencies` still rejects proprietary SDKs. List the chosen plugin's code license, release/maintenance signal, compressed/unpacked size and measured APK impact; inspect transitive dependencies rather than assume the plugin name proves compliance.
+- [ ] Android/iOS synthetic device evidence covers permission prompts/denial, scheduled reminder delivery and cancellation. Unsupported behavior is documented honestly; no claim of App Store guideline 4.2 acceptance follows from an artifact build.
+
+**WP-6f: Every-photo publication privacy screen — BLOCKED pending specification approval**
+
+Branch: `wp-6f-photo-privacy-screening`. Justin's chosen policy is server-side open-detector screening of every photo, with individual flagged photos withheld for private human CLI review and no automatic blur. Eligible observation data and other photos proceed normally. **Do not implement, install detectors, add migrations or deploy this WP until Justin approves and merges this specification PR.** Even after that, unresolved weight licenses, uncalibrated category coverage and production authorization remain gates. See SPEC §15.4 and [the detector comparison](PHOTO_PRIVACY_SCREENING.md).
+
+Acceptance criteria for the later implementation PR:
+
+- [ ] Migration/pgTAP tests give every existing/new photo a pending private publication state, reject client clearance, bind clearance to content/version evidence and preserve RLS strength. QA settlement remains independent of privacy withholding.
+- [ ] Worker tests screen whole sanitized/oriented frames for every A/B/C photo, including context outside the soil/card masks; retries are bounded/idempotent. Detector errors, unsupported input and ambiguous detections withhold only that photo.
+- [ ] Export/release/training tests reject pending/review/error/withheld photo bytes, shards, thumbnails and URLs; eligible structured data and other cleared photos survive a privacy flag, including an empty-photo observation. Existing QA, finalized A/B, grant, withdrawal, provenance, holdout and k-anonymity checks still apply.
+- [ ] Private CLI tests reject unauthorized review, preserve audit decisions, suppress private payloads from logs and prevent withdrawn content from reappearing. Only explicit human clearance can overturn a flagged result; no automatic blur exists.
+- [ ] Every code/runtime dependency and exact model artifact has verified separate licenses, source/payload digest, maintenance signal and size. An MIT wrapper cannot imply an MIT weight license; unresolved artifacts cannot be deployed.
+- [ ] Before photo publication, private synthetic/staged evaluation reports per-category sample counts, misses/false positives and uncertainty, calibrates high-recall thresholds and documents unsupported cases. Justin reviews acceptance evidence; no claimed GSIP recall is borrowed from an upstream benchmark.
+- [ ] Contributor-facing/legal copy explains individual photo withholding, private review and residual privacy limits, subject to counsel review. Any immutable older release is identified honestly; no retroactive erasure claim.
+- [ ] No raw images, precise points, OCR strings or private screening metadata enter public fixtures/reports, CI logs or agent surfaces; I7/I11/I12 tests cover the new path.
+
+Remaining **WP-APP-2 store-release scope** stays gated: Apple/Google accounts, signing, store listings and deep links require Justin's accounts and decisions. No account, certificate or keystore is created by WP-APP-2A/2B.
+
 ### Phase 1.5b and Phase 2+ (specified after launch review)
 
 WP-AGENT-2 delegated capture for assistants (scoped tokens, consent screen, path-bound upload URLs) · WP-APP-2 store release of the phone app (deep-link e-mail sign-in, icons, signing and store listings; `docs/APP_STORE.md`) · WP-7 QA gate model (slots into the WP-4b/6b interface) · WP-8 estimator v0 · WP-9 nightly retrain and model cards · WP-10 estimate API · WP-11 gold-label bulk ingestion and gold kits · WP-12 fused correction and Most Wanted layers with information-gain credit · WP-13 SoilGrids file sampler replacing the REST dependency · WP-14 silver-label protocols · WP-AGENT-3 verifier task API with I13 consensus · WP-AGENT-4 evaluation service (I15) · WP-DATA-1 Parquet photo shards, Croissant metadata and PROV provenance · WP-OPS-1 event-driven worker queue.
@@ -226,8 +274,11 @@ GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function 
 
 `docs/spec-v3` → WP-6b → WP-6c → WP-6d → WP-6e → WP-AGENT-1 → WP-APP-1, as stacked pull requests merged in that order. WP-SITE-1D can happen at any time. The launch gates of SPEC §11 are checked after WP-6e merges; the product owner then sets `service_state.capture_open`. The read-only parts of WP-AGENT-1 may deploy before launch because they touch no contributor data.
 
+Pending v4.0 review/merge sequence: WP-APP-1 → `docs/spec-v4` (Justin approval/merge) → WP-APP-2A → WP-APP-2B. Owner-authorized account-free WP-APP-2A preparation can start after the specification commit exists, while its PR remains stacked and awaits the merge sequence. WP-6f may be a separate branch after the approved specification, with no dependency on notifications, but stays blocked until that specification approval and its model/license/calibration gates. Retarget successors after Justin merges; merge main forward to resolve conflicts, never rebase or force-push the reviewed stack. §11 launch and production-command gates remain independent of this sequence.
+
 ## 8. Changelog
 
+- **v4.0 draft (2026-10-11; awaiting product-owner approval):** schedules account-free WP-APP-2A, proposed local notifications WP-APP-2B and gated every-photo privacy screening WP-6f. Records the approved backup/screening policy without claiming iOS protection, model recall, store readiness or implementation approval.
 - **v3.0 (2026-10-10):** follows SPEC v3.0. Completed WP-0 to WP-6 summarized and archived. Added Phase 1.1 launch hardening (WP-6b ingest, QA and release integrity; WP-6c priors and tiles; WP-6d contributor rights; WP-6e provenance), Phase 1.5 (WP-SITE-1D, WP-AGENT-1, WP-APP-1) and the Phase 2+ outline. Added stacked-PR workflow, human-of-record DCO rule, guardrails 9 (I12) and 10 (B1–B8), updated environment variables, and review gates for I12.
 - **v2.2 (2026-07-22):** anonymous sign-ins; immutable per-submission grants; canonical units and depth constraints; owner-prefixed quarantine paths.
 - **v2.1 (2026-07-22):** builder changed to Claude; non-author approval plus product-owner go/no-go; WP-4b ingest QA; z8 native tiles; export metadata assertions.
