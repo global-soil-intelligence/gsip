@@ -131,7 +131,6 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
 5. Agents cannot write yet. An `actors` row for an agent, device or lab is created only by the
    service role and must be operated by a human actor; deleting that person's account revokes it.
 
-
 ## Production worker schedule holds
 
 Merging a workflow or adding its credential must not authorise production work. Scheduled worker
