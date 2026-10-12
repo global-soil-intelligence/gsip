@@ -85,12 +85,34 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    exists and carries the palette version the legends use. Until the variable is set the map uses
    ISRIC's WMS with ISRIC's own legend.
 
+### WP-6d — contributor rights
+
+1. Apply the migrations. Requests withdraw grants from releases as soon as they are made, and the
+   database refuses anything a request covers; the hourly `Contributor rights requests` workflow
+   (`pipeline.rights_worker`, service role) then deletes rows and photos, deletes auth users for
+   account deletions, and removes any canonical photo object left without a photo row. Run it once
+   by hand after deploying and confirm it succeeds. A failed run opens an issue titled
+   "Contributor rights worker is failing"; watch the repository's issues, and check monthly that
+   GitHub has not disabled the schedule (it does after 60 days without repository activity).
+2. Anyone can create an anonymous account and file empty requests. The worker handles requests with
+   data first and completes empty withdrawals at once, but keep Supabase's anonymous sign-in rate
+   limit and add the CAPTCHA before launch (SPEC section 11).
+3. Review typed attribution names before launch and then weekly:
+   `uv run python -m pipeline.attribution_review list`, then `approve` or `reject` with
+   `--contributor`, `--name-json` (paste the name exactly as `list` prints it) and `--reviewer`.
+   Until a name is approved its observations are released without photos.
+4. The legal pack in `docs/legal/` is a draft. When counsel approves it, publish the approved
+   versions and set the repository variables `VITE_TERMS_URL`, `VITE_PRIVACY_URL` and
+   `VITE_SAMPLING_RULES_URL` (HTTPS or same-site paths); until then the capture app links to the
+   drafts in the repository. Capture stays closed until this is done.
+
 ## Production worker schedule holds
 
 Merging a workflow or adding its credential must not authorise production work. Scheduled worker
 jobs skip unless Justin has approved that worker's production gate and explicitly set its repository
 variable to `true`: `GSIP_PRIOR_SCHEDULE_ENABLED`, `GSIP_QA_SCHEDULE_ENABLED`,
-`GSIP_EXPORT_SCHEDULE_ENABLED`, or `GSIP_CLEANUP_SCHEDULE_ENABLED`. Missing variables hold the jobs.
+`GSIP_EXPORT_SCHEDULE_ENABLED`, `GSIP_CLEANUP_SCHEDULE_ENABLED`, or
+`GSIP_RIGHTS_SCHEDULE_ENABLED`. Missing variables hold the jobs.
 Manual dispatch remains available for a separately approved, bounded one-off run; it does not enable
 the schedule. Existing disabled workflows stay disabled until their own gate. Do not set any schedule
 variable while capture, photo publication or export still has an unmet gate. Restore a hold by removing

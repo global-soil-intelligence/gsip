@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      attribution_reviews: {
+        Row: {
+          attribution_name: string
+          contributor_id: string
+          decision: string
+          note: string | null
+          reviewed_at: string
+          reviewer: string
+        }
+        Insert: {
+          attribution_name: string
+          contributor_id: string
+          decision: string
+          note?: string | null
+          reviewed_at?: string
+          reviewer: string
+        }
+        Update: {
+          attribution_name?: string
+          contributor_id?: string
+          decision?: string
+          note?: string | null
+          reviewed_at?: string
+          reviewer?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'attribution_reviews_contributor_id_fkey'
+            columns: ['contributor_id']
+            isOneToOne: false
+            referencedRelation: 'contributors'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       contribution_grants: {
         Row: {
           accepted_at: string
@@ -78,6 +113,53 @@ export type Database = {
           reputation?: number
         }
         Relationships: []
+      }
+      deletion_requests: {
+        Row: {
+          attempts: number
+          claimed_at: string | null
+          completed_at: string | null
+          contributor_id: string
+          id: string
+          kind: string
+          last_error: string | null
+          not_before: string | null
+          requested_at: string
+          status: string
+        }
+        Insert: {
+          attempts?: number
+          claimed_at?: string | null
+          completed_at?: string | null
+          contributor_id: string
+          id?: string
+          kind: string
+          last_error?: string | null
+          not_before?: string | null
+          requested_at?: string
+          status?: string
+        }
+        Update: {
+          attempts?: number
+          claimed_at?: string | null
+          completed_at?: string | null
+          contributor_id?: string
+          id?: string
+          kind?: string
+          last_error?: string | null
+          not_before?: string | null
+          requested_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'deletion_requests_contributor_id_fkey'
+            columns: ['contributor_id']
+            isOneToOne: false
+            referencedRelation: 'contributors'
+            referencedColumns: ['id']
+          },
+        ]
       }
       gold_labels: {
         Row: {
@@ -170,6 +252,42 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      grant_withdrawals: {
+        Row: {
+          grant_id: string
+          reason: string
+          request_id: string | null
+          withdrawn_at: string
+        }
+        Insert: {
+          grant_id: string
+          reason: string
+          request_id?: string | null
+          withdrawn_at?: string
+        }
+        Update: {
+          grant_id?: string
+          reason?: string
+          request_id?: string | null
+          withdrawn_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'grant_withdrawals_grant_id_fkey'
+            columns: ['grant_id']
+            isOneToOne: false
+            referencedRelation: 'contribution_grants'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'grant_withdrawals_request_id_fkey'
+            columns: ['request_id']
+            isOneToOne: false
+            referencedRelation: 'deletion_requests'
+            referencedColumns: ['id']
+          },
+        ]
       }
       photos: {
         Row: {
@@ -560,9 +678,33 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      attribution_review_queue: {
+        Row: {
+          attribution_name: string | null
+          contributor_id: string | null
+          first_accepted_at: string | null
+          grants: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'contribution_grants_contributor_id_fkey'
+            columns: ['contributor_id']
+            isOneToOne: false
+            referencedRelation: 'contributors'
+            referencedColumns: ['id']
+          },
+        ]
+      }
     }
     Functions: {
+      apply_deletion_request: {
+        Args: { p_request_id: string }
+        Returns: {
+          deleted_submissions: number
+          withdrawn_grants: number
+        }[]
+      }
+      auth_user_exists: { Args: { p_uid: string }; Returns: boolean }
       begin_prior_attempt: {
         Args: {
           p_costs: Json
@@ -576,6 +718,28 @@ export type Database = {
         }[]
       }
       capture_is_open: { Args: never; Returns: boolean }
+      claim_deletion_request: {
+        Args: { p_stale?: unknown }
+        Returns: {
+          attempts: number
+          auth_uid: string | null
+          contributor_id: string
+          kind: string
+          request_id: string
+        }[]
+      }
+      complete_deletion_request: {
+        Args: { p_request_id: string }
+        Returns: undefined
+      }
+      contributor_orphaned_objects: {
+        Args: { p_auth_uid: string; p_limit?: number }
+        Returns: {
+          bucket_id: string
+          name: string
+        }[]
+      }
+      current_auth_user_exists: { Args: never; Returns: boolean }
       current_contributor_id: { Args: never; Returns: string }
       fail_prior_job: {
         Args: { p_reason: string; p_submission_id: string }
@@ -585,7 +749,25 @@ export type Database = {
         Args: { p_submission_id: string }
         Returns: string
       }
+      my_submission_accepts_uploads: {
+        Args: { p_submission: string }
+        Returns: boolean
+      }
+      orphaned_photo_objects: {
+        Args: { p_limit?: number }
+        Returns: {
+          name: string
+        }[]
+      }
       refresh_public_h3_cells: { Args: { payload: Json }; Returns: number }
+      release_deletion_request: {
+        Args: {
+          p_error: string
+          p_request_id: string
+          p_retry_after?: unknown
+        }
+        Returns: undefined
+      }
       requeue_stale_prior_jobs: {
         Args: { p_older_than?: unknown }
         Returns: number

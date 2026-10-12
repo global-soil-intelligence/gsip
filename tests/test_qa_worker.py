@@ -50,6 +50,7 @@ class WorkerHarness(SupabaseQaWorker):
         finalized_pending: list[str] | None = None,
         exhausted: list[str] | None = None,
         failing_settles: set[str] | None = None,
+        withdrawn: set[str] | None = None,
     ) -> None:
         super().__init__("https://supabase.test", "service-key")
         self.hostile = hostile
@@ -61,6 +62,7 @@ class WorkerHarness(SupabaseQaWorker):
         self.finalized_pending = finalized_pending or []
         self.exhausted = exhausted or []
         self.failing_settles = failing_settles or set()
+        self.withdrawn = withdrawn or set()
         self.calls: list[str] = []
         self.job_states: dict[str, str] = {}
         self.photo_updates: dict[str, dict[str, Any]] = {}
@@ -135,7 +137,10 @@ class WorkerHarness(SupabaseQaWorker):
             self.job_states[photo_id] = str(kwargs["json"]["status"])
         if method == "PATCH" and path.startswith("photos?id=eq."):
             photo_id = path.rsplit(".", 1)[-1]
+            if photo_id in self.withdrawn:
+                return self._response([])  # the row was deleted by a withdrawal
             self.photo_updates.setdefault(photo_id, {}).update(kwargs["json"])
+            return self._response([{"id": photo_id}])
         if method == "PATCH" and path.startswith("submissions?"):
             self.submission_updates.append(kwargs["json"])
         return self._response([])
@@ -171,6 +176,21 @@ def test_hostile_images_dead_letter_and_do_not_block_following_jobs(
     assert all("status" not in update for update in worker.submission_updates)
     assert worker.submission_updates[-1]["h3_r8"].startswith("88")
     assert worker.settled == [SUBMISSION, SUBMISSION]
+
+
+def test_a_photo_withdrawn_mid_check_leaves_no_object_behind() -> None:
+    worker = WorkerHarness(b"unused", withdrawn={"good"})
+
+    assert not worker.process_one("good", 0)
+
+    assert len(worker.promotions) == 1
+    assert f"DELETE /storage/v1/object/submission-photos/{GOOD_PATH}" in worker.storage_requests
+    assert f"DELETE /storage/v1/object/incoming-photos/{GOOD_PATH}" in worker.storage_requests
+    # Nothing is written for a photo that no longer exists.
+    assert "POST qa_events" not in worker.calls
+    assert worker.settled == []
+    # The claim was the job's last write: no verdict is recorded for a photo that is gone.
+    assert worker.job_states["good"] == "processing"
 
 
 def test_zero_valued_prior_reaches_gps_plausibility(

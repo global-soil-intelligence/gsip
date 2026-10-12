@@ -28,6 +28,7 @@ from pipeline.export import (
     SupabaseExportSource,
     assert_public_record,
     build_export,
+    honour_late_withdrawals,
     publish_export,
 )
 from pipeline.k_anonymity import Observation, PublishedCell, assign_cells
@@ -97,6 +98,9 @@ def submission(
     contributor: str | None = None,
     h3_r8: str = BURLINGTON,
     grant: bool = True,
+    attribution: str = "soil-friend",
+    review: str | None = "approved",
+    withdrawn: bool = False,
     synthetic: bool = False,
     photos: tuple[ExportPhoto, ...] | None = None,
     captured_at: str = "2026-07-22T12:00:00Z",
@@ -107,7 +111,17 @@ def submission(
         captured_at=captured_at,
         contributor_id=person,
         disturbed=False,
-        grant=Grant("soil-friend", "ODbL-1.0", "CC-BY-SA-4.0", "2026-07-22-v1") if grant else None,
+        grant=Grant(
+            attribution,
+            "ODbL-1.0",
+            "CC-BY-SA-4.0",
+            "2026-07-22-v1",
+            withdrawn=withdrawn,
+            attribution_review=review,
+            id=f"grant-{index}",
+        )
+        if grant
+        else None,
         gold_labels=(),
         h3_r6=h3.cell_to_parent(h3_r8, 6),
         h3_r8=h3_r8,
@@ -145,6 +159,13 @@ def build(
     loader: Any = None,
 ) -> ExportResult:
     return build_export(submissions, root, EXPORT_DATE, loader or (lambda _: clean_photo()))
+
+
+def load_rows(result: ExportResult) -> list[dict[str, Any]]:
+    loaded = load_dataset(
+        "parquet", data_files=str(result.target / "data" / "train.parquet"), split="train"
+    )
+    return [dict(row) for row in loaded]
 
 
 def test_export_is_private_field_free_and_loads_with_datasets(tmp_path: Path) -> None:
@@ -506,11 +527,21 @@ def test_source_attaches_per_photo_qa_and_keeps_the_contributor_private() -> Non
             },
         ],
         "gold_labels": [],
+        "grant_withdrawals": [],
+        "attribution_reviews": [],
     }
+    [loaded] = load_from(tables)
+    assert loaded.contributor_id == "c-1"
+    assert loaded.owner_uid == "30000000-0000-4000-8000-000000000001"
+    shot_b = next(item for item in loaded.photos if item.shot_type == "B")
+    assert shot_b.qa_status == "pass"
+    assert shot_b.qa_model_version == "deterministic-v2"
+    assert {check.check for check in shot_b.qa_checks} == {"sharpness", "soil_region"}
 
+
+def load_from(tables: dict[str, list[dict[str, Any]]]) -> list[ExportSubmission]:
     def handler(request: httpx.Request) -> httpx.Response:
-        table = request.url.path.rsplit("/", 1)[-1]
-        body = tables[table]
+        body = tables[request.url.path.rsplit("/", 1)[-1]]
         return httpx.Response(
             200, headers={"Content-Range": f"0-{len(body) - 1}/{len(body)}"}, json=body
         )
@@ -519,15 +550,176 @@ def test_source_attaches_per_photo_qa_and_keeps_the_contributor_private() -> Non
     source.client.close()
     source.client = httpx.Client(transport=httpx.MockTransport(handler))
     try:
-        [loaded] = source.submissions()
+        return source.submissions()
     finally:
         source.client.close()
-    assert loaded.contributor_id == "c-1"
-    assert loaded.owner_uid == "30000000-0000-4000-8000-000000000001"
-    shot_b = next(item for item in loaded.photos if item.shot_type == "B")
-    assert shot_b.qa_status == "pass"
-    assert shot_b.qa_model_version == "deterministic-v2"
-    assert {check.check for check in shot_b.qa_checks} == {"sharpness", "soil_region"}
+
+
+def source_tables(
+    attribution: str, withdrawals: list[str], reviews: list[dict[str, str]]
+) -> dict[str, list[dict[str, Any]]]:
+    return {
+        "submissions": [
+            {
+                "captured_at": "2026-07-22T12:00:00+00:00",
+                "contributor_id": "c-1",
+                "disturbed": False,
+                "grant_id": "g-1",
+                "h3_r6": R6_PARENT,
+                "h3_r8": BURLINGTON,
+                "id": "73f0400e-5c64-5a6e-90d1-000000000001",
+                "is_synthetic": False,
+                "land_cover": "cropland",
+                "precip_flag": None,
+                "status": "qa_pass",
+                "surface_condition": "dry",
+                "contributor": {"auth_uid": "30000000-0000-4000-8000-000000000001"},
+            }
+        ],
+        "contribution_grants": [
+            {
+                "attribution_name": attribution,
+                "data_license": "ODbL-1.0",
+                "photo_license": "CC-BY-SA-4.0",
+                "terms_version": "v1",
+            }
+        ],
+        "qa_events": [],
+        "photos": [],
+        "gold_labels": [],
+        "grant_withdrawals": [{"grant_id": grant} for grant in withdrawals],
+        "attribution_reviews": reviews,
+    }
+
+
+def test_source_marks_withdrawn_grants_and_reads_the_review_for_that_contributor() -> None:
+    [withdrawn] = load_from(source_tables("Jane Q Example", ["g-1"], []))
+    assert withdrawn.grant is not None and withdrawn.grant.withdrawn
+    assert not withdrawn.grant.photos_publishable
+
+    [approved] = load_from(
+        source_tables(
+            "Jane Q Example",
+            [],
+            [
+                {
+                    "attribution_name": "Jane Q Example",
+                    "contributor_id": "c-1",
+                    "decision": "approved",
+                },
+                # An approval of a different name says nothing about this one.
+                {"attribution_name": "Other", "contributor_id": "c-1", "decision": "approved"},
+            ],
+        )
+    )
+    assert approved.grant is not None and not approved.grant.withdrawn
+    assert approved.grant.attribution_review == "approved" and approved.grant.photos_publishable
+
+    # The same text approved for someone else does not approve it for c-1.
+    [elsewhere] = load_from(
+        source_tables(
+            "Jane Q Example",
+            [],
+            [
+                {
+                    "attribution_name": "Jane Q Example",
+                    "contributor_id": "c-2",
+                    "decision": "approved",
+                }
+            ],
+        )
+    )
+    assert elsewhere.grant is not None and not elsewhere.grant.photos_publishable
+
+
+def test_a_withdrawal_filed_during_the_export_is_honoured_before_publishing(
+    tmp_path: Path,
+) -> None:
+    rows = [*three_contributors_in_one_cell(), submission(4)]
+    first = build(rows, tmp_path)
+    assert rows[3].id in {row["id"] for row in load_rows(first)}
+    reads = iter([{"grant-4"}, {"grant-4"}])
+    rebuilt: list[list[ExportSubmission]] = []
+
+    def rebuild(marked: list[ExportSubmission]) -> ExportResult:
+        rebuilt.append(marked)
+        return build(marked, tmp_path)
+
+    result = honour_late_withdrawals(rows, first, lambda: next(reads), rebuild)
+
+    assert len(rebuilt) == 1
+    assert rows[3].id not in {row["id"] for row in load_rows(result)}
+    assert len(load_rows(result)) == 3
+
+
+def test_an_export_without_late_withdrawals_is_published_as_built(tmp_path: Path) -> None:
+    rows = three_contributors_in_one_cell()
+    result = build(rows, tmp_path)
+
+    def rebuild(_: list[ExportSubmission]) -> ExportResult:
+        raise AssertionError("nothing to rebuild")
+
+    assert honour_late_withdrawals(rows, result, set, rebuild) is result
+
+
+def test_withdrawals_that_keep_arriving_stop_the_release(tmp_path: Path) -> None:
+    rows = [*three_contributors_in_one_cell(), submission(4), submission(5)]
+    first = build(rows, tmp_path)
+    reads = iter([{"grant-4"}, {"grant-4", "grant-5"}])
+
+    with pytest.raises(ExportHealthError, match="kept arriving"):
+        honour_late_withdrawals(rows, first, lambda: next(reads), lambda m: build(m, tmp_path))
+
+
+def test_withdrawn_grants_never_enter_a_release(tmp_path: Path) -> None:
+    rows = [*three_contributors_in_one_cell(), submission(4, withdrawn=True)]
+
+    result = build(rows, tmp_path)
+
+    ids = {row["id"] for row in load_rows(result)}
+    assert rows[3].id not in ids and len(ids) == 3
+    assert result.set_aside == {} and result.withheld == 0
+    assert not (result.target / "photos" / rows[3].id).exists()
+
+
+def test_unreviewed_and_rejected_names_release_rows_without_photos(tmp_path: Path) -> None:
+    loaded_paths: list[str] = []
+
+    def loader(path: str) -> bytes:
+        loaded_paths.append(path)
+        return clean_photo()
+
+    pending = submission(1, attribution="Jane Q Example", review=None)
+    rejected = submission(2, attribution="Field Notes Club", review="rejected")
+    default = submission(3, attribution="Anonymous soil contributor", review=None)
+
+    result = build([pending, rejected, default], tmp_path, loader)
+
+    rows = {row["id"]: row for row in load_rows(result)}
+    assert rows[pending.id]["photos"] == [] and rows[rejected.id]["photos"] == []
+    assert [photo["attribution_name"] for photo in rows[default.id]["photos"]] == [
+        "Anonymous soil contributor",
+        "Anonymous soil contributor",
+    ]
+    assert all(default.id in path for path in loaded_paths), "unpublished photos are never read"
+    card = (result.target / "README.md").read_text(encoding="utf-8")
+    assert "Jane Q Example" not in card and "Field Notes Club" not in card
+    released = json.dumps(load_rows(result), default=str)
+    assert "Jane Q Example" not in released and "Field Notes Club" not in released
+
+
+def test_an_approved_name_publishes_photos_with_that_name(tmp_path: Path) -> None:
+    rows = [
+        submission(index, attribution="Jane Q Example", review="approved") for index in (1, 2, 3)
+    ]
+
+    result = build(rows, tmp_path)
+
+    published = load_rows(result)
+    assert all(len(row["photos"]) == 2 for row in published)
+    assert {photo["attribution_name"] for row in published for photo in row["photos"]} == {
+        "Jane Q Example"
+    }
 
 
 def test_hub_replacement_precedes_atomic_public_cell_refresh(tmp_path: Path) -> None:

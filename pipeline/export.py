@@ -8,7 +8,7 @@ import os
 import shutil
 import time
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -19,6 +19,7 @@ from datasets import Dataset, load_dataset  # type: ignore[import-untyped]
 from huggingface_hub import HfApi
 from PIL import Image
 
+from pipeline.attribution import photos_publishable
 from pipeline.k_anonymity import (
     K_ANONYMITY,
     Observation,
@@ -86,6 +87,14 @@ class Grant:
     data_license: str
     photo_license: str
     terms_version: str
+    # WP-6d: a withdrawn grant never enters a release; photos need a publishable attribution.
+    withdrawn: bool = False
+    attribution_review: str | None = None
+    id: str = ""
+
+    @property
+    def photos_publishable(self) -> bool:
+        return photos_publishable(self.attribution_name, self.attribution_review)
 
 
 @dataclass(frozen=True)
@@ -176,8 +185,10 @@ pretty_name: Global Soil Intelligence Project public contributions
 # GSIP public soil contributions
 
 Export date: {export_date.isoformat()}. Rows: {len(records)}. This release contains only QA-passed,
-non-synthetic contributions with immutable contribution grants, and of those only photos that
-passed QA themselves. Locations are k-anonymous H3 cells, never precise points.
+non-synthetic contributions with immutable, unwithdrawn contribution grants, and of those only
+photos that passed QA themselves. A row whose contributor typed an attribution name that has not
+yet been reviewed is released without photos. Locations are k-anonymous H3 cells, never precise
+points.
 Observations withheld until they meet k-anonymity: {withheld}.
 
 ## Licenses
@@ -309,9 +320,15 @@ def _row(
     if not set(REQUIRED_SHOTS) <= passed:
         # A qa_pass status without passing shots A and B predates settle_submission: refuse it.
         raise RowSetAside("required_shots_not_passed")
-    releasable = sorted(
-        (photo for photo in submission.photos if photo.qa_status == "pass"),
-        key=lambda item: item.shot_type,
+    # Until a typed attribution name is approved, the observation is released without photos,
+    # so the name is published nowhere (SPEC section 6, WP-6d).
+    releasable = (
+        sorted(
+            (photo for photo in submission.photos if photo.qa_status == "pass"),
+            key=lambda item: item.shot_type,
+        )
+        if submission.grant.photos_publishable
+        else []
     )
     photos = [_public_photo(submission, photo, temporary, photo_loader) for photo in releasable]
     return {
@@ -325,6 +342,43 @@ def _row(
         "status": submission.status,
         "surface_condition": submission.surface_condition,
     }
+
+
+def honour_late_withdrawals(
+    submissions: list[ExportSubmission],
+    result: ExportResult,
+    withdrawn_grant_ids: Callable[[], set[str]],
+    rebuild: Callable[[list[ExportSubmission]], ExportResult],
+) -> ExportResult:
+    """Withdrawals filed while a release was being built are honoured before it is published.
+
+    The export reads withdrawals when it starts. Just before publishing, it reads them again; if
+    any grant in the build has been withdrawn since, it rebuilds once without those observations,
+    and refuses to publish if more arrive during the rebuild (WP-6d).
+    """
+
+    def late(candidates: list[ExportSubmission], withdrawn: set[str]) -> set[str]:
+        return {
+            submission.grant.id
+            for submission in candidates
+            if submission.grant is not None
+            and not submission.grant.withdrawn
+            and submission.grant.id in withdrawn
+        }
+
+    newly_withdrawn = late(submissions, withdrawn_grant_ids())
+    if not newly_withdrawn:
+        return result
+    marked = [
+        replace(submission, grant=replace(submission.grant, withdrawn=True))
+        if submission.grant is not None and submission.grant.id in newly_withdrawn
+        else submission
+        for submission in submissions
+    ]
+    rebuilt = rebuild(marked)
+    if late(marked, withdrawn_grant_ids()):
+        raise ExportHealthError("withdrawals kept arriving during the export; refusing to publish")
+    return rebuilt
 
 
 def _write_report(
@@ -364,7 +418,10 @@ def build_export(
         (
             submission
             for submission in submissions
-            if submission.status == "qa_pass" and not submission.is_synthetic
+            if submission.status == "qa_pass"
+            and not submission.is_synthetic
+            # A withdrawn grant's observations never enter a release (I7, WP-6d).
+            and not (submission.grant is not None and submission.grant.withdrawn)
         ),
         key=lambda submission: submission.id,
     )
@@ -498,7 +555,21 @@ class SupabaseExportSource:
         response.raise_for_status()
         return response.content
 
+    def withdrawn_grant_ids(self) -> set[str]:
+        return {
+            str(row["grant_id"])
+            for row in self._rows("grant_withdrawals?select=grant_id&order=grant_id")
+        }
+
     def submissions(self) -> list[ExportSubmission]:
+        withdrawn = self.withdrawn_grant_ids()
+        reviews = {
+            (str(row["contributor_id"]), str(row["attribution_name"])): str(row["decision"])
+            for row in self._rows(
+                "attribution_reviews?select=contributor_id,attribution_name,decision"
+                "&order=contributor_id,attribution_name"
+            )
+        }
         rows = self._rows(
             "submissions?status=eq.qa_pass&is_synthetic=eq.false&order=id&select="
             "id,contributor_id,h3_r8,h3_r6,captured_at,land_cover,surface_condition,disturbed,"
@@ -509,9 +580,20 @@ class SupabaseExportSource:
             submission_id = str(row["id"])
             grants = self._rows(
                 "contribution_grants?"
-                f"id=eq.{row['grant_id']}&select=attribution_name,data_license,photo_license,terms_version"
+                f"id=eq.{row['grant_id']}"
+                "&select=id,attribution_name,data_license,photo_license,terms_version"
             )
-            grant = Grant(**grants[0]) if grants else None
+            grant = (
+                Grant(
+                    **{**grants[0], "id": str(grants[0].get("id", row["grant_id"]))},
+                    withdrawn=str(row["grant_id"]) in withdrawn,
+                    attribution_review=reviews.get(
+                        (str(row["contributor_id"]), str(grants[0]["attribution_name"]))
+                    ),
+                )
+                if grants
+                else None
+            )
             checks: dict[str, list[QaCheck]] = {}
             versions: dict[str, str] = {}
             for event in self._rows(
@@ -610,7 +692,14 @@ def main() -> None:
     source = SupabaseExportSource(
         os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"]
     )
-    result = build_export(source.submissions(), args.output, args.date, source.photo)
+    submissions = source.submissions()
+    result = build_export(submissions, args.output, args.date, source.photo)
+    result = honour_late_withdrawals(
+        submissions,
+        result,
+        source.withdrawn_grant_ids,
+        lambda marked: build_export(marked, args.output, args.date, source.photo),
+    )
     if args.push:
         publish_export(
             source,

@@ -22,6 +22,10 @@ vi.mock('../src/supabase', () => ({
   createGsipClient: () => ({ hosted: true }),
   fetchServiceState: mocks.fetchServiceState,
   isServiceConfigured: () => true,
+  recordOwner: async () => undefined,
+  sendSignInLink: async () => 'sent',
+  latestDeletionRequest: async () => null,
+  requestDeletion: async () => 'requested',
   submitQueued: mocks.submitQueued,
 }))
 
@@ -218,7 +222,10 @@ describe('capture retry behavior', () => {
     fireEvent.change(screen.getByLabelText('Surface condition'), {
       target: { value: 'moist' },
     })
-    fireEvent.click(screen.getByRole('checkbox'))
+    fireEvent.click(screen.getByRole('checkbox', { name: /sampling rules/i }))
+    fireEvent.click(
+      screen.getByRole('checkbox', { name: /I own these photos/i }),
+    )
     fireEvent.submit(
       screen
         .getByRole('button', { name: /queue observation/i })

@@ -19,6 +19,8 @@ export type CaptureDraft = {
   landCover: string
   latitude: number
   longitude: number
+  /** The auth user signed in when the observation was queued; it is only ever sent as them. */
+  ownerUid?: string
   photos: QueuedPhoto[]
   submissionId: string
   surfaceCondition: string
@@ -27,6 +29,8 @@ export type CaptureDraft = {
 
 export type QueueRecord = CaptureDraft & {
   deadLetteredAt?: string
+  /** Set when its account is no longer signed in here: kept, not sent, until the person decides. */
+  heldAt?: string
   nextRetryAt?: string
   queuedAt: string
   syncAttempts?: number

@@ -6,6 +6,20 @@ forbidden precise or private keys (including the raw `h3_r8` and `h3_r6` cells),
 immutable grant, downloads only canonical private photos, strips metadata again, verifies the
 result, and writes a Parquet dataset that is immediately round-tripped with `datasets.load_dataset()`.
 
+## Withdrawals and attribution (WP-6d)
+
+- A submission whose grant has a `grant_withdrawals` row never becomes a candidate: it is neither
+  released, set aside nor counted. A contributor's request withdraws their grants the moment it is
+  made, and the hourly rights worker deletes the rows soon after.
+- Withdrawals are read when the export starts and again just before publishing
+  (`honour_late_withdrawals`). If any grant in the build was withdrawn in between, the export rebuilds
+  once without those observations; if more arrive during the rebuild, it refuses to publish. A
+  release built after a request therefore never contains the withdrawn observations.
+- Photos publish only under the default pseudonym, or under a typed attribution name that a steward
+  approved for that contributor (`attribution_reviews`). A pending or rejected name releases the row
+  without photos, so the name appears nowhere; such photos are never read from Storage. Review names
+  with `uv run python -m pipeline.attribution_review list|approve|reject`.
+
 ## k-anonymous locations (SPEC I7)
 
 Rows carry `h3_cell` and `h3_resolution` instead of the private cells. Each observation is placed in

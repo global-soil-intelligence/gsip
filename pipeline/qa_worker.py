@@ -223,9 +223,10 @@ class SupabaseQaWorker:
                 headers={"Content-Type": "image/jpeg", "x-upsert": "true"},
             )
             promoted.raise_for_status()
-            self._rest(
+            updated = self._rest(
                 "PATCH",
                 f"photos?id=eq.{photo_id}",
+                headers={"Prefer": "return=representation"},
                 json={
                     "calibration_status": result.calibration_status,
                     "camera_metadata_private": result.camera_metadata,
@@ -237,7 +238,12 @@ class SupabaseQaWorker:
                         event.score for event in result.events if event.check_name == "sharpness"
                     ),
                 },
-            )
+            ).json()
+            if not updated:
+                # WP-6d: the photo was withdrawn while it was being checked. Its row (and job)
+                # are gone, so no object may outlive it: undo the promotion and stop.
+                self._discard_objects(object_path)
+                return False
             self._rest(
                 "POST",
                 "qa_events?on_conflict=submission_id,check_name",
@@ -288,6 +294,12 @@ class SupabaseQaWorker:
                 terminal=attempts + 1 >= MAX_QA_ATTEMPTS,
             )
             return False
+
+    def _discard_objects(self, object_path: str) -> None:
+        for bucket in ("submission-photos", "incoming-photos"):
+            removed = self.client.delete(f"{self.url}/storage/v1/object/{bucket}/{object_path}")
+            if removed.status_code not in (400, 404):
+                removed.raise_for_status()
 
     def _quarantine_objects(self, prefix: str = "", depth: int = 0) -> list[tuple[str, datetime]]:
         if depth > 8:
