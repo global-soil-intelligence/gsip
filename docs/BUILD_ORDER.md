@@ -152,6 +152,23 @@ Acceptance criteria:
 Point `globalsoilintelligence.com` at GitHub Pages, set the Pages custom domain, enforce HTTPS and retire the Squarespace page.
 Acceptance: the canonical domain serves the Pages site; `robots.txt` allows crawlers; canonical URLs and the sitemap resolve.
 
+**WP-SITE-1E: Prior-tile host policy**
+Scope: record the product owner's conditional approval for same-origin repository GitHub Pages
+prior tiles in the privacy notice and a deployment plan. Tiles remain palette-version release
+assets outside git and enter the Pages artifact only at deploy time. This package documents the
+host; it does not build or publish archives, change workflows or authorize deployment.
+
+Acceptance criteria:
+
+- [ ] The privacy notice identifies GitHub Pages as the map tile host and discloses browser
+      requests; its counsel-review status remains unchanged.
+- [ ] The plan requires SoilGrids-only values, palette and checksum evidence, a tile target of
+      700 MB or less, a whole site well below 1 GB, and verified Pages 206 range responses.
+- [ ] WMS remains the fallback until every condition passes; release publication and Pages
+      deployment remain gated by Justin's explicit go.
+- [ ] The privacy disclosure test fails without the host entry; processor and language checks and
+      documentation formatting pass. No dependency or licence changes.
+
 **WP-AGENT-1: Agent-readable GSIP**
 Scope:
 

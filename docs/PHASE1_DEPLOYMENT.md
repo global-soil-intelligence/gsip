@@ -78,11 +78,15 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    least 12 s apart), SSURGO 30 a minute, Open-Meteo 60. To pause all prior lookups, set
    `refill_per_minute` very low in `upstream_buckets`; jobs simply defer and the drain waits within
    its budget.
-3. Build the prior archives (`uv run python -m pipeline.build_prior_tiles --max-zoom 8`), publish the
-   whole `output/tiles/<palette version>/` directory under one public base, and set the repository
-   variable `VITE_PRIOR_TILES_BASE` to that base. The Pages deploy then checks that every archive
-   exists and carries the palette version the legends use. Until the variable is set the map uses
-   ISRIC's WMS with ISRIC's own legend.
+3. Build the prior archives (`uv run python -m pipeline.build_prior_tiles --max-zoom 8`) and
+   follow [the approved GitHub Pages tile-host plan](PRIOR_TILE_HOSTING.md). Never commit tiles:
+   keep the whole `output/tiles/<palette version>/` directory in a palette-version release asset
+   and add it to the Pages artifact at deploy time. Measure the tiles against the 700 MB target
+   and the whole site well below 1 GB; verify only SoilGrids-derived values, palette metadata and
+   actual Pages 206 range responses before setting `VITE_PRIOR_TILES_BASE` to the same-origin
+   base. Release publication, variable updates and Pages deployment each require Justin's go.
+   The asset-assembly workflow is follow-up work; until all conditions pass and the variable is
+   set, the map uses ISRIC's WMS with ISRIC's own legend.
 
 ### WP-6d — contributor rights
 
