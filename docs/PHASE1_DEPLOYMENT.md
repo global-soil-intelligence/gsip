@@ -158,8 +158,6 @@ The read-only interfaces touch no contributor data, so they may go live before c
 5. Every Pages build now prerenders the site and fails unless each page carries its headline and
    JSON-LD. After WP-SITE-1D, check that `https://globalsoilintelligence.com/llms.txt` resolves.
 
-
-
 ## Production worker schedule holds
 
 Merging a workflow or adding its credential must not authorise production work. Scheduled worker
