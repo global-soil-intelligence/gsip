@@ -83,3 +83,30 @@ def test_rights_requests_are_processed_hourly_and_failures_raise_an_alert() -> N
     assert "secrets.SUPABASE_SERVICE_ROLE_KEY" in text and "vars.SUPABASE_URL" in text
     assert "cancel-in-progress: false" in text, "a new run never cancels one mid-deletion"
     assert "if: failure()" in text and "issues: write" in text and "gh issue" in text
+
+
+@pytest.mark.parametrize(
+    ("filename", "job", "variable"),
+    [
+        ("prior-enrichment.yml", "drain", "GSIP_PRIOR_SCHEDULE_ENABLED"),
+        ("rights-worker.yml", "process", "GSIP_RIGHTS_SCHEDULE_ENABLED"),
+        ("photo-qa.yml", "process", "GSIP_QA_SCHEDULE_ENABLED"),
+        ("nightly-export.yml", "export", "GSIP_EXPORT_SCHEDULE_ENABLED"),
+        ("quarantine-cleanup.yml", "cleanup", "GSIP_CLEANUP_SCHEDULE_ENABLED"),
+    ],
+)
+def test_production_worker_schedule_requires_explicit_opt_in(
+    filename: str, job: str, variable: str
+) -> None:
+    workflow = next(path for path in WORKFLOWS if path.name == filename)
+    text = workflow.read_text(encoding="utf-8")
+    # A job-level gate runs before checkout, dependency setup or secret-bearing steps.
+    # A step gate alone could leave another step free to mutate production.
+    expected = (
+        "    if: ${{ github.event_name == 'workflow_dispatch' || "
+        f"(github.event_name == 'schedule' && vars.{variable} == 'true') "
+        "}}"
+    )
+    assert f"  {job}:\n{expected}\n" in text, filename
+    assert "workflow_dispatch:" in text and "schedule:" in text
+    assert "secrets.SUPABASE_SERVICE_ROLE_KEY" in text
