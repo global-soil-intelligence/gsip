@@ -1,16 +1,22 @@
 import { describe, expect, it, vi } from 'vitest'
 import soilGrids from './fixtures/soilgrids.json'
+import urbanSoilGrids from './fixtures/soilgrids-urban.json'
 import ssurgo from './fixtures/ssurgo.json'
+import { cellToLatLng, getResolution } from 'h3-js'
 import {
+  elevationUrl,
   fetchJsonWithRetry,
   isConus,
-  openMeteoUrls,
   parseElevation,
-  parseRecentPrecipitation,
+  parsePrecipitationWindow,
   parseSoilGridsResponse,
   parseSsurgoResponse,
+  precipitationSource,
+  precipitationUrl,
+  priorLookupPoint,
   SOILGRIDS_PROPERTY_MAPPING,
   soilGridsUrl,
+  ssurgoQuery,
 } from '../src/prior'
 
 describe('prior source mapping', () => {
@@ -91,31 +97,167 @@ describe('prior source mapping', () => {
     ).toBeUndefined()
   })
 
+  it('treats an empty Soil Data Access answer as no data, not an error', () => {
+    expect(parseSsurgoResponse({})).toEqual([])
+  })
+
+  it('treats an all-null (urban) SoilGrids answer as no prior, not an error', () => {
+    expect(parseSoilGridsResponse(urbanSoilGrids)).toEqual([])
+  })
+
+  it('keeps the properties SoilGrids does estimate in a partial answer', () => {
+    const partial = structuredClone(soilGrids) as typeof soilGrids
+    const soc = partial.properties.layers.find((layer) => layer.name === 'soc')
+    for (const depth of soc!.depths)
+      Object.assign(depth.values, { 'Q0.05': null, 'Q0.95': null, mean: null })
+    const clay = partial.properties.layers.find(
+      (layer) => layer.name === 'clay',
+    )
+    Object.assign(clay!.depths[2].values, { mean: null })
+    const priors = parseSoilGridsResponse(partial)
+    expect(priors.some((prior) => prior.property === 'soc')).toBe(false)
+    expect(
+      priors
+        .filter((prior) => prior.property === 'clay')
+        .map((prior) => prior.depth_bottom_cm),
+    ).toEqual([5])
+    expect(priors).toHaveLength(13)
+  })
+
   it('detects the CONUS routing boundary without exposing coordinates', () => {
     expect(isConus(41.9483, -93.625)).toBe(true)
     expect(isConus(-9, -72)).toBe(false)
   })
 })
 
+describe('lookup privacy', () => {
+  it('sends external services the resolution-9 cell centre, never the precise point', () => {
+    const point = priorLookupPoint(44.47591234, -73.21214321)
+    expect(getResolution(point.cell)).toBe(9)
+    const [latitude, longitude] = cellToLatLng(point.cell)
+    expect(point.latitude).toBeCloseTo(latitude, 6)
+    expect(point.longitude).toBeCloseTo(longitude, 6)
+    expect(point.latitude).not.toBe(44.47591234)
+    for (const url of [
+      soilGridsUrl('https://rest.isric.org', point),
+      elevationUrl('https://api.open-meteo.com', point),
+      precipitationUrl({
+        archiveBase: 'https://archive-api.open-meteo.com',
+        capturedAt: '2026-10-08T15:00:00Z',
+        forecastBase: 'https://api.open-meteo.com',
+        now: new Date('2026-10-10T00:00:00Z'),
+        point,
+      }),
+    ]) {
+      expect(url).not.toContain('44.4759123')
+      expect(url).not.toContain('73.2121432')
+    }
+    expect(ssurgoQuery(point)).toContain(
+      `POINT(${point.longitude} ${point.latitude})`,
+    )
+  })
+})
+
 describe('environment enrichment', () => {
-  it('parses GLO-90 elevation and a three-day precipitation flag', () => {
+  it('parses GLO-90 elevation, treating a missing value as unknown', () => {
     expect(parseElevation({ elevation: [305] })).toBe(305)
+    expect(parseElevation({ elevation: [null] })).toBeNull()
+  })
+
+  it('flags rain in the 72 hours before capture, not before the request', () => {
+    const hourly = {
+      hourly: {
+        precipitation: [0.6, 0.6, 0, 9],
+        time: [
+          '2026-10-05T14:00',
+          '2026-10-07T10:00',
+          '2026-10-08T14:00',
+          '2026-10-08T16:00',
+        ],
+      },
+    }
+    // Rain after the capture moment (16:00) must not count.
+    expect(parsePrecipitationWindow(hourly, '2026-10-08T15:00:00Z')).toBe(false)
+    expect(parsePrecipitationWindow(hourly, '2026-10-08T17:00:00Z')).toBe(true)
+    // 2026-10-05T14:00 is outside the 72-hour window ending 2026-10-08T15:00.
     expect(
-      parseRecentPrecipitation({
-        daily: { precipitation_sum: [0.2, 0.4, 0.5, 0] },
-      }),
+      parsePrecipitationWindow(
+        {
+          hourly: {
+            precipitation: [5, null],
+            time: ['2026-10-05T14:00', '2026-10-08T10:00'],
+          },
+        },
+        '2026-10-08T15:00:00Z',
+      ),
+    ).toBeNull()
+  })
+
+  it('counts the hour labelled at the capture time, which covers the hour before it', () => {
+    // Open-Meteo's value labelled 15:00 is the rain from 14:00 to 15:00.
+    expect(
+      parsePrecipitationWindow(
+        { hourly: { precipitation: [3], time: ['2026-10-08T15:00'] } },
+        '2026-10-08T15:00:00Z',
+      ),
     ).toBe(true)
+    // The hour labelled 16:00 starts at the capture moment and does not count.
     expect(
-      parseRecentPrecipitation({
-        daily: { precipitation_sum: [0, null, 0, 2] },
-      }),
+      parsePrecipitationWindow(
+        {
+          hourly: {
+            precipitation: [0, 3],
+            time: ['2026-10-08T15:00', '2026-10-08T16:00'],
+          },
+        },
+        '2026-10-08T15:00:00Z',
+      ),
     ).toBe(false)
   })
 
-  it('builds bounded official API URLs', () => {
-    const soil = new URL(
-      soilGridsUrl('https://rest.isric.org', 41.9483, -93.625),
+  it('measures the forecast cut-over from the start of the window', () => {
+    const now = new Date('2026-10-10T00:00:00Z')
+    // 90 days before 'now' is 2026-07-12; a capture at 2026-07-12T01:00 has a window starting
+    // 2026-07-09, beyond the forecast history, so it must use the archive.
+    expect(precipitationSource('2026-07-12T01:00:00Z', now)).toBe('archive')
+    expect(precipitationSource('2026-07-16T01:00:00Z', now)).toBe('forecast')
+    expect(precipitationSource('2027-01-01T00:00:00Z', now)).toBe('unavailable')
+    expect(precipitationSource('1970-01-01T00:00:00Z', now)).toBe('unavailable')
+    expect(precipitationSource('not a time', now)).toBe('unavailable')
+  })
+
+  it('chooses the forecast API for recent captures and the archive for old ones', () => {
+    const point = priorLookupPoint(41.9483, -93.625)
+    const recent = new URL(
+      precipitationUrl({
+        archiveBase: 'https://archive-api.open-meteo.com',
+        capturedAt: '2026-10-08T15:00:00Z',
+        forecastBase: 'https://api.open-meteo.com',
+        now: new Date('2026-10-10T00:00:00Z'),
+        point,
+      }),
     )
+    expect(recent.host).toBe('api.open-meteo.com')
+    expect(recent.pathname).toBe('/v1/forecast')
+    expect(recent.searchParams.get('start_date')).toBe('2026-10-05')
+    expect(recent.searchParams.get('end_date')).toBe('2026-10-08')
+    expect(recent.searchParams.get('hourly')).toBe('precipitation')
+    const old = new URL(
+      precipitationUrl({
+        archiveBase: 'https://archive-api.open-meteo.com',
+        capturedAt: '2026-03-01T12:00:00Z',
+        forecastBase: 'https://api.open-meteo.com',
+        now: new Date('2026-10-10T00:00:00Z'),
+        point,
+      }),
+    )
+    expect(old.host).toBe('archive-api.open-meteo.com')
+    expect(old.pathname).toBe('/v1/archive')
+  })
+
+  it('builds bounded official API URLs', () => {
+    const point = priorLookupPoint(41.9483, -93.625)
+    const soil = new URL(soilGridsUrl('https://rest.isric.org', point))
     expect(soil.pathname).toBe('/soilgrids/v2.0/properties/query')
     expect(soil.searchParams.getAll('property')).toHaveLength(8)
     expect(soil.searchParams.getAll('depth')).toEqual([
@@ -123,9 +265,9 @@ describe('environment enrichment', () => {
       '5-15cm',
       '15-30cm',
     ])
-    const meteo = openMeteoUrls('https://api.open-meteo.com', 41.9483, -93.625)
-    expect(new URL(meteo.elevation).pathname).toBe('/v1/elevation')
-    expect(new URL(meteo.weather).searchParams.get('past_days')).toBe('3')
+    expect(
+      new URL(elevationUrl('https://api.open-meteo.com', point)).pathname,
+    ).toBe('/v1/elevation')
   })
 })
 

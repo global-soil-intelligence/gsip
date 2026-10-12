@@ -27,6 +27,11 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.6
+      - name: Install GDAL for the golden-tile tests
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends gdal-bin
       - run: pnpm install --frozen-lockfile
       - run: uv sync --frozen --all-groups
       - run: pnpm lint
@@ -39,6 +44,9 @@ jobs:
       - run: uv run ruff check .
       - run: uv run mypy
       - run: uv run pytest
+        env:
+          GSIP_REQUIRE_GDAL: '1'
+      - run: deno check --config supabase/functions/deno.json supabase/functions/*/index.ts
       - run: pnpm db:start
       - run: pnpm db:reset
       - run: pnpm db:test

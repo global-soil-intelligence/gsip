@@ -1,0 +1,47 @@
+{
+  "version": "2026-10-10",
+  "source": "SoilGrids 2.0 (ISRIC, CC BY 4.0), 0-5 cm mean",
+  "layers": [
+    {
+      "id": "soc",
+      "label": "Organic carbon",
+      "unit": "g/kg",
+      "soilgrids": { "vrt": "soc/soc_0-5cm_mean.vrt", "scale": 0.1 },
+      "stops": [
+        { "value": 0, "color": "#f4ecd6" },
+        { "value": 5, "color": "#e2c88f" },
+        { "value": 15, "color": "#c49a5a" },
+        { "value": 30, "color": "#946437" },
+        { "value": 60, "color": "#5f3b20" },
+        { "value": 120, "color": "#2e1b0f" }
+      ]
+    },
+    {
+      "id": "ph",
+      "label": "Soil pH",
+      "unit": "pH",
+      "soilgrids": { "vrt": "phh2o/phh2o_0-5cm_mean.vrt", "scale": 0.1 },
+      "stops": [
+        { "value": 4, "color": "#b2182b" },
+        { "value": 5, "color": "#ef8a62" },
+        { "value": 6, "color": "#fddbc7" },
+        { "value": 7, "color": "#f7f7f7" },
+        { "value": 8, "color": "#92c5de" },
+        { "value": 9, "color": "#2166ac" }
+      ]
+    },
+    {
+      "id": "clay",
+      "label": "Clay content",
+      "unit": "g/kg",
+      "soilgrids": { "vrt": "clay/clay_0-5cm_mean.vrt", "scale": 1 },
+      "stops": [
+        { "value": 0, "color": "#fff7ec" },
+        { "value": 100, "color": "#fdd49e" },
+        { "value": 200, "color": "#fc8d59" },
+        { "value": 350, "color": "#d7301f" },
+        { "value": 500, "color": "#7f0000" }
+      ]
+    }
+  ]
+}

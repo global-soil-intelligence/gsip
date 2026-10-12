@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { cleanup, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Database } from '@gsip/schema'
 import {
@@ -7,6 +7,7 @@ import {
   contributionFeatures,
   fetchContributionCells,
   PRIOR_LAYERS,
+  priorSource,
 } from '../src/mapData'
 
 vi.mock('maplibre-gl', () => ({
@@ -26,7 +27,81 @@ vi.mock('pmtiles', () => ({
   },
 }))
 
-import { App } from '../src/App'
+import { App, Legend } from '../src/App'
+import { legendGradient, paletteLayer, SOILGRIDS_PALETTE } from '@gsip/schema'
+
+afterEach(() => {
+  cleanup()
+  vi.unstubAllEnvs()
+})
+
+function rgb(hex: string): string {
+  const value = Number.parseInt(hex.slice(1), 16)
+  return `rgb(${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255})`
+}
+
+describe('prior legends', () => {
+  it('takes every layer palette from the versioned JSON the tile builder reads', () => {
+    expect(PRIOR_LAYERS.map((layer) => layer.id)).toEqual(['soc', 'ph', 'clay'])
+    for (const layer of PRIOR_LAYERS) {
+      // The same object, not a copy: the map cannot carry its own colours.
+      expect(layer.palette).toBe(paletteLayer(layer.id))
+      expect(SOILGRIDS_PALETTE.layers).toContain(layer.palette)
+      expect(layer.unit).toBe(layer.palette.unit)
+    }
+  })
+
+  it('loads only archives built with the palette its legends are drawn from', () => {
+    vi.stubEnv('VITE_PRIOR_TILES_BASE', 'https://tiles.example/gsip/')
+    expect(PRIOR_LAYERS.map((layer) => priorSource(layer))).toEqual(
+      PRIOR_LAYERS.map((layer) =>
+        expect.objectContaining({
+          maxzoom: 8,
+          url: `pmtiles://https://tiles.example/gsip/${SOILGRIDS_PALETTE.version}/${layer.id}.pmtiles`,
+        }),
+      ),
+    )
+  })
+
+  it('renders each legend with the palette stop colours in order', () => {
+    vi.stubEnv('VITE_PRIOR_TILES_BASE', 'https://tiles.example/gsip/')
+    for (const layer of PRIOR_LAYERS) {
+      render(<Legend layer={layer} />)
+      const drawn = screen.getByTestId(`legend-gradient-${layer.id}`).style
+        .background
+      const positions = paletteLayer(layer.id).stops.map((stop) =>
+        Math.max(drawn.indexOf(rgb(stop.color)), drawn.indexOf(stop.color)),
+      )
+      expect(positions.every((position) => position >= 0)).toBe(true)
+      expect([...positions].sort((a, b) => a - b)).toEqual(positions)
+      cleanup()
+    }
+  })
+
+  it('draws every PMTiles legend from the palette that colours the tiles', () => {
+    vi.stubEnv('VITE_PRIOR_TILES_BASE', 'https://tiles.example/gsip/')
+    for (const layer of PRIOR_LAYERS) {
+      render(<Legend layer={layer} />)
+      const gradient = screen.getByTestId(`legend-gradient-${layer.id}`)
+      // jsdom normalizes colours, so compare against the same normalization.
+      const probe = document.createElement('i')
+      probe.style.background = legendGradient(layer.palette)
+      expect(gradient.style.background).toBe(probe.style.background)
+      expect(gradient.style.background).not.toBe('')
+      cleanup()
+    }
+  })
+
+  it('shows ISRIC’s own legend for the WMS fallback it does not colour', () => {
+    const soc = PRIOR_LAYERS[0]
+    render(<Legend layer={soc} />)
+    const image = screen.getByRole('img', {
+      name: /ISRIC legend for Organic carbon/i,
+    })
+    expect(image.getAttribute('src')).toContain('request=GetLegendGraphic')
+    expect(image.getAttribute('src')).toContain('layer=soc_0-5cm_mean')
+  })
+})
 
 describe('public map', () => {
   it('offers all Phase 1 layers, units, and a contribution path', () => {

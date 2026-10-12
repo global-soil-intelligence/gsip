@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "check:prior-tiles": "node scripts/check-prior-tiles.mjs",
     "dev": "vite",
     "lint": "eslint src tests vite.config.ts",
     "test": "vitest run",

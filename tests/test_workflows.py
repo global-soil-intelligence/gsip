@@ -53,6 +53,26 @@ def test_quarantine_cleanup_runs_on_its_own_schedule() -> None:
     assert "vars.SUPABASE_URL" in text
 
 
+def test_prior_drain_waits_less_than_its_schedule_interval() -> None:
+    drain = next(path for path in WORKFLOWS if path.name == "prior-enrichment.yml")
+    text = drain.read_text(encoding="utf-8")
+    interval = re.search(r"cron: '\*/(\d+) \* \* \* \*'", text)
+    budget = re.search(r"pipeline\.prior_worker --budget-seconds (\d+)", text)
+    assert interval and budget, "the drain must declare its schedule and time budget"
+    assert int(budget.group(1)) < int(interval.group(1)) * 60
+    assert re.search(r"timeout-minutes: \d+", text)
+
+
+def test_pages_deploy_checks_the_prior_tiles_match_the_palette() -> None:
+    pages = next(path for path in WORKFLOWS if path.name == "pages.yml")
+    [gate] = [
+        block
+        for block in _step_blocks(pages.read_text(encoding="utf-8"))
+        if "pnpm check:prior-tiles" in block
+    ]
+    assert "VITE_PRIOR_TILES_BASE: ${{ vars.VITE_PRIOR_TILES_BASE }}" in gate
+
+
 @pytest.mark.parametrize(
     ("filename", "job", "variable"),
     [

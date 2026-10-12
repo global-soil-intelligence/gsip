@@ -69,6 +69,22 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
 
    Setting it back to `false` pauses capture immediately; queued observations wait on devices.
 
+### WP-6c — priors and tiles
+
+1. Apply the migrations, then redeploy the function so it picks up the import map and the pinned
+   `verify_jwt = true` from `supabase/config.toml`: `supabase functions deploy prior-attach`. The
+   function needs no new secret; the optional `OPEN_METEO_ARCHIVE_BASE` and `SOILGRIDS_BASE`
+   variables override the public endpoints. Confirm in the dashboard that JWT verification is on.
+2. Upstream buckets start full: SoilGrids holds one token refilled five times a minute (calls at
+   least 12 s apart), SSURGO 30 a minute, Open-Meteo 60. To pause all prior lookups, set
+   `refill_per_minute` very low in `upstream_buckets`; jobs simply defer and the drain waits within
+   its budget.
+3. Build the prior archives (`uv run python -m pipeline.build_prior_tiles --max-zoom 8`), publish the
+   whole `output/tiles/<palette version>/` directory under one public base, and set the repository
+   variable `VITE_PRIOR_TILES_BASE` to that base. The Pages deploy then checks that every archive
+   exists and carries the palette version the legends use. Until the variable is set the map uses
+   ISRIC's WMS with ISRIC's own legend.
+
 ## Production worker schedule holds
 
 Merging a workflow or adding its credential must not authorise production work. Scheduled worker

@@ -1,56 +1,68 @@
 import { createClient } from '@supabase/supabase-js'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { cellToBoundary } from 'h3-js'
-import type { Database } from '@gsip/schema'
+import {
+  type Database,
+  type PaletteLayer,
+  paletteLayer,
+  SOILGRIDS_PALETTE,
+} from '@gsip/schema'
 import type { RasterSourceSpecification } from 'maplibre-gl'
 
 export type PriorLayerId = 'soc' | 'ph' | 'clay'
 export type PriorLayer = {
   archive: string
-  high: string
   id: PriorLayerId
   label: string
   layer: string
-  low: string
   mapfile: string
+  palette: PaletteLayer
   unit: string
 }
 
+function priorLayer(
+  id: PriorLayerId,
+  mapfile: string,
+  layer: string,
+): PriorLayer {
+  const palette = paletteLayer(id)
+  return {
+    // Archives live under the palette version that coloured them (pipeline/build_prior_tiles.py),
+    // so the map only ever loads tiles that match the legend it draws.
+    archive: `${SOILGRIDS_PALETTE.version}/${id}.pmtiles`,
+    id,
+    label: palette.label,
+    layer,
+    mapfile,
+    palette,
+    unit: palette.unit,
+  }
+}
+
 export const PRIOR_LAYERS: PriorLayer[] = [
-  {
-    archive: 'soc.pmtiles',
-    high: 'High · 400 g/kg',
-    id: 'soc',
-    label: 'Organic carbon',
-    layer: 'soc_0-5cm_mean',
-    low: 'Low · 0 g/kg',
-    mapfile: 'soc',
-    unit: 'g/kg',
-  },
-  {
-    archive: 'ph.pmtiles',
-    high: 'Alkaline · pH 10',
-    id: 'ph',
-    label: 'Soil pH',
-    layer: 'phh2o_0-5cm_mean',
-    low: 'Acidic · pH 3',
-    mapfile: 'phh2o',
-    unit: 'pH',
-  },
-  {
-    archive: 'clay.pmtiles',
-    high: 'High · 800 g/kg',
-    id: 'clay',
-    label: 'Clay content',
-    layer: 'clay_0-5cm_mean',
-    low: 'Low · 0 g/kg',
-    mapfile: 'clay',
-    unit: 'g/kg',
-  },
+  priorLayer('soc', 'soc', 'soc_0-5cm_mean'),
+  priorLayer('ph', 'phh2o', 'phh2o_0-5cm_mean'),
+  priorLayer('clay', 'clay', 'clay_0-5cm_mean'),
 ]
 
+export function priorTilesBase(): string | undefined {
+  return import.meta.env.VITE_PRIOR_TILES_BASE?.replace(/\/$/, '') || undefined
+}
+
+/** ISRIC's own legend, for the WMS fallback whose colours GSIP does not control. */
+export function wmsLegendUrl(layer: PriorLayer): string {
+  const query = new URLSearchParams({
+    format: 'image/png',
+    layer: layer.layer,
+    request: 'GetLegendGraphic',
+    service: 'WMS',
+    version: '1.1.1',
+  })
+  return `https://maps.isric.org/mapserv/${layer.mapfile}?${query.toString()}`
+}
+
 export function priorSource(layer: PriorLayer): RasterSourceSpecification {
-  const archiveBase = import.meta.env.VITE_PRIOR_TILES_BASE?.replace(/\/$/, '')
+  const archiveBase = priorTilesBase()
   if (archiveBase)
     return {
       maxzoom: 8,

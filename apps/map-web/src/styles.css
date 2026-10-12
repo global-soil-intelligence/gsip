@@ -181,15 +181,16 @@ h1 {
 .legend i {
   height: 0.55rem;
   border-radius: 99px;
-  background: linear-gradient(90deg, #ece6ba, #d09b4d, #73472e);
 }
 
-.legend-ph i {
-  background: linear-gradient(90deg, #e97664, #e7d676, #5a9faf);
+.legend-wms {
+  display: block;
 }
 
-.legend-clay i {
-  background: linear-gradient(90deg, #eee2b9, #c8794f, #793d35);
+.legend-wms img {
+  max-width: 100%;
+  background: #f5f4ea;
+  border-radius: 0.3rem;
 }
 
 .map-status {

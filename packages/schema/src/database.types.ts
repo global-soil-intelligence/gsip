@@ -265,10 +265,32 @@ export type Database = {
           },
         ]
       }
+      prior_cell_cache: {
+        Row: {
+          h3_r9: string
+          payload: Json
+          retrieved_at: string
+          source: string
+        }
+        Insert: {
+          h3_r9: string
+          payload: Json
+          retrieved_at?: string
+          source: string
+        }
+        Update: {
+          h3_r9?: string
+          payload?: Json
+          retrieved_at?: string
+          source?: string
+        }
+        Relationships: []
+      }
       prior_jobs: {
         Row: {
           attempts: number
           completed_at: string | null
+          empty_sources: string[]
           last_error: string | null
           started_at: string | null
           status: string
@@ -278,6 +300,7 @@ export type Database = {
         Insert: {
           attempts?: number
           completed_at?: string | null
+          empty_sources?: string[]
           last_error?: string | null
           started_at?: string | null
           status?: string
@@ -287,6 +310,7 @@ export type Database = {
         Update: {
           attempts?: number
           completed_at?: string | null
+          empty_sources?: string[]
           last_error?: string | null
           started_at?: string | null
           status?: string
@@ -510,22 +534,62 @@ export type Database = {
           },
         ]
       }
+      upstream_buckets: {
+        Row: {
+          capacity: number
+          refill_per_minute: number
+          refilled_at: string
+          source: string
+          tokens: number
+        }
+        Insert: {
+          capacity: number
+          refill_per_minute: number
+          refilled_at?: string
+          source: string
+          tokens: number
+        }
+        Update: {
+          capacity?: number
+          refill_per_minute?: number
+          refilled_at?: string
+          source?: string
+          tokens?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      capture_is_open: { Args: never; Returns: boolean }
-      claim_prior_job_attempt: {
-        Args: { p_submission_id: string }
-        Returns: number
+      begin_prior_attempt: {
+        Args: {
+          p_costs: Json
+          p_owner_request: boolean
+          p_submission_id: string
+        }
+        Returns: {
+          attempts: number | null
+          outcome: string
+          retry_after_seconds: number | null
+        }[]
       }
+      capture_is_open: { Args: never; Returns: boolean }
       current_contributor_id: { Args: never; Returns: string }
+      fail_prior_job: {
+        Args: { p_reason: string; p_submission_id: string }
+        Returns: undefined
+      }
       finalize_submission: {
         Args: { p_submission_id: string }
         Returns: string
       }
       refresh_public_h3_cells: { Args: { payload: Json }; Returns: number }
+      requeue_stale_prior_jobs: {
+        Args: { p_older_than?: unknown }
+        Returns: number
+      }
       settle_submission: {
         Args: { p_submission_id: string }
         Returns: string

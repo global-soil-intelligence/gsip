@@ -16,6 +16,7 @@ jobs:
   drain:
     if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && vars.GSIP_PRIOR_SCHEDULE_ENABLED == 'true') }}
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v7
@@ -26,7 +27,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: uv sync --frozen --no-dev
-      - run: uv run python -m pipeline.prior_worker
+      # Starts no wait or job after 240 s, so a run normally ends before the next is due (the
+      # concurrency group queues any overlap rather than running two drains at once).
+      - run: uv run python -m pipeline.prior_worker --budget-seconds 240
         env:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_URL: ${{ vars.SUPABASE_URL }}

@@ -1,3 +1,4 @@
+import { cellToLatLng, latLngToCell } from 'h3-js'
 import { z } from 'zod'
 
 export const SOILGRIDS_PROPERTY_MAPPING = {
@@ -34,10 +35,11 @@ const soilGridsDepthSchema = z.object({
     top_depth: z.number(),
     unit_depth: z.literal('cm'),
   }),
+  // SoilGrids answers null where it has no estimate (it masks built-up land, water and rock).
   values: z.object({
-    'Q0.05': z.number(),
-    'Q0.95': z.number(),
-    mean: z.number(),
+    'Q0.05': z.number().nullable(),
+    'Q0.95': z.number().nullable(),
+    mean: z.number().nullable(),
   }),
 })
 
@@ -62,6 +64,10 @@ function rounded(value: number): number {
   return Number(value.toFixed(6))
 }
 
+/**
+ * Canonical prior rows from a SoilGrids response. A property with no estimate yields no row: an
+ * all-null response (an urban site, for example) is a definitive "no prior", not an error.
+ */
 export function parseSoilGridsResponse(input: unknown): PriorInput[] {
   const response = soilGridsResponseSchema.parse(input)
   const priors: PriorInput[] = []
@@ -86,57 +92,102 @@ export function parseSoilGridsResponse(input: unknown): PriorInput[] {
       return depth
     })
     const mapping = SOILGRIDS_PROPERTY_MAPPING[code]
-    const convert = (value: number) => rounded(value * mapping.scale)
+    const convert = (value: number | null) =>
+      value === null ? null : rounded(value * mapping.scale)
     const surface = depths[0].values
-    priors.push({
-      depth_bottom_cm: 5,
-      depth_top_cm: 0,
-      property: mapping.property,
-      source: 'soilgrids',
-      uncertainty_hi: convert(surface['Q0.95']),
-      uncertainty_lo: convert(surface['Q0.05']),
-      unit: mapping.unit,
-      value: convert(surface.mean),
-    })
+    if (surface.mean !== null) {
+      priors.push({
+        depth_bottom_cm: 5,
+        depth_top_cm: 0,
+        property: mapping.property,
+        source: 'soilgrids',
+        uncertainty_hi: convert(surface['Q0.95']),
+        uncertainty_lo: convert(surface['Q0.05']),
+        unit: mapping.unit,
+        value: rounded(surface.mean * mapping.scale),
+      })
+    }
 
     // SoilGrids publishes standard 0-5, 5-15 and 15-30 cm layers. GSIP's
     // 0-30 cm profile is their deterministic thickness-weighted aggregate.
-    const aggregate = (key: 'Q0.05' | 'Q0.95' | 'mean') =>
-      depths.reduce((sum, depth) => {
-        const thickness = depth.range.bottom_depth - depth.range.top_depth
-        return sum + depth.values[key] * thickness
-      }, 0) / 30
-    priors.push({
-      depth_bottom_cm: 30,
-      depth_top_cm: 0,
-      property: mapping.property,
-      source: 'soilgrids',
-      uncertainty_hi: convert(aggregate('Q0.95')),
-      uncertainty_lo: convert(aggregate('Q0.05')),
-      unit: mapping.unit,
-      value: convert(aggregate('mean')),
-    })
+    // Averaging layer quantiles gives a conservative (wider than exact)
+    // interval; it is documented as such (SPEC section 6).
+    const aggregate = (key: 'Q0.05' | 'Q0.95' | 'mean'): number | null => {
+      let sum = 0
+      for (const depth of depths) {
+        const value = depth.values[key]
+        if (value === null) return null
+        sum += value * (depth.range.bottom_depth - depth.range.top_depth)
+      }
+      return sum / 30
+    }
+    const profileMean = aggregate('mean')
+    if (profileMean !== null) {
+      priors.push({
+        depth_bottom_cm: 30,
+        depth_top_cm: 0,
+        property: mapping.property,
+        source: 'soilgrids',
+        uncertainty_hi: convert(aggregate('Q0.95')),
+        uncertainty_lo: convert(aggregate('Q0.05')),
+        unit: mapping.unit,
+        value: rounded(profileMean * mapping.scale),
+      })
+    }
   }
   return priors
 }
 
 const elevationResponseSchema = z.object({
-  elevation: z.array(z.number()).min(1),
+  elevation: z.array(z.number().nullable()).min(1),
 })
-const weatherResponseSchema = z.object({
-  daily: z.object({ precipitation_sum: z.array(z.number().nullable()).min(1) }),
+const hourlyPrecipitationSchema = z.object({
+  hourly: z.object({
+    precipitation: z.array(z.number().nullable()),
+    time: z.array(z.string()),
+  }),
 })
 
-export function parseElevation(input: unknown): number {
-  return elevationResponseSchema.parse(input).elevation[0]
+/** Elevation in metres, or null where the DEM has no value. */
+export function parseElevation(input: unknown): number | null {
+  const value = elevationResponseSchema.parse(input).elevation[0]
+  return value === null || !Number.isFinite(value) ? null : value
 }
 
-export function parseRecentPrecipitation(input: unknown): boolean {
-  const values = weatherResponseSchema.parse(input).daily.precipitation_sum
-  const previousThreeDays = values.slice(0, 3)
-  return (
-    previousThreeDays.reduce<number>((sum, value) => sum + (value ?? 0), 0) >= 1
-  )
+export const PRECIPITATION_WINDOW_HOURS = 72
+export const PRECIPITATION_FLAG_MM = 1
+
+const HOUR_MS = 60 * 60_000
+
+/**
+ * Whether at least 1 mm of rain fell in the 72 hours before capture (the main moisture
+ * confounder for soil colour). Null when the window has no data.
+ *
+ * Open-Meteo's hourly `precipitation` labelled T is the sum over the preceding hour (T-1h, T], so
+ * an hour counts when that interval overlaps the window; an hour that starts at or after the
+ * capture moment does not.
+ */
+export function parsePrecipitationWindow(
+  input: unknown,
+  capturedAt: string,
+): boolean | null {
+  const { hourly } = hourlyPrecipitationSchema.parse(input)
+  const end = Date.parse(capturedAt)
+  if (!Number.isFinite(end)) throw new Error('capturedAt is not a timestamp')
+  const start = end - PRECIPITATION_WINDOW_HOURS * HOUR_MS
+  let total = 0
+  let observed = 0
+  hourly.time.forEach((time, index) => {
+    // Open-Meteo returns UTC hours without a zone suffix when timezone=UTC.
+    const label = Date.parse(time.endsWith('Z') ? time : `${time}Z`)
+    const value = hourly.precipitation[index]
+    if (!Number.isFinite(label) || label <= start || label - HOUR_MS >= end)
+      return
+    if (value === null || value === undefined) return
+    total += value
+    observed += 1
+  })
+  return observed === 0 ? null : total >= PRECIPITATION_FLAG_MM
 }
 
 const SSURGO_COLUMNS = [
@@ -150,12 +201,15 @@ const SSURGO_COLUMNS = [
   readonly [string, CanonicalProperty, CanonicalUnit, number]
 >
 
+// Soil Data Access answers an empty result set with `{}` (no Table): a definitive "no data".
 const ssurgoResponseSchema = z.object({
-  Table: z.array(z.array(z.union([z.string(), z.number(), z.null()]))),
+  Table: z
+    .array(z.array(z.union([z.string(), z.number(), z.null()])))
+    .optional(),
 })
 
 export function parseSsurgoResponse(input: unknown): PriorInput[] {
-  const rows = ssurgoResponseSchema.parse(input).Table
+  const rows = ssurgoResponseSchema.parse(input).Table ?? []
   if (rows.length < 2) return []
   const headers = rows[0].map(String)
   const indexed = rows
@@ -215,6 +269,28 @@ export function isConus(latitude: number, longitude: number): boolean {
   )
 }
 
+/** An upstream failure, with the HTTP status when there was one (null for network errors). */
+export class UpstreamError extends Error {
+  constructor(
+    message: string,
+    readonly status: number | null,
+  ) {
+    super(message)
+    this.name = 'UpstreamError'
+  }
+}
+
+/** A 4xx other than 429 is a definitive answer about the request, not a transient failure. */
+export function isDefinitiveRejection(error: unknown): boolean {
+  return (
+    error instanceof UpstreamError &&
+    error.status !== null &&
+    error.status >= 400 &&
+    error.status < 500 &&
+    error.status !== 429
+  )
+}
+
 export async function fetchJsonWithRetry(
   fetcher: typeof fetch,
   input: string,
@@ -235,30 +311,32 @@ export async function fetchJsonWithRetry(
     let response: Response
     try {
       response = await fetcher(input, init)
-    } catch (error) {
-      lastError = error
+    } catch {
+      lastError = new UpstreamError('Upstream request failed', null)
       if (attempt < attempts) await sleep(baseDelayMs * 2 ** (attempt - 1))
       continue
     }
     if (response.ok) return (await response.json()) as unknown
     if (response.status < 500 && response.status !== 429)
-      throw new Error(`Upstream request failed with status ${response.status}`)
-    lastError = new Error(`Retryable upstream status ${response.status}`)
+      throw new UpstreamError(
+        `Upstream request failed with status ${response.status}`,
+        response.status,
+      )
+    lastError = new UpstreamError(
+      `Retryable upstream status ${response.status}`,
+      response.status,
+    )
     if (attempt < attempts) await sleep(baseDelayMs * 2 ** (attempt - 1))
   }
   throw lastError instanceof Error
     ? lastError
-    : new Error('Upstream request failed')
+    : new UpstreamError('Upstream request failed', null)
 }
 
-export function soilGridsUrl(
-  base: string,
-  latitude: number,
-  longitude: number,
-): string {
+export function soilGridsUrl(base: string, point: LookupPoint): string {
   const url = new URL('/soilgrids/v2.0/properties/query', base)
-  url.searchParams.set('lat', String(latitude))
-  url.searchParams.set('lon', String(longitude))
+  url.searchParams.set('lat', String(point.latitude))
+  url.searchParams.set('lon', String(point.longitude))
   for (const property of Object.keys(SOILGRIDS_PROPERTY_MAPPING))
     url.searchParams.append('property', property)
   for (const depth of ['0-5cm', '5-15cm', '15-30cm'])
@@ -268,26 +346,98 @@ export function soilGridsUrl(
   return url.toString()
 }
 
-export function openMeteoUrls(
-  base: string,
+export type LookupPoint = { cell: string; latitude: number; longitude: number }
+
+/**
+ * The point external processors see (SPEC I7): the centre of the resolution-9 H3 cell (about
+ * 0.1 km²), never the contributor's precise point. It is also the prior cache key.
+ */
+export function priorLookupPoint(
   latitude: number,
   longitude: number,
-) {
-  const elevation = new URL('/v1/elevation', base)
-  elevation.searchParams.set('latitude', String(latitude))
-  elevation.searchParams.set('longitude', String(longitude))
-  const weather = new URL('/v1/forecast', base)
-  weather.searchParams.set('latitude', String(latitude))
-  weather.searchParams.set('longitude', String(longitude))
-  weather.searchParams.set('daily', 'precipitation_sum')
-  weather.searchParams.set('past_days', '3')
-  weather.searchParams.set('forecast_days', '1')
-  weather.searchParams.set('timezone', 'UTC')
-  return { elevation: elevation.toString(), weather: weather.toString() }
+): LookupPoint {
+  const cell = latLngToCell(latitude, longitude, 9)
+  const [centreLatitude, centreLongitude] = cellToLatLng(cell)
+  return {
+    cell,
+    latitude: Number(centreLatitude.toFixed(6)),
+    longitude: Number(centreLongitude.toFixed(6)),
+  }
 }
 
-export function ssurgoQuery(latitude: number, longitude: number): string {
-  const point = `POINT(${longitude} ${latitude})`
+export function elevationUrl(base: string, point: LookupPoint): string {
+  const url = new URL('/v1/elevation', base)
+  url.searchParams.set('latitude', String(point.latitude))
+  url.searchParams.set('longitude', String(point.longitude))
+  return url.toString()
+}
+
+/** The Open-Meteo forecast API serves roughly the last 92 days; older windows use the archive. */
+export const FORECAST_HISTORY_DAYS = 90
+/** The ERA5-based archive starts in 1940. */
+export const ARCHIVE_START = Date.parse('1940-01-02T00:00:00Z')
+/**
+ * Capture clients never send a capture time older than a year; anything far older is a wrong
+ * device clock, and weather for it would be meaningless rather than missing.
+ */
+export const OLDEST_CAPTURE_DAYS = 400
+const FUTURE_TOLERANCE_MS = 60 * 60_000
+
+function isoDate(epochMs: number): string {
+  return new Date(epochMs).toISOString().slice(0, 10)
+}
+
+/**
+ * Which Open-Meteo service covers the window before a capture, or `unavailable` when none can
+ * or should (a device clock in the future or implausibly old): that is "no data", never a
+ * retryable failure.
+ * The forecast cut-over is measured from the start of the window, not the capture moment.
+ */
+export function precipitationSource(
+  capturedAt: string,
+  now: Date,
+): 'archive' | 'forecast' | 'unavailable' {
+  const end = Date.parse(capturedAt)
+  if (!Number.isFinite(end)) return 'unavailable'
+  const start = end - PRECIPITATION_WINDOW_HOURS * HOUR_MS
+  if (
+    end > now.getTime() + FUTURE_TOLERANCE_MS ||
+    start < ARCHIVE_START ||
+    now.getTime() - end > OLDEST_CAPTURE_DAYS * 24 * HOUR_MS
+  )
+    return 'unavailable'
+  return now.getTime() - start > FORECAST_HISTORY_DAYS * 24 * HOUR_MS
+    ? 'archive'
+    : 'forecast'
+}
+
+export function precipitationUrl(options: {
+  archiveBase: string
+  capturedAt: string
+  forecastBase: string
+  now: Date
+  point: LookupPoint
+}): string {
+  const end = Date.parse(options.capturedAt)
+  const source = precipitationSource(options.capturedAt, options.now)
+  if (source === 'unavailable')
+    throw new Error('No precipitation service covers this capture time')
+  const start = end - PRECIPITATION_WINDOW_HOURS * HOUR_MS
+  const archived = source === 'archive'
+  const url = archived
+    ? new URL('/v1/archive', options.archiveBase)
+    : new URL('/v1/forecast', options.forecastBase)
+  url.searchParams.set('latitude', String(options.point.latitude))
+  url.searchParams.set('longitude', String(options.point.longitude))
+  url.searchParams.set('hourly', 'precipitation')
+  url.searchParams.set('start_date', isoDate(start))
+  url.searchParams.set('end_date', isoDate(end))
+  url.searchParams.set('timezone', 'UTC')
+  return url.toString()
+}
+
+export function ssurgoQuery(lookup: LookupPoint): string {
+  const point = `POINT(${lookup.longitude} ${lookup.latitude})`
   return `select co.comppct_r, ch.hzdept_r, ch.hzdepb_r,
     ch.ph1to1h2o_r as ph, ch.claytotal_r as clay,
     ch.sandtotal_r as sand, ch.silttotal_r as silt,
