@@ -62,6 +62,18 @@ WP-0 repository bootstrap · WP-1 schema and RLS · WP-2 reference card · WP-3 
 
 ### Phase 1.1 — Launch hardening (before the first real contribution)
 
+**WP-OPS-2: Production migration-history reconciliation**
+
+Before deploying the reviewed stack, reconcile the owner-confirmed legacy timestamp drift and accidental foreign deployment. Preserve application rows, schema, RLS, grants, capture restrictions and anonymous-auth settings. [PRODUCTION_RECONCILIATION.md](PRODUCTION_RECONCILIATION.md) records the effective-schema comparison, thirteen timestamp pairs, a private ledger backup and exact commands. The read-only catalog comparator must reject any difference beyond the documented aliases and platform metadata; tests must reject missing or changed privacy protections. Rehearse metadata alignment and all nine pending migrations in an isolated database, and run `scripts/db-migration-test.sh` before requesting approval. Justin authorizes history repair and the stray function deletion separately; new migrations and deployments each require their own subsequent go. No foreign application migration is imported into GSIP.
+
+Acceptance:
+
+- [ ] Compare production's effective baseline with all seventeen reviewed July migrations, including private functions, Storage policies and grants.
+- [ ] Confirm aggregate counts and the absence of foreign tables; preserve recoverable original history privately before any repair.
+- [ ] Test strict drift rejection and rehearse history alignment without application changes, then the nine pending migrations on synthetic existing rows.
+- [ ] Show the exact project and commands; execute only after Justin's explicit go, with a stop on any failed step or changed evidence.
+- [ ] Read back seventeen canonical baseline identities, exactly nine pending migrations, unchanged application counts/privacy controls and removal of only the approved stray function.
+
 **WP-6b: Ingest, QA and release integrity**
 Fixes launch blockers 1, 4, 5, 6 and 8 from the 2026-10-10 review.
 Scope:
