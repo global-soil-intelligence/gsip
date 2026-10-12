@@ -106,14 +106,13 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    `VITE_SAMPLING_RULES_URL` (HTTPS or same-site paths); until then the capture app links to the
    drafts in the repository. Capture stays closed until this is done.
 
-
-
 ## Production worker schedule holds
 
 Merging a workflow or adding its credential must not authorise production work. Scheduled worker
 jobs skip unless Justin has approved that worker's production gate and explicitly set its repository
 variable to `true`: `GSIP_PRIOR_SCHEDULE_ENABLED`, `GSIP_QA_SCHEDULE_ENABLED`,
-`GSIP_EXPORT_SCHEDULE_ENABLED`, or `GSIP_CLEANUP_SCHEDULE_ENABLED`. Missing variables hold the jobs.
+`GSIP_EXPORT_SCHEDULE_ENABLED`, `GSIP_CLEANUP_SCHEDULE_ENABLED`, or
+`GSIP_RIGHTS_SCHEDULE_ENABLED`. Missing variables hold the jobs.
 Manual dispatch remains available for a separately approved, bounded one-off run; it does not enable
 the schedule. Existing disabled workflows stay disabled until their own gate. Do not set any schedule
 variable while capture, photo publication or export still has an unmet gate. Restore a hold by removing
