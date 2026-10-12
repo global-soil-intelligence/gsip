@@ -29,7 +29,9 @@ instructions conflict, flag the conflict. Justin's explicit instructions take pr
   and B1–B8, actual verification results and unresolved review findings.
 - Use Conventional Commits. Add `Co-Authored-By: Codex <codex@openai.com>` to each commit
   written by Codex; another agent names itself. An agent never adds Justin's `Signed-off-by`,
-  certifies the DCO, approves a PR or merges. Justin reviews and merges.
+  certifies the DCO or approves a PR. Justin gives the final review and merge go. Under his
+  documented 2026-10-12 owner exception, an explicitly authorized agent may execute ordered
+  merges after green CI and resolved independent-review findings, without bypassing protections.
 
 ## Preserve the reviewed stack
 
