@@ -9,7 +9,7 @@ import { captureTime, isCaptureLive } from './capture'
 import { fuzzLocation } from './geo'
 import { HexPreview } from './HexPreview'
 import { legalLinks } from './legal'
-import { MySoil } from './MySoil'
+import { MySoil } from './MySoilPanel'
 import { mySoil } from './mySoil'
 import {
   type CapturedPhoto,

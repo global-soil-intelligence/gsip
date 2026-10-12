@@ -2,7 +2,7 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { cellToParent, latLngToCell } from 'h3-js'
 import { afterEach, describe, expect, it } from 'vitest'
 import { MY_SOIL_COLUMNS, mySoil } from '../src/mySoil'
-import { MySoil } from '../src/MySoil'
+import { MySoil } from '../src/MySoilPanel'
 import type { GsipClient } from '../src/supabase'
 
 afterEach(cleanup)
