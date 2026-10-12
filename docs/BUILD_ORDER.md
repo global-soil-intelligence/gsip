@@ -4,7 +4,7 @@
 **Version:** 3.0 — 2026-10-10
 **Pending amendment:** v4.0 draft — 2026-10-12. The additional packages below are proposed under SPEC §15; the reviewed v3.0 plan remains the baseline until Justin approves and merges the specification PR.
 **Builder:** Claude (build sessions), acting for the product owner as human of record.
-**Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) against the §5 review gates; findings and resolutions are posted to the PR. The GitHub approval required by branch protection must come from a non-author maintainer account. Justin Hart provides the final product-owner go/no-go; when his account authors a PR, that go/no-go cannot also satisfy GitHub's non-author approval.
+**Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) against the §5 review gates; findings and resolutions are posted to the PR. Justin Hart provides the final product-owner go/no-go. On 2026-10-12 he approved an owner exception: the extra non-author GitHub approval is no longer required for this owner-operated repository. Independent adversarial review and green CI remain required; an agent never submits an approving review or certifies the human DCO.
 **Product owner:** Justin Hart
 **Governing document:** `docs/SPEC.md` (v3.0). If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
 
@@ -13,7 +13,7 @@
 ## 1. Roles and workflow
 
 - The builder implements **one work package (WP) per pull request**, on a branch named `wp-<id>-<slug>` (e.g. `wp-6b-launch-hardening`). Specification updates use `docs/spec-v<version>`.
-- **No direct commits to `main`.** Merges happen only after (a) CI green, (b) adversarial review findings resolved, (c) one approving review from a non-author maintainer, and (d) the product owner's go/no-go.
+- **No direct commits to `main`.** Merges happen only after (a) CI green, (b) adversarial review findings resolved, (c) the product owner's explicit go/no-go. An authorised agent may execute an ordered merge after these gates, but never bypass a protection or approve its own work.
 - Work packages that depend on each other are opened as **stacked pull requests**: each PR targets its predecessor's branch and is retargeted to `main` when the predecessor merges. Merge in the order of §7.
 - Every PR description contains: the WP id, the WP's acceptance criteria checked or explained, the spec invariants (I1–I15) and business guardrails (B1–B8) it touches, and any deviation from this build order with justification.
 - Commits use Conventional Commits. Human commits carry a DCO sign-off (`git commit -s`). Agent-authored commits carry a `Co-Authored-By` trailer for the agent and are signed off by the human of record who adopts them; an agent never certifies the DCO itself.
@@ -34,7 +34,7 @@
 
 ## 3. Repository
 
-`https://github.com/global-soil-intelligence/gsip`, public, with branch protection on `main` (PR plus one approval, stale approvals dismissed, conversation resolution, no force-push or deletion). The product owner adds the CI `validate` job as a required status check.
+`https://github.com/global-soil-intelligence/gsip`, public, with branch protection on `main` (PR required, zero extra approving reviews under the owner exception, stale approvals dismissed, conversation resolution, no force-push or deletion). The product owner adds the CI `validate` job as a required status check.
 
 GitHub Pages serves one site per repository: the site at `/`, capture at `/capture/`, the map at `/map/`, and the reference card PDFs at `/reference-card/`, from one combined artifact. The canonical domain fronts it after WP-SITE-1D.
 
