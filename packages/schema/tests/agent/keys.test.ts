@@ -15,7 +15,7 @@ function legacyKey(role: string): string {
   ].join('.')
 }
 
-const PUBLISHABLE = 'sb_publishable_Q2hlY2tz_0123456789'
+const PUBLISHABLE = 'sb_publishable_' + '0'.repeat(32)
 const env =
   (values: Record<string, string>) =>
   (name: string): string | undefined =>
@@ -26,7 +26,7 @@ describe('the function holds only a publishable key (I12)', () => {
     expect(isPublishableKey(PUBLISHABLE)).toBe(true)
     expect(isPublishableKey(legacyKey('anon'))).toBe(true)
     for (const key of [
-      'sb_secret_Q2hlY2tz_0123456789',
+      'sb_secret_' + '0'.repeat(32),
       legacyKey('authenticated'),
       legacyKey('service_role'),
       'not.a.jwt',
@@ -43,7 +43,7 @@ describe('the function holds only a publishable key (I12)', () => {
         env({
           SUPABASE_PUBLISHABLE_KEYS: JSON.stringify({
             default: PUBLISHABLE,
-            mobile: 'sb_publishable_other_1',
+            mobile: 'sb_publishable_' + '1'.repeat(32),
           }),
           SUPABASE_ANON_KEY: legacyKey('anon'),
         }),
@@ -63,7 +63,7 @@ describe('the function holds only a publishable key (I12)', () => {
       publishableKeyFrom(
         env({
           SUPABASE_PUBLISHABLE_KEYS: '{not json',
-          SUPABASE_PUBLISHABLE_KEY: 'sb_secret_Q2hlY2tz_0123456789',
+          SUPABASE_PUBLISHABLE_KEY: 'sb_secret_' + '0'.repeat(32),
           SUPABASE_ANON_KEY: legacyKey('anon'),
         }),
       ),

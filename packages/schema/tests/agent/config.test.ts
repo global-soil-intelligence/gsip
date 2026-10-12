@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { publicFunctionConfig } from '../../src/agent/config'
 
-const KEY = 'sb_publishable_Q2hlY2tz_0123456789'
+const KEY = 'sb_publishable_' + '0'.repeat(32)
 const env =
   (values: Record<string, string>) =>
   (name: string): string | undefined =>
