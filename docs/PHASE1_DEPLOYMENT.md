@@ -85,7 +85,6 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    exists and carries the palette version the legends use. Until the variable is set the map uses
    ISRIC's WMS with ISRIC's own legend.
 
-
 ## Production worker schedule holds
 
 Merging a workflow or adding its credential must not authorise production work. Scheduled worker
