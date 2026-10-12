@@ -17,6 +17,19 @@ import {
   RELEASE,
 } from './fixtures'
 
+function base64Url(text: string): string {
+  return btoa(text).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_')
+}
+
+/** An unsigned JWT-shaped anonymous key; PostgREST verifies actual signatures. */
+function legacyAnonymousKey(): string {
+  return [
+    base64Url(JSON.stringify({ alg: 'HS256', typ: 'JWT' })),
+    base64Url(JSON.stringify({ iss: 'supabase', role: 'anon' })),
+    'signature',
+  ].join('.')
+}
+
 const AGENT_SOURCES = import.meta.glob(
   ['../../src/agent/*.ts', '../../../../supabase/functions/gsip-public/*.ts'],
   { eager: true, import: 'default', query: '?raw' },
@@ -88,7 +101,7 @@ describe('agents see no more than the public (I12)', () => {
   const handler = createPublicHandler({
     reader: postgrestReader({
       url: 'https://project.supabase.co',
-      publishableKey: 'sb_publishable_test',
+      publishableKey: 'sb_publishable_' + '0'.repeat(32),
       fetch: hostileFetch(),
     }),
     datasetRepo: 'global-soil-intelligence/gsip',
@@ -122,7 +135,7 @@ describe('agents see no more than the public (I12)', () => {
     const seen: Array<{ url: string; headers: Record<string, string> }> = []
     const reader = postgrestReader({
       url: 'https://project.supabase.co/',
-      publishableKey: 'sb_publishable_test',
+      publishableKey: 'sb_publishable_' + '0'.repeat(32),
       fetch: async (input, init) => {
         seen.push({
           url: input,
@@ -137,11 +150,11 @@ describe('agents see no more than the public (I12)', () => {
     )
     expect(seen[0]?.headers).toEqual({
       Accept: 'application/json',
-      apikey: 'sb_publishable_test',
+      apikey: 'sb_publishable_' + '0'.repeat(32),
     })
     const legacy = postgrestReader({
       url: 'https://project.supabase.co',
-      publishableKey: 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYW5vbiJ9.signature',
+      publishableKey: legacyAnonymousKey(),
       fetch: async (input, init) => {
         seen.push({
           url: input,
@@ -164,7 +177,7 @@ describe('agents see no more than the public (I12)', () => {
     ]) {
       const reader = postgrestReader({
         url: 'https://project.supabase.co',
-        publishableKey: 'sb_publishable_test',
+        publishableKey: 'sb_publishable_' + '0'.repeat(32),
         fetch: async () => answer,
       })
       await expect(reader.cells([BURLINGTON_R8])).rejects.toBeInstanceOf(
