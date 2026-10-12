@@ -47,9 +47,18 @@ Local evidence lives outside Git under `outputs/stack-landing-2026-10-11/`:
 - `canonical-catalog-baseline17-supplement.json`: SHA-256 `dd8bdda47d262ef2e86e1679d55c45de8cdf706e4b3f394272c88997e9a7fb7d`.
 - `production-catalog-before-reconciliation.json`, its supplement, the strict comparison, aggregate counts, source/image receipt and rehearsal outputs bind the observed production state to that reference. They are observation evidence, not authorization or a recovery dump.
 
-Reproduce the comparison without a database connection using `uv run python -m scripts.reconciliation --help`. Reference and production inputs must be schema-only catalog JSON. The helper never connects to a database or executes a repair command. Fifty-one synthetic unit tests reject changes to the protections the comparison checks.
+Reproduce the comparison from this reconciliation branch without a database connection. Reference and production inputs must be schema-only catalog JSON. The helper never connects to a database or executes a repair command. Fifty-one synthetic unit tests reject changes to the protections the comparison checks.
 
-The isolated reconciliation rehearsal passed **64/64 assertions**: baseline ownership/RLS checks with two synthetic identities, the six exact alias forms, a privacy-weakening negative control, ledger transitions 18 → 31 → 18 → 17 → 26, unchanged synthetic application rows/catalog during metadata repair, and all nine October upgrades. Post-upgrade metadata matches the reviewed target apart from five exact surviving ownership aliases. Capture remains closed. This rehearses the documented ledger insert/delete effects in disposable SQL; it does not claim to have executed Supabase CLI repair or any production operation. The driver and coordinate-free SQL inputs are saved alongside `canonical-ledger-reconciliation-rehearsal.json` outside Git. No foreign source was used, and synthetic geometry is empty rather than a coordinate literal.
+```sh
+GSIP_EVIDENCE="/Users/justinhart/Desktop/Cowork /GSIP 2.0/outputs/stack-landing-2026-10-11"
+uv run --frozen python -m scripts.reconciliation \
+  --reference-catalog "$GSIP_EVIDENCE/canonical-catalog-baseline17.json" \
+  --observed-catalog "$GSIP_EVIDENCE/production-catalog-before-reconciliation.json" \
+  --reference-supplement "$GSIP_EVIDENCE/canonical-catalog-baseline17-supplement.json" \
+  --observed-supplement "$GSIP_EVIDENCE/production-catalog-before-reconciliation-supplement.json"
+```
+
+The isolated reconciliation rehearsal passed **64/64 assertions**: baseline ownership/RLS checks with two synthetic identities, the six exact alias forms, a privacy-weakening negative control, ledger transitions 18 → 31 → 18 → 17 → 26, unchanged synthetic application rows/catalog during metadata repair, and all nine October upgrades. Post-upgrade metadata matches the reviewed target apart from five exact surviving ownership aliases. The local post-upgrade reference has `capture_open = false`. This rehearses the documented ledger insert/delete effects in disposable SQL; it does not claim to have executed Supabase CLI repair or any production operation. The driver and coordinate-free SQL inputs are saved alongside `canonical-ledger-reconciliation-rehearsal.json` outside Git. No foreign source was used, and synthetic geometry is empty rather than a coordinate literal.
 
 ## Timestamp mapping
 
@@ -88,7 +97,11 @@ git -C "$GSIP_REPO" status --porcelain
 
 Expected source is `f9e1ac2f8a88671f99b959e476499392297bd30f`, empty status, CLI `2.118.0`, and the original eighteen identities. Any different readback stops execution. The CLI may initialize its temporary database login role during read-only preflight; this is not an application migration.
 
-Before any ledger repair, preserve the complete original history, including names and statement arrays, privately. Only migration metadata is dumped; do not dump application, auth, Vault or Storage rows. Create an owner-private directory outside the repository with restrictive permissions, never print its SQL, never attach it to a PR, and verify its eighteen rows in an isolated restore. Arrange durable owner-controlled storage before proceeding; a temporary file alone is insufficient recovery protection.
+Before any ledger repair, preserve the complete original history, including names and statement arrays, privately. Only migration metadata is dumped; do not dump application, auth, Vault or Storage rows. Create an owner-private directory outside the repository with restrictive permissions, never print its SQL, never attach it to a PR, and verify its eighteen rows in an isolated restore. A temporary file alone is insufficient recovery protection.
+
+**Recovery preparation is now verified.** The owner-private copy is stored outside Git at `/Users/justinhart/.supabase/gsip-recovery/2026-10-11/`, directory mode 0700 and SQL file modes 0600. Its schema file is 1,116 bytes, SHA-256 `ae56295c7e66a8b46ab50df6f00cf57f7866f2478a17fbe3910d9def39e836ab`; its data file is 37,668 bytes, SHA-256 `612b05231c79eac1e52cc4bf5da49ec2e9d4755358b461c902af69f6f089c857`. A network-disabled isolated restore matched **18/18 complete records**, including names, versions, complete statement arrays and all six ledger fields, against fresh digest-only production queries. Exactly one user table and zero user functions were restored; recorded foreign SQL stayed inert text. The temporary container was removed. Gitleaks 8.21.2 scanned the private backup with zero findings and no custom suppression. Only sanitized receipts are in the review evidence directory; the SQL files are not attached or committed. Fresh ledger drift requires a new recovery copy and restore proof before any repair.
+
+The following documents the read-only preparation pattern for a new copy; do not overwrite the verified files. Move any temporary copy into owner-private durable storage and verify that final copy before repair.
 
 ```sh
 umask 077
@@ -139,4 +152,4 @@ After Gates A/B are verified, present their exact plan and `db push --skip-vault
 
 ## Assumptions and limits
 
-Justin's target and foreign-deployment attribution are authoritative owner decisions. Seed classification is his statement; independent evidence establishes aggregate counts, not contributor-row provenance. No concurrent application or ledger writer is assumed, and fresh checks must invalidate this plan if state changes. Strict effective-schema equality does not reconstruct past DML effects or prove the complete hosted platform identical to local stand-ins. Platform extensions/grants stay intact. Backup restoration, history repair, function deletion, nine new migrations, anonymous-auth readback and physical-device backup tests remain unexecuted gates. No new dependency, service, licence or architecture is introduced.
+Justin's target and foreign-deployment attribution are authoritative owner decisions. Seed classification is his statement; independent evidence establishes aggregate counts, not contributor-row provenance. No concurrent application or ledger writer is assumed, and fresh checks must invalidate this plan if state changes. Strict effective-schema equality does not reconstruct past DML effects or prove the complete hosted platform identical to local stand-ins. Platform extensions/grants stay intact. History repair, function deletion, nine new migrations, anonymous-auth readback and physical-device backup tests remain unexecuted gates. No new dependency, service, licence or architecture is introduced.
