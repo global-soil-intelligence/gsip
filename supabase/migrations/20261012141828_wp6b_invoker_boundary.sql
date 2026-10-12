@@ -1,0 +1,62 @@
+-- SPEC section 6: keep client entry points at caller privilege.
+-- Existing public callers and data privileges remain unchanged; private dispatch is bound.
+-- Additive correction: no existing migration, capture state or auth configuration changes.
+
+create or replace function public.capture_is_open()
+returns boolean language sql stable security invoker set search_path = ''
+as $$ select coalesce((select s.capture_open from public.service_state s), false); $$;
+revoke all on function public.capture_is_open() from public, anon, authenticated, service_role;
+grant execute on function public.capture_is_open() to anon, authenticated, service_role;
+
+create function private.finalize_submission(p_submission_id uuid)
+returns timestamptz
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+declare
+    finalized timestamptz;
+    caller uuid := (select auth.uid());
+begin
+    if caller is null then
+        raise exception 'authentication required' using errcode = '42501';
+    end if;
+
+    select s.finalized_at into finalized
+    from public.submissions s
+    join public.contributors c on c.id = s.contributor_id
+    where s.id = p_submission_id and c.auth_uid = caller
+    for update of s;
+
+    if not found then
+        raise exception 'submission not found' using errcode = 'P0002';
+    end if;
+    if finalized is not null then
+        return finalized;
+    end if;
+
+    if (
+        select count(distinct p.shot_type)
+        from public.photos p
+        where p.submission_id = p_submission_id and p.shot_type in ('A', 'B')
+    ) < 2 then
+        raise exception 'shots A and B are required before a submission can be finalized'
+            using errcode = '23514';
+    end if;
+
+    update public.submissions
+    set finalized_at = now()
+    where id = p_submission_id
+    returning finalized_at into finalized;
+    return finalized;
+end;
+$$;
+revoke all on function private.finalize_submission(uuid) from public, anon, authenticated, service_role;
+grant execute on function private.finalize_submission(uuid) to authenticated;
+
+create or replace function public.finalize_submission(p_submission_id uuid)
+returns timestamptz language sql volatile security invoker set search_path = ''
+return private.finalize_submission(p_submission_id);
+revoke all on function public.finalize_submission(uuid) from public, anon, authenticated, service_role;
+grant execute on function public.finalize_submission(uuid) to authenticated;
