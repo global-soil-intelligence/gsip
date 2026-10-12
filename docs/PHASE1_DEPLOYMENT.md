@@ -29,8 +29,9 @@ Updated 2026-07-23. The governing scope is `SPEC.md` v2.2 and the ordered implem
 
 These are intentionally not bypassed by code:
 
-1. A non-author maintainer approves the stacked pull requests before protected `main` can merge;
-   Justin then gives the product-owner go/no-go. No work package has been self-merged.
+1. Independent review findings are resolved and CI passes before protected `main` can merge;
+   Justin gives the product-owner go/no-go. His 2026-10-12 owner exception removes the additional
+   non-author GitHub approval requirement. No agent submits an approving review.
 2. Complete legal review of the ODbL 1.0 / CC BY-SA 4.0 contribution terms, then confirm enabling
    anonymous sign-in in production Supabase.
 3. Add `SUPABASE_SERVICE_ROLE_KEY` as a GitHub secret for the scheduled prior, photo-QA, and export
