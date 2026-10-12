@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   cleanup:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'schedule' && vars.GSIP_CLEANUP_SCHEDULE_ENABLED == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
