@@ -171,9 +171,6 @@ The read-only interfaces touch no contributor data, so they may go live before c
 3. Store release (signing, icons, listings, deep-link e-mail sign-in) is WP-APP-2. Its open
    decisions are listed in `docs/APP_STORE.md`.
 
-
-
-
 ## Production worker schedule holds
 
 Merging a workflow or adding its credential must not authorise production work. Scheduled worker
