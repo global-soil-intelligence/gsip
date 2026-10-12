@@ -55,3 +55,15 @@ def test_coding_guide_check_commands_resolve_to_repository_tools() -> None:
     assert (ROOT / "scripts/db-migration-test.sh").is_file()
     assert (ROOT / "supabase/functions/deno.json").is_file()
     assert tuple((ROOT / "supabase/functions").glob("*/index.ts"))
+
+
+def test_coding_guide_explicitly_prohibits_the_i5_ui_and_api_term() -> None:
+    text = " ".join(GUIDE.read_text(encoding="utf-8").casefold().split())
+    rule = re.search(r"\bi5\b[^.]*", text)
+    assert rule is not None, "coding guide must state I5 explicitly"
+    assert re.search(r"\bui\b", rule[0]) and re.search(r"\bapi\b", rule[0]), (
+        "I5 must apply to both UI and API copy"
+    )
+    assert re.search(r"\b(?:never|must not)\b.*\b(?:says?|uses?)\b.*\bsoil test\b", rule[0]), (
+        "I5 must explicitly prohibit the term in UI and API copy"
+    )
