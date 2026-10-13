@@ -11,6 +11,25 @@ from ml.library_baseline import prepare_pairs, run_baseline
 from pipeline.library import LibraryRecord
 
 
+@pytest.mark.parametrize("command", ["baseline", "demo"])
+def test_cli_argument_errors_do_not_echo_private_inputs(
+    command: str, capsys: pytest.CaptureFixture[str]
+) -> None:
+    from ml.library_baseline import main as baseline_main
+    from pipeline.library_demo import main as demo_main
+
+    sentinel = "private-input-must-never-appear"
+    args = ["--output", sentinel, "--unknown", sentinel]
+    if command == "baseline":
+        args += ["--store", sentinel, "--demo"]
+    with pytest.raises(SystemExit) as exited:
+        (baseline_main if command == "baseline" else demo_main)(args)
+    assert exited.value.code == 2
+    output = capsys.readouterr()
+    assert sentinel not in output.out + output.err
+    assert "Invalid private command arguments" in output.err
+
+
 def pairs(count: int = 12) -> list[LibraryRecord]:
     result = []
     for sample in range(count):

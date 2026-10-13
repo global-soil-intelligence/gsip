@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 import hashlib
 import io
 import json
@@ -18,6 +17,7 @@ from pipeline.library import (
     Context,
     InstrumentReflectance,
     LibraryRecord,
+    PrivateArgumentParser,
     PrivateLibrary,
 )
 from pipeline.phone_optics import summarize_rgb
@@ -78,7 +78,7 @@ def demo(output: Path) -> dict[str, int | float | bool | str]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
+    parser = PrivateArgumentParser(
         description="Fictional GSIP library demo; no scientific claims"
     )
     parser.add_argument("--output", type=Path, required=True)

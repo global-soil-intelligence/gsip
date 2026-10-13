@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 import hashlib
 import json
 import os
@@ -19,6 +18,7 @@ from pipeline.library import (
     CameraRgb,
     InstrumentReflectance,
     LibraryRecord,
+    PrivateArgumentParser,
     PrivateLibrary,
     encoded,
     private_path,
@@ -198,7 +198,7 @@ def run_baseline(records: list[LibraryRecord], output: Path, *, demo: bool) -> B
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Synthetic-only private RGB reconstruction demo")
+    parser = PrivateArgumentParser(description="Synthetic-only private RGB reconstruction demo")
     parser.add_argument("--store", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--demo", action="store_true", required=True)
