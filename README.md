@@ -1,6 +1,6 @@
 # Global Soil Intelligence Project
 
-GSIP is building an **open soil spectral reference library**, with smartphones as the accessible capture and sample-linking tool. The library connects camera observations and metadata to instrument spectra and verified laboratory evidence; open AI models and the soil map are downstream goals. Ordinary RGB phone photos are optical observations, not wavelength-resolved spectra. See the [v5 library proposal](docs/SPEC.md#16-open-soil-spectral-library-v5) and [implementation sequence](docs/BUILD_ORDER.md#library-first-implementation-sequence-v5-spec-16).
+GSIP is building an **open soil spectral reference library**, with smartphones as the accessible capture and sample-linking tool. The library connects camera observations and metadata to instrument spectra and verified laboratory evidence; open AI models and the soil map are downstream goals. Ordinary RGB phone photos are optical observations, not wavelength-resolved spectra. See the [library specification](docs/SPEC.md#16-open-soil-spectral-library-v5-foundation-v6v7-private-intake) and [implementation sequence](docs/BUILD_ORDER.md#library-first-implementation-sequence-spec-16).
 
 The existing collection foundation is a phone app (also a no-install web app) guides contributors through privacy-safe soil photography with a printable reference card. The current map supplies public soil-map priors; later evaluated library models will supply estimates with explicit uncertainty. Agents can read public cells, the protocol and dataset releases through a public API and an MCP server; see the [agent guide](docs/AGENTS.md).
 
@@ -23,8 +23,12 @@ Run `pnpm --filter @gsip/capture-pwa dev` for capture or
 `pnpm --filter @gsip/map-web dev` for the map.
 
 For the private soil-library record contract and local node commands, see the
-[soil library developer guide](docs/SOIL_LIBRARY.md). Hosted intake, federation and
-scientific model validation remain scheduled work; these tools do not open capture.
+[soil library developer guide](docs/SOIL_LIBRARY.md). Private intake and compatible
+phone integration have merged source, including [LIB-4C (#51)](https://github.com/global-soil-intelligence/gsip/pull/51).
+The [LIB-5A exchange contract (#58)](https://github.com/global-soil-intelligence/gsip/pull/58)
+and [LIB-5B synthetic local simulator (#64)](https://github.com/global-soil-intelligence/gsip/pull/64)
+are also merged. Hosted deployment and activation, real peer sharing and scientific
+model validation remain gated; these tools do not open capture.
 
 ## Governing documents
 
