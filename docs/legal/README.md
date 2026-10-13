@@ -32,7 +32,11 @@ Each document marks open points as **[DECISION]**. In brief:
 8. **Governing law and venue**, warranty disclaimer and liability cap.
 
 Implemented and tested: the capture gate (WP-6b); withdrawal, deletion, the refusal of anything a
-request covers, attribution review and the age confirmation at submission (WP-6d). Not built yet:
-agent interfaces and their routing rules (WP-AGENT-1 and later) and any in-app data export (copies
-are answered by the privacy contact). `tests/test_processors.py` fails if the code names an
+request covers, attribution review and the age confirmation at submission (WP-6d); the public read
+interface for people and agents, which serves only published cells and release records
+(WP-AGENT-1); and the phone app, a second way to contribute with the same data and rights as the
+website, whose store answers are in [`docs/APP_STORE.md`](../APP_STORE.md) (WP-APP-1). Not built
+yet: agent interfaces that act for a contributor or suggest sampling targets, and their routing
+rules (later work packages), and any in-app data export (copies are answered by the privacy
+contact). `tests/test_processors.py` fails if the code names an
 external host that the privacy notice does not list.

@@ -69,6 +69,37 @@ describe('offline queue', () => {
     expect(await queued()).toEqual([])
   })
 
+  it('stops before the next record once the screen that started it has closed', async () => {
+    let records = [
+      { ...record, submissionId: 'first' },
+      { ...record, submissionId: 'second' },
+    ]
+    let closed = false
+    const sent: string[] = []
+    const store = {
+      list: async () => records,
+      put: async () => undefined,
+      remove: async (submissionId: string) => {
+        records = records.filter((item) => item.submissionId !== submissionId)
+      },
+    }
+
+    const summary = await drainQueue(
+      store,
+      async (item) => {
+        sent.push(item.submissionId)
+        closed = true
+      },
+      () => Date.parse('2026-07-23T00:00:00Z'),
+      () => closed,
+    )
+
+    // The record already sent is confirmed and removed; the next one stays queued.
+    expect(sent).toEqual(['first'])
+    expect(summary.synced).toBe(1)
+    expect(records.map((item) => item.submissionId)).toEqual(['second'])
+  })
+
   it('bounds retries and dead-letters a permanently failing record', async () => {
     let stored = record
     let sends = 0

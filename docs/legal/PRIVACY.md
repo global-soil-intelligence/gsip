@@ -24,6 +24,16 @@ required — DECISION.]**
 
 We do not sell personal data, show advertising, or build profiles of contributors.
 
+### The phone app
+
+The GSIP phone app collects the same data as the website. It asks for the camera, and for your
+location while you use the app, only when you first use each; it never uses location in the
+background. On Android the position comes from your phone's own location services (which on
+many phones include Google Play services, as your phone's settings decide), and GSIP receives
+only the result. Photos you take for an observation, and observations waiting to sync, stay in
+the app's storage on your phone until they sync or you discard them; your phone's own backups
+may include that storage **[DECISION]**.
+
 ## What becomes public
 
 The open dataset (nightly, under ODbL 1.0 and CC BY-SA 4.0) and the public map contain, for each

@@ -21,6 +21,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('../src/supabase', () => ({
   createGsipClient: () => ({ hosted: true }),
+  existingContributor: async () => null,
   fetchServiceState: mocks.fetchServiceState,
   isServiceConfigured: () => true,
   recordOwner: async () => undefined,
@@ -185,6 +186,41 @@ describe('capture retry behavior', () => {
     expect(mocks.fetchServiceState).toHaveBeenCalledTimes(3)
   })
 
+  it('sends nothing more once the app has closed', async () => {
+    let release: (() => void) | undefined
+    mocks.submitQueued.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          release = resolve
+        }),
+    )
+    await enqueue(record)
+    const { unmount } = render(<App />)
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(1))
+
+    // A trigger mid-drain schedules a follow-up drain. The app then closes, and a record queued
+    // afterwards is for whichever screen opens next to send, never the closed one.
+    act(() => {
+      window.dispatchEvent(new Event('online'))
+    })
+    unmount()
+    const later = { ...record, submissionId: 'queued-after-closing' }
+    await enqueue(later)
+    await act(async () => release?.())
+
+    await waitFor(async () =>
+      expect((await queued()).map((item) => item.submissionId)).toEqual([
+        later.submissionId,
+      ]),
+    )
+    // Room for the follow-up drain the closed screen must not run.
+    await new Promise((resolve) => setTimeout(resolve, 150))
+    expect(mocks.submitQueued).toHaveBeenCalledTimes(1)
+    expect((await queued()).map((item) => item.submissionId)).toEqual([
+      later.submissionId,
+    ])
+  })
+
   it('shows a recovery action for a dead-lettered observation', async () => {
     await enqueue({
       ...record,
@@ -312,6 +348,46 @@ describe('provenance claims and the terms window (WP-6e)', () => {
           locationSource: 'manual_pin',
         },
       }),
+    )
+  })
+
+  it('dates the observation by shot B, not shot A (SPEC section 5)', async () => {
+    const now = Date.now()
+    const shotA = now - 20 * 60_000
+    const shotB = now - 5 * 60_000
+    render(<App />)
+    fireEvent.change(screen.getByLabelText(/A · Context/i), {
+      target: {
+        files: [
+          new File(['jpeg'], 'a.jpg', {
+            type: 'image/jpeg',
+            lastModified: shotA,
+          }),
+        ],
+      },
+    })
+    fireEvent.change(screen.getByLabelText(/B · Fresh face/i), {
+      target: {
+        files: [
+          new File(['jpeg'], 'b.jpg', {
+            type: 'image/jpeg',
+            lastModified: shotB,
+          }),
+        ],
+      },
+    })
+    fireEvent.change(screen.getByLabelText('Latitude'), {
+      target: { value: '44.4759' },
+    })
+    fireEvent.change(screen.getByLabelText('Longitude'), {
+      target: { value: '-73.2121' },
+    })
+    describeAndSubmit()
+
+    await waitFor(() => expect(mocks.submitQueued).toHaveBeenCalledTimes(1))
+    expect(mocks.submitQueued).toHaveBeenCalledWith(
+      { hosted: true },
+      expect.objectContaining({ capturedAt: new Date(shotB).toISOString() }),
     )
   })
 

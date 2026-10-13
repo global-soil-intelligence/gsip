@@ -1,0 +1,137 @@
+name: App build
+
+# WP-APP-1: the GSIP phone app. The iOS and Android projects are generated from
+# apps/capture-pwa/capacitor.config.ts, given their permissions by scripts/app_permissions.py,
+# and built unsigned: an Android debug APK and an iOS simulator build, kept as artifacts.
+# Signing and store upload are out of scope (docs/APP_STORE.md).
+
+on:
+  pull_request:
+    paths:
+      - apps/capture-pwa/**
+      - packages/schema/**
+      - scripts/app_permissions.py
+      - pnpm-lock.yaml
+      - .github/workflows/app-build.yml
+  push:
+    branches: [main]
+    paths:
+      - apps/capture-pwa/**
+      - packages/schema/**
+      - scripts/app_permissions.py
+      - pnpm-lock.yaml
+      - .github/workflows/app-build.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: app-build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # The same public configuration the website's capture app is built with.
+  VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+  VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+  VITE_CAPTURE_LIVE: ${{ vars.VITE_CAPTURE_LIVE }}
+  VITE_TERMS_URL: ${{ vars.VITE_TERMS_URL }}
+  VITE_PRIVACY_URL: ${{ vars.VITE_PRIVACY_URL }}
+  VITE_SAMPLING_RULES_URL: ${{ vars.VITE_SAMPLING_RULES_URL }}
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.9.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @gsip/capture-pwa build:app
+      - name: Generate the Android project
+        working-directory: apps/capture-pwa
+        run: pnpm exec cap add android
+      - name: Apply the app's permissions
+        run: python scripts/app_permissions.py apply-android apps/capture-pwa/android/app/src/main/AndroidManifest.xml
+      - name: Check the app ships no closed SDK
+        working-directory: apps/capture-pwa/android
+        # bash -eo pipefail: a failed Gradle run fails the step, never passes it with no input.
+        shell: bash
+        run: |
+          {
+            ./gradlew --no-daemon -q :app:dependencies --configuration debugRuntimeClasspath
+            ./gradlew --no-daemon -q :app:dependencies --configuration releaseRuntimeClasspath
+          } | python ../../../scripts/app_permissions.py check-dependencies -
+      - name: Build the debug APK
+        working-directory: apps/capture-pwa/android
+        run: ./gradlew --no-daemon assembleDebug
+      - name: Check the APK's permissions
+        shell: bash
+        run: |
+          aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2"
+          "$aapt2" dump permissions apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk \
+            | python scripts/app_permissions.py check-apk -
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gsip-capture-android-debug
+          path: apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+
+  ios:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.9.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Use the newest Xcode on the runner
+        run: |
+          newest="$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)"
+          if [ -n "$newest" ]; then sudo xcode-select -s "$newest"; fi
+          xcodebuild -version
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @gsip/capture-pwa build:app
+      - name: Generate the iOS project
+        working-directory: apps/capture-pwa
+        run: pnpm exec cap add ios
+      - name: Apply the app's permissions
+        run: python scripts/app_permissions.py apply-ios apps/capture-pwa/ios/App/App/Info.plist
+      - name: Build for the iOS simulator
+        working-directory: apps/capture-pwa/ios/App
+        run: >-
+          xcodebuild -project App.xcodeproj -scheme App -configuration Debug
+          -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+          -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+      - name: Check the built app's permissions
+        run: python scripts/app_permissions.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist
+      - name: Package the simulator build
+        working-directory: apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator
+        run: ditto -c -k --sequesterRsrc --keepParent App.app "$GITHUB_WORKSPACE/gsip-capture-ios-simulator.zip"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gsip-capture-ios-simulator
+          path: gsip-capture-ios-simulator.zip
+          if-no-files-found: error
+          retention-days: 14

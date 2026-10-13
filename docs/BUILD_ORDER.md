@@ -174,7 +174,7 @@ Acceptance criteria:
 **WP-APP-1: GSIP phone app**
 Scope:
 
-1. **Capacitor** in `apps/capture-pwa` (`appId com.globalsoilintelligence.app`, web directory `dist`) with the core, camera and geolocation plugins.
+1. **Capacitor** in `apps/capture-pwa` (`appId com.globalsoilintelligence.app`, web directory `dist`) with the core, camera and geolocation plugins. The geolocation plugin is included on iOS only: on Android it compiles in Google's closed Play services location SDK (guardrail 6), so the Android app uses the web view's location API, which asks for the same permissions.
 2. **Platform layer** (`src/platform/`): native or web camera (normalized to the queue's JPEG photo shape), geolocation (accuracy and source), an attestation-provider interface (`none` until a server verifier exists), and the `app` ingest-path claim.
 3. **My Soil**: the signed-in contributor's submissions with date, status, shots and public cell, read through RLS; never coordinates.
 4. **Builds.** `app-build.yml` generates the iOS and Android projects from the Capacitor config, applies permission strings with a checked-in script, and builds an unsigned Android debug APK and an iOS simulator build as artifacts. Signing and store upload are out of scope.
@@ -189,7 +189,7 @@ Acceptance criteria:
 
 ### Phase 1.5b and Phase 2+ (specified after launch review)
 
-WP-AGENT-2 delegated capture for assistants (scoped tokens, consent screen, path-bound upload URLs) · WP-7 QA gate model (slots into the WP-4b/6b interface) · WP-8 estimator v0 · WP-9 nightly retrain and model cards · WP-10 estimate API · WP-11 gold-label bulk ingestion and gold kits · WP-12 fused correction and Most Wanted layers with information-gain credit · WP-13 SoilGrids file sampler replacing the REST dependency · WP-14 silver-label protocols · WP-AGENT-3 verifier task API with I13 consensus · WP-AGENT-4 evaluation service (I15) · WP-DATA-1 Parquet photo shards, Croissant metadata and PROV provenance · WP-OPS-1 event-driven worker queue.
+WP-AGENT-2 delegated capture for assistants (scoped tokens, consent screen, path-bound upload URLs) · WP-APP-2 store release of the phone app (deep-link e-mail sign-in, icons, signing and store listings; `docs/APP_STORE.md`) · WP-7 QA gate model (slots into the WP-4b/6b interface) · WP-8 estimator v0 · WP-9 nightly retrain and model cards · WP-10 estimate API · WP-11 gold-label bulk ingestion and gold kits · WP-12 fused correction and Most Wanted layers with information-gain credit · WP-13 SoilGrids file sampler replacing the REST dependency · WP-14 silver-label protocols · WP-AGENT-3 verifier task API with I13 consensus · WP-AGENT-4 evaluation service (I15) · WP-DATA-1 Parquet photo shards, Croissant metadata and PROV provenance · WP-OPS-1 event-driven worker queue.
 
 ## 5. Review gates (checked on every PR)
 

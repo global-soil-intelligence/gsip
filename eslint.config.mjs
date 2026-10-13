@@ -10,6 +10,9 @@ export default tseslint.config(
       '**/dist-ssr/**',
       '**/coverage/**',
       '_site/**',
+      // The phone app's generated native projects (WP-APP-1).
+      'apps/capture-pwa/android/**',
+      'apps/capture-pwa/ios/**',
       'output/**',
     ],
   },
