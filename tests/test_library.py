@@ -129,6 +129,80 @@ def test_sample_wide_withdrawal_removes_records_and_blocks_reimport(tmp_path: Pa
         PrivateLibrary(store.root).add(LibraryRecord.model_validate(record(12)))
 
 
+def test_withdrawn_measurement_identity_cannot_be_reassigned(tmp_path: Path) -> None:
+    store = PrivateLibrary(tmp_path / "library")
+    for number in (10, 11):
+        store.add(LibraryRecord.model_validate(record(number)))
+    assert store.withdraw(UUID(int=2), UUID(int=3)) == 2
+    reopened = PrivateLibrary(store.root)
+    for number in (10, 11):
+        changed = copy.deepcopy(record(number))
+        changed["node_id"] = str(UUID(int=80))
+        changed["sample_id"] = str(UUID(int=90))
+        changed["synthetic"] = False
+        with pytest.raises(ValueError):
+            reopened.add(LibraryRecord.model_validate(changed))
+    # A different measurement still cannot revive the withdrawn sample key.
+    with pytest.raises(ValueError):
+        reopened.add(LibraryRecord.model_validate(record(12)))
+    assert reopened.records() == []
+    assert not list(reopened.root.glob("*.json"))
+    unrelated = record(90) | {"node_id": str(UUID(int=80)), "sample_id": str(UUID(int=90))}
+    assert reopened.add(LibraryRecord.model_validate(unrelated)) is True
+    assert len(reopened.records()) == 1
+
+
+def test_withdrawal_identity_marker_precedes_record_deletion(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    store = PrivateLibrary(tmp_path / "library")
+    original = LibraryRecord.model_validate(record())
+    store.add(original)
+    original_unlink = Path.unlink
+
+    def fail_record_deletion(path: Path, missing_ok: bool = False) -> None:
+        if path == store.root / f"{original.measurement_id}.json":
+            raise OSError("simulated interruption")
+        original_unlink(path, missing_ok=missing_ok)
+
+    monkeypatch.setattr(Path, "unlink", fail_record_deletion)
+    with pytest.raises(OSError):
+        store.withdraw(original.node_id, original.sample_id)
+    marker = store.root / f"withdrawn-measurement-{original.measurement_id}"
+    assert marker.read_bytes() == b"withdrawn\n"
+    assert marker.stat().st_mode & 0o077 == 0
+    assert store.records() == []
+    monkeypatch.setattr(Path, "unlink", original_unlink)
+    assert store.withdraw(original.node_id, original.sample_id) == 1
+    changed = copy.deepcopy(record())
+    changed["sample_id"] = str(UUID(int=90))
+    with pytest.raises(ValueError):
+        PrivateLibrary(store.root).add(LibraryRecord.model_validate(changed))
+
+
+@pytest.mark.parametrize("invalid_field", ["consent_verified", "measurement_id", "measurement"])
+def test_store_revalidates_copied_models_without_logging_values(
+    tmp_path: Path, invalid_field: str, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import warnings
+
+    store = PrivateLibrary(tmp_path / "library")
+    original = LibraryRecord.model_validate(record())
+    replacement: object = "NEVER-ECHO-THIS"
+    if invalid_field == "measurement":
+        replacement = original.measurement.model_copy(update={"source_sha256": replacement})
+    invalid = original.model_copy(update={invalid_field: replacement})
+    with warnings.catch_warnings(record=True) as emitted:
+        warnings.simplefilter("always")
+        with pytest.raises(ValueError):
+            store.add(invalid)
+    assert emitted == []
+    output = capsys.readouterr()
+    assert "NEVER-ECHO-THIS" not in output.out + output.err
+    assert store.records() == []
+    assert not list(store.root.glob("*.json"))
+
+
 def test_symlinks_and_public_store_are_refused(tmp_path: Path) -> None:
     target = tmp_path / "target"
     target.mkdir(mode=0o700)
@@ -151,6 +225,33 @@ def test_cli_never_echoes_invalid_payload_or_paths(
     assert "NEVER-ECHO-THIS" not in output.out + output.err
     assert str(incoming) not in output.out + output.err
     assert "invalid" in output.err.lower()
+
+
+@pytest.mark.parametrize("field", ["--node", "--sample"])
+def test_cli_malformed_withdrawal_identifier_is_generic(
+    tmp_path: Path, field: str, capsys: pytest.CaptureFixture[str]
+) -> None:
+    identifiers = {"--node": str(UUID(int=2)), "--sample": str(UUID(int=3))}
+    identifiers[field] = "NEVER-ECHO-THIS"
+    with pytest.raises(SystemExit) as stopped:
+        main(
+            [
+                "--store",
+                str(tmp_path / "library"),
+                "withdraw",
+                "--node",
+                identifiers["--node"],
+                "--sample",
+                identifiers["--sample"],
+            ]
+        )
+    assert stopped.value.code == 2
+    output = capsys.readouterr()
+    assert output.out == ""
+    assert "NEVER-ECHO-THIS" not in output.err
+    assert str(tmp_path) not in output.err
+    assert "invalid" in output.err.lower()
+    assert not (tmp_path / "library").exists()
 
 
 def test_concurrent_identical_import_is_single_write(tmp_path: Path) -> None:
