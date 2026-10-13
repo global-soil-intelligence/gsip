@@ -187,6 +187,22 @@ Acceptance criteria:
 - [ ] `app-build.yml` produces the Android debug APK and the iOS simulator build.
 - [ ] The app requests only camera and when-in-use location permissions, each with a purpose string.
 
+### Phase 1.5a — Follow-ups independent of production deployment
+
+**WP-AGENT-0: Coding-agent guidance**
+Scope: add root `AGENTS.md` for repository contributors, linking the public-reader guide at
+`docs/AGENTS.md`; collect the invariant, reviewed-stack, privacy, verification and per-step
+production-authorization rules. This is documentation of existing authority, not an architecture
+change or deployment permission.
+
+Acceptance criteria:
+
+- [ ] The root guide distinguishes coding agents from public API consumers and links every
+      read-first governing document.
+- [ ] A documentation usability test proves the local links and documented repository check
+      commands resolve; it fails without the guide.
+- [ ] Formatting and language checks pass; no dependency, licence, workflow or production change.
+
 **WP-3b: Cross-tab queue sync**
 Scope:
 
