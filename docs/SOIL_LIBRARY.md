@@ -28,3 +28,13 @@ Sample context records depth in cm and wet/moist/dry/unknown condition. Optional
 You can fork and extend the code, run a private local library node, and consume GSIP's public read API today. You cannot register that node to upload samples to GSIP using these commands. WP-LIB-4 schedules phone/private hosted intake and server verification; WP-LIB-5 schedules authenticated node exchange, physical-sample deduplication and rights propagation. Capture remains closed until the existing launch gates pass. Individual spectral publication remains blocked on the new fingerprinting/privacy review even if no coordinates are present.
 
 No trained or independently validated soil reconstruction model is provided by the record store. Scientific training requires paired field measurements, verified calibration, rights eligibility and disjoint independent evaluation. Biological relationships need actual assays and an expert-reviewed vocabulary; no camera or spectral record here asserts microbial composition.
+
+## Extracting optical measurements from a phone photo
+
+WP-LIB-2 supplies an offline staged-only extractor:
+
+```sh
+uv run python -m pipeline.phone_optics --store /private/local/soil-library --template /private/local/camera-record.json --image /private/local/staged-photo.jpg
+```
+
+The template is a valid `camera_rgb` record with new measurement identity and `synthetic: true`. The extractor replaces only its measurement payload. It sanitizes and orients pixels, converts embedded profiles to sRGB, masks the detected reference card with the existing margin, then measures RGB means and standard deviations in the remaining candidate soil pixels. It keeps a sanitized-content hash, not raw metadata, and does not advance consent, pairing or QA states. All measurements stay uncalibrated, including images with a detected card. Without a card the candidate region is the whole frame; actual soil segmentation remains a future QA improvement. Insufficient candidate pixels fail. Real contributor imagery is refused by this record-producing CLI until WP-6f/hosted verification is integrated; synthetic staged images exercise the software without claiming field evidence.
