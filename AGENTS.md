@@ -47,10 +47,13 @@ existing PR descriptions and append each fix and reason under **Changes after re
 When Justin merges a predecessor, retarget the next PR to `main` and resolve conflicts by
 merging `main` into it. Follow-ups stack on `wp-app-1-phone-app` until the reviewed stack merges.
 
-The only approved secret-scan exception is the three immutable synthetic WP-AGENT-1 fixture
-fingerprints in `.gitleaksignore`, audited on 2026-10-11. Do not broaden them or change the
-scanner's rules, full-history coverage, redaction or workflow to make a check pass. Any
-additional suppression requires Justin's explicit approval.
+The approved secret-scan exceptions are exactly the three immutable synthetic WP-AGENT-1
+fixture fingerprints audited on 2026-10-11 and the one historical noncredential browser-fixture
+fingerprint explicitly approved by Justin on 2026-10-13. `.gitleaksignore` preserves the original
+four lines and adds only
+`bb9bd8a583231ff63ec14a7622532ddb869d7cde:scripts/e2e_server.py:generic-api-key:32`.
+Do not broaden these entries or change the scanner's rules, full-history coverage, redaction
+or workflow to make a check pass. Every further suppression requires Justin's explicit approval.
 
 ## Privacy, security, language and dependencies
 
