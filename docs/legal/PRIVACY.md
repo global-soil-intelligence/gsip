@@ -31,8 +31,26 @@ location while you use the app, only when you first use each; it never uses loca
 background. On Android the position comes from your phone's own location services (which on
 many phones include Google Play services, as your phone's settings decide), and GSIP receives
 only the result. Photos you take for an observation, and observations waiting to sync, stay in
-the app's storage on your phone until they sync or you discard them; your phone's own backups
-may include that storage **[DECISION]**.
+the app's storage on your phone until they sync or you discard them.
+
+Our policy excludes the app's private queue, photo drafts and account session from cloud
+backups. Android builds exclude these stores from cloud backup; on Android 12 or newer,
+direct device-to-device transfer may retain them without sending them to cloud storage.
+Older Android versions exclude both backup and transfer. Physical-device backup/restore and
+transfer checks are required before release. Backups a provider already holds cannot be
+erased retroactively by updating the app.
+
+**iOS implementation is blocked/unverified:** the app's current WebKit storage has no verified
+cloud-backup exclusion yet. iOS store release waits for a separately reviewed storage solution
+and physical-device backup/restore checks; we do not claim that a simulator build or a setting
+for unrelated files excludes this data.
+
+Once the platform's cloud exclusion is implemented and verified, a fresh install or cloud
+restore starts a new anonymous account and does not recover unsynced work. Current iOS
+cloud-restore behavior is unverified, and older backups may still restore private data.
+A verified direct Android transfer may preserve the old account and queue. Until in-app
+e-mail linking ships, contributions from an inaccessible old account can be withdrawn through
+the privacy contact. Keep the old phone until its queued work has synced.
 
 ## What becomes public
 
@@ -59,17 +77,24 @@ workers) handle your precise position on our behalf. The data sources we query (
 Open-Meteo) never receive it: soil-map, elevation and rainfall lookups send only the centre of your
 observation's resolution-9 cell (about 0.1 km²).
 
-| Service                                | Role                                                                                                             | What it receives                                                                           | Hosts                                                 |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
-| Supabase                               | Database, sign-in, private photo storage, server functions                                                       | Everything in "What we collect", including precise positions and e-mail addresses          | `*.supabase.co`                                       |
-| Sign-in e-mail delivery **[DECISION]** | Sends sign-in links, configured in Supabase Auth                                                                 | Your e-mail address                                                                        | (the provider configured in Supabase Auth)            |
-| GitHub                                 | Hosts the website (GitHub Pages) and runs GSIP's scheduled workers (Actions)                                     | Visitors' IP addresses and browser details; workers process private data inside their runs | `github.com`, `*.github.io`                           |
-| Hugging Face                           | Hosts the open dataset                                                                                           | The public release only                                                                    | `huggingface.co`                                      |
-| ISRIC – World Soil Information         | SoilGrids soil maps for estimates and map layers                                                                 | Cell centres (server); map visitors' browsers load map images directly (IP address)        | `rest.isric.org`, `maps.isric.org`, `files.isric.org` |
-| USDA NRCS Soil Data Access             | US soil survey values                                                                                            | Cell centres within the United States (server)                                             | `sdmdataaccess.sc.egov.usda.gov`                      |
-| Open-Meteo                             | Elevation, and rainfall in the three days before capture                                                         | Cell centres and the capture date window (server)                                          | `api.open-meteo.com`, `archive-api.open-meteo.com`    |
-| Map tile host **[DECISION]**           | Serves GSIP's prior map tiles when `VITE_PRIOR_TILES_BASE` is set                                                | Visitors' IP addresses                                                                     | (the host in `VITE_PRIOR_TILES_BASE`)                 |
-| Squarespace                            | Serves the `globalsoilintelligence.com` holding page until the domain moves to GitHub Pages **[DECISION: date]** | Visitors' IP addresses and browser details                                                 | `globalsoilintelligence.com`                          |
+| Service                                | Role                                                                                                                                                     | What it receives                                                                             | Hosts                                                             |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Supabase                               | Database, sign-in, private photo storage, server functions                                                                                               | Everything in "What we collect", including precise positions and e-mail addresses            | `*.supabase.co`                                                   |
+| Sign-in e-mail delivery **[DECISION]** | Sends sign-in links, configured in Supabase Auth                                                                                                         | Your e-mail address                                                                          | (the provider configured in Supabase Auth)                        |
+| GitHub                                 | Hosts the website (GitHub Pages) and runs GSIP's scheduled workers (Actions)                                                                             | Visitors' IP addresses and browser details; workers process private data inside their runs   | `github.com`, `*.github.io`                                       |
+| Hugging Face                           | Hosts the open dataset                                                                                                                                   | The public release only                                                                      | `huggingface.co`                                                  |
+| ISRIC – World Soil Information         | SoilGrids soil maps for estimates and map layers                                                                                                         | Cell centres (server); map visitors' browsers load map images directly (IP address)          | `rest.isric.org`, `maps.isric.org`, `files.isric.org`             |
+| USDA NRCS Soil Data Access             | US soil survey values                                                                                                                                    | Cell centres within the United States (server)                                               | `sdmdataaccess.sc.egov.usda.gov`                                  |
+| Open-Meteo                             | Elevation, and rainfall in the three days before capture                                                                                                 | Cell centres and the capture date window (server)                                            | `api.open-meteo.com`, `archive-api.open-meteo.com`                |
+| Map tile host: GitHub Pages            | Serves GSIP's SoilGrids-derived prior map tiles from the same origin as the website, once the publication checks pass and `VITE_PRIOR_TILES_BASE` is set | Visitors' IP addresses and browser details; no contributor observations or precise positions | `*.github.io`, `globalsoilintelligence.com` after the DNS cutover |
+| Squarespace                            | Serves the `globalsoilintelligence.com` holding page until the domain moves to GitHub Pages **[DECISION: date]**                                         | Visitors' IP addresses and browser details                                                   | `globalsoilintelligence.com`                                      |
+
+The product owner approved GitHub Pages as the prior-tile host on 2026-10-11, conditional
+on the [tile-host publication checks](../PRIOR_TILE_HOSTING.md). The archives contain only
+SoilGrids-derived values, not contributor observations or their private locations. Until those
+checks pass, the map continues to load ISRIC's WMS images directly; those requests disclose the
+visitor's IP address to ISRIC, as listed above. This hosting decision does not put this draft
+notice in force or authorize publication.
 
 **International transfers [DECISION]:** these providers may process data outside your country,
 including in the United States. [Mechanism for each provider, and the Supabase project region.]

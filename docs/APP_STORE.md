@@ -12,14 +12,19 @@ owner or counsel.
   `pnpm --filter @gsip/capture-pwa build:app`: the capture app without its service worker, which
   would serve a stale version after an app update. It then generates the iOS and Android projects
   with `cap add`, applies the permissions with `scripts/app_permissions.py`, refuses closed SDKs
-  in the Android dependency tree, and builds an unsigned Android debug APK and an iOS simulator
-  build. Both are kept as workflow artifacts for 14 days, and CI checks the permissions each one
-  actually holds.
+  in the Android dependency tree, and applies CI versions and Android backup rules with
+  `scripts/app_build.py`. It builds an Android debug APK (signed by Gradle's disposable debug
+  key) and an unsigned iOS simulator app. Both are kept as artifacts for 14 days; CI checks
+  their effective permissions, versions and the APK's compiled backup rules. Each platform is
+  built twice with the same inputs and a separate JSON receipt records the comparison.
 - The native projects are generated, never committed (`apps/capture-pwa/android/` and `ios/` are
   ignored). To work on them locally: `pnpm --filter @gsip/capture-pwa build:app`, then
   `pnpm exec cap add android` (or `ios`) in `apps/capture-pwa`, then
   `python scripts/app_permissions.py apply-android apps/capture-pwa/android/app/src/main/AndroidManifest.xml`
-  (or `apply-ios apps/capture-pwa/ios/App/App/Info.plist`).
+  (or `apply-ios apps/capture-pwa/ios/App/App/Info.plist`). Then apply the versions and backup
+  settings: `python scripts/app_build.py apply-android apps/capture-pwa/android/app 101
+apps/capture-pwa/package.json` (or `apply-ios apps/capture-pwa/ios/App/App/Info.plist 101
+apps/capture-pwa/package.json`). Local build number `101` is synthetic, never a store upload.
 - Builds use the same public configuration as the website (`SUPABASE_URL`,
   `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_CAPTURE_LIVE` and the legal links). Like the website,
   the app accepts observations only in builds made with `VITE_CAPTURE_LIVE=true`, and the
@@ -80,9 +85,79 @@ Answers for Apple's App Privacy details and Google Play's Data safety form. They
 - Photos the app has taken for an observation not yet queued, and queued observations with
   their precise points, wait in the app's own storage until they sync (or until the person
   discards them). The camera plugin's own copy of each photo is deleted as soon as the app has
-  read it. Android and iOS include app storage in the phone's own backups by default, which
-  also keeps the device's account across a phone change. **[DECISION]** keep (account
-  continuity) or exclude (no copy of unsynced points in backups).
+  read it. Justin's policy is to exclude the private queue, photo drafts and session from cloud
+  backups. Android rules and the outstanding iOS gate are described below; the decision is
+  resolved, but iOS protection is **blocked/unverified**.
+
+## Versions and repeat-build evidence (WP-APP-2A)
+
+The marketing version is `apps/capture-pwa/package.json` (`0.1.0`), used for Android
+`versionName` and iOS `CFBundleShortVersionString`. CI uses the canonical positive
+`GITHUB_RUN_NUMBER` from this same `app-build.yml` workflow for Android `versionCode`.
+For input `n`, iOS `CFBundleVersion` is
+`1 + floor((n - 1) / 10000).floor((n - 1) / 100) % 100.(n - 1) % 100`.
+For example, `1` → `1.0.0`, `101` → `1.1.0`, `10000` → `1.99.99`, and `10001` → `2.0.0`.
+Inputs stop at `99,990,000` (`9999.99.99`); aliases such as `01` are rejected. Reruns use
+identical numbers. The mapping is injective and increasing within this workflow.
+
+**Assumption:** the workflow identity/counter is retained. GitHub scopes run numbers to a
+workflow. Before replacing that workflow or uploading a signed build, Justin must compare
+both stores' last build numbers; do not reuse a counter or upload a rerun as a new build.
+
+CI includes `gsip-android-build-receipt.json` and `gsip-ios-build-receipt.json` in the existing
+Android and iOS artifact archives, respectively. Receipts record source commit, lockfile/configuration hashes, actual
+runner/toolchain versions, build-number input, both artifact hashes and a comparison.
+`byte_equal` means exact archive equality. `entry_content_equal` compares every non-directory
+ZIP entry's bytes. This view omits directory entries, ZIP metadata and container bytes,
+including APK signing blocks outside ZIP entries; changed/missing payload entries remain
+reported. Full hashes and `byte_equal` include all artifact bytes. Entry equality alone is not
+artifact reproducibility. Neither a successful build nor equal version numbers proves it. This compares repeated builds in one job; it does not prove
+cross-runner reproducibility. Toolchain pins and resolved versions make inputs traceable;
+floating runner images/Xcode and regenerated debug keys can change bytes between jobs.
+Only the exact artifact, reference artifact and output receipt paths are excluded from the
+source-clean check; other untracked source files or tracked modifications make it false.
+Local precommit receipts with `source_tree_clean=false` are preparation evidence, not builds
+identified by the HEAD commit alone.
+
+## Phone backups: resolved policy and remaining device gates
+
+Android uses `allowBackup=true` only to activate explicit transport rules. On Android 12+
+(API 31+), `dataExtractionRules` excludes all nine app-storage domains from cloud backup and
+explicitly includes them for direct device-to-device transfer. This covers WebView storage,
+queued points, photo drafts and session files. On Android 11 and older, `fullBackupContent`
+excludes the same nine domains from both cloud backup and transfer. CI resolves the compiled
+application's resource references, verifies the packaged XML, and rejects custom backup agents
+or extra resource configurations. No permission or closed-SDK check is relaxed.
+
+**Android device gate:** before claiming device protection, use synthetic drafts, queue and
+session records to test cloud backup/restore on a physical device, plus direct transfer on
+Android 12+ and exclusion on a supported legacy device. Compiled rules prove configuration,
+not the behavior of every phone manufacturer's transfer tooling. Existing backups already
+held by a provider cannot be retroactively erased by an app update.
+
+**iOS gate — blocked/unverified:** the queue/drafts live in WebKit IndexedDB and the session
+in localStorage. No reliable exclusion is implemented here. An Info.plist key or simulator
+build cannot prove exclusion. Apple's file resource exclusion flag can reset after writes,
+and Apple describes it as guidance rather than a guarantee. The existing filesystem plugin's
+`LibraryNoCloud` directory does not move WebKit's current stores.
+
+The next separately specified options are to migrate private storage into the existing
+no-cloud filesystem directory while preserving offline durability (recommended for study),
+or add a native exclusion bridge after Justin approves an exception to the TypeScript/Python
+rule. An ephemeral WebKit store would lose offline work and is unsuitable. Either viable
+option needs synthetic real-device backup/restore tests before iOS store readiness; no option
+has been selected or implemented by this package.
+
+Once a platform's cloud exclusion is implemented and verified, a fresh install or cloud restore
+starts a new anonymous account and loses unsynced work. Current iOS cloud-restore behavior is
+**unverified**; older backups may still restore private data. A verified direct transfer on
+Android 12+ may preserve the queue and account. Until in-app
+e-mail linking ships in WP-APP-2, withdraw old-device contributions through the privacy contact
+when the old account is inaccessible. Retain the old phone until its queued work has synced.
+
+Platform references: [Android backup transport rules](https://developer.android.com/identity/data/autobackup),
+[Apple bundle versions](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html),
+and [Apple backup exclusion](https://developer.apple.com/documentation/foundation/optimizing-your-app-s-data-for-icloud-backup).
 
 ## Account and data deletion
 
@@ -138,10 +213,28 @@ Check on one Android phone and one iPhone, and record the results in the pull re
    area.
 7. Your data: withdraw, then delete the account.
 8. Links to the map, the reference card and the legal pages open in the browser.
+9. Android synthetic cloud backup/restore, legacy exclusion and Android 12+ direct-transfer
+   checks described above; no private bytes in cloud backup.
+10. The separately implemented iOS exclusion method passes synthetic real-device backup/restore
+    checks. This remains **blocked/unverified** and prevents an iOS store-readiness claim.
 
 Each CI build is signed with a fresh debug key, so a newer APK will not install over an older
 one: uninstall first. Uninstalling deletes the device's anonymous account and queue, so withdraw
 or delete test contributions before uninstalling.
 
-Still to do before submission (WP-APP-2): app icons and launch screens (the generated projects
-use Capacitor's defaults), version numbers set by CI, signing, store listings and screenshots.
+## Owner-controlled signing inputs (placeholders only)
+
+The app will publish under Viridis LLC organization accounts controlled by Justin. Accounts,
+certificates, keystores and upload credentials are not created by this work package.
+
+| Platform | Required owner input                                                    | Status                             |
+| -------- | ----------------------------------------------------------------------- | ---------------------------------- |
+| Apple    | Viridis LLC Apple Developer organization / Team ID                      | Pending Justin                     |
+| Apple    | App Store Connect app record and bundle-ID registration                 | Pending Justin                     |
+| Apple    | Distribution certificate, provisioning profile and upload authorization | Pending Justin; secret stores only |
+| Google   | Viridis LLC Play Console organization and app record                    | Pending Justin                     |
+| Google   | Play App Signing enrollment, upload key and upload authorization        | Pending Justin; secret stores only |
+
+Still to do before submission (WP-APP-2): the device backup gates, app icons and launch screens
+(the generated projects use Capacitor's defaults), signing, store listings and screenshots.
+Deep links and e-mail account linking wait for the owner-controlled accounts.
