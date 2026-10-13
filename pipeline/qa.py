@@ -188,8 +188,18 @@ def sanitize_jpeg(raw: bytes) -> tuple[bytes, dict[str, float | int | str]]:
 
 
 def has_embedded_metadata(image_bytes: bytes) -> bool:
+    """Fail closed unless one complete JPEG has only canonical metadata-free channels.
+
+    Input sanitization still accepts/re-encodes supported source formats. This check is for
+    the exact publish-ready representation; it does not prove the producer or prevent image
+    steganography. Marker/table/scan-header checks are structural, not a complete Huffman
+    entropy-bit validator. Pixel/codec decoding remains the caller's separate check.
+    """
+
+    # Preserve unreadable-image errors for callers that set an unreadable photo aside.
+    # Readable non-JPEGs and unsafe JPEG streams are dirty postcanonical representations.
     with Image.open(io.BytesIO(image_bytes)) as image:
-        if image.getexif():
+        if image.format != "JPEG" or image.getexif():
             return True
         if any(
             key.lower() in {"comment", "exif", "icc_profile", "xmp", "xml"} for key in image.info
@@ -202,37 +212,229 @@ def has_embedded_metadata(image_bytes: bytes) -> bool:
 
 
 def _has_forbidden_jpeg_segment(image_bytes: bytes) -> bool:
+    """Walk marker lengths and every entropy-coded scan, including the true final EOI.
+
+    ITU T.81 Annex B defines length-delimited segments, FF fill, FF00 stuffing and
+    standalone restart/EOI markers. Length payloads can contain FFD9: searching raw bytes
+    for EOI would truncate a valid table. JFIF 1.02 specifies APP0 fields; our sole allowed
+    APP0 is the exact thumbnail-free 14-byte JFIF header emitted by sanitize_jpeg.
+    """
+
     if not image_bytes.startswith(b"\xff\xd8"):
-        return False
+        return True
+    # Keep this fixed: variable versions, densities and thumbnails are metadata channels.
+    canonical_jfif = b"JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00"
+    # Huffman DCT baseline, sequential and progressive frames only. DNL, DAC,
+    # arithmetic/lossless frames and extension payloads have no canonical producer here.
+    frame_markers = {0xC0, 0xC1, 0xC2}
+    table_markers = {0xC4, 0xDB, 0xDD}
     cursor = 2
+    in_scan = False
+    saw_frame = False
+    saw_scan = False
+    progressive = False
+    components: dict[int, int] = {}
+    scanned_components: set[int] = set()
+    coefficient_bits: dict[int, list[int | None]] = {}
+    defined_tables: set[tuple[int, int]] = set()
+    pending_tables: set[tuple[int, int]] = set()
+    active_tables: set[tuple[int, int]] = set()
+    active_components: set[int] = set()
+    scan_has_entropy = False
+    first_marker = True
     while cursor < len(image_bytes):
-        if image_bytes[cursor] != 0xFF:
-            cursor += 1
-            continue
+        if in_scan:
+            next_marker = image_bytes.find(b"\xff", cursor)
+            if next_marker < 0:
+                return True
+            if next_marker > cursor:
+                scan_has_entropy = True
+            cursor = next_marker
+        elif image_bytes[cursor] != 0xFF:
+            return True  # Unframed bytes between length-delimited segments.
+        marker_start = cursor
         while cursor < len(image_bytes) and image_bytes[cursor] == 0xFF:
             cursor += 1
         if cursor >= len(image_bytes):
-            break
+            return True
         marker = image_bytes[cursor]
         cursor += 1
-        if marker in {0x01, 0xD8, 0xD9} or 0xD0 <= marker <= 0xD7:
+        if in_scan and marker == 0x00:
+            # A stuffed FF is exactly FF00; extra FF bytes only precede real markers.
+            if cursor != marker_start + 2:
+                return True
+            scan_has_entropy = True
             continue
-        if marker == 0xDA:
-            break
+        if in_scan and 0xD0 <= marker <= 0xD7:
+            continue
+        if in_scan:
+            if not scan_has_entropy:
+                return True  # A bare SOS header cannot consume a pending definition.
+            pending_tables.difference_update(active_tables)
+            scanned_components.update(active_components)
+            in_scan = False
+        if marker == 0xD9:
+            return not (
+                saw_frame
+                and saw_scan
+                and not pending_tables
+                and scanned_components == set(components)
+                and cursor == len(image_bytes)
+            )
+        # Nested SOI, bare restart/TEM and reserved/private extension markers are not
+        # supported canonical image syntax. Every other accepted marker has a length.
+        if marker not in frame_markers | table_markers | {0xDA, 0xE0}:
+            return True
         if cursor + 2 > len(image_bytes):
             return True
         length = int.from_bytes(image_bytes[cursor : cursor + 2], "big")
         if length < 2 or cursor + length > len(image_bytes):
             return True
         payload = image_bytes[cursor + 2 : cursor + length]
-        if marker == 0xFE:
-            return True
-        if 0xE1 <= marker <= 0xEF:
-            return True
-        if marker == 0xE0 and not payload.startswith((b"JFIF\x00", b"JFXX\x00")):
-            return True
         cursor += length
-    return False
+        if marker == 0xE0:
+            if not first_marker or payload != canonical_jfif:
+                return True
+        elif marker in table_markers:
+            destinations = _jpeg_table_destinations(marker, payload)
+            if destinations is None or (marker == 0xDB and saw_scan):
+                return True
+            for destination in destinations:
+                table = (marker, destination)
+                if table in pending_tables:
+                    return True  # Replaced before any scan actually consumed this definition.
+                defined_tables.add(table)
+                pending_tables.add(table)
+        elif marker in frame_markers:
+            if saw_frame or len(payload) < 6 or not 1 <= payload[5] <= 4:
+                return True
+            if len(payload) != 6 + 3 * payload[5]:
+                return True
+            if payload[0] not in ({8} if marker == 0xC0 else {8, 12}):
+                return True
+            if not int.from_bytes(payload[1:3], "big") or not int.from_bytes(payload[3:5], "big"):
+                return True  # DNL-delayed dimensions are outside this canonical profile.
+            for offset in range(6, len(payload), 3):
+                component, sampling, quantization = payload[offset : offset + 3]
+                if component in components or quantization > 3:
+                    return True
+                if not 1 <= sampling >> 4 <= 4 or not 1 <= sampling & 0x0F <= 4:
+                    return True
+                components[component] = quantization
+                coefficient_bits[component] = [None] * 64
+            progressive = marker == 0xC2
+            saw_frame = True
+        elif marker == 0xDA:
+            if not saw_frame or not payload or not 1 <= payload[0] <= 4:
+                return True
+            if len(payload) != 4 + 2 * payload[0]:
+                return True
+            start, end, approximation = payload[-3:]
+            high, low = approximation >> 4, approximation & 0x0F
+            if progressive:
+                if not 0 <= start <= end <= 63 or high > 13 or low > 13:
+                    return True
+                if (start == 0 and end != 0) or (start > 0 and payload[0] != 1):
+                    return True
+                if high and high != low + 1:
+                    return True
+            elif (start, end, approximation) != (0, 63, 0):
+                return True
+            scan_components: set[int] = set()
+            required_tables: set[tuple[int, int]] = set()
+            for offset in range(1, 1 + 2 * payload[0], 2):
+                component, selectors = payload[offset : offset + 2]
+                if component not in components or component in scan_components:
+                    return True
+                dc, ac = selectors >> 4, selectors & 0x0F
+                if dc > 3 or ac > 3:
+                    return True
+                scan_components.add(component)
+                required_tables.add((0xDB, components[component]))
+                if not progressive:
+                    required_tables.update({(0xC4, dc), (0xC4, 0x10 | ac)})
+                elif start == 0:
+                    if ac or (high and dc):
+                        return True  # Unused selector fields must be zero.
+                    if not high:
+                        required_tables.add((0xC4, dc))
+                else:
+                    if dc:
+                        return True
+                    required_tables.add((0xC4, 0x10 | ac))
+            if not required_tables <= defined_tables:
+                return True
+            if not progressive:
+                if scan_components & scanned_components:
+                    return True  # Sequential components are encoded once, never ignored repeats.
+            else:
+                for component in scan_components:
+                    bits = coefficient_bits[component]
+                    if start > 0 and bits[0] is None:
+                        return True  # A component's initial DC scan must precede its AC scans.
+                    for coefficient in range(start, end + 1):
+                        previous = bits[coefficient]
+                        if (not high and previous is not None) or (high and previous != high):
+                            return True  # No repeated initialization or impossible refinement.
+                        bits[coefficient] = low
+            # Commit actual definition consumption only after this valid scan has entropy.
+            # DC refinement has no Huffman table; AC scans use only their AC tables.
+            active_tables = required_tables | {(0xDD, 0)}
+            active_components = scan_components
+            scan_has_entropy = False
+            saw_scan = True
+            in_scan = True
+        first_marker = False
+    return True  # Missing final EOI, even if a permissive decoder can show pixels.
+
+
+def _jpeg_table_destinations(marker: int, payload: bytes) -> tuple[int, ...] | None:
+    """Consume complete T.81 DQT/DHT entries or the exact two-byte DRI control.
+
+    A length-valid segment is insufficient: decoders can ignore surplus table/control
+    bytes. Do not accept padding, unknown precision/class/destination, or empty entries.
+    """
+
+    if marker == 0xDD:
+        return (0,) if len(payload) == 2 else None
+    cursor = 0
+    destinations: list[int] = []
+    if not payload:
+        return None
+    while cursor < len(payload):
+        header = payload[cursor]
+        cursor += 1
+        kind, destination = header >> 4, header & 0x0F
+        if kind not in {0, 1} or destination > 3:
+            return None
+        if marker == 0xDB:
+            entry_size = 64 * (kind + 1)
+            end = cursor + entry_size
+            if end > len(payload):
+                return None
+            step = kind + 1
+            if any(
+                int.from_bytes(payload[offset : offset + step], "big") == 0
+                for offset in range(cursor, end, step)
+            ):
+                return None
+            destinations.append(destination)
+        else:  # DHT: sixteen code-length counts followed by exactly that many symbols.
+            counts = payload[cursor : cursor + 16]
+            if len(counts) != 16 or not 1 <= sum(counts) <= 256:
+                return None
+            # Canonical Huffman codes cannot oversubscribe the tree or use all-ones.
+            remaining_codes = 1
+            for count in counts:
+                remaining_codes = remaining_codes * 2 - count
+                if remaining_codes <= 0:
+                    return None
+            end = cursor + 16 + sum(counts)
+            if end > len(payload):
+                return None
+            destinations.append(header)
+        cursor = end
+    return tuple(destinations)
 
 
 def _decode(image_bytes: bytes) -> np.ndarray:
