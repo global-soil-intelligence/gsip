@@ -1,12 +1,12 @@
 # GSIP Build Order — Work Plan
 
-**Project:** Global Soil Intelligence Project (citizen-science soil mapping flywheel for people and agents)
-**Version:** 3.0 — 2026-10-10
-**Pending amendment:** v4.0 draft — 2026-10-12. The additional packages below are proposed under SPEC §15; the reviewed v3.0 plan remains the baseline until Justin approves and merges the specification PR.
-**Builder:** Claude (build sessions), acting for the product owner as human of record.
+**Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
+**Version:** 5.0 proposed — 2026-10-12 (SPEC §16)
+**Baseline:** v3 plus the v4 amendment merged in #38. Library implementation preparation is authorized by Justin; separate PR review/merge and all production gates remain required.
+**Builder:** Codex, acting for Justin Hart as human of record.
 **Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) against the §5 review gates; findings and resolutions are posted to the PR. Justin Hart provides the final product-owner go/no-go. On 2026-10-12 he approved an owner exception: the extra non-author GitHub approval is no longer required for this owner-operated repository. Independent adversarial review and green CI remain required; an agent never submits an approving review or certifies the human DCO.
 **Product owner:** Justin Hart
-**Governing document:** `docs/SPEC.md` (v3.0). If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
+**Governing document:** `docs/SPEC.md` (v5 proposal; existing launch gates preserved). If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
 
 ---
 
@@ -297,6 +297,24 @@ Acceptance criteria:
 
 WP-AGENT-2 delegated capture for assistants (scoped tokens, consent screen, path-bound upload URLs) · WP-APP-2 store release of the phone app (deep-link e-mail sign-in, icons, signing and store listings; `docs/APP_STORE.md`) · WP-7 QA gate model (slots into the WP-4b/6b interface) · WP-8 estimator v0 · WP-9 nightly retrain and model cards · WP-10 estimate API · WP-11 gold-label bulk ingestion and gold kits · WP-12 fused correction and Most Wanted layers with information-gain credit · WP-13 SoilGrids file sampler replacing the REST dependency · WP-14 silver-label protocols · WP-AGENT-3 verifier task API with I13 consensus · WP-AGENT-4 evaluation service (I15) · WP-DATA-1 Parquet photo shards, Croissant metadata and PROV provenance · WP-OPS-1 event-driven worker queue.
 
+### Library-first implementation sequence (v5, SPEC §16)
+
+The spectral library is the primary asset. The existing capture, QA, rights and provenance infrastructure remains the collection foundation; priors and the map are downstream context. Do not train an estimator on unpaired imagery and imply measured spectra or biological ground truth.
+
+| Package | Deliverable | Acceptance and dependencies |
+| --- | --- | --- |
+| **WP-LIB-1** | Private sample/measurement contract and runnable local node store | Strict versioned validation; RGB distinct from reflectance; dimensions/units/calibration/source hashes; immutable idempotent imports; conflicting UUID rejection; private filesystem; sample-wide tombstones; generic logs; synthetic tests. No credentials, network or public release. |
+| **WP-LIB-2** | Smartphone-photo optical extraction | Sanitization, orientation and sRGB conversion reuse; detected card excluded with margin; mean/dispersion/pixel count/source hash; no card is explicit unknown and all outputs uncalibrated; reject insufficient soil region; synthetic fixtures prove masking and deterministic output. Depends on LIB-1. Offline staged utility only while WP-6f remains gated. |
+| **WP-LIB-3** | Paired dataset and reconstruction baseline | Same-sample RGB↔instrument pairing, aligned wavelength grids; sample-level disjoint partitions; rights/QA/holdout propagation; field vs synthetic separation; deterministic baseline and reproducibility receipts; honest development errors only. No public predictions, publication or hosted retraining. Depends on LIB-1/2; meaningful field evaluation awaits paired data. |
+| **WP-LIB-4** | Phone + hosted private library intake | Offline sample IDs/context, attachment/reference UX, grant and terms checks, migration/RLS, ownership, server-derived provenance, digest-bound pairing, withdrawal cascades, queue/backups and holdout tests. Specify exact hosted contract before implementation; no deploy without go. |
+| **WP-LIB-5** | Federated node exchange | Specification first: authenticated scoped grants, node identities, cross-node physical-sample deduplication, rights/license verification, revocation propagation, rate limits and private lineage. Local nodes do not yet participate in canonical ingestion. |
+| **WP-LIB-6** | Scientific reference adapters and evaluation | Lab/biological assay vocabulary, licensed instrument adapters, paired field pilot, sealed spatial/device holdout, uncertainty calibration and model card. Device spectral hardware is optional; no closed SDK without approval. Requires real verified reference data and expert review. |
+| **WP-LIB-7** | Eligible library releases and map integration | Fingerprinting/linkage privacy evaluation, k-anonymity, consent/withdrawal checks, photo gate, licenses, dataset card and approved release pipeline; map advertises measurement basis and uncertainty. No individual spectral release by default. |
+
+New dependencies: none for LIB-1/2/3; use already locked Pydantic, NumPy/OpenCV and Pillow plus Python standard library. Instrument/model/detector dependencies in later packages require license (including weights), maintenance and payload-size audits before adoption. The linear baseline is research plumbing; it does not supersede WP-8's estimator/evaluation gates. WP-11's gold-label ingestion and WP-DATA-1 join the library contract rather than a competing identity system.
+
+Prepare `docs/spec-v5` → WP-LIB-1 → WP-LIB-2 → WP-LIB-3 as separate stacked PRs. LIB-4/5/6/7 need their detailed follow-up specifications and scientific/privacy prerequisites; do not silently activate them from this outline. No merge, deployment, worker dispatch, capture opening or release is authorized by this preparation order.
+
 ## 5. Review gates (checked on every PR)
 
 1. Acceptance criteria demonstrably met (CI evidence or reproducible commands, not claims).
@@ -339,6 +357,8 @@ GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function 
 Pending v4.0 review/merge sequence: WP-APP-1 → `docs/spec-v4` (Justin approval/merge) → WP-APP-2A → WP-APP-2B. Owner-authorized account-free WP-APP-2A preparation can start after the specification commit exists, while its PR remains stacked and awaits the merge sequence. WP-6f may be a separate branch after the approved specification, with no dependency on notifications, but stays blocked until that specification approval and its model/license/calibration gates. Retarget successors after Justin merges; merge main forward to resolve conflicts, never rebase or force-push the reviewed stack. §11 launch and production-command gates remain independent of this sequence.
 
 ## 8. Changelog
+
+- **v5.0 proposed (2026-10-12):** library-first mission and seven explicit work packages, executable private foundations before hosted integration, federation and evaluated models. Existing launch/owner gates retained.
 
 - **v4.0 draft (2026-10-12; awaiting product-owner approval):** schedules account-free WP-APP-2A, sync reminders only in version 1 for WP-APP-2B, and gated every-photo screening WP-6f. Nearby suggestions wait for Most Wanted and land-access eligibility. Records the separate data-only publication gate, bounded card exception for scene-text, and evaluation/license conditions for a dedicated plate detector without claiming iOS protection, model recall, store readiness or implementation approval.
 - **v3.0 (2026-10-10):** follows SPEC v3.0. Completed WP-0 to WP-6 summarized and archived. Added Phase 1.1 launch hardening (WP-6b ingest, QA and release integrity; WP-6c priors and tiles; WP-6d contributor rights; WP-6e provenance), Phase 1.5 (WP-SITE-1D, WP-AGENT-1, WP-APP-1) and the Phase 2+ outline. Added stacked-PR workflow, human-of-record DCO rule, guardrails 9 (I12) and 10 (B1–B8), updated environment variables, and review gates for I12.

@@ -1,9 +1,9 @@
-# GSIP v3 — Citizen-Science Architecture Specification
+# GSIP v5 — Open Soil Spectral Library Specification
 
 **Project:** Global Soil Intelligence Project (globalsoilintelligence.com)
-**Version:** 3.0 — 2026-10-10
-**Status:** PROPOSED — becomes ACTIVE when the product owner merges it. Supersedes v2.2 and every earlier architecture document. The 2024 `GSIP core algorithms` spectroscopy document remains a Phase 4+ reference for hardware-partner integrations.
-**Pending amendment:** v4.0 draft — 2026-10-12, in §11 and §15. The v3.0 version and status above remain the reviewed baseline; this draft becomes normative only when Justin Hart approves and merges its specification PR. It authorizes no deployment or opening of capture.
+**Version:** 5.0 — 2026-10-12
+**Status:** PROPOSED — the library architecture becomes active after Justin reviews and merges this specification. v3 and the merged v4 amendment remain the deployed baseline. Preparation of the separate library implementation PRs is authorized; no production migration, deployment, publication or capture opening is authorized.
+**Scope:** the open soil spectral library is primary; smartphones are the accessible capture and sample-linking tool. Maps and models are downstream products. Earlier spectroscopy documents are references, not implemented protocols or evidence of measurement accuracy.
 **Owner:** Justin Hart, Viridis LLC (steward; see `GOVERNANCE.md`)
 **Hosting:** GitHub (org monorepo) · Supabase (canonical instance) · Hugging Face (open dataset and models)
 
@@ -11,12 +11,13 @@
 
 ## 1. Mission
 
-Build the world's best-resolved, living global soil map by turning every phone into a soil sensor and letting people and AI agents build on the result. Contributors photograph soil with a printable reference card; GSIP fuses those observations with public soil maps to produce soil estimates with explicit uncertainty. Every verified observation, label and estimate request improves the dataset, the models and the map.
+Build an open, geographically connected soil spectral reference library using smartphones as the widely accessible capture tool. Connect soil observations and their metadata to measured spectra and independently verified laboratory results. Use that growing evidence base to train and evaluate open AI models, build the soil map, and investigate relationships relevant to the soil biome.
 
-**What GSIP is:** an open-source citizen-science data flywheel (the iNaturalist playbook applied to soil), open to human contributors and to agents acting for accountable people.
-**What GSIP is not:** a farm-management SaaS, a laboratory replacement, a carbon-credit marketplace, a data broker or an advertising platform.
+The library is the primary research asset. The map is its geographic view, and AI models are reproducible interpretations of evidence. A smartphone captures guided images, context and sample identity; it can also connect a physical sample to an external instrument or laboratory record. A normal RGB camera records three broad channels, not a wavelength-resolved reflectance spectrum. Neither photographs nor spectra alone establish soil chemistry or biological composition. Spectral reconstruction and biological predictions require paired reference measurements and independent evaluation, and must remain labeled estimates.
 
-The phone app is the main contribution funnel (§4, WP-APP-1). Agents start as readers and assistants and earn wider roles in stages (§9). Viridis LLC stewards the hosted service under the business guardrails B1–B8 in `GOVERNANCE.md`; the commons stays free and forkable.
+**Library chain:** smartphone observation → private sample identity and metadata → camera optical record and/or instrument spectrum → paired laboratory evidence → rights-eligible training data → evaluated open models → privacy-preserving map.
+
+People, schools, labs and developers can contribute to and build on the open code under a human of record. Viridis LLC stewards the canonical service under B1–B8. Independent local library nodes can organize private sample records; synchronization with the canonical service requires the separately scheduled authorization and rights protocol. A local import never confers canonical acceptance, QA clearance, consent verification or publication eligibility.
 
 ## 2. Invariants
 
@@ -250,11 +251,11 @@ Agents join in order of risk. Each role sees no more than it needs, and an assis
 **Phase 1 — Capture + map, zero ML.** Code done (WP-3 to WP-6). **Phase 1.1 — Launch hardening** (WP-6b to WP-6e) fixes the review's launch blockers and lands the agent-era schema (I9–I11) while production holds little or no real data, because adding provenance later costs a backfill of every row.
 _Launch gates (all required before `capture_open` is set):_ WP-6b to WP-6e merged; legal pack approved by counsel; the 50-photo field pilot calibrates QA thresholds; prior PMTiles published; production Supabase on a paid tier with workers green; the canonical domain serves the crawlable site. **The legal review, not the code, sets the launch date.**
 
-_Photo-publication gate (proposed v4.0; every newly built release):_ no photo publication until WP-6f is deployed and Justin has approved its calibration evidence. Until then, releases contain structured data only, with empty photo lists and no public photo bytes, shards, thumbnails or URLs. Eligible data still passes the existing QA, consent, withdrawal, provenance, holdout and k-anonymity gates. This gate does not open capture or authorize deployment; previously published immutable releases are identified honestly rather than claimed erased.
+_Photo-publication gate (merged v4.0; every newly built release):_ no photo publication until WP-6f is deployed and Justin has approved its calibration evidence. Until then, releases contain structured data only, with empty photo lists and no public photo bytes, shards, thumbnails or URLs. Eligible data still passes the existing QA, consent, withdrawal, provenance, holdout and k-anonymity gates. This gate does not open capture or authorize deployment; previously published immutable releases are identified honestly rather than claimed erased.
 
 **Phase 1.5 — App and agent readers.** The GSIP phone app (WP-APP-1) and the read API, MCP server and prerendered site (WP-AGENT-1). Read-only agent pieces can ship before launch because they touch no contributor data. Phase 1.5b, after launch: delegated capture for assistants.
 
-**Phase 2 — First models.** QA gate model; estimator v0 (colour, coarse texture, SOM) on weak labels; silver-label protocols; verifier task API with consensus (I13); nightly retrain with model cards; SoilGrids file sampler replacing the REST dependency.
+**Phase 2 — Library and paired evidence first (§16), then first models.** QA gate model; estimator v0 (colour, coarse texture, SOM) on weak labels; silver-label protocols; verifier task API with consensus (I13); nightly retrain with model cards; SoilGrids file sampler replacing the REST dependency.
 _Done when:_ gold-holdout coarse-texture accuracy ≥ 70 % and SOM intervals reach ≥ 90 % empirical coverage.
 
 **Phase 3 — The flywheel closes.** Estimate API and UI, evaluation service, gold-kit partner labs, fused correction layer, Most Wanted layer and contribution credit.
@@ -287,15 +288,17 @@ Community and agents: external contributors merged, partner labs onboarded, data
 
 ## 14. Changelog
 
+- **v5.0 proposed (2026-10-12):** makes the open soil spectral library primary, smartphones the capture/linking tool, and maps/models downstream. Adds L1–L7 and WP-LIB-1 through WP-LIB-7; preserves capture and photo-publication gates. Local preparation is authorized, production remains separately gated.
+
 - **v4.0 draft (2026-10-12; awaiting product-owner approval):** proposed §11 photo-publication gate and §15 schedule WP-APP-2A (CI versions, reproducibility evidence and private-storage backup exclusions), WP-APP-2B (local sync reminders only in version 1) and WP-6f (per-photo privacy screening). Nearby suggestions wait for Most Wanted and land-access eligibility. Scene-text screening may exclude only the detected reference-card quadrilateral plus its bounded margin; face screening covers the entire frame. Start with face and scene-text screening; a dedicated plate model needs an evidenced gap and verified licenses. These gates are proposed, not implemented.
 - **v3.0 (2026-10-10):** humans and agents. Added I9–I15. Amended I2 (finalize with required shots A and B; app or web), I3 ("no prior" is terminal), I6 (agents contribute only under a human of record's grant), I7 (k = 3 distinct-contributor publication at resolution 8 → 6 → 4; processors receive resolution-9 cell centres; withdrawal and deletion; independent quarantine cleanup) and I8 (soil-region QA with the card masked). §4 moves the Capacitor phone app from Phase 4 to Phase 1.5 as the main funnel and adds agent interfaces, provenance tiers and palette-driven tiles. §5 adds the finalize step, settlement table, sampling rules, capture-time precipitation, colour handling and upstream fair use. §6 adds path binding, per-photo QA status, provenance, the capture gate, withdrawals, releases and the holdout flag, and makes export set aside bad rows instead of aborting. §8 adds palette legends and multi-resolution contribution cells. New §9 Agents. §10 adds the steward, guardrails, trademarks and human-of-record DCO. §11 adds Phase 1.1 launch hardening, launch gates and Phase 1.5.
 - **v2.2 (2026-07-22):** anonymous contribution pinned to Supabase Anonymous Sign-Ins; immutable `contribution_grants` referenced by every submission; canonical units and depth bounds; private Storage path, metadata allowlist, fail-closed promotion and 24-hour quarantine cleanup.
 - **v2.1 (2026-07-22):** I7 made fail-closed; ODbL data separated from CC BY-SA photos with a legal-review gate; elevation source pinned; QA gate phased; canonical property mapping; legacy-repo disposition.
 - **v2.0 (2026-07-22):** initial citizen-science architecture; superseded all 2024 documents.
 
-## 15. Pending v4.0 amendment: app readiness and photo privacy
+## 15. Merged v4.0 amendment: app readiness and photo privacy
 
-**Status: PROPOSED.** Justin chose the backup and screening policies below on 2026-10-11, but requested review of this specification before screening implementation. Approval of policy is not approval of an unreviewed implementation. Until Justin approves and merges this specification PR, v3.0 remains the reviewed baseline and WP-6f is blocked. [BUILD_ORDER.md](BUILD_ORDER.md) schedules separate implementation PRs. No model, plugin, migration or production setting is added by this amendment.
+**Status: merged in #38.** Justin approved the backup and screening policy specification on 2026-10-12. WP-6f implementation, detector licensing and calibration evidence remain separate requirements; the amendment does not authorize production changes. [BUILD_ORDER.md](BUILD_ORDER.md) schedules the implementation PRs.
 
 ### 15.1 Invariants and activation
 
@@ -331,7 +334,41 @@ Privacy status is independent of `photos.qa_status` and submission settlement. A
 
 [The detector comparison](PHOTO_PRIVACY_SCREENING.md) separates code licenses from weight licenses, records payload size and maintenance signals, and explains unmeasured recall. YuNet and open scene-text detection are first-stage benchmark candidates; OCR may aid evaluation but cannot be the clearance gate. Add a dedicated plate detector only if staged evaluation exposes a material gap in face and scene-text coverage, and its exact artifact has verified code and weight licenses. The listed plate candidate remains ineligible while its weight license is unresolved; that candidate is not a required dependency. No model is selected for deployment. Prefer high recall and human review over automatic clearance based on OCR recognition alone: an unreadable plate or house number may still identify a place or person. Confidence thresholds, full-resolution/multiscale handling and unsupported cases must be calibrated and approved before public photo publication; absence of a detection is not a guarantee of anonymity. Report sample counts, per-category misses/false positives and uncertainty, including tiny/occluded faces, varied skin tones, oblique plates and multiple numeral scripts. Use synthetic/staged, consented evaluation material with no real contributor uploads in fixtures or public reports. Unknown recall, unresolved weight licenses for a selected artifact or missing category coverage are explicit blockers; fail closed for photos while eligible data continues.
 
-**Implementation gate:** WP-6f starts only after Justin approves and merges this specification PR. The later implementation PR needs migrations/RLS and export tests, private review authorization tests, reproducible detector-license/digest evidence, and calibration evidence before deployment; production commands still require a separate exact-target "go". This proposal neither starts screening nor claims current photos are screened.
+**Implementation gate:** the specification merge prerequisite is satisfied by #38. The later implementation PR needs migrations/RLS and export tests, private review authorization tests, reproducible detector-license/digest evidence, and calibration evidence before deployment; production commands still require a separate exact-target "go". This proposal neither starts screening nor claims current photos are screened.
+
+## 16. Open soil spectral library (v5)
+
+### 16.1 Additional invariants
+
+I1–I15 and B1–B8 remain binding. These library rules add constraints, not exceptions:
+
+- **L1 — Measurement identity:** `camera_rgb` records contain three sRGB channel summaries with no invented wavelengths. `instrument_reflectance` records contain explicit nanometre wavelengths, fractional reflectance, uncertainty per band and an instrument/calibration identity. Derived spectra are a future distinct record type, never instrument truth.
+- **L2 — Sample linkage:** a node UUID plus sample UUID identifies one physical sample. Measurement UUIDs identify immutable records. The same paired sample and all its repeated observations must remain in one training partition. Nodes cannot claim the same physical sample under different identities to increase evidence counts.
+- **L3 — Traceable context:** record protocol version, capture method, device/instrument identity, material condition, depth bounds, source digest and calibration status. Unknown values are explicit; absence of a reference card is uncalibrated. Card detection alone does not certify reflectance calibration. Exact timestamps, instrument serials, operator identity, locations and document links remain private.
+- **L4 — Paired evidence:** spectra and camera records join only through the same physical sample key. Laboratory evidence records method, canonical unit, uncertainty and verifier. Laboratory properties are not inferred from the spectrum. Biological assays require a separately reviewed vocabulary and interpretation protocol; none is fabricated from imagery.
+- **L5 — Rights and partitions:** local records declare grant references, withdrawal state, QA state, synthetic provenance and sealed holdout state. These declarations are untrusted until verified by canonical ingest. Withdrawn, unconsented, QA-failing and synthetic records never enter field-model training. Holdout samples and their twins never enter training, tuning or an ordinary evaluation CLI.
+- **L6 — Private by default:** the new node store, measurements, spectra, sample linkage and training files remain private, even when they omit coordinates. No node CLI publishes or uploads. No individual spectral public release until a separate privacy review considers fingerprinting, linkage and generalization under I7, including k = 3; a broad cell alone is insufficient clearance. WP-6f continues to gate image bytes and image-derived training inputs. Logs contain counts and generic error classes only.
+- **L7 — Reproducibility and honest status:** record input hashes, extractor/model version, grouping rule and label basis. A baseline demonstrates the pipeline, not scientific validity. No useful model or soil-biome inference is claimed without eligible paired field data, independent evaluation and calibrated uncertainty.
+
+### 16.2 Version 1 private exchange contract
+
+`gsip-library-v1` is a bounded JSON record, validated identically at import and use. One record carries a measurement UUID, node/sample UUID pair, protocol version, structured sample context, grant UUID and current eligibility states. A discriminated measurement payload holds either camera RGB summaries (source-image SHA-256, extractor version, pixel count, dispersion, card-present indicator, uncalibrated status) or instrument reflectance (source-file SHA-256, wavelengths in nm, reflectance in [0,1], uncertainty in [0,1], instrument and calibration reference UUIDs). Wavelengths are finite, strictly increasing, aligned with values and uncertainties, between 200 and 25,000 nm; at least three and at most 10,000 bands. Version 1 accepts fractional reflectance only; percent, absorbance, radiance and out-of-range values must be converted by an independently documented adapter, never silently clipped or guessed.
+
+Depths use cm with 0 ≤ top < bottom ≤ 200; material condition is wet, moist, dry or unknown. Opaque UUID references replace arbitrary text/document URLs. Optional paired labels use the existing canonical chemistry/texture property and unit mapping, a method reference UUID, nonnegative uncertainty and a verifier UUID. A label is evidence only when its origin and pairing are verified. Reject unknown fields, non-finite numbers, inconsistent arrays and conflicting measurement identities. Local declarations never bypass hosted grants/RLS.
+
+### 16.3 Node, capture and model implementation boundaries
+
+WP-LIB-1 supplies a local private store and import/inspect/withdraw commands. Creation uses restrictive filesystem permissions; immutable writes are atomic and identical re-imports are idempotent. Reject conflicting identities and symlinked stores. A withdrawal is a durable node/sample tombstone blocking future imports and use. Store operators must use encrypted local storage and delete separately produced training/model files when rights change; the CLI cannot retract external copies. Shared/public folders and phone cloud backups are unsuitable. Federation is explicitly not implemented by a directory of records.
+
+WP-LIB-2 derives deterministic optical summaries from a sanitized phone photograph using the existing card homography and card-exclusion margin. Summarize only the selected soil candidate region; it is a geometric candidate, not a learned segmentation guarantee. Report per-channel mean and dispersion, surviving pixel count and source digest. Keep values as uncalibrated sRGB even with a detected card; do not reuse corrected card patches as a soil correction transform. Require private operator input and synthetic/staged material while WP-6f is not deployed. This offline utility does not change app capture, QA verdicts or hosted workers.
+
+WP-LIB-3 prepares a private dataset of verified paired RGB and instrument records. Reject duplicate/conflicting sample pairing; propagate withdrawal and holdout across every measurement of a sample. Require a common wavelength grid and matching device/protocol/material condition per admitted pair, without implicit interpolation. Partition by sample, never by photo. Grouping across sites/campaigns and an independently sealed spatial/device holdout must precede scientific accuracy claims. A deterministic linear baseline learns RGB→reflectance only from eligible train samples and reports error on a disjoint development partition; it emits no chemistry/biome predictions or public weights. Prediction intervals and external validation are mandatory before an estimator is exposed. Synthetic data are only a test/demo mode with conspicuous non-scientific output and cannot mix into field runs.
+
+Next, WP-LIB-4 integrates the contract with phone offline capture and private hosted ingest, including consent/grant verification, immutable sample pairing, server-derived provenance, RLS, deletion and holdout enforcement. WP-LIB-5 specifies node federation (scoped delegated credentials, identity/deduplication, terms/license verification and revocation propagation) before implementing it. WP-LIB-6 adds verified lab/biological assay adapters and independent reconstruction/estimator evaluation; WP-LIB-7 adds approved generalized library releases and map/model consumption. These depend on field data and scientific/privacy review, not merely a green software build. Existing priors remain priors, not training truth.
+
+### 16.4 Library success measures
+
+Report eligible physical samples, paired camera/instrument samples, verified lab links, instrument/calibration coverage, repeat measurements and material/device/site diversity separately. Report synthetic demo counts separately. Track withdrawal completion and withheld/publication counts. Model evidence includes held-out error, uncertainty coverage and domain coverage; a repository, successful CLI run or library record count does not establish useful scientific adoption or biome insight.
 
 ---
 
