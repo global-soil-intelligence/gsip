@@ -22,6 +22,10 @@ uv run pytest
 Run `pnpm --filter @gsip/capture-pwa dev` for capture or
 `pnpm --filter @gsip/map-web dev` for the map.
 
+For the private soil-library record contract and local node commands, see the
+[soil library developer guide](docs/SOIL_LIBRARY.md). Hosted intake, federation and
+scientific model validation remain scheduled work; these tools do not open capture.
+
 ## Governing documents
 
 - [Architecture specification](docs/SPEC.md)
