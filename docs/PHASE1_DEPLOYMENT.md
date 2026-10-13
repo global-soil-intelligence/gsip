@@ -131,6 +131,33 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
 5. Agents cannot write yet. An `actors` row for an agent, device or lab is created only by the
    service role and must be operated by a human actor; deleting that person's account revokes it.
 
+## Phase 1.5: operator steps
+
+### WP-AGENT-1 — agent-readable GSIP
+
+The read-only interfaces touch no contributor data, so they may go live before capture opens.
+
+1. Apply the migration. It adds `dataset_releases`, which the export fills after each successful
+   push; the export workflow needs no new secret.
+2. Deploy the function: `supabase functions deploy gsip-public`. `supabase/config.toml` sets
+   `verify_jwt = false` because the interfaces are public; confirm in the dashboard that JWT
+   verification is off. The function finds the project's publishable key in the platform's
+   environment (`SUPABASE_PUBLISHABLE_KEYS`, or the legacy anonymous key) and never uses any other
+   key. Optional function secrets: `HF_DATASET_REPO` (to link releases on Hugging Face),
+   `GSIP_PUBLIC_RATE_LIMIT_PER_MINUTE` (per client, default 60),
+   `GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE` (per function instance across clients, default 20 times
+   the per-client limit) and `GSIP_PUBLIC_BASE_URL` (only when the function is served from another
+   address).
+3. Smoke-test it: `curl "$base/v1/protocol"` answers 200 with licence and citation fields,
+   `curl "$base/v1/cells/892a8ab5863ffff"` (a resolution-9 cell) answers 400, and an MCP client
+   added with `claude mcp add --transport http gsip "$base/mcp"` lists four tools. Here `$base` is
+   `https://<project-ref>.supabase.co/functions/v1/gsip-public`.
+4. Set the repository variable `VITE_GSIP_PUBLIC_API` to `$base` and redeploy Pages. The data page
+   and `llms.txt` then advertise the interfaces; until the variable is set they mention only the
+   agent guide.
+5. Every Pages build now prerenders the site and fails unless each page carries its headline and
+   JSON-LD. After WP-SITE-1D, check that `https://globalsoilintelligence.com/llms.txt` resolves.
+
 ## Production worker schedule holds
 
 Merging a workflow or adding its credential must not authorise production work. Scheduled worker

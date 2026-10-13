@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && vite build --ssr src/prerender.tsx && node scripts/prerender.mjs",
     "dev": "vite",
-    "lint": "eslint src tests vite.config.ts",
+    "lint": "eslint src tests scripts vite.config.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

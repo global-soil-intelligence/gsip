@@ -5,8 +5,23 @@ export type PageId = 'about' | 'card' | 'data' | 'home' | 'methods'
 const repository = 'https://github.com/global-soil-intelligence/gsip'
 const captureLive = import.meta.env.VITE_CAPTURE_LIVE === 'true'
 const datasetUrl = import.meta.env.VITE_DATASET_URL?.trim()
+// The deployed gsip-public function (WP-AGENT-1). Unset until it is live, so the site never
+// advertises an interface that does not answer.
+const publicApi = import.meta.env.VITE_GSIP_PUBLIC_API?.trim().replace(
+  /\/+$/,
+  '',
+)
+const agentGuide = `${repository}/blob/main/docs/AGENTS.md`
 
-const pageMeta: Record<
+export const PAGES: readonly PageId[] = [
+  'home',
+  'about',
+  'card',
+  'data',
+  'methods',
+]
+
+export const pageMeta: Record<
   PageId,
   { description: string; eyebrow: string; title: string }
 > = {
@@ -40,6 +55,39 @@ const pageMeta: Record<
     eyebrow: 'Methods in the open',
     title: 'Scientific honesty is part of the architecture.',
   },
+}
+
+/** The open dataset, described for search engines and agents (WP-AGENT-1). */
+const datasetJsonLd = {
+  '@id': 'https://globalsoilintelligence.com/data/#dataset',
+  '@type': 'Dataset',
+  name: 'GSIP public soil observations',
+  description:
+    'Soil photographs taken by citizen scientists beside a printed colour reference card, with protocol metadata, per-photo quality checks and provenance tiers. Locations are k-anonymous H3 cells shared by at least 3 contributors, never precise points. Values are observations and estimates, not laboratory results.',
+  url: 'https://globalsoilintelligence.com/data/',
+  // Two licences: the structured data and the photographs are licensed separately.
+  license: [
+    'https://opendatacommons.org/licenses/odbl/1-0/',
+    'https://creativecommons.org/licenses/by-sa/4.0/',
+  ],
+  conditionsOfAccess:
+    'Structured data under ODbL 1.0; contributed photographs under CC BY-SA 4.0, credited to their contributors.',
+  isAccessibleForFree: true,
+  creator: { '@id': 'https://globalsoilintelligence.com/#organization' },
+  publisher: { '@id': 'https://globalsoilintelligence.com/#organization' },
+  keywords: [
+    'soil',
+    'citizen science',
+    'soil photographs',
+    'soil organic carbon',
+    'H3',
+    'open data',
+  ],
+  measurementTechnique:
+    'Smartphone photographs with a printed colour reference card (GSIP capture protocol v1.1)',
+  spatialCoverage: { '@type': 'Place', name: 'Global' },
+  // The repository page, not a download: its files change with every release.
+  ...(datasetUrl ? { sameAs: datasetUrl } : {}),
 }
 
 function pathFrom(page: PageId, path: string) {
@@ -143,6 +191,7 @@ function PageShell({ children, page }: { children: ReactNode; page: PageId }) {
         '@id': 'https://globalsoilintelligence.com/#organization',
         '@type': 'Organization',
         name: 'Global Soil Intelligence',
+        sameAs: [repository],
         url: 'https://globalsoilintelligence.com/',
       },
       {
@@ -157,6 +206,7 @@ function PageShell({ children, page }: { children: ReactNode; page: PageId }) {
         },
         url: canonical,
       },
+      ...(page === 'home' || page === 'data' ? [datasetJsonLd] : []),
     ],
   }
   return (
@@ -167,9 +217,14 @@ function PageShell({ children, page }: { children: ReactNode; page: PageId }) {
       <Header page={page} />
       {children}
       <Footer page={page} />
-      <script type="application/ld+json">
-        {JSON.stringify(structuredData)}
-      </script>
+      <script
+        type="application/ld+json"
+        // Prerendered as raw script text: React would escape quotes in a text child. `<` is
+        // escaped so the data can never close the script element.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
+        }}
+      />
     </>
   )
 }
@@ -779,6 +834,27 @@ function DataPage() {
             boundaries, photo attribution, and export-date provenance. A public
             contact and repository issue path will be published before real
             contributions are released.
+          </p>
+        </section>
+        <section className="interior-section citation-section" id="agents">
+          <p className="eyebrow">Agents and developers</p>
+          <h2>Read the commons from code or an AI agent.</h2>
+          <p>
+            A read-only API and an MCP server answer with the capture protocol,
+            the published cells and the latest release, and attach the licences
+            and citation to every answer. They read exactly what this site
+            shows: no precise locations and no private data.
+          </p>
+          <p className="agent-links">
+            <a href={agentGuide}>Agent guide</a>
+            {publicApi ? (
+              <>
+                {' · '}
+                <a href={`${publicApi}/v1/openapi.json`}>OpenAPI description</a>
+                {' · MCP endpoint '}
+                <code>{`${publicApi}/mcp`}</code>
+              </>
+            ) : null}
           </p>
         </section>
       </main>

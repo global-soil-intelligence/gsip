@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { App, type PageId } from '../src/App'
 
@@ -60,5 +60,65 @@ describe('public website', () => {
     expect(
       screen.getByText(/Exact geometry remains protected operational data/),
     ).toBeTruthy()
+  })
+
+  it('points agents to the guide, and to no interface until one is configured', () => {
+    render(<App page="data" />)
+
+    expect(
+      screen.getByRole('link', { name: 'Agent guide' }).getAttribute('href'),
+    ).toBe(
+      'https://github.com/global-soil-intelligence/gsip/blob/main/docs/AGENTS.md',
+    )
+    expect(
+      screen.queryByRole('link', { name: 'OpenAPI description' }),
+    ).toBeNull()
+    expect(screen.queryByText(/MCP endpoint/)).toBeNull()
+  })
+})
+
+describe('public website with the read API deployed', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.resetModules()
+  })
+
+  it('links the OpenAPI description and names the MCP endpoint', async () => {
+    vi.stubEnv(
+      'VITE_GSIP_PUBLIC_API',
+      ' https://project.supabase.co/functions/v1/gsip-public/ ',
+    )
+    vi.resetModules()
+    const { App: Configured } = await import('../src/App')
+    render(<Configured page="data" />)
+
+    expect(
+      screen
+        .getByRole('link', { name: 'OpenAPI description' })
+        .getAttribute('href'),
+    ).toBe(
+      'https://project.supabase.co/functions/v1/gsip-public/v1/openapi.json',
+    )
+    expect(
+      screen.getByText(
+        'https://project.supabase.co/functions/v1/gsip-public/mcp',
+      ).tagName,
+    ).toBe('CODE')
+  })
+
+  it('names the published dataset as the same thing, without claiming a download', async () => {
+    const hub = 'https://huggingface.co/datasets/global-soil-intelligence/gsip'
+    vi.stubEnv('VITE_DATASET_URL', hub)
+    vi.resetModules()
+    const { App: Configured } = await import('../src/App')
+    const { container } = render(<Configured page="data" />)
+
+    const graph = JSON.parse(
+      container.querySelector('script[type="application/ld+json"]')
+        ?.textContent ?? '{}',
+    )['@graph'] as Array<Record<string, unknown>>
+    const dataset = graph.find((node) => node['@type'] === 'Dataset')
+    expect(dataset?.sameAs).toBe(hub)
+    expect(dataset).not.toHaveProperty('distribution')
   })
 })

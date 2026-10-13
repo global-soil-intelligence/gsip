@@ -1019,6 +1019,15 @@ p {
   font-size: 1.08rem;
 }
 
+/* Endpoint URLs are long; they wrap rather than widen the page on a phone. */
+.agent-links {
+  overflow-wrap: anywhere;
+}
+
+.agent-links a {
+  font-weight: 750;
+}
+
 .roadmap-grid {
   grid-template-columns: repeat(3, 1fr);
 }

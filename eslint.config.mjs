@@ -7,6 +7,7 @@ export default tseslint.config(
       '.claude/worktrees/**',
       '**/.venv/**',
       '**/dist/**',
+      '**/dist-ssr/**',
       '**/coverage/**',
       '_site/**',
       'output/**',
@@ -20,6 +21,7 @@ export default tseslint.config(
       globals: {
         URL: 'readonly',
         console: 'readonly',
+        process: 'readonly',
       },
     },
   },

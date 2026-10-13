@@ -46,8 +46,10 @@ URL = re.compile(
 # Strings that look like URLs but are never contacted.
 NOT_CONTACTED = {
     "127.0.0.1": "local development server",
+    "creativecommons.org": "photo licence link in API responses and site metadata (never fetched)",
     "localhost": "local development server",
     "ns.adobe.com": "XMP namespace identifier, matched when stripping metadata",
+    "opendatacommons.org": "data licence link in API responses and site metadata (never fetched)",
     "same-site.invalid": "reserved .invalid origin used only to resolve relative links",
     "schema.org": "JSON-LD vocabulary identifier",
     "soilgrids.org": "citation link in the dataset card",

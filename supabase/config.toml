@@ -36,3 +36,10 @@ sql_paths = ["./seed.sql"]
 enabled = true
 verify_jwt = true
 import_map = "./functions/deno.json"
+
+# WP-AGENT-1: public, read-only REST and MCP for people and agents. No JWT is required: the
+# function holds only the publishable key, so the anonymous role's grants bound every read (I12).
+[functions.gsip-public]
+enabled = true
+verify_jwt = false
+import_map = "./functions/deno.json"
