@@ -158,7 +158,7 @@ class PrivateLibrary:
             os.close(fd)
 
     def _read(self, path: Path) -> bytes:
-        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
         try:
             info = os.fstat(fd)
             if (
@@ -205,7 +205,7 @@ class PrivateLibrary:
     def _records(self) -> list[LibraryRecord]:
         result = []
         for path in sorted(self.root.glob("*.json")):
-            record = LibraryRecord.model_validate_json(self._read(path))
+            record = parse_record(self._read(path))
             if path.name != f"{record.measurement_id}.json":
                 raise ValueError("record identity mismatch")
             if not self._withdrawn(*record.sample_key):
@@ -246,7 +246,7 @@ class PrivateLibrary:
             removed = 0
             # Tombstone first: a crash during deletion cannot readmit the remaining records.
             for item in self.root.glob("*.json"):
-                record = LibraryRecord.model_validate_json(self._read(item))
+                record = parse_record(self._read(item))
                 if record.sample_key == (node, sample):
                     item.unlink()
                     removed += 1
@@ -254,12 +254,27 @@ class PrivateLibrary:
             return removed
 
 
+def _unique_fields(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate JSON field")
+        result[key] = value
+    return result
+
+
+def parse_record(data: bytes) -> LibraryRecord:
+    if len(data) > MAX_RECORD_BYTES:
+        raise ValueError("record too large")
+    return LibraryRecord.model_validate(json.loads(data, object_pairs_hook=_unique_fields))
+
+
 def read_record(path: Path) -> LibraryRecord:
     with path.open("rb") as source:
         data = source.read(MAX_RECORD_BYTES + 1)
     if len(data) > MAX_RECORD_BYTES:
         raise ValueError("record too large")
-    return LibraryRecord.model_validate_json(data)
+    return parse_record(data)
 
 
 def main(argv: list[str] | None = None) -> int:
