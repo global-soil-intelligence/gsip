@@ -16,6 +16,29 @@ from pipeline.library import CameraRgb, LibraryRecord
 from pipeline.phone_optics import extract_phone_record, summarize_rgb
 
 
+def test_cli_argument_errors_do_not_echo_private_inputs(capsys: pytest.CaptureFixture[str]) -> None:
+    from pipeline.phone_optics import main
+
+    sentinel = "private-input-must-never-appear"
+    with pytest.raises(SystemExit) as exited:
+        main(
+            [
+                "--store",
+                sentinel,
+                "--template",
+                sentinel,
+                "--image",
+                sentinel,
+                "--unknown",
+                sentinel,
+            ]
+        )
+    assert exited.value.code == 2
+    output = capsys.readouterr()
+    assert sentinel not in output.out + output.err
+    assert "Invalid private command arguments" in output.err
+
+
 def image_bytes(rgb: tuple[int, int, int] = (100, 80, 60)) -> bytes:
     image = Image.new("RGB", (100, 100), rgb)
     output = io.BytesIO()

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 import hashlib
 import sys
 from pathlib import Path
@@ -13,7 +12,13 @@ import numpy as np
 from PIL import Image
 
 from card.validate import card_transform
-from pipeline.library import CameraRgb, LibraryRecord, PrivateLibrary, read_record
+from pipeline.library import (
+    CameraRgb,
+    LibraryRecord,
+    PrivateArgumentParser,
+    PrivateLibrary,
+    read_record,
+)
 from pipeline.qa import SOIL_FRACTION_MIN, sanitize_jpeg, soil_region
 
 MAX_IMAGE_BYTES = 25_000_000
@@ -59,7 +64,7 @@ def extract_phone_record(raw: bytes, template: LibraryRecord) -> LibraryRecord:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Staged-only private phone RGB extraction")
+    parser = PrivateArgumentParser(description="Staged-only private phone RGB extraction")
     parser.add_argument("--store", type=Path, required=True)
     parser.add_argument("--template", type=Path, required=True)
     parser.add_argument("--image", type=Path, required=True)
