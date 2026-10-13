@@ -252,7 +252,6 @@ Acceptance criteria for the later implementation PR:
 
 Remaining **WP-APP-2 store-release scope** stays gated: Apple/Google accounts, signing, store listings and deep links require Justin's accounts and decisions. No account, certificate or keystore is created by WP-APP-2A/2B.
 
-
 ### Phase 1.5a — Follow-ups independent of production deployment
 
 **WP-AGENT-0: Coding-agent guidance**
@@ -268,7 +267,6 @@ Acceptance criteria:
 - [ ] A documentation usability test proves the local links and documented repository check
       commands resolve; it fails without the guide.
 - [ ] Formatting and language checks pass; no dependency, licence, workflow or production change.
-
 
 **WP-3b: Cross-tab queue sync**
 Scope:
