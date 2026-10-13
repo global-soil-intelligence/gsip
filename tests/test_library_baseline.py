@@ -70,6 +70,46 @@ def test_cross_sample_duplicate_source_cannot_leak_between_partitions() -> None:
         prepare_pairs(rows, demo=True)
 
 
+@pytest.mark.parametrize("source_index", [0, 1], ids=["camera", "instrument"])
+@pytest.mark.parametrize(
+    "excluded_state",
+    [
+        pytest.param({"holdout": True}, id="holdout"),
+        pytest.param({"withdrawn": True}, id="withdrawn"),
+        pytest.param({"consent_verified": False}, id="unconsented"),
+        pytest.param({"pairing_verified": False}, id="unpaired"),
+        pytest.param({"qa_status": "fail"}, id="failed-qa"),
+    ],
+)
+def test_excluded_sample_sources_cannot_enter_training_as_another_sample(
+    source_index: int, excluded_state: dict[str, object]
+) -> None:
+    rows = pairs()
+    rows[source_index] = changed(rows[source_index], **excluded_state)
+    twin_index = 2 + source_index
+    rows[twin_index] = changed(
+        rows[twin_index],
+        measurement=rows[twin_index].measurement.model_dump()
+        | {"source_sha256": rows[source_index].measurement.source_sha256},
+    )
+    with pytest.raises(ValueError, match="repeated source across physical sample identities"):
+        prepare_pairs(rows, demo=True)
+
+
+@pytest.mark.parametrize("source_index", [0, 1], ids=["camera-only", "instrument-only"])
+def test_incomplete_pair_sources_cannot_enter_as_another_sample(source_index: int) -> None:
+    rows = pairs()
+    twin_index = 2 + source_index
+    rows[twin_index] = changed(
+        rows[twin_index],
+        measurement=rows[twin_index].measurement.model_dump()
+        | {"source_sha256": rows[source_index].measurement.source_sha256},
+    )
+    del rows[1 - source_index]
+    with pytest.raises(ValueError, match="repeated source across physical sample identities"):
+        prepare_pairs(rows, demo=True)
+
+
 def test_wavelength_grid_and_context_mismatches_are_refused() -> None:
     for update in ({"wavelength_nm": [460.0, 550.0, 650.0]},):
         rows = pairs()

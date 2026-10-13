@@ -50,6 +50,7 @@ class PairedSample:
 def prepare_pairs(records: list[LibraryRecord], *, demo: bool) -> list[PairedSample]:
     groups: dict[tuple[UUID, UUID], list[LibraryRecord]] = defaultdict(list)
     identities: dict[UUID, bytes] = {}
+    source_samples: dict[str, tuple[UUID, UUID]] = {}
     for record in records:
         digest = encoded(record)
         if record.measurement_id in identities:
@@ -57,9 +58,13 @@ def prepare_pairs(records: list[LibraryRecord], *, demo: bool) -> list[PairedSam
                 raise ValueError("conflicting measurement identity")
             continue
         identities[record.measurement_id] = digest
+        # Check every source before eligibility or pairing exclusions can hide a twin.
+        source = record.measurement.source_sha256
+        if source in source_samples and source_samples[source] != record.sample_key:
+            raise ValueError("repeated source across physical sample identities")
+        source_samples[source] = record.sample_key
         groups[record.sample_key].append(record)
     pairs = []
-    source_samples: dict[str, tuple[UUID, UUID]] = {}
     grid: tuple[float, ...] | None = None
     device: UUID | None = None
     for key, group in sorted(groups.items()):
@@ -98,11 +103,6 @@ def prepare_pairs(records: list[LibraryRecord], *, demo: bool) -> list[PairedSam
             grid, device = measured.wavelength_nm, optical.device_id
         elif grid != measured.wavelength_nm or device != optical.device_id:
             raise ValueError("mixed wavelength grids or camera devices")
-        for row in (camera, spectrum):
-            source = row.measurement.source_sha256
-            if source in source_samples and source_samples[source] != key:
-                raise ValueError("repeated source across physical sample identities")
-            source_samples[source] = key
         pairs.append(PairedSample(key, camera, spectrum))
     return pairs
 
