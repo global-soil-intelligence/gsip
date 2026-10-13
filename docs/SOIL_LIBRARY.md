@@ -38,3 +38,16 @@ uv run python -m pipeline.phone_optics --store /private/local/soil-library --tem
 ```
 
 The template is a valid `camera_rgb` record with new measurement identity and `synthetic: true`. The extractor replaces only its measurement payload. It sanitizes and orients pixels, converts embedded profiles to sRGB, masks the detected reference card with the existing margin, then measures RGB means and standard deviations in the remaining candidate soil pixels. It keeps a sanitized-content hash, not raw metadata, and does not advance consent, pairing or QA states. All measurements stay uncalibrated, including images with a detected card. Without a card the candidate region is the whole frame; actual soil segmentation remains a future QA improvement. Insufficient candidate pixels fail. Real contributor imagery is refused by this record-producing CLI until WP-6f/hosted verification is integrated; synthetic staged images exercise the software without claiming field evidence.
+
+## Run the complete local demo
+
+```sh
+uv run python -m pipeline.library_demo --output /private/local/new-demo-directory
+uv run python -m ml.library_baseline --store /private/local/new-demo-directory/records --output /private/local/another-new-baseline --demo
+```
+
+The first command creates 12 fictional physical samples: staged phone images go through the real optical extractor, and invented reflectance values form a deliberately simple paired reference. It imports 24 private records and fits a linear RGB-to-reflectance baseline. All records and outputs are explicitly synthetic. The demo's reconstruction error is a software check, **not a sensor benchmark or soil result**. It needs no paid service, new dependency, training download or production credential.
+
+The baseline requires matching sample context and grant, verified local pairing/consent declarations, passing QA and one camera/instrument pair per sample. It excludes whole samples if any record is withdrawn, held out or ineligible; synthetic records cannot enter field preparation. Ambiguous repeated measurements, conflicting identities, mixed grids/devices and source files shared across different sample identities are refused. Bulk instrument files need a separately specified adapter with per-measurement source identity. Sample-hashed partitions separate training from development; sealed holdouts are never used. Development partition error does not substitute for independent spatial/device evaluation.
+
+Outputs are private `model.json`, `partitions.json` and `receipt.json`, created in a new directory without overwriting older evidence. The receipt is written last; a directory without it is incomplete. It records input digest, algorithm/NumPy versions, partition counts and development error. Coefficients and sample keys remain private. This model has no calibrated intervals and is marked ineligible for deployment; it predicts reflectance in a fictional demo, never soil chemistry or biology. Field model training is deliberately blocked until canonical rights/provenance and photo-screening verification are integrated. The demo is deterministic for the same inputs and locked environment; hashes and NumPy versions permit checking platform differences rather than claiming universal byte-identical floating-point results.
