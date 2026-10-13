@@ -164,6 +164,17 @@ exact inspection command and keeps the same four fields. All original resolution
 selection, artifact and output operations remain mandatory. The marker is diagnostic
 build configuration emitted by Python, with its exact hash recorded in the audit;
 it adds no shipped native application source or dependency.
+If the exact inspection command fails, the CLI also reports one
+`GSIP_GRADLE_CONTEXT_V1` line with eight fixed tokens: version, canonical command,
+stdout state, stderr state, combined bound, task-marker state, structured framing
+and public Gradle framing category. This distinguishes an absent marker from a
+marker that could not be inspected because of type, UTF-8, control or size guards.
+The cap remains 65,536 bytes. Unknown or ambiguous framing stays explicitly unknown
+or ambiguous; no message, path, property, URL or stream fragment is copied. Commands
+outside the exact inspection scope emit no supplemental line. The original
+four-field diagnostic remains last and unchanged, and the CLI still fails. This
+context establishes where diagnostic inspection stopped; it does not establish a
+producer/API repair or native acceptance. The generated Gradle task is unchanged.
 Both actual debug and release inputs remain required; there is no debug substitution
 or check skip. If the next CI run confirms absent release project outputs, their
 actual variant producers must run before inspection in a separate forward fix.

@@ -144,6 +144,149 @@ def mark(stage: str, **counts: int) -> None:
     _diagnostic_counts = counts
 
 
+def _gradle_inspection_command(error: subprocess.CalledProcessError) -> bool:
+    args = error.cmd
+    if (
+        type(error.returncode) is not int
+        or error.returncode == 0
+        or type(args) not in (list, tuple)
+        or len(args) != 7
+        or any(
+            type(arg) is not str
+            or not 0 < len(arg) <= 4096
+            or any(ord(char) < 32 or ord(char) == 127 for char in arg)
+            for arg in args
+        )
+        or not Path(args[0]).is_absolute()
+        or Path(args[0]).name != "gradlew"
+        or list(args[1:4]) != ["--no-daemon", "--console=plain", "-I"]
+        or not Path(args[4]).is_absolute()
+        or Path(args[4]).name != "inspection.gradle"
+        or args[5] != ":app:gsipRuntimeEvidence"
+        or not args[6].startswith("-PgsipEvidenceOutput=")
+        or not Path(args[6].removeprefix("-PgsipEvidenceOutput=")).is_absolute()
+    ):
+        return False
+    return True
+
+
+def _gradle_context_stream(raw: Any) -> tuple[str, str | None, int]:
+    """No coercion or partial inspection: match existing type/UTF-8/size/control guards."""
+    if raw is None:
+        return "MISSING", "", 0
+    if type(raw) not in (str, bytes):
+        return "TYPE_REJECTED", None, 0
+    if len(raw) > MAX_DIAGNOSTIC_BYTES:
+        return "SIZE_REJECTED", None, 0
+    try:
+        text = raw.decode("utf-8") if isinstance(raw, bytes) else raw
+        size = len(text.encode("utf-8"))
+    except UnicodeError:
+        return "UTF8_REJECTED", None, 0
+    if size > MAX_DIAGNOSTIC_BYTES:
+        return "SIZE_REJECTED", None, 0
+    if any((ord(char) < 32 and char not in "\n\r\t") or ord(char) == 127 for char in text):
+        return "CONTROL_REJECTED", None, 0
+    return (
+        ("BYTES_VALID" if isinstance(raw, bytes) else "TEXT_VALID"),
+        text.replace("\r\n", "\n"),
+        size,
+    )
+
+
+def _gradle_context_marker(text: str) -> str:
+    if "GSIP_RUNTIME_FAILURE" not in text:
+        return "ABSENT"
+    lines = [line for line in text.splitlines() if "GSIP_RUNTIME_FAILURE_V1|" in line]
+    if text.count("GSIP_RUNTIME_FAILURE") != 1 or len(lines) != 1:
+        return "INVALID"
+    parts = lines[0].split("|")
+    if (
+        len(parts) != 3
+        or parts[0] != "GSIP_RUNTIME_FAILURE_V1"
+        or parts[1] not in GRADLE_FAILURE_PHASES
+        or parts[2] not in GRADLE_FAILURE_CAUSES
+    ):
+        return "INVALID"
+    return "VALID"
+
+
+def _gradle_context_framing(text: str) -> tuple[str, str]:
+    """Classify public Gradle framing only; never return its opaque message values."""
+    single = text.count("FAILURE: Build failed with an exception.\n")
+    multiple = len(
+        re.findall(r"(?m)^FAILURE: Build completed with [2-9][0-9]{0,2} failures\.$", text)
+    )
+    if not single and not multiple:
+        return "ABSENT", "UNKNOWN"
+    chunks = text.split("* What went wrong:\n")[1:]
+    if not chunks or any("* Try:\n" not in chunk for chunk in chunks):
+        return "MALFORMED", "UNKNOWN"
+    structure = "MULTIPLE" if multiple or single > 1 or len(chunks) > 1 else "SINGLE"
+    labels = set()
+    for chunk in chunks:
+        section = chunk.split("* Try:\n", 1)[0].strip()
+        first = section.splitlines()[0] if section else ""
+        matched = False
+        for prefix, label in (
+            ("Could not compile initialization script ", "INIT_COMPILE"),
+            ("A problem occurred evaluating initialization script.", "INIT_EVALUATION"),
+            ("A problem occurred evaluating settings ", "SETTINGS_EVALUATION"),
+            ("Could not compile settings file ", "SETTINGS_COMPILE"),
+            ("Could not compile build file ", "PROJECT_COMPILE"),
+            ("A problem occurred evaluating root project ", "PROJECT_EVALUATION"),
+            ("A problem occurred evaluating project ", "PROJECT_EVALUATION"),
+            ("A problem occurred configuring root project ", "PROJECT_CONFIGURATION"),
+            ("A problem occurred configuring project ", "PROJECT_CONFIGURATION"),
+            ("Task 'gsipRuntimeEvidence' not found in project ':app'.", "TASK_SELECTION"),
+            ("Execution failed for task ':app:gsipRuntimeEvidence'.", "TASK_EXECUTION"),
+            ("Could not resolve all files for configuration ", "DEPENDENCY_RESOLUTION"),
+            ("Could not resolve all artifacts for configuration ", "DEPENDENCY_RESOLUTION"),
+        ):
+            if first.startswith(prefix):
+                labels.add(label)
+                matched = True
+        if not matched:
+            labels.add("UNKNOWN")
+    return structure, (
+        next(iter(labels)) if len(labels) == 1 else "AMBIGUOUS" if labels else "UNKNOWN"
+    )
+
+
+def gradle_failure_context(error: subprocess.CalledProcessError) -> str | None:
+    """Supplemental fixed-token origin only; never alters the four-field diagnostic."""
+    if (
+        _diagnostic_stage != "android-gradle-inspection"
+        or not isinstance(error, subprocess.CalledProcessError)
+        or not _gradle_inspection_command(error)
+    ):
+        return None
+    stdout, left, left_size = _gradle_context_stream(error.stdout)
+    stderr, right, right_size = _gradle_context_stream(error.stderr)
+    combined = "UNINSPECTED"
+    marker = structure = framing = "UNINSPECTED"
+    if left is not None and right is not None:
+        if left_size + right_size > MAX_DIAGNOSTIC_BYTES:
+            combined = "SIZE_REJECTED"
+        else:
+            combined = "WITHIN_BOUND"
+            text = left + "\n" + right
+            marker = _gradle_context_marker(text)
+            structure, framing = _gradle_context_framing(text)
+    return "|".join(
+        (
+            "GSIP_GRADLE_CONTEXT_V1",
+            "COMMAND_VALID",
+            stdout,
+            stderr,
+            combined,
+            marker,
+            structure,
+            framing,
+        )
+    )
+
+
 def gradle_failure_details(error: subprocess.CalledProcessError) -> tuple[str, str]:
     """Inspect bounded tool output in memory; return only an unambiguous fixed label."""
     args = error.cmd
@@ -2546,6 +2689,10 @@ def main(argv: list[str] | None = None) -> int:
         tarfile.TarError,
     ) as error:
         print("native-audit: evidence missing, invalid or unreviewed", file=sys.stderr)
+        if isinstance(error, subprocess.CalledProcessError):
+            context = gradle_failure_context(error)
+            if context is not None:
+                print(context, file=sys.stderr)
         print(
             "native-audit: diagnostic " + json.dumps(diagnostic(error), sort_keys=True),
             file=sys.stderr,
