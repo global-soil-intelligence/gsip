@@ -11,7 +11,7 @@ import sys
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Annotated, Literal, Self
+from typing import Annotated, Literal, NoReturn, Self
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -23,7 +23,9 @@ MAX_RECORD_BYTES = 2_000_000
 
 
 class StrictRecord(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, allow_inf_nan=False)
+    model_config = ConfigDict(
+        extra="forbid", frozen=True, allow_inf_nan=False, revalidate_instances="always"
+    )
 
 
 class Context(StrictRecord):
@@ -209,13 +211,22 @@ class PrivateLibrary:
         path = self._tombstone(node, sample)
         return path.exists() or path.is_symlink()
 
+    def _measurement_tombstone(self, measurement: UUID) -> Path:
+        return self.root / f"withdrawn-measurement-{measurement}"
+
+    def _measurement_withdrawn(self, measurement: UUID) -> bool:
+        path = self._measurement_tombstone(measurement)
+        return path.exists() or path.is_symlink()
+
     def _records(self) -> list[LibraryRecord]:
         result = []
         for path in sorted(self.root.glob("*.json")):
             record = parse_record(self._read(path))
             if path.name != f"{record.measurement_id}.json":
                 raise ValueError("record identity mismatch")
-            if not self._withdrawn(*record.sample_key):
+            if not self._withdrawn(*record.sample_key) and not self._measurement_withdrawn(
+                record.measurement_id
+            ):
                 result.append(record)
         return result
 
@@ -224,9 +235,14 @@ class PrivateLibrary:
             return self._records()
 
     def add(self, record: LibraryRecord) -> bool:
+        # Pydantic copies/construction can bypass validation, including on nested models.
+        # Revalidate before serialization, which otherwise warns with private field values.
+        record = LibraryRecord.model_validate(record)
         with self.locked():
             if self._withdrawn(*record.sample_key) or record.withdrawn:
                 raise ValueError("sample is withdrawn")
+            if self._measurement_withdrawn(record.measurement_id):
+                raise ValueError("measurement is withdrawn")
             data = encoded(record)
             if len(data) > MAX_RECORD_BYTES:
                 raise ValueError("record too large")
@@ -255,6 +271,12 @@ class PrivateLibrary:
             for item in self.root.glob("*.json"):
                 record = parse_record(self._read(item))
                 if record.sample_key == (node, sample):
+                    # Preserve only the opaque identity before deleting any record bytes.
+                    # A crash cannot free a measurement UUID for another sample's data.
+                    if not self._measurement_withdrawn(record.measurement_id):
+                        self._write(
+                            self._measurement_tombstone(record.measurement_id), b"withdrawn\n"
+                        )
                     item.unlink()
                     removed += 1
             self._sync()
@@ -284,10 +306,14 @@ def read_record(path: Path) -> LibraryRecord:
     return parse_record(data)
 
 
+class PrivateArgumentParser(argparse.ArgumentParser):
+    def error(self, message: str) -> NoReturn:
+        # argparse's default error includes supplied values, including malformed IDs.
+        self.exit(2, "Invalid private command arguments; operation stopped.\n")
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Private offline GSIP library; no upload or export"
-    )
+    parser = PrivateArgumentParser(description="Private offline GSIP library; no upload or export")
     parser.add_argument("--store", type=Path)
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("schema")
