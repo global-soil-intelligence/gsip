@@ -80,4 +80,9 @@ if [ "$status" = 0 ]; then
   python3 "$REPO/scripts/test-library-intake-concurrency.py" --native-psql \
     --database "$DB" --socket "$WORK" --port "$PORT" || status=1
 fi
+# Separate photo privacy races preserve the existing library checks and their fixture contract.
+if [ "$status" = 0 ]; then
+  python3 "$REPO/scripts/test-photo-privacy-concurrency.py" --native-psql \
+    --database "$DB" --socket "$WORK" --port "$PORT" || status=1
+fi
 exit "$status"
