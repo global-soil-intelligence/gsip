@@ -174,7 +174,34 @@ or ambiguous; no message, path, property, URL or stream fragment is copied. Comm
 outside the exact inspection scope emit no supplemental line. The original
 four-field diagnostic remains last and unchanged, and the CLI still fails. This
 context establishes where diagnostic inspection stopped; it does not establish a
-producer/API repair or native acceptance. The generated Gradle task is unchanged.
+producer/API repair or native acceptance. This context adds no graph acceptance.
+An independently bounded private fault channel now survives oversized captured stderr
+without inspecting it or changing its 65,536-byte refusal. Python creates a fresh
+private directory beside the temporary graph output. The generated task writes only
+three fixed fields (`schema`, `phase`, `cause`) into an exclusively created numbered
+receipt; it never overwrites an existing file. Python accepts exactly one 256-byte-or-
+smaller receipt, with the exact schema and whitelisted phase/cause strings. Duplicate
+keys, unknown fields, foreign names, multiple receipts, unsafe links, nonregular files
+and oversized or malformed contents remain `UNKNOWN`. No raw stream is persisted.
+
+The CLI emits only `GSIP_FIXED_FAULT_V1|VALID|<phase>|<cause>` or
+`GSIP_FIXED_FAULT_V1|UNKNOWN`, tied to the exact original failed inspection command,
+exception identity, nonzero exit status and inspection stage. Its lease resets at CLI
+and inspection entry. A different exception, command, status or stage cannot reuse
+an earlier receipt. Commands outside the exact inspection scope emit no fault line.
+The existing context and four-field diagnostic remain unchanged, and the original
+Gradle exception is rethrown; a receipt supplies no audit acceptance.
+
+The existing `projectsEvaluated` callback also records `TASK_SETUP` before rethrowing
+its original setup exception. Settings or initialization/compilation failures before
+that callback legitimately have no receipt and remain `UNKNOWN`. This uses public
+Gradle lifecycle and Java file APIs only within Python-emitted temporary build
+configuration, with its exact task hash retained by the audit. It adds no shipped
+native source or dependency. Offline Gradle 8.14.3/Java 21 synthetic controls verified
+byte-identical successful graphs, preserved tool/CLI failure statuses for oversized
+task/setup output, and explicitly unknown early settings failures. They do not identify
+the hosted Android failure's underlying cause or establish a native product build.
+
 Both actual debug and release inputs remain required; there is no debug substitution
 or check skip. If the next CI run confirms absent release project outputs, their
 actual variant producers must run before inspection in a separate forward fix.

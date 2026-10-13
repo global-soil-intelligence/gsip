@@ -106,6 +106,10 @@ DIAGNOSTIC_COUNTS = {
 _diagnostic_stage = "start"
 _diagnostic_counts: dict[str, int] = {}
 MAX_DIAGNOSTIC_BYTES = 65_536
+MAX_FIXED_FAULT_BYTES = 256
+_fixed_fault_lease: tuple[
+    subprocess.CalledProcessError, tuple[str, ...], int, tuple[str, str] | None
+] | None = None
 GRADLE_FAILURE_PHASES = {
     "DEBUG_CONFIGURATION": "android-gradle-debug-configuration",
     "DEBUG_RESOLUTION": "android-gradle-debug-resolution",
@@ -169,6 +173,65 @@ def _gradle_inspection_command(error: subprocess.CalledProcessError) -> bool:
         return False
     return True
 
+
+
+def reset_fixed_fault() -> None:
+    global _fixed_fault_lease
+    _fixed_fault_lease = None
+
+
+def read_fixed_fault(directory: Path, root: Path) -> tuple[str, str] | None:
+    """Only a single fixed, descriptor-checked receipt; never inspect tool streams."""
+    try:
+        contained(directory, (root,))
+        with os.scandir(directory) as entries:
+            first = next(entries, None)
+            if first is None or next(entries, None) is not None or first.name != "fault-0.json":
+                return None
+        payload = decoded(read(directory / "fault-0.json", (root,), MAX_FIXED_FAULT_BYTES))
+        if (
+            set(payload) != {"schema", "phase", "cause"}
+            or payload["schema"] != "gsip-fixed-fault-v1"
+            or type(payload["phase"]) is not str
+            or payload["phase"] not in {*GRADLE_FAILURE_PHASES, "TASK_SETUP"}
+            or type(payload["cause"]) is not str
+            or payload["cause"] not in GRADLE_FAILURE_CAUSES
+        ):
+            return None
+        return payload["phase"], payload["cause"]
+    except (OSError, ValueError, TypeError, KeyError, RecursionError):
+        return None
+
+
+def lease_fixed_fault(
+    error: subprocess.CalledProcessError, command: list[str], directory: Path, root: Path
+) -> None:
+    global _fixed_fault_lease
+    reset_fixed_fault()
+    if (
+        _diagnostic_stage == "android-gradle-inspection"
+        and _gradle_inspection_command(error)
+        and tuple(error.cmd) == tuple(command)
+    ):
+        _fixed_fault_lease = (
+            error, tuple(command), error.returncode, read_fixed_fault(directory, root)
+        )
+
+
+def fixed_fault_diagnostic(error: subprocess.CalledProcessError) -> str | None:
+    if _diagnostic_stage != "android-gradle-inspection" or not _gradle_inspection_command(error):
+        return None
+    lease = _fixed_fault_lease
+    if (
+        lease is None
+        or lease[0] is not error
+        or lease[1] != tuple(error.cmd)
+        or lease[2] != error.returncode
+        or lease[3] is None
+    ):
+        return "GSIP_FIXED_FAULT_V1|UNKNOWN"
+    phase, cause = lease[3]
+    return f"GSIP_FIXED_FAULT_V1|VALID|{phase}|{cause}"
 
 def _gradle_context_stream(raw: Any) -> tuple[str, str | None, int]:
     """No coercion or partial inspection: match existing type/UTF-8/size/control guards."""
@@ -778,6 +841,7 @@ def npm_evidence(repo: Path, names: tuple[str, ...]) -> list[dict[str, Any]]:
 GRADLE_TASK = """import groovy.json.JsonOutput
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+def gsipFaultSequence = new java.util.concurrent.atomic.AtomicInteger(0)
 def gsipEmitFault = { phase, failure ->
     def safePhase = phase in ['DEBUG_CONFIGURATION','DEBUG_RESOLUTION','DEBUG_COMPONENTS',
         'DEBUG_ARTIFACTS','RELEASE_CONFIGURATION','RELEASE_RESOLUTION','RELEASE_COMPONENTS',
@@ -813,8 +877,17 @@ def gsipEmitFault = { phase, failure ->
         if (current == null && labels.size() == 1) { cause = labels.iterator().next() }
     } catch (Throwable ignored) { cause = 'UNKNOWN' }
     System.err.println('GSIP_RUNTIME_FAILURE_V1|' + safePhase + '|' + cause)
+    def receiptPhase = phase == 'TASK_SETUP' ? 'TASK_SETUP' : safePhase
+    def directory = new File(gradle.rootProject.findProperty('gsipEvidenceOutput').toString()
+        + '.faults')
+    def receipt = new File(directory, 'fault-' + gsipFaultSequence.getAndIncrement() + '.json')
+    def payload = JsonOutput.toJson([schema:'gsip-fixed-fault-v1',
+        phase:receiptPhase,cause:cause]).getBytes('UTF-8')
+    java.nio.file.Files.write(receipt.toPath(), payload,
+        java.nio.file.StandardOpenOption.CREATE_NEW, java.nio.file.StandardOpenOption.WRITE)
 }
 gradle.projectsEvaluated {
+    try {
     def app = gradle.rootProject.project(':app')
     app.tasks.register('gsipRuntimeEvidence') {
         doLast {
@@ -860,6 +933,10 @@ gradle.projectsEvaluated {
                 throw failure
             }
         }
+    }
+    } catch (Throwable failure) {
+        try { gsipEmitFault('TASK_SETUP', failure) } catch (Throwable ignored) {}
+        throw failure
     }
 }
 """
@@ -1014,6 +1091,7 @@ def runtime_evidence(
 
 
 def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> None:
+    reset_fixed_fault()
     mark("android-dependency-trees")
     for configuration in ("debugRuntimeClasspath", "releaseRuntimeClasspath"):
         text = run(
@@ -1046,19 +1124,24 @@ def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> N
         temporary = Path(directory)
         task, graph = temporary / "inspection.gradle", temporary / "resolved.json"
         task.write_text(GRADLE_TASK)
+        faults = graph.with_name(graph.name + ".faults")
+        faults.mkdir(mode=0o700)
+        reset_fixed_fault()
         mark("android-gradle-inspection")
-        run(
-            [
-                str(repo / "apps/capture-pwa/android/gradlew"),
-                "--no-daemon",
-                "--console=plain",
-                "-I",
-                str(task),
-                ":app:gsipRuntimeEvidence",
-                f"-PgsipEvidenceOutput={graph}",
-            ],
-            repo / "apps/capture-pwa/android",
-        )
+        command = [
+            str(repo / "apps/capture-pwa/android/gradlew"),
+            "--no-daemon",
+            "--console=plain",
+            "-I",
+            str(task),
+            ":app:gsipRuntimeEvidence",
+            f"-PgsipEvidenceOutput={graph}",
+        ]
+        try:
+            run(command, repo / "apps/capture-pwa/android")
+        except subprocess.CalledProcessError as error:
+            lease_fixed_fault(error, command, faults, temporary)
+            raise
         raw = read(graph, (temporary,))
         result = runtime_evidence(decoded(raw), repo, cache, True)
     mark("android-source-bindings")
@@ -2621,6 +2704,7 @@ def write(path: Path, value: dict[str, Any]) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    reset_fixed_fault()
     mark("start")
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="action", required=True)
@@ -2693,10 +2777,14 @@ def main(argv: list[str] | None = None) -> int:
             context = gradle_failure_context(error)
             if context is not None:
                 print(context, file=sys.stderr)
+            fault = fixed_fault_diagnostic(error)
+            if fault is not None:
+                print(fault, file=sys.stderr)
         print(
             "native-audit: diagnostic " + json.dumps(diagnostic(error), sort_keys=True),
             file=sys.stderr,
         )
+        reset_fixed_fault()
         return 1
 
 
