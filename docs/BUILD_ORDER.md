@@ -1,12 +1,12 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
-**Version:** 5.0 proposed — 2026-10-12 (SPEC §16)
-**Baseline:** v3 plus the v4 amendment merged in #38. Library implementation preparation is authorized by Justin; separate PR review/merge and all production gates remain required.
+**Version:** 6.0 proposed — 2026-10-12 (SPEC §16)
+**Baseline:** v3 plus the v4 amendment merged in #38 and the v5 library foundation merged under Justin's 2026-10-12 owner authorization. The LIB-4A/4B/4C contract is proposed; implementation preparation is authorized, with separate PR review/merge and all production gates required.
 **Builder:** Codex, acting for Justin Hart as human of record.
 **Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) against the §5 review gates; findings and resolutions are posted to the PR. Justin Hart provides the final product-owner go/no-go. On 2026-10-12 he approved an owner exception: the extra non-author GitHub approval is no longer required for this owner-operated repository. Independent adversarial review and green CI remain required; an agent never submits an approving review or certifies the human DCO.
 **Product owner:** Justin Hart
-**Governing document:** `docs/SPEC.md` (v5 proposal; existing launch gates preserved). If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
+**Governing document:** `docs/SPEC.md` (merged v5 foundation and proposed v6 private intake; existing launch gates preserved). If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
 
 ---
 
@@ -297,7 +297,7 @@ Acceptance criteria:
 
 WP-AGENT-2 delegated capture for assistants (scoped tokens, consent screen, path-bound upload URLs) · WP-APP-2 store release of the phone app (deep-link e-mail sign-in, icons, signing and store listings; `docs/APP_STORE.md`) · WP-7 QA gate model (slots into the WP-4b/6b interface) · WP-8 estimator v0 · WP-9 nightly retrain and model cards · WP-10 estimate API · WP-11 gold-label bulk ingestion and gold kits · WP-12 fused correction and Most Wanted layers with information-gain credit · WP-13 SoilGrids file sampler replacing the REST dependency · WP-14 silver-label protocols · WP-AGENT-3 verifier task API with I13 consensus · WP-AGENT-4 evaluation service (I15) · WP-DATA-1 Parquet photo shards, Croissant metadata and PROV provenance · WP-OPS-1 event-driven worker queue.
 
-### Library-first implementation sequence (v5, SPEC §16)
+### Library-first implementation sequence (v5 foundation; proposed v6 intake, SPEC §16)
 
 The spectral library is the primary asset. The existing capture, QA, rights and provenance infrastructure remains the collection foundation; priors and the map are downstream context. Do not train an estimator on unpaired imagery and imply measured spectra or biological ground truth.
 
@@ -306,14 +306,42 @@ The spectral library is the primary asset. The existing capture, QA, rights and 
 | **WP-LIB-1** | Private sample/measurement contract and runnable local node store | Strict versioned validation; RGB distinct from reflectance; dimensions/units/calibration/source hashes; immutable idempotent imports; conflicting UUID rejection; private filesystem; sample-wide tombstones; generic logs; synthetic tests. No credentials, network or public release.                                                                                         |
 | **WP-LIB-2** | Smartphone-photo optical extraction                               | Sanitization, orientation and sRGB conversion reuse; detected card excluded with margin; mean/dispersion/pixel count/source hash; no card is explicit unknown and all outputs uncalibrated; reject insufficient soil region; synthetic fixtures prove masking and deterministic output. Depends on LIB-1. Offline staged utility only while WP-6f remains gated.                |
 | **WP-LIB-3** | Paired dataset and reconstruction baseline                        | Same-sample RGB↔instrument pairing, aligned wavelength grids; sample-level disjoint partitions; rights/QA/holdout propagation; field vs synthetic separation; deterministic baseline and reproducibility receipts; honest development errors only. No public predictions, publication or hosted retraining. Depends on LIB-1/2; meaningful field evaluation awaits paired data. |
-| **WP-LIB-4** | Phone + hosted private library intake                             | Offline sample IDs/context, attachment/reference UX, grant and terms checks, migration/RLS, ownership, server-derived provenance, digest-bound pairing, withdrawal cascades, queue/backups and holdout tests. Specify exact hosted contract before implementation; no deploy without go.                                                                                        |
+| **WP-LIB-4A** | Shared caller contract and instrument parser | `gsip-library-intake-v1` strict envelope and bounded declaration JSON; UUID/context/band/unit validation; reject local rights/QA/holdout fields, unknown/duplicate fields and unsupported files. Shared synthetic TS/Python conformance corpus. No network, app activation or schema change. Depends on LIB-1/2/3 and reviewed v6 specification. |
+| **WP-LIB-4B** | Additive private hosted intake | Service-owned private tables, caller-bound invoker RPC, independent closed gate, immutable idempotence/digests, owner/grant/actor checks, quota, withdrawal/tombstones and monotonic sample holdout. Existing-data/role/race tests; unchanged rights-worker RPC signatures. Receipts are stored private declarations only; original source and physical pairing stay unverified. Depends on LIB-4A. |
+| **WP-LIB-4C** | Compatible phone sample form and queue | Optional sample depth/condition and strict JSON attachment; restart-safe draft IDs; staged/lost-response retry, legacy queues, original-account binding, discard/withdraw clearing, native backup coverage and false-by-default build flag. Capability absence holds safely without changing the legacy capture read or creating an account. Synthetic end-to-end unverified receipt and deletion test. Depends on LIB-4A/4B. |
 | **WP-LIB-5** | Federated node exchange                                           | Specification first: authenticated scoped grants, node identities, cross-node physical-sample deduplication, rights/license verification, revocation propagation, rate limits and private lineage. Local nodes do not yet participate in canonical ingestion.                                                                                                                   |
 | **WP-LIB-6** | Scientific reference adapters and evaluation                      | Lab/biological assay vocabulary, licensed instrument adapters, paired field pilot, sealed spatial/device holdout, uncertainty calibration and model card. Device spectral hardware is optional; no closed SDK without approval. Requires real verified reference data and expert review.                                                                                        |
 | **WP-LIB-7** | Eligible library releases and map integration                     | Fingerprinting/linkage privacy evaluation, k-anonymity, consent/withdrawal checks, photo gate, licenses, dataset card and approved release pipeline; map advertises measurement basis and uncertainty. No individual spectral release by default.                                                                                                                               |
 
-New dependencies: none for LIB-1/2/3; use already locked Pydantic, NumPy/OpenCV and Pillow plus Python standard library. Instrument/model/detector dependencies in later packages require license (including weights), maintenance and payload-size audits before adoption. The linear baseline is research plumbing; it does not supersede WP-8's estimator/evaluation gates. WP-11's gold-label ingestion and WP-DATA-1 join the library contract rather than a competing identity system.
+New dependencies: none for LIB-1/2/3 or the proposed LIB-4A/4B/4C path; use the existing locked TypeScript validation stack, Pydantic, NumPy/OpenCV and Pillow plus standard libraries/Postgres. Instrument/model/detector dependencies in later packages require license (including weights), maintenance and payload-size audits before adoption. The linear baseline is research plumbing; it does not supersede WP-8's estimator/evaluation gates. WP-11's gold-label ingestion and WP-DATA-1 join the library contract rather than a competing identity system.
 
-Prepare `docs/spec-v5` → WP-LIB-1 → WP-LIB-2 → WP-LIB-3 as separate stacked PRs. LIB-4/5/6/7 need their detailed follow-up specifications and scientific/privacy prerequisites; do not silently activate them from this outline. No merge, deployment, worker dispatch, capture opening or release is authorized by this preparation order.
+The v5 foundation sequence is `docs/spec-v5` → WP-LIB-1 → WP-LIB-2 → WP-LIB-3. The next sequence is `docs/spec-v6` → `wp-lib-4a-intake-contract` → `wp-lib-4b-private-intake` → `wp-lib-4c-phone-intake`, as separate PRs in that order. Implementation can be prepared after the specification commit, with no merge before its prerequisite and independent review/green CI. Execute only owner-authorized merges; this order supplies no deployment, worker dispatch, capture opening or release authority. LIB-5/6/7 still need their separate scientific/privacy specifications and prerequisites.
+
+**WP-LIB-4A acceptance (SPEC §16.5):**
+
+- [ ] Strict envelope/declaration parser accepts only the specified IDs, version, context and optional instrument payload; all local verified-state, label, URL, timestamp and arbitrary-file fields are refused.
+- [ ] Reject duplicate/unknown keys, invalid UUIDs, non-finite values, malformed/misaligned/non-increasing bands, unsupported units and input above 2,000,000 UTF-8 bytes before full parsing.
+- [ ] Shared valid/invalid synthetic corpus proves TS parser and Python instrument-validator agreement; ordinary local `gsip-library-v1` files are not silently promoted into hosted requests.
+- [ ] No dependencies, network, private data, app activation or database changes; no weakening of LIB-1/2/3's field-training/photo gates.
+
+**WP-LIB-4B acceptance (SPEC §16.6–16.7):**
+
+- [ ] Fresh additive migration creates RLS-protected, service-owned private tables, durable tombstones and an independent default-closed gate; no exposed private schema or direct client table privilege.
+- [ ] `library_intake_capabilities()` returns exactly `{version: 'gsip-library-intake-v1', available: boolean}`; `record_library_intake(p_request jsonb)` and `my_library_intake_receipt(p_intake_id uuid)` return only the specified safe receipt. Public wrappers are invoker with definition-time bound private dispatch and narrowly granted execution.
+- [ ] pgTAP covers anon, owner, another contributor and service roles; server structural/bound/quota validation; live auth/actor/grant/submission/photo ownership; forbidden authority fields; absent/closed gates; identical retry and conflicting UUID/context/source requests.
+- [ ] Instrument source/calibration and physical-pair verification stay pending; no positive verification API, field RGB extraction, labels/adapters, new generic Storage, public release or training path.
+- [ ] Rights tests prove shared-lock serialization against intake/withdrawal, immediate invalidation, tombstones before payload erasure, no revival, monotonic sample holdout and no owner-visible seal/label/evidence leakage.
+- [ ] Existing-data migration tests preserve legacy rows, grants and function signatures, keep capture/auth/gates closed, create no acceptance backfill and prove an older rights worker cannot complete a request while library payload remains.
+- [ ] Existing worker/export/public-reader suites stay green; library fields never reach agent APIs, export, map aggregates or ordinary model preparation.
+
+**WP-LIB-4C acceptance (SPEC §16.8):**
+
+- [ ] Optional form accepts explicit depth/condition and one strict JSON instrument declaration; private IDs/metadata/bytes survive draft restart and queue upgrade without inventing library records for legacy observations.
+- [ ] Tests prove exact retries after partial upload or lost response, capability absence/unsupported service as a non-consuming hold, terminal conflict handling, withdrawal rejection and no premature queue removal.
+- [ ] Account-switch tests prove immutable namespace/owner binding, new namespace for new-account captures and no silent reassignment through bulk held-record release.
+- [ ] Queue/draft clear and withdrawal/account deletion erase new private bytes, with generation/cross-tab race tests and compiled native backup assertions.
+- [ ] `VITE_LIBRARY_INTAKE_LIVE=false` default preserves existing UI and sends no new RPC; capability probing does not change the legacy gate query or trigger anonymous sign-in. Actual intake also requires compatible capabilities, server library gate and existing capture gates.
+- [ ] Synthetic end-to-end capture → queued sample → owner-private unverified receipt → exact retry → withdrawal/deletion succeeds; the test artifact stays local, and the actual app/Pages artifact is rebuilt with both build flags false.
 
 ## 5. Review gates (checked on every PR)
 
@@ -357,6 +385,8 @@ GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function 
 Historical v4.0 review/merge sequence (#38 and WP-APP-2A have merged; remaining implementation and calibration gates still apply): WP-APP-1 → `docs/spec-v4` (Justin approval/merge) → WP-APP-2A → WP-APP-2B. Owner-authorized account-free WP-APP-2A preparation can start after the specification commit exists, while its PR remains stacked and awaits the merge sequence. WP-6f may be a separate branch after the approved specification, with no dependency on notifications, but stays blocked until that specification approval and its model/license/calibration gates. Retarget successors after Justin merges; merge main forward to resolve conflicts, never rebase or force-push the reviewed stack. §11 launch and production-command gates remain independent of this sequence.
 
 ## 8. Changelog
+
+- **v6.0 proposed (2026-10-12):** splits private intake into LIB-4A caller contract/parser, LIB-4B additive hosted rights/holdout enforcement and LIB-4C compatible phone queue integration. Registers exact branches/acceptance and keeps original source-file/physical verification, field training, federation, production activation and publication outside these packages.
 
 - **v5.0 proposed (2026-10-12):** library-first mission and seven explicit work packages, executable private foundations before hosted integration, federation and evaluated models. Existing launch/owner gates retained.
 
