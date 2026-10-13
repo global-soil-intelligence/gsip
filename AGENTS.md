@@ -108,10 +108,11 @@ needed for the corresponding checks. State missing tools and rely on CI for thos
 Never report a check as passing unless it ran. Preserve command outcomes, run links and
 artifact evidence; a local pass does not prove a deployment or production health.
 
-The prescribed Playwright command uses a local synthetic/mock capture-live test build.
-Keep that test output local: never upload or publish it. Rebuild the actual Pages deployment
-artifact with `VITE_CAPTURE_LIVE=false` after browser verification. This test harness does not
-authorize production capture or anonymous sign-in.
+The prescribed Playwright command builds Pages with both activation flags closed, then serves
+a separate synthetic capture fixture from a temporary directory on loopback only. That fixture
+uses reserved `.test` endpoints and is never copied into `_site` or a deployment artifact.
+Keep the fixture local: never upload or publish it. The harness refuses server reuse and cleans
+temporary files when it exits. It does not authorize production capture or anonymous sign-in.
 
 ## Production is gated, one step at a time
 
