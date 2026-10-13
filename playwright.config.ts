@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: true,
   use: { baseURL: 'http://127.0.0.1:4173', trace: 'retain-on-failure' },
   webServer: {
-    command: 'uv run python -m scripts.e2e_server',
+    command: 'uv run python tests/e2e_server.py',
     reuseExistingServer: false,
     url: 'http://127.0.0.1:4173/gsip/',
   },

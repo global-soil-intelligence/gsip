@@ -6,9 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+import e2e_server
 import pytest
-
-from scripts import e2e_server
 
 
 def test_builds_pages_closed_and_mock_capture_only_in_temporary_output(
@@ -30,8 +29,8 @@ def test_builds_pages_closed_and_mock_capture_only_in_temporary_output(
             json.dumps({"capture_live": len(calls) == 2, "library_intake_live": False})
         )
 
-    monkeypatch.setattr("scripts.e2e_server.subprocess.run", run)
-    monkeypatch.setattr("scripts.e2e_server.which", lambda name: "/synthetic/bin/pnpm")
+    monkeypatch.setattr("e2e_server.subprocess.run", run)
+    monkeypatch.setattr("e2e_server.which", lambda name: "/synthetic/bin/pnpm")
     e2e_server.build_fixtures(root, capture)
     assert calls[0][0] == ["/synthetic/bin/pnpm", "build:pages"]
     assert calls[0][1]["env"]["VITE_CAPTURE_LIVE"] == "false"
@@ -62,8 +61,8 @@ def test_refuses_open_pages_before_mock_build(
             json.dumps({"capture_live": True, "library_intake_live": False})
         )
 
-    monkeypatch.setattr("scripts.e2e_server.subprocess.run", run)
-    monkeypatch.setattr("scripts.e2e_server.which", lambda name: "/synthetic/bin/pnpm")
+    monkeypatch.setattr("e2e_server.subprocess.run", run)
+    monkeypatch.setattr("e2e_server.which", lambda name: "/synthetic/bin/pnpm")
     with pytest.raises(ValueError, match="Pages activation"):
         e2e_server.build_fixtures(tmp_path, tmp_path / "unused")
     assert len(calls) == 1
@@ -114,6 +113,6 @@ def test_main_cleans_fixture_and_binds_loopback(
 
 def test_playwright_uses_isolated_server_and_disallows_server_reuse() -> None:
     config = (e2e_server.ROOT / "playwright.config.ts").read_text()
-    assert "uv run python -m scripts.e2e_server" in config
+    assert "uv run python tests/e2e_server.py" in config
     assert "reuseExistingServer: false" in config
     assert "VITE_CAPTURE_LIVE: 'true'" not in config
