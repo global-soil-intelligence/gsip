@@ -142,3 +142,17 @@ def test_exemptions_are_only_for_hosts_the_code_mentions() -> None:
     mentioned = code_hosts()
     stale = sorted(set(NOT_CONTACTED) - set(mentioned) - {"localhost"})
     assert not stale, f"remove exemptions the code no longer needs: {stale}"
+
+
+def test_the_approved_tile_host_has_a_specific_same_origin_privacy_entry() -> None:
+    rows = [
+        line.split("|")[1:-1]
+        for line in PRIVACY.read_text(encoding="utf-8").splitlines()
+        if line.startswith("| Map tile host")
+    ]
+    assert len(rows) == 1, "the map tile host must have exactly one disclosed service entry"
+    service, role, received, hosts = (cell.strip() for cell in rows[0])
+    assert service == "Map tile host: GitHub Pages"
+    assert "same origin" in role
+    assert "IP addresses" in received
+    assert {"*.github.io", "globalsoilintelligence.com"} <= set(re.findall(r"`([^`]+)`", hosts))
