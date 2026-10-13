@@ -90,6 +90,8 @@ def test_android_requests_location_while_in_use_and_removes_the_rest() -> None:
         "android.permission.INTERNET",
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
     }
     assert permissions.android_permission_problems(granted) == []
     # Any library that declares these loses them in the merged manifest, the camera included:
@@ -122,6 +124,8 @@ permission: com.globalsoilintelligence.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISS
 uses-permission: name='android.permission.INTERNET'
 uses-permission: name='android.permission.ACCESS_COARSE_LOCATION'
 uses-permission: name='android.permission.ACCESS_FINE_LOCATION'
+uses-permission: name='android.permission.POST_NOTIFICATIONS'
+uses-permission: name='android.permission.RECEIVE_BOOT_COMPLETED'
 uses-permission: name='android.permission.ACCESS_NETWORK_STATE'
 uses-permission: name='com.globalsoilintelligence.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
 """
@@ -197,3 +201,51 @@ def test_the_android_app_ships_no_closed_sdk(tmp_path: Path) -> None:
     # An empty or failed Gradle run is not a pass.
     tree.write_text("", encoding="utf-8")
     assert permissions.main(["app_permissions.py", "check-dependencies", str(tree)]) == 2
+
+
+@pytest.mark.parametrize(
+    "tag", ["uses-permission", "uses-permission-sdk-23", "uses-permission-sdk-31"]
+)
+@pytest.mark.parametrize("permission", ["SCHEDULE_EXACT_ALARM", "USE_EXACT_ALARM", "WAKE_LOCK"])
+def test_app2b_removes_and_rejects_exact_alarm_and_wake_permissions(
+    tag: str, permission: str
+) -> None:
+    name = f"android.permission.{permission}"
+    manifest = template_manifest().replace(
+        "</manifest>", f'<{tag} android:name="{name}" /></manifest>'
+    )
+    # Manifest checks catch SDK-qualified declarations too, before applying removals.
+    assert name in permissions.manifest_permissions(manifest)
+    assert any(
+        name in problem
+        for problem in permissions.android_permission_problems(
+            permissions.manifest_permissions(manifest)
+        )
+    )
+    applied = permissions.apply_android(manifest)
+    assert name not in permissions.manifest_permissions(applied)
+    assert f'<{tag} android:name="{name}" tools:node="remove"' in applied
+    assert permissions.android_permission_problems(permissions.manifest_permissions(applied)) == []
+    assert permissions.apply_android(applied) == applied
+    # The compiled APK check independently rejects it even if manifest merging changes.
+    dump = APK_DUMP + f"{tag}: name='{name}'\n"
+    assert any(
+        name in problem
+        for problem in permissions.android_permission_problems(permissions.apk_permissions(dump))
+    )
+
+
+def test_app2b_permission_additions_are_exact_and_old_rejections_remain() -> None:
+    approved = set(permissions.ANDROID_REQUESTED)
+    assert approved == {
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+    }
+    assert permissions.android_permission_problems(approved) == []
+    for name in permissions.ANDROID_SENSITIVE - approved:
+        assert permissions.android_permission_problems(approved | {name})
+    assert permissions.closed_dependencies(
+        "+--- com.google.android.gms:play-services-location:21.3.0"
+    )

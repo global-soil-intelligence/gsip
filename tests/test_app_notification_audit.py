@@ -1,0 +1,1316 @@
+"""APP-2B evidence refuses incomplete native graphs, licenses and comparisons."""
+
+from __future__ import annotations
+
+import copy
+import json
+import os
+import platform
+import zipfile
+from pathlib import Path
+from typing import Any, cast
+
+import pytest
+
+from scripts import app_build
+from scripts import app_notification_audit as audit
+
+COORD = ("org.example", "example-runtime", "1.2.3")
+ROOT = Path(__file__).parents[1]
+
+
+def pom(
+    coord: tuple[str, str, str] = COORD,
+    license_name: str | None = "Apache License, Version 2.0",
+    parent: tuple[str, str, str] | None = None,
+) -> bytes:
+    licenses = (
+        ""
+        if license_name is None
+        else (
+            f"<licenses><license><name>{license_name}</name>"
+            "<url>https://www.apache.org/licenses/LICENSE-2.0</url></license></licenses>"
+        )
+    )
+    inherited = (
+        ""
+        if parent is None
+        else (
+            f"<parent><groupId>{parent[0]}</groupId><artifactId>{parent[1]}</artifactId>"
+            f"<version>{parent[2]}</version></parent>"
+        )
+    )
+    return (
+        f"<project>{inherited}<groupId>{coord[0]}</groupId>"
+        f"<artifactId>{coord[1]}</artifactId><version>{coord[2]}</version>"
+        f"{licenses}</project>"
+    ).encode()
+
+
+def cached(cache: Path, coord: tuple[str, str, str], data: bytes) -> Path:
+    path = (
+        cache
+        / "modules-2/files-2.1"
+        / coord[0]
+        / coord[1]
+        / coord[2]
+        / "synthetic-hash"
+        / f"{coord[1]}-{coord[2]}.pom"
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(data)
+    return path
+
+
+def zipped(
+    path: Path, payload: bytes = b"synthetic class bytes", activation: bool | None = None
+) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr("classes.dex", payload)
+        archive.writestr("META-INF/LICENSE", b"Synthetic Apache-2.0 notice")
+        if activation is not None:
+            archive.writestr(
+                "assets/public/gsip-activation.json",
+                json.dumps({"capture_live": activation, "library_intake_live": False}),
+            )
+
+
+@pytest.fixture
+def graph(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> tuple[dict[str, Any], Path, Path, Path]:
+    repo, cache = tmp_path / "repo", tmp_path / "cache"
+    repo.mkdir()
+    cached(cache, COORD, pom())
+    artifact = (
+        cache / "modules-2/files-2.1" / COORD[0] / COORD[1] / COORD[2] / "binary-hash/runtime.jar"
+    )
+    zipped(artifact)
+    view = {
+        "name": "debugRuntimeClasspath",
+        "modules": [list(COORD)],
+        "projects": [":app"],
+        "artifacts": [{"kind": "module", "coordinate": list(COORD), "file": str(artifact)}],
+    }
+    release = copy.deepcopy(view)
+    release["name"] = "releaseRuntimeClasspath"
+    monkeypatch.setattr(audit, "npm_evidence", lambda repo, names: [])
+    monkeypatch.setattr(
+        audit,
+        "public_bytes",
+        lambda *args, **kwargs: pytest.fail("fixture audit must never fetch a network resource"),
+    )
+    return {"views": [view, release]}, repo, cache, artifact
+
+
+def test_exact_graph_retains_both_selected_license_and_binary_evidence(
+    graph: tuple[dict[str, Any], Path, Path, Path],
+) -> None:
+    data, repo, cache, artifact = graph
+    result = audit.runtime_evidence(data, repo, cache, False)
+    assert {view["configuration"] for view in result["runtime_views"]} == {
+        "debugRuntimeClasspath",
+        "releaseRuntimeClasspath",
+    }
+    runtime = result["runtime_views"][0]
+    assert (
+        runtime["selected_modules"][0]["pom_license_evidence"][0]["licenses"][0]["spdx"]
+        == "Apache-2.0"
+    )
+    assert runtime["resolved_runtime_inputs"][0]["sha256"] == audit.sha(artifact.read_bytes())
+    assert runtime["resolved_runtime_inputs"][0]["bytes"] == artifact.stat().st_size
+    assert (
+        runtime["resolved_runtime_inputs"][0]["embedded_license_notice_files"][0]["entry"]
+        == "META-INF/LICENSE"
+    )
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "missing_release",
+        "duplicate_view",
+        "empty_modules",
+        "unresolved_module",
+        "outside_cache",
+        "closed_sdk",
+        "unknown_project",
+        "unknown_binary",
+    ],
+)
+def test_graph_refuses_missing_or_unreviewed_runtime(
+    graph: tuple[dict[str, Any], Path, Path, Path], defect: str, tmp_path: Path
+) -> None:
+    data, repo, cache, artifact = graph
+    if defect == "missing_release":
+        data["views"].pop()
+    elif defect == "duplicate_view":
+        data["views"][1]["name"] = "debugRuntimeClasspath"
+    elif defect == "empty_modules":
+        data["views"][0]["modules"] = []
+    elif defect == "unresolved_module":
+        data["views"][0]["artifacts"][0]["coordinate"][2] = "99.0"
+    elif defect == "outside_cache":
+        outside = tmp_path / "other.jar"
+        zipped(outside)
+        data["views"][0]["artifacts"][0]["file"] = str(outside)
+    elif defect == "closed_sdk":
+        closed = ("com.google.android.gms", "play-services-location", "1.0")
+        cached(cache, closed, pom(closed))
+        closed_file = (
+            cache
+            / "modules-2/files-2.1"
+            / closed[0]
+            / closed[1]
+            / closed[2]
+            / "binary-hash/closed.jar"
+        )
+        zipped(closed_file)
+        data["views"][0]["modules"] = [list(closed)]
+        data["views"][0]["artifacts"] = [
+            {"kind": "module", "coordinate": list(closed), "file": str(closed_file)}
+        ]
+    elif defect == "unknown_project":
+        data["views"][0]["projects"].append(":unreviewed-proprietary-wrapper")
+    elif defect == "unknown_binary":
+        renamed = artifact.with_suffix(".so")
+        artifact.rename(renamed)
+        data["views"][0]["artifacts"][0]["file"] = str(renamed)
+    with pytest.raises(audit.AuditError):
+        audit.runtime_evidence(data, repo, cache, False)
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "missing",
+        "ambiguous",
+        "wrong_coordinate",
+        "no_license",
+        "closed_license",
+        "entity",
+        "parent_cycle",
+    ],
+)
+def test_pom_license_evidence_refuses_unknown_or_ambiguous(
+    graph: tuple[dict[str, Any], Path, Path, Path], defect: str
+) -> None:
+    _, _, cache, _ = graph
+    path = cached(cache, COORD, pom())
+    if defect == "missing":
+        path.unlink()
+    elif defect == "ambiguous":
+        alternate = path.parent.parent / "other-hash" / path.name
+        alternate.parent.mkdir()
+        alternate.write_bytes(path.read_bytes())
+    elif defect == "wrong_coordinate":
+        path.write_bytes(pom((COORD[0], COORD[1], "9.9.9")))
+    elif defect == "no_license":
+        path.write_bytes(pom(license_name=None))
+    elif defect == "closed_license":
+        path.write_bytes(pom(license_name="Proprietary commercial runtime"))
+    elif defect == "entity":
+        path.write_bytes(
+            b'<!DOCTYPE project [<!ENTITY x SYSTEM "file:///private/synthetic-test">]>' + pom()
+        )
+    elif defect == "parent_cycle":
+        path.write_bytes(pom(license_name=None, parent=COORD))
+    with pytest.raises(audit.AuditError):
+        audit.pom_evidence(COORD, cache, False)
+
+
+def test_explicit_parent_inheritance_is_retained_not_inferred(tmp_path: Path) -> None:
+    parent = ("org.example", "example-parent", "1.2.3")
+    cached(tmp_path, COORD, pom(license_name=None, parent=parent))
+    cached(tmp_path, parent, pom(parent))
+    result = audit.pom_evidence(COORD, tmp_path, False)
+    assert result[0]["inherits_license_from"] == list(parent)
+    assert result[1]["coordinate"] == list(parent)
+    assert result[1]["licenses"][0]["spdx"] == "Apache-2.0"
+
+
+@pytest.mark.parametrize(
+    "defect", ["symlink", "ancestor_symlink", "hardlink", "oversized", "outside", "directory"]
+)
+def test_file_reads_are_explicit_bounded_regular_single_link(tmp_path: Path, defect: str) -> None:
+    root = tmp_path / "allowed"
+    root.mkdir()
+    file = root / "evidence"
+    file.write_bytes(b"synthetic metadata")
+    target = file
+    if defect == "symlink":
+        target = root / "link"
+        target.symlink_to(file)
+    elif defect == "ancestor_symlink":
+        directory = root / "real"
+        directory.mkdir()
+        (directory / "evidence").write_bytes(b"synthetic metadata")
+        (root / "alias").symlink_to(directory, target_is_directory=True)
+        target = root / "alias/evidence"
+    elif defect == "hardlink":
+        os.link(file, root / "copy")
+    elif defect == "oversized":
+        file.write_bytes(b"x" * 100)
+    elif defect == "outside":
+        target = tmp_path / "outside"
+        target.write_bytes(b"synthetic metadata")
+    elif defect == "directory":
+        target = root
+    with pytest.raises((audit.AuditError, OSError)):
+        audit.read(target, (root,), 32)
+
+
+@pytest.mark.parametrize("defect", ["duplicate", "traversal", "symlink", "huge_entry"])
+def test_zip_refuses_ambiguous_paths_and_unbounded_unpacking(
+    tmp_path: Path, defect: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    file = tmp_path / "runtime.jar"
+    with zipfile.ZipFile(file, "w") as archive:
+        if defect == "duplicate":
+            with pytest.warns(UserWarning):
+                archive.writestr("LICENSE", b"one")
+                archive.writestr("LICENSE", b"two")
+        elif defect == "traversal":
+            archive.writestr("../LICENSE", b"synthetic")
+        elif defect == "symlink":
+            info = zipfile.ZipInfo("LICENSE")
+            info.external_attr = 0o120777 << 16
+            archive.writestr(info, b"../private-synthetic")
+        else:
+            archive.writestr("LICENSE", b"too long")
+            monkeypatch.setattr(audit, "MAX_ZIP_BYTES", 3)
+    with pytest.raises(audit.AuditError):
+        audit.zip_evidence(file, (tmp_path,))
+
+
+def test_raw_metadata_rejects_duplicate_json_and_oversize() -> None:
+    with pytest.raises(audit.AuditError):
+        audit.decoded(b'{"views":[],"views":[]}')
+    with pytest.raises(audit.AuditError):
+        audit.decoded(b" " * (audit.MAX_META + 1))
+
+
+FIXTURE_LOCK_BYTES = b"synthetic locked build input\n"
+FIXTURE_LOCK_SHA = audit.sha(FIXTURE_LOCK_BYTES)
+
+
+def toolchain_fixture(target: str) -> dict[str, Any]:
+    import sys
+
+    tools: dict[str, Any] = {
+        "node": "v24.11.0",
+        "pnpm": "11.9.0",
+        "python": sys.version,
+        "runner": "Linux-6.11.0-1018-azure-x86_64-with-glibc2.39"
+        if target == "android"
+        else "macOS-26.0-arm64-arm-64bit",
+        "runner_image": {
+            "ImageOS": "ubuntu24" if target == "android" else "macos26",
+            "ImageVersion": "20261013.2.0",
+            "RUNNER_OS": "Linux" if target == "android" else "macOS",
+            "RUNNER_ARCH": "X64" if target == "android" else "ARM64",
+        },
+    }
+    if target == "ios":
+        tools.update({"xcode": "Xcode 26.0\nBuild version 17A324", "sdk": "26.0"})
+    else:
+        tools.update(
+            {
+                "aapt2": "Android Asset Packaging Tool (aapt) 2.19.2-13409019",
+                "java": (
+                    'openjdk version "21.0.8" 2025-07-15 LTS\n'
+                    "OpenJDK Runtime Environment Temurin-21.0.8+9 (build 21.0.8+9-LTS)\n"
+                    "OpenJDK 64-Bit Server VM Temurin-21.0.8+9 "
+                    "(build 21.0.8+9-LTS, mixed mode, sharing)"
+                ),
+                "gradle": "\n".join(
+                    [
+                        "-" * 60,
+                        "Gradle 8.14.3",
+                        "-" * 60,
+                        "Build time: 2025-07-04 13:23:44 UTC",
+                        "Revision: " + "a" * 40,
+                        "Kotlin: 2.0.21",
+                        "Groovy: 3.0.24",
+                        "Ant: Apache Ant(TM) version 1.10.15 compiled on August 25 2024",
+                        "Launcher JVM: 21.0.8 (Eclipse Adoptium 21.0.8+9-LTS)",
+                        "Daemon JVM: /opt/hostedtoolcache/Java_Temurin_jdk/21.0.8/x64 "
+                        "(no JDK specified, using current Java home)",
+                        "OS: Linux 6.11.0-1018-azure amd64",
+                    ]
+                ),
+            }
+        )
+    return tools
+
+
+def genuine_build_receipt(
+    artifact: Path,
+    source_commit: str,
+    target: str = "android",
+    reference: Path | None = None,
+    resolved_bytes: bytes = FIXTURE_LOCK_BYTES,
+) -> dict[str, Any]:
+    """Use the actual producer on synthetic ZIPs, with fixed native/tool/environment inputs."""
+    import tempfile
+    from unittest.mock import patch
+
+    reference = artifact if reference is None else reference
+    tools = toolchain_fixture(target)
+    with tempfile.TemporaryDirectory(prefix="gsip-build-receipt-control-") as temporary:
+        root = Path(temporary)
+        for name in (
+            "pnpm-lock.yaml",
+            "uv.lock",
+            "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties",
+            "apps/capture-pwa/android/build.gradle",
+            "apps/capture-pwa/android/variables.gradle",
+        ):
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(FIXTURE_LOCK_BYTES)
+        package = root / "apps/capture-pwa/package.json"
+        package.write_text(json.dumps({"version": "0.1.0"}))
+        if target == "ios":
+            resolved = (
+                root
+                / "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace"
+                / "xcshareddata/swiftpm/Package.resolved"
+            )
+            resolved.parent.mkdir(parents=True)
+            resolved.write_bytes(resolved_bytes)
+
+        def command(args: list[str]) -> str:
+            if args[0] == "git":
+                return source_commit
+            if args[0] in {"node", "pnpm", "java", "xcodebuild"}:
+                return cast(
+                    str, tools[{"java": "java", "xcodebuild": "xcode"}.get(args[0], args[0])]
+                )
+            if args[0] == "xcrun":
+                return cast(str, tools["sdk"])
+            if args[0] == "synthetic-aapt2":
+                return cast(str, tools["aapt2"])
+            if args[0].endswith("gradlew"):
+                return cast(str, tools["gradle"])
+            pytest.fail("unexpected tool invocation in synthetic producer control")
+
+        with (
+            patch.object(app_build, "__file__", str(root / "scripts/app_build.py")),
+            patch.object(app_build, "command", side_effect=command),
+            patch.object(app_build, "source_clean", return_value=True),
+            patch.object(platform, "platform", return_value=tools["runner"]),
+            patch.dict(os.environ, tools["runner_image"]),
+        ):
+            return app_build.receipt(
+                artifact,
+                reference,
+                app_build.versions("123", package),
+                target,
+                "synthetic-aapt2" if target == "android" else None,
+            )
+
+
+def complete_native(
+    source_commit: str, artifact_sha256: str, *, project_artifact_outside: bool = False
+) -> dict[str, Any]:
+    """Positive comparison control uses actual bounded collector output on synthetic inputs."""
+    import tempfile
+
+    with tempfile.TemporaryDirectory(prefix="gsip-native-sidecar-fixture-") as temporary:
+        root = Path(temporary).resolve()
+        repo, cache = root / "repo", root / "cache"
+        names = tuple(
+            name
+            for name in audit.NPM_PACKAGES
+            if source_commit != audit.BASELINE or name != "@capacitor/local-notifications"
+        )
+        versions = {
+            "@capacitor/core": "8.5.2",
+            "@capacitor/android": "8.5.2",
+            "@capacitor/ios": "8.5.2",
+            "@capacitor/camera": "8.2.4",
+            "@capacitor/filesystem": "8.1.3",
+            "@capacitor/geolocation": "8.2.2",
+            "@capacitor/local-notifications": "8.3.1",
+        }
+        for name in names:
+            package = repo / "node_modules/.pnpm/synthetic/node_modules" / name
+            package.mkdir(parents=True)
+            (package / "package.json").write_text(
+                json.dumps({"name": name, "version": versions[name], "license": "MIT"})
+            )
+            (package / "LICENSE").write_text("MIT synthetic fixture: Permission is hereby granted.")
+            installed = repo / "apps/capture-pwa/node_modules" / name
+            installed.parent.mkdir(parents=True, exist_ok=True)
+            installed.symlink_to(package, target_is_directory=True)
+        cached(cache, COORD, pom())
+        module = (
+            cache / "modules-2/files-2.1" / COORD[0] / COORD[1] / COORD[2] / "binary/runtime.jar"
+        )
+        zipped(module)
+        projects = []
+        artifacts = [{"kind": "module", "coordinate": list(COORD), "file": str(module)}]
+        for project, name in audit.PROJECT_PACKAGES.items():
+            if name not in names:
+                continue
+            projects.append(project)
+            package = (repo / "apps/capture-pwa/node_modules" / name).resolve()
+            directory = (
+                package / ("capacitor" if project == ":capacitor-android" else "android") / "build"
+            )
+            file = directory / (project[1:] + ".aar")
+            if project_artifact_outside and project == ":capacitor-android":
+                file = repo / "unmatched/renamed-capacitor.aar"
+            zipped(file)
+            artifacts.append({"kind": "project", "project": project, "file": str(file)})
+        view = {
+            "name": "debugRuntimeClasspath",
+            "modules": [list(COORD)],
+            "projects": [":app", *projects],
+            "artifacts": artifacts,
+        }
+        release = {**copy.deepcopy(view), "name": "releaseRuntimeClasspath"}
+        result = audit.runtime_evidence({"views": [view, release]}, repo, cache, False)
+        inputs = {
+            name: FIXTURE_LOCK_SHA
+            for name in (
+                "pnpm-lock.yaml",
+                "apps/capture-pwa/package.json",
+                "apps/capture-pwa/capacitor.config.ts",
+                "scripts/app_permissions.py",
+                "scripts/app_build.py",
+                "apps/capture-pwa/android/gradle/wrapper/gradle-wrapper.properties",
+                "apps/capture-pwa/android/build.gradle",
+                "apps/capture-pwa/android/variables.gradle",
+            )
+        }
+        result.update(
+            {
+                "schema_version": "gsip-app-notification-native-audit-v1",
+                "platform": "android",
+                "source_commit": source_commit,
+                "source_inputs": inputs,
+                "built_artifact_sha256": artifact_sha256,
+                "resolved_graph_sha256": "c" * 64,
+                "build_only_environment_sha256": "d" * 64,
+                "runtime_tree_sha256": {
+                    name: "e" * 64 for name in ("debugRuntimeClasspath", "releaseRuntimeClasspath")
+                },
+                "debug_signing_key_sha256": "b" * 64,
+            }
+        )
+        return result
+
+
+def receipts(
+    parent: Path, candidate: Path
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    value = genuine_build_receipt(parent, audit.BASELINE)
+    second = genuine_build_receipt(candidate, "a" * 40)
+    native = complete_native(audit.BASELINE, value["artifact_sha256"])
+    return value, second, native
+
+
+def test_feature_delta_uses_actual_parent_and_candidate_bytes(tmp_path: Path) -> None:
+    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
+    zipped(parent, b"parent", False)
+    zipped(candidate, b"larger feature candidate", False)
+    left, right, native = receipts(parent, candidate)
+    result = audit.feature_comparison(
+        parent,
+        candidate,
+        left,
+        right,
+        "a" * 40,
+        {**native, "source_commit": audit.BASELINE},
+        complete_native("a" * 40, right["artifact_sha256"]),
+    )
+    assert result["archive_byte_delta"] == candidate.stat().st_size - parent.stat().st_size
+    assert result["zip_comparison"]["changed_entries"] == ["classes.dex"]
+    assert "no dependency-only attribution" in result["scope"]
+    assert result["closed_flags"] == {"capture_live": False, "library_intake_live": False}
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "wrong_parent",
+        "wrong_candidate",
+        "toolchain",
+        "run_number",
+        "unclean",
+        "wrong_bytes",
+        "debug_key",
+        "open_activation",
+        "missing_activation",
+    ],
+)
+def test_feature_delta_refuses_unmatched_build_inputs(tmp_path: Path, defect: str) -> None:
+    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
+    zipped(parent, b"parent", False)
+    zipped(candidate, b"candidate", False)
+    left, right, native = receipts(parent, candidate)
+    native["source_commit"] = audit.BASELINE
+    other_native = complete_native("a" * 40, right["artifact_sha256"])
+    if defect == "wrong_parent":
+        left["source_commit"] = "c" * 40
+    elif defect == "wrong_candidate":
+        right["source_commit"] = "c" * 40
+    elif defect == "toolchain":
+        right["toolchain"] = {"node": "v25"}
+    elif defect == "run_number":
+        right["run_number"] = 124
+    elif defect == "unclean":
+        left["source_tree_clean"] = False
+    elif defect == "wrong_bytes":
+        right["artifact_sha256"] = "d" * 64
+    elif defect == "debug_key":
+        other_native["debug_signing_key_sha256"] = "c" * 64
+    elif defect == "open_activation":
+        zipped(candidate, b"candidate", True)
+        right["artifact_sha256"] = audit.sha(candidate.read_bytes())
+        other_native["built_artifact_sha256"] = right["artifact_sha256"]
+        right["reference_sha256"] = right["artifact_sha256"]
+        right["comparison"] = app_build.comparison(candidate, candidate)
+    elif defect == "missing_activation":
+        zipped(candidate)
+        right["artifact_sha256"] = audit.sha(candidate.read_bytes())
+        other_native["built_artifact_sha256"] = right["artifact_sha256"]
+        right["reference_sha256"] = right["artifact_sha256"]
+        right["comparison"] = app_build.comparison(candidate, candidate)
+    with pytest.raises((audit.AuditError, ValueError)):
+        audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other_native)
+
+
+def test_cli_error_never_copies_private_error_text(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path
+) -> None:
+    def failure(*args: Any) -> None:
+        raise ValueError("synthetic private-sentinel-not-for-output")
+
+    monkeypatch.setattr(audit, "collect_ios", failure)
+    assert (
+        audit.main(
+            [
+                "ios",
+                str(tmp_path),
+                str(tmp_path / "receipt.json"),
+                str(tmp_path / "fixture-ios.zip"),
+            ]
+        )
+        == 1
+    )
+    captured = capsys.readouterr()
+    assert "private-sentinel" not in captured.err
+    assert captured.out == ""
+
+
+def test_workflow_retains_old_gates_and_uploads_owned_evidence() -> None:
+    text = (ROOT / ".github/workflows/app-build.yml").read_text()
+    for value in (
+        "--configuration debugRuntimeClasspath",
+        "--configuration releaseRuntimeClasspath",
+        "check-dependencies -",
+        "check-apk",
+        "check-ios",
+        "assembleDebug --rerun-tasks --no-build-cache",
+        "CODE_SIGNING_ALLOWED=NO clean build",
+        "VITE_CAPTURE_LIVE: 'false'",
+        "VITE_LIBRARY_INTAKE_LIVE: 'false'",
+        "scripts/app_notification_audit.py",
+        "tests/test_app_notification_audit.py",
+        "scripts.app_notification_audit android",
+        "scripts.app_notification_audit ios",
+        "scripts.app_notification_audit compare",
+        audit.BASELINE,
+        "gsip-android-feature-comparison.json",
+        "gsip-ios-feature-comparison.json",
+    ):
+        assert value in text
+
+
+@pytest.fixture
+def ios_evidence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> tuple[Path, Path, dict[str, bytes]]:
+    import io
+
+    repo = tmp_path / "ios-repo"
+    ios = repo / "apps/capture-pwa/ios"
+    package = repo / "node_modules/@capacitor/ios"
+    package.mkdir(parents=True)
+    installed = repo / "apps/capture-pwa/node_modules/@capacitor"
+    installed.mkdir(parents=True)
+    (installed / "ios").symlink_to(package, target_is_directory=True)
+    license_data = b"MIT License\nPermission is hereby granted, synthetic upstream evidence."
+    (package / "LICENSE").write_bytes(license_data)
+    versions = {
+        "@capacitor/core": "8.5.2",
+        "@capacitor/android": "8.5.2",
+        "@capacitor/ios": "8.5.2",
+        "@capacitor/camera": "8.2.4",
+        "@capacitor/filesystem": "8.1.3",
+        "@capacitor/geolocation": "8.2.2",
+        "@capacitor/local-notifications": "8.3.1",
+    }
+    for name in audit.NPM_PACKAGES:
+        directory = repo / "node_modules" / name
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / "package.json").write_text(
+            json.dumps({"name": name, "version": versions[name], "license": "MIT"})
+        )
+        (directory / "LICENSE").write_bytes(license_data)
+        if name != "@capacitor/ios":
+            (repo / "apps/capture-pwa/node_modules" / name).symlink_to(
+                directory, target_is_directory=True
+            )
+    header = package / "CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h"
+    header.parent.mkdir(parents=True)
+    header.write_bytes(b"Synthetic source header: Apache License, Version 2.0")
+    resolved = ios / "App/App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+    resolved.parent.mkdir(parents=True)
+    resolved.write_text(
+        json.dumps(
+            {
+                "pins": [
+                    {
+                        "identity": "capacitor-swift-pm",
+                        "location": "https://github.com/ionic-team/capacitor-swift-pm.git",
+                        "state": {"version": "8.5.2", "revision": "1" * 40},
+                    }
+                ]
+            }
+        )
+    )
+    public = {
+        "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md": (
+            b"Synthetic binary xcframework releases of Capacitor and CapacitorCordova"
+        ),
+        "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE": license_data,
+    }
+    manifest = ""
+    for name in ("Capacitor", "Cordova"):
+        folder = (
+            ios / f"App/build/SourcePackages/artifacts/capacitor-swift-pm/{name}/{name}.xcframework"
+        )
+        folder.mkdir(parents=True)
+        (folder / "Info.plist").write_bytes(f"synthetic-{name}".encode())
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, "w") as archive:
+            archive.writestr(f"{name}.xcframework/Info.plist", f"synthetic-{name}".encode())
+        raw = stream.getvalue()
+        url = f"https://github.com/ionic-team/capacitor-swift-pm/releases/download/8.5.2/{name}.xcframework.zip"
+        public[url] = raw
+        manifest += f'.binaryTarget(name: "{name}", url: "{url}", checksum: "{audit.sha(raw)}")\n'
+    checkout = ios / "App/build/SourcePackages/checkouts/capacitor-swift-pm"
+    checkout.mkdir(parents=True)
+    (checkout / "Package.swift").write_text(manifest)
+    monkeypatch.setattr(audit, "public_bytes", lambda url, *args, **kwargs: public[url])
+    monkeypatch.setattr(
+        audit,
+        "source_inputs",
+        lambda *args: {
+            name: FIXTURE_LOCK_SHA
+            for name in (
+                "pnpm-lock.yaml",
+                "apps/capture-pwa/package.json",
+                "apps/capture-pwa/capacitor.config.ts",
+                "scripts/app_permissions.py",
+                "scripts/app_build.py",
+            )
+        },
+    )
+    monkeypatch.setattr(
+        audit,
+        "run",
+        lambda args, *unused: "1" * 40 if "capacitor-swift-pm" in " ".join(args) else "a" * 40,
+    )
+    artifact = repo / "fixture-ios.zip"
+    with zipfile.ZipFile(artifact, "w") as archive:
+        archive.writestr(
+            "App.app/public/gsip-activation.json",
+            json.dumps({"capture_live": False, "library_intake_live": False}),
+        )
+    return repo, resolved, public
+
+
+def test_ios_records_selected_pins_exact_binary_tree_and_distinct_licenses(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path
+) -> None:
+    repo, _, _ = ios_evidence
+    output = tmp_path / "ios-audit.json"
+    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
+    result = json.loads(output.read_text())
+    assert result["spm"]["pins"][0]["state"]["version"] == "8.5.2"
+    assert {item["name"] for item in result["spm"]["binary_inputs"]} == {"Capacitor", "Cordova"}
+    for item in result["spm"]["binary_inputs"]:
+        assert item["swift_manifest_checksum"] == item["archive"]["sha256"]
+        assert item["actual_resolved_tree"]["file_count"] == 1
+    assert result["spm"]["upstream_capacitor_source_license"]["spdx"] == "MIT"
+    assert result["cordova_apache_source_header"]["spdx"] == "Apache-2.0"
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "unknown_pin",
+        "changed_version",
+        "checksum",
+        "changed_tree",
+        "pod_resolution",
+        "upstream_license",
+    ],
+)
+def test_ios_refuses_unexpected_native_selection_or_unbound_binary(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, defect: str
+) -> None:
+    repo, resolved, public = ios_evidence
+    if defect in {"unknown_pin", "changed_version"}:
+        data = json.loads(resolved.read_text())
+        if defect == "unknown_pin":
+            data["pins"][0]["location"] = "https://example.invalid/proprietary-runtime.git"
+        else:
+            data["pins"][0]["state"]["version"] = "8.5.3"
+        resolved.write_text(json.dumps(data))
+    elif defect == "checksum":
+        url = next(value for value in public if value.endswith("Capacitor.xcframework.zip"))
+        public[url] += b"changed-synthetic-archive"
+    elif defect == "changed_tree":
+        file = (
+            repo
+            / "apps/capture-pwa/ios/App/build/SourcePackages/artifacts"
+            / "capacitor-swift-pm/Capacitor/Capacitor.xcframework/Info.plist"
+        )
+        file.write_bytes(b"changed-synthetic-framework")
+    elif defect == "pod_resolution":
+        (repo / "apps/capture-pwa/ios/Podfile.lock").write_text("synthetic unknown pod")
+    else:
+        public["https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE"] = (
+            b"different license"
+        )
+    with pytest.raises(audit.AuditError):
+        audit.collect_ios(repo, tmp_path / "refused.json", repo / "fixture-ios.zip")
+
+
+@pytest.mark.parametrize(
+    "defect", ["unexpected_jar", "closed_license", "foreign_link", "valid_empty_source"]
+)
+def test_npm_project_source_does_not_license_unexpected_binary(tmp_path: Path, defect: str) -> None:
+    repo = tmp_path / "repo"
+    package = repo / "node_modules/.pnpm/synthetic/node_modules/@capacitor/local-notifications"
+    package.mkdir(parents=True)
+    installed = repo / "apps/capture-pwa/node_modules/@capacitor"
+    installed.mkdir(parents=True)
+    (installed / "local-notifications").symlink_to(package, target_is_directory=True)
+    (package / "package.json").write_text(
+        json.dumps({"name": "@capacitor/local-notifications", "version": "8.3.1", "license": "MIT"})
+    )
+    (package / "LICENSE").write_text(
+        "MIT License: Permission is hereby granted, synthetic fixture."
+    )
+    if defect == "unexpected_jar":
+        zipped(package / "android/libs/runtime.jar")
+    elif defect == "closed_license":
+        data = json.loads((package / "package.json").read_text())
+        data["license"] = "Proprietary"
+        (package / "package.json").write_text(json.dumps(data))
+    elif defect == "foreign_link":
+        external = tmp_path / "external"
+        external.mkdir()
+        (installed / "local-notifications").unlink()
+        (installed / "local-notifications").symlink_to(external, target_is_directory=True)
+    else:
+        (package / "empty-source-placeholder").write_bytes(b"")
+        result = audit.npm_evidence(repo, ("@capacitor/local-notifications",))
+        assert result[0]["installed_file_count"] == 3
+        assert result[0]["license"] == "MIT"
+        return
+    with pytest.raises(audit.AuditError):
+        audit.npm_evidence(repo, ("@capacitor/local-notifications",))
+
+
+def test_feature_receipt_refuses_unknown_private_sidecar_fields(tmp_path: Path) -> None:
+    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
+    zipped(parent, b"parent", False)
+    zipped(candidate, b"candidate", False)
+    left, right, native = receipts(parent, candidate)
+    right["unexpected_private_context"] = "synthetic private sentinel"
+    with pytest.raises(audit.AuditError):
+        audit.feature_comparison(
+            parent,
+            candidate,
+            left,
+            right,
+            "a" * 40,
+            {**native, "source_commit": audit.BASELINE},
+            complete_native("a" * 40, right["artifact_sha256"]),
+        )
+
+
+def test_pom_depth_bound_prevents_oversized_structural_evidence(tmp_path: Path) -> None:
+    cached(tmp_path, COORD, b"<project>" + b"<nested>" * 65 + b"</nested>" * 65 + b"</project>")
+    with pytest.raises(audit.AuditError):
+        audit.pom_evidence(COORD, tmp_path, False)
+
+
+def test_review_traversal_refuses_before_reading_outside_root(tmp_path: Path) -> None:
+    allowed = tmp_path / "allowed"
+    allowed.mkdir()
+    outside = tmp_path / "outside"
+    outside.write_bytes(b"synthetic outside-root evidence")
+    with pytest.raises(audit.AuditError):
+        audit.read(allowed / ".." / "outside", (allowed,))
+
+
+def test_review_binary_coordinate_cannot_escape_through_traversal(
+    graph: tuple[dict[str, Any], Path, Path, Path], tmp_path: Path
+) -> None:
+    data, repo, cache, _ = graph
+    outside = tmp_path / "unmatched.jar"
+    zipped(outside, b"synthetic unbound binary")
+    selected = cache / "modules-2/files-2.1" / COORD[0] / COORD[1] / COORD[2]
+    escaped = selected / "../../../../../../unmatched.jar"
+    assert escaped.resolve() == outside
+    data["views"][0]["artifacts"][0]["file"] = str(escaped)
+    with pytest.raises(audit.AuditError):
+        audit.runtime_evidence(data, repo, cache, False)
+
+
+@pytest.mark.parametrize(
+    "field",
+    ["version", "groupId", "artifactId", "license_name", "license_url", "parent", "licenses"],
+)
+def test_review_duplicate_pom_identity_or_license_fields_refuse(tmp_path: Path, field: str) -> None:
+    raw = pom()
+    if field == "license_name":
+        raw = raw.replace(b"</name>", b"</name><name>Proprietary commercial runtime</name>")
+    elif field == "license_url":
+        raw = raw.replace(b"</url>", b"</url><url>https://example.invalid/private-license</url>")
+    elif field == "parent":
+        raw = pom(parent=COORD).replace(
+            b"</parent>",
+            b"</parent><parent><groupId>org.other</groupId><artifactId>other</artifactId><version>9</version></parent>",
+        )
+    elif field == "licenses":
+        raw = raw.replace(
+            b"</licenses>",
+            b"</licenses><licenses><license><name>Proprietary</name><url>https://example.invalid/private</url></license></licenses>",
+        )
+    else:
+        raw = raw.replace(
+            f"</{field}>".encode(), f"</{field}><{field}>different</{field}>".encode()
+        )
+    cached(tmp_path, COORD, raw)
+    with pytest.raises(audit.AuditError):
+        audit.pom_evidence(COORD, tmp_path, False)
+
+
+def test_review_header_only_native_sidecars_refuse_feature_comparison(tmp_path: Path) -> None:
+    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
+    zipped(parent, b"parent", False)
+    zipped(candidate, b"candidate", False)
+    left, right, _ = receipts(parent, candidate)
+    native = {
+        "platform": "android",
+        "debug_signing_key_sha256": "b" * 64,
+        "schema_version": "gsip-app-notification-native-audit-v1",
+        "source_inputs": {"pnpm-lock.yaml": "f" * 64},
+    }
+    with pytest.raises(audit.AuditError):
+        audit.feature_comparison(
+            parent,
+            candidate,
+            left,
+            right,
+            "a" * 40,
+            {**native, "source_commit": audit.BASELINE},
+            {**native, "source_commit": "a" * 40},
+        )
+
+
+def test_review_spm_pin_revision_must_match_actual_checkout(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path
+) -> None:
+    repo, resolved, _ = ios_evidence
+    data = json.loads(resolved.read_text())
+    data["pins"][0]["state"]["revision"] = "f" * 40
+    resolved.write_text(json.dumps(data))
+    with pytest.raises(audit.AuditError):
+        audit.collect_ios(repo, tmp_path / "refused.json", repo / "fixture-ios.zip")
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "missing_graph",
+        "missing_npm",
+        "missing_binary",
+        "missing_pom",
+        "closed_pom",
+        "module_binding",
+        "project_binding",
+        "source_lock",
+        "artifact_binding",
+        "tree_digest",
+        "unknown_field",
+    ],
+)
+def test_complete_native_sidecar_rejects_removed_or_conflicting_bindings(
+    tmp_path: Path, defect: str
+) -> None:
+    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
+    zipped(parent, b"parent", False)
+    zipped(candidate, b"candidate", False)
+    left, right, native = receipts(parent, candidate)
+    other = complete_native("a" * 40, right["artifact_sha256"])
+    if defect == "missing_graph":
+        other["runtime_views"] = []
+    elif defect == "missing_npm":
+        other["npm_sources"] = []
+    elif defect == "missing_binary":
+        other["runtime_views"][0]["resolved_runtime_inputs"] = []
+    elif defect == "missing_pom":
+        other["runtime_views"][0]["selected_modules"][0]["pom_license_evidence"] = []
+    elif defect == "closed_pom":
+        other["runtime_views"][0]["selected_modules"][0]["pom_license_evidence"][0]["licenses"][0][
+            "declared_name"
+        ] = "Proprietary commercial runtime"
+    elif defect == "module_binding":
+        other["runtime_views"][0]["resolved_runtime_inputs"][0]["coordinate"][2] = "99.0"
+    elif defect == "project_binding":
+        other["runtime_views"][0]["project_sources"][0]["source_manifest_sha256"] = "1" * 64
+    elif defect == "source_lock":
+        other["source_inputs"]["apps/capture-pwa/android/build.gradle"] = "1" * 64
+    elif defect == "artifact_binding":
+        other["built_artifact_sha256"] = "1" * 64
+    elif defect == "tree_digest":
+        other["runtime_tree_sha256"]["releaseRuntimeClasspath"] = "not a digest"
+    else:
+        other["unexpected_private_field"] = "synthetic context must not be copied"
+    with pytest.raises(audit.AuditError):
+        audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other)
+
+
+def ios_build_fixture(repo: Path, native: dict[str, Any]) -> dict[str, Any]:
+    resolved = next((repo / "apps/capture-pwa/ios").rglob("Package.resolved"))
+    return {
+        "platform": "ios",
+        "source_commit": native["source_commit"],
+        "artifact_sha256": native["built_artifact_sha256"],
+        "lockfile_sha256": {
+            "pnpm-lock.yaml": FIXTURE_LOCK_SHA,
+            "uv.lock": FIXTURE_LOCK_SHA,
+            str(resolved.relative_to(repo)): audit.sha(resolved.read_bytes()),
+        },
+    }
+
+
+def test_collected_ios_sidecar_passes_complete_validation_after_serialization(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path
+) -> None:
+    repo, _, _ = ios_evidence
+    output = tmp_path / "validated-ios.json"
+    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
+    native = json.loads(output.read_text())
+    audit.validate_native(native, ios_build_fixture(repo, native))
+    assert native["spm"]["checkout_revision"] == native["spm"]["pins"][0]["state"]["revision"]
+    assert native["spm"]["release_tag_revision"] == native["spm"]["checkout_revision"]
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "missing_spm",
+        "missing_tree",
+        "tree_digest",
+        "binary_digest",
+        "license_binding",
+        "revision_binding",
+        "missing_checkout",
+        "source_lock",
+    ],
+)
+def test_ios_sidecar_cannot_substitute_partial_or_conflicting_native_evidence(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, defect: str
+) -> None:
+    repo, _, _ = ios_evidence
+    output = tmp_path / "ios-native.json"
+    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
+    native = json.loads(output.read_text())
+    build = ios_build_fixture(repo, native)
+    if defect == "missing_spm":
+        native["spm"] = {}
+    elif defect == "missing_tree":
+        native["spm"]["binary_inputs"][0]["actual_resolved_tree"] = {}
+    elif defect == "tree_digest":
+        native["spm"]["binary_inputs"][0]["actual_resolved_tree"]["files"][0]["sha256"] = "f" * 64
+    elif defect == "binary_digest":
+        native["spm"]["binary_inputs"][0]["archive"]["sha256"] = "f" * 64
+    elif defect == "license_binding":
+        native["spm"]["upstream_capacitor_source_license"]["sha256"] = "f" * 64
+    elif defect == "revision_binding":
+        native["spm"]["checkout_revision"] = "f" * 40
+    elif defect == "missing_checkout":
+        native["spm"].pop("checkout_revision")
+    else:
+        build["lockfile_sha256"][
+            next(key for key in build["lockfile_sha256"] if key.endswith("Package.resolved"))
+        ] = "f" * 64
+    with pytest.raises(audit.AuditError):
+        audit.validate_native(native, build)
+
+
+@pytest.mark.parametrize("mismatch", ["checkout", "release_tag"])
+def test_spm_local_git_readback_refuses_mismatched_pin_or_release(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]],
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    mismatch: str,
+) -> None:
+    repo, _, _ = ios_evidence
+
+    def readback(args: list[str], *unused: Any) -> str:
+        if "capacitor-swift-pm" not in " ".join(args):
+            return "a" * 40
+        if (mismatch == "checkout" and args[-1] == "HEAD") or (
+            mismatch == "release_tag" and args[-1] == "refs/tags/8.5.2^{commit}"
+        ):
+            return "f" * 40
+        return "1" * 40
+
+    monkeypatch.setattr(audit, "run", readback)
+    with pytest.raises(audit.AuditError):
+        audit.collect_ios(repo, tmp_path / "refused.json", repo / "fixture-ios.zip")
+
+
+def test_workflow_native_audit_commands_match_the_cli_contract() -> None:
+    import shlex
+
+    lines = (ROOT / ".github/workflows/app-build.yml").read_text().splitlines()
+    commands = [
+        shlex.split(line) for line in lines if "python -m scripts.app_notification_audit " in line
+    ]
+    assert len(commands) == 6
+    for argv in commands:
+        assert len(argv) == {"android": 8, "ios": 7, "compare": 14}[argv[3]]
+
+
+def test_project_artifact_must_belong_to_its_inspected_package_output() -> None:
+    with pytest.raises(audit.AuditError):
+        complete_native(audit.BASELINE, "a" * 64, project_artifact_outside=True)
+
+
+@pytest.mark.parametrize(
+    ("path", "bad"),
+    [
+        (("comparison",), {}),
+        (("comparison", "unknown"), "synthetic private sentinel"),
+        (("toolchain", "unknown"), "synthetic private sentinel"),
+        (("toolchain", "runner_image", "unknown"), "synthetic private sentinel"),
+        (("reference_sha256",), "not-a-digest"),
+        (("reference_sha256",), "f" * 64),
+        (("source_commit",), "z" * 40),
+        (("artifact_sha256",), "f" * 64),
+        (("run_number",), False),
+        (("run_number",), float("nan")),
+        (("run_number",), float("inf")),
+        (("run_number",), 123.0),
+        (("run_number",), 0),
+        (("run_number",), app_build.MAX_RUN_NUMBER + 1),
+        (("android_version_code",), True),
+        (("android_version_code",), "garbage"),
+        (("android_version_code",), 124),
+        (("ios_build_version",), {"private": "synthetic"}),
+        (("ios_build_version",), "1.1.23"),
+        (("marketing_version",), "01.1.0"),
+        (("marketing_version",), {"private": "synthetic"}),
+        (("source_tree_clean",), 1),
+        (("comparison_scope",), "unverified"),
+        (("platform",), {}),
+        (("lockfile_sha256",), {}),
+        (("lockfile_sha256", "pnpm-lock.yaml"), "not-a-digest"),
+        (("lockfile_sha256", "unknown"), "f" * 64),
+        (("toolchain",), {}),
+        (("toolchain", "node"), "v23.0.0"),
+        (("toolchain", "pnpm"), []),
+        (("toolchain", "python"), "synthetic private sentinel"),
+        (("toolchain", "runner"), "macOS-26.0-arm64"),
+        (("toolchain", "runner_image"), {}),
+        (("toolchain", "runner_image", "RUNNER_ARCH"), []),
+        (("toolchain", "runner_image", "RUNNER_ARCH"), "ARM64"),
+        (("toolchain", "runner_image", "RUNNER_OS"), "macOS"),
+        (("toolchain", "runner_image", "ImageOS"), "unavailable"),
+        (("toolchain", "runner_image", "ImageVersion"), "20260230.1.0"),
+        (("toolchain", "java"), {}),
+        (("toolchain", "gradle"), "Gradle 8.14.3"),
+        (("toolchain", "aapt2"), "synthetic private sentinel"),
+        (("comparison", "byte_equal"), 1),
+        (("comparison", "entry_content_equal"), "true"),
+        (("comparison", "byte_equal"), False),
+        (("comparison", "normalization"), "invented proof"),
+        (("comparison", "changed_entries"), ["../private"]),
+        (("comparison", "changed_entries"), ["classes.dex", "classes.dex"]),
+        (("comparison", "first_only"), ["z", "a"]),
+        (("comparison", "second_only"), {}),
+        (("comparison", "second_only"), ["unmeasured"]),
+        (("unknown",), {"private": "synthetic"}),
+    ],
+)
+def test_full_build_receipt_refuses_invalid_nested_proof(
+    tmp_path: Path, path: tuple[str, ...], bad: Any
+) -> None:
+    artifact = tmp_path / "candidate.apk"
+    zipped(artifact, b"synthetic", False)
+    value = genuine_build_receipt(artifact, "a" * 40)
+    nested = value
+    for part in path[:-1]:
+        nested = nested[part]
+    nested[path[-1]] = bad
+    with pytest.raises(audit.AuditError):
+        audit.validate_build_receipt(value, artifact, artifact)
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        b'{"proof":{"a":1,"a":2}}',
+        b'{"proof":NaN}',
+        b'{"proof":{"nested":Infinity}}',
+        b'{"proof":-Infinity}',
+        b'{"proof":1e999}',
+    ],
+)
+def test_json_nested_proofs_reject_duplicate_and_nonfinite_values(raw: bytes) -> None:
+    with pytest.raises(audit.AuditError):
+        audit.decoded(raw)
+
+
+def test_json_finite_decimal_is_preserved_for_incidental_package_metadata() -> None:
+    assert audit.decoded(b'{"metadata":0.5}') == {"metadata": 0.5}
+
+
+def repacked(path: Path, reference: Path, variant: str) -> None:
+    with zipfile.ZipFile(reference) as first, zipfile.ZipFile(path, "w") as second:
+        second.comment = b"synthetic different archive metadata"
+        for entry in first.infolist():
+            second.writestr(entry, first.read(entry.filename))
+        if variant == "content":
+            second.writestr("synthetic-feature-marker.txt", b"synthetic repeated content")
+
+
+@pytest.mark.parametrize("target", ["android", "ios"])
+@pytest.mark.parametrize("variant", ["identical", "metadata", "content"])
+def test_actual_producer_current_and_repeated_build_receipts_pass(
+    tmp_path: Path, target: str, variant: str
+) -> None:
+    reference = tmp_path / "reference.zip"
+    artifact = tmp_path / "current.zip"
+    if target == "android":
+        zipped(reference, b"synthetic", False)
+    else:
+        with zipfile.ZipFile(reference, "w") as archive:
+            archive.writestr(
+                "App.app/public/gsip-activation.json",
+                json.dumps({"capture_live": False, "library_intake_live": False}),
+            )
+    if variant == "identical":
+        artifact.write_bytes(reference.read_bytes())
+    else:
+        repacked(artifact, reference, variant)
+    value = genuine_build_receipt(artifact, "a" * 40, target, reference)
+    audit.validate_build_receipt(audit.decoded(json.dumps(value).encode()), artifact, reference)
+    assert value["comparison"]["byte_equal"] is (variant == "identical")
+    assert value["comparison"]["entry_content_equal"] is (variant != "content")
+    if variant != "identical":
+        with pytest.raises(audit.AuditError):
+            audit.validate_build_receipt(value, artifact, None)
+        with pytest.raises(audit.AuditError):
+            audit.validate_build_receipt(value, artifact, artifact)
+
+
+@pytest.mark.parametrize("variant", ["identical", "metadata", "content"])
+def test_ios_complete_feature_comparison_accepts_real_producer_proofs(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, variant: str
+) -> None:
+    repo, resolved, _ = ios_evidence
+    reference = repo / "fixture-ios.zip"
+    parent = tmp_path / "parent.zip"
+    candidate = tmp_path / "candidate.zip"
+    parent.write_bytes(reference.read_bytes())
+    if variant == "identical":
+        candidate.write_bytes(reference.read_bytes())
+    else:
+        repacked(candidate, reference, variant)
+    output = tmp_path / "native.json"
+    audit.collect_ios(repo, output, candidate)
+    right_native = audit.decoded(output.read_bytes())
+    left_native = copy.deepcopy(right_native)
+    left_native["source_commit"] = audit.BASELINE
+    left_native["built_artifact_sha256"] = audit.sha(parent.read_bytes())
+    left_native["npm_sources"] = [
+        entry
+        for entry in left_native["npm_sources"]
+        if entry["name"] != "@capacitor/local-notifications"
+    ]
+    left = genuine_build_receipt(parent, audit.BASELINE, "ios", reference, resolved.read_bytes())
+    right = genuine_build_receipt(candidate, "a" * 40, "ios", reference, resolved.read_bytes())
+    result = audit.feature_comparison(
+        parent, candidate, left, right, "a" * 40, left_native, right_native, reference, reference
+    )
+    assert result["input_receipts"]["candidate"]["comparison"] == app_build.comparison(
+        reference, candidate
+    )
+
+
+@pytest.mark.parametrize("field", ["xcode", "sdk", "runner", "runner_image"])
+def test_ios_toolchain_receipt_requires_each_actual_field(tmp_path: Path, field: str) -> None:
+    artifact = tmp_path / "ios.zip"
+    with zipfile.ZipFile(artifact, "w") as archive:
+        archive.writestr(
+            "App.app/public/gsip-activation.json",
+            json.dumps({"capture_live": False, "library_intake_live": False}),
+        )
+    value = genuine_build_receipt(artifact, "a" * 40, "ios")
+    value["toolchain"][field] = {"private": "synthetic"}
+    with pytest.raises(audit.AuditError):
+        audit.validate_build_receipt(value, artifact, artifact)
+
+
+def test_cli_never_writes_unknown_build_proof_fields(tmp_path: Path) -> None:
+    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
+    zipped(parent, b"parent", False)
+    zipped(candidate, b"candidate", False)
+    left, right, native = receipts(parent, candidate)
+    right["toolchain"]["unknown_private_context"] = "synthetic private sentinel"
+    paths = []
+    for name, value in [
+        ("left", left),
+        ("right", right),
+        ("left-native", native),
+        ("right-native", complete_native("a" * 40, right["artifact_sha256"])),
+    ]:
+        path = tmp_path / (name + ".json")
+        path.write_text(json.dumps(value))
+        paths.append(path)
+    output = tmp_path / "never-written.json"
+    assert (
+        audit.main(
+            [
+                "compare",
+                str(parent),
+                str(candidate),
+                str(paths[0]),
+                str(paths[1]),
+                "a" * 40,
+                str(output),
+                str(paths[2]),
+                str(paths[3]),
+                str(parent),
+                str(candidate),
+            ]
+        )
+        == 1
+    )
+    assert not output.exists()

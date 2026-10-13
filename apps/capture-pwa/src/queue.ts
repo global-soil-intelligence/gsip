@@ -2,6 +2,12 @@ import { type DBSchema, type IDBPDatabase, openDB } from 'idb'
 import type { LibraryDraft } from './library'
 import type { CapturedPhoto } from './platform/types'
 import type { QueueRecord, ShotType } from './types'
+import { acceptanceExpired, TERMS_VERSION } from './terms'
+import {
+  initialReminderState,
+  type SyncReminderState,
+  type ReminderContext,
+} from './syncReminder'
 
 /** A photo the phone app has taken for an observation not yet queued (WP-APP-1). */
 export type DraftPhoto = { photo: CapturedPhoto; shotType: ShotType }
@@ -17,6 +23,7 @@ interface CaptureQueueDatabase extends DBSchema {
     value: { nodeId: string; ownerUid?: string }
   }
   queueState: { key: 'generation'; value: number }
+  syncReminder: { key: 'current'; value: SyncReminderState }
   draftPhotos: {
     key: ShotType
     value: DraftPhoto
@@ -29,7 +36,7 @@ let databasePromise: Promise<IDBPDatabase<CaptureQueueDatabase>> | undefined
 let generation = 0
 
 function database() {
-  databasePromise ??= openDB<CaptureQueueDatabase>('gsip-capture-v1', 3, {
+  databasePromise ??= openDB<CaptureQueueDatabase>('gsip-capture-v1', 4, {
     upgrade(db, oldVersion) {
       if (oldVersion < 1)
         db.createObjectStore('submissions', { keyPath: 'submissionId' })
@@ -41,6 +48,8 @@ function database() {
         db.createObjectStore('libraryNamespace')
         db.createObjectStore('queueState')
       }
+      // APP-2B: additive private reminder intent; queue/draft/library stores are unchanged.
+      if (oldVersion < 4) db.createObjectStore('syncReminder')
     },
     blocking() {
       // A newer version of the app wants to upgrade the database: step aside.
@@ -77,12 +86,27 @@ export async function clearQueue(): Promise<number> {
       'libraryDraft',
       'libraryNamespace',
       'queueState',
+      'syncReminder',
     ],
     'readwrite',
   )
   const records = await tx.objectStore('submissions').getAll()
   const revision = (await tx.objectStore('queueState').get('generation')) ?? 0
   await tx.objectStore('queueState').put(revision + 1, 'generation')
+  const reminder = checkedReminderState(
+    await tx.objectStore('syncReminder').get('current'),
+  )
+  await tx.objectStore('syncReminder').put(
+    {
+      ...reminder,
+      enabled: false,
+      epoch: reminder.epoch + 1,
+      cleanupPending: true,
+      cycleOpen: false,
+      consumed: false,
+    },
+    'current',
+  )
   await Promise.all([
     tx.objectStore('submissions').clear(),
     tx.objectStore('draftPhotos').clear(),
@@ -349,4 +373,108 @@ async function updateQueued(
     if (next !== record) await tx.store.put(next)
   }
   await tx.done
+}
+
+/** No credentials/session object or queue bytes are accepted into reminder intent. */
+function checkedReminderState(saved: unknown): SyncReminderState {
+  if (!saved || typeof saved !== 'object') return initialReminderState()
+  const value = saved as SyncReminderState
+  if (
+    !(
+      value.owner === null ||
+      (typeof value.owner === 'string' &&
+        value.owner.length > 0 &&
+        value.owner.length <= 128)
+    ) ||
+    !Number.isSafeInteger(value.epoch) ||
+    value.epoch < 0 ||
+    value.epoch >= Number.MAX_SAFE_INTEGER ||
+    !Number.isSafeInteger(value.revision) ||
+    value.revision < 0 ||
+    [
+      'enabled',
+      'cycleOpen',
+      'consumed',
+      'allowed',
+      'blocked',
+      'cleanupPending',
+    ].some((key) => typeof value[key as keyof SyncReminderState] !== 'boolean')
+  )
+    return initialReminderState()
+  return {
+    owner: value.owner,
+    enabled: value.enabled,
+    epoch: value.epoch,
+    revision: value.revision,
+    cycleOpen: value.cycleOpen,
+    consumed: value.consumed,
+    allowed: value.allowed,
+    blocked: value.blocked,
+    cleanupPending: value.cleanupPending,
+  }
+}
+export const indexedDbReminderStore = {
+  async read(): Promise<SyncReminderState> {
+    return checkedReminderState(
+      await (await database()).get('syncReminder', 'current'),
+    )
+  },
+  async update(
+    change: (state: SyncReminderState) => SyncReminderState,
+  ): Promise<SyncReminderState> {
+    const tx = (await database()).transaction('syncReminder', 'readwrite')
+    const before = checkedReminderState(await tx.store.get('current'))
+    const changed = change(before)
+    // A lifetime fence can turn an already admitted read into a no-op. Do not submit a stale write.
+    const next = changed === before ? before : checkedReminderState(changed)
+    if (changed !== before) await tx.store.put(next, 'current')
+    await tx.done
+    return next
+  },
+}
+
+/** Atomic local queue/revision snapshot. Raw records never cross the notification seam. */
+export async function queueReminderContext(
+  owner: string | null,
+  captureLive: boolean,
+  gate: ReminderContext['gate'],
+  libraryLive: boolean,
+): Promise<ReminderContext> {
+  const tx = (await database()).transaction(['submissions', 'queueState'])
+  const [records, revision] = await Promise.all([
+    tx.objectStore('submissions').getAll(),
+    tx.objectStore('queueState').get('generation'),
+  ])
+  await tx.done
+  return {
+    owner,
+    captureLive,
+    gate,
+    revision: revision ?? 0,
+    hasWork: records.length > 0,
+    blocked: records.some(
+      (record) =>
+        !owner ||
+        record.ownerUid !== owner ||
+        Boolean(
+          record.heldAt ||
+          record.deadLetteredAt ||
+          record.termsExpiredAt ||
+          record.libraryConflictAt,
+        ) ||
+        Boolean(record.library && !libraryLive) ||
+        (!(
+          record.reconfirmedTermsVersion === TERMS_VERSION &&
+          record.reconfirmedAt
+        ) &&
+          record.termsVersion !== TERMS_VERSION) ||
+        acceptanceExpired(
+          record.reconfirmedTermsVersion === TERMS_VERSION &&
+            record.reconfirmedAt
+            ? record.reconfirmedAt
+            : (record.acceptedAt ?? record.queuedAt),
+          Date.now(),
+        ),
+    ),
+  }
 }

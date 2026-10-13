@@ -13,7 +13,9 @@ on:
       - packages/schema/**
       - scripts/app_permissions.py
       - scripts/app_build.py
+      - scripts/app_notification_audit.py
       - tests/test_app_build.py
+      - tests/test_app_notification_audit.py
       - tests/test_app_permissions.py
       - pnpm-lock.yaml
       - .github/workflows/app-build.yml
@@ -24,7 +26,9 @@ on:
       - packages/schema/**
       - scripts/app_permissions.py
       - scripts/app_build.py
+      - scripts/app_notification_audit.py
       - tests/test_app_build.py
+      - tests/test_app_notification_audit.py
       - tests/test_app_permissions.py
       - pnpm-lock.yaml
       - .github/workflows/app-build.yml
@@ -50,7 +54,7 @@ env:
 jobs:
   android:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -67,7 +71,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile --package-import-method copy
       - run: pnpm --filter @gsip/capture-pwa build:app
       - name: Generate the Android project
         working-directory: apps/capture-pwa
@@ -111,18 +115,65 @@ jobs:
           "$aapt2" dump permissions "$apk" | python scripts/app_permissions.py check-apk -
           python scripts/app_build.py check-apk "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"
           python scripts/app_build.py receipt "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-android-reference.apk" apps/capture-pwa/android/app/build/outputs/apk/debug/gsip-android-build-receipt.json android "$aapt2"
+      - name: Audit exact Android runtime and license inputs
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/gsip-app2b-evidence/android"
+          python -m scripts.app_notification_audit android "$GITHUB_WORKSPACE" "$HOME/.gradle/caches" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-native-audit.json" "$HOME/.android/debug.keystore"
+      - name: Build the exact APP-2B parent in an isolated checkout
+        shell: bash
+        run: |
+          baseline=d7ed716ed0921381da04f542e90902ede36cb462
+          git fetch --no-tags origin "$baseline"
+          git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2b-parent"
+          git -C "$RUNNER_TEMP/gsip-app2b-parent" checkout --detach "$baseline"
+          test "$(git -C "$RUNNER_TEMP/gsip-app2b-parent" rev-parse HEAD)" = "$baseline"
+          cd "$RUNNER_TEMP/gsip-app2b-parent"
+          pnpm install --frozen-lockfile --package-import-method copy
+          pnpm --filter @gsip/capture-pwa build:app
+          cd apps/capture-pwa
+          pnpm exec cap add android
+          cd ../..
+          python scripts/app_permissions.py apply-android apps/capture-pwa/android/app/src/main/AndroidManifest.xml
+          python scripts/app_build.py apply-android apps/capture-pwa/android/app "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
+          cd apps/capture-pwa/android
+          {
+            ./gradlew --no-daemon -q :app:dependencies --configuration debugRuntimeClasspath
+            ./gradlew --no-daemon -q :app:dependencies --configuration releaseRuntimeClasspath
+          } | python ../../../scripts/app_permissions.py check-dependencies -
+          ./gradlew --no-daemon assembleDebug
+          cd ../../..
+          aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2"
+          apk=apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk
+          "$aapt2" dump permissions "$apk" | python scripts/app_permissions.py check-apk -
+          python scripts/app_build.py check-apk "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"
+          cp "$apk" "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk"
+          cd apps/capture-pwa/android
+          ./gradlew --no-daemon assembleDebug --rerun-tasks --no-build-cache
+          cd ../../..
+          "$aapt2" dump permissions "$apk" | python scripts/app_permissions.py check-apk -
+          python scripts/app_build.py check-apk "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"
+          cp "$apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent.apk"
+          python scripts/app_build.py receipt "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-build-receipt.json" android "$aapt2"
+          cd "$GITHUB_WORKSPACE"
+          python -m scripts.app_notification_audit android "$RUNNER_TEMP/gsip-app2b-parent" "$HOME/.gradle/caches" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-native-audit.json" "$HOME/.android/debug.keystore"
+          candidate_commit="$(git rev-parse HEAD)"
+          cp "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-repeat-reference.apk"
+          cp "$RUNNER_TEMP/gsip-android-reference.apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-repeat-reference.apk"
+          python -m scripts.app_notification_audit compare "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent.apk" apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-build-receipt.json" apps/capture-pwa/android/app/build/outputs/apk/debug/gsip-android-build-receipt.json "$candidate_commit" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-feature-comparison.json" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-native-audit.json" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-native-audit.json" "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk" "$RUNNER_TEMP/gsip-android-reference.apk"
       - uses: actions/upload-artifact@v7
         with:
           name: gsip-capture-android-debug
           path: |
             apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk
             apps/capture-pwa/android/app/build/outputs/apk/debug/gsip-android-build-receipt.json
+            ${{ runner.temp }}/gsip-app2b-evidence/android/**
           if-no-files-found: error
           retention-days: 14
 
   ios:
     runs-on: macos-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -140,7 +191,7 @@ jobs:
           newest="$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)"
           if [ -n "$newest" ]; then sudo xcode-select -s "$newest"; fi
           xcodebuild -version
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile --package-import-method copy
       - run: pnpm --filter @gsip/capture-pwa build:app
       - name: Generate the iOS project
         working-directory: apps/capture-pwa
@@ -176,11 +227,52 @@ jobs:
         run: ditto -c -k --sequesterRsrc --keepParent App.app "$GITHUB_WORKSPACE/gsip-capture-ios-simulator.zip"
       - name: Record iOS build evidence
         run: python scripts/app_build.py receipt gsip-capture-ios-simulator.zip "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-ios-reference.zip" gsip-ios-build-receipt.json ios
+      - name: Audit actual iOS native selection and licenses
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/gsip-app2b-evidence/ios"
+          python -m scripts.app_notification_audit ios "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-candidate-native-audit.json" "$GITHUB_WORKSPACE/gsip-capture-ios-simulator.zip"
+      - name: Build the exact iOS parent in an isolated checkout
+        shell: bash
+        run: |
+          baseline=d7ed716ed0921381da04f542e90902ede36cb462
+          git fetch --no-tags origin "$baseline"
+          git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2b-parent"
+          git -C "$RUNNER_TEMP/gsip-app2b-parent" checkout --detach "$baseline"
+          test "$(git -C "$RUNNER_TEMP/gsip-app2b-parent" rev-parse HEAD)" = "$baseline"
+          cd "$RUNNER_TEMP/gsip-app2b-parent"
+          pnpm install --frozen-lockfile --package-import-method copy
+          pnpm --filter @gsip/capture-pwa build:app
+          cd apps/capture-pwa
+          pnpm exec cap add ios
+          cd ../..
+          python scripts/app_permissions.py apply-ios apps/capture-pwa/ios/App/App/Info.plist
+          python scripts/app_build.py apply-ios apps/capture-pwa/ios/App/App/Info.plist "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
+          cd apps/capture-pwa/ios/App
+          xcodebuild -project App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+          cd ../../../..
+          python scripts/app_permissions.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist
+          python scripts/app_build.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
+          ditto -c -k --sequesterRsrc --keepParent apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app "$RUNNER_TEMP/gsip-ios-parent-repeat-reference.zip"
+          cd apps/capture-pwa/ios/App
+          xcodebuild -project App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build
+          cd ../../../..
+          python scripts/app_permissions.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist
+          python scripts/app_build.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
+          ditto -c -k --sequesterRsrc --keepParent apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent.zip"
+          python scripts/app_build.py receipt "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent.zip" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-ios-parent-repeat-reference.zip" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-build-receipt.json" ios
+          cd "$GITHUB_WORKSPACE"
+          python -m scripts.app_notification_audit ios "$RUNNER_TEMP/gsip-app2b-parent" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-native-audit.json" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent.zip"
+          candidate_commit="$(git rev-parse HEAD)"
+          cp "$RUNNER_TEMP/gsip-ios-parent-repeat-reference.zip" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-repeat-reference.zip"
+          cp "$RUNNER_TEMP/gsip-ios-reference.zip" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-candidate-repeat-reference.zip"
+          python -m scripts.app_notification_audit compare "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent.zip" gsip-capture-ios-simulator.zip "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-build-receipt.json" gsip-ios-build-receipt.json "$candidate_commit" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-feature-comparison.json" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-parent-native-audit.json" "$RUNNER_TEMP/gsip-app2b-evidence/ios/gsip-ios-candidate-native-audit.json" "$RUNNER_TEMP/gsip-ios-parent-repeat-reference.zip" "$RUNNER_TEMP/gsip-ios-reference.zip"
       - uses: actions/upload-artifact@v7
         with:
           name: gsip-capture-ios-simulator
           path: |
             gsip-capture-ios-simulator.zip
             gsip-ios-build-receipt.json
+            ${{ runner.temp }}/gsip-app2b-evidence/ios/**
           if-no-files-found: error
           retention-days: 14

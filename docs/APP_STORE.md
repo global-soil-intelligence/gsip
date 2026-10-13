@@ -29,7 +29,7 @@ apps/capture-pwa/package.json`). Local build number `101` is synthetic, never a 
   `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_CAPTURE_LIVE` and the legal links). Like the website,
   the app accepts observations only in builds made with `VITE_CAPTURE_LIVE=true`, and the
   database's capture switch decides the rest.
-- Plugins: the camera and file plugins on both platforms; the geolocation plugin on iOS only. On
+- Plugins: camera, file and optional local-notification plugins on both platforms; the geolocation plugin on iOS only. On
   Android it would compile Google's closed Play services location SDK into the app, which
   BUILD_ORDER guardrail 6 does not allow without sign-off, so the Android app uses its web view's
   own location API, which asks for the same permissions.
@@ -38,13 +38,14 @@ apps/capture-pwa/package.json`). Local build number `101` is synthetic, never a 
 
 ## Permissions
 
-The app asks for two things, each only when the person uses the feature:
+The app asks for camera/location when those features are used, and notifications only after explicit reminder opt-in:
 
-| Platform | Permission                                                               | When it is asked                | Purpose string                                                                                                                  |
-| -------- | ------------------------------------------------------------------------ | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| iOS      | Camera (`NSCameraUsageDescription`)                                      | First "Take photo"              | GSIP uses the camera to photograph soil beside the printed reference card.                                                      |
-| iOS      | Location when in use (`NSLocationWhenInUseUsageDescription`)             | First "Use my current location" | GSIP records where each soil photo was taken, privately. Only a broad area shared by at least 3 contributors is ever published. |
-| Android  | Location while in use (`ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`) | First "Use my current location" | Android shows its own prompt; the form explains the use beside the button.                                                      |
+| Platform    | Permission                                                               | When it is asked                 | Purpose string                                                                                                                  |
+| ----------- | ------------------------------------------------------------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| iOS         | Camera (`NSCameraUsageDescription`)                                      | First "Take photo"               | GSIP uses the camera to photograph soil beside the printed reference card.                                                      |
+| iOS         | Location when in use (`NSLocationWhenInUseUsageDescription`)             | First "Use my current location"  | GSIP records where each soil photo was taken, privately. Only a broad area shared by at least 3 contributors is ever published. |
+| Android     | Location while in use (`ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`) | First "Use my current location"  | Android shows its own prompt; the form explains the use beside the button.                                                      |
+| iOS/Android | Local notifications (`POST_NOTIFICATIONS` on Android 13+)                | Explicit "Enable sync reminders" | One generic reminder to review unsynced work; denial leaves capture usable.                                                     |
 
 - **Android camera.** The app declares no camera permission, and removes one if a library brings
   it in. "Take photo" opens the system camera app, which then needs none, so Android never asks.
@@ -55,6 +56,7 @@ The app asks for two things, each only when the person uses the feature:
   ("GSIP lets you choose a saved soil photo with the system picker, which shares only the photo
   you pick.") and `NSPhotoLibraryAddUsageDescription` ("GSIP keeps your soil photos inside the
   app and does not save them to your library.").
+- **Reminders.** [APP-2B](APP_SYNC_REMINDERS.md) adds one inexact 24-hour scheduling attempt per backlog cycle, with no private notification payload, push service or location calculation. Android adds normal `RECEIVE_BOOT_COMPLETED` for bounded restoration after unlock; exact-alarm permissions and `WAKE_LOCK` are removed/rejected, including SDK-qualified forms. Opt-out/sign-out/rights/sync/empty or observed closed gates clear the owned pending/delivered reminder; uncertain cleanup stays held. Device behavior is not proven by the native build.
 - **Never requested.** Background location, the microphone, contacts, storage and media
   permissions, and the advertising ID. `scripts/app_permissions.py` removes any of these that a
   library brings into the Android manifest, and CI fails if the built APK or the built iOS app
@@ -217,6 +219,11 @@ Check on one Android phone and one iPhone, and record the results in the pull re
    checks described above; no private bytes in cloud backup.
 10. The separately implemented iOS exclusion method passes synthetic real-device backup/restore
     checks. This remains **blocked/unverified** and prevents an iOS store-readiness claim.
+11. Local sync reminders: Android 12/13+ and iPhone permission/denial/revocation, foreground/
+    background/killed/offline, reboot/unlock, opt-out, empty/closed/foreign queue cancellation,
+    late replies, fresh tap access and pending/delivered absence. Exact-alarm settings stay
+    closed; synthetic private sentinels never enter native logs. This device evidence remains
+    pending; unit tests and unsigned native artifacts do not prove it.
 
 Each CI build is signed with a fresh debug key, so a newer APK will not install over an older
 one: uninstall first. Uninstalling deletes the device's anonymous account and queue, so withdraw
@@ -249,7 +256,7 @@ stay local. The independent hosted capability gate also defaults closed.
 
 Library draft context, strict declaration JSON bytes, namespace/account bindings
 and the queue generation fence use the existing `gsip-capture-v1` WebKit/browser
-IndexedDB database (version 3). They share the compiled Android all-domain cloud
+IndexedDB database (version 4 after APP-2B's additive reminder-intent store). They share the compiled Android all-domain cloud
 backup exclusions and approved direct-device-transfer policy above. The existing
 iOS cloud backup gate remains blocked/unverified; a local test does not establish
 iOS backup exclusion or store readiness. Imported JSON files elsewhere on the
