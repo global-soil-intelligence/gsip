@@ -8,6 +8,12 @@ import {
 import { captureTime, isCaptureLive } from './capture'
 import { fuzzLocation } from './geo'
 import { HexPreview } from './HexPreview'
+import { LibrarySection } from './LibrarySection'
+import {
+  type LibraryDraft,
+  isLibraryIntakeLive,
+  queueLibraryDraft,
+} from './library'
 import { legalLinks } from './legal'
 import { MySoil } from './MySoilPanel'
 import { mySoil } from './mySoil'
@@ -30,6 +36,12 @@ import {
 } from './provenance'
 import {
   clearDraftPhotos,
+  clearLibraryDraft,
+  discardLibraryConflicts,
+  savedLibraryDraft,
+  saveLibraryDraft,
+  queueRevision,
+  putIfCurrent,
   discardHeld,
   draftPhotos,
   enqueue,
@@ -95,15 +107,30 @@ function PhotoField({
   label,
   name,
   optional = false,
+  onChooseFile,
+  savedPhoto,
+  shot,
 }: {
+  savedPhoto?: CapturedPhoto | null
+  shot?: ShotType
+  onChooseFile?: (file: File) => void
   label: string
   name: string
   optional?: boolean
 }) {
+  const preview = usePreview(savedPhoto ?? null)
   return (
     <label className="photo-field">
       <span>{label}</span>
       <small>{optional ? 'Optional confidence boost' : 'Required'}</small>
+      {savedPhoto && <small>Photo {shot} ready on this device</small>}
+      {preview && (
+        <img
+          className="photo-preview"
+          src={preview}
+          alt={`Saved draft photo ${shot}`}
+        />
+      )}
       <div className="camera-guide" aria-hidden="true">
         <span>Keep card + soil inside the guide</span>
       </div>
@@ -112,7 +139,11 @@ function PhotoField({
         type="file"
         accept="image/jpeg"
         capture="environment"
-        required={!optional}
+        required={!optional && !onChooseFile}
+        onChange={(event) => {
+          const file = event.currentTarget.files?.[0]
+          if (file && onChooseFile) onChooseFile(file)
+        }}
       />
     </label>
   )
@@ -218,6 +249,7 @@ function NativePhotoField({
           Use a saved photo for {shot}
           <input
             className="visually-hidden"
+            name={`shot-${shot.toLowerCase()}`}
             type="file"
             accept="image/jpeg"
             disabled={disabled}
@@ -268,14 +300,18 @@ function CaptureClosed() {
 export function App() {
   const formRef = useRef<HTMLFormElement>(null)
   const live = isCaptureLive()
+  const libraryLive = isLibraryIntakeLive()
+  const [libraryDraft, setLibraryDraft] = useState<LibraryDraft | null>(null)
+  const [libraryConflictCount, setLibraryConflictCount] = useState(0)
+  const [heldLibraryCount, setHeldLibraryCount] = useState(0)
   // WP-APP-1: the phone app uses the native camera and location; browsers use the web ones.
   const native = useMemo(() => isNativeApp(), [])
   const [platform, setPlatform] = useState<Platform | null>(() =>
     native ? null : webPlatform(),
   )
   const [nativePhotos, setNativePhotos] = useState<ShotPhotos>(NO_PHOTOS)
-  // The latest camera request; a result from an older one (never settled, or superseded) is ignored.
-  const shotRequest = useRef(0)
+  // Camera and picker share one intent counter per shot: a later choice always wins.
+  const photoRequests = useRef<Record<ShotType, number>>({ A: 0, B: 0, C: 0 })
   const [soilRefresh, setSoilRefresh] = useState(0)
   const client = useMemo(
     () =>
@@ -329,7 +365,7 @@ export function App() {
 
   // Photos taken before Android ended the app (it may, while the camera is open) come back.
   useEffect(() => {
-    if (!native) return
+    if (!native && !libraryLive) return
     let cancelled = false
     draftPhotos().then(
       (saved) => {
@@ -345,7 +381,32 @@ export function App() {
     return () => {
       cancelled = true
     }
-  }, [native])
+  }, [native, libraryLive])
+
+  useEffect(() => {
+    if (!libraryLive) return
+    let cancelled = false
+    void savedLibraryDraft().then((saved) => {
+      if (!cancelled) setLibraryDraft(saved ?? null)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [libraryLive])
+
+  async function changeLibraryDraft(next: LibraryDraft | null) {
+    const revision = next?.deviceRevision ?? (await queueRevision())
+    setLibraryDraft(next)
+    try {
+      if (next) {
+        if (!(await saveLibraryDraft(next, revision))) setLibraryDraft(null)
+      } else await clearLibraryDraft()
+    } catch {
+      setStatus(
+        'The private draft could not be saved. Try again before queueing.',
+      )
+    }
+  }
 
   const refreshQueueState = useCallback(async () => {
     const records = await queued()
@@ -354,6 +415,12 @@ export function App() {
       records.filter((record) => Boolean(record.deadLetteredAt)).length,
     )
     setHeldCount(records.filter((record) => Boolean(record.heldAt)).length)
+    setHeldLibraryCount(
+      records.filter((record) => record.heldAt && record.library).length,
+    )
+    setLibraryConflictCount(
+      records.filter((record) => Boolean(record.libraryConflictAt)).length,
+    )
     setReconfirmCount(
       records.filter((record) => Boolean(record.termsExpiredAt)).length,
     )
@@ -381,7 +448,10 @@ export function App() {
     setStatus('Securely syncing queued observations…')
     const result = await drainQueue(
       indexedDbQueue,
-      (record) => submitQueued(client, record),
+      (record, checkpoint) =>
+        record.library
+          ? submitQueued(client, record, checkpoint)
+          : submitQueued(client, record),
       () => Date.now(),
       closed,
     )
@@ -393,7 +463,15 @@ export function App() {
     const withdrawn = result.discarded
       ? ` ${result.discarded} observation${result.discarded > 1 ? 's' : ''} you had withdrawn ${result.discarded > 1 ? 'were' : 'was'} removed from this device.`
       : ''
-    if (result.reconfirm) {
+    if (result.conflicts) {
+      setStatus(
+        'A private sample has an identity or context conflict. Keep it here or explicitly discard it; its identifiers cannot be replaced on retry.',
+      )
+    } else if (result.paused) {
+      setStatus(
+        'Private library intake is paused. Your sample and photos stay on this device, including any completed upload stage.',
+      )
+    } else if (result.reconfirm) {
       setStatus(
         `${result.reconfirm} observation${result.reconfirm > 1 ? 's' : ''} waited more than 30 days to sync. Accept the contribution terms again to send ${result.reconfirm > 1 ? 'them' : 'it'}.${withdrawn}`,
       )
@@ -490,23 +568,29 @@ export function App() {
     )
   }
 
-  function keepNativePhoto(shot: ShotType, photo: CapturedPhoto) {
+  async function keepNativePhoto(
+    shot: ShotType,
+    photo: CapturedPhoto,
+    revision: number,
+  ) {
+    if (revision !== (await queueRevision())) return
     setNativePhotos((current) => ({ ...current, [shot]: photo }))
-    void saveDraftPhoto(shot, photo).catch(() => undefined)
+    await saveDraftPhoto(shot, photo, revision)
     setStatus(`Photo ${shot} is ready.`)
   }
 
   async function takeNativePhoto(shot: ShotType) {
     if (platform?.camera.kind !== 'native') return
-    const request = ++shotRequest.current
+    const request = ++photoRequests.current[shot]
+    const revision = await queueRevision()
     setStatus('Opening the camera… If it does not open, use a saved photo.')
     try {
       const photo = await platform.camera.takePhoto()
-      if (request !== shotRequest.current) return
-      if (photo) keepNativePhoto(shot, photo)
+      if (request !== photoRequests.current[shot]) return
+      if (photo) await keepNativePhoto(shot, photo, revision)
       else setStatus('No photo was taken.')
     } catch (error) {
-      if (request !== shotRequest.current) return
+      if (request !== photoRequests.current[shot]) return
       setStatus(
         PHOTO_PROBLEMS[
           error instanceof PhotoRefused ? error.problem : 'failed'
@@ -516,13 +600,14 @@ export function App() {
   }
 
   async function chooseNativePhoto(shot: ShotType, file: File) {
-    shotRequest.current += 1
+    const request = ++photoRequests.current[shot]
+    const revision = await queueRevision()
     try {
-      keepNativePhoto(
-        shot,
-        await photoFromFile(file, PAGE_LOADED_AT, Date.now()),
-      )
+      const photo = await photoFromFile(file, PAGE_LOADED_AT, Date.now())
+      if (request !== photoRequests.current[shot]) return
+      await keepNativePhoto(shot, photo, revision)
     } catch (error) {
+      if (request !== photoRequests.current[shot]) return
       setStatus(
         PHOTO_PROBLEMS[
           error instanceof PhotoRefused ? error.problem : 'not_jpeg'
@@ -532,8 +617,9 @@ export function App() {
   }
 
   function discardNativePhotos() {
-    shotRequest.current += 1
+    for (const shot of SHOTS) photoRequests.current[shot] += 1
     setNativePhotos(NO_PHOTOS)
+    setLibraryDraft(null)
     void clearDraftPhotos().catch(() => undefined)
     setStatus('Photos discarded.')
   }
@@ -568,7 +654,7 @@ export function App() {
     event.preventDefault()
     const unsupportedPhoto = Array.from(
       event.currentTarget.querySelectorAll<HTMLInputElement>(
-        'input[type="file"]',
+        'input[type="file"][name^="shot-"]',
       ),
     ).some((input) =>
       Array.from(input.files ?? []).some((file) => file.type !== 'image/jpeg'),
@@ -605,10 +691,12 @@ export function App() {
       setStatus('Confirm the sampling rules before queueing this observation.')
       return
     }
+    const submitRevision = await queueRevision()
     const now = Date.now()
     let shots: ShotPhotos
     try {
-      shots = native ? nativePhotos : await webPhotos(formElement, now)
+      shots =
+        native || libraryLive ? nativePhotos : await webPhotos(formElement, now)
     } catch (error) {
       setStatus(
         PHOTO_PROBLEMS[
@@ -628,6 +716,37 @@ export function App() {
     })
     // WP-6d: an observation is only ever sent as the account it was made under.
     const ownerUid = await recordOwner(client)
+    let library: QueueRecord['library']
+    if (libraryDraft) {
+      if (libraryDraft.ownerUid && libraryDraft.ownerUid !== ownerUid) {
+        setStatus(
+          'This private draft belongs to its original account. Return to that account or discard the draft before creating a new sample.',
+        )
+        return
+      }
+      try {
+        library = queueLibraryDraft(libraryDraft)
+      } catch {
+        setStatus(
+          'Enter valid sample depth bounds and a supported declaration before queueing.',
+        )
+        return
+      }
+      // Persist private context and photo bytes before the durable queue write.
+      if (
+        libraryDraft.deviceRevision !== undefined &&
+        libraryDraft.deviceRevision !== submitRevision
+      )
+        return
+      if (!(await saveLibraryDraft(libraryDraft, submitRevision))) return
+      await Promise.all(
+        SHOTS.flatMap((shot) =>
+          shots[shot]
+            ? [saveDraftPhoto(shot, shots[shot]!, submitRevision)]
+            : [],
+        ),
+      )
+    }
     const record: QueueRecord = {
       accuracyM: accuracy,
       acceptedAt: new Date(now).toISOString(),
@@ -643,17 +762,21 @@ export function App() {
       deviceModel: coarseDeviceModel(),
       disturbed: form.get('disturbed') === 'yes',
       grantId: crypto.randomUUID(),
+      library,
       landCover: String(form.get('land-cover')),
       latitude: numericLatitude,
       longitude: numericLongitude,
       ownerUid,
       photos: capturedPhotos,
       queuedAt: new Date().toISOString(),
-      submissionId: crypto.randomUUID(),
+      submissionId: library?.request.submission_id ?? crypto.randomUUID(),
       surfaceCondition: String(form.get('surface-condition')),
       termsVersion: TERMS_VERSION,
     }
-    await enqueue(record)
+    if (library) {
+      if (!(await putIfCurrent(record, submitRevision, false))) return
+    } else await enqueue(record)
+    setLibraryDraft(null)
     setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
     formRef.current?.reset()
     setNativePhotos(NO_PHOTOS)
@@ -812,9 +935,36 @@ export function App() {
                   ))
                 ) : (
                   <>
-                    <PhotoField name="shot-a" label="A · Context / 30 cm" />
-                    <PhotoField name="shot-b" label="B · Fresh face / 15 cm" />
                     <PhotoField
+                      savedPhoto={libraryLive ? nativePhotos.A : undefined}
+                      shot="A"
+                      name="shot-a"
+                      label="A · Context / 30 cm"
+                      onChooseFile={
+                        libraryLive
+                          ? (file) => void chooseNativePhoto('A', file)
+                          : undefined
+                      }
+                    />
+                    <PhotoField
+                      savedPhoto={libraryLive ? nativePhotos.B : undefined}
+                      shot="B"
+                      name="shot-b"
+                      label="B · Fresh face / 15 cm"
+                      onChooseFile={
+                        libraryLive
+                          ? (file) => void chooseNativePhoto('B', file)
+                          : undefined
+                      }
+                    />
+                    <PhotoField
+                      savedPhoto={libraryLive ? nativePhotos.C : undefined}
+                      shot="C"
+                      onChooseFile={
+                        libraryLive
+                          ? (file) => void chooseNativePhoto('C', file)
+                          : undefined
+                      }
                       name="shot-c"
                       label="C · Moist texture"
                       optional
@@ -934,6 +1084,22 @@ export function App() {
               </div>
             </fieldset>
 
+            {libraryLive && (
+              <LibrarySection
+                client={client}
+                value={libraryDraft}
+                onChange={changeLibraryDraft}
+              />
+            )}
+            {libraryLive && !native && (
+              <button
+                type="button"
+                className="secondary"
+                onClick={discardNativePhotos}
+              >
+                Discard draft photos and private sample
+              </button>
+            )}
             <fieldset>
               <legend>
                 <span>04</span> Grant & submit
@@ -1016,6 +1182,13 @@ export function App() {
                   device. {heldCount > 1 ? 'They stay' : 'It stays'} here and{' '}
                   {heldCount > 1 ? 'are' : 'is'} not sent unless you choose.
                 </p>
+                {heldLibraryCount > 0 && (
+                  <p>
+                    Private library samples stay bound to their original
+                    account. Return to that account to retry; this button cannot
+                    transfer them.
+                  </p>
+                )}
                 <button
                   type="button"
                   className="secondary"
@@ -1029,13 +1202,34 @@ export function App() {
                   type="button"
                   className="secondary"
                   onClick={() => {
-                    void releaseHeld()
+                    void recordOwner(client)
+                      .then((uid) => releaseHeld(uid))
                       .then(refreshQueueState)
                       .then(() => sync())
                   }}
                 >
-                  Send {heldCount > 1 ? 'them' : 'it'} from this device’s
-                  account
+                  {heldLibraryCount === heldCount
+                    ? 'Retry from the original account'
+                    : 'Send'}{' '}
+                  {heldCount > 1 ? 'them' : 'it'} from this device’s account
+                </button>
+              </div>
+            )}
+            {libraryConflictCount > 0 && (
+              <div role="group" aria-label="Private samples needing attention">
+                <p>
+                  {libraryConflictCount} private sample(s) have an immutable
+                  identity or context conflict. They remain on this device until
+                  you discard them.
+                </p>
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() =>
+                    void discardLibraryConflicts().then(refreshQueueState)
+                  }
+                >
+                  Discard conflicted private samples
                 </button>
               </div>
             )}
@@ -1095,7 +1289,9 @@ export function App() {
             client={client}
             onQueueCleared={async () => {
               // The queue and any photos taken here are gone; My Soil changes too.
+              for (const shot of SHOTS) photoRequests.current[shot] += 1
               setNativePhotos(NO_PHOTOS)
+              setLibraryDraft(null)
               setSoilRefresh((count) => count + 1)
               await refreshQueueState()
             }}

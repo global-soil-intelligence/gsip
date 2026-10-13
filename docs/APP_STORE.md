@@ -238,3 +238,20 @@ certificates, keystores and upload credentials are not created by this work pack
 Still to do before submission (WP-APP-2): the device backup gates, app icons and launch screens
 (the generated projects use Capacitor's defaults), signing, store listings and screenshots.
 Deep links and e-mail account linking wait for the owner-controlled accounts.
+
+## Private library intake preparation (WP-LIB-4C)
+
+App and Pages builds explicitly keep `VITE_CAPTURE_LIVE=false` and
+`VITE_LIBRARY_INTAKE_LIVE=false`. The capture build emits `gsip-activation.json`
+from the same values compiled into its code. Pages packaging and native APK/iOS
+artifact checks refuse an open flag or a missing receipt; synthetic open builds
+stay local. The independent hosted capability gate also defaults closed.
+
+Library draft context, strict declaration JSON bytes, namespace/account bindings
+and the queue generation fence use the existing `gsip-capture-v1` WebKit/browser
+IndexedDB database (version 3). They share the compiled Android all-domain cloud
+backup exclusions and approved direct-device-transfer policy above. The existing
+iOS cloud backup gate remains blocked/unverified; a local test does not establish
+iOS backup exclusion or store readiness. Imported JSON files elsewhere on the
+device remain outside GSIP deletion control; the web picker supplies no temporary
+native path to erase.

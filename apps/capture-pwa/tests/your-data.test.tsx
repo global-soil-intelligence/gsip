@@ -151,8 +151,22 @@ describe('your data', () => {
     expect(await screen.findByText(/withdrawal completed on/i)).toBeDefined()
   })
 
-  it('keeps the queue and explains when a request is already in progress', async () => {
+  it('clears local private bytes after a confirmed already-open request', async () => {
     mocks.requestDeletion.mockResolvedValue('already_open')
+    vi.stubEnv('VITE_LIBRARY_INTAKE_LIVE', 'true')
+    const q = await import('../src/queue')
+    const { newLibraryDraft } = await import('../src/library')
+    const draft = {
+      ...newLibraryDraft('00000000-0000-4000-8000-000000000001'),
+      declarationBytes: new Uint8Array([123, 125]),
+    }
+    await q.saveLibraryDraft(draft, await q.queueRevision())
+    await q.saveDraftPhoto('B', {
+      bytes: new Uint8Array([255, 216, 255, 1]),
+      mimeType: 'image/jpeg',
+      method: 'file',
+      takenAt: 1,
+    })
     await enqueue(record)
     render(<App />)
     choose(/delete my account/i)
@@ -162,7 +176,10 @@ describe('your data', () => {
     expect(
       await screen.findByText(/a request is already in progress/i),
     ).toBeDefined()
-    expect(await queued()).toHaveLength(1)
+    expect(await queued()).toEqual([])
+    expect(await q.savedLibraryDraft()).toBeUndefined()
+    expect(await q.draftPhotos()).toEqual({})
+    expect(screen.queryByLabelText('Depth top (cm)')).toBeNull()
   })
 
   it('says so when the request cannot be sent', async () => {

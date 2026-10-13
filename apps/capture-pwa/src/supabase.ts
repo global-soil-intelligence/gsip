@@ -1,11 +1,22 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import type { Database } from '@gsip/schema'
+import {
+  type Database,
+  type Json,
+  LibraryIntakeCapabilitiesSchema,
+  LibraryIntakeReceiptSchema,
+  parseLibraryIntakeRequest,
+} from '@gsip/schema'
 import {
   AccountChanged,
+  LibraryConflict,
+  LibraryUnavailable,
   isWithdrawal,
   RecordWithdrawn,
   TermsReconfirmationNeeded,
 } from './errors'
+import { isCaptureLive } from './capture'
+import { isLibraryIntakeLive } from './library'
+import { libraryNamespaceOwner, queueRevision, bindLibraryOwner } from './queue'
 import { fuzzLocation } from './geo'
 import { claimColumns } from './provenance'
 import { acceptanceExpired, TERMS_VERSION } from './terms'
@@ -39,6 +50,21 @@ export async function fetchServiceState(
     return data.capture_open ? 'open' : 'closed'
   } catch {
     return 'unknown'
+  }
+}
+
+/** Missing/closed/incompatible capabilities never authorize sign-in or partial intake. */
+export async function fetchLibraryAvailability(
+  client: GsipClient,
+): Promise<boolean> {
+  if (!isLibraryIntakeLive()) return false
+  try {
+    const result = await client.rpc('library_intake_capabilities')
+    if (result.error) return false
+    const parsed = LibraryIntakeCapabilitiesSchema.safeParse(result.data)
+    return parsed.success && parsed.data.available
+  } catch {
+    return false
   }
 }
 
@@ -209,109 +235,185 @@ function duplicateUpload(error: {
 export async function submitQueued(
   client: GsipClient,
   record: QueueRecord,
+  checkpoint: (record: QueueRecord) => Promise<void> = async () => undefined,
 ): Promise<void> {
-  const uid = await senderUid(client, record)
-  const contributor = await contributorId(client, uid)
-  const grant = await client
-    .from('contribution_grants')
-    .select('id')
-    .eq('id', record.grantId)
-    .maybeSingle()
-  if (grant.error) throw grant.error
-  if (!grant.data) {
-    // The grant records when the person accepted the terms, never the photo's own timestamp.
-    // WP-6e (I9): the original acceptance always goes first. The server refuses a withdrawn one
-    // as withdrawn (WD001) before it checks its age, so an observation its person withdrew is
-    // dropped, never re-accepted. Only an acceptance it refused as expired, or under terms this
-    // build no longer presents, is held for the person to accept the current terms again.
-    const original = await insertGrant(
-      client,
-      record,
-      contributor,
-      record.acceptedAt ?? record.queuedAt,
-      record.termsVersion,
-    )
-    if (original.error) {
-      if (isWithdrawal(original.error)) throw new RecordWithdrawn()
-      if (!needsNewAcceptance(original.error, record, Date.now()))
-        throw original.error
+  const deviceRevision = record.library ? await queueRevision() : undefined
+  // Presence requires completion: never silently send a library record down the legacy path.
+  if (record.library !== undefined) {
+    if (!isLibraryIntakeLive() || !isCaptureLive())
+      throw new LibraryUnavailable()
+    try {
       if (
-        !record.reconfirmedAt ||
-        acceptanceExpired(record.reconfirmedAt, Date.now())
+        record.library.version !== 1 ||
+        record.library.request.submission_id !== record.submissionId ||
+        !record.photos.some((p) => p.shotType === 'A') ||
+        !record.photos.some((p) => p.shotType === 'B')
       )
-        throw new TermsReconfirmationNeeded()
-      const renewed = await insertGrant(
+        throw new LibraryConflict()
+      record.library.request = parseLibraryIntakeRequest(
+        JSON.stringify(record.library.request),
+      )
+    } catch {
+      throw new LibraryConflict()
+    }
+    if (!(await fetchLibraryAvailability(client)))
+      throw new LibraryUnavailable()
+    if ((await fetchServiceState(client)) !== 'open')
+      throw new LibraryUnavailable()
+  }
+  if (record.library) {
+    const knownOwner = await libraryNamespaceOwner(
+      record.library.request.node_id,
+    )
+    if (knownOwner) {
+      if (record.ownerUid && record.ownerUid !== knownOwner)
+        throw new AccountChanged()
+      record.ownerUid = knownOwner
+    }
+  }
+  const uid = await senderUid(client, record)
+  if (record.library) {
+    record.ownerUid = await bindLibraryOwner(
+      record.library.request.node_id,
+      uid,
+      deviceRevision,
+    )
+    await checkpoint(record)
+    if (record.ownerUid !== uid) throw new AccountChanged()
+  }
+  if (!record.library?.photosFinalized) {
+    const contributor = await contributorId(client, uid)
+    const grant = await client
+      .from('contribution_grants')
+      .select('id')
+      .eq('id', record.grantId)
+      .maybeSingle()
+    if (grant.error) throw grant.error
+    if (!grant.data) {
+      // The grant records when the person accepted the terms, never the photo's own timestamp.
+      // WP-6e (I9): the original acceptance always goes first. The server refuses a withdrawn one
+      // as withdrawn (WD001) before it checks its age, so an observation its person withdrew is
+      // dropped, never re-accepted. Only an acceptance it refused as expired, or under terms this
+      // build no longer presents, is held for the person to accept the current terms again.
+      const original = await insertGrant(
         client,
         record,
         contributor,
-        record.reconfirmedAt,
-        record.reconfirmedTermsVersion ?? TERMS_VERSION,
+        record.acceptedAt ?? record.queuedAt,
+        record.termsVersion,
       )
-      if (renewed.error) throw refusal(renewed.error)
+      if (original.error) {
+        if (isWithdrawal(original.error)) throw new RecordWithdrawn()
+        if (!needsNewAcceptance(original.error, record, Date.now()))
+          throw original.error
+        if (
+          !record.reconfirmedAt ||
+          acceptanceExpired(record.reconfirmedAt, Date.now())
+        )
+          throw new TermsReconfirmationNeeded()
+        const renewed = await insertGrant(
+          client,
+          record,
+          contributor,
+          record.reconfirmedAt,
+          record.reconfirmedTermsVersion ?? TERMS_VERSION,
+        )
+        if (renewed.error) throw refusal(renewed.error)
+      }
     }
-  }
 
-  const location = fuzzLocation(record.latitude, record.longitude)
-  const existingSubmission = await client
-    .from('submissions')
-    .select('id')
-    .eq('id', record.submissionId)
-    .maybeSingle()
-  if (existingSubmission.error) throw existingSubmission.error
-  if (!existingSubmission.data) {
-    const created = await client.from('submissions').insert({
-      captured_at: record.capturedAt,
-      contributor_id: contributor,
-      disturbed: record.disturbed,
-      device_model: record.deviceModel,
-      geom_precise: `POINT(${record.longitude} ${record.latitude})`,
-      gps_accuracy_m: record.accuracyM,
-      grant_id: record.grantId,
-      h3_r6: location.h3R6,
-      h3_r8: location.h3R8,
-      id: record.submissionId,
-      land_cover: record.landCover,
-      status: 'pending',
-      surface_condition: record.surfaceCondition,
-      // WP-6e: claims only; the server assigns the actor and the provenance tier.
-      ...claimColumns(record.claims),
-    })
-    if (created.error) throw refusal(created.error)
-  }
-
-  for (const photo of record.photos) {
-    const path = photoStoragePath(uid, record, photo)
-    const uploaded = await client.storage
-      .from('incoming-photos')
-      .upload(path, photo.bytes, {
-        contentType: photo.mimeType,
-        upsert: false,
-      })
-    if (uploaded.error && !duplicateUpload(uploaded.error)) throw uploaded.error
-
-    const existingPhoto = await client
-      .from('photos')
+    const location = fuzzLocation(record.latitude, record.longitude)
+    const existingSubmission = await client
+      .from('submissions')
       .select('id')
-      .eq('submission_id', record.submissionId)
-      .eq('shot_type', photo.shotType)
+      .eq('id', record.submissionId)
       .maybeSingle()
-    if (existingPhoto.error) throw existingPhoto.error
-    if (!existingPhoto.data) {
-      const created = await client.from('photos').insert({
-        shot_type: photo.shotType,
-        storage_path: path,
-        submission_id: record.submissionId,
+    if (existingSubmission.error) throw existingSubmission.error
+    if (!existingSubmission.data) {
+      const created = await client.from('submissions').insert({
+        captured_at: record.capturedAt,
+        contributor_id: contributor,
+        disturbed: record.disturbed,
+        device_model: record.deviceModel,
+        geom_precise: `POINT(${record.longitude} ${record.latitude})`,
+        gps_accuracy_m: record.accuracyM,
+        grant_id: record.grantId,
+        h3_r6: location.h3R6,
+        h3_r8: location.h3R8,
+        id: record.submissionId,
+        land_cover: record.landCover,
+        status: 'pending',
+        surface_condition: record.surfaceCondition,
+        // WP-6e: claims only; the server assigns the actor and the provenance tier.
+        ...claimColumns(record.claims),
       })
       if (created.error) throw refusal(created.error)
     }
-  }
 
-  // Shots A and B are uploaded: finalize so the server can settle QA status.
-  // Finalize is idempotent, so a retry after a lost response is safe.
-  const finalized = await client.rpc('finalize_submission', {
-    p_submission_id: record.submissionId,
-  })
-  if (finalized.error) throw finalized.error
+    for (const photo of record.photos) {
+      if (record.library) await checkpoint(record)
+      const path = photoStoragePath(uid, record, photo)
+      const uploaded = await client.storage
+        .from('incoming-photos')
+        .upload(path, photo.bytes, {
+          contentType: photo.mimeType,
+          upsert: false,
+        })
+      if (uploaded.error && !duplicateUpload(uploaded.error))
+        throw uploaded.error
+
+      const existingPhoto = await client
+        .from('photos')
+        .select('id')
+        .eq('submission_id', record.submissionId)
+        .eq('shot_type', photo.shotType)
+        .maybeSingle()
+      if (existingPhoto.error) throw existingPhoto.error
+      if (!existingPhoto.data) {
+        const created = await client.from('photos').insert({
+          shot_type: photo.shotType,
+          storage_path: path,
+          submission_id: record.submissionId,
+        })
+        if (created.error) throw refusal(created.error)
+      }
+    }
+
+    // Shots A and B are uploaded: finalize so the server can settle QA status.
+    // Finalize is idempotent, so a retry after a lost response is safe.
+    if (record.library) await checkpoint(record)
+    const finalized = await client.rpc('finalize_submission', {
+      p_submission_id: record.submissionId,
+    })
+    if (finalized.error) throw refusal(finalized.error)
+    if (record.library) {
+      record.library.photosFinalized = true
+      await checkpoint(record)
+    }
+  }
+  if (record.library) {
+    await checkpoint(record)
+    // Revalidate the transport byte bound and strict envelope at the send boundary.
+    const request = parseLibraryIntakeRequest(
+      JSON.stringify(record.library.request),
+    )
+    const intake = await client.rpc('record_library_intake', {
+      p_request: request as unknown as Json,
+    })
+    if (intake.error) {
+      if (isWithdrawal(intake.error)) throw new RecordWithdrawn()
+      if (intake.error.code === 'LI002') throw new LibraryConflict()
+      if (intake.error.code === '42501') throw new AccountChanged()
+      if (
+        ['LI001', '42883', 'PGRST202', 'PGRST205'].includes(intake.error.code)
+      )
+        throw new LibraryUnavailable()
+      throw new Error('Private intake could not complete.')
+    }
+    const receipt = LibraryIntakeReceiptSchema.safeParse(intake.data)
+    if (!receipt.success || receipt.data.intake_id !== request.intake_id)
+      throw new Error('Private intake receipt is unavailable.')
+  }
 
   // The durable prior_jobs row is created by the submission trigger. This
   // best-effort invocation starts enrichment immediately; an upstream outage

@@ -43,8 +43,11 @@ test('public hub explains the project and connects its core paths', async ({
     }),
   ).toBeVisible()
   await expect(
-    page.getByRole('link', { name: 'Contribute an observation' }).first(),
+    page.getByRole('link', { name: 'Capture opening soon' }).first(),
   ).toBeVisible()
+  await expect(
+    page.getByRole('link', { name: 'Capture opening soon' }).first(),
+  ).toHaveAttribute('href', './about/#launch-status')
   await page
     .getByRole('navigation', { name: 'Primary navigation' })
     .getByRole('link', { name: 'Print card' })

@@ -47,10 +47,13 @@ existing PR descriptions and append each fix and reason under **Changes after re
 When Justin merges a predecessor, retarget the next PR to `main` and resolve conflicts by
 merging `main` into it. Follow-ups stack on `wp-app-1-phone-app` until the reviewed stack merges.
 
-The only approved secret-scan exception is the three immutable synthetic WP-AGENT-1 fixture
-fingerprints in `.gitleaksignore`, audited on 2026-10-11. Do not broaden them or change the
-scanner's rules, full-history coverage, redaction or workflow to make a check pass. Any
-additional suppression requires Justin's explicit approval.
+The approved secret-scan exceptions are exactly the three immutable synthetic WP-AGENT-1
+fixture fingerprints audited on 2026-10-11 and the one historical noncredential browser-fixture
+fingerprint explicitly approved by Justin on 2026-10-13. `.gitleaksignore` preserves the original
+four lines and adds only
+`bb9bd8a583231ff63ec14a7622532ddb869d7cde:scripts/e2e_server.py:generic-api-key:32`.
+Do not broaden these entries or change the scanner's rules, full-history coverage, redaction
+or workflow to make a check pass. Every further suppression requires Justin's explicit approval.
 
 ## Privacy, security, language and dependencies
 
@@ -108,10 +111,11 @@ needed for the corresponding checks. State missing tools and rely on CI for thos
 Never report a check as passing unless it ran. Preserve command outcomes, run links and
 artifact evidence; a local pass does not prove a deployment or production health.
 
-The prescribed Playwright command uses a local synthetic/mock capture-live test build.
-Keep that test output local: never upload or publish it. Rebuild the actual Pages deployment
-artifact with `VITE_CAPTURE_LIVE=false` after browser verification. This test harness does not
-authorize production capture or anonymous sign-in.
+The prescribed Playwright command builds Pages with both activation flags closed, then serves
+a separate synthetic capture fixture from a temporary directory on loopback only. That fixture
+uses reserved `.test` endpoints and is never copied into `_site` or a deployment artifact.
+Keep the fixture local: never upload or publish it. The harness refuses server reuse and cleans
+temporary files when it exits. It does not authorize production capture or anonymous sign-in.
 
 ## Production is gated, one step at a time
 

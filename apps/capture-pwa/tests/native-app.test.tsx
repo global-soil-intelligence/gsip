@@ -1,5 +1,6 @@
 import 'fake-indexeddb/auto'
 import {
+  act,
   cleanup,
   fireEvent,
   render,
@@ -319,4 +320,69 @@ describe('the phone app (WP-APP-1)', () => {
     expect(screen.queryByRole('button', { name: /magic link/i })).toBeNull()
     expect(screen.getByText(/later version of the app/i)).toBeDefined()
   })
+})
+
+it('a later saved shot B supersedes a pending camera result for the same shot', async () => {
+  const { draftPhotos } = await import('../src/queue')
+  let finish: ((value: unknown) => void) | undefined
+  mocks.takePhoto.mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve
+      }),
+  )
+  render(<App />)
+  fireEvent.click(await takeButton('B'))
+  await waitFor(() => expect(mocks.takePhoto).toHaveBeenCalledOnce())
+  const selected = new File([JPEG], 'newer.jpg', {
+    type: 'image/jpeg',
+    lastModified: 1,
+  })
+  fireEvent.change(screen.getByLabelText('Use a saved photo for B'), {
+    target: { files: [selected] },
+  })
+  await waitFor(async () =>
+    expect((await draftPhotos()).B?.method).toBe('file'),
+  )
+  finish!({
+    type: 0,
+    saved: false,
+    uri: OUTPUT,
+    webPath: 'https://localhost/_capacitor_file_/PIC.jpg',
+  })
+  await waitFor(() => expect(mocks.deleteFile).toHaveBeenCalledOnce())
+  await waitFor(async () =>
+    expect((await draftPhotos()).B?.method).toBe('file'),
+  )
+})
+
+it('a later camera shot B supersedes a pending saved-file read for the same shot', async () => {
+  const { draftPhotos } = await import('../src/queue')
+  let finish: ((value: ArrayBuffer) => void) | undefined
+  const selected = new File([JPEG], 'older.jpg', {
+    type: 'image/jpeg',
+    lastModified: 1,
+  })
+  const read = vi.spyOn(selected, 'arrayBuffer').mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve
+      }),
+  )
+  render(<App />)
+  await takeButton('B')
+  fireEvent.change(screen.getByLabelText('Use a saved photo for B'), {
+    target: { files: [selected] },
+  })
+  await waitFor(() => expect(read).toHaveBeenCalledOnce())
+  await take('B')
+  await waitFor(async () =>
+    expect((await draftPhotos()).B?.method).toBe('camera'),
+  )
+  await act(async () => {
+    finish!(JPEG.buffer)
+  })
+  await waitFor(async () =>
+    expect((await draftPhotos()).B?.method).toBe('camera'),
+  )
 })

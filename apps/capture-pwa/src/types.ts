@@ -1,3 +1,4 @@
+import type { QueuedLibrary } from './library'
 import type { ProvenanceClaims } from './provenance'
 
 export type ShotType = 'A' | 'B' | 'C'
@@ -21,6 +22,8 @@ export type CaptureDraft = {
   disturbed: boolean
   grantId: string
   landCover: string
+  /** Optional private intake; its presence can never fall back to ordinary capture. */
+  library?: QueuedLibrary
   latitude: number
   longitude: number
   /** The auth user signed in when the observation was queued; it is only ever sent as them. */
@@ -36,6 +39,8 @@ export type QueueRecord = CaptureDraft & {
   /** Set when its account is no longer signed in here: kept, not sent, until the person decides. */
   heldAt?: string
   nextRetryAt?: string
+  /** Immutable library identity/context refusal: only local discard, never new IDs on retry. */
+  libraryConflictAt?: string
   queuedAt: string
   /**
    * When the person accepted the current terms again for an observation whose original acceptance
