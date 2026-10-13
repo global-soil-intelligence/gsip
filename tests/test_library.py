@@ -151,3 +151,40 @@ def test_cli_never_echoes_invalid_payload_or_paths(
     assert "NEVER-ECHO-THIS" not in output.out + output.err
     assert str(incoming) not in output.out + output.err
     assert "invalid" in output.err.lower()
+
+
+def test_concurrent_identical_import_is_single_write(tmp_path: Path) -> None:
+    from concurrent.futures import ThreadPoolExecutor
+
+    store = PrivateLibrary(tmp_path / "library")
+    incoming = LibraryRecord.model_validate(record())
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        results = list(executor.map(lambda _: store.add(incoming), range(12)))
+    assert sum(results) == 1
+    assert len(store.records()) == 1
+
+
+def test_invalid_label_units_and_spectral_camera_fields_fail() -> None:
+    raw = record()
+    raw["labels"] = [
+        {
+            "property": "ph",
+            "unit": "g/kg",
+            "value": 7.0,
+            "uncertainty": 0.1,
+            "method_id": str(UUID(int=6)),
+            "verifier_id": str(UUID(int=7)),
+        }
+    ]
+    with pytest.raises(ValueError):
+        LibraryRecord.model_validate(raw)
+
+
+def test_duplicate_json_fields_cannot_change_measurement_meaning(tmp_path: Path) -> None:
+    from pipeline.library import read_record
+
+    incoming = tmp_path / "duplicate.json"
+    data = json.dumps(record())
+    incoming.write_text(data[:-1] + ', "synthetic": false}')
+    with pytest.raises(ValueError):
+        read_record(incoming)
