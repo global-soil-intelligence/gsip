@@ -378,15 +378,15 @@ Report eligible physical samples, paired camera/instrument samples, verified lab
 
 `gsip-library-intake-v1` has exactly these fields:
 
-| Field | Value and meaning |
-| --- | --- |
-| `schema_version` | Exactly `gsip-library-intake-v1`. |
-| `intake_id` | UUID allocated once for the queued request; retries retain it. |
-| `node_id`, `sample_id` | UUID namespace and sample key, allocated once in the private draft. A phone namespace is not a federated credential. |
-| `submission_id` | UUID of the contributor's existing finalized submission. The server resolves its shot B photo; no arbitrary photo ID, storage path or URL is accepted. |
-| `protocol_version` | Exactly `gsip-capture-v1`. |
-| `context` | Exactly `depth_top_cm`, `depth_bottom_cm` and `condition`, with the finite bounds and condition vocabulary of §16.2. Depths are declarations entered by the person, never inferred or defaulted. |
-| `instrument_declaration` | Null, or the strict object below. Absence means no instrument evidence was supplied. |
+| Field                    | Value and meaning                                                                                                                                                                                |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `schema_version`         | Exactly `gsip-library-intake-v1`.                                                                                                                                                                |
+| `intake_id`              | UUID allocated once for the queued request; retries retain it.                                                                                                                                   |
+| `node_id`, `sample_id`   | UUID namespace and sample key, allocated once in the private draft. A phone namespace is not a federated credential.                                                                             |
+| `submission_id`          | UUID of the contributor's existing finalized submission. The server resolves its shot B photo; no arbitrary photo ID, storage path or URL is accepted.                                           |
+| `protocol_version`       | Exactly `gsip-capture-v1`.                                                                                                                                                                       |
+| `context`                | Exactly `depth_top_cm`, `depth_bottom_cm` and `condition`, with the finite bounds and condition vocabulary of §16.2. Depths are declarations entered by the person, never inferred or defaulted. |
+| `instrument_declaration` | Null, or the strict object below. Absence means no instrument evidence was supplied.                                                                                                             |
 
 An attached declaration JSON file has exactly `measurement_id` (UUID) and `measurement`. `measurement` is the `instrument_reflectance` payload in §16.2: lowercase 64-hex `source_sha256`, instrument and calibration UUIDs, 3–10,000 aligned finite bands, strictly increasing wavelengths from 200 to 25,000 nm, and reflectance/uncertainty in [0,1]. The nested intake field has this same shape; its version is defined by the enclosing intake contract. It contains no labels, references to external URLs, instrument serials, operator names, timestamps or original instrument-file bytes. Percent reflectance, absorbance and radiance remain unsupported; do not convert them implicitly.
 
