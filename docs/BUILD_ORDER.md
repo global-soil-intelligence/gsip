@@ -157,6 +157,23 @@ Acceptance criteria:
 Point `globalsoilintelligence.com` at GitHub Pages, set the Pages custom domain, enforce HTTPS and retire the Squarespace page.
 Acceptance: the canonical domain serves the Pages site; `robots.txt` allows crawlers; canonical URLs and the sitemap resolve.
 
+**WP-SITE-1E: Prior-tile host policy**
+Scope: record the product owner's conditional approval for same-origin repository GitHub Pages
+prior tiles in the privacy notice and a deployment plan. Tiles remain palette-version release
+assets outside git and enter the Pages artifact only at deploy time. This package documents the
+host; it does not build or publish archives, change workflows or authorize deployment.
+
+Acceptance criteria:
+
+- [ ] The privacy notice identifies GitHub Pages as the map tile host and discloses browser
+      requests; its counsel-review status remains unchanged.
+- [ ] The plan requires SoilGrids-only values, palette and checksum evidence, a tile target of
+      700 MB or less, a whole site well below 1 GB, and verified Pages 206 range responses.
+- [ ] WMS remains the fallback until every condition passes; release publication and Pages
+      deployment remain gated by Justin's explicit go.
+- [ ] The privacy disclosure test fails without the host entry; processor and language checks and
+      documentation formatting pass. No dependency or licence changes.
+
 **WP-AGENT-1: Agent-readable GSIP**
 Scope:
 
@@ -190,7 +207,7 @@ Acceptance criteria:
 
 ### Pending v4.0 follow-ups — separate implementation PRs
 
-The following packages schedule SPEC §15 without claiming it has been approved or implemented. Owner-approved policy decisions are recorded there. Capture and production anonymous sign-in remain closed. The specification PR carries no code, dependencies or migrations. Follow-up branches stack after WP-APP-1 until the existing stack merges, with this specification amendment as the first change for the new architecture. Already-authorized WP-APP-2A CI/Android backup preparation may be built and reviewed against this proposal after its specification commit; its merge follows specification approval. Notification architecture remains a proposal, and screening implementation has the stronger explicit approval-and-merge gate below. No agent merges or approves a PR.
+The following packages schedule SPEC §15 without claiming it has been approved or implemented. Owner-approved policy decisions are recorded there. Capture and production anonymous sign-in remain closed. The specification PR carries no code, dependencies or migrations. Follow-up branches stack after WP-APP-1 until the existing stack merges, with this specification amendment as the first change for the new architecture. Already-authorized WP-APP-2A CI/Android backup preparation may be built and reviewed against this proposal after its specification commit; its merge follows specification approval. Notification architecture remains a proposal, and screening implementation has the stronger explicit approval-and-merge gate below. Justin retains final review and merge authority; the documented owner exception permits an explicitly authorized agent to execute ordered merges after green CI, without submitting an approving review.
 
 **WP-APP-2A: Account-free app build readiness and private backup exclusions**
 
@@ -235,6 +252,37 @@ Acceptance criteria for the later implementation PR:
 
 Remaining **WP-APP-2 store-release scope** stays gated: Apple/Google accounts, signing, store listings and deep links require Justin's accounts and decisions. No account, certificate or keystore is created by WP-APP-2A/2B.
 
+
+### Phase 1.5a — Follow-ups independent of production deployment
+
+**WP-AGENT-0: Coding-agent guidance**
+Scope: add root `AGENTS.md` for repository contributors, linking the public-reader guide at
+`docs/AGENTS.md`; collect the invariant, reviewed-stack, privacy, verification and per-step
+production-authorization rules. This is documentation of existing authority, not an architecture
+change or deployment permission.
+
+Acceptance criteria:
+
+- [ ] The root guide distinguishes coding agents from public API consumers and links every
+      read-first governing document.
+- [ ] A documentation usability test proves the local links and documented repository check
+      commands resolve; it fails without the guide.
+- [ ] Formatting and language checks pass; no dependency, licence, workflow or production change.
+
+
+**WP-3b: Cross-tab queue sync**
+Scope:
+
+1. Coordinate the existing queue drain with the origin's exclusive Web Lock `gsip-sync`, requested with `ifAvailable: true`. A context that cannot acquire it returns immediately without reading or changing the queue.
+2. Hold the lock until the complete drain settles, including queue writes and failures. Browsers without Web Locks keep the current drain behavior; existing per-screen trigger coalescing and retry scheduling continue.
+3. Preserve account binding, withdrawn-record removal, queue-generation checks, terms reconfirmation, backoff and dead-letter handling. No data, credential, capture-gate or dependency changes.
+
+Acceptance criteria:
+
+- [ ] vitest: overlapping tabs sharing a queue send each record only once with Web Locks; an unavailable lock causes no queue reads, writes or sends.
+- [ ] vitest: a queue exception releases the lock so a later drain can acquire it; browsers without Web Locks retain the existing behavior.
+- [ ] Existing queue, ownership, terms, rights and startup-sync tests pass.
+
 ### Phase 1.5b and Phase 2+ (specified after launch review)
 
 WP-AGENT-2 delegated capture for assistants (scoped tokens, consent screen, path-bound upload URLs) · WP-APP-2 store release of the phone app (deep-link e-mail sign-in, icons, signing and store listings; `docs/APP_STORE.md`) · WP-7 QA gate model (slots into the WP-4b/6b interface) · WP-8 estimator v0 · WP-9 nightly retrain and model cards · WP-10 estimate API · WP-11 gold-label bulk ingestion and gold kits · WP-12 fused correction and Most Wanted layers with information-gain credit · WP-13 SoilGrids file sampler replacing the REST dependency · WP-14 silver-label protocols · WP-AGENT-3 verifier task API with I13 consensus · WP-AGENT-4 evaluation service (I15) · WP-DATA-1 Parquet photo shards, Croissant metadata and PROV provenance · WP-OPS-1 event-driven worker queue.
@@ -276,7 +324,7 @@ GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function 
 
 ## 7. Sequencing
 
-`docs/spec-v3` → WP-6b → WP-6c → WP-6d → WP-6e → WP-AGENT-1 → WP-APP-1, as stacked pull requests merged in that order. WP-SITE-1D can happen at any time. The launch gates of SPEC §11 are checked after WP-6e merges; the product owner then sets `service_state.capture_open`. The read-only parts of WP-AGENT-1 may deploy before launch because they touch no contributor data.
+`docs/spec-v3` → WP-6b → WP-6c → WP-6d → WP-6e → WP-AGENT-1 → WP-APP-1, as stacked pull requests merged in that order. WP-SITE-1D can happen at any time. The launch gates of SPEC §11 are checked after WP-6e merges; the product owner then sets `service_state.capture_open`. The read-only parts of WP-AGENT-1 may deploy before launch because they touch no contributor data. WP-3b is an independent queue follow-up stacked on WP-APP-1 until the reviewed stack merges.
 
 Pending v4.0 review/merge sequence: WP-APP-1 → `docs/spec-v4` (Justin approval/merge) → WP-APP-2A → WP-APP-2B. Owner-authorized account-free WP-APP-2A preparation can start after the specification commit exists, while its PR remains stacked and awaits the merge sequence. WP-6f may be a separate branch after the approved specification, with no dependency on notifications, but stays blocked until that specification approval and its model/license/calibration gates. Retarget successors after Justin merges; merge main forward to resolve conflicts, never rebase or force-push the reviewed stack. §11 launch and production-command gates remain independent of this sequence.
 
