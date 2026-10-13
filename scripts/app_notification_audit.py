@@ -890,6 +890,11 @@ gradle.projectsEvaluated {
     try {
     def app = gradle.rootProject.project(':app')
     app.tasks.register('gsipRuntimeEvidence') {
+        dependsOn {
+            ['debugRuntimeClasspath','releaseRuntimeClasspath'].collect { name ->
+                app.configurations.getByName(name).buildDependencies
+            }
+        }
         doLast {
             def phase = 'DEBUG_CONFIGURATION'
             try {

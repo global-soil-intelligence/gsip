@@ -206,6 +206,45 @@ Both actual debug and release inputs remain required; there is no debug substitu
 or check skip. If the next CI run confirms absent release project outputs, their
 actual variant producers must run before inspection in a separate forward fix.
 
+## Runtime artifact producer order
+
+The inspection task declares `dependsOn` for the public `buildDependencies` of both
+`debugRuntimeClasspath` and `releaseRuntimeClasspath`. Gradle schedules the selected
+project artifact producers before the task reads resolved artifact files. The
+[Gradle 8.14.3 configuration API](<https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/Configuration.html#getBuildDependencies()>)
+provides this dependency information. The
+[legacy resolved-configuration API](https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/ResolvedConfiguration.html)
+does not track task dependencies in its returned file sets. Resolving those sets
+inside `doLast` alone therefore does not schedule their producers.
+
+An offline Gradle 8.14.3/Java 21 regression uses built-in Java projects and a registered
+artifact transform that opens each actual jar as a ZIP. The previous task fails during
+debug artifact inspection before either selected project jar exists. The declared
+producers build both selected jars first and the unchanged inspection then succeeds.
+Removing either variant's dependency, disabling a producer, failing a producer or
+omitting a runtime configuration still fails; selecting another project never licenses
+it or bypasses the source audit. This proves a task-input defect and its correction.
+The hosted Android run reported `DEBUG_ARTIFACTS|UNKNOWN`, so its specific cause remains
+unverified until a fresh CI run. The local fixture does not establish that cause.
+
+The declaration adds no artifact substitution, configuration skip, application release
+signing, key or account. Both selected graphs, artifact files and all existing source,
+license, permission, backup, repeat and closed-activation proofs remain required. Task-
+graph/setup failures may occur before the inspection callback emits a fault receipt;
+those failures remain failed and explicitly unknown.
+
+The real regression is opt-in because ordinary Python validation may lack the verified
+Gradle/Java tools. A skip is reported as unavailable, never as a passing native control:
+
+```sh
+GSIP_TEST_GRADLE_HOME="<verified-Gradle-8.14.3-home>" \
+  python -m pytest tests/test_app_notification_audit.py \
+  -k real_gradle_runtime_producers_precede_content_transforms
+```
+
+It uses a fresh `GRADLE_USER_HOME`, offline resolution and local synthetic Maven/jar
+fixtures only. Actual CI still supplies the Android product build and artifact evidence.
+
 ## Reading the artifacts
 
 The existing Android and simulator artifact archives contain their original builds

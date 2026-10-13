@@ -3017,3 +3017,182 @@ def test_fixed_fault_run_rethrows_original_error_and_resets_entry(
     audit.mark("android-gradle-inspection")
     assert audit.fixed_fault_diagnostic(caught.value) == "GSIP_FIXED_FAULT_V1|UNKNOWN"
     audit.reset_fixed_fault()
+
+
+def gradle_producer_fixture(root: Path, mode: str) -> None:
+    """Offline built-in Java projects; transforms consume real ZIP contents."""
+    root.mkdir()
+    names = ["app", "library", "other-library"] + (["foreign"] if mode == "foreign" else [])
+    (root / "settings.gradle").write_text(
+        "rootProject.name='synthetic-producer-proof'\ngradle.startParameter.offline=true\n"
+        + "include " + ",".join(repr(":" + name) for name in names) + "\n"
+    )
+    (root / "build.gradle").write_text(
+        "allprojects { repositories { maven { url=uri(rootProject.file('local-maven')) } } }\n"
+    )
+    for name in names:
+        (root / name).mkdir()
+        if name != "app":
+            (root / name / "build.gradle").write_text("plugins { id 'java-library' }\n")
+    module = root / "local-maven" / COORD[0].replace(".", "/") / COORD[1] / COORD[2]
+    module.mkdir(parents=True)
+    (module / f"{COORD[1]}-{COORD[2]}.pom").write_bytes(pom())
+    zipped(module / f"{COORD[1]}-{COORD[2]}.jar")
+    configurations = ["debugRuntimeClasspath"]
+    if mode != "missing_configuration":
+        configurations.append("releaseRuntimeClasspath")
+    declarations = "\n".join(
+        name + " { canBeConsumed=false; canBeResolved=true }" for name in configurations
+    )
+    dependencies = "\n".join(
+        name + " project(':" + ("library" if name.startswith("debug") else "other-library")
+        + "')\n" + name + " '" + ":".join(COORD) + "'" for name in configurations
+    )
+    if mode == "foreign":
+        dependencies += "\ndebugRuntimeClasspath project(':foreign')"
+    attributes = "\n".join(
+        "configurations." + name + ".attributes.attribute(\n"
+        + "    ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, 'verified-jar')"
+        for name in configurations
+    )
+    (root / "app/build.gradle").write_text(
+        """import org.gradle.api.artifacts.transform.TransformAction
+import org.gradle.api.artifacts.transform.TransformOutputs
+import org.gradle.api.artifacts.transform.TransformParameters
+import org.gradle.api.artifacts.transform.InputArtifact
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+import org.gradle.api.file.FileSystemLocation
+import org.gradle.api.provider.Provider
+plugins { id 'java' }
+abstract class RequireJarContents implements TransformAction<TransformParameters.None> {
+    @InputArtifact abstract Provider<FileSystemLocation> getInputArtifact()
+    void transform(TransformOutputs outputs) {
+        new java.util.zip.ZipFile(inputArtifact.get().asFile).close()
+        System.out.println('GSIP_SYNTHETIC_TRANSFORM_EXECUTED')
+        outputs.file(inputArtifact.get().asFile)
+    }
+}
+""" + "configurations {\n" + declarations + "\n}\ndependencies {\n" + dependencies
+        + """
+    registerTransform(RequireJarContents) {
+        from.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, 'jar')
+        to.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, 'verified-jar')
+    }
+}
+""" + attributes + "\n"
+    )
+    if mode == "missing_producer":
+        with (root / "library/build.gradle").open("a") as stream:
+            stream.write("tasks.named('jar') { enabled=false }\n")
+    elif mode == "producer_failure":
+        with (root / "library/build.gradle").open("a") as stream:
+            stream.write(
+                "tasks.named('jar') { doFirst { "
+                "throw new IllegalStateException('synthetic-producer-failure') } }\n"
+            )
+
+
+@pytest.mark.parametrize("mode", [
+    "success", "no_debug_dependency", "no_release_dependency", "missing_producer",
+    "producer_failure", "missing_configuration", "foreign",
+])
+def test_real_gradle_runtime_producers_precede_content_transforms(
+    mode: str, tmp_path: Path, graph: tuple[dict[str, Any], Path, Path, Path]
+) -> None:
+    """Opt in with a verified Gradle 8.14.3 home; no SDK or remote dependency is used."""
+    import subprocess
+
+    selected = os.environ.get("GSIP_TEST_GRADLE_HOME")
+    if not selected:
+        pytest.skip("real Gradle producer control requires explicit verified tool home")
+    home = Path(selected)
+    if not home.is_absolute() or ".." in home.parts or not (home / "bin/gradle").is_file():
+        pytest.fail("invalid explicit Gradle tool home")
+    project = tmp_path / "producer-fixture"
+    gradle_producer_fixture(project, mode)
+    task = audit.GRADLE_TASK
+    if mode in {"no_debug_dependency", "no_release_dependency"}:
+        configuration = (
+            "releaseRuntimeClasspath" if mode == "no_debug_dependency"
+            else "debugRuntimeClasspath"
+        )
+        task = task.replace(
+            "['debugRuntimeClasspath','releaseRuntimeClasspath'].collect { name ->\n"
+            "                app.configurations.getByName(name).buildDependencies",
+            "['" + configuration + "'].collect { name ->\n"
+            "                app.configurations.getByName(name).buildDependencies",
+            1,
+        )
+    inspection = tmp_path / "inspection.gradle"
+    inspection.write_text(task)
+    output = tmp_path / "resolved.json"
+    output.with_name(output.name + ".faults").mkdir(mode=0o700)
+    environment = dict(os.environ, GRADLE_USER_HOME=str(tmp_path / "gradle-user-home"))
+    completed = subprocess.run(  # noqa: S603 - explicit verified opt-in tool, owned offline fixture
+        [str(home / "bin/gradle"), "--no-daemon", "--console=plain", "-I", str(inspection),
+         ":app:gsipRuntimeEvidence", "-PgsipEvidenceOutput=" + str(output)],
+        cwd=project, env=environment, capture_output=True, timeout=120,
+    )
+    if len(completed.stdout) + len(completed.stderr) > 2_000_000:
+        pytest.fail("synthetic Gradle control exceeded fixed output bound")
+    succeeds = mode in {"success", "foreign"}
+    if (completed.returncode == 0) != succeeds or output.exists() != succeeds:
+        pytest.fail("real Gradle producer control has incorrect exit or graph status")
+    if succeeds:
+        data = audit.decoded(output.read_bytes())
+        assert {view["name"] for view in data["views"]} == {
+            "debugRuntimeClasspath", "releaseRuntimeClasspath",
+        }
+        assert all(Path(item["file"]).is_file() for v in data["views"] for item in v["artifacts"])
+        assert b"GSIP_SYNTHETIC_TRANSFORM_EXECUTED" in completed.stdout
+        inspection_offset = completed.stdout.find(b"> Task :app:gsipRuntimeEvidence")
+        for name in ["library", "other-library"] + (["foreign"] if mode == "foreign" else []):
+            offset = completed.stdout.find(("> Task :" + name + ":jar").encode())
+            assert 0 <= offset < inspection_offset
+        assert [view["projects"] for view in data["views"]] == [
+            [":app", ":foreign", ":library"] if mode == "foreign" else [":app", ":library"],
+            [":app", ":other-library"],
+        ]
+        if mode == "foreign":
+            licensed, repo, cache, unused = graph
+            licensed["views"][0]["projects"].append(":foreign")
+            with pytest.raises(audit.AuditError):
+                audit.runtime_evidence(licensed, repo, cache, False)
+    else:
+        assert not (project / "library/build/libs/library.jar").exists() or mode in {
+            "no_release_dependency", "missing_configuration",
+        }
+        if mode in {"no_debug_dependency", "no_release_dependency", "missing_producer"}:
+            expected_phase = (
+                "RELEASE_ARTIFACTS" if mode == "no_release_dependency" else "DEBUG_ARTIFACTS"
+            )
+            assert audit.read_fixed_fault(output.with_name(output.name + ".faults"), tmp_path) == (
+                expected_phase, "FILE_MISSING",
+            )
+        elif mode == "producer_failure":
+            assert b"> Task :app:gsipRuntimeEvidence" not in completed.stdout
+            assert b"> Task :library:jar FAILED" in completed.stdout
+        elif mode == "missing_configuration":
+            assert (
+                b"Configuration with name 'releaseRuntimeClasspath' not found."
+                in completed.stderr
+            )
+    control = {
+        "mode": mode,
+        "tool_exit_code": completed.returncode,
+        "graph_created": output.exists(),
+        "graph_sha256": audit.sha(output.read_bytes()) if output.exists() else None,
+        "task_sha256": audit.sha(task.encode()),
+        "project_jars": {
+            name: (project / name / "build/libs" / (name + ".jar")).is_file()
+            for name in ["library", "other-library"]
+        },
+        "stdout_sha256": audit.sha(completed.stdout),
+        "stderr_sha256": audit.sha(completed.stderr),
+        "stdout_bytes": len(completed.stdout),
+        "stderr_bytes": len(completed.stderr),
+        "fixed_fault": audit.read_fixed_fault(output.with_name(output.name + ".faults"), tmp_path),
+        "raw_tool_output_persisted": False,
+        "native_acceptance_claimed": False,
+    }
+    (tmp_path / "producer-control.json").write_text(json.dumps(control, sort_keys=True) + "\n")
