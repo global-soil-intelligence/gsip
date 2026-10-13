@@ -124,8 +124,8 @@ jobs:
         shell: bash
         run: |
           baseline=d7ed716ed0921381da04f542e90902ede36cb462
-          git fetch --no-tags origin "$baseline"
-          git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2b-parent"
+          git clone --no-hardlinks --no-checkout https://github.com/global-soil-intelligence/gsip.git "$RUNNER_TEMP/gsip-app2b-parent"
+          git -C "$RUNNER_TEMP/gsip-app2b-parent" fetch --no-tags origin "$baseline"
           git -C "$RUNNER_TEMP/gsip-app2b-parent" checkout --detach "$baseline"
           test "$(git -C "$RUNNER_TEMP/gsip-app2b-parent" rev-parse HEAD)" = "$baseline"
           cd "$RUNNER_TEMP/gsip-app2b-parent"
@@ -236,8 +236,8 @@ jobs:
         shell: bash
         run: |
           baseline=d7ed716ed0921381da04f542e90902ede36cb462
-          git fetch --no-tags origin "$baseline"
-          git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2b-parent"
+          git clone --no-hardlinks --no-checkout https://github.com/global-soil-intelligence/gsip.git "$RUNNER_TEMP/gsip-app2b-parent"
+          git -C "$RUNNER_TEMP/gsip-app2b-parent" fetch --no-tags origin "$baseline"
           git -C "$RUNNER_TEMP/gsip-app2b-parent" checkout --detach "$baseline"
           test "$(git -C "$RUNNER_TEMP/gsip-app2b-parent" rev-parse HEAD)" = "$baseline"
           cd "$RUNNER_TEMP/gsip-app2b-parent"

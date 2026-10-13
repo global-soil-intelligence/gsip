@@ -2027,3 +2027,275 @@ def test_nonblocking_open_keeps_nofollow_and_descriptor_type_checks(
     assert len(flags_seen) == 1
     assert flags_seen[0] & os.O_NOFOLLOW
     assert flags_seen[0] & os.O_NONBLOCK
+
+
+GRADLE_INSPECTION_COMMAND = [
+    "/synthetic/private/android/gradlew",
+    "--no-daemon",
+    "--console=plain",
+    "-I",
+    "/synthetic/private/inspection.gradle",
+    ":app:gsipRuntimeEvidence",
+    "-PgsipEvidenceOutput=/synthetic/private/resolved.json",
+]
+
+
+def gradle_failure_fixture(reason: str) -> str:
+    return (
+        "FAILURE: Build failed with an exception.\n\n* What went wrong:\n"
+        "Execution failed for task ':app:gsipRuntimeEvidence'.\n> "
+        + reason
+        + "\n\n* Try:\n> Run with --stacktrace option.\n\nBUILD FAILED in 1s\n"
+    )
+
+
+@pytest.mark.parametrize(
+    ("reason", "expected"),
+    [
+        ("unsupported runtime component", "GRADLE_COMPONENT_UNSUPPORTED"),
+        ("unsupported runtime artifact", "GRADLE_ARTIFACT_UNSUPPORTED"),
+        (
+            "Configuration with name 'releaseRuntimeClasspath' not found.",
+            "GRADLE_CONFIGURATION_MISSING",
+        ),
+        (
+            "Could not resolve all artifacts for configuration ':app:releaseRuntimeClasspath'.\n"
+            "> File /synthetic/private/unbuilt-release.jar does not exist.",
+            "GRADLE_RUNTIME_FILE_MISSING",
+        ),
+        (
+            "Could not resolve all artifacts for configuration ':app:debugRuntimeClasspath'.\n"
+            "> Could not GET https://example.invalid/private.\n> Connection timed out",
+            "GRADLE_DEPENDENCY_NETWORK",
+        ),
+    ],
+)
+def test_gradle_tool_failure_uses_only_fixed_reason_class(reason: str, expected: str) -> None:
+    import subprocess
+
+    audit.mark("android-gradle-inspection")
+    error = subprocess.CalledProcessError(
+        1, GRADLE_INSPECTION_COMMAND, output="", stderr=gradle_failure_fixture(reason)
+    )
+    value = audit.diagnostic(error)
+    assert value["error_class"] == expected
+    assert set(value) == {"stage", "error_class", "source_line", "counts"}
+    assert value["counts"] == {}
+    assert "synthetic/private" not in json.dumps(value)
+    assert "https://" not in json.dumps(value)
+
+
+@pytest.mark.parametrize("location", ["stdout", "stderr", "bytes", "crlf"])
+def test_gradle_fixed_class_handles_supported_output_encodings(location: str) -> None:
+    import subprocess
+
+    audit.mark("android-gradle-inspection")
+    text = gradle_failure_fixture("unsupported runtime component")
+    output: Any = text if location == "stdout" else ""
+    stderr: Any = text if location != "stdout" else None
+    if location == "bytes":
+        stderr = text.encode("utf-8")
+    elif location == "crlf":
+        stderr = text.replace("\n", "\r\n")
+    value = audit.diagnostic(
+        subprocess.CalledProcessError(1, GRADLE_INSPECTION_COMMAND, output=output, stderr=stderr)
+    )
+    assert value["error_class"] == "GRADLE_COMPONENT_UNSUPPORTED"
+
+
+@pytest.mark.parametrize(
+    ("reason", "expected"),
+    [
+        (
+            "Could not get unknown property 'projectPath' for synthetic private object.",
+            "GRADLE_INSPECTION_API",
+        ),
+        ("Task 'gsipRuntimeEvidence' not found in project ':app'.", "GRADLE_TASK_MISSING"),
+    ],
+)
+def test_gradle_fixed_class_identifies_task_and_known_api_only(reason: str, expected: str) -> None:
+    import subprocess
+
+    audit.mark("android-gradle-inspection")
+    text = gradle_failure_fixture(reason)
+    if expected == "GRADLE_TASK_MISSING":
+        text = text.replace("Execution failed for task ':app:gsipRuntimeEvidence'.\n> ", "")
+    error = subprocess.CalledProcessError(1, GRADLE_INSPECTION_COMMAND, stderr=text)
+    value = audit.diagnostic(error)
+    assert value["error_class"] == expected
+    assert "synthetic private" not in json.dumps(value)
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "wrong_stage",
+        "wrong_command",
+        "string_command",
+        "short_command",
+        "relative_tool",
+        "relative_script",
+        "wrong_task",
+        "relative_output",
+        "control_argument",
+        "huge_argument",
+        "bool_code",
+        "zero_code",
+        "string_code",
+        "invalid_bytes",
+        "surrogate_text",
+        "huge_stdout",
+        "huge_stderr",
+        "combined_bound",
+        "unexpected_stream",
+        "bool_stream",
+        "control_stream",
+        "duplicate_failure",
+        "missing_header",
+        "wrong_task_context",
+        "reason_only",
+        "missing_try",
+        "missing_footer",
+        "footer_before_context",
+        "duplicate_section",
+        "private_unknown",
+        "similar_reason",
+        "outside_reason",
+        "unprefixed_reason",
+        "ambiguous",
+        "network_without_resolution",
+        "network_without_cause",
+        "unknown_api",
+        "unknown_config",
+    ],
+)
+def test_gradle_fixed_class_refuses_unbounded_or_ambiguous_context(defect: str) -> None:
+    import subprocess
+
+    audit.mark("android-gradle-inspection")
+    command: Any = list(GRADLE_INSPECTION_COMMAND)
+    code: Any = 1
+    output: Any = ""
+    text: Any = gradle_failure_fixture("unsupported runtime component")
+    if defect == "wrong_stage":
+        audit.mark("android-dependency-trees")
+    elif defect == "wrong_command":
+        command = ["/synthetic/private/gradlew", "--version"]
+    elif defect == "string_command":
+        command = " ".join(command)
+    elif defect == "short_command":
+        command.pop()
+    elif defect == "relative_tool":
+        command[0] = "gradlew"
+    elif defect == "relative_script":
+        command[4] = "inspection.gradle"
+    elif defect == "wrong_task":
+        command[5] = ":app:privateTask"
+    elif defect == "relative_output":
+        command[6] = "-PgsipEvidenceOutput=relative.json"
+    elif defect == "control_argument":
+        command[0] += "\n"
+    elif defect == "huge_argument":
+        command[0] = "/" + "x" * 4096
+    elif defect == "bool_code":
+        code = True
+    elif defect == "zero_code":
+        code = 0
+    elif defect == "string_code":
+        code = "1"
+    elif defect == "invalid_bytes":
+        text = text.encode() + b"\xff"
+    elif defect == "surrogate_text":
+        text += "\ud800"
+    elif defect == "huge_stdout":
+        output = "x" * (audit.MAX_DIAGNOSTIC_BYTES + 1)
+    elif defect == "huge_stderr":
+        text += "x" * audit.MAX_DIAGNOSTIC_BYTES
+    elif defect == "combined_bound":
+        output = "x" * audit.MAX_DIAGNOSTIC_BYTES
+    elif defect == "unexpected_stream":
+
+        class PrivatePayload:
+            def __str__(self) -> str:
+                pytest.fail("private stream must not be coerced to text")
+
+        output = PrivatePayload()
+    elif defect == "bool_stream":
+        output = True
+    elif defect == "control_stream":
+        text += "\x00"
+    elif defect == "duplicate_failure":
+        text += text
+    elif defect == "missing_header":
+        text = text.replace("FAILURE: Build failed with an exception.\n", "")
+    elif defect == "wrong_task_context":
+        text = text.replace(":app:gsipRuntimeEvidence", ":app:privateTask")
+    elif defect == "reason_only":
+        text = "unsupported runtime component"
+    elif defect == "missing_try":
+        text = text.replace("* Try:\n", "")
+    elif defect == "missing_footer":
+        text = text.replace("BUILD FAILED in 1s", "")
+    elif defect == "footer_before_context":
+        text = "BUILD FAILED in 1s\n" + text.replace("BUILD FAILED in 1s", "")
+    elif defect == "duplicate_section":
+        text += "* What went wrong:\n"
+    elif defect == "private_unknown":
+        text = gradle_failure_fixture("synthetic private payload https://example.invalid/private")
+    elif defect == "similar_reason":
+        text = gradle_failure_fixture("synthetic unsupported runtime component private")
+    elif defect == "outside_reason":
+        text = "unsupported runtime component\n" + gradle_failure_fixture("private unknown")
+    elif defect == "unprefixed_reason":
+        text = text.replace("> unsupported runtime component", "unsupported runtime component")
+    elif defect == "ambiguous":
+        text = gradle_failure_fixture(
+            "unsupported runtime component\n> unsupported runtime artifact"
+        )
+    elif defect == "network_without_resolution":
+        text = gradle_failure_fixture(
+            "Could not GET https://example.invalid\n> Connection timed out"
+        )
+    elif defect == "network_without_cause":
+        text = gradle_failure_fixture(
+            "Could not resolve all artifacts for configuration ':app:debugRuntimeClasspath'.\n"
+            "> Could not GET https://example.invalid\n> synthetic private cause"
+        )
+    elif defect == "unknown_api":
+        text = gradle_failure_fixture("Could not get unknown property 'privateInput' for object.")
+    elif defect == "unknown_config":
+        text = gradle_failure_fixture("Configuration with name 'privateInput' not found.")
+    error = subprocess.CalledProcessError(code, command, output=output, stderr=text)
+    value = audit.diagnostic(error)
+    assert value["error_class"] == "BUILD_TOOL"
+    assert set(value) == {"stage", "error_class", "source_line", "counts"}
+    assert value["counts"] == {}
+    assert "private" not in json.dumps(value)
+    assert "https://" not in json.dumps(value)
+
+
+def test_gradle_failure_diagnostic_main_retains_source_line_and_no_tool_output(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path
+) -> None:
+    import subprocess
+
+    private = "synthetic private payload https://example.invalid/private"
+
+    def failure(*args: Any, **kwargs: Any) -> Any:
+        raise subprocess.CalledProcessError(
+            1,
+            GRADLE_INSPECTION_COMMAND,
+            output=private,
+            stderr=gradle_failure_fixture("unsupported runtime component"),
+        )
+
+    monkeypatch.setattr("scripts.app_notification_audit.subprocess.run", failure)
+    audit.mark("android-gradle-inspection")
+    with pytest.raises(subprocess.CalledProcessError) as caught:
+        audit.run(GRADLE_INSPECTION_COMMAND, tmp_path)
+    value = audit.diagnostic(caught.value)
+    assert value["error_class"] == "GRADLE_COMPONENT_UNSUPPORTED"
+    assert 0 < value["source_line"] < 10_000
+    assert private not in json.dumps(value)
+    assert capsys.readouterr().out == ""
+    assert capsys.readouterr().err == ""

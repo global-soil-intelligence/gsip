@@ -146,6 +146,13 @@ A failure reports only a fixed audit-stage label, fixed error-class label, sourc
 number and bounded counts. It never prints paths, coordinates, parser payloads, tool
 stderr, environment values, credentials or arbitrary exception text. This diagnoses
 the Android audit failure without assuming that release artifacts are its cause.
+For the exact inspection command, bounded UTF-8 output is inspected in memory for
+unambiguous Gradle failure signatures. Only fixed labels for an unsupported
+component/artifact, missing task/configuration/runtime file, known inspection API
+property, or dependency network failure can replace `BUILD_TOOL`. Unknown,
+malformed, oversized or ambiguous output remains `BUILD_TOOL`; no tool output is
+copied into the four-field diagnostic. These labels do not establish a repair or
+provide native acceptance evidence.
 Both actual debug and release inputs remain required; there is no debug substitution
 or check skip. If the next CI run confirms absent release project outputs, their
 actual variant producers must run before inspection in a separate forward fix.

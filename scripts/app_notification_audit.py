@@ -105,6 +105,7 @@ DIAGNOSTIC_COUNTS = {
 }
 _diagnostic_stage = "start"
 _diagnostic_counts: dict[str, int] = {}
+MAX_DIAGNOSTIC_BYTES = 65_536
 
 
 def mark(stage: str, **counts: int) -> None:
@@ -115,6 +116,111 @@ def mark(stage: str, **counts: int) -> None:
         refuse()
     _diagnostic_stage = stage
     _diagnostic_counts = counts
+
+
+def gradle_failure_class(error: subprocess.CalledProcessError) -> str:
+    """Inspect bounded tool output in memory; return only an unambiguous fixed label."""
+    args = error.cmd
+    if (
+        type(error.returncode) is not int
+        or error.returncode == 0
+        or type(args) not in (list, tuple)
+        or len(args) != 7
+        or any(
+            type(arg) is not str
+            or not 0 < len(arg) <= 4096
+            or any(ord(char) < 32 or ord(char) == 127 for char in arg)
+            for arg in args
+        )
+        or not Path(args[0]).is_absolute()
+        or Path(args[0]).name != "gradlew"
+        or list(args[1:4]) != ["--no-daemon", "--console=plain", "-I"]
+        or not Path(args[4]).is_absolute()
+        or Path(args[4]).name != "inspection.gradle"
+        or args[5] != ":app:gsipRuntimeEvidence"
+        or not args[6].startswith("-PgsipEvidenceOutput=")
+        or not Path(args[6].removeprefix("-PgsipEvidenceOutput=")).is_absolute()
+    ):
+        return "BUILD_TOOL"
+    streams = []
+    size = 0
+    for raw in (error.stdout, error.stderr):
+        if raw is None:
+            continue
+        if type(raw) not in (str, bytes) or len(raw) > MAX_DIAGNOSTIC_BYTES:
+            return "BUILD_TOOL"
+        try:
+            text = raw.decode("utf-8") if isinstance(raw, bytes) else raw
+            size += len(text.encode("utf-8"))
+        except UnicodeError:
+            return "BUILD_TOOL"
+        if size > MAX_DIAGNOSTIC_BYTES or any(
+            (ord(char) < 32 and char not in "\n\r\t") or ord(char) == 127 for char in text
+        ):
+            return "BUILD_TOOL"
+        streams.append(text.replace("\r\n", "\n"))
+    text = "\n".join(streams)
+    header = "FAILURE: Build failed with an exception.\n"
+    marker = "* What went wrong:\n"
+    if text.count(header) != 1 or text.count(marker) != 1 or text.count("* Try:\n") != 1:
+        return "BUILD_TOOL"
+    after_header = text.split(header, 1)[1]
+    if marker not in after_header:
+        return "BUILD_TOOL"
+    after_marker = after_header.split(marker, 1)[1]
+    if "* Try:\n" not in after_marker:
+        return "BUILD_TOOL"
+    section, after_try = after_marker.split("* Try:\n", 1)
+    if not re.search(r"(?m)^BUILD FAILED in [0-9][0-9a-z .]*$", after_try):
+        return "BUILD_TOOL"
+    section = section.strip()
+    if section == "Task 'gsipRuntimeEvidence' not found in project ':app'.":
+        return "GRADLE_TASK_MISSING"
+    execution = "Execution failed for task ':app:gsipRuntimeEvidence'.\n"
+    if not section.startswith(execution):
+        return "BUILD_TOOL"
+    reason_lines = [line.strip() for line in section[len(execution) :].splitlines() if line.strip()]
+    if not reason_lines or any(not line.startswith("> ") for line in reason_lines):
+        return "BUILD_TOOL"
+    reasons = {line.removeprefix("> ").strip() for line in reason_lines}
+    labels = set()
+    for reason, label in (
+        ("unsupported runtime component", "GRADLE_COMPONENT_UNSUPPORTED"),
+        ("unsupported runtime artifact", "GRADLE_ARTIFACT_UNSUPPORTED"),
+    ):
+        if reason in reasons:
+            labels.add(label)
+    if any(
+        re.fullmatch(r"Configuration with name '(?:debug|release)RuntimeClasspath' not found\.", r)
+        for r in reasons
+    ):
+        labels.add("GRADLE_CONFIGURATION_MISSING")
+    if any(
+        re.fullmatch(
+            r"Could not get unknown property '(?:projectPath|componentIdentifier|group|module|"
+            r"version|resolvedArtifacts|canonicalPath)' for .+\.",
+            reason,
+        )
+        for reason in reasons
+    ):
+        labels.add("GRADLE_INSPECTION_API")
+    resolution = any(
+        re.fullmatch(
+            r"Could not resolve all artifacts for configuration ':app:(?:debug|release)"
+            r"RuntimeClasspath'\.",
+            reason,
+        )
+        for reason in reasons
+    )
+    if resolution and any(re.fullmatch(r"File .+ does not exist\.", r) for r in reasons):
+        labels.add("GRADLE_RUNTIME_FILE_MISSING")
+    if (
+        resolution
+        and any(re.fullmatch(r"Could not GET .+", r) for r in reasons)
+        and reasons & {"Connection timed out", "Remote host terminated the handshake"}
+    ):
+        labels.add("GRADLE_DEPENDENCY_NETWORK")
+    return next(iter(labels)) if len(labels) == 1 else "BUILD_TOOL"
 
 
 def diagnostic(error: BaseException) -> dict[str, Any]:
@@ -137,6 +243,10 @@ def diagnostic(error: BaseException) -> dict[str, Any]:
         ),
         "INVALID_EVIDENCE",
     )
+    if _diagnostic_stage == "android-gradle-inspection" and isinstance(
+        error, subprocess.CalledProcessError
+    ):
+        category = gradle_failure_class(error)
     line = 0
     trace = error.__traceback__
     while trace is not None:
