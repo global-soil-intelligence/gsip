@@ -2299,3 +2299,184 @@ def test_gradle_failure_diagnostic_main_retains_source_line_and_no_tool_output(
     assert private not in json.dumps(value)
     assert capsys.readouterr().out == ""
     assert capsys.readouterr().err == ""
+
+
+GRADLE_FAILURE_PHASES = {
+    "DEBUG_CONFIGURATION": "android-gradle-debug-configuration",
+    "DEBUG_RESOLUTION": "android-gradle-debug-resolution",
+    "DEBUG_COMPONENTS": "android-gradle-debug-components",
+    "DEBUG_ARTIFACTS": "android-gradle-debug-artifacts",
+    "RELEASE_CONFIGURATION": "android-gradle-release-configuration",
+    "RELEASE_RESOLUTION": "android-gradle-release-resolution",
+    "RELEASE_COMPONENTS": "android-gradle-release-components",
+    "RELEASE_ARTIFACTS": "android-gradle-release-artifacts",
+    "OUTPUT": "android-gradle-output",
+}
+
+
+@pytest.mark.parametrize("phase", list(GRADLE_FAILURE_PHASES))
+def test_gradle_task_marker_supplies_only_fixed_fault_phase(phase: str) -> None:
+    import subprocess
+
+    audit.mark("android-gradle-inspection")
+    error = subprocess.CalledProcessError(
+        1,
+        GRADLE_INSPECTION_COMMAND,
+        stderr="GSIP_RUNTIME_FAILURE_V1|" + phase + "|UNKNOWN\n",
+    )
+    value = audit.diagnostic(error)
+    assert value["stage"] == GRADLE_FAILURE_PHASES[phase]
+    assert value["error_class"] == "BUILD_TOOL"
+    assert set(value) == {"stage", "error_class", "source_line", "counts"}
+    assert value["counts"] == {}
+
+
+@pytest.mark.parametrize(
+    ("cause", "expected"),
+    [
+        ("CONFIGURATION_MISSING", "GRADLE_CONFIGURATION_MISSING"),
+        ("DEPENDENCY_UNRESOLVED", "GRADLE_DEPENDENCY_UNRESOLVED"),
+        ("API_PROPERTY", "GRADLE_INSPECTION_PROPERTY"),
+        ("API_METHOD", "GRADLE_INSPECTION_METHOD"),
+        ("FILE_MISSING", "GRADLE_RUNTIME_FILE_MISSING"),
+        ("NETWORK", "GRADLE_DEPENDENCY_NETWORK"),
+        ("INVALID_ARGUMENT", "GRADLE_INVALID_ARGUMENT"),
+        ("NULL_VALUE", "GRADLE_NULL_VALUE"),
+        ("TYPE_MISMATCH", "GRADLE_TYPE_MISMATCH"),
+        ("ILLEGAL_STATE", "GRADLE_ILLEGAL_STATE"),
+    ],
+)
+def test_gradle_task_marker_supplies_only_fixed_public_cause(cause: str, expected: str) -> None:
+    import subprocess
+
+    audit.mark("android-gradle-inspection")
+    error = subprocess.CalledProcessError(
+        1,
+        GRADLE_INSPECTION_COMMAND,
+        stderr="GSIP_RUNTIME_FAILURE_V1|DEBUG_RESOLUTION|" + cause + "\n",
+    )
+    value = audit.diagnostic(error)
+    assert value["stage"] == "android-gradle-debug-resolution"
+    assert value["error_class"] == expected
+    assert set(value) == {"stage", "error_class", "source_line", "counts"}
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "duplicate",
+        "duplicate_streams",
+        "unknown_phase",
+        "unknown_cause",
+        "private_extra",
+        "prefix",
+        "timestamp",
+        "space",
+        "lowercase",
+        "missing_field",
+        "extra_field",
+        "embedded",
+        "unicode",
+        "control",
+        "oversized",
+        "unknown_version",
+        "wrong_command",
+        "wrong_stage",
+        "malformed_with_legacy",
+        "ambiguous_with_legacy",
+        "absent",
+    ],
+)
+def test_gradle_task_marker_refuses_malformed_ambiguous_and_private_context(defect: str) -> None:
+    import subprocess
+
+    audit.mark("android-gradle-inspection")
+    command = list(GRADLE_INSPECTION_COMMAND)
+    marker = "GSIP_RUNTIME_FAILURE_V1|DEBUG_COMPONENTS|API_PROPERTY\n"
+    text = marker
+    output = ""
+    if defect == "duplicate":
+        text += marker
+    elif defect == "duplicate_streams":
+        output = marker
+    elif defect == "unknown_phase":
+        text = marker.replace("DEBUG_COMPONENTS", "SYNTHETIC_PRIVATE")
+    elif defect == "unknown_cause":
+        text = marker.replace("API_PROPERTY", "SYNTHETIC_PRIVATE")
+    elif defect == "private_extra":
+        text = marker.rstrip() + "|synthetic private payload\n"
+    elif defect == "prefix":
+        text = "synthetic private prefix" + marker
+    elif defect == "timestamp":
+        text = "2026-01-01T00:00:00Z " + marker
+    elif defect == "space":
+        text = marker.replace("|API_PROPERTY", "| API_PROPERTY")
+    elif defect == "lowercase":
+        text = marker.lower()
+    elif defect == "missing_field":
+        text = "GSIP_RUNTIME_FAILURE_V1|DEBUG_COMPONENTS\n"
+    elif defect == "extra_field":
+        text = marker.rstrip() + "|UNKNOWN\n"
+    elif defect == "embedded":
+        text = "synthetic private " + marker + "synthetic private"
+    elif defect == "unicode":
+        text = marker.replace("API_PROPERTY", "API_PROPΕRTY")
+    elif defect == "control":
+        text += "\x00"
+    elif defect == "oversized":
+        text += "x" * audit.MAX_DIAGNOSTIC_BYTES
+    elif defect == "unknown_version":
+        text = marker.replace("_V1", "_V2")
+    elif defect == "wrong_command":
+        command[5] = ":app:privateTask"
+    elif defect == "wrong_stage":
+        audit.mark("android-dependency-trees")
+    elif defect == "malformed_with_legacy":
+        text = (
+            marker.rstrip() + "|private\n" + gradle_failure_fixture("unsupported runtime component")
+        )
+    elif defect == "ambiguous_with_legacy":
+        text += marker + gradle_failure_fixture("unsupported runtime component")
+    elif defect == "absent":
+        text = "synthetic private failure payload"
+    error = subprocess.CalledProcessError(1, command, output=output, stderr=text)
+    value = audit.diagnostic(error)
+    assert value["stage"] in {"android-gradle-inspection", "android-dependency-trees"}
+    assert value["error_class"] == "BUILD_TOOL"
+    assert set(value) == {"stage", "error_class", "source_line", "counts"}
+    assert value["counts"] == {}
+    assert "private" not in json.dumps(value)
+
+
+def test_gradle_task_marker_can_report_known_unknown_fallback() -> None:
+    import subprocess
+
+    audit.mark("android-gradle-inspection")
+    error = subprocess.CalledProcessError(
+        1, GRADLE_INSPECTION_COMMAND, stderr="GSIP_RUNTIME_FAILURE_V1|UNKNOWN|UNKNOWN\n"
+    )
+    value = audit.diagnostic(error)
+    assert value["stage"] == "android-gradle-inspection"
+    assert value["error_class"] == "BUILD_TOOL"
+
+
+def test_gradle_emitter_preserves_validation_and_exact_original_exception() -> None:
+    task = audit.GRADLE_TASK
+    assert "['debugRuntimeClasspath','releaseRuntimeClasspath']" in task
+    assert task.count("config.resolvedConfiguration.rethrowFailure()") == 1
+    assert task.count("config.incoming.resolutionResult.allComponents.each") == 1
+    assert task.count("config.resolvedConfiguration.resolvedArtifacts.collect") == 1
+    assert task.count("throw new GradleException('unsupported runtime component')") == 1
+    assert task.count("throw new GradleException('unsupported runtime artifact')") == 1
+    assert task.count("output.text = JsonOutput.toJson([views:views])") == 1
+    assert "catch (Throwable failure)" in task
+    assert "try { gsipEmitFault(phase, failure) } catch (Throwable ignored) {}" in task
+    assert "throw failure" in task
+    assert "depth < 16 && seen.add(current)" in task
+    assert "current == null && labels.size() == 1" in task
+    assert "new IdentityHashMap()" in task
+    assert "System.err.println('GSIP_RUNTIME_FAILURE_V1|' + safePhase + '|' + cause)" in task
+    assert "getMessage" not in task
+    assert "printStackTrace" not in task
+    assert "System.getenv" not in task
+    assert "failure.toString" not in task

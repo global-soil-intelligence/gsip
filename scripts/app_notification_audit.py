@@ -106,6 +106,32 @@ DIAGNOSTIC_COUNTS = {
 _diagnostic_stage = "start"
 _diagnostic_counts: dict[str, int] = {}
 MAX_DIAGNOSTIC_BYTES = 65_536
+GRADLE_FAILURE_PHASES = {
+    "DEBUG_CONFIGURATION": "android-gradle-debug-configuration",
+    "DEBUG_RESOLUTION": "android-gradle-debug-resolution",
+    "DEBUG_COMPONENTS": "android-gradle-debug-components",
+    "DEBUG_ARTIFACTS": "android-gradle-debug-artifacts",
+    "RELEASE_CONFIGURATION": "android-gradle-release-configuration",
+    "RELEASE_RESOLUTION": "android-gradle-release-resolution",
+    "RELEASE_COMPONENTS": "android-gradle-release-components",
+    "RELEASE_ARTIFACTS": "android-gradle-release-artifacts",
+    "OUTPUT": "android-gradle-output",
+    "UNKNOWN": "android-gradle-inspection",
+}
+GRADLE_FAILURE_CAUSES = {
+    "CONFIGURATION_MISSING": "GRADLE_CONFIGURATION_MISSING",
+    "DEPENDENCY_UNRESOLVED": "GRADLE_DEPENDENCY_UNRESOLVED",
+    "API_PROPERTY": "GRADLE_INSPECTION_PROPERTY",
+    "API_METHOD": "GRADLE_INSPECTION_METHOD",
+    "FILE_MISSING": "GRADLE_RUNTIME_FILE_MISSING",
+    "NETWORK": "GRADLE_DEPENDENCY_NETWORK",
+    "INVALID_ARGUMENT": "GRADLE_INVALID_ARGUMENT",
+    "NULL_VALUE": "GRADLE_NULL_VALUE",
+    "TYPE_MISMATCH": "GRADLE_TYPE_MISMATCH",
+    "ILLEGAL_STATE": "GRADLE_ILLEGAL_STATE",
+    "UNKNOWN": "BUILD_TOOL",
+}
+DIAGNOSTIC_STAGES.update(GRADLE_FAILURE_PHASES.values())
 
 
 def mark(stage: str, **counts: int) -> None:
@@ -118,7 +144,7 @@ def mark(stage: str, **counts: int) -> None:
     _diagnostic_counts = counts
 
 
-def gradle_failure_class(error: subprocess.CalledProcessError) -> str:
+def gradle_failure_details(error: subprocess.CalledProcessError) -> tuple[str, str]:
     """Inspect bounded tool output in memory; return only an unambiguous fixed label."""
     args = error.cmd
     if (
@@ -141,47 +167,61 @@ def gradle_failure_class(error: subprocess.CalledProcessError) -> str:
         or not args[6].startswith("-PgsipEvidenceOutput=")
         or not Path(args[6].removeprefix("-PgsipEvidenceOutput=")).is_absolute()
     ):
-        return "BUILD_TOOL"
+        return "android-gradle-inspection", "BUILD_TOOL"
     streams = []
     size = 0
     for raw in (error.stdout, error.stderr):
         if raw is None:
             continue
         if type(raw) not in (str, bytes) or len(raw) > MAX_DIAGNOSTIC_BYTES:
-            return "BUILD_TOOL"
+            return "android-gradle-inspection", "BUILD_TOOL"
         try:
             text = raw.decode("utf-8") if isinstance(raw, bytes) else raw
             size += len(text.encode("utf-8"))
         except UnicodeError:
-            return "BUILD_TOOL"
+            return "android-gradle-inspection", "BUILD_TOOL"
         if size > MAX_DIAGNOSTIC_BYTES or any(
             (ord(char) < 32 and char not in "\n\r\t") or ord(char) == 127 for char in text
         ):
-            return "BUILD_TOOL"
+            return "android-gradle-inspection", "BUILD_TOOL"
         streams.append(text.replace("\r\n", "\n"))
     text = "\n".join(streams)
+    if "GSIP_RUNTIME_FAILURE" in text:
+        prefix = "GSIP_RUNTIME_FAILURE_V1|"
+        lines = [line for line in text.splitlines() if prefix in line]
+        if text.count("GSIP_RUNTIME_FAILURE") != 1 or len(lines) != 1:
+            return "android-gradle-inspection", "BUILD_TOOL"
+        parts = lines[0].split("|")
+        if (
+            len(parts) != 3
+            or parts[0] != "GSIP_RUNTIME_FAILURE_V1"
+            or parts[1] not in GRADLE_FAILURE_PHASES
+            or parts[2] not in GRADLE_FAILURE_CAUSES
+        ):
+            return "android-gradle-inspection", "BUILD_TOOL"
+        return GRADLE_FAILURE_PHASES[parts[1]], GRADLE_FAILURE_CAUSES[parts[2]]
     header = "FAILURE: Build failed with an exception.\n"
     marker = "* What went wrong:\n"
     if text.count(header) != 1 or text.count(marker) != 1 or text.count("* Try:\n") != 1:
-        return "BUILD_TOOL"
+        return "android-gradle-inspection", "BUILD_TOOL"
     after_header = text.split(header, 1)[1]
     if marker not in after_header:
-        return "BUILD_TOOL"
+        return "android-gradle-inspection", "BUILD_TOOL"
     after_marker = after_header.split(marker, 1)[1]
     if "* Try:\n" not in after_marker:
-        return "BUILD_TOOL"
+        return "android-gradle-inspection", "BUILD_TOOL"
     section, after_try = after_marker.split("* Try:\n", 1)
     if not re.search(r"(?m)^BUILD FAILED in [0-9][0-9a-z .]*$", after_try):
-        return "BUILD_TOOL"
+        return "android-gradle-inspection", "BUILD_TOOL"
     section = section.strip()
     if section == "Task 'gsipRuntimeEvidence' not found in project ':app'.":
-        return "GRADLE_TASK_MISSING"
+        return "android-gradle-inspection", "GRADLE_TASK_MISSING"
     execution = "Execution failed for task ':app:gsipRuntimeEvidence'.\n"
     if not section.startswith(execution):
-        return "BUILD_TOOL"
+        return "android-gradle-inspection", "BUILD_TOOL"
     reason_lines = [line.strip() for line in section[len(execution) :].splitlines() if line.strip()]
     if not reason_lines or any(not line.startswith("> ") for line in reason_lines):
-        return "BUILD_TOOL"
+        return "android-gradle-inspection", "BUILD_TOOL"
     reasons = {line.removeprefix("> ").strip() for line in reason_lines}
     labels = set()
     for reason, label in (
@@ -220,10 +260,16 @@ def gradle_failure_class(error: subprocess.CalledProcessError) -> str:
         and reasons & {"Connection timed out", "Remote host terminated the handshake"}
     ):
         labels.add("GRADLE_DEPENDENCY_NETWORK")
-    return next(iter(labels)) if len(labels) == 1 else "BUILD_TOOL"
+    return "android-gradle-inspection", (next(iter(labels)) if len(labels) == 1 else "BUILD_TOOL")
+
+
+def gradle_failure_class(error: subprocess.CalledProcessError) -> str:
+    """Compatibility helper: category only; source diagnostic also binds the fixed phase."""
+    return gradle_failure_details(error)[1]
 
 
 def diagnostic(error: BaseException) -> dict[str, Any]:
+    stage = _diagnostic_stage
     category = next(
         (
             label
@@ -246,7 +292,7 @@ def diagnostic(error: BaseException) -> dict[str, Any]:
     if _diagnostic_stage == "android-gradle-inspection" and isinstance(
         error, subprocess.CalledProcessError
     ):
-        category = gradle_failure_class(error)
+        stage, category = gradle_failure_details(error)
     line = 0
     trace = error.__traceback__
     while trace is not None:
@@ -254,7 +300,7 @@ def diagnostic(error: BaseException) -> dict[str, Any]:
             line = trace.tb_lineno
         trace = trace.tb_next
     return {
-        "stage": _diagnostic_stage,
+        "stage": stage,
         "error_class": category,
         "source_line": line,
         "counts": _diagnostic_counts,
@@ -589,37 +635,87 @@ def npm_evidence(repo: Path, names: tuple[str, ...]) -> list[dict[str, Any]]:
 GRADLE_TASK = """import groovy.json.JsonOutput
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+def gsipEmitFault = { phase, failure ->
+    def safePhase = phase in ['DEBUG_CONFIGURATION','DEBUG_RESOLUTION','DEBUG_COMPONENTS',
+        'DEBUG_ARTIFACTS','RELEASE_CONFIGURATION','RELEASE_RESOLUTION','RELEASE_COMPONENTS',
+        'RELEASE_ARTIFACTS','OUTPUT'] ? phase : 'UNKNOWN'
+    def categories = [
+        'org.gradle.api.artifacts.UnknownConfigurationException':'CONFIGURATION_MISSING',
+        'org.gradle.internal.resolve.ModuleVersionNotFoundException':'DEPENDENCY_UNRESOLVED',
+        'org.gradle.internal.resolve.ModuleVersionResolveException':'DEPENDENCY_UNRESOLVED',
+        'groovy.lang.MissingPropertyException':'API_PROPERTY',
+        'groovy.lang.MissingMethodException':'API_METHOD',
+        'java.io.FileNotFoundException':'FILE_MISSING',
+        'java.nio.file.NoSuchFileException':'FILE_MISSING',
+        'java.net.UnknownHostException':'NETWORK',
+        'java.net.SocketTimeoutException':'NETWORK',
+        'javax.net.ssl.SSLHandshakeException':'NETWORK',
+        'java.lang.IllegalArgumentException':'INVALID_ARGUMENT',
+        'java.lang.NullPointerException':'NULL_VALUE',
+        'java.lang.ClassCastException':'TYPE_MISMATCH',
+        'java.lang.IllegalStateException':'ILLEGAL_STATE'
+    ]
+    def cause = 'UNKNOWN'
+    try {
+        def seen = Collections.newSetFromMap(new IdentityHashMap())
+        def labels = [] as Set
+        def current = failure
+        def depth = 0
+        while (current != null && depth < 16 && seen.add(current)) {
+            def label = categories[current.getClass().getName()]
+            if (label != null) { labels.add(label) }
+            current = current.getCause()
+            depth++
+        }
+        if (current == null && labels.size() == 1) { cause = labels.iterator().next() }
+    } catch (Throwable ignored) { cause = 'UNKNOWN' }
+    System.err.println('GSIP_RUNTIME_FAILURE_V1|' + safePhase + '|' + cause)
+}
 gradle.projectsEvaluated {
     def app = gradle.rootProject.project(':app')
     app.tasks.register('gsipRuntimeEvidence') {
         doLast {
-            def views = ['debugRuntimeClasspath','releaseRuntimeClasspath'].collect { name ->
-                def config = app.configurations.getByName(name)
-                config.resolvedConfiguration.rethrowFailure()
-                def modules = []
-                def projects = []
-                config.incoming.resolutionResult.allComponents.each { component ->
-                    def id = component.id
-                    if (id instanceof ModuleComponentIdentifier) {
-                        modules.add([id.group,id.module,id.version])
-                    } else if (id instanceof ProjectComponentIdentifier) {
-                        projects.add(id.projectPath)
-                    } else { throw new GradleException('unsupported runtime component') }
+            def phase = 'DEBUG_CONFIGURATION'
+            try {
+                def views = ['debugRuntimeClasspath','releaseRuntimeClasspath'].collect { name ->
+                    def variant = name == 'debugRuntimeClasspath' ? 'DEBUG' : 'RELEASE'
+                    phase = variant + '_CONFIGURATION'
+                    def config = app.configurations.getByName(name)
+                    phase = variant + '_RESOLUTION'
+                    config.resolvedConfiguration.rethrowFailure()
+                    def modules = []
+                    def projects = []
+                    phase = variant + '_COMPONENTS'
+                    config.incoming.resolutionResult.allComponents.each { component ->
+                        def id = component.id
+                        if (id instanceof ModuleComponentIdentifier) {
+                            modules.add([id.group,id.module,id.version])
+                        } else if (id instanceof ProjectComponentIdentifier) {
+                            projects.add(id.projectPath)
+                        } else { throw new GradleException('unsupported runtime component') }
+                    }
+                    phase = variant + '_ARTIFACTS'
+                    def artifacts = config.resolvedConfiguration.resolvedArtifacts.collect {
+                        artifact ->
+                        def id = artifact.id.componentIdentifier
+                        if (id instanceof ModuleComponentIdentifier) {
+                            [kind:'module', coordinate:[id.group,id.module,id.version],
+                             file:artifact.file.canonicalPath]
+                        } else if (id instanceof ProjectComponentIdentifier) {
+                            [kind:'project', project:id.projectPath,
+                             file:artifact.file.canonicalPath]
+                        } else { throw new GradleException('unsupported runtime artifact') }
+                    }
+                    [name:name,modules:modules.unique().sort { it.join(':') },
+                     projects:projects.unique().sort(),artifacts:artifacts]
                 }
-                def artifacts = config.resolvedConfiguration.resolvedArtifacts.collect { artifact ->
-                    def id = artifact.id.componentIdentifier
-                    if (id instanceof ModuleComponentIdentifier) {
-                        [kind:'module', coordinate:[id.group,id.module,id.version],
-                         file:artifact.file.canonicalPath]
-                    } else if (id instanceof ProjectComponentIdentifier) {
-                        [kind:'project', project:id.projectPath, file:artifact.file.canonicalPath]
-                    } else { throw new GradleException('unsupported runtime artifact') }
-                }
-                [name:name,modules:modules.unique().sort { it.join(':') },
-                 projects:projects.unique().sort(),artifacts:artifacts]
+                phase = 'OUTPUT'
+                def output = new File(app.findProperty('gsipEvidenceOutput').toString())
+                output.text = JsonOutput.toJson([views:views])
+            } catch (Throwable failure) {
+                try { gsipEmitFault(phase, failure) } catch (Throwable ignored) {}
+                throw failure
             }
-            def output = new File(app.findProperty('gsipEvidenceOutput').toString())
-            output.text = JsonOutput.toJson([views:views])
         }
     }
 }

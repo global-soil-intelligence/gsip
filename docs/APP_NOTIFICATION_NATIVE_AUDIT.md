@@ -153,6 +153,17 @@ property, or dependency network failure can replace `BUILD_TOOL`. Unknown,
 malformed, oversized or ambiguous output remains `BUILD_TOOL`; no tool output is
 copied into the four-field diagnostic. These labels do not establish a repair or
 provide native acceptance evidence.
+The temporary inspection task now emits one fixed failure marker before rethrowing
+the exact original exception. Its phase identifies debug/release configuration,
+resolution, component selection, artifact selection or output. Its cause is selected
+only from whitelisted public exception classes; no message, property name, method
+argument, path or other payload is printed. Cause traversal is limited to 16 distinct
+objects and detects cycles. Unknown, conflicting, cyclic or truncated causes report
+`UNKNOWN`. The Python diagnostic accepts only one exact, bounded marker for the
+exact inspection command and keeps the same four fields. All original resolution,
+selection, artifact and output operations remain mandatory. The marker is diagnostic
+build configuration emitted by Python, with its exact hash recorded in the audit;
+it adds no shipped native application source or dependency.
 Both actual debug and release inputs remain required; there is no debug substitution
 or check skip. If the next CI run confirms absent release project outputs, their
 actual variant producers must run before inspection in a separate forward fix.
