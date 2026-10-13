@@ -29,7 +29,7 @@ def build_fixtures(root: Path, capture: Path) -> None:
         VITE_CAPTURE_LIVE="false",
         VITE_LIBRARY_INTAKE_LIVE="false",
         VITE_GSIP_PUBLIC_API="https://supabase.test/functions/v1/gsip-public",
-        VITE_SUPABASE_PUBLISHABLE_KEY="e2e-publishable-key",
+        VITE_SUPABASE_PUBLISHABLE_KEY="e2e-key",
         VITE_SUPABASE_URL="https://supabase.test",
     )
     subprocess.run(  # noqa: S603 - fixed repository build, no shell or user arguments

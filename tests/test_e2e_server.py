@@ -42,6 +42,7 @@ def test_builds_pages_closed_and_mock_capture_only_in_temporary_output(
         assert options["cwd"] == root
         assert options["env"]["VITE_LIBRARY_INTAKE_LIVE"] == "false"
         assert options["env"]["VITE_SUPABASE_URL"] == "https://supabase.test"
+        assert options["env"]["VITE_SUPABASE_PUBLISHABLE_KEY"] == "e2e-key"
     assert json.loads((root / "_site/capture/gsip-activation.json").read_text()) == {
         "capture_live": False,
         "library_intake_live": False,
