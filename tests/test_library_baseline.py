@@ -5,10 +5,10 @@ from pathlib import Path
 from uuid import UUID
 
 import pytest
+from test_library import record
 
 from ml.library_baseline import prepare_pairs, run_baseline
 from pipeline.library import LibraryRecord
-from tests.test_library import record
 
 
 def pairs(count: int = 12) -> list[LibraryRecord]:

@@ -14,6 +14,7 @@ from PIL import Image
 
 from ml.library_baseline import run_baseline
 from pipeline.library import (
+    CameraRgb,
     Context,
     InstrumentReflectance,
     LibraryRecord,
