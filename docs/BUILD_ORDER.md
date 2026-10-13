@@ -269,7 +269,6 @@ Acceptance criteria:
       commands resolve; it fails without the guide.
 - [ ] Formatting and language checks pass; no dependency, licence, workflow or production change.
 
-
 **WP-3b: Cross-tab queue sync**
 Scope:
 
