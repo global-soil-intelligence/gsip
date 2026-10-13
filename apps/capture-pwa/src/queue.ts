@@ -1,4 +1,5 @@
 import { type DBSchema, type IDBPDatabase, openDB } from 'idb'
+import type { LibraryDraft } from './library'
 import type { CapturedPhoto } from './platform/types'
 import type { QueueRecord, ShotType } from './types'
 
@@ -10,6 +11,12 @@ interface CaptureQueueDatabase extends DBSchema {
     key: string
     value: QueueRecord
   }
+  libraryDraft: { key: 'current'; value: LibraryDraft }
+  libraryNamespace: {
+    key: string
+    value: { nodeId: string; ownerUid?: string }
+  }
+  queueState: { key: 'generation'; value: number }
   draftPhotos: {
     key: ShotType
     value: DraftPhoto
@@ -22,13 +29,18 @@ let databasePromise: Promise<IDBPDatabase<CaptureQueueDatabase>> | undefined
 let generation = 0
 
 function database() {
-  databasePromise ??= openDB<CaptureQueueDatabase>('gsip-capture-v1', 2, {
+  databasePromise ??= openDB<CaptureQueueDatabase>('gsip-capture-v1', 3, {
     upgrade(db, oldVersion) {
       if (oldVersion < 1)
         db.createObjectStore('submissions', { keyPath: 'submissionId' })
       // Version 2 (WP-APP-1): photos taken before the observation is queued.
       if (oldVersion < 2)
         db.createObjectStore('draftPhotos', { keyPath: 'shotType' })
+      if (oldVersion < 3) {
+        db.createObjectStore('libraryDraft')
+        db.createObjectStore('libraryNamespace')
+        db.createObjectStore('queueState')
+      }
     },
     blocking() {
       // A newer version of the app wants to upgrade the database: step aside.
@@ -57,9 +69,27 @@ export async function removeQueued(submissionId: string): Promise<void> {
  */
 export async function clearQueue(): Promise<number> {
   generation += 1
-  const records = await queued()
-  await (await database()).clear('submissions')
-  await clearDraftPhotos()
+  const db = await database()
+  const tx = db.transaction(
+    [
+      'submissions',
+      'draftPhotos',
+      'libraryDraft',
+      'libraryNamespace',
+      'queueState',
+    ],
+    'readwrite',
+  )
+  const records = await tx.objectStore('submissions').getAll()
+  const revision = (await tx.objectStore('queueState').get('generation')) ?? 0
+  await tx.objectStore('queueState').put(revision + 1, 'generation')
+  await Promise.all([
+    tx.objectStore('submissions').clear(),
+    tx.objectStore('draftPhotos').clear(),
+    tx.objectStore('libraryDraft').clear(),
+    tx.objectStore('libraryNamespace').clear(),
+  ])
+  await tx.done
   return records.length
 }
 
@@ -71,8 +101,16 @@ export async function clearQueue(): Promise<number> {
 export async function saveDraftPhoto(
   shotType: ShotType,
   photo: CapturedPhoto,
+  revision?: number,
 ): Promise<void> {
-  await (await database()).put('draftPhotos', { photo, shotType })
+  const tx = (await database()).transaction(
+    ['draftPhotos', 'queueState'],
+    'readwrite',
+  )
+  const current = (await tx.objectStore('queueState').get('generation')) ?? 0
+  if (revision === undefined || revision === current)
+    await tx.objectStore('draftPhotos').put({ photo, shotType })
+  await tx.done
 }
 
 export async function draftPhotos(): Promise<
@@ -85,22 +123,56 @@ export async function draftPhotos(): Promise<
 }
 
 export async function clearDraftPhotos(): Promise<void> {
-  await (await database()).clear('draftPhotos')
+  generation += 1
+  const tx = (await database()).transaction(
+    ['draftPhotos', 'libraryDraft', 'queueState'],
+    'readwrite',
+  )
+  const revision = (await tx.objectStore('queueState').get('generation')) ?? 0
+  await tx.objectStore('queueState').put(revision + 1, 'generation')
+  await Promise.all([
+    tx.objectStore('draftPhotos').clear(),
+    tx.objectStore('libraryDraft').clear(),
+  ])
+  await tx.done
 }
 
 /** Discards observations held because their account is no longer signed in here. */
 export async function discardHeld(): Promise<number> {
-  const held = (await queued()).filter((record) => record.heldAt)
-  for (const record of held) await removeQueued(record.submissionId)
-  return held.length
+  return discardMatching((record) => Boolean(record.heldAt))
 }
 
-/** The person chose to send held observations from the account signed in on this device now. */
-export async function releaseHeld(): Promise<void> {
-  for (const record of await queued()) {
-    if (!record.heldAt) continue
-    await enqueue({ ...record, heldAt: undefined, ownerUid: undefined })
-  }
+export async function discardLibraryConflicts(): Promise<number> {
+  return discardMatching((record) => Boolean(record.libraryConflictAt))
+}
+
+async function discardMatching(
+  matches: (record: QueueRecord) => boolean,
+): Promise<number> {
+  generation += 1
+  const tx = (await database()).transaction(
+    ['submissions', 'queueState'],
+    'readwrite',
+  )
+  const revision = (await tx.objectStore('queueState').get('generation')) ?? 0
+  await tx.objectStore('queueState').put(revision + 1, 'generation')
+  const records = (await tx.objectStore('submissions').getAll()).filter(matches)
+  for (const record of records)
+    await tx.objectStore('submissions').delete(record.submissionId)
+  await tx.done
+  return records.length
+}
+
+/** Library samples can only return to their original account; older captures keep their behavior. */
+export async function releaseHeld(currentUid?: string): Promise<void> {
+  await updateQueued((record) => {
+    if (!record.heldAt) return record
+    if (record.library)
+      return currentUid && record.ownerUid === currentUid
+        ? { ...record, heldAt: undefined }
+        : record
+    return { ...record, heldAt: undefined, ownerUid: undefined }
+  })
 }
 
 /**
@@ -113,35 +185,168 @@ export async function reconfirmTerms(
   reconfirmedTermsVersion: string,
 ): Promise<number> {
   let count = 0
-  for (const record of await queued()) {
-    if (!record.termsExpiredAt) continue
-    await enqueue({
+  await updateQueued((record) => {
+    if (!record.termsExpiredAt) return record
+    count += 1
+    return {
       ...record,
       nextRetryAt: undefined,
       reconfirmedAt,
       reconfirmedTermsVersion,
       termsExpiredAt: undefined,
-    })
-    count += 1
-  }
+    }
+  })
   return count
 }
 
 export async function retryDeadLettered(): Promise<void> {
-  for (const record of await queued()) {
-    if (!record.deadLetteredAt) continue
-    await enqueue({
-      ...record,
-      deadLetteredAt: undefined,
-      nextRetryAt: undefined,
-      syncAttempts: 0,
-    })
-  }
+  await updateQueued((record) =>
+    record.deadLetteredAt
+      ? {
+          ...record,
+          deadLetteredAt: undefined,
+          nextRetryAt: undefined,
+          syncAttempts: 0,
+        }
+      : record,
+  )
 }
 
 export const indexedDbQueue = {
   generation: () => generation,
+  revision: queueRevision,
+  putIfCurrent,
+  isCurrent: async (revision: number) => (await queueRevision()) === revision,
   list: queued,
   put: enqueue,
   remove: removeQueued,
+}
+
+/** Persistent across tabs and restarts, unlike the local fast generation counter. */
+export async function queueRevision(): Promise<number> {
+  return (await (await database()).get('queueState', 'generation')) ?? 0
+}
+
+export async function putIfCurrent(
+  record: QueueRecord,
+  revision: number,
+  existingOnly = true,
+): Promise<boolean> {
+  const tx = (await database()).transaction(
+    ['submissions', 'queueState'],
+    'readwrite',
+  )
+  const current = (await tx.objectStore('queueState').get('generation')) ?? 0
+  const exists =
+    !existingOnly ||
+    Boolean(await tx.objectStore('submissions').get(record.submissionId))
+  if (current === revision && exists)
+    await tx.objectStore('submissions').put(record)
+  await tx.done
+  return current === revision && exists
+}
+
+export async function savedLibraryDraft(): Promise<LibraryDraft | undefined> {
+  return (await database()).get('libraryDraft', 'current')
+}
+
+export async function saveLibraryDraft(
+  draft: LibraryDraft,
+  revision: number,
+): Promise<boolean> {
+  const tx = (await database()).transaction(
+    ['libraryDraft', 'queueState'],
+    'readwrite',
+  )
+  const current = (await tx.objectStore('queueState').get('generation')) ?? 0
+  if (current === revision)
+    await tx.objectStore('libraryDraft').put(draft, 'current')
+  await tx.done
+  return current === revision
+}
+
+export async function libraryNodeForOwner(
+  ownerUid?: string,
+  revision?: number,
+): Promise<string> {
+  const tx = (await database()).transaction(
+    ['libraryNamespace', 'queueState'],
+    'readwrite',
+  )
+  const current = (await tx.objectStore('queueState').get('generation')) ?? 0
+  if (revision !== undefined && current !== revision) {
+    await tx.done
+    throw new Error('Private draft was discarded.')
+  }
+  const store = tx.objectStore('libraryNamespace')
+  let saved = await store.get('current')
+  if (!saved || saved.ownerUid !== ownerUid) {
+    saved = { nodeId: crypto.randomUUID(), ownerUid }
+    await store.put(saved, 'current')
+  }
+  await tx.done
+  return saved.nodeId
+}
+
+/** Persist the first sender binding before any capture mutation; do not transfer a known node. */
+export async function bindLibraryOwner(
+  nodeId: string,
+  ownerUid: string,
+  revision?: number,
+): Promise<string> {
+  const tx = (await database()).transaction(
+    ['libraryNamespace', 'queueState'],
+    'readwrite',
+  )
+  const current = (await tx.objectStore('queueState').get('generation')) ?? 0
+  if (revision !== undefined && current !== revision) {
+    await tx.done
+    throw new Error('Private draft was discarded.')
+  }
+  const store = tx.objectStore('libraryNamespace')
+  const known = await store.get(nodeId)
+  const binding = known?.ownerUid ?? ownerUid
+  if (!known?.ownerUid) await store.put({ nodeId, ownerUid: binding }, nodeId)
+  const saved = await store.get('current')
+  if (saved?.nodeId === nodeId && !saved.ownerUid)
+    await store.put({ nodeId, ownerUid: binding }, 'current')
+  await tx.done
+  return binding
+}
+
+export async function rememberLibraryOwner(
+  nodeId: string,
+  ownerUid: string,
+  revision?: number,
+): Promise<void> {
+  if ((await bindLibraryOwner(nodeId, ownerUid, revision)) !== ownerUid)
+    throw new Error('Private namespace belongs to its original account.')
+}
+
+export async function clearLibraryDraft(): Promise<void> {
+  const tx = (await database()).transaction(
+    ['libraryDraft', 'queueState'],
+    'readwrite',
+  )
+  const revision = (await tx.objectStore('queueState').get('generation')) ?? 0
+  await tx.objectStore('queueState').put(revision + 1, 'generation')
+  await tx.objectStore('libraryDraft').clear()
+  await tx.done
+}
+
+export async function libraryNamespaceOwner(
+  nodeId: string,
+): Promise<string | undefined> {
+  return (await (await database()).get('libraryNamespace', nodeId))?.ownerUid
+}
+
+async function updateQueued(
+  update: (record: QueueRecord) => QueueRecord,
+): Promise<void> {
+  const tx = (await database()).transaction('submissions', 'readwrite')
+  for (const record of await tx.store.getAll()) {
+    const next = update(record)
+    if (next !== record) await tx.store.put(next)
+  }
+  await tx.done
 }

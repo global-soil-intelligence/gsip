@@ -178,6 +178,10 @@ def test_ios_versions_survive_binary_plist_and_rerun(tmp_path: Path) -> None:
     assert data["CFBundleIdentifier"] == "$(PRODUCT_BUNDLE_IDENTIFIER)"
     assert not any("backup" in key.lower() for key in data)
     path.write_bytes(plistlib.dumps(data, fmt=plistlib.FMT_BINARY))
+    (path.parent / "public").mkdir()
+    (path.parent / "public/gsip-activation.json").write_text(
+        '{"capture_live":false,"library_intake_live":false}'
+    )
     build.check_ios(path, value)
     data["CFBundleVersion"] = "1"
     path.write_bytes(plistlib.dumps(data, fmt=plistlib.FMT_BINARY))
@@ -220,6 +224,7 @@ def apk_dumps() -> dict[str, str]:
 
 
 def test_built_apk_checks_actual_application_resource_refs_and_payload(
+    tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     dumps = apk_dumps()
@@ -228,7 +233,13 @@ def test_built_apk_checks_actual_application_resource_refs_and_payload(
         return dumps[args[4] if args[2] == "xmltree" else args[2]]
 
     monkeypatch.setattr(build, "command", run)
-    build.check_apk(Path("synthetic.apk"), build.versions("101", PACKAGE), "aapt2")
+    apk = tmp_path / "synthetic.apk"
+    with zipfile.ZipFile(apk, "w") as output:
+        output.writestr(
+            "assets/public/gsip-activation.json",
+            '{"capture_live":false,"library_intake_live":false}',
+        )
+    build.check_apk(apk, build.versions("101", PACKAGE), "aapt2")
 
 
 @pytest.mark.parametrize(
@@ -399,3 +410,34 @@ def test_source_clean_excludes_only_exact_generated_outputs(
     monkeypatch.setattr(build, "command", run)
     assert build.source_clean(tmp_path, (output,)) is False
     assert build.source_clean(tmp_path, (output, tmp_path / "new_source.py")) is True
+
+
+@pytest.mark.parametrize("flag", ["capture_live", "library_intake_live"])
+def test_packaged_native_assets_refuse_open_capture_or_library(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, flag: str
+) -> None:
+    dumps = apk_dumps()
+    monkeypatch.setattr(
+        build, "command", lambda args: dumps[args[4] if args[2] == "xmltree" else args[2]]
+    )
+    apk = tmp_path / "synthetic.apk"
+    activation = {"capture_live": False, "library_intake_live": False}
+    activation[flag] = True
+    with zipfile.ZipFile(apk, "w") as output:
+        output.writestr("assets/public/gsip-activation.json", json.dumps(activation))
+    with pytest.raises(ValueError, match="activation"):
+        build.check_apk(apk, build.versions("101", PACKAGE), "aapt2")
+
+
+def test_library_indexeddb_stores_share_the_compiled_cloud_backup_exclusions() -> None:
+    source = Path("apps/capture-pwa/src/queue.ts").read_text()
+    assert "'gsip-capture-v1', 3" in source
+    for store in ("libraryDraft", "libraryNamespace", "queueState"):
+        assert f"db.createObjectStore('{store}')" in source
+    for modern in (False, True):
+        rules = build.xml(build.backup_rules(modern))
+        cloud = rules.find("cloud-backup") if modern else rules
+        assert cloud is not None
+        for domain in ("root", "database", "device_root", "device_database"):
+            assert cloud.find(f"exclude[@domain='{domain}'][@path='.']") is not None
+    # The compiled resource test proves the approved all-domain rules ship in the APK.

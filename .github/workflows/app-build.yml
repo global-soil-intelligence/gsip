@@ -41,7 +41,8 @@ env:
   # The same public configuration the website's capture app is built with.
   VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL }}
   VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
-  VITE_CAPTURE_LIVE: ${{ vars.VITE_CAPTURE_LIVE }}
+  VITE_CAPTURE_LIVE: 'false'
+  VITE_LIBRARY_INTAKE_LIVE: 'false'
   VITE_TERMS_URL: ${{ vars.VITE_TERMS_URL }}
   VITE_PRIVACY_URL: ${{ vars.VITE_PRIVACY_URL }}
   VITE_SAMPLING_RULES_URL: ${{ vars.VITE_SAMPLING_RULES_URL }}

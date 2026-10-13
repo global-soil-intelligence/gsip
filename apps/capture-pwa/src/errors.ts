@@ -38,3 +38,22 @@ export function isWithdrawal(error: unknown): boolean {
     (error as { code?: unknown }).code === 'WD001'
   )
 }
+
+/** A closed, absent or incompatible private intake service; no retry budget is spent. */
+export class LibraryUnavailable extends Error {
+  constructor() {
+    super('Private library intake is paused.')
+    this.name = 'LibraryUnavailable'
+  }
+}
+
+/** Permanent caller identity/context conflict; private payload is never included. */
+export class LibraryConflict extends Error {
+  constructor() {
+    super('The private sample needs attention before it can be sent.')
+    this.name = 'LibraryConflict'
+  }
+}
+
+/** A clear/discard invalidated the drain's device generation. */
+export class QueueDiscarded extends Error {}

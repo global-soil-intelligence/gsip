@@ -98,16 +98,18 @@ export function YourData({
     setBusy(true)
     try {
       const outcome = await requestDeletion(client, choice)
+      // Every confirmed server outcome also fulfills the person's local clear intent.
+      // A failed/uncertain request throws before this point and preserves local bytes.
+      const discarded = await clearQueue()
+      await onQueueCleared()
+      const local = discarded
+        ? ` ${discarded} observation${discarded > 1 ? 's' : ''} queued on this device ${discarded > 1 ? 'were' : 'was'} discarded.`
+        : ''
       if (outcome === 'already_open') {
         setMessage(
-          'A request is already in progress. You can make another once it completes.',
+          `A request is already in progress. You can make another once it completes. Private drafts and photos on this device were cleared.${local}`,
         )
       } else {
-        const discarded = await clearQueue()
-        await onQueueCleared()
-        const local = discarded
-          ? ` ${discarded} observation${discarded > 1 ? 's' : ''} queued on this device ${discarded > 1 ? 'were' : 'was'} discarded.`
-          : ''
         if (outcome === 'no_account') {
           setMessage(
             `This device has no account, so nothing from it is stored on our servers.${local}`,

@@ -146,7 +146,19 @@ def apply_ios(path: Path, value: Versions) -> None:
     path.write_bytes(plistlib.dumps(data, fmt=plistlib.FMT_XML))
 
 
+def check_activation(raw: bytes) -> None:
+    try:
+        data = json.loads(raw)
+    except (ValueError, UnicodeDecodeError) as error:
+        raise ValueError("packaged activation receipt is invalid") from error
+    if data != {"capture_live": False, "library_intake_live": False} or any(
+        type(value) is not bool for value in data.values()
+    ):
+        raise ValueError("packaged activation must keep capture and library intake closed")
+
+
 def check_ios(path: Path, value: Versions) -> None:
+    check_activation((path.parent / "public" / "gsip-activation.json").read_bytes())
     data = plistlib.loads(path.read_bytes())
     if (
         data.get("CFBundleShortVersionString") != value.marketing
@@ -262,6 +274,12 @@ def check_apk(apk: Path, value: Versions, aapt2: str) -> None:
         if app.get(f"{{{ANDROID_NS}}}{attribute}") != identifier:
             raise ValueError(f"compiled application does not reference its approved {attribute}")
         check_rules(aapt_xml(command([aapt2, "dump", "xmltree", "--file", file, str(apk)])), modern)
+
+    with zipfile.ZipFile(apk) as archive:
+        name = "assets/public/gsip-activation.json"
+        if archive.namelist().count(name) != 1:
+            raise ValueError("packaged activation receipt is missing or ambiguous")
+        check_activation(archive.read(name))
 
 
 def digest(path: Path) -> str:
