@@ -1,6 +1,6 @@
 # Open soil spectral library: developer entry point
 
-GSIP's primary goal is an open soil spectral reference library. Smartphones collect guided images and context and link physical samples to instrument/lab evidence. Maps and AI models use that evidence. The v5 architecture is proposed in [SPEC §16](SPEC.md#16-open-soil-spectral-library-v5); these private local tools are preparation, not a production deployment or a public dataset.
+GSIP's primary goal is an open soil spectral reference library. Smartphones collect guided images and context and link physical samples to instrument/lab evidence. Maps and AI models use that evidence. The v5 library foundation is implemented, with v6/v7 private intake specified in [SPEC §16](SPEC.md#16-open-soil-spectral-library-v5-foundation-v6v7-private-intake). The library tools and default-closed hosted intake are preparation; production deployment and public spectral data remain gated.
 
 ## What you can run now
 
@@ -30,7 +30,7 @@ Sample context records depth in cm and wet/moist/dry/unknown condition. Optional
 Local record authority flags cannot be promoted into hosted authority. These
 parsers prepare validation only; they activate no phone or hosted intake.
 
-You can fork and extend the code, run a private local library node, and consume GSIP's public read API today. You cannot register that node to upload samples to GSIP using these commands. WP-LIB-4 schedules phone/private hosted intake and server verification; WP-LIB-5 schedules authenticated node exchange, physical-sample deduplication and rights propagation. Capture remains closed until the existing launch gates pass. Individual spectral publication remains blocked on the new fingerprinting/privacy review even if no coordinates are present.
+You can fork and extend the code, run a private local library node, and consume GSIP's public read API today. You cannot register that node to upload samples to GSIP using these commands. WP-LIB-4B adds [private hosted intake](LIBRARY_PRIVATE_INTAKE.md) for unverified declarations; gated WP-LIB-4C adds the phone workflow. No source-file, calibration or physical-pair verification is supplied by LIB-4; WP-LIB-5 schedules authenticated node exchange, physical-sample deduplication and rights propagation. Capture remains closed until the existing launch gates pass. Individual spectral publication remains blocked on the new fingerprinting/privacy review even if no coordinates are present.
 
 No trained or independently validated soil reconstruction model is provided by the record store. Scientific training requires paired field measurements, verified calibration, rights eligibility and disjoint independent evaluation. Biological relationships need actual assays and an expert-reviewed vocabulary; no camera or spectral record here asserts microbial composition.
 

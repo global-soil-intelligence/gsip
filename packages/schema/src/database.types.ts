@@ -866,6 +866,13 @@ export type Database = {
         Args: { p_submission_id: string }
         Returns: string
       }
+      library_intake_capabilities: { Args: never; Returns: Json }
+      my_library_intake_receipt: {
+        Args: { p_intake_id: string }
+        Returns: Json
+      }
+      record_library_intake: { Args: { p_request: Json }; Returns: Json }
+      set_library_intake_open: { Args: { p_open: boolean }; Returns: undefined }
       my_submission_accepts_uploads: {
         Args: { p_submission: string }
         Returns: boolean

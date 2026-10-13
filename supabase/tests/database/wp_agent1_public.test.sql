@@ -4,7 +4,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(12);
+select plan(14);
 
 -- Every table and view in the public schema that the anonymous role can read, at table or column
 -- level. A new table readable by anon fails here until it is reviewed and listed.
@@ -37,9 +37,23 @@ select is(
     (select count(*) from pg_proc p join pg_namespace n on n.oid = p.pronamespace
      where n.nspname in ('public', 'private')
        and has_function_privilege('anon', p.oid, 'execute')
-       and p.proname <> 'capture_is_open'),
+       and p.oid not in ('public.capture_is_open()'::regprocedure,
+           'public.library_intake_capabilities()'::regprocedure,
+           'private.library_intake_capabilities()'::regprocedure)),
     0::bigint,
-    'the anonymous role executes no GSIP function except capture_is_open'
+    'anonymous execution is limited to the exact capture gate and library capability signatures'
+);
+
+select results_eq(
+    $$select key from jsonb_object_keys(public.library_intake_capabilities()) key order by key$$,
+    $$values ('available'::text), ('version'::text)$$,
+    'anonymous library capabilities expose only availability and contract version'
+);
+select ok(
+    not has_function_privilege('anon', 'public.record_library_intake(jsonb)', 'execute')
+    and not has_function_privilege('anon', 'public.my_library_intake_receipt(uuid)', 'execute')
+    and not has_function_privilege('anon', 'public.set_library_intake_open(boolean)', 'execute'),
+    'anonymous capability read grants no intake, receipt or activation authority'
 );
 
 -- Releases.
