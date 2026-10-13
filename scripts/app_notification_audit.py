@@ -16,6 +16,7 @@ import re
 import stat
 import subprocess
 import sys
+import tarfile
 import tempfile
 import urllib.error
 import urllib.request
@@ -73,6 +74,83 @@ def refuse() -> NoReturn:
     raise AuditError("native evidence missing, invalid or unreviewed")
 
 
+DIAGNOSTIC_STAGES = {
+    "start",
+    "android-dependency-trees",
+    "android-build-environment",
+    "android-gradle-inspection",
+    "android-npm-sources",
+    "android-runtime-graph",
+    "android-runtime-licenses",
+    "android-project-sources",
+    "android-runtime-binaries",
+    "android-source-bindings",
+    "ios-pods",
+    "ios-resolution",
+    "ios-remote-sources",
+    "ios-capacitor-checkout",
+    "ios-capacitor-licenses",
+    "ios-capacitor-binaries",
+    "ios-npm-sources",
+    "ios-source-bindings",
+    "feature-comparison",
+}
+DIAGNOSTIC_COUNTS = {
+    "runtime_views",
+    "module_inputs",
+    "project_inputs",
+    "remote_pins",
+    "resolved_files",
+    "source_packages",
+}
+_diagnostic_stage = "start"
+_diagnostic_counts: dict[str, int] = {}
+
+
+def mark(stage: str, **counts: int) -> None:
+    global _diagnostic_stage, _diagnostic_counts
+    if stage not in DIAGNOSTIC_STAGES or not set(counts) <= DIAGNOSTIC_COUNTS:
+        refuse()
+    if any(type(value) is not int or not 0 <= value <= 30_000 for value in counts.values()):
+        refuse()
+    _diagnostic_stage = stage
+    _diagnostic_counts = counts
+
+
+def diagnostic(error: BaseException) -> dict[str, Any]:
+    category = next(
+        (
+            label
+            for kind, label in (
+                (AuditError, "AUDIT_REFUSAL"),
+                (FileNotFoundError, "MISSING_FILE"),
+                (PermissionError, "FILE_PERMISSION"),
+                (urllib.error.URLError, "PUBLIC_METADATA"),
+                (subprocess.SubprocessError, "BUILD_TOOL"),
+                (zipfile.BadZipFile, "INVALID_ARCHIVE"),
+                (tarfile.TarError, "INVALID_ARCHIVE"),
+                (ET.ParseError, "MALFORMED_METADATA"),
+                (OSError, "FILE_ERROR"),
+                (ValueError, "MALFORMED_METADATA"),
+            )
+            if isinstance(error, kind)
+        ),
+        "INVALID_EVIDENCE",
+    )
+    line = 0
+    trace = error.__traceback__
+    while trace is not None:
+        if trace.tb_frame.f_code.co_filename == __file__:
+            line = trace.tb_lineno
+        trace = trace.tb_next
+    return {
+        "stage": _diagnostic_stage,
+        "error_class": category,
+        "source_line": line,
+        "counts": _diagnostic_counts,
+    }
+
+
 def sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -105,7 +183,7 @@ def read(
 ) -> bytes:
     """Only explicit bounded regular single-link files beneath trusted CI roots."""
     absolute = contained(path, roots)
-    fd = os.open(absolute, os.O_RDONLY | os.O_NOFOLLOW)
+    fd = os.open(absolute, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     try:
         info = os.fstat(fd)
         if (
@@ -441,6 +519,7 @@ gradle.projectsEvaluated {
 def runtime_evidence(
     data: dict[str, Any], repo: Path, cache: Path, allow_fetch: bool
 ) -> dict[str, Any]:
+    mark("android-runtime-graph")
     views = data.get("views")
     if (
         not isinstance(views, list)
@@ -449,6 +528,7 @@ def runtime_evidence(
         != {"debugRuntimeClasspath", "releaseRuntimeClasspath"}
     ):
         refuse()
+    mark("android-npm-sources")
     npm = npm_evidence(repo, NPM_PACKAGES)
     npm_by_name = {item["name"]: item for item in npm}
     receipts = []
@@ -467,6 +547,7 @@ def runtime_evidence(
             refuse()
         if app_permissions.closed_dependencies("\n".join(":".join(item) for item in modules)):
             refuse()
+        mark("android-runtime-licenses", module_inputs=len(modules))
         selected = []
         for coord in modules:
             selected.append(
@@ -475,6 +556,7 @@ def runtime_evidence(
                     "pom_license_evidence": pom_evidence(coord, cache, allow_fetch),
                 }
             )
+        mark("android-project-sources", project_inputs=len(view["projects"]))
         projects = []
         for project in view["projects"]:
             if project == ":app":
@@ -508,6 +590,11 @@ def runtime_evidence(
                     "source_manifest_sha256": npm_by_name[name]["installed_source_manifest_sha256"],
                 }
             )
+        mark(
+            "android-runtime-binaries",
+            module_inputs=len(modules),
+            project_inputs=len(view["projects"]),
+        )
         binaries = []
         for artifact in view["artifacts"]:
             if (
@@ -578,6 +665,7 @@ def runtime_evidence(
 
 
 def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> None:
+    mark("android-dependency-trees")
     for configuration in ("debugRuntimeClasspath", "releaseRuntimeClasspath"):
         text = run(
             [
@@ -594,6 +682,7 @@ def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> N
         if "--- " not in text or app_permissions.closed_dependencies(text):
             refuse()
         (output.parent / f"{output.stem}-{configuration}.txt").write_text(text + "\n")
+    mark("android-build-environment")
     build_environment = run(
         [
             str(repo / "apps/capture-pwa/android/gradlew"),
@@ -608,6 +697,7 @@ def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> N
         temporary = Path(directory)
         task, graph = temporary / "inspection.gradle", temporary / "resolved.json"
         task.write_text(GRADLE_TASK)
+        mark("android-gradle-inspection")
         run(
             [
                 str(repo / "apps/capture-pwa/android/gradlew"),
@@ -622,6 +712,7 @@ def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> N
         )
         raw = read(graph, (temporary,))
         result = runtime_evidence(decoded(raw), repo, cache, True)
+    mark("android-source-bindings")
     result["build_only_environment_sha256"] = sha(build_environment.encode())
     result["runtime_tree_sha256"] = {
         configuration: sha(
@@ -686,6 +777,7 @@ def tree_evidence(root: Path, allowed: Path) -> dict[str, Any]:
         )
     if not files:
         refuse()
+    files.sort(key=lambda item: item["path"])
     return {
         "bytes": total,
         "file_count": len(files),
@@ -694,34 +786,312 @@ def tree_evidence(root: Path, allowed: Path) -> dict[str, Any]:
     }
 
 
+# Reviewed existing selected remote source dependencies, exact public tag evidence.
+ION_PACKAGES: dict[str, dict[str, Any]] = {
+    "ion-ios-camera": {
+        "version": "2.0.0",
+        "revision": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
+        "manifest_sha256": "9c996d5e3d272926b9ca7375db032769554479b39088f3c6261a9b6db3f0e398",
+        "license_sha256": "731d2fac39f3d6dc79c04f9a7d2e59c2999caa0dd1dbcf295f9c0e922580dacc",
+        "archive_sha256": "973aa971e499abe35869c939dddb31ebec2c11b1e646cda3c2eb3fe95329b322",
+        "source_tree_sha256": "ee2d399fea29b2136b17f6183fe7fb4afd528f71f193e40a78b1f34c233fd3bf",
+        "source_bytes": 522080,
+        "source_file_count": 110,
+        "archive_bytes": 273170,
+        "test_dependencies": [
+            {"location": "https://github.com/Quick/Nimble.git", "minimum_version": "13.0.0"},
+            {"location": "https://github.com/Quick/Quick.git", "minimum_version": "7.0.0"},
+        ],
+    },
+    "ion-ios-filesystem": {
+        "version": "1.1.4",
+        "revision": "56bd6f9e77cb4f2269c03f2d92a9fe58fe168a1c",
+        "manifest_sha256": "2af20bd56bf4fd79f19e89fcc8bf524c225edece060ea1e08d0970799481d465",
+        "license_sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d",
+        "archive_sha256": "8efe6d8d1dd40b6894d5c128e9bb81bc557f8d58d3c4c4f6dc12ab9ac5c891d9",
+        "source_tree_sha256": "e9b94d4a60923891b387d45fe7be988ab21e343ccd705901bbc046acc590b057",
+        "source_bytes": 150959,
+        "source_file_count": 36,
+        "archive_bytes": 31020,
+        "test_dependencies": [],
+    },
+    "ion-ios-geolocation": {
+        "version": "2.1.1",
+        "revision": "db363927d3a954e3ea24d2e72b6e9814769a84be",
+        "manifest_sha256": "1afefd99f4747c429c71ccd2823a8623095da3b9a2fa0df7f341f31beb310245",
+        "license_sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d",
+        "archive_sha256": "bbff6b0ab17490d7ef80b18af0f520a83f4eee3c042fa980c0f60c234bff33fb",
+        "source_tree_sha256": "8d834e023fc57cdcf8cb183d29db71dd089219f802c5baf3aae24b78c7d0476b",
+        "source_bytes": 95915,
+        "source_file_count": 35,
+        "archive_bytes": 23644,
+        "test_dependencies": [],
+    },
+}
+CAPACITOR_RELEASE: dict[str, Any] = {
+    "version": "8.5.2",
+    "revision": "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+    "manifest_sha256": "d438f723a12d16a803aeb0b81d1160a04ead205f74614a2b97aa8965acf95a72",
+    "readme_sha256": "da248c966f5d41d4a36967eaace66fc6c8436f46c4fbad3434df3f54b737d9c4",
+    "license_sha256": "9c6ebf3e5ab832ba4d5af38f340978e1fedbfee6e3d23662dfdb8917a9d864dd",
+    "cordova_header_sha256": "5b015a36af3df0bb49cfc97f9092f75e48fd02c56f366d674667b7cde888db13",
+    "source_archive_sha256": "4299321005ae1e8fa981eda92b2bd263eda6008baf249818cd794c2c8f22f667",
+    "source_archive_bytes": 3549,
+    "source_tree": {
+        "bytes": 9594,
+        "file_count": 9,
+        "tree_sha256": "a9db722c3e4ffbb6bcd049ca844a64dafde4a92d70c70f170779502b09122652",
+    },
+    "binaries": {
+        "Capacitor": {
+            "sha256": "134c65a8bd30bfaa8ccb158d78142fa7231bf3f472e4a5d808c5fbed90fd4c75",
+            "archive_bytes": 6611661,
+            "tree_sha256": "50de18f4b668ee63f13f6def160a3793a0b4c2da64bed3bd6f4364ec7d82f8bc",
+            "file_count": 54,
+            "bytes": 23980848,
+        },
+        "Cordova": {
+            "sha256": "57ff2c8f1e5dcd8d4379ac3cccde1407d81ccd575347dc2aff4f72272b8794a1",
+            "archive_bytes": 1842451,
+            "tree_sha256": "10f6b5162f8953a32d8a2285ea6fe885ae8f72955962c003160f51b77e4bf2da",
+            "file_count": 58,
+            "bytes": 4838267,
+        },
+    },
+}
+
+APPLICATION_RESOLVED = (
+    "apps/capture-pwa/ios/App/App.xcodeproj/project.xcworkspace/"
+    "xcshareddata/swiftpm/Package.resolved"
+)
+UPSTREAM_RESOLVED = {
+    "ion-ios-filesystem": (
+        "IONFilesystemLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+    ),
+    "ion-ios-geolocation": (
+        "IONGeolocationLib.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+    ),
+}
+SWIFTLINT_PIN = {
+    "identity": "swiftlintplugins",
+    "kind": "remoteSourceControl",
+    "location": "https://github.com/SimplyDanny/SwiftLintPlugins",
+    "state": {"revision": "f9731bef175c3eea3a0ca960f1be78fcc2bc7853", "version": "0.57.1"},
+}
+
+
+def selected_pins(value: Any) -> dict[str, dict[str, Any]]:
+    pins = items(value, 4)
+    result = {}
+    for value in pins:
+        if not isinstance(value, dict):
+            refuse()
+        pin = record(
+            value, {"identity", "location", "state"} | ({"kind"} if "kind" in value else set())
+        )
+        identity = pin["identity"]
+        if not isinstance(identity, str) or identity in result:
+            refuse()
+        expected = ION_PACKAGES.get(identity)
+        version = expected["version"] if expected else "8.5.2"
+        if (
+            identity not in {"capacitor-swift-pm", *ION_PACKAGES}
+            or pin["location"] != f"https://github.com/ionic-team/{identity}.git"
+            or ("kind" in pin and pin["kind"] != "remoteSourceControl")
+        ):
+            refuse()
+        state = record(pin["state"], {"version", "revision"})
+        if (
+            state["version"] != version
+            or not isinstance(state["revision"], str)
+            or not re.fullmatch(r"[0-9a-f]{40}", state["revision"])
+            or state["revision"]
+            != (expected["revision"] if expected is not None else CAPACITOR_RELEASE["revision"])
+        ):
+            refuse()
+        result[identity] = pin
+    if set(result) != {"capacitor-swift-pm", *ION_PACKAGES}:
+        refuse()
+    return result
+
+
+def source_archive(data: bytes, identity: str, version: str) -> dict[str, Any]:
+    files: list[dict[str, Any]] = []
+    total = 0
+    prefix = f"{identity}-{version}/"
+    with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as archive:
+        for member in archive:
+            if member.isdir():
+                continue
+            if not member.isfile() or not member.name.startswith(prefix):
+                refuse()
+            path = relative_name(member.name[len(prefix) :])
+            if path.endswith((".jar", ".aar", ".a", ".dylib", ".zip")) or any(
+                part.endswith((".framework", ".xcframework")) for part in Path(path).parts
+            ):
+                refuse()
+            if not 0 <= member.size <= MAX_BINARY:
+                refuse()
+            stream = archive.extractfile(member)
+            if stream is None:
+                refuse()
+            payload = stream.read(MAX_BINARY + 1)
+            if len(payload) != member.size:
+                refuse()
+            total += len(payload)
+            files.append({"path": path, "bytes": len(payload), "sha256": sha(payload)})
+            if total > MAX_ZIP_BYTES or len(files) > 30_000:
+                refuse()
+    files.sort(key=lambda item: item["path"])
+    if not files or len({item["path"] for item in files}) != len(files):
+        refuse()
+    return {
+        "bytes": total,
+        "file_count": len(files),
+        "files": files,
+        "tree_sha256": sha(json.dumps(files, sort_keys=True, separators=(",", ":")).encode()),
+    }
+
+
+def checkout_source_tree(checkout: Path, repo: Path) -> dict[str, Any]:
+    files: list[dict[str, Any]] = []
+    total = 0
+    for file in sorted(checkout.rglob("*")):
+        relative = file.relative_to(checkout)
+        if relative.parts[0] == ".git":
+            continue  # Git metadata is not package source and is never read.
+        if file.is_symlink():
+            refuse()
+        if file.is_dir():
+            continue
+        payload = read(file, (repo,), MAX_BINARY, allow_empty=True)
+        total += len(payload)
+        files.append({"path": str(relative), "bytes": len(payload), "sha256": sha(payload)})
+        if total > MAX_ZIP_BYTES or len(files) > 30_000:
+            refuse()
+    if not files:
+        refuse()
+    files.sort(key=lambda item: item["path"])
+    return {
+        "bytes": total,
+        "file_count": len(files),
+        "files": files,
+        "tree_sha256": sha(json.dumps(files, sort_keys=True, separators=(",", ":")).encode()),
+    }
+
+
+def collect_remote_sources(repo: Path, pins: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    result = []
+    for identity, expected in sorted(ION_PACKAGES.items()):
+        checkout = repo / f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}"
+        contained(checkout, (repo,))
+        head = run(["git", "-C", str(checkout), "rev-parse", "HEAD"])
+        tag = run(
+            ["git", "-C", str(checkout), "rev-parse", f"refs/tags/{expected['version']}^{{commit}}"]
+        )
+        if head != pins[identity]["state"]["revision"] or tag != head:
+            refuse()
+        manifest = read(checkout / "Package.swift", (repo,))
+        license_data = read(checkout / "LICENSE", (repo,))
+        if (
+            sha(manifest) != expected["manifest_sha256"]
+            or sha(license_data) != expected["license_sha256"]
+            or b".binaryTarget" in manifest
+            or b"Permission is hereby granted" not in license_data
+        ):
+            refuse()
+        url = f"https://codeload.github.com/ionic-team/{identity}/tar.gz/refs/tags/{expected['version']}"
+        data = public_bytes(url, MAX_BINARY)
+        if sha(data) != expected["archive_sha256"]:
+            refuse()
+        published = source_archive(data, identity, expected["version"])
+        actual = checkout_source_tree(checkout, repo)
+        if published != actual:
+            refuse()
+        result.append(
+            {
+                "identity": identity,
+                "location": pins[identity]["location"],
+                "version": expected["version"],
+                "checkout_revision": head,
+                "release_tag_revision": tag,
+                "manifest_sha256": sha(manifest),
+                "license": {
+                    "spdx": "MIT",
+                    "sha256": sha(license_data),
+                    "source": f"https://raw.githubusercontent.com/ionic-team/{identity}/{expected['version']}/LICENSE",
+                },
+                "source_archive": {"url": url, "sha256": sha(data), "bytes": len(data)},
+                "actual_source_tree": actual,
+                "test_only_dependencies": expected["test_dependencies"],
+                "runtime_remote_dependencies": [],
+                "binary_targets": [],
+            }
+        )
+    return result
+
+
+def resolved_inventory(repo: Path, application_pins: Any) -> list[dict[str, Any]]:
+    ios = repo / "apps/capture-pwa/ios"
+    expected = {APPLICATION_RESOLVED: "application selected graph"}
+    for identity, relative in UPSTREAM_RESOLVED.items():
+        expected[
+            f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}/{relative}"
+        ] = "upstream development project tool lock; not selected in application graph"
+    paths = list(ios.rglob("Package.resolved"))
+    if {str(path.relative_to(repo)) for path in paths} != set(expected):
+        refuse()
+    result = []
+    for path in sorted(paths):
+        raw = read(path, (repo,))
+        value = decoded(raw)
+        relative = str(path.relative_to(repo))
+        keys = (
+            {"pins"}
+            | ({"version"} if "version" in value else set())
+            | ({"originHash"} if "originHash" in value else set())
+        )
+        record(value, keys)
+        if "version" in value and (
+            type(value["version"]) is not int or value["version"] not in {1, 2, 3}
+        ):
+            refuse()
+        if "originHash" in value:
+            evidence_digest(value["originHash"])
+        if relative == APPLICATION_RESOLVED:
+            selected_pins(value["pins"])
+            if value["pins"] != application_pins:
+                refuse()
+        elif value["pins"] != [SWIFTLINT_PIN]:
+            refuse()
+        result.append(
+            {
+                "path": relative,
+                "sha256": sha(raw),
+                "scope": expected[relative],
+                "pins": value["pins"],
+            }
+        )
+    return result
+
+
 def collect_ios(repo: Path, output: Path, artifact: Path | None = None) -> None:
     artifact = artifact if artifact is not None else repo / "gsip-capture-ios-simulator.zip"
     ios = repo / "apps/capture-pwa/ios"
+    mark("ios-pods")
     if list(ios.rglob("Podfile.lock")):
         refuse()  # This workflow selects SPM; a new Pod resolution needs an explicit audit adapter.
-    resolved_paths = list(ios.rglob("Package.resolved"))
-    if len(resolved_paths) != 1:
-        refuse()
-    raw = read(resolved_paths[0], (repo,))
+    mark("ios-resolution")
+    raw = read(repo / APPLICATION_RESOLVED, (repo,))
     resolved = decoded(raw)
     pins = resolved.get("pins")
-    if not isinstance(pins, list) or len(pins) != 1:
-        refuse()
-    pin = pins[0]
-    if (
-        not isinstance(pin, dict)
-        or pin.get("identity") != "capacitor-swift-pm"
-        or pin.get("location") != "https://github.com/ionic-team/capacitor-swift-pm.git"
-    ):
-        refuse()
-    state = pin.get("state")
-    if (
-        not isinstance(state, dict)
-        or state.get("version") != "8.5.2"
-        or not isinstance(state.get("revision"), str)
-        or not re.fullmatch(r"[0-9a-f]{40}", state["revision"])
-    ):
-        refuse()
+    selected = selected_pins(pins)
+    inventory = resolved_inventory(repo, pins)
+    mark("ios-remote-sources", remote_pins=len(selected), resolved_files=len(inventory))
+    remote_sources = collect_remote_sources(repo, selected)
+    pin = selected["capacitor-swift-pm"]
+    state = pin["state"]
+    mark("ios-capacitor-checkout")
     checkout = ios / "App/build/SourcePackages/checkouts/capacitor-swift-pm"
     contained(checkout, (repo,))
     checkout_revision = run(["git", "-C", str(checkout), "rev-parse", "HEAD"])
@@ -730,6 +1100,35 @@ def collect_ios(repo: Path, output: Path, artifact: Path | None = None) -> None:
         refuse()
     manifest = read(checkout / "Package.swift", (repo,))
     manifest_text = manifest.decode()
+    if sha(manifest) != CAPACITOR_RELEASE["manifest_sha256"]:
+        refuse()
+    source_url = "https://codeload.github.com/ionic-team/capacitor-swift-pm/tar.gz/refs/tags/8.5.2"
+    source_data = public_bytes(source_url, MAX_BINARY)
+    if (
+        sha(source_data) != CAPACITOR_RELEASE["source_archive_sha256"]
+        or len(source_data) != CAPACITOR_RELEASE["source_archive_bytes"]
+    ):
+        refuse()
+    published_source = source_archive(source_data, "capacitor-swift-pm", "8.5.2")
+    actual_source = checkout_source_tree(checkout, repo)
+    if published_source != actual_source:
+        refuse()
+    capacitor_source = {
+        "identity": "capacitor-swift-pm",
+        "location": pin["location"],
+        "version": "8.5.2",
+        "checkout_revision": checkout_revision,
+        "release_tag_revision": release_revision,
+        "manifest_sha256": sha(manifest),
+        "source_archive": {
+            "url": source_url,
+            "sha256": sha(source_data),
+            "bytes": len(source_data),
+        },
+        "actual_source_tree": actual_source,
+    }
+    validate_capacitor_source(capacitor_source)
+
     matches = re.findall(
         r'\.binaryTarget\(\s*name:\s*"(Capacitor|Cordova)",\s*url:\s*"(https://github\.com/ionic-team/capacitor-swift-pm/releases/download/8\.5\.2/(?:Capacitor|Cordova)\.xcframework\.zip)",\s*checksum:\s*"([0-9a-f]{64})"\s*\)',
         manifest_text,
@@ -740,6 +1139,7 @@ def collect_ios(repo: Path, output: Path, artifact: Path | None = None) -> None:
         or manifest_text.count(".binaryTarget(") != 2
     ):
         refuse()
+    mark("ios-capacitor-licenses")
     readme_url = "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md"
     license_url = "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE"
     upstream_readme = public_bytes(readme_url, MAX_META)
@@ -747,12 +1147,18 @@ def collect_ios(repo: Path, output: Path, artifact: Path | None = None) -> None:
     installed_ios = (repo / "apps/capture-pwa/node_modules/@capacitor/ios").resolve()
     if (
         b"binary xcframework releases of Capacitor and CapacitorCordova" not in upstream_readme
+        or sha(upstream_readme) != CAPACITOR_RELEASE["readme_sha256"]
+        or sha(upstream_license) != CAPACITOR_RELEASE["license_sha256"]
         or upstream_license != read(installed_ios / "LICENSE", (repo / "node_modules",))
     ):
         refuse()
+    mark("ios-capacitor-binaries")
     frameworks = []
     for name, url, checksum in matches:
-        if not url.endswith(f"/{name}.xcframework.zip"):
+        if (
+            not url.endswith(f"/{name}.xcframework.zip")
+            or checksum != CAPACITOR_RELEASE["binaries"][name]["sha256"]
+        ):
             refuse()
         data = public_bytes(url, MAX_BINARY, redirects=True)
         if sha(data) != checksum:
@@ -776,28 +1182,33 @@ def collect_ios(repo: Path, output: Path, artifact: Path | None = None) -> None:
             }
             if entries != expected:
                 refuse()
-        frameworks.append(
-            {
-                "name": name,
-                "published_archive_url": url,
-                "swift_manifest_checksum": checksum,
-                "actual_resolved_tree": tree,
-                "archive": zip_metadata,
-                "license_source": (
-                    "Capacitor npm ios MIT LICENSE; Cordova files additionally "
-                    "retain Apache-2.0 source headers; package metadata alone "
-                    "does not license other binary contents"
-                ),
-            }
-        )
+        binary_record = {
+            "name": name,
+            "published_archive_url": url,
+            "swift_manifest_checksum": checksum,
+            "actual_resolved_tree": tree,
+            "archive": zip_metadata,
+            "license_source": (
+                "Capacitor npm ios MIT LICENSE; Cordova files additionally "
+                "retain Apache-2.0 source headers; package metadata alone "
+                "does not license other binary contents"
+            ),
+        }
+        validate_capacitor_binary(binary_record)
+        frameworks.append(binary_record)
+    mark("ios-npm-sources")
     npm = npm_evidence(repo, NPM_PACKAGES)
     ios_package = (repo / "apps/capture-pwa/node_modules/@capacitor/ios").resolve()
     header = read(
         ios_package / "CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h",
         (repo / "node_modules",),
     )
-    if b"Apache License, Version 2.0" not in header:
+    if (
+        b"Apache License, Version 2.0" not in header
+        or sha(header) != CAPACITOR_RELEASE["cordova_header_sha256"]
+    ):
         refuse()
+    mark("ios-source-bindings")
     write(
         output,
         {
@@ -810,6 +1221,9 @@ def collect_ios(repo: Path, output: Path, artifact: Path | None = None) -> None:
             "spm": {
                 "package_resolved_sha256": sha(raw),
                 "pins": pins,
+                "resolved_inventory": inventory,
+                "remote_source_packages": remote_sources,
+                "capacitor_source": capacitor_source,
                 "selected_manifest_sha256": sha(manifest),
                 "checkout_revision": checkout_revision,
                 "release_tag_revision": release_revision,
@@ -1132,7 +1546,7 @@ def validate_android(native: dict[str, Any], npm: dict[str, dict[str, Any]]) -> 
         refuse()
 
 
-def validate_tree(value: Any) -> None:
+def validate_tree(value: Any, *, allow_empty_files: bool = False) -> None:
     tree = record(value, {"bytes", "file_count", "files", "tree_sha256"})
     files = items(tree["files"], 30_000)
     total = 0
@@ -1141,7 +1555,7 @@ def validate_tree(value: Any) -> None:
         row = record(file, {"path", "sha256", "bytes"})
         names.append(relative_name(row["path"]))
         evidence_digest(row["sha256"])
-        total += count(row["bytes"], MAX_BINARY)
+        total += count(row["bytes"], MAX_BINARY, 0 if allow_empty_files else 1)
     if (
         names != sorted(set(names))
         or tree["file_count"] != len(files)
@@ -1153,6 +1567,194 @@ def validate_tree(value: Any) -> None:
         refuse()
 
 
+def validate_source_packages(value: Any, pins: dict[str, dict[str, Any]]) -> None:
+    identities = []
+    for item in items(value, 3):
+        row = record(
+            item,
+            {
+                "identity",
+                "location",
+                "version",
+                "checkout_revision",
+                "release_tag_revision",
+                "manifest_sha256",
+                "license",
+                "source_archive",
+                "actual_source_tree",
+                "test_only_dependencies",
+                "runtime_remote_dependencies",
+                "binary_targets",
+            },
+        )
+        identity = row["identity"]
+        if not isinstance(identity, str) or identity not in ION_PACKAGES or identity in identities:
+            refuse()
+        identities.append(identity)
+        expected = ION_PACKAGES[identity]
+        if (
+            row["location"] != pins[identity]["location"]
+            or row["version"] != expected["version"]
+            or row["checkout_revision"] != pins[identity]["state"]["revision"]
+            or row["release_tag_revision"] != row["checkout_revision"]
+            or evidence_digest(row["manifest_sha256"]) != expected["manifest_sha256"]
+            or row["test_only_dependencies"] != expected["test_dependencies"]
+            or row["runtime_remote_dependencies"] != []
+            or row["binary_targets"] != []
+        ):
+            refuse()
+        license_source = record(row["license"], {"spdx", "sha256", "source"})
+        archive = record(row["source_archive"], {"url", "sha256", "bytes"})
+        if (
+            license_source["spdx"] != "MIT"
+            or evidence_digest(license_source["sha256"]) != expected["license_sha256"]
+            or license_source["source"]
+            != f"https://raw.githubusercontent.com/ionic-team/{identity}/{expected['version']}/LICENSE"
+            or archive["url"]
+            != f"https://codeload.github.com/ionic-team/{identity}/tar.gz/refs/tags/{expected['version']}"
+            or evidence_digest(archive["sha256"]) != expected["archive_sha256"]
+        ):
+            refuse()
+        if count(archive["bytes"], MAX_BINARY) != expected["archive_bytes"]:
+            refuse()
+        validate_tree(row["actual_source_tree"], allow_empty_files=True)
+        if (
+            row["actual_source_tree"]["tree_sha256"] != expected["source_tree_sha256"]
+            or row["actual_source_tree"]["bytes"] != expected["source_bytes"]
+            or row["actual_source_tree"]["file_count"] != expected["source_file_count"]
+        ):
+            refuse()
+        source_files = {file["path"]: file["sha256"] for file in row["actual_source_tree"]["files"]}
+        if (
+            source_files.get("LICENSE") != license_source["sha256"]
+            or source_files.get("Package.swift") != row["manifest_sha256"]
+        ):
+            refuse()
+    if set(identities) != set(ION_PACKAGES):
+        refuse()
+
+
+def validate_resolved_inventory(
+    value: Any, pins: Any, locks: dict[str, Any], remote_sources: Any
+) -> None:
+    expected = {APPLICATION_RESOLVED: "application selected graph"}
+    for identity, relative in UPSTREAM_RESOLVED.items():
+        expected[
+            f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}/{relative}"
+        ] = "upstream development project tool lock; not selected in application graph"
+    actual = set()
+    for item in items(value, 3):
+        row = record(item, {"path", "sha256", "scope", "pins"})
+        path = relative_name(row["path"])
+        if path not in expected or path in actual or row["scope"] != expected[path]:
+            refuse()
+        actual.add(path)
+        if evidence_digest(row["sha256"]) != locks.get(path):
+            refuse()
+        if row["pins"] != (pins if path == APPLICATION_RESOLVED else [SWIFTLINT_PIN]):
+            refuse()
+        if path != APPLICATION_RESOLVED:
+            source = next((item for item in remote_sources if item["identity"] in path), None)
+            if source is None:
+                refuse()
+            relative = UPSTREAM_RESOLVED[source["identity"]]
+            digest = next(
+                (
+                    item["sha256"]
+                    for item in source["actual_source_tree"]["files"]
+                    if item["path"] == relative
+                ),
+                None,
+            )
+            if digest != row["sha256"]:
+                refuse()
+    if actual != set(expected) or set(locks) != {"pnpm-lock.yaml", "uv.lock", *expected}:
+        refuse()
+
+
+def validate_capacitor_source(value: Any) -> None:
+    row = record(
+        value,
+        {
+            "identity",
+            "location",
+            "version",
+            "checkout_revision",
+            "release_tag_revision",
+            "manifest_sha256",
+            "source_archive",
+            "actual_source_tree",
+        },
+    )
+    if (
+        row["identity"] != "capacitor-swift-pm"
+        or row["location"] != "https://github.com/ionic-team/capacitor-swift-pm.git"
+        or row["version"] != CAPACITOR_RELEASE["version"]
+        or row["checkout_revision"] != CAPACITOR_RELEASE["revision"]
+        or row["release_tag_revision"] != CAPACITOR_RELEASE["revision"]
+        or evidence_digest(row["manifest_sha256"]) != CAPACITOR_RELEASE["manifest_sha256"]
+    ):
+        refuse()
+    archive = record(row["source_archive"], {"url", "sha256", "bytes"})
+    if (
+        archive["url"]
+        != "https://codeload.github.com/ionic-team/capacitor-swift-pm/tar.gz/refs/tags/8.5.2"
+        or evidence_digest(archive["sha256"]) != CAPACITOR_RELEASE["source_archive_sha256"]
+        or count(archive["bytes"], MAX_BINARY) != CAPACITOR_RELEASE["source_archive_bytes"]
+    ):
+        refuse()
+    tree = row["actual_source_tree"]
+    validate_tree(tree, allow_empty_files=True)
+    if any(tree[key] != expected for key, expected in CAPACITOR_RELEASE["source_tree"].items()):
+        refuse()
+    source_files = {file["path"]: file["sha256"] for file in tree["files"]}
+    if (
+        source_files.get("Package.swift") != row["manifest_sha256"]
+        or source_files.get("README.md") != CAPACITOR_RELEASE["readme_sha256"]
+    ):
+        refuse()
+
+
+def validate_capacitor_binary(value: Any) -> None:
+    row = record(
+        value,
+        {
+            "name",
+            "published_archive_url",
+            "swift_manifest_checksum",
+            "actual_resolved_tree",
+            "archive",
+            "license_source",
+        },
+    )
+    name = row["name"]
+    if not isinstance(name, str) or name not in CAPACITOR_RELEASE["binaries"]:
+        refuse()
+    expected = CAPACITOR_RELEASE["binaries"][name]
+    archive = record(row["archive"], {"sha256", "bytes", "embedded_license_notice_files"})
+    if (
+        row["published_archive_url"]
+        != f"https://github.com/ionic-team/capacitor-swift-pm/releases/download/8.5.2/{name}.xcframework.zip"
+        or evidence_digest(row["swift_manifest_checksum"]) != expected["sha256"]
+        or evidence_digest(archive["sha256"]) != expected["sha256"]
+        or count(archive["bytes"], MAX_BINARY) != expected["archive_bytes"]
+        or row["license_source"]
+        != (
+            "Capacitor npm ios MIT LICENSE; Cordova files additionally "
+            "retain Apache-2.0 source headers; package metadata alone "
+            "does not license other binary contents"
+        )
+    ):
+        refuse()
+    validate_notices(archive["embedded_license_notice_files"])
+    if archive["embedded_license_notice_files"] != []:
+        refuse()  # Exact reviewed archives contain no separate licence/notice entries.
+    tree = row["actual_resolved_tree"]
+    validate_tree(tree)
+    if any(tree[key] != expected[key] for key in ("tree_sha256", "bytes", "file_count")):
+        refuse()
+
+
 def validate_ios(
     native: dict[str, Any], npm: dict[str, dict[str, Any]], locks: dict[str, Any]
 ) -> None:
@@ -1161,6 +1763,9 @@ def validate_ios(
         {
             "package_resolved_sha256",
             "pins",
+            "resolved_inventory",
+            "remote_source_packages",
+            "capacitor_source",
             "selected_manifest_sha256",
             "checkout_revision",
             "release_tag_revision",
@@ -1169,26 +1774,21 @@ def validate_ios(
             "binary_inputs",
         },
     )
-    pin = items(spm["pins"], 1)[0]
-    if not isinstance(pin, dict):
+    selected = selected_pins(spm["pins"])
+    pin = selected["capacitor-swift-pm"]
+    revision = pin["state"]["revision"]
+    if revision != spm["checkout_revision"] or revision != spm["release_tag_revision"]:
         refuse()
-    pin = record(pin, {"identity", "location", "state"} | ({"kind"} if "kind" in pin else set()))
-    state = record(pin["state"], {"version", "revision"})
-    revision = state["revision"]
-    if (
-        pin["identity"] != "capacitor-swift-pm"
-        or pin["location"] != "https://github.com/ionic-team/capacitor-swift-pm.git"
-        or ("kind" in pin and pin["kind"] != "remoteSourceControl")
-        or state["version"] != "8.5.2"
-        or not isinstance(revision, str)
-        or not re.fullmatch(r"[0-9a-f]{40}", revision)
-        or revision != spm["checkout_revision"]
-        or revision != spm["release_tag_revision"]
-    ):
+    validate_source_packages(spm["remote_source_packages"], selected)
+    validate_resolved_inventory(
+        spm["resolved_inventory"], spm["pins"], locks, spm["remote_source_packages"]
+    )
+    validate_capacitor_source(spm["capacitor_source"])
+    if evidence_digest(spm["selected_manifest_sha256"]) != CAPACITOR_RELEASE["manifest_sha256"]:
         refuse()
-    evidence_digest(spm["selected_manifest_sha256"])
-    resolved = [value for name, value in locks.items() if name.endswith("/Package.resolved")]
-    if len(resolved) != 1 or evidence_digest(spm["package_resolved_sha256"]) != resolved[0]:
+    if spm["capacitor_source"]["checkout_revision"] != revision:
+        refuse()
+    if evidence_digest(spm["package_resolved_sha256"]) != locks.get(APPLICATION_RESOLVED):
         refuse()
     description = record(spm["upstream_binary_host_description"], {"url", "sha256"})
     license_source = record(spm["upstream_capacitor_source_license"], {"url", "spdx", "sha256"})
@@ -1199,9 +1799,11 @@ def validate_ios(
         != "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE"
         or license_source["spdx"] != "MIT"
         or license_source["sha256"] != npm["@capacitor/ios"]["license_sha256"]
+        or evidence_digest(license_source["sha256"]) != CAPACITOR_RELEASE["license_sha256"]
     ):
         refuse()
-    evidence_digest(description["sha256"])
+    if evidence_digest(description["sha256"]) != CAPACITOR_RELEASE["readme_sha256"]:
+        refuse()
     names = set()
     for binary in items(spm["binary_inputs"], 2):
         row = record(
@@ -1215,6 +1817,7 @@ def validate_ios(
                 "license_source",
             },
         )
+        validate_capacitor_binary(row)
         name = row["name"]
         if name not in {"Capacitor", "Cordova"} or name in names:
             refuse()
@@ -1245,7 +1848,8 @@ def validate_ios(
         != "@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h"
     ):
         refuse()
-    evidence_digest(header["sha256"])
+    if evidence_digest(header["sha256"]) != CAPACITOR_RELEASE["cordova_header_sha256"]:
+        refuse()
     if (
         native["pods"] != "not selected; no Podfile.lock"
         or native["system_frameworks"]
@@ -1527,17 +2131,11 @@ def validate_build_receipt(value: dict[str, Any], artifact: Path, reference: Pat
             "apps/capture-pwa/android/variables.gradle",
         }
     else:
-        resolved = [
-            name
-            for name in locks
-            if isinstance(name, str)
-            and name.startswith("apps/capture-pwa/ios/")
-            and name.endswith("/Package.resolved")
-        ]
-        if len(resolved) != 1:
-            refuse()
-        relative_name(resolved[0])
-        lock_names.add(resolved[0])
+        lock_names.add(APPLICATION_RESOLVED)
+        for identity, relative in UPSTREAM_RESOLVED.items():
+            lock_names.add(
+                f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}/{relative}"
+            )
     record(locks, lock_names)
     for digest in locks.values():
         evidence_digest(digest)
@@ -1592,6 +2190,7 @@ def feature_comparison(
     parent_reference: Path | None = None,
     candidate_reference: Path | None = None,
 ) -> dict[str, Any]:
+    mark("feature-comparison")
     validate_build_receipt(parent_receipt, parent, parent_reference)
     validate_build_receipt(candidate_receipt, candidate, candidate_reference)
 
@@ -1673,6 +2272,7 @@ def write(path: Path, value: dict[str, Any]) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    mark("start")
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="action", required=True)
     android = commands.add_parser("android")
@@ -1737,8 +2337,13 @@ def main(argv: list[str] | None = None) -> int:
         KeyError,
         RecursionError,
         RuntimeError,
-    ):
+        tarfile.TarError,
+    ) as error:
         print("native-audit: evidence missing, invalid or unreviewed", file=sys.stderr)
+        print(
+            "native-audit: diagnostic " + json.dumps(diagnostic(error), sort_keys=True),
+            file=sys.stderr,
+        )
         return 1
 
 

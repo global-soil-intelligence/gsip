@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import copy
+import gzip
 import json
 import os
 import platform
+import tarfile
 import zipfile
 from pathlib import Path
 from typing import Any, cast
@@ -380,6 +382,14 @@ def genuine_build_receipt(
             )
             resolved.parent.mkdir(parents=True)
             resolved.write_bytes(resolved_bytes)
+            for identity, relative in audit.UPSTREAM_RESOLVED.items():
+                nested = (
+                    root
+                    / f"apps/capture-pwa/ios/App/build/SourcePackages/checkouts/{identity}"
+                    / relative
+                )
+                nested.parent.mkdir(parents=True)
+                nested.write_text(json.dumps({"pins": [audit.SWIFTLINT_PIN], "version": 2}))
 
         def command(args: list[str]) -> str:
             if args[0] == "git":
@@ -684,12 +694,68 @@ def ios_evidence(
             }
         )
     )
+    expected = copy.deepcopy(audit.ION_PACKAGES)
+    for identity, entry in expected.items():
+        checkout = ios / f"App/build/SourcePackages/checkouts/{identity}"
+        checkout.mkdir(parents=True)
+        manifest_data = f"// synthetic source-only fixture {identity}\n".encode()
+        (checkout / "Package.swift").write_bytes(manifest_data)
+        (checkout / "LICENSE").write_bytes(license_data)
+        if identity in audit.UPSTREAM_RESOLVED:
+            nested = checkout / audit.UPSTREAM_RESOLVED[identity]
+            nested.parent.mkdir(parents=True)
+            nested.write_text(json.dumps({"pins": [audit.SWIFTLINT_PIN], "version": 2}))
+        source_files: list[dict[str, Any]] = []
+        stream = io.BytesIO()
+        with tarfile.open(fileobj=stream, mode="w:gz") as source_archive:
+            for file in sorted(checkout.rglob("*")):
+                if not file.is_file():
+                    continue
+                payload = file.read_bytes()
+                name = str(file.relative_to(checkout))
+                member = tarfile.TarInfo(f"{identity}-{entry['version']}/{name}")
+                member.size = len(payload)
+                source_archive.addfile(member, io.BytesIO(payload))
+                source_files.append(
+                    {"path": name, "bytes": len(payload), "sha256": audit.sha(payload)}
+                )
+        raw_archive = stream.getvalue()
+        entry.update(
+            {
+                "manifest_sha256": audit.sha(manifest_data),
+                "license_sha256": audit.sha(license_data),
+                "archive_sha256": audit.sha(raw_archive),
+                "source_tree_sha256": audit.sha(
+                    json.dumps(source_files, sort_keys=True, separators=(",", ":")).encode()
+                ),
+                "source_bytes": sum(row["bytes"] for row in source_files),
+                "source_file_count": len(source_files),
+                "archive_bytes": len(raw_archive),
+            }
+        )
+        entry["fixture_archive"] = raw_archive
+    monkeypatch.setattr(audit, "ION_PACKAGES", expected)
+    resolved_value = json.loads(resolved.read_text())
+    resolved_value["pins"] += [
+        {
+            "identity": identity,
+            "location": f"https://github.com/ionic-team/{identity}.git",
+            "kind": "remoteSourceControl",
+            "state": {"version": entry["version"], "revision": entry["revision"]},
+        }
+        for identity, entry in expected.items()
+    ]
+    resolved.write_text(json.dumps(resolved_value))
     public = {
         "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md": (
             b"Synthetic binary xcframework releases of Capacitor and CapacitorCordova"
         ),
         "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE": license_data,
     }
+    for identity, entry in expected.items():
+        public[
+            f"https://codeload.github.com/ionic-team/{identity}/tar.gz/refs/tags/{entry['version']}"
+        ] = entry.pop("fixture_archive")
     manifest = ""
     for name in ("Capacitor", "Cordova"):
         folder = (
@@ -707,6 +773,57 @@ def ios_evidence(
     checkout = ios / "App/build/SourcePackages/checkouts/capacitor-swift-pm"
     checkout.mkdir(parents=True)
     (checkout / "Package.swift").write_text(manifest)
+    capacitor = copy.deepcopy(audit.CAPACITOR_RELEASE)
+    readme_url = "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md"
+    (checkout / "README.md").write_bytes(public[readme_url])
+    source_files = []
+    stream = io.BytesIO()
+    with tarfile.open(fileobj=stream, mode="w:gz") as source_archive:
+        for file in sorted(checkout.rglob("*")):
+            if not file.is_file():
+                continue
+            payload = file.read_bytes()
+            name = str(file.relative_to(checkout))
+            member = tarfile.TarInfo("capacitor-swift-pm-8.5.2/" + name)
+            member.size = len(payload)
+            source_archive.addfile(member, io.BytesIO(payload))
+            source_files.append({"path": name, "sha256": audit.sha(payload), "bytes": len(payload)})
+    raw_archive = stream.getvalue()
+    public["https://codeload.github.com/ionic-team/capacitor-swift-pm/tar.gz/refs/tags/8.5.2"] = (
+        raw_archive
+    )
+    capacitor.update(
+        {
+            "revision": "1" * 40,
+            "manifest_sha256": audit.sha(manifest.encode()),
+            "readme_sha256": audit.sha(public[readme_url]),
+            "license_sha256": audit.sha(license_data),
+            "cordova_header_sha256": audit.sha(header.read_bytes()),
+            "source_archive_sha256": audit.sha(raw_archive),
+            "source_archive_bytes": len(raw_archive),
+            "source_tree": {
+                "bytes": sum(file["bytes"] for file in source_files),
+                "file_count": len(source_files),
+                "tree_sha256": audit.sha(
+                    json.dumps(source_files, sort_keys=True, separators=(",", ":")).encode()
+                ),
+            },
+        }
+    )
+    for name in ("Capacitor", "Cordova"):
+        url = f"https://github.com/ionic-team/capacitor-swift-pm/releases/download/8.5.2/{name}.xcframework.zip"
+        payload = f"synthetic-{name}".encode()
+        tree_files = [{"path": "Info.plist", "sha256": audit.sha(payload), "bytes": len(payload)}]
+        capacitor["binaries"][name] = {
+            "sha256": audit.sha(public[url]),
+            "archive_bytes": len(public[url]),
+            "bytes": len(payload),
+            "file_count": 1,
+            "tree_sha256": audit.sha(
+                json.dumps(tree_files, sort_keys=True, separators=(",", ":")).encode()
+            ),
+        }
+    monkeypatch.setattr(audit, "CAPACITOR_RELEASE", capacitor)
     monkeypatch.setattr(audit, "public_bytes", lambda url, *args, **kwargs: public[url])
     monkeypatch.setattr(
         audit,
@@ -722,11 +839,14 @@ def ios_evidence(
             )
         },
     )
-    monkeypatch.setattr(
-        audit,
-        "run",
-        lambda args, *unused: "1" * 40 if "capacitor-swift-pm" in " ".join(args) else "a" * 40,
-    )
+
+    def readback(args: list[str], *unused: Any) -> str:
+        for identity, entry in expected.items():
+            if identity in " ".join(args):
+                return cast(str, entry["revision"])
+        return "1" * 40 if "capacitor-swift-pm" in " ".join(args) else "a" * 40
+
+    monkeypatch.setattr(audit, "run", readback)
     artifact = repo / "fixture-ios.zip"
     with zipfile.ZipFile(artifact, "w") as archive:
         archive.writestr(
@@ -994,7 +1114,6 @@ def test_complete_native_sidecar_rejects_removed_or_conflicting_bindings(
 
 
 def ios_build_fixture(repo: Path, native: dict[str, Any]) -> dict[str, Any]:
-    resolved = next((repo / "apps/capture-pwa/ios").rglob("Package.resolved"))
     return {
         "platform": "ios",
         "source_commit": native["source_commit"],
@@ -1002,7 +1121,10 @@ def ios_build_fixture(repo: Path, native: dict[str, Any]) -> dict[str, Any]:
         "lockfile_sha256": {
             "pnpm-lock.yaml": FIXTURE_LOCK_SHA,
             "uv.lock": FIXTURE_LOCK_SHA,
-            str(resolved.relative_to(repo)): audit.sha(resolved.read_bytes()),
+            **{
+                str(path.relative_to(repo)): audit.sha(path.read_bytes())
+                for path in (repo / "apps/capture-pwa/ios").rglob("Package.resolved")
+            },
         },
     }
 
@@ -1073,7 +1195,14 @@ def test_spm_local_git_readback_refuses_mismatched_pin_or_release(
 
     def readback(args: list[str], *unused: Any) -> str:
         if "capacitor-swift-pm" not in " ".join(args):
-            return "a" * 40
+            return next(
+                (
+                    cast(str, entry["revision"])
+                    for identity, entry in audit.ION_PACKAGES.items()
+                    if identity in " ".join(args)
+                ),
+                "a" * 40,
+            )
         if (mismatch == "checkout" and args[-1] == "HEAD") or (
             mismatch == "release_tag" and args[-1] == "refs/tags/8.5.2^{commit}"
         ):
@@ -1314,3 +1443,587 @@ def test_cli_never_writes_unknown_build_proof_fields(tmp_path: Path) -> None:
         == 1
     )
     assert not output.exists()
+
+
+def test_ios_exact_ci_four_package_graph_and_nested_tool_inventory_passes(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path
+) -> None:
+    repo, _, _ = ios_evidence
+    output = tmp_path / "complete-ci-shape.json"
+    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
+    native = audit.decoded(output.read_bytes())
+    assert {pin["identity"] for pin in native["spm"]["pins"]} == {
+        "capacitor-swift-pm",
+        "ion-ios-camera",
+        "ion-ios-filesystem",
+        "ion-ios-geolocation",
+    }
+    assert len(native["spm"]["remote_source_packages"]) == 3
+    assert len(native["spm"]["resolved_inventory"]) == 3
+    assert (
+        sum(
+            row["scope"] == "application selected graph"
+            for row in native["spm"]["resolved_inventory"]
+        )
+        == 1
+    )
+    assert all(
+        row["runtime_remote_dependencies"] == [] and row["binary_targets"] == []
+        for row in native["spm"]["remote_source_packages"]
+    )
+    assert (
+        native["spm"]["remote_source_packages"][0]["test_only_dependencies"]
+        == audit.ION_PACKAGES["ion-ios-camera"]["test_dependencies"]
+    )
+    audit.validate_native(native, ios_build_fixture(repo, native))
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "missing_pin",
+        "unknown_pin",
+        "duplicate_pin",
+        "wrong_location",
+        "wrong_version",
+        "wrong_revision",
+        "wrong_kind",
+        "private_pin_field",
+        "missing_checkout",
+        "wrong_head",
+        "wrong_tag",
+        "changed_manifest",
+        "missing_license",
+        "changed_license",
+        "changed_source",
+        "source_symlink",
+        "archive_changed",
+        "archive_repacked",
+        "archive_missing",
+        "extra_resolved",
+        "tool_pin_changed",
+        "tool_unknown",
+        "tool_nested_extra",
+    ],
+)
+def test_ios_complete_graph_refuses_unbound_source_selection(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]],
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    defect: str,
+) -> None:
+    repo, resolved, public = ios_evidence
+    pins = audit.decoded(resolved.read_bytes())
+    entry = pins["pins"][1]
+    checkout = repo / "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-camera"
+    if defect == "missing_pin":
+        pins["pins"].pop()
+    elif defect == "unknown_pin":
+        entry["identity"] = "unreviewed-sdk"
+    elif defect == "duplicate_pin":
+        pins["pins"][2] = copy.deepcopy(entry)
+    elif defect == "wrong_location":
+        entry["location"] = "https://example.invalid/closed.git"
+    elif defect == "wrong_version":
+        entry["state"]["version"] = "99.0.0"
+    elif defect == "wrong_revision":
+        entry["state"]["revision"] = "f" * 40
+    elif defect == "wrong_kind":
+        entry["kind"] = "binary"
+    elif defect == "private_pin_field":
+        entry["private"] = "synthetic private sentinel"
+    elif defect == "missing_checkout":
+        (checkout / "Package.swift").unlink()
+    elif defect in {"wrong_head", "wrong_tag"}:
+        original = audit.run
+
+        def mismatched(args: list[str], *unused: Any) -> str:
+            if "ion-ios-camera" in " ".join(args) and (
+                args[-1] == "HEAD" if defect == "wrong_head" else args[-1].startswith("refs/tags/")
+            ):
+                return "f" * 40
+            return original(args)
+
+        monkeypatch.setattr(audit, "run", mismatched)
+    elif defect == "changed_manifest":
+        (checkout / "Package.swift").write_text('.binaryTarget(name: "unreviewed")')
+    elif defect == "missing_license":
+        (checkout / "LICENSE").unlink()
+    elif defect == "changed_license":
+        (checkout / "LICENSE").write_text("proprietary licence")
+    elif defect == "changed_source":
+        (checkout / "unmatched.swift").write_text("synthetic different source")
+    elif defect == "source_symlink":
+        (checkout / "unmatched.swift").symlink_to(repo / "fixture-ios.zip")
+    elif defect in {"archive_changed", "archive_repacked", "archive_missing"}:
+        url = next(url for url in public if "codeload.github.com/ionic-team/ion-ios-camera" in url)
+        if defect == "archive_changed":
+            public[url] = b"synthetic corrupt source archive"
+        elif defect == "archive_repacked":
+            public[url] = gzip.compress(gzip.decompress(public[url]), mtime=1)
+        else:
+            public.pop(url)
+    elif defect == "extra_resolved":
+        (repo / "apps/capture-pwa/ios/unreviewed").mkdir()
+        (repo / "apps/capture-pwa/ios/unreviewed/Package.resolved").write_text('{"pins":[]}')
+    else:
+        nested = (
+            repo
+            / "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/ion-ios-filesystem"
+            / audit.UPSTREAM_RESOLVED["ion-ios-filesystem"]
+        )
+        tool = audit.decoded(nested.read_bytes())
+        if defect == "tool_pin_changed":
+            tool["pins"][0]["state"]["revision"] = "f" * 40
+        elif defect == "tool_unknown":
+            tool["pins"][0]["identity"] = "unreviewed-tool"
+        else:
+            tool["private"] = {"sentinel": "synthetic"}
+        nested.write_text(json.dumps(tool))
+    resolved.write_text(json.dumps(pins))
+    with pytest.raises((audit.AuditError, OSError, KeyError)):
+        audit.collect_ios(repo, tmp_path / "never-written.json", repo / "fixture-ios.zip")
+    assert not (tmp_path / "never-written.json").exists()
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "missing_sources",
+        "unknown_source",
+        "missing_inventory",
+        "extra_inventory",
+        "source_revision",
+        "source_tag",
+        "source_license",
+        "source_manifest",
+        "source_archive",
+        "source_tree",
+        "source_tree_bytes",
+        "selected_runtime_dependency",
+        "binary_target",
+        "unbound_tool_lock",
+        "unknown_nested_metadata",
+    ],
+)
+def test_full_ios_receipt_rejects_ambiguous_or_partial_four_graph_proof(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, defect: str
+) -> None:
+    repo, _, _ = ios_evidence
+    output = tmp_path / "source.json"
+    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
+    native = audit.decoded(output.read_bytes())
+    build = ios_build_fixture(repo, native)
+    spm = native["spm"]
+    row = spm["remote_source_packages"][0]
+    if defect == "missing_sources":
+        spm["remote_source_packages"] = []
+    elif defect == "unknown_source":
+        row["identity"] = "unknown"
+    elif defect == "missing_inventory":
+        spm["resolved_inventory"] = []
+    elif defect == "extra_inventory":
+        spm["resolved_inventory"].append(copy.deepcopy(spm["resolved_inventory"][0]))
+    elif defect == "source_revision":
+        row["checkout_revision"] = "f" * 40
+    elif defect == "source_tag":
+        row["release_tag_revision"] = "f" * 40
+    elif defect == "source_license":
+        row["license"]["sha256"] = "f" * 64
+    elif defect == "source_manifest":
+        row["manifest_sha256"] = "f" * 64
+    elif defect == "source_archive":
+        row["source_archive"]["sha256"] = "f" * 64
+    elif defect == "source_tree":
+        row["actual_source_tree"]["tree_sha256"] = "f" * 64
+    elif defect == "source_tree_bytes":
+        row["actual_source_tree"]["bytes"] = False
+    elif defect == "selected_runtime_dependency":
+        row["runtime_remote_dependencies"] = [{"location": "https://example.invalid/closed"}]
+    elif defect == "binary_target":
+        row["binary_targets"] = [{"unknown": "synthetic"}]
+    elif defect == "unknown_nested_metadata":
+        row["license"]["private"] = "synthetic private sentinel"
+    else:
+        row = next(
+            entry
+            for entry in spm["resolved_inventory"]
+            if entry["scope"] != "application selected graph"
+        )
+        row["sha256"] = "f" * 64
+        build["lockfile_sha256"][row["path"]] = "f" * 64
+    with pytest.raises(audit.AuditError):
+        audit.validate_native(native, build)
+
+
+def test_missing_release_artifact_is_refused_with_fixed_safe_diagnostic(
+    graph: tuple[dict[str, Any], Path, Path, Path],
+) -> None:
+    data, repo, cache, file = graph
+    data["views"][1]["artifacts"][0]["file"] = str(file.parent / "unbuilt-release.jar")
+    with pytest.raises(FileNotFoundError) as caught:
+        audit.runtime_evidence(data, repo, cache, False)
+    diagnostic = audit.diagnostic(caught.value)
+    assert diagnostic["stage"] == "android-runtime-binaries"
+    assert diagnostic["error_class"] == "MISSING_FILE"
+    assert set(diagnostic) == {"stage", "error_class", "source_line", "counts"}
+    assert 0 < diagnostic["source_line"] < 10_000
+    assert diagnostic["counts"] == {"module_inputs": 1, "project_inputs": 1}
+    assert "unbuilt-release" not in json.dumps(diagnostic)
+    assert str(repo) not in json.dumps(diagnostic)
+
+
+@pytest.mark.parametrize("defect", ["stage", "count_name", "bool_count", "huge_count"])
+def test_diagnostic_inputs_are_fixed_enum_and_bounded_counts(defect: str) -> None:
+    with pytest.raises(audit.AuditError):
+        if defect == "stage":
+            audit.mark("synthetic private sentinel")
+        elif defect == "count_name":
+            audit.mark("start", private_context=1)
+        elif defect == "bool_count":
+            audit.mark("start", remote_pins=True)
+        else:
+            audit.mark("start", remote_pins=30_001)
+
+
+def test_error_diagnostic_does_not_emit_paths_payloads_or_tool_stderr(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path
+) -> None:
+    def private_error(*unused: Any) -> None:
+        audit.mark("android-gradle-inspection")
+        raise __import__("subprocess").CalledProcessError(
+            1,
+            ["synthetic private path"],
+            output="synthetic private payload",
+            stderr="synthetic private stderr",
+        )
+
+    monkeypatch.setattr(audit, "collect_android", private_error)
+    assert (
+        audit.main(
+            [
+                "android",
+                str(tmp_path),
+                str(tmp_path),
+                str(tmp_path / "out.json"),
+                str(tmp_path / "synthetic-key"),
+            ]
+        )
+        == 1
+    )
+    text = capsys.readouterr().err
+    assert "synthetic private" not in text
+    assert "BUILD_TOOL" in text and "android-gradle-inspection" in text
+    assert str(tmp_path) not in text
+
+
+def test_fake_gradle_inspection_preserves_both_actual_views_and_reports_missing_release(
+    graph: tuple[dict[str, Any], Path, Path, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    data, repo, cache, file = graph
+    data["views"][1]["artifacts"][0]["file"] = str(file.parent / "unbuilt-release.jar")
+    output = tmp_path / "evidence/native.json"
+    output.parent.mkdir()
+    calls: list[list[str]] = []
+
+    def fake_gradle(args: list[str], *unused: Any) -> str:
+        calls.append(args)
+        if ":app:gsipRuntimeEvidence" in args:
+            task = Path(args[args.index("-I") + 1])
+            assert task.read_text() == audit.GRADLE_TASK
+            assert "debugRuntimeClasspath" in task.read_text()
+            assert "releaseRuntimeClasspath" in task.read_text()
+            graph_output = Path(
+                next(
+                    arg.split("=", 1)[1] for arg in args if arg.startswith("-PgsipEvidenceOutput=")
+                )
+            )
+            graph_output.write_text(json.dumps(data))
+            return ""
+        return "synthetic runtime tree\n+--- org.example:example-runtime:1.2.3"
+
+    monkeypatch.setattr(audit, "run", fake_gradle)
+    with pytest.raises(FileNotFoundError) as caught:
+        audit.collect_android(repo, cache, output, tmp_path / "unused-debug-key")
+    assert len(calls) == 4
+    assert audit.diagnostic(caught.value)["stage"] == "android-runtime-binaries"
+    assert not output.exists()
+    assert data["views"][1]["artifacts"][0]["file"] != data["views"][0]["artifacts"][0]["file"]
+
+
+def test_primary_source_tree_uses_canonical_string_paths_for_shared_stems(tmp_path: Path) -> None:
+    import io
+
+    root = tmp_path / "repo"
+    checkout = root / "checkout"
+    payloads = {
+        "Library/source.swift": b"synthetic source",
+        "Library.xcodeproj/project.pbxproj": b"synthetic project",
+    }
+    stream = io.BytesIO()
+    with tarfile.open(fileobj=stream, mode="w:gz") as archive:
+        for name, data in payloads.items():
+            file = checkout / name
+            file.parent.mkdir(parents=True, exist_ok=True)
+            file.write_bytes(data)
+            member = tarfile.TarInfo("synthetic-library-1.0.0/" + name)
+            member.size = len(data)
+            archive.addfile(member, io.BytesIO(data))
+    actual = audit.checkout_source_tree(checkout, root)
+    published = audit.source_archive(stream.getvalue(), "synthetic-library", "1.0.0")
+    assert actual == published
+    assert [file["path"] for file in actual["files"]] == sorted(payloads)
+
+
+@pytest.mark.parametrize("defect", ["traversal", "symlink", "binary", "wrong_root", "duplicate"])
+def test_remote_source_archives_reject_unreviewed_file_inputs(defect: str) -> None:
+    import io
+
+    stream = io.BytesIO()
+    with tarfile.open(fileobj=stream, mode="w:gz") as archive:
+        name = "synthetic-library-1.0.0/source.swift"
+        if defect == "traversal":
+            name = "synthetic-library-1.0.0/../private"
+        elif defect == "binary":
+            name = "synthetic-library-1.0.0/unknown.xcframework/binary"
+        elif defect == "wrong_root":
+            name = "other-library-1.0.0/source.swift"
+        member = tarfile.TarInfo(name)
+        if defect == "symlink":
+            member.type = tarfile.SYMTYPE
+            member.linkname = "../private"
+            archive.addfile(member)
+        else:
+            member.size = 1
+            archive.addfile(member, io.BytesIO(b"a"))
+            if defect == "duplicate":
+                archive.addfile(member, io.BytesIO(b"b"))
+    with pytest.raises(audit.AuditError):
+        audit.source_archive(stream.getvalue(), "synthetic-library", "1.0.0")
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "extra_source",
+        "source_target",
+        "source_dependency",
+        "missing_manifest",
+        "missing_readme",
+        "source_symlink",
+        "archive_changed",
+        "archive_repacked",
+        "readme_changed",
+        "coordinated_source_license",
+        "changed_apache_header",
+    ],
+)
+def test_capacitor_full_reviewed_checkout_and_primary_bytes_are_required(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, mutation: str
+) -> None:
+    repo, _, public = ios_evidence
+    checkout = repo / "apps/capture-pwa/ios/App/build/SourcePackages/checkouts/capacitor-swift-pm"
+    if mutation == "extra_source":
+        (checkout / "Unreviewed.swift").write_text("// synthetic added code")
+    elif mutation in {"source_target", "source_dependency"}:
+        with (checkout / "Package.swift").open("a") as stream:
+            stream.write(
+                '\n.target(name: "Unreviewed")'
+                if mutation == "source_target"
+                else '\n.package(url: "https://example.invalid/unreviewed.git", from: "1.0.0")'
+            )
+    elif mutation in {"missing_manifest", "missing_readme"}:
+        (checkout / ("Package.swift" if mutation == "missing_manifest" else "README.md")).unlink()
+    elif mutation == "source_symlink":
+        (checkout / "Unreviewed.swift").symlink_to(repo / "fixture-ios.zip")
+    elif mutation in {"archive_changed", "archive_repacked"}:
+        url = "https://codeload.github.com/ionic-team/capacitor-swift-pm/tar.gz/refs/tags/8.5.2"
+        public[url] = (
+            b"synthetic corrupt source archive"
+            if mutation == "archive_changed"
+            else gzip.compress(gzip.decompress(public[url]), mtime=1)
+        )
+    elif mutation == "readme_changed":
+        url = "https://raw.githubusercontent.com/ionic-team/capacitor-swift-pm/8.5.2/README.md"
+        public[url] += b"\nsynthetic unreviewed description"
+    elif mutation == "coordinated_source_license":
+        url = "https://raw.githubusercontent.com/ionic-team/capacitor/8.5.2/LICENSE"
+        changed = public[url] + b"\nsynthetic unreviewed license content"
+        public[url] = changed
+        (repo / "node_modules/@capacitor/ios/LICENSE").write_bytes(changed)
+    else:
+        header = (
+            repo
+            / "node_modules/@capacitor/ios/CapacitorCordova/CapacitorCordova/Classes/Public/CDV.h"
+        )
+        header.write_bytes(header.read_bytes() + b"\nsynthetic unreviewed licence header")
+    with pytest.raises((audit.AuditError, OSError)):
+        audit.collect_ios(repo, tmp_path / "must-refuse.json", repo / "fixture-ios.zip")
+    assert not (tmp_path / "must-refuse.json").exists()
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "manifest",
+        "coordinated_revision",
+        "binary_checksum",
+        "description",
+        "source_missing",
+        "source_archive",
+        "source_tree",
+        "source_tree_count",
+        "source_unknown",
+        "binary_archive_size",
+        "binary_tree",
+        "binary_notice",
+        "coordinated_license",
+        "header",
+    ],
+)
+def test_capacitor_sidecar_proofs_are_bound_to_fixed_primary_expectations(
+    ios_evidence: tuple[Path, Path, dict[str, bytes]], tmp_path: Path, mutation: str
+) -> None:
+    repo, _, _ = ios_evidence
+    output = tmp_path / "valid.json"
+    audit.collect_ios(repo, output, repo / "fixture-ios.zip")
+    native = audit.decoded(output.read_bytes())
+    build = ios_build_fixture(repo, native)
+    audit.validate_native(native, build)
+    spm = native["spm"]
+    source = spm["capacitor_source"]
+    if mutation == "manifest":
+        spm["selected_manifest_sha256"] = source["manifest_sha256"] = "f" * 64
+    elif mutation == "coordinated_revision":
+        spm["pins"][0]["state"]["revision"] = "f" * 40
+        spm["checkout_revision"] = spm["release_tag_revision"] = "f" * 40
+        source["checkout_revision"] = source["release_tag_revision"] = "f" * 40
+        for entry in spm["resolved_inventory"]:
+            if entry["scope"] == "application selected graph":
+                entry["pins"][0]["state"]["revision"] = "f" * 40
+    elif mutation == "binary_checksum":
+        row = spm["binary_inputs"][0]
+        row["swift_manifest_checksum"] = row["archive"]["sha256"] = "f" * 64
+    elif mutation == "description":
+        spm["upstream_binary_host_description"]["sha256"] = "f" * 64
+    elif mutation == "source_missing":
+        spm.pop("capacitor_source")
+    elif mutation == "source_archive":
+        source["source_archive"]["sha256"] = "f" * 64
+    elif mutation == "source_tree":
+        source["actual_source_tree"]["files"][0]["sha256"] = "f" * 64
+        source["actual_source_tree"]["tree_sha256"] = audit.sha(
+            json.dumps(
+                source["actual_source_tree"]["files"], sort_keys=True, separators=(",", ":")
+            ).encode()
+        )
+    elif mutation == "source_tree_count":
+        source["actual_source_tree"]["file_count"] = True
+    elif mutation == "source_unknown":
+        source["private"] = "synthetic private sentinel"
+    elif mutation == "binary_archive_size":
+        spm["binary_inputs"][0]["archive"]["bytes"] += 1
+    elif mutation == "binary_tree":
+        row = spm["binary_inputs"][0]["actual_resolved_tree"]
+        row["files"][0]["sha256"] = "f" * 64
+        row["tree_sha256"] = audit.sha(
+            json.dumps(row["files"], sort_keys=True, separators=(",", ":")).encode()
+        )
+    elif mutation == "binary_notice":
+        spm["binary_inputs"][0]["archive"]["embedded_license_notice_files"] = [
+            {"path": "LICENSE", "sha256": "f" * 64, "bytes": 1}
+        ]
+    elif mutation == "coordinated_license":
+        spm["upstream_capacitor_source_license"]["sha256"] = "f" * 64
+        next(package for package in native["npm_sources"] if package["name"] == "@capacitor/ios")[
+            "license_sha256"
+        ] = "f" * 64
+    else:
+        native["cordova_apache_source_header"]["sha256"] = "f" * 64
+    with pytest.raises(audit.AuditError):
+        audit.validate_native(native, build)
+
+
+@pytest.mark.parametrize("kind", ["regular", "fifo", "fifo_allow_empty", "swapped_fifo"])
+def test_bounded_descriptor_read_refuses_fifo_without_waiting_for_a_writer(
+    tmp_path: Path, kind: str
+) -> None:
+    """Actual FIFO/open-time substitution; every child is bounded and reaped."""
+    import select
+    import subprocess
+    import sys
+
+    path = tmp_path / "synthetic-input"
+    if kind in {"fifo", "fifo_allow_empty"}:
+        os.mkfifo(path)
+    else:
+        path.write_bytes(b"synthetic regular content")
+    child_code = """import sys,os
+from pathlib import Path
+from scripts import app_notification_audit as audit
+path=Path(sys.argv[1]);kind=sys.argv[2]
+if kind=='swapped_fifo':
+ original_open=audit.os.open
+ def replace_at_open(file,flags,*args,**kwargs):
+  if Path(file)==path:
+   path.unlink();os.mkfifo(path)
+  return original_open(file,flags,*args,**kwargs)
+ audit.os.open=replace_at_open
+print('ready',flush=True)
+if sys.stdin.readline().strip()!='go':sys.exit(2)
+try:
+ data=audit.read(path,(path.parent,),allow_empty=kind=='fifo_allow_empty')
+except (audit.AuditError,OSError):print('refused',flush=True)
+else:print('regular-ok' if data==b'synthetic regular content' else 'unexpected',flush=True)
+"""
+    command = [sys.executable, "-c", child_code, str(path), kind]
+    child = subprocess.Popen(  # noqa: S603 - fixed synthetic read-only child, explicitly bounded and reaped
+        command,
+        cwd=ROOT,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        env={"PYTHONPATH": str(ROOT), "PATH": os.defpath},
+    )
+    completed = False
+    output = stderr = ""
+    try:
+        assert child.stdout is not None
+        ready, _, _ = select.select([child.stdout], [], [], 2)
+        assert ready, "synthetic child did not start within its startup bound"
+        assert child.stdout.readline() == "ready\n"
+        try:
+            output, stderr = child.communicate(input="go\n", timeout=0.25)
+            completed = True
+        except subprocess.TimeoutExpired:
+            child.kill()
+            output, stderr = child.communicate(timeout=2)
+    finally:
+        if child.poll() is None:
+            child.kill()
+            child.communicate(timeout=2)
+    assert child.poll() is not None
+    assert completed, "special-file open blocked before descriptor type refusal"
+    assert child.returncode == 0
+    assert stderr == ""
+    assert output == ("regular-ok\n" if kind == "regular" else "refused\n")
+
+
+def test_nonblocking_open_keeps_nofollow_and_descriptor_type_checks(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    file = tmp_path / "regular"
+    file.write_bytes(b"synthetic bytes")
+    actual_open = os.open
+    flags_seen: list[int] = []
+
+    def checked_open(path: Any, flags: int, *args: Any, **kwargs: Any) -> int:
+        flags_seen.append(flags)
+        return actual_open(path, flags, *args, **kwargs)
+
+    monkeypatch.setattr(os, "open", checked_open)
+    assert audit.read(file, (tmp_path,)) == b"synthetic bytes"
+    assert len(flags_seen) == 1
+    assert flags_seen[0] & os.O_NOFOLLOW
+    assert flags_seen[0] & os.O_NONBLOCK

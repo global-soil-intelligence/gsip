@@ -40,7 +40,11 @@ and a JSON view of selected resolved modules and actual JAR/AAR inputs. The exis
 `check-dependencies` checks continue on both configurations. Closed SDK coordinates,
 missing graphs, unknown projects, malformed or ambiguous metadata, unsafe files and
 unknown licenses fail the additional audit as well. Traversal components are rejected
-before canonical containment checks. Runtime binaries remain inside their exact
+before canonical containment checks. File opens use `O_NOFOLLOW | O_NONBLOCK`, then
+validate the opened descriptor as a bounded single-link regular file. A FIFO with no
+writer is promptly refused, including an input replaced between containment and open;
+regular-file reads retain their existing behavior. A path-only preflight cannot replace
+these descriptor checks. Runtime binaries remain inside their exact
 module/version cache directory or known generated project output; the temporary task
 emits canonical paths for pnpm package links.
 
@@ -74,15 +78,57 @@ claim a complete license audit of every test/compiler/SDK artifact.
 
 ## iOS selection and license evidence
 
-The current workflow selects Swift Package Manager. Audit records the actual single
-`Package.resolved` pin, exact Capacitor SwiftPM 8.5.2 revision, selected package manifest,
-and both official checksummed Capacitor/Cordova XCFramework archives. Read-only local
-Git checks bind the resolved revision to the actual checkout HEAD and its 8.5.2 release
-tag; a correctly shaped but unmatched revision is refused. It compares the
+The current workflow selects Swift Package Manager. Its application graph selects
+Capacitor SwiftPM 8.5.2, IONCameraLib 2.0.0, IONFilesystemLib 1.1.4 and
+IONGeolocationLib 2.1.1. All four identities, official repositories, exact versions and
+checkout HEAD/tag revisions are required. Unknown, missing or changed selections
+refuse the audit. Capacitor's complete checkout, manifest and source archive are bound
+to the independently retrieved 8.5.2 release, including revision
+`0b6882e9a3288342aacf36348e5a94e4f1dd7b13`. Additional source targets, dependencies,
+files or changed metadata fail even when the two expected binary declarations remain.
+The comparison validates fixed published archive hashes, byte sizes and full extracted
+binary trees for both Capacitor/Cordova XCFrameworks. It compares the
 actual extracted framework tree with the verified archive entries. Changed checksums,
 unknown pins/binary targets, unexpected Pod resolution or mismatched extracted bytes
-refuse the audit. A new native version or Pod path needs an explicit adapter/review;
+refuse the audit. Each ION package additionally records its exact reviewed manifest,
+MIT licence, compressed source archive hash/size and full unpacked source tree. The
+actual checkout tree must match that reviewed tag archive, including the licence and
+manifest. Source trees with extra files, symlinks or prebundled native archives fail.
+A new native version or Pod path needs an explicit adapter/review;
 there is no permissive fallback.
+
+The application lockfile and two upstream ION development-project lockfiles are
+inventoried separately and bound to both the build receipt and the reviewed source
+archive. The latter declare SwiftLintPlugins 0.57.1 at its exact recorded revision;
+it is absent from the application's selected graph. Camera's Quick/Nimble declarations
+serve its upstream test target. These declarations remain visible as development/test
+inputs; no tool or test binary is represented as shipped or licensed by a wrapper.
+An extra resolved file or inconsistent tool pin is rejected.
+
+The existing ION selections are source libraries, not newly added app dependencies.
+Their exact public tags were verified independently on 2026-10-13. These are source
+archive sizes, not application overhead:
+
+| Selected library      | Licence source                                                              | Compressed / unpacked source bytes | Selected-tag commit date |
+| --------------------- | --------------------------------------------------------------------------- | ---------------------------------: | ------------------------ |
+| ION camera 2.0.0      | [MIT](https://github.com/ionic-team/ion-ios-camera/blob/2.0.0/LICENSE)      |                  273,170 / 522,080 | 2026-08-28               |
+| ION filesystem 1.1.4  | [MIT](https://github.com/ionic-team/ion-ios-filesystem/blob/1.1.4/LICENSE)  |                   31,020 / 150,959 | 2026-09-08               |
+| ION geolocation 2.1.1 | [MIT](https://github.com/ionic-team/ion-ios-geolocation/blob/2.1.1/LICENSE) |                    23,644 / 95,915 | 2026-03-10               |
+
+The Capacitor distribution tag was committed and released on 2026-09-11. Its reviewed
+source archive is 3,549 compressed bytes / 9,594 unpacked bytes. The published Capacitor
+XCFramework archive is 6,611,661 compressed bytes / 23,980,848 unpacked bytes; Cordova is
+1,842,451 / 4,838,267 bytes. These are distribution input sizes, not application impact.
+The versioned upstream Capacitor MIT licence, README and Cordova Apache source header
+have fixed independent hashes. Both binary archives have no separate licence/notice
+entries; the evidence records that exact absence. Matching package labels or mutually
+consistent but unreviewed sidecar hashes cannot substitute for these reviewed inputs.
+This proves identity/provenance of published bytes, not reproducibility of their
+upstream compilation.
+
+Exact archive, manifest, licence and source-tree digests are retained by the audit.
+`codeload.github.com` supplies only the reviewed public source archives during build
+evidence collection; it receives no app-runtime request or contributor data.
 
 The [official SwiftPM manifest](https://github.com/ionic-team/capacitor-swift-pm/blob/8.5.2/Package.swift)
 and [host description](https://github.com/ionic-team/capacitor-swift-pm/blob/8.5.2/README.md)
@@ -93,6 +139,16 @@ installed `CDV.h` header hash separately. A package-level MIT label never licens
 unrelated binary contents. Apple SDK/system frameworks remain platform/toolchain
 inputs and are not represented as open plugin dependencies. This evidence does not
 prove reproducible reconstruction of upstream XCFrameworks or device behavior.
+
+## Safe failure diagnostics
+
+A failure reports only a fixed audit-stage label, fixed error-class label, source line
+number and bounded counts. It never prints paths, coordinates, parser payloads, tool
+stderr, environment values, credentials or arbitrary exception text. This diagnoses
+the Android audit failure without assuming that release artifacts are its cause.
+Both actual debug and release inputs remain required; there is no debug substitution
+or check skip. If the next CI run confirms absent release project outputs, their
+actual variant producers must run before inspection in a separate forward fix.
 
 ## Reading the artifacts
 
