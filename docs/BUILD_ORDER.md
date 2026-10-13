@@ -204,6 +204,36 @@ Acceptance criteria:
 - [ ] `app-build.yml` produces the Android debug APK and the iOS simulator build.
 - [ ] The app requests only camera and when-in-use location permissions, each with a purpose string.
 
+### Phase 1.5a — Follow-ups independent of production deployment
+
+**WP-AGENT-0: Coding-agent guidance**
+Scope: add root `AGENTS.md` for repository contributors, linking the public-reader guide at
+`docs/AGENTS.md`; collect the invariant, reviewed-stack, privacy, verification and per-step
+production-authorization rules. This is documentation of existing authority, not an architecture
+change or deployment permission.
+
+Acceptance criteria:
+
+- [ ] The root guide distinguishes coding agents from public API consumers and links every
+      read-first governing document.
+- [ ] A documentation usability test proves the local links and documented repository check
+      commands resolve; it fails without the guide.
+- [ ] Formatting and language checks pass; no dependency, licence, workflow or production change.
+
+
+**WP-3b: Cross-tab queue sync**
+Scope:
+
+1. Coordinate the existing queue drain with the origin's exclusive Web Lock `gsip-sync`, requested with `ifAvailable: true`. A context that cannot acquire it returns immediately without reading or changing the queue.
+2. Hold the lock until the complete drain settles, including queue writes and failures. Browsers without Web Locks keep the current drain behavior; existing per-screen trigger coalescing and retry scheduling continue.
+3. Preserve account binding, withdrawn-record removal, queue-generation checks, terms reconfirmation, backoff and dead-letter handling. No data, credential, capture-gate or dependency changes.
+
+Acceptance criteria:
+
+- [ ] vitest: overlapping tabs sharing a queue send each record only once with Web Locks; an unavailable lock causes no queue reads, writes or sends.
+- [ ] vitest: a queue exception releases the lock so a later drain can acquire it; browsers without Web Locks retain the existing behavior.
+- [ ] Existing queue, ownership, terms, rights and startup-sync tests pass.
+
 ### Phase 1.5b and Phase 2+ (specified after launch review)
 
 WP-AGENT-2 delegated capture for assistants (scoped tokens, consent screen, path-bound upload URLs) · WP-APP-2 store release of the phone app (deep-link e-mail sign-in, icons, signing and store listings; `docs/APP_STORE.md`) · WP-7 QA gate model (slots into the WP-4b/6b interface) · WP-8 estimator v0 · WP-9 nightly retrain and model cards · WP-10 estimate API · WP-11 gold-label bulk ingestion and gold kits · WP-12 fused correction and Most Wanted layers with information-gain credit · WP-13 SoilGrids file sampler replacing the REST dependency · WP-14 silver-label protocols · WP-AGENT-3 verifier task API with I13 consensus · WP-AGENT-4 evaluation service (I15) · WP-DATA-1 Parquet photo shards, Croissant metadata and PROV provenance · WP-OPS-1 event-driven worker queue.
@@ -245,7 +275,7 @@ GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function 
 
 ## 7. Sequencing
 
-`docs/spec-v3` → WP-6b → WP-6c → WP-6d → WP-6e → WP-AGENT-1 → WP-APP-1, as stacked pull requests merged in that order. WP-SITE-1D can happen at any time. The launch gates of SPEC §11 are checked after WP-6e merges; the product owner then sets `service_state.capture_open`. The read-only parts of WP-AGENT-1 may deploy before launch because they touch no contributor data.
+`docs/spec-v3` → WP-6b → WP-6c → WP-6d → WP-6e → WP-AGENT-1 → WP-APP-1, as stacked pull requests merged in that order. WP-SITE-1D can happen at any time. The launch gates of SPEC §11 are checked after WP-6e merges; the product owner then sets `service_state.capture_open`. The read-only parts of WP-AGENT-1 may deploy before launch because they touch no contributor data. WP-3b is an independent queue follow-up stacked on WP-APP-1 until the reviewed stack merges.
 
 ## 8. Changelog
 

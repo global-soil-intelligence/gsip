@@ -49,13 +49,26 @@ export async function drainQueue(
   now: () => number = Date.now,
   stopped: () => boolean = () => false,
 ): Promise<SyncSummary> {
-  const summary: SyncSummary = {
-    discarded: 0,
-    failed: 0,
-    held: 0,
-    reconfirm: 0,
-    synced: 0,
-  }
+  const locks = typeof navigator === 'undefined' ? undefined : navigator.locks
+  if (!locks?.request) return drainUnlocked(store, send, now, stopped)
+  // The browser owns this lock across tabs until the whole drain settles. A busy tab
+  // returns immediately; the existing online/retry triggers may try again later.
+  return locks.request('gsip-sync', { ifAvailable: true }, (lock) =>
+    lock ? drainUnlocked(store, send, now, stopped) : emptySummary(),
+  )
+}
+
+function emptySummary(): SyncSummary {
+  return { discarded: 0, failed: 0, held: 0, reconfirm: 0, synced: 0 }
+}
+
+async function drainUnlocked(
+  store: QueueStore,
+  send: (record: QueueRecord) => Promise<void>,
+  now: () => number,
+  stopped: () => boolean,
+): Promise<SyncSummary> {
+  const summary = emptySummary()
   const generation = store.generation?.()
   const cleared = () =>
     store.generation !== undefined && store.generation() !== generation
