@@ -3360,3 +3360,1036 @@ def test_real_gradle_build_observer_preserves_failure_and_prior_fault(
         "native_acceptance_claimed": False,
     }
     (tmp_path / "observer-control.json").write_text(json.dumps(control, sort_keys=True) + "\n")
+SPLIT_VIEW_FIXTURE_TEXT = {
+    "app/build.gradle": "import org.gradle.api.attributes.Attribute\n"
+    "def buildType = Attribute.of('gsip.fixture.buildType', String)\n"
+    "['debug','release'].each { variant ->\n"
+    "    def runtime = configurations.create(variant + "
+    "'RuntimeClasspath') {\n"
+    "        canBeConsumed = false\n"
+    "        canBeResolved = true\n"
+    "        attributes.attribute(buildType, variant)\n"
+    "        "
+    "attributes.attribute(Attribute.of('com.android.build.api.attributes.AgpVersionAttr', "
+    "String), '8.13.0')\n"
+    "    }\n"
+    "    dependencies.add(runtime.name, project(':library'))\n"
+    "}\n"
+    "\n"
+    "repositories { maven { url = uri(rootProject.file('repo'));\n"
+    "metadataSources { gradleMetadata();\n"
+    "mavenPom() } } }\n"
+    "['debug','release'].each { variant ->\n"
+    " def name = variant + 'RuntimeClasspath'\n"
+    " dependencies.add(name, 'synthetic.publicview:plain:1.0')\n"
+    " dependencies.add(name, 'synthetic.publicview:androidraw:1.0')\n"
+    " dependencies.add(name, "
+    "dependencies.platform('synthetic.publicview:bom:1.0'))\n"
+    " if (findProperty('caseName') == 'emptyLibrary') { "
+    "dependencies.add(name, 'synthetic.publicview:empty:1.0') }\n"
+    " if (findProperty('caseName') == 'unresolved') { "
+    "dependencies.add(name, 'synthetic.publicview:absent:1.0') }\n"
+    "}\n",
+    "build.gradle": "",
+    "library/build.gradle": "import org.gradle.api.artifacts.type.ArtifactTypeDefinition\n"
+    "import org.gradle.api.attributes.Attribute\n"
+    "def buildType = Attribute.of('gsip.fixture.buildType', "
+    "String)\n"
+    "['debug','release'].each { variant ->\n"
+    "    def classes = tasks.register(variant + 'Classes') {\n"
+    "        def output = layout.buildDirectory.file(variant + "
+    "'/classes.jar')\n"
+    "        outputs.file(output)\n"
+    "        doLast { output.get().asFile.parentFile.mkdirs();\n"
+    "def zip = new "
+    "java.util.zip.ZipOutputStream(output.get().asFile.newOutputStream());\n"
+    "zip.putNextEntry(new "
+    "java.util.zip.ZipEntry('fixture-variant.txt'));\n"
+    "zip.write((variant + '-classes').getBytes('UTF-8'));\n"
+    "zip.closeEntry();\n"
+    "zip.close() }\n"
+    "    }\n"
+    "    def resources = tasks.register(variant + 'Resources') {\n"
+    "        def output = layout.buildDirectory.file(variant + "
+    "'/resources.zip')\n"
+    "        outputs.file(output)\n"
+    "        doLast { output.get().asFile.parentFile.mkdirs();\n"
+    "output.get().asFile.text = variant + '-resources' }\n"
+    "    }\n"
+    "    configurations.create(variant + 'RuntimeElements') {\n"
+    "        canBeConsumed = true\n"
+    "        canBeResolved = false\n"
+    "        attributes.attribute(buildType, variant)\n"
+    "        outgoing.variants.create('classes') {\n"
+    "            "
+    "attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "
+    "'android-classes-jar')\n"
+    "            artifact(layout.buildDirectory.file(variant + "
+    "'/classes.jar')) { builtBy(classes) }\n"
+    "        }\n"
+    "        outgoing.variants.create('resources') {\n"
+    "            "
+    "attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "
+    "'android-res')\n"
+    "            artifact(layout.buildDirectory.file(variant + "
+    "'/resources.zip')) { builtBy(resources) }\n"
+    "        }\n"
+    "    }\n"
+    "}\n",
+    "repo/synthetic/publicview/androidraw/1.0/androidraw-1.0.pom": "<project>\n"
+    "<modelVersion>4.0.0</modelVersion>\n"
+    "<groupId>synthetic.publicview</groupId>\n"
+    "<artifactId>androidraw</artifactId>\n"
+    "<version>1.0</version>\n"
+    "<packaging>aar</packaging>\n"
+    "</project>",
+    "repo/synthetic/publicview/bom/1.0/bom-1.0.module": "{\n"
+    '  "formatVersion": "1.1",\n'
+    '  "component": {\n'
+    '    "group": '
+    '"synthetic.publicview",\n'
+    '    "module": "bom",\n'
+    '    "version": "1.0"\n'
+    "  },\n"
+    '  "variants": [\n'
+    "    {\n"
+    '      "name": '
+    '"platformRuntime",\n'
+    '      "attributes": {\n'
+    '        "org.gradle.category": '
+    '"platform",\n'
+    '        "org.gradle.usage": '
+    '"java-runtime"\n'
+    "      },\n"
+    '      "dependencyConstraints": '
+    "[\n"
+    "        {\n"
+    '          "group": '
+    '"synthetic.publicview",\n'
+    '          "module": "plain",\n'
+    '          "version": {\n'
+    '            "requires": "1.0"\n'
+    "          }\n"
+    "        }\n"
+    "      ]\n"
+    "    }\n"
+    "  ]\n"
+    "}\n",
+    "repo/synthetic/publicview/bom/1.0/bom-1.0.pom": "<project>\n"
+    "<modelVersion>4.0.0</modelVersion>\n"
+    "<groupId>synthetic.publicview</groupId>\n"
+    "<artifactId>bom</artifactId>\n"
+    "<version>1.0</version>\n"
+    "<packaging>pom</packaging>\n"
+    "<dependencyManagement>\n"
+    "<dependencies>\n"
+    "<dependency>\n"
+    "<groupId>synthetic.publicview</groupId>\n"
+    "<artifactId>plain</artifactId>\n"
+    "<version>1.0</version>\n"
+    "</dependency>\n"
+    "</dependencies>\n"
+    "</dependencyManagement>\n"
+    "</project>",
+    "repo/synthetic/publicview/empty/1.0/empty-1.0.module": "{\n"
+    '  "formatVersion": "1.1",\n'
+    '  "component": {\n'
+    '    "group": '
+    '"synthetic.publicview",\n'
+    '    "module": "empty",\n'
+    '    "version": "1.0"\n'
+    "  },\n"
+    '  "variants": [\n'
+    "    {\n"
+    '      "name": "runtime",\n'
+    '      "attributes": {\n'
+    "        "
+    '"org.gradle.category": '
+    '"library",\n'
+    '        "org.gradle.usage": '
+    '"java-runtime"\n'
+    "      },\n"
+    '      "files": []\n'
+    "    }\n"
+    "  ]\n"
+    "}\n",
+    "repo/synthetic/publicview/plain/1.0/plain-1.0.pom": "<project>\n"
+    "<modelVersion>4.0.0</modelVersion>\n"
+    "<groupId>synthetic.publicview</groupId>\n"
+    "<artifactId>plain</artifactId>\n"
+    "<version>1.0</version>\n"
+    "<packaging>jar</packaging>\n"
+    "</project>",
+    "settings.gradle": "rootProject.name = 'gsip-public-secondary-variant-fixture'\n"
+    "include ':app', ':library'\n",
+}
+
+
+def split_view_fixture(root: Path, mode: str) -> None:
+    """Public Gradle secondary variants, local raw JAR/AAR and selected platform only."""
+    root.mkdir()
+    for relative, text in SPLIT_VIEW_FIXTURE_TEXT.items():
+        file = root / relative
+        file.parent.mkdir(parents=True, exist_ok=True)
+        if mode == "unknown_agp":
+            text = text.replace("'8.13.0'", "'99.0.0'")
+        if mode == "library_metadata":
+            text = text.replace("findProperty('caseName') == 'emptyLibrary'", "true")
+        if mode == "unresolved":
+            text = text.replace("findProperty('caseName') == 'unresolved'", "true")
+        file.write_text(text)
+    zipped(root / "repo/synthetic/publicview/plain/1.0/plain-1.0.jar", b"raw jar")
+    zipped(root / "repo/synthetic/publicview/androidraw/1.0/androidraw-1.0.aar", b"raw aar")
+    if mode == "missing_binary":
+        (root / "repo/synthetic/publicview/plain/1.0/plain-1.0.jar").unlink()
+
+
+@pytest.mark.parametrize(
+    "mode",
+    [
+        "success",
+        "unknown_agp",
+        "wrong_type",
+        "missing_project",
+        "omit_module",
+        "no_debug_producer",
+        "no_release_producer",
+        "wrong_variant",
+        "library_metadata",
+        "missing_binary",
+        "unresolved",
+    ],
+)
+def test_real_gradle_split_views_preserve_raw_inputs_and_selected_variants(
+    mode: str, tmp_path: Path
+) -> None:
+    import subprocess
+
+    selected = os.environ.get("GSIP_TEST_GRADLE_HOME")
+    if not selected:
+        pytest.skip("real split-view control requires explicit verified Gradle tool home")
+    home = Path(selected)
+    if not home.is_absolute() or ".." in home.parts or not (home / "bin/gradle").is_file():
+        pytest.fail("invalid explicit Gradle tool home")
+    project = tmp_path / "split-fixture"
+    split_view_fixture(project, mode)
+    task = audit.GRADLE_TASK
+    if mode == "wrong_type":
+        task = task.replace("'android-classes-jar')", "'gsip-missing-type')", 1)
+    elif mode == "missing_project":
+        task = task.replace("it instanceof ProjectComponentIdentifier && it != rootId", "false", 1)
+    elif mode == "omit_module":
+        task = task.replace(
+            "it instanceof ModuleComponentIdentifier }",
+            "it instanceof ModuleComponentIdentifier && it.module != 'plain' }",
+            1,
+        )
+    elif mode in {"no_debug_producer", "no_release_producer"}:
+        kept = "release" if mode == "no_debug_producer" else "debug"
+        task = task.replace(
+            "configs.collectMany { config ->",
+            "configs.findAll { it.name.startsWith('" + kept + "') }.collectMany { config ->",
+            1,
+        )
+    elif mode == "wrong_variant":
+        task = task.replace(
+            "'android-classes-jar')",
+            "'android-classes-jar')\n                        "
+            "attributes.attribute(org.gradle.api.attributes.Attribute.of("
+            "'gsip.fixture.buildType', String), 'debug')",
+            1,
+        )
+    inspection = tmp_path / "inspection.gradle"
+    inspection.write_text(task)
+    output = tmp_path / "resolved.json"
+    output.with_name(output.name + ".faults").mkdir(mode=0o700)
+    environment = dict(os.environ, GRADLE_USER_HOME=str(tmp_path / "gradle-user-home"))
+    completed = subprocess.run(  # noqa: S603 - verified explicit tool and owned offline fixture
+        [
+            str(home / "bin/gradle"),
+            "--no-daemon",
+            "--console=plain",
+            "-I",
+            str(inspection),
+            ":app:gsipRuntimeEvidence",
+            "-PgsipEvidenceOutput=" + str(output),
+        ],
+        cwd=project,
+        env=environment,
+        capture_output=True,
+        timeout=120,
+    )
+    if len(completed.stdout) + len(completed.stderr) > 2_000_000:
+        pytest.fail("synthetic split-view control exceeded fixed output bound")
+    fails_build = mode in {
+        "unknown_agp",
+        "wrong_type",
+        "missing_project",
+        "missing_binary",
+        "unresolved",
+        "wrong_variant",
+    }
+    if (completed.returncode != 0) != fails_build or output.exists() == fails_build:
+        pytest.fail("split-view control has incorrect fixed exit/graph status")
+    if mode == "wrong_variant":
+        assert audit.read_fixed_fault(output.with_name(output.name + ".faults"), tmp_path) == (
+            "RELEASE_ARTIFACTS", "UNKNOWN",
+        )
+    data = audit.decoded(output.read_bytes()) if output.exists() else None
+    expected_modules = {
+        ("synthetic.publicview", name, "1.0") for name in ["plain", "androidraw", "bom"]
+    }
+    if data is not None:
+        assert [view["name"] for view in data["views"]] == [
+            "debugRuntimeClasspath",
+            "releaseRuntimeClasspath",
+        ]
+        for view in data["views"]:
+            assert expected_modules <= {tuple(v) for v in view["modules"]}
+            assert set(view["projects"]) == {":app", ":library"}
+            artifacts = view["artifacts"]
+            module_artifacts = [v for v in artifacts if v["kind"] == "module"]
+            actual_modules = {tuple(v["coordinate"]) for v in module_artifacts}
+            assert actual_modules == expected_modules - {("synthetic.publicview", "bom", "1.0")} - (
+                {("synthetic.publicview", "plain", "1.0")} if mode == "omit_module" else set()
+            )
+            for artifact in module_artifacts:
+                coordinate = artifact["coordinate"]
+                expected = (
+                    project
+                    / "repo/synthetic/publicview"
+                    / coordinate[1]
+                    / "1.0"
+                    / Path(artifact["file"]).name
+                )
+                assert Path(artifact["file"]).read_bytes() == expected.read_bytes()
+            projects = [v for v in artifacts if v["kind"] == "project"]
+            assert len(projects) == 1 and projects[0]["project"] == ":library"
+            file = Path(projects[0]["file"])
+            missing = (
+                mode == "no_debug_producer"
+                and view["name"].startswith("debug")
+                or mode == "no_release_producer"
+                and view["name"].startswith("release")
+            )
+            assert file.is_file() != missing
+            if file.is_file():
+                with zipfile.ZipFile(file) as archive:
+                    actual = archive.read("fixture-variant.txt")
+                variant = "debug" if view["name"].startswith("debug") else "release"
+                assert (actual == (variant + "-classes").encode()) != (
+                    mode == "wrong_variant" and variant == "release"
+                )
+        if mode == "success":
+            offset = completed.stdout.find(b"> Task :app:gsipRuntimeEvidence")
+            for variant in ["debug", "release"]:
+                producer = completed.stdout.find(
+                    ("> Task :library:" + variant + "Classes").encode()
+                )
+                assert 0 <= producer < offset
+    control = {
+        "mode": mode,
+        "tool_exit_code": completed.returncode,
+        "graph_created": output.exists(),
+        "task_sha256": audit.sha(task.encode()),
+        "stdout_sha256": audit.sha(completed.stdout),
+        "stderr_sha256": audit.sha(completed.stderr),
+        "stdout_bytes": len(completed.stdout),
+        "stderr_bytes": len(completed.stderr),
+        "raw_output_persisted": False,
+        "native_acceptance_claimed": False,
+    }
+    (tmp_path / "split-view-control.json").write_text(json.dumps(control, sort_keys=True) + "\n")
+
+
+@pytest.mark.parametrize(
+    "defect", ["missing_module", "missing_project", "pom_metadata", "jar_metadata"]
+)
+def test_split_view_sidecar_keeps_existing_full_component_coverage(
+    defect: str, tmp_path: Path
+) -> None:
+    native = complete_native("a" * 40, "b" * 64)
+    if defect == "missing_project":
+        for row in native["runtime_views"]:
+            row["resolved_runtime_inputs"] = [
+                v for v in row["resolved_runtime_inputs"] if v.get("project") != ":capacitor-camera"
+            ]
+    elif defect == "missing_module":
+        for row in native["runtime_views"]:
+            row["resolved_runtime_inputs"] = [
+                v for v in row["resolved_runtime_inputs"] if "coordinate" not in v
+            ]
+    else:
+        coord = ("synthetic.publicview", "metadata", "1.0")
+        raw = pom(coord).replace(
+            b"</project>",
+            (
+                "<packaging>"
+                + ("pom" if defect == "pom_metadata" else "jar")
+                + "</packaging></project>"
+            ).encode(),
+        )
+        cached(tmp_path, coord, raw)
+        proof = audit.pom_evidence(coord, tmp_path, False)
+        for row in native["runtime_views"]:
+            row["selected_modules"].append(
+                {"coordinate": list(coord), "pom_license_evidence": proof}
+            )
+    if defect == "pom_metadata":
+        audit.validate_android(native, audit.validate_npm(native["npm_sources"], "a" * 40))
+    else:
+        with pytest.raises(audit.AuditError):
+            audit.validate_android(native, audit.validate_npm(native["npm_sources"], "a" * 40))
+
+
+# Actual empty AGP 8.13 R output, independently checked against its pinned generator.
+# This literal is independent of the maintained expected-class builder.
+CORDOVA_EMPTY_R = bytes.fromhex(
+    "cafebabe00000034000a010023636170616369746f722f636f72646f76612f616e64726f6964"
+    "2f706c7567696e732f520700010100106a6176612f6c616e672f4f626a6563740700030100"
+    "063c696e69743e0100032829560c000500060a00040007010004436f646500310002000400"
+    "0000000001000200050006000100090000001100010001000000052ab70008b1000000000000"
+)
+CORDOVA_R_MEMBER = "capacitor/cordova/android/plugins/R.class"
+
+
+def cordova_output_project(root: Path) -> tuple[Path, list[Path], list[Path]]:
+    generated = root / "apps/capture-pwa/android/capacitor-cordova-android-plugins"
+    generated.mkdir(parents=True)
+    (generated / "build.gradle").write_text(
+        'android { namespace "capacitor.cordova.android.plugins" }\n'
+    )
+    runtime, resources = [], []
+    for variant in ("debug", "release"):
+        suffix = variant.capitalize()
+        classes = generated / (
+            f"build/intermediates/runtime_library_classes_jar/{variant}/"
+            f"bundleLibRuntimeToJar{suffix}/classes.jar"
+        )
+        classes.parent.mkdir(parents=True)
+        classes.write_bytes(b"PK\x05\x06" + b"\0" * 18)
+        resource = generated / (
+            f"build/intermediates/compile_r_class_jar/{variant}/generate{suffix}RFile/R.jar"
+        )
+        resource.parent.mkdir(parents=True)
+        with zipfile.ZipFile(resource, "w") as archive:
+            archive.writestr(CORDOVA_R_MEMBER, CORDOVA_EMPTY_R)
+        runtime.append(classes)
+        resources.append(resource)
+    return generated, runtime, resources
+
+
+def test_generated_cordova_outputs_are_proven_empty_not_prebundled(
+    graph: tuple[dict[str, Any], Path, Path, Path],
+) -> None:
+    data, repo, cache, _ = graph
+    generated, runtime, resources = cordova_output_project(repo)
+    assert len(CORDOVA_EMPTY_R) == 150
+    assert audit.sha(CORDOVA_EMPTY_R) == (
+        "3bcff37a8da344d813483fecde266705db27eb75c73f85f6de2c85449064a077"
+    )
+    for index, view in enumerate(data["views"]):
+        view["projects"].append(":capacitor-cordova-android-plugins")
+        view["artifacts"].append(
+            {
+                "kind": "project",
+                "project": ":capacitor-cordova-android-plugins",
+                "file": str(runtime[index]),
+            }
+        )
+    result = audit.runtime_evidence(data, repo, cache, False)
+    for index, view in enumerate(result["runtime_views"]):
+        assert view["project_sources"][0]["project"] == ":capacitor-cordova-android-plugins"
+        binary = view["resolved_runtime_inputs"][-1]
+        assert binary["sha256"] == audit.sha(runtime[index].read_bytes())
+        assert binary["bytes"] == 22
+        assert binary["embedded_license_notice_files"] == []
+        with zipfile.ZipFile(resources[index]) as archive:
+            assert archive.read(CORDOVA_R_MEMBER) == CORDOVA_EMPTY_R
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "libs_jar",
+        "source_jar",
+        "unknown_build_jar",
+        "wrong_variant_path",
+        "aar",
+        "java",
+        "kotlin",
+        "wrong_namespace",
+        "duplicate_namespace",
+        "nonempty_runtime",
+        "runtime_trailing",
+        "wrong_r_class",
+        "constructor_code",
+        "extra_constant",
+        "extra_member",
+        "duplicate_member",
+        "wrong_member",
+        "archive_comment",
+        "member_comment",
+        "member_extra",
+        "compressed",
+        "prefix_payload",
+        "trailing_payload",
+        "local_extra",
+        "oversize",
+        "hardlink",
+        "symlink",
+        "directory_symlink",
+        "fifo",
+        "symlink_project",
+    ],
+)
+def test_generated_cordova_source_or_archive_payload_is_refused(
+    defect: str, tmp_path: Path
+) -> None:
+    generated, runtime, resources = cordova_output_project(tmp_path)
+    r = resources[0]
+    if defect in {"libs_jar", "source_jar", "unknown_build_jar", "aar", "java", "kotlin"}:
+        relative = {
+            "libs_jar": "libs/empty.jar",
+            "source_jar": "src/main/empty.jar",
+            "unknown_build_jar": "build/unknown/empty.jar",
+            "aar": "build/empty.aar",
+            "java": "src/main/java/Unexpected.java",
+            "kotlin": "src/main/kotlin/Unexpected.kt",
+        }[defect]
+        extra = generated / relative
+        extra.parent.mkdir(parents=True, exist_ok=True)
+        extra.write_bytes(b"PK\x05\x06" + b"\0" * 18)
+    elif defect == "wrong_variant_path":
+        runtime[0].rename(runtime[0].with_name("Classes.jar"))
+    elif defect in {"wrong_namespace", "duplicate_namespace"}:
+        (generated / "build.gradle").write_text(
+            'namespace "synthetic.other"\n'
+            if defect == "wrong_namespace"
+            else 'namespace "capacitor.cordova.android.plugins"\n' * 2
+        )
+    elif defect in {"nonempty_runtime", "runtime_trailing"}:
+        if defect == "nonempty_runtime":
+            with zipfile.ZipFile(runtime[0], "w") as archive:
+                archive.writestr("Unexpected.class", b"synthetic")
+        else:
+            runtime[0].write_bytes(runtime[0].read_bytes() + b"synthetic payload")
+    elif defect in {"prefix_payload", "trailing_payload", "local_extra", "oversize"}:
+        raw = r.read_bytes()
+        if defect == "prefix_payload":
+            raw = b"synthetic payload" + raw
+        elif defect == "trailing_payload":
+            raw += b"synthetic payload"
+        elif defect == "local_extra":
+            raw = raw[:28] + b"\x01\x00" + raw[30:]
+        else:
+            raw += b"x" * 2_000
+        r.write_bytes(raw)
+    elif defect in {"hardlink", "symlink", "directory_symlink", "fifo", "symlink_project"}:
+        if defect == "directory_symlink":
+            (generated / "linked").symlink_to(tmp_path, target_is_directory=True)
+        elif defect == "symlink_project":
+            linked = generated.parent / "linked-project"
+            linked.symlink_to(generated, target_is_directory=True)
+            generated = linked
+        elif defect == "hardlink":
+            os.link(r, r.with_name("hardlinked.jar"))
+        elif defect == "symlink":
+            r.rename(r.with_name("source.jar"))
+            r.symlink_to(r.with_name("source.jar"))
+        else:
+            r.unlink()
+            os.mkfifo(r)
+    else:
+        payload = CORDOVA_EMPTY_R
+        member = CORDOVA_R_MEMBER
+        if defect == "wrong_r_class":
+            payload = payload.replace(b"plugins/R", b"plugins/X")
+        elif defect == "constructor_code":
+            payload = payload[:-11] + b"\x00" + payload[-10:]
+        elif defect == "extra_constant":
+            payload += b"synthetic constant"
+        elif defect == "wrong_member":
+            member = "synthetic/Unexpected.class"
+        entry = zipfile.ZipInfo(member)
+        if defect == "member_comment":
+            entry.comment = b"synthetic private metadata"
+        elif defect == "member_extra":
+            entry.extra = b"\x01\x00\x00\x00"
+        elif defect == "compressed":
+            entry.compress_type = zipfile.ZIP_DEFLATED
+        with zipfile.ZipFile(r, "w") as archive:
+            archive.writestr(entry, payload)
+            if defect == "extra_member":
+                archive.writestr("Unexpected.class", b"synthetic")
+            elif defect == "duplicate_member":
+                with pytest.warns(UserWarning, match="Duplicate name"):
+                    archive.writestr(member, payload)
+            elif defect == "archive_comment":
+                archive.comment = b"synthetic private metadata"
+    with pytest.raises(audit.AuditError):
+        audit.validate_empty_cordova_project(generated)
+
+
+@pytest.mark.parametrize("location", ["root", "child"])
+def test_generated_cordova_unreadable_tree_is_refused(
+    location: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    generated, _, _ = cordova_output_project(tmp_path)
+    target = generated if location == "root" else generated / "unreadable"
+    target.mkdir(exist_ok=True)
+    original = os.scandir
+
+    def unreadable(path: Any) -> Any:
+        if Path(path) == target:
+            raise PermissionError("synthetic private directory metadata")
+        return original(path)
+
+    monkeypatch.setattr(os, "scandir", unreadable)
+    with pytest.raises(audit.AuditError):
+        audit.validate_empty_cordova_project(generated)
+
+
+def test_generated_cordova_tree_entry_bound_is_enforced(tmp_path: Path) -> None:
+    generated, _, _ = cordova_output_project(tmp_path)
+    for index in range(30_001):
+        (generated / f"synthetic-{index}.txt").touch()
+    with pytest.raises(audit.AuditError):
+        audit.validate_empty_cordova_project(generated)
+
+
+@pytest.mark.parametrize("directory", ["src/main/jniLibs/arm64-v8a", "jniLibs", "build", "libs"])
+@pytest.mark.parametrize("suffix", [".so", ".SO"])
+def test_generated_cordova_prebundled_native_library_is_refused(
+    directory: str, suffix: str, tmp_path: Path
+) -> None:
+    generated, _, _ = cordova_output_project(tmp_path)
+    library = generated / directory / ("synthetic-bundled" + suffix)
+    library.parent.mkdir(parents=True, exist_ok=True)
+    library.write_bytes(b"\x7fELF synthetic fixture, not a real native library")
+    with pytest.raises(audit.AuditError):
+        audit.validate_empty_cordova_project(generated)
+
+
+# Exact public selected-coordinate POM metadata, independently retrieved 2026-10-13.
+# These compressed metadata fixtures contain no app binary, credentials or contributor data.
+_REVIEWED_PUBLIC_POMS_GZIP_BASE64 = {
+    ("androidx.camera", "camera-core", "1.4.2"): (
+        "H4sIAAAAAAAC/81Y31PjNhB+569Q08diiQSmvWaMb65AO9eB3k2hnfbpRrHXicCWPJKcH/3ru5Ll4ISQ"
+        "cEBueLIlfVp93+5qZTl+Py8LMgVthJKnvT496hGQqcqEHJ/2/rr5NXrXe58cxJVWt5BagmhpTnsTa6sh"
+        "YyWfgqS84ukEqNJj9vnTFTuhR86KRw7nRizRs9mMzo49bnB01Gf/XF1e48SSR0Iay2UKOMuIofGdlyrl"
+        "1pPauRhxCLMJMjdZ0xl5IMV2LzkgJP4uisjNRBhSqqwugMy4IbwwilT1qBBmAhmZCTshnGiBxrTDQXFI"
+        "ftM8Q3gJlmfc8kNComhpcDZBLDETVRcZGQGpDZpx2oBnlJwrIpUlaAYsEDsBkquiUDP0NCmEhDC9axD5"
+        "WYUWMoG+APce1leacLlYsmk0tKRILrCVKmnqEpl3DdoJt27pRcuy0pAjpgE7JsLeM+5MzNQXJP9FQ6mm"
+        "MLz3UuS8FI09j2hJIEz0Pvu7ya3EByBmK30ONNaqrj5mCZeZViKb05Qjax6zdsCBuLYi56nFZjMcpUpD"
+        "zDr9DhbyOOnTEzqI2bSzDObEHR+jwoRzHbP7phuUaDM584bJmTfse9xQBibVonKZmLghdFVZKQnSGoyf"
+        "9nH8HayzR4KFSzHSXC8OMXmK5hXdrKbC7Snsc74W6GFpMYYZ0VAIPnIBa2bnqpaZz/wmWiDdqCFjDdgK"
+        "oEwLTGoC8wq0wP2K4zzVyrgkLojKyYfGmzRmXQFOUK2LpN0vGUyhUGiDBu9TVMduGzmsjQhDisANGNas"
+        "/n1wr7PkLApc39v/F7hOBkf9n2O22udQuB25FP/xlkjr9ht0YGBLPlUo6lrVOgXyuak4nVCwdRNxIVKQ"
+        "SCzYC82mtWLfVwS0nNsZxxheNsBDEhKRDFxqtgv5ua2bQt3q1JR2UXb58ezij+uLCCdTO7dLh/j5GYZY"
+        "i1HtuWqoFEai29UwZiuUNwv45fq8JfwIRxfKdKJVKeqSjpUaY754J/pwYg4u6mn7+AGjmRs2wQ1usDQK"
+        "yf68+HB+dUFbAy+VsWyYsH9CirVBWnZsCNNT0sCtsGKj02yWNGkZgLjVJE52RLFzOBZ22PqrTfgH7qoK"
+        "bnFjlyzXuOJM6TvDTF1VSiOJjsGDhyEwK9touX22Wmw3EQus0T+oPsM9vbjiko+hxEKxdF0YEm3Kr+Db"
+        "ricW1QDdUFr9Y7BeXQP+8Rrbxmadzx4oQp5jGMybpjjHEu/WfdMsC4GOXKQFvGWSZXEnbDQVbum3zBOP"
+        "eFBvmyDMXolfpydUoy5mtXRtKFwbxD2UxiV+c/rT/oG8rrgu7KG2jjJ/yq8rMymeHIn7qhNuFzTNg0dE"
+        "74V11HzGOW/xYoeEE9r/Ggk4aBfY8N+8/u0lyvD0S2utkedWZfewKK9trcHsENV/PC66lhY98xpxeTb7"
+        "6M7O34gCdzXZyl3D85nuP4FgLnIhLWikt13JGnKrpONNBetx57+upM4BukXOEoX31rLcUagG3yidvpZ6"
+        "gXdOd71/Pvn9Z5jVPMVr9lZFS8xzD4u9ZRX6J1xIKK+tolNe1Nuj42CRh0X3B8quevsjPd5fenU0jGs+"
+        "5TuSy/0IcT84mlq7g/gej2+82dNbsCONV2JD75QtxPbzu4FExmZ4s97B+x0dDL4t9fkTuM/dTzSF93iJ"
+        "Z1zYQTuE/PSyzFn/aIxZ+K+c/A9g6W8kiBYAAA=="
+    ),
+    ("io.ionic.libs", "ioncamera-android", "1.0.2"): (
+        "H4sIAAAAAAAC/82XXZPbJhSG7/dXUF8H8MembTyKks427eyM03YmaSd3GSywxC4CDSB//PsekCzJrqvd"
+        "SbI78ZWBl8NzDucASt7sS4W2wjpp9OvJjEwnSOjMcKnz15O/P/6Gf568Sa+Sypo7kXm0d3LpskKUbGUy"
+        "5uOkwvtqSWnJtkITVjEYJsbm9K8/39NrMiVTFBTukmTveNOJo5BAe4KASLtHmJ1cIfhF9RK4uhm73Y7s"
+        "FlE7n05n9NP71YeIjKV2nulMTFKYmvyAMfpYSIdKw2sl0I45xJQzqKrXSrpCcLSTvkAMWQnzbdAJ9QL9"
+        "bhkHeSk848yzFwhh3BncFaBFrjC14mgtUO3ATFhXME7QrwZp4xGYEV4gXwi0MUqZHUQbKalFO31oEPi8"
+        "AQtcQrxF+N+ubyxi+tDRND4codBGQisz2tUlkA8N+oL5sPThSFlZsQFNIw4k0vfEg4ncfAb4z1aUZiuW"
+        "fZRwiBLOIwfuANqJMWb/NPmVxm1L6ElfEOXW1NUtT6Uh0CUzouTaJfTYHSTMerlhmY8qnTHwimGmuTWS"
+        "J3QwGsRtPqeQzmSe0O1gKcije5aDlyljNqF9MwxqMHvJfOwPAi5cZmUV8j69iSL0SyNCK7lO6HA86Gur"
+        "0mPy5xClek0yU9LoJIYAx7/HdXCzbELDrDBbyUxoJ1waE/3YbFpH2lXT2TPGoS9Zl66VWUO5SU25yRxd"
+        "3d68++PDuw4HzNIBQtdwbWS2QpkKIt1qu45T3tuAcEYLpSmBV75tNl+ahDZd7aonpgbNZmWXla0QMljD"
+        "IRWCD51LcHzZO78cdZ6AMKEDA2dO3PzXtHPFSXQfs8Ale1dfvmPeChF3rM8Z2oYD0CuhOZzlUvRb0nYd"
+        "utAfSwwOS3In/NqCMUfujVfB6KAAo3pQZo0EO89VSPzTAozivghfkfnLkyqM4y6DQKTgZAVHVeAOzW7H"
+        "T0nH0NuY7CFeVowyBwG+9/sHcGcvwyF1GdfW2svym+CyqgrOMz/KPFCNQv/0PMyQslvpD+PIregRoX5F"
+        "Fk9HDXEjuTG5EqR1gJRwhVrJ1Ch/LxpPk/mzhDxcyz6UpVfsYGr/QIafi0dcmJMn9eCu1nKctlWMIF6T"
+        "2eLsBv+mjJeOvf0jzr09hrME4gtPNofjsXK3LR+s0MV37sj/PKee049BzcJHiCC5M+P3UCMYzfLZlMye"
+        "o1Db19tYeTbvyuaiGg3y9VNmfYcs9nIDZ4WwwDF+dZ4pR9kX5MevYR+049MFHunNx2d69S/ckBmOrg4A"
+        "AA=="
+    ),
+    ("io.ionic.libs", "ionfilesystem-android", "1.1.0"): (
+        "H4sIAAAAAAAC/81W204bMRB9z1e4ecZ2AlQq0bK0olAhhbYStOobctZO1rBrr2xvNvn7jr3XUC5Rkarm"
+        "KTM+M3PmeMZJdLbJM7QWxkqtTsdTMhkjoRLNpVqdjn/cXuIP47N4FBVG34vEoY2VM5ukImdznTAXglLn"
+        "ihmlOVsLRVjB4Jhos6Lfv13TYzIhE+QR9inIxvLaiQOQgD1GwEjZPdKORwg+AT0DXl1EVVWkOgrYw8lk"
+        "Sn9dz28CZSyVdUwlYhxDaPQOY3SbSotyzctMoIpZxDKrUVEuMmlTwVElXYoYMhLijceJ7AB9MYwDPBeO"
+        "cebYAUIYdwmrFLDIprrMOFoIVFpI4+sKxgn6rJHSDkEa4QRyqUBLnWW6ArVRJpVowocJgZ/TkIFL0Fv4"
+        "7019bRBT245N3UNLCi0lWIlWtsyB+TChS5nzpbcty8KIJWBqsGciXc94EMj1HZC/MyLXazHrVcJeJbwK"
+        "PHBHoAkMmv2s5ysO1xbRHZ8HrYwuiyseS03AJROSyYWNaOv2EGacXLLEBZTy3dktUMwxU9xoySM6QPiA"
+        "ZqbjKZn6mutBOZilB7aCTmPGTER70x8qlovnSoQzD+LCJkYWfv7jS690jUSfaiSay0VEhyAfVJosbjdh"
+        "BZKVC5LonIaOMagdvrbFcF8/oj7SZ8hkIpQVNg6T35q11VKf186ebDj629p0kekF7KBUdH51fvH15qJj"
+        "A1npgEFn2Eahtch0Aao32M6xS/fKM3hEFlZVAl35sR4GqSNau5qqO6kGZl3ZJnkDhIlW8Gh5/cE5g75n"
+        "fe+zV3snAI7oIMmjRs7/TG9tuiPwvkWeyjl628U5I0S4uH58aCMNtFAIxeGdl6K/nsa17a6hXT94SMm9"
+        "cAsDySx50C7zSQfLGdCD9ash2Dqe+T3YXcwA7pfzhBwe72xnOLcJiBFDowU05Hl7s7v9XaYvUW902YBm"
+        "RrzI2QPwg9u8Qnf6/tFjMqBrSuVk/ha6Tym92UPqDQb6unTwC2Jx3eorov/vTTzzqv/LPrrZgepyLd32"
+        "xR5a0B4zdEKO3sJ6YIf1hR+w+s9ZPPoNlr/ydM4JAAA="
+    ),
+    ("junit", "junit", "4.13.2"): (
+        "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"
+        "imkAAA=="
+    ),
+    ("org.hamcrest", "hamcrest-core", "1.3"): (
+        "H4sIAAAAAAAC/4VSTWvjMBC9B/IfBt8tOW0X2uA4LL1soKWFLqW3okqTWGkkGUmx03+/Y9kOLd1lwQfP"
+        "mzfvzYfK9ckcoEUftLOrbMGKDNBKp7TdrbLN00N+ff3jJl9k62o+Kxvv9igjUI0Nq6yOsVlybkSLlolG"
+        "yBqZ8zv++HDPr1jRayXm8hT0md11HesuE++iKBb85f7uiQqNyLUNUViJ2XwGQCXLkPA7J0VM3f3XD/7F"
+        "SEDeXr0WrwU7BZVVvUdpnMLD8zB8lRRK/gWbzxKvER5tTDUU7bw7NhtVkTCrhZEeQyz5hI4k4aPeChkJ"
+        "mTj5IFPyT7mRPR6gWrDLkrdnc8rws3cK/yYrncdvotSzfBc7OmO1F76XmcKUtcJg9WtUgNukkLCUVRik"
+        "102cugD4XesA9MUaofeDn48bcFuYmgAjIi3bw9aTSuf8O0QHbwjHgArePqhQe9VvIH584tCDarWiedno"
+        "YOXhSO7JR8DWHa1Kx4eAsfebbLRpDmhoMSkbiOmpL2OI6Rr0A8qGDX6dhlYxvGL6/wO8BxQo/gIAAA=="
+    ),
+    ("org.hamcrest", "hamcrest-parent", "1.3"): (
+        "H4sIAAAAAAAC/8VVbWvbMBD+Huh/EP4eKVk76ILjjhG2tjRtIWPbt6LIV0edLBlJzsu/31l+ibOmBAaj"
+        "HwK5u+funnskn+Krba7IGqyTRk+jMR1FBLQwqdTZNLpZPAwvLz9+Go6jq+RsEBfWvIDwBHO0m0Yr74sJ"
+        "Yzlfg6a84GIF1NiMPT7M2QUdVbUCcrJ1skNvNhu6OQ+4D6PRmP2a3y0wMedDqZ3nWkB0NiAEUyYu+O+M"
+        "4D6wO9mPvIUIjuH64mn0NKJbl0ZJ1SPOTQrqRz18EirE7MB3Ngi4zJqyuEkTLEVXPBcWnI9Z6w0Qbr18"
+        "5sKj3SKGBbegEdiLBWwjdzKm5zFbd60wgox/8wy1TwqTx2xvDqqo5jkk1011Mq9mIo9NjxALNUqrkkoH"
+        "h0Jk0q/KJRUmZy0rdsvX/LobokKHtBScsLKolE6+gQbLFakHIKgveTaWcKVIW4YoubTcSnA0Zv3cRjIl"
+        "BWgHLhTf243ZDnMPG/JlMSN3dbQ3RsC0ozTXxhQIMqUV9aG2LdjSpcPGoMWq2A8ViqTSeSuXZWBnoTDI"
+        "t+9qCLI+w85y7TxO5C3y3wTGRGG0xs+naorlJphb/T7va0yO1qAIiFkvuWZYM2rObg0K1bGd3J1nr4NM"
+        "kxcDdMOVBhczmf51FrcGyM8meHgM1qjuIDtHMmtbxCzYHZz18dXlOKTyBjfNPS3sTsARavccL2Edewdm"
+        "Ls+eLeAm0keoLTzmkK9t/D2EA6nSUh8jd48hMgux99BNcLvz1R57Rey7yckMtILd/2TWs7vvGNd72cuo"
+        "zf3KFsZCeAPKrssrTBa2ozf2FLBekbtTMKk9ZDa8cQfQ1qjI4ltQv734/w9CkPRztAcAAA=="
+    ),
+}
+_REVIEWED_PUBLIC_POM_ROWS: dict[tuple[str, str, str], dict[str, Any]] = {
+    ("androidx.camera", "camera-core", "1.4.2"): {
+        "coordinate": ["androidx.camera", "camera-core", "1.4.2"],
+        "pom_sha256": "ea820b7874afa1047d288c29d6dbb4c9795b70bf12d3e229235af4e7bd08c072",
+        "pom_bytes": 5768,
+        "origin": "resolved Gradle metadata cache",
+        "packaging": "aar",
+        "licenses": [
+            {
+                "spdx": "Apache-2.0",
+                "declared_name": "The Apache Software License, Version 2.0",
+                "declared_url": "http://www.apache.org/licenses/LICENSE-2.0.txt",
+            },
+            {
+                "spdx": "BSD-3-Clause",
+                "declared_name": "BSD License",
+                "declared_url": "https://chromium.googlesource.com/libyuv/libyuv/+/refs/heads/main/README.chromium",
+            },
+        ],
+    },
+    ("io.ionic.libs", "ioncamera-android", "1.0.2"): {
+        "coordinate": ["io.ionic.libs", "ioncamera-android", "1.0.2"],
+        "pom_sha256": "5c1bc27a7c7442ba6ebdb731f88f2a74ed620d7c9847a357c26389800e63a958",
+        "pom_bytes": 3758,
+        "origin": "resolved Gradle metadata cache",
+        "packaging": "aar",
+        "licenses": [
+            {
+                "spdx": "MIT",
+                "declared_name": "License",
+                "declared_url": "https://github.com/ionic-team/ion-android-camera/blob/main/docs/LICENSE",
+            }
+        ],
+    },
+    ("io.ionic.libs", "ionfilesystem-android", "1.1.0"): {
+        "coordinate": ["io.ionic.libs", "ionfilesystem-android", "1.1.0"],
+        "pom_sha256": "5fc8a9c96e200e19673596aba8c66e7e1bdaa217146a3c04eae75e154b844ecb",
+        "pom_bytes": 2510,
+        "origin": "resolved Gradle metadata cache",
+        "packaging": "aar",
+        "licenses": [
+            {
+                "spdx": "MIT",
+                "declared_name": "License",
+                "declared_url": "https://github.com/ionic-team/ion-android-filesystem/blob/main/LICENSE",
+            }
+        ],
+    },
+    ("junit", "junit", "4.13.2"): {
+        "coordinate": ["junit", "junit", "4.13.2"],
+        "pom_sha256": "569b6977ee4603c965c1c46c3058fa6e969291b0160eb6964dd092cd89eadd94",
+        "pom_bytes": 27018,
+        "origin": "resolved Gradle metadata cache",
+        "packaging": "jar",
+        "licenses": [
+            {
+                "spdx": "EPL-1.0",
+                "declared_name": "Eclipse Public License 1.0",
+                "declared_url": "http://www.eclipse.org/legal/epl-v10.html",
+            }
+        ],
+    },
+    ("org.hamcrest", "hamcrest-core", "1.3"): {
+        "coordinate": ["org.hamcrest", "hamcrest-core", "1.3"],
+        "pom_sha256": "fde386a7905173a1b103de6ab820727584b50d0e32282e2797787c20a64ffa93",
+        "pom_bytes": 766,
+        "origin": "resolved Gradle metadata cache",
+        "packaging": "jar",
+        "licenses": [],
+        "inherits_license_from": ["org.hamcrest", "hamcrest-parent", "1.3"],
+    },
+    ("org.hamcrest", "hamcrest-parent", "1.3"): {
+        "coordinate": ["org.hamcrest", "hamcrest-parent", "1.3"],
+        "pom_sha256": "6d535f94efb663bdb682c9f27a50335394688009642ba7a9677504bc1be4129b",
+        "pom_bytes": 1972,
+        "origin": "resolved Gradle metadata cache",
+        "packaging": "pom",
+        "licenses": [
+            {
+                "spdx": "BSD-3-Clause",
+                "declared_name": "New BSD License",
+                "declared_url": "http://www.opensource.org/licenses/bsd-license.php",
+            }
+        ],
+    },
+}
+
+
+def reviewed_public_pom_bytes(coord: tuple[str, str, str]) -> bytes:
+    import base64
+
+    return gzip.decompress(base64.b64decode(_REVIEWED_PUBLIC_POMS_GZIP_BASE64[coord]))
+
+
+def reviewed_public_chain(coord: tuple[str, str, str]) -> list[dict[str, Any]]:
+    row = copy.deepcopy(_REVIEWED_PUBLIC_POM_ROWS[coord])
+    chain = [row]
+    if "inherits_license_from" in row:
+        parent = row["inherits_license_from"]
+        chain.extend(reviewed_public_chain((parent[0], parent[1], parent[2])))
+    return chain
+
+
+@pytest.fixture
+def reviewed_public_cache(tmp_path: Path) -> Path:
+    cache = tmp_path / "reviewed-public-cache"
+    for coord in _REVIEWED_PUBLIC_POM_ROWS:
+        cached(cache, coord, reviewed_public_pom_bytes(coord))
+    return cache
+
+
+@pytest.mark.parametrize("coord", _REVIEWED_PUBLIC_POM_ROWS)
+def test_reviewed_exact_public_pom_producer_retains_complete_context(
+    reviewed_public_cache: Path, coord: tuple[str, str, str]
+) -> None:
+    assert audit.pom_evidence(coord, reviewed_public_cache, False) == reviewed_public_chain(coord)
+
+
+@pytest.mark.parametrize("coord", _REVIEWED_PUBLIC_POM_ROWS)
+def test_reviewed_exact_public_pom_offline_validator_retains_classification(
+    coord: tuple[str, str, str],
+) -> None:
+    assert (
+        audit.validate_pom_chain(reviewed_public_chain(coord), coord)
+        == (_REVIEWED_PUBLIC_POM_ROWS[coord]["packaging"])
+    )
+
+
+@pytest.mark.parametrize(
+    "name", ["License", "BSD License", "New BSD License", "Eclipse Public License 1.0"]
+)
+def test_reviewed_context_does_not_expand_name_only_license_aliases(name: str) -> None:
+    with pytest.raises(audit.AuditError):
+        audit.license_id(name)
+
+
+@pytest.mark.parametrize("coord", _REVIEWED_PUBLIC_POM_ROWS)
+def test_reviewed_public_pom_producer_refuses_changed_bytes_even_with_same_declarations(
+    reviewed_public_cache: Path, coord: tuple[str, str, str]
+) -> None:
+    # Whitespace preserves parsed declarations but changes the reviewed publisher bytes.
+    cached(reviewed_public_cache, coord, reviewed_public_pom_bytes(coord) + b"\n")
+    with pytest.raises(audit.AuditError):
+        audit.pom_evidence(coord, reviewed_public_cache, False)
+
+
+@pytest.mark.parametrize("coord", _REVIEWED_PUBLIC_POM_ROWS)
+@pytest.mark.parametrize("defect", ["digest", "size", "packaging", "rebound_coordinate"])
+def test_reviewed_public_pom_offline_validator_refuses_rebound_context(
+    coord: tuple[str, str, str], defect: str
+) -> None:
+    chain = reviewed_public_chain(coord)
+    expected = coord
+    if defect == "digest":
+        chain[0]["pom_sha256"] = "f" * 64
+    elif defect == "size":
+        chain[0]["pom_bytes"] += 1
+    elif defect == "packaging":
+        chain[0]["packaging"] = "jar" if chain[0]["packaging"] != "jar" else "aar"
+    else:
+        expected = (coord[0], coord[1], "999.0")
+        chain[0]["coordinate"] = list(expected)
+    with pytest.raises(audit.AuditError):
+        audit.validate_pom_chain(chain, expected)
+
+
+@pytest.mark.parametrize("coord", _REVIEWED_PUBLIC_POM_ROWS)
+@pytest.mark.parametrize("defect", ["name", "url", "spdx", "duplicate", "partial"])
+def test_reviewed_public_pom_offline_validator_requires_complete_license_tuples(
+    coord: tuple[str, str, str], defect: str
+) -> None:
+    chain = reviewed_public_chain(coord)
+    leaf = chain[-1]
+    if defect == "name":
+        leaf["licenses"][0]["declared_name"] = "Apache License, Version 2.0"
+        leaf["licenses"][0]["spdx"] = "Apache-2.0"
+    elif defect == "url":
+        leaf["licenses"][0]["declared_url"] = "https://example.test/reviewed-license"
+    elif defect == "spdx":
+        leaf["licenses"][0]["spdx"] = (
+            "MIT" if leaf["licenses"][0]["spdx"] != "MIT" else "BSD-3-Clause"
+        )
+    elif defect == "duplicate":
+        leaf["licenses"].append(copy.deepcopy(leaf["licenses"][0]))
+    else:
+        leaf["licenses"].pop()
+    with pytest.raises(audit.AuditError):
+        audit.validate_pom_chain(chain, coord)
+
+
+@pytest.mark.parametrize("defect", ["flatten", "parent", "new_inheritance", "reordered"])
+def test_reviewed_hamcrest_inheritance_and_camera_multilicense_are_not_malleable(
+    defect: str,
+) -> None:
+    coord = ("org.hamcrest", "hamcrest-core", "1.3")
+    chain = reviewed_public_chain(coord)
+    if defect == "flatten":
+        chain[0].pop("inherits_license_from")
+        chain[0]["licenses"] = chain[1]["licenses"]
+        chain.pop()
+    elif defect == "parent":
+        chain[0]["inherits_license_from"] = ["org.hamcrest", "different-parent", "1.3"]
+        chain[1]["coordinate"] = chain[0]["inherits_license_from"]
+    elif defect == "new_inheritance":
+        coord = ("io.ionic.libs", "ioncamera-android", "1.0.2")
+        chain = reviewed_public_chain(coord)
+        chain[0]["licenses"] = []
+        chain[0]["inherits_license_from"] = ["org.hamcrest", "hamcrest-parent", "1.3"]
+        chain.append(reviewed_public_chain(("org.hamcrest", "hamcrest-parent", "1.3"))[0])
+    else:
+        coord = ("androidx.camera", "camera-core", "1.4.2")
+        chain = reviewed_public_chain(coord)
+        chain[0]["licenses"].reverse()
+    with pytest.raises(audit.AuditError):
+        audit.validate_pom_chain(chain, coord)
+
+
+def test_reviewed_exception_cannot_be_injected_into_generic_pom() -> None:
+    coord = ("org.example", "generic-runtime", "1.0")
+    chain = reviewed_public_chain(("junit", "junit", "4.13.2"))
+    chain[0]["coordinate"] = list(coord)
+    chain[0]["pom_sha256"] = "a" * 64
+    with pytest.raises(audit.AuditError):
+        audit.validate_pom_chain(chain, coord)
+
+
+def test_reviewed_hamcrest_cannot_inherit_from_an_ordinary_licensed_replacement() -> None:
+    coord = ("org.hamcrest", "hamcrest-core", "1.3")
+    chain = reviewed_public_chain(coord)
+    replacement = ("org.example", "ordinary-parent", "1.0")
+    chain[0]["inherits_license_from"] = list(replacement)
+    chain[1] = {
+        "coordinate": list(replacement),
+        "pom_sha256": "e" * 64,
+        "pom_bytes": 200,
+        "origin": "resolved Gradle metadata cache",
+        "packaging": "pom",
+        "licenses": [
+            {
+                "spdx": "Apache-2.0",
+                "declared_name": "Apache License, Version 2.0",
+                "declared_url": "https://www.apache.org/licenses/LICENSE-2.0",
+            }
+        ],
+    }
+    with pytest.raises(audit.AuditError):
+        audit.validate_pom_chain(chain, coord)
+
+
+def test_reviewed_digest_cannot_be_rebound_to_generic_recognized_declarations() -> None:
+    expected = ("org.example", "ordinary-runtime", "1.0")
+    chain = reviewed_public_chain(("androidx.camera", "camera-core", "1.4.2"))
+    chain[0]["coordinate"] = list(expected)
+    chain[0]["licenses"] = chain[0]["licenses"][:1]
+    with pytest.raises(audit.AuditError):
+        audit.validate_pom_chain(chain, expected)

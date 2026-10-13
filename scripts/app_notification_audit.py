@@ -14,6 +14,7 @@ import math
 import os
 import re
 import stat
+import struct
 import subprocess
 import sys
 import tarfile
@@ -49,6 +50,129 @@ LICENSE_NAMES = {
     "BSD-2-Clause": {"bsd 2-clause", "bsd 2-clause license", "bsd-2-clause"},
     "BSD-3-Clause": {"bsd 3-clause", "bsd 3-clause license", "bsd-3-clause", "the bsd license"},
 }
+# Exact existing runtime metadata reviewed with the immutable sources in the native audit doc.
+# These contexts classify declared licences; they do not approve distribution or attest
+# source-to-binary compilation. Generic name-only aliases remain unchanged.
+REVIEWED_POM_CONTEXTS: dict[tuple[str, str, str], dict[str, Any]] = {
+    ("androidx.camera", "camera-core", "1.4.2"): {
+        "pom_sha256": "ea820b7874afa1047d288c29d6dbb4c9795b70bf12d3e229235af4e7bd08c072",
+        "pom_bytes": 5768,
+        "packaging": "aar",
+        "parent": None,
+        "licenses": (
+            (
+                "Apache-2.0",
+                "The Apache Software License, Version 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0.txt",
+            ),
+            (
+                "BSD-3-Clause",
+                "BSD License",
+                "https://chromium.googlesource.com/libyuv/libyuv/+/refs/heads/main/README.chromium",
+            ),
+        ),
+        "reviewed_upstream_license_sources": (
+            (
+                "https://chromium.googlesource.com/libyuv/libyuv/+/58d817ed81e8fe8b06a58576d639cd56b19526d3/LICENSE",
+                "2b2cc1180c7e6988328ad2033b04b80117419db9c4c584918bbb3cfec7e9364f",
+            ),
+        ),
+    },
+    ("io.ionic.libs", "ioncamera-android", "1.0.2"): {
+        "pom_sha256": "5c1bc27a7c7442ba6ebdb731f88f2a74ed620d7c9847a357c26389800e63a958",
+        "pom_bytes": 3758,
+        "packaging": "aar",
+        "parent": None,
+        "licenses": (
+            (
+                "MIT",
+                "License",
+                "https://github.com/ionic-team/ion-android-camera/blob/main/docs/LICENSE",
+            ),
+        ),
+        "reviewed_upstream_license_sources": (
+            (
+                "https://github.com/ionic-team/ion-android-camera/blob/f802e3ed0cb948131e6f962fccea96a9a5c4fb23/LICENSE",
+                "5eee4ddf7b28c22447e4440ab08c9344e68252ee1effc56621764268f7687c14",
+            ),
+            (
+                "https://repo.maven.apache.org/maven2/io/ionic/libs/ioncamera-android/1.0.2/ioncamera-android-1.0.2-sources.jar",
+                "23db977c141fc00a8ee4643837b23c293db3ed3427eee96ecb6f0fb56399cd6f",
+            ),
+        ),
+    },
+    ("io.ionic.libs", "ionfilesystem-android", "1.1.0"): {
+        "pom_sha256": "5fc8a9c96e200e19673596aba8c66e7e1bdaa217146a3c04eae75e154b844ecb",
+        "pom_bytes": 2510,
+        "packaging": "aar",
+        "parent": None,
+        "licenses": (
+            (
+                "MIT",
+                "License",
+                "https://github.com/ionic-team/ion-android-filesystem/blob/main/LICENSE",
+            ),
+        ),
+        "reviewed_upstream_license_sources": (
+            (
+                "https://github.com/ionic-team/ion-android-filesystem/blob/11ef15db0c355faa917750a31758b3edd33a9cf7/LICENSE",
+                "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d",
+            ),
+            (
+                "https://repo.maven.apache.org/maven2/io/ionic/libs/ionfilesystem-android/1.1.0/ionfilesystem-android-1.1.0-sources.jar",
+                "047c129598afc49e4b0098d0b5276199e29801681a4eed5f904841d426f9404a",
+            ),
+        ),
+    },
+    ("junit", "junit", "4.13.2"): {
+        "pom_sha256": "569b6977ee4603c965c1c46c3058fa6e969291b0160eb6964dd092cd89eadd94",
+        "pom_bytes": 27018,
+        "packaging": "jar",
+        "parent": None,
+        "licenses": (
+            ("EPL-1.0", "Eclipse Public License 1.0", "http://www.eclipse.org/legal/epl-v10.html"),
+        ),
+        "reviewed_upstream_license_sources": (
+            (
+                "https://repo.maven.apache.org/maven2/junit/junit/4.13.2/junit-4.13.2-sources.jar#LICENSE-junit.txt",
+                "9648bb2891b9813970bddb68d4be8a5e6ec8280d0180a53dfb29236b579c55bb",
+            ),
+        ),
+    },
+    ("org.hamcrest", "hamcrest-core", "1.3"): {
+        "pom_sha256": "fde386a7905173a1b103de6ab820727584b50d0e32282e2797787c20a64ffa93",
+        "pom_bytes": 766,
+        "packaging": "jar",
+        "parent": ("org.hamcrest", "hamcrest-parent", "1.3"),
+        "licenses": (),
+        "reviewed_upstream_license_sources": (
+            (
+                "https://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar#LICENSE.txt",
+                "1cde867cab5c8e842929da5391cef98b4017314822270e934e8e2eef3767c666",
+            ),
+        ),
+    },
+    ("org.hamcrest", "hamcrest-parent", "1.3"): {
+        "pom_sha256": "6d535f94efb663bdb682c9f27a50335394688009642ba7a9677504bc1be4129b",
+        "pom_bytes": 1972,
+        "packaging": "pom",
+        "parent": None,
+        "licenses": (
+            (
+                "BSD-3-Clause",
+                "New BSD License",
+                "http://www.opensource.org/licenses/bsd-license.php",
+            ),
+        ),
+        "reviewed_upstream_license_sources": (
+            (
+                "https://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar#LICENSE.txt",
+                "1cde867cab5c8e842929da5391cef98b4017314822270e934e8e2eef3767c666",
+            ),
+        ),
+    },
+}
+
 PROJECT_PACKAGES = {
     ":capacitor-android": "@capacitor/android",
     ":capacitor-camera": "@capacitor/camera",
@@ -663,6 +787,35 @@ def license_id(name: str) -> str:
     raise AssertionError("unreachable")
 
 
+def reviewed_pom_licenses(
+    coord: tuple[str, str, str],
+    pom_sha256: str,
+    pom_size: int,
+    packaging: str,
+    declarations: list[tuple[str, str]],
+    parent: tuple[str, str, str] | None,
+) -> list[dict[str, str]] | None:
+    """Resolve only a complete, reviewed POM context; unknown names still refuse."""
+    context = REVIEWED_POM_CONTEXTS.get(coord)
+    if context is None:
+        if any(pom_sha256 == item["pom_sha256"] for item in REVIEWED_POM_CONTEXTS.values()):
+            refuse()  # A reviewed POM cannot be rebound to a different coordinate.
+        return None
+    expected = context["licenses"]
+    if (
+        pom_sha256 != context["pom_sha256"]
+        or pom_size != context["pom_bytes"]
+        or packaging != context["packaging"]
+        or parent != context["parent"]
+        or declarations != [(name, url) for _, name, url in expected]
+    ):
+        refuse()
+    return [
+        {"spdx": identifier, "declared_name": name, "declared_url": url}
+        for identifier, name, url in expected
+    ]
+
+
 def singleton_text(element: ET.Element, key: str, *, required: bool) -> str | None:
     matches = element.findall(key)
     if len(matches) > 1 or (required and not matches):
@@ -727,6 +880,7 @@ def pom_evidence(
         "packaging": singleton_text(root, "packaging", required=False) or "jar",
         "licenses": [],
     }
+    declarations = []
     for item in licenses:
         name, url = (singleton_text(item, key, required=True) for key in ("name", "url"))
         if (
@@ -737,9 +891,18 @@ def pom_evidence(
             or not re.fullmatch(r"https?://[^\s<>]+", url)
         ):
             refuse()
-        record["licenses"].append(
+        declarations.append((name, url))
+    reviewed = reviewed_pom_licenses(
+        coord, sha(raw), len(raw), record["packaging"], declarations, parent_coord
+    )
+    record["licenses"] = (
+        reviewed
+        if reviewed is not None
+        else [
             {"spdx": license_id(name), "declared_name": name, "declared_url": url}
-        )
+            for name, url in declarations
+        ]
+    )
     if licenses:
         return [record]
     if parent_coord is None:
@@ -843,6 +1006,7 @@ def npm_evidence(repo: Path, names: tuple[str, ...]) -> list[dict[str, Any]]:
 GRADLE_TASK = """import groovy.json.JsonOutput
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition
 def gsipFaultSequence = new java.util.concurrent.atomic.AtomicInteger(0)
 def gsipFaultObserved = new java.util.concurrent.atomic.AtomicBoolean(false)
 def gsipEmitFault = { phase, failure ->
@@ -904,9 +1068,50 @@ gradle.projectsEvaluated {
     try {
     def app = gradle.rootProject.project(':app')
     app.tasks.register('gsipRuntimeEvidence') {
+        def selectedViews = [:]
+        def inspectViews = { config ->
+            if (!selectedViews.containsKey(config.name)) {
+                def agp = config.attributes.keySet().findAll {
+                    it.name == 'com.android.build.api.attributes.AgpVersionAttr'
+                }
+                if (agp.isEmpty()) { selectedViews[config.name] = null }
+                else {
+                    if (agp.size() != 1 || config.attributes.getAttribute(agp.first())
+                        .toString() != '8.13.0') {
+                        throw new GradleException('unsupported Android runtime metadata')
+                    }
+                    def rootId = config.incoming.resolutionResult.root.id
+                    def modules = config.incoming.artifactView {
+                        componentFilter { it instanceof ModuleComponentIdentifier }
+                    }
+                    def projects = config.incoming.artifactView {
+                        attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
+                            'android-classes-jar')
+                        componentFilter {
+                            it instanceof ProjectComponentIdentifier && it != rootId
+                        }
+                    }
+                    selectedViews[config.name] = [modules:modules,projects:projects,root:rootId]
+                }
+            }
+            selectedViews[config.name]
+        }
         dependsOn {
+            def configs = ['debugRuntimeClasspath','releaseRuntimeClasspath'].collect {
+                app.configurations.getByName(it)
+            }
+            if (configs.every { inspectViews(it) == null }) {
             ['debugRuntimeClasspath','releaseRuntimeClasspath'].collect { name ->
                 app.configurations.getByName(name).buildDependencies
+            }
+            } else {
+                if (configs.any { inspectViews(it) == null }) {
+                    throw new GradleException('inconsistent Android runtime metadata')
+                }
+                configs.collectMany { config ->
+                    def views = inspectViews(config)
+                    [views.modules.files,views.projects.files]
+                }
             }
         }
         doLast {
@@ -930,8 +1135,8 @@ gradle.projectsEvaluated {
                         } else { throw new GradleException('unsupported runtime component') }
                     }
                     phase = variant + '_ARTIFACTS'
-                    def artifacts = config.resolvedConfiguration.resolvedArtifacts.collect {
-                        artifact ->
+                    def selected = inspectViews(config)
+                    def describeArtifact = { artifact ->
                         def id = artifact.id.componentIdentifier
                         if (id instanceof ModuleComponentIdentifier) {
                             [kind:'module', coordinate:[id.group,id.module,id.version],
@@ -940,6 +1145,25 @@ gradle.projectsEvaluated {
                             [kind:'project', project:id.projectPath,
                              file:artifact.file.canonicalPath]
                         } else { throw new GradleException('unsupported runtime artifact') }
+                    }
+                    def artifacts
+                    if (selected == null) {
+                        artifacts = config.resolvedConfiguration.resolvedArtifacts.collect {
+                            artifact -> describeArtifact(artifact)
+                        }
+                    } else {
+                        def resolved = selected.modules.artifacts.artifacts +
+                            selected.projects.artifacts.artifacts
+                        def expected = config.incoming.resolutionResult.allComponents.findAll {
+                            it.id instanceof ProjectComponentIdentifier && it.id != selected.root
+                        }.collect { it.id } as Set
+                        def actual = resolved.findAll {
+                            it.id.componentIdentifier instanceof ProjectComponentIdentifier
+                        }.collect { it.id.componentIdentifier } as Set
+                        if (expected != actual) {
+                            throw new GradleException('incomplete Android project runtime')
+                        }
+                        artifacts = resolved.collect { artifact -> describeArtifact(artifact) }
                     }
                     [name:name,modules:modules.unique().sort { it.join(':') },
                      projects:projects.unique().sort(),artifacts:artifacts]
@@ -959,6 +1183,126 @@ gradle.projectsEvaluated {
     }
 }
 """
+
+
+def empty_cordova_resource_class() -> bytes:
+    """Pinned AGP 8.13 empty outer-R emission for the Capacitor 8.5.2 namespace."""
+
+    def utf(value: str) -> bytes:
+        raw = value.encode("ascii")
+        return b"\x01" + struct.pack(">H", len(raw)) + raw
+
+    pool = b"".join(
+        (
+            utf("capacitor/cordova/android/plugins/R"),
+            b"\x07\x00\x01",
+            utf("java/lang/Object"),
+            b"\x07\x00\x03",
+            utf("<init>"),
+            utf("()V"),
+            b"\x0c\x00\x05\x00\x06",
+            b"\x0a\x00\x04\x00\x07",
+            utf("Code"),
+        )
+    )
+    # Exact known CP relations, Java 8 public/final/Object class, no fields/interfaces;
+    # one private ()V constructor with only aload_0/Object.<init>/return and no payload.
+    return (
+        b"\xca\xfe\xba\xbe"
+        + struct.pack(">HHH", 0, 52, 10)
+        + pool
+        + struct.pack(">HHHHHH", 49, 2, 4, 0, 0, 1)
+        + struct.pack(">HHHHHIHHI", 2, 5, 6, 1, 9, 17, 1, 1, 5)
+        + b"\x2a\xb7\x00\x08\xb1"
+        + b"\0" * 6
+    )
+
+
+def validate_empty_cordova_project(generated: Path) -> None:
+    """No plugin source/prebundles; inspect every generated archive, never skip build/."""
+    contained(generated, (generated.parent,))
+    if not generated.is_dir():
+        refuse()
+    build_script = read(generated / "build.gradle", (generated,), MAX_META).decode("utf-8")
+    if re.findall(r"namespace\s*(?:=\s*)?[\"']([^\"']+)[\"']", build_script) != [
+        "capacitor.cordova.android.plugins"
+    ]:
+        refuse()
+    total = 0
+    for directory, dirs, files in os.walk(
+        generated, followlinks=False, onerror=lambda _error: refuse()
+    ):
+        for name in dirs + files:
+            total += 1
+            if total > 30_000:
+                refuse()
+            path = Path(directory) / name
+            status = path.lstat()
+            if stat.S_ISLNK(status.st_mode) or not (
+                stat.S_ISREG(status.st_mode) or stat.S_ISDIR(status.st_mode)
+            ):
+                refuse()
+            if stat.S_ISDIR(status.st_mode):
+                continue
+            if status.st_nlink != 1 or path.suffix.lower() in {".java", ".kt", ".aar", ".so"}:
+                refuse()
+            if path.suffix.lower() != ".jar":
+                continue
+            relative = path.relative_to(generated).as_posix()
+            runtime = re.fullmatch(
+                r"build/intermediates/runtime_library_classes_jar/(debug|release)/"
+                r"bundleLibRuntimeToJar(Debug|Release)/classes\.jar",
+                relative,
+            )
+            resource = re.fullmatch(
+                r"build/intermediates/compile_r_class_jar/(debug|release)/"
+                r"generate(Debug|Release)RFile/R\.jar",
+                relative,
+            )
+            role = runtime or resource
+            if role is None or role[1].capitalize() != role[2]:
+                refuse()
+            raw = read(path, (generated / "build",), 2_000)
+            if runtime is not None:
+                if raw != b"PK\x05\x06" + b"\0" * 18:
+                    refuse()
+                continue
+            expected = empty_cordova_resource_class()
+            member = b"capacitor/cordova/android/plugins/R.class"
+            local_end = 30 + len(member) + len(expected)
+            central_size = 46 + len(member)
+            if (
+                len(raw) != local_end + central_size + 22
+                or raw[:4] != b"PK\x03\x04"
+                or raw[30 : 30 + len(member)] != member
+                or raw[30 + len(member) : local_end] != expected
+                or raw[local_end : local_end + 4] != b"PK\x01\x02"
+                or raw[local_end + 46 : -22] != member
+                or struct.unpack("<4s4H2IH", raw[-22:])
+                != (b"PK\x05\x06", 0, 0, 1, 1, central_size, local_end, 0)
+            ):
+                refuse()
+            with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+                entries = archive.infolist()
+                if archive.comment or len(entries) != 1:
+                    refuse()
+                entry = entries[0]
+                if (
+                    entry.filename != "capacitor/cordova/android/plugins/R.class"
+                    or entry.comment
+                    or entry.extra
+                    or entry.flag_bits != 0
+                    or entry.compress_type != zipfile.ZIP_STORED
+                    or entry.file_size != len(expected)
+                    or entry.compress_size != len(expected)
+                    or stat.S_IFMT(entry.external_attr >> 16) not in {0, stat.S_IFREG}
+                    or entry.header_offset != 0
+                    or struct.unpack("<HH", raw[6:10]) != (0, zipfile.ZIP_STORED)
+                    or struct.unpack("<IIIHH", raw[14:30])
+                    != (entry.CRC, len(expected), len(expected), len(member), 0)
+                    or archive.read(entry) != expected
+                ):
+                    refuse()
 
 
 def runtime_evidence(
@@ -1008,13 +1352,7 @@ def runtime_evidence(
                 continue
             if project == ":capacitor-cordova-android-plugins":
                 generated = repo / "apps/capture-pwa/android/capacitor-cordova-android-plugins"
-                if (
-                    any(generated.rglob("*.jar"))
-                    or any(generated.rglob("*.aar"))
-                    or any((generated / "src").rglob("*.java"))
-                    or any((generated / "src").rglob("*.kt"))
-                ):
-                    refuse()
+                validate_empty_cordova_project(generated)
                 projects.append(
                     {
                         "project": project,
@@ -1103,8 +1441,9 @@ def runtime_evidence(
         "npm_sources": npm,
         "temporary_gradle_task_sha256": sha(GRADLE_TASK.encode()),
         "scope": (
-            "resolved inputs of both shipped runtime configurations; "
-            "build/test/toolchain inputs are separate, not inferred shipped"
+            "resolved inputs of both shipped runtime configurations; project binaries are "
+            "compiled runtime classpath JARs; full npm-source and whole-APK evidence "
+            "remain separate; build/test/toolchain inputs are separate, not inferred shipped"
         ),
     }
 
@@ -1819,18 +2158,32 @@ def validate_pom_chain(value: Any, expected: tuple[str, str, str]) -> str:
         }:
             refuse()
         licenses = items(row["licenses"], 10, 0)
+        declarations = []
         for entry_license in licenses:
             license_row = record(entry_license, {"spdx", "declared_name", "declared_url"})
             name, url = license_row["declared_name"], license_row["declared_url"]
             if (
                 not isinstance(name, str)
                 or len(name) > 200
-                or license_id(name) != license_row["spdx"]
                 or not isinstance(url, str)
                 or len(url) > 500
                 or not re.fullmatch(r"https?://[^\s<>]+", url)
             ):
                 refuse()
+            declarations.append((name, url))
+        reviewed = reviewed_pom_licenses(
+            actual,
+            row["pom_sha256"],
+            row["pom_bytes"],
+            row["packaging"],
+            declarations,
+            coordinate(row["inherits_license_from"]) if inherited else None,
+        )
+        if reviewed is not None:
+            if licenses != reviewed:
+                refuse()
+        elif any(license_id(item["declared_name"]) != item["spdx"] for item in licenses):
+            refuse()
         if inherited:
             if licenses or index == len(chain) - 1:
                 refuse()
@@ -1888,8 +2241,9 @@ def validate_npm(value: Any, source_commit: str) -> dict[str, dict[str, Any]]:
 
 def validate_android(native: dict[str, Any], npm: dict[str, dict[str, Any]]) -> None:
     if native["scope"] != (
-        "resolved inputs of both shipped runtime configurations; "
-        "build/test/toolchain inputs are separate, not inferred shipped"
+        "resolved inputs of both shipped runtime configurations; project binaries are "
+        "compiled runtime classpath JARs; full npm-source and whole-APK evidence "
+        "remain separate; build/test/toolchain inputs are separate, not inferred shipped"
     ):
         refuse()
     for key in (

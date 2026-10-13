@@ -36,7 +36,11 @@ artifact: CI rebuilds it under the candidate's current job inputs.
 
 `python -m scripts.app_notification_audit android` retains separate exact
 `debugRuntimeClasspath` and `releaseRuntimeClasspath` dependency trees, their digests
-and a JSON view of selected resolved modules and actual JAR/AAR inputs. The existing
+and a JSON view of selected resolved modules, original external JAR/AAR inputs and
+compiled project runtime-classpath JARs. Project classpath JARs are not described as
+all intermediate resource, manifest or native-library inputs: full installed npm-source
+manifests and the complete APK/permission/native-entry/repeat proofs remain separate
+and required. The existing
 `check-dependencies` checks continue on both configurations. Closed SDK coordinates,
 missing graphs, unknown projects, malformed or ambiguous metadata, unsafe files and
 unknown licenses fail the additional audit as well. Traversal components are rejected
@@ -71,6 +75,32 @@ manifests. Unexpected prebundled JAR/AAR/native-framework inputs are refused ins
 of inheriting a wrapper's MIT label. The empty generated Cordova compatibility project
 must contain no third-party plugin source or binary. The installed geolocation package
 can appear in npm inspection; its Android project remains excluded from the runtime.
+
+The generated Cordova tree is scanned rather than excluding its build directory. Its
+only permitted JAR roles are the exact debug/release AGP runtime-classes and resource-R
+output paths. Runtime-classes JARs must be canonical 22-byte empty ZIPs. Resource JARs
+must have exactly one fixed `capacitor/cordova/android/plugins/R.class` entry, with no
+extra members, ZIP comments, extra fields or hidden prefix/trailing payload. Its exact
+150-byte Java 8 class has no fields, interfaces, additional constants or attributes;
+its sole private constructor calls `Object.<init>` and returns. Changed constructors,
+classes, namespaces, source/libs archives, any AAR or standalone `.so` library
+(case-insensitive, anywhere in the tree), Java/Kotlin source, unknown JAR
+producer paths, unsafe links, nonregular files and oversized inputs are refused.
+Unreadable root or child directories refuse the audit rather than being skipped;
+the scan is bounded to 30,000 entries.
+
+**Assumption:** this empty generated R stub is the deterministic output of the pinned
+AGP 8.13.0 `BytecodeRClassWriterKt.generateOuterRClass` implementation for an empty
+resource set and the Capacitor CLI 8.5.2 template namespace. The reviewed builder class
+digest is `650dd0508723e0eb6be807f756bfc4f1dbe63c9f154b0b3ed4cc25da2b9c8ac6`;
+the template archive digest is
+`c9fa746751c74e786878e40b073fd3854c772b26716663cabbd8ebb874e39ba9`.
+The expected class is constructed from that exact structure, not approved merely by
+its filename or supplied hash. These are primary implementation provenance facts,
+not a supported AGP generator API dependency. A changed generator, template or output
+shape requires review. This exception identifies the project's own empty generated
+outputs; it grants no licence approval to any third-party binary and changes none of
+the separate component, POM, source-manifest, descriptor, whole-APK or repeat checks.
 
 Build-only `:app:buildEnvironment` is retained separately and hashed. It describes
 Gradle/AGP/Kotlin tooling, not shipped runtime code. The resolved runtime audit does not
@@ -230,44 +260,72 @@ class name, exception message or property is printed. Existing 16-object depth,
 identity-cycle and conflicting-label refusals remain intact; unsupported classes remain
 `UNKNOWN`. These labels are diagnostic coverage and are not a claim about hosted CI.
 
-## Runtime artifact producer order
+## Runtime artifact selection and producer order
 
-The inspection task declares `dependsOn` for the public `buildDependencies` of both
-`debugRuntimeClasspath` and `releaseRuntimeClasspath`. Gradle schedules the selected
-project artifact producers before the task reads resolved artifact files. The
-[Gradle 8.14.3 configuration API](<https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/Configuration.html#getBuildDependencies()>)
-provides this dependency information. The
-[legacy resolved-configuration API](https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/ResolvedConfiguration.html)
-does not track task dependencies in its returned file sets. Resolving those sets
-inside `doLast` alone therefore does not schedule their producers.
+The pinned AGP 8.13.0 projects publish several secondary artifacts on each debug and
+release runtime variant. An unchanged local inspection reproduced
+`ArtifactSelectionException` through the pinned Gradle artifact-ambiguity describer:
+asking the original configuration for an unspecified artifact type cannot choose
+between those secondary artifacts. The same source operation succeeded after the
+adapter below. This establishes the local mechanism; the hosted failure's identical
+root cause still requires a fresh CI result.
 
-An offline Gradle 8.14.3/Java 21 regression uses built-in Java projects and a registered
-artifact transform that opens each actual jar as a ZIP. The previous task fails during
-debug artifact inspection before either selected project jar exists. The declared
-producers build both selected jars first and the unchanged inspection then succeeds.
-Removing either variant's dependency, disabling a producer, failing a producer or
-omitting a runtime configuration still fails; selecting another project never licenses
-it or bypasses the source audit. This proves a task-input defect and its correction.
-The hosted Android run reported `DEBUG_ARTIFACTS|UNKNOWN`, so its specific cause remains
-unverified until a fresh CI run. The local fixture does not establish that cause.
+The adapter activates only for the public `AgpVersionAttr` metadata with the reviewed
+value `8.13.0`. An unknown AGP version fails; configurations without that Android
+metadata retain the existing unambiguous Java path. Both original component graphs
+and their consumer attributes remain intact. Each Android configuration has two
+strict public artifact views:
 
-The declaration adds no artifact substitution, configuration skip, application release
-signing, key or account. Both selected graphs, artifact files and all existing source,
-license, permission, backup, repeat and closed-activation proofs remain required. Task-
-graph/setup failures may occur before the inspection callback emits a fault receipt;
-those failures remain failed and explicitly unknown.
+- A module-only view adds no attributes and retains original external AAR/JAR bytes.
+- A project-only view requests AGP's `android-classes-jar` artifact type, retaining the
+  selected debug/release variant. The exact resolution-root identity is excluded.
 
-The real regression is opt-in because ordinary Python validation may lack the verified
-Gradle/Java tools. A skip is reported as unavailable, never as a passing native control:
+There is no variant reselection, lenient resolution, debug substitution or fallback
+on failure. Every selected nonroot project must be represented; a typed view can
+otherwise return no matching artifact even when leniency is disabled. The existing
+sidecar validator continues to require a binary for every selected non-`pom` module.
+Its metadata-only exception still requires coordinate-matched, licensed primary POM
+proof whose packaging is `pom`; a missing ordinary library never qualifies. Unknown
+projects, paths, modules and licences remain refused.
+
+Producer dependencies are lazy and refer to the exact module/project view file
+collections for both configurations. Those are the files subsequently inspected.
+Using the original configuration's default `buildDependencies` would perform the
+same ambiguous selection before the task ran. The plain Java path retains its
+original dependency declaration and resolved-artifact collection. The
+[ArtifactView API](https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/ArtifactView.html)
+and [ArtifactCollection API](https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/artifacts/ArtifactCollection.html)
+provide the selected artifacts and producer-aware file collections. The adapter
+never transforms or substitutes the external module binaries.
+
+The four reviewed plugin projects each declare exactly one compiled-class artifact
+of type `android-classes-jar` on both actual runtime variants. AGP's class artifact is
+an explicit classpath projection; separate resources, manifest and native-library
+coverage remains attributed to the unchanged full-source and complete-APK proofs.
+No new resource-directory evidence protocol or broader intermediate-file claim is
+introduced.
+
+Offline public Gradle 8.14.3/Java 21 controls reproduce secondary-artifact ambiguity,
+retain raw external JAR/AAR identity, build different debug/release class JARs, and
+exercise missing typed-project output, missing module/binary, incorrect variant,
+unknown AGP metadata and removal of either producer dependency. Existing producer
+transform, graph, source, licence and diagnostic controls remain required. The local
+Android inspection builds plugin producers, not an application APK, and neither it
+nor a diagnostic supplies native product acceptance.
+
+The real controls are opt-in because ordinary Python validation may lack verified
+Gradle/Java tools. A skip is unavailable evidence:
 
 ```sh
 GSIP_TEST_GRADLE_HOME="<verified-Gradle-8.14.3-home>" \
-  python -m pytest tests/test_app_notification_audit.py \
-  -k real_gradle_runtime_producers_precede_content_transforms
+  python -m pytest tests/test_app_notification_audit.py -k real_gradle
 ```
 
-It uses a fresh `GRADLE_USER_HOME`, offline resolution and local synthetic Maven/jar
-fixtures only. Actual CI still supplies the Android product build and artifact evidence.
+They preserve `HOME`, use fresh task-specific `GRADLE_USER_HOME` directories and local
+synthetic Maven inputs, and require no SDK download, owner signing input or account.
+All source, permission, backup, repeated-build and closed-activation checks remain
+mandatory. Actual CI still supplies the complete Android product build, parent
+comparison and published artifact evidence.
 
 ## Reading the artifacts
 
@@ -309,3 +367,74 @@ Android/iPhone permission, delivery, cancellation, reboot, native logging and ba
 checks remain synthetic real-device gates. iOS WebKit cloud-backup exclusion, signing,
 accounts and store acceptance remain blocked/unverified. No artifact or code merge
 opens production, capture, photo publication or notification permission on a real phone.
+
+## Exact existing Android POM classifications
+
+The additional audit exposed five pre-existing runtime metadata declarations that its
+name-only licence parser could not classify. The fixed pre-reminder parent already
+pins camera 8.2.4 and filesystem 8.1.3; this correction changes no selected dependency,
+version, scope, project licence, Gradle task, permission, closed-SDK rule or receipt
+schema. The generic name-only table still refuses `License`, `BSD License`,
+`New BSD License` and `Eclipse Public License 1.0` outside the reviewed context.
+
+Both collection and offline validation require the exact coordinate, complete primary
+POM digest and size, packaging, ordered licence name/URL/classification tuples and
+relevant parent chain. The six contexts below cover the five selected modules and
+Hamcrest's explicit parent. Changed, partial, duplicated, rebound or unreviewed
+metadata refuses; the map is not a permissive licence-name fallback.
+
+| Exact coordinate                            | Primary POM SHA-256                                                | Reviewed classification                |
+| ------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------- |
+| `androidx.camera:camera-core:1.4.2`         | `ea820b7874afa1047d288c29d6dbb4c9795b70bf12d3e229235af4e7bd08c072` | Apache-2.0 and libyuv BSD-3-Clause     |
+| `io.ionic.libs:ioncamera-android:1.0.2`     | `5c1bc27a7c7442ba6ebdb731f88f2a74ed620d7c9847a357c26389800e63a958` | MIT                                    |
+| `io.ionic.libs:ionfilesystem-android:1.1.0` | `5fc8a9c96e200e19673596aba8c66e7e1bdaa217146a3c04eae75e154b844ecb` | MIT                                    |
+| `junit:junit:4.13.2`                        | `569b6977ee4603c965c1c46c3058fa6e969291b0160eb6964dd092cd89eadd94` | EPL-1.0                                |
+| `org.hamcrest:hamcrest-core:1.3`            | `fde386a7905173a1b103de6ab820727584b50d0e32282e2797787c20a64ffa93` | Explicit inheritance from the next row |
+| `org.hamcrest:hamcrest-parent:1.3`          | `6d535f94efb663bdb682c9f27a50335394688009642ba7a9677504bc1be4129b` | BSD-3-Clause                           |
+
+All six exact public Google Maven/Maven Central POMs matched the resolved cache
+byte-for-byte during the bounded review. The source/licence facts supporting the
+ambiguous declarations are separately pinned:
+
+- Camera's declared libyuv link identifies BSD-3-Clause. The reviewed
+  [libyuv licence at commit `58d817ed`](https://chromium.googlesource.com/libyuv/libyuv/+/58d817ed81e8fe8b06a58576d639cd56b19526d3/LICENSE)
+  hashes to `2b2cc1180c7e6988328ad2033b04b80117419db9c4c584918bbb3cfec7e9364f`.
+  The Camera POM does not identify its bundled native source revision; this is
+  declared licence classification, not a source-to-binary reconstruction claim.
+- ION camera's POM points to a missing `docs/LICENSE`. The actual root
+  [MIT licence at immutable commit `f802e3ed`](https://github.com/ionic-team/ion-android-camera/blob/f802e3ed0cb948131e6f962fccea96a9a5c4fb23/LICENSE)
+  hashes to `5eee4ddf7b28c22447e4440ab08c9344e68252ee1effc56621764268f7687c14`.
+  All 29 Java/Kotlin files in the exact
+  [published 1.0.2 source JAR](https://repo.maven.apache.org/maven2/io/ionic/libs/ioncamera-android/1.0.2/ioncamera-android-1.0.2-sources.jar)
+  match that source snapshot byte-for-byte. No public release tag was available;
+  the commit is a matched source snapshot, not an asserted publication tag.
+- ION filesystem's [1.1.0 source licence](https://github.com/ionic-team/ion-android-filesystem/blob/11ef15db0c355faa917750a31758b3edd33a9cf7/LICENSE)
+  hashes to `de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d`.
+  All 20 Java/Kotlin files in its exact
+  [published source JAR](https://repo.maven.apache.org/maven2/io/ionic/libs/ionfilesystem-android/1.1.0/ionfilesystem-android-1.1.0-sources.jar)
+  match the 1.1.0 tag's source tree.
+- The exact JUnit binary and
+  [published source JAR](https://repo.maven.apache.org/maven2/junit/junit/4.13.2/junit-4.13.2-sources.jar)
+  contain identical `LICENSE-junit.txt` bytes, SHA-256
+  `9648bb2891b9813970bddb68d4be8a5e6ec8280d0180a53dfb29236b579c55bb`.
+  The exact [Hamcrest binary](https://repo.maven.apache.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar)
+  contains its three-clause `LICENSE.txt`, SHA-256
+  `1cde867cab5c8e842929da5391cef98b4017314822270e934e8e2eef3767c666`.
+
+JUnit and Hamcrest are actual binary inputs to both resolved runtime configurations,
+not metadata-only platforms. ION camera's exact published POM/module metadata and
+[matching build source](https://github.com/ionic-team/ion-android-camera/blob/f802e3ed0cb948131e6f962fccea96a9a5c4fb23/build.gradle#L100)
+explicitly declare JUnit as a runtime implementation dependency; JUnit declares
+Hamcrest. The bounded source and class-file inspection found no direct JUnit/Hamcrest
+references in the selected ION camera/filesystem code, but this does not establish
+reflective/runtime exclusion safety or final APK removal. No exclusion is made.
+
+EPL-1.0 classification of this exact existing JUnit context does not relicense GSIP's
+MIT code or approve distribution. The [official EPL-1.0 text](https://www.eclipse.org/legal/epl/epl-v10.html)
+and [Eclipse FAQ questions 16–17](https://www.eclipse.org/legal/epl/faq/)
+separate source-availability information and compliance for the EPL portion. Licence
+and notice preservation, source availability and the applicable distribution terms
+still require review for the actual distributed product. A parser pass supplies no
+legal compatibility opinion, counsel approval, store acceptance, deployment or
+physical-device evidence. Existing legal, owner, production and launch gates remain
+unchanged.
