@@ -153,3 +153,29 @@ def test_hard_timeout_kills_and_joins_an_unresponsive_child(monkeypatch: Any) ->
     with pytest.raises(module.PrivacyError, match="timeout"):
         engine.screen(jpeg(image()), 1)
     assert process.terminated and process.killed and process.closed and process.joins == 2
+
+
+@pytest.mark.parametrize(
+    "channel", ["trailer", "concatenated", "jfif_extra", "late_comment", "jfxx_thumbnail"]
+)
+def test_sanitized_decoder_refuses_unexamined_jpeg_payload(channel: str) -> None:
+    module = api()
+    clean = jpeg(image())
+    private = b"synthetic-private-channel"
+    if channel == "trailer":
+        raw = clean + private + b"\xff\xd9"
+    elif channel == "concatenated":
+        raw = clean + clean
+    elif channel == "late_comment":
+        segment = b"\xff\xfe" + (len(private) + 2).to_bytes(2, "big") + private
+        raw = clean[:-2] + segment + clean[-2:]
+    else:
+        payload = (
+            b"JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00" + private
+            if channel == "jfif_extra"
+            else b"JFXX\x00\x13\x01\x01\x00\x00\x00"
+        )
+        segment = b"\xff\xe0" + (len(payload) + 2).to_bytes(2, "big") + payload
+        raw = clean[:2] + segment + clean[2:]
+    with pytest.raises(module.PrivacyError):
+        module.decode_sanitized(raw)

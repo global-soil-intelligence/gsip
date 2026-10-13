@@ -49,6 +49,22 @@ applicable redistribution obligations in any separately authorized worker artifa
 metadata/trailing bytes, and preserves its exact bytes. Both original resolution
 and half resolution use overlapping 640-pixel tiles with 128-pixel overlap; edge
 tiles cover the final row/column. Face and scene-text inputs include every pixel, including the reference card.
+
+The shared JPEG guard walks every length-delimited segment and each entropy scan
+through one terminal end marker at the exact end of the file. It refuses late
+metadata, concatenated images, trailers, thumbnails and private marker extensions.
+Supported table/control sections must match their full declared field layout.
+Each table generation must be structurally referenced by a valid scan before
+replacement; unused definitions, repeated sequential scans, impossible progressive
+history and empty claimed scans are refused.
+The sole optional APP0 header is the exact 14-byte JFIF 1.01 header emitted by the
+current sanitizer (unitless 1-by-1 density, no thumbnail), in its first position.
+This checks the complete marker stream, payload lengths, table references and scan
+history; it does not prove consumption of every entropy-coded bit or detect all
+codec/pixel steganography. The trusted QA producer still re-encodes source uploads.
+Changing this source changes
+the configuration digest; previous screening clearance cannot authorize new bytes.
+
 The existing single-marker homography cannot establish that a complete, unobscured
 GSIP card occupies its projected polygon. A bare marker or occluded card could hide
 unrelated text there. The optional SPEC exception therefore stays disabled until
