@@ -9,11 +9,11 @@ import cv2
 import numpy as np
 import pytest
 from PIL import Image
+from test_library import record
 
 from card.fixtures import canonical_card
 from pipeline.library import CameraRgb, LibraryRecord
 from pipeline.phone_optics import extract_phone_record, summarize_rgb
-from tests.test_library import record
 
 
 def image_bytes(rgb: tuple[int, int, int] = (100, 80, 60)) -> bytes:
