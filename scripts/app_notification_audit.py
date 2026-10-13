@@ -133,6 +133,8 @@ GRADLE_FAILURE_CAUSES = {
     "NULL_VALUE": "GRADLE_NULL_VALUE",
     "TYPE_MISMATCH": "GRADLE_TYPE_MISMATCH",
     "ILLEGAL_STATE": "GRADLE_ILLEGAL_STATE",
+    "STACK_OVERFLOW": "GRADLE_STACK_OVERFLOW",
+    "OUT_OF_MEMORY": "GRADLE_OUT_OF_MEMORY",
     "UNKNOWN": "BUILD_TOOL",
 }
 DIAGNOSTIC_STAGES.update(GRADLE_FAILURE_PHASES.values())
@@ -193,7 +195,7 @@ def read_fixed_fault(directory: Path, root: Path) -> tuple[str, str] | None:
             set(payload) != {"schema", "phase", "cause"}
             or payload["schema"] != "gsip-fixed-fault-v1"
             or type(payload["phase"]) is not str
-            or payload["phase"] not in {*GRADLE_FAILURE_PHASES, "TASK_SETUP"}
+            or payload["phase"] not in {*GRADLE_FAILURE_PHASES, "TASK_SETUP", "BUILD_FAILURE"}
             or type(payload["cause"]) is not str
             or payload["cause"] not in GRADLE_FAILURE_CAUSES
         ):
@@ -842,7 +844,9 @@ GRADLE_TASK = """import groovy.json.JsonOutput
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 def gsipFaultSequence = new java.util.concurrent.atomic.AtomicInteger(0)
+def gsipFaultObserved = new java.util.concurrent.atomic.AtomicBoolean(false)
 def gsipEmitFault = { phase, failure ->
+    gsipFaultObserved.set(true)
     def safePhase = phase in ['DEBUG_CONFIGURATION','DEBUG_RESOLUTION','DEBUG_COMPONENTS',
         'DEBUG_ARTIFACTS','RELEASE_CONFIGURATION','RELEASE_RESOLUTION','RELEASE_COMPONENTS',
         'RELEASE_ARTIFACTS','OUTPUT'] ? phase : 'UNKNOWN'
@@ -860,7 +864,9 @@ def gsipEmitFault = { phase, failure ->
         'java.lang.IllegalArgumentException':'INVALID_ARGUMENT',
         'java.lang.NullPointerException':'NULL_VALUE',
         'java.lang.ClassCastException':'TYPE_MISMATCH',
-        'java.lang.IllegalStateException':'ILLEGAL_STATE'
+        'java.lang.IllegalStateException':'ILLEGAL_STATE',
+        'java.lang.StackOverflowError':'STACK_OVERFLOW',
+        'java.lang.OutOfMemoryError':'OUT_OF_MEMORY'
     ]
     def cause = 'UNKNOWN'
     try {
@@ -877,7 +883,7 @@ def gsipEmitFault = { phase, failure ->
         if (current == null && labels.size() == 1) { cause = labels.iterator().next() }
     } catch (Throwable ignored) { cause = 'UNKNOWN' }
     System.err.println('GSIP_RUNTIME_FAILURE_V1|' + safePhase + '|' + cause)
-    def receiptPhase = phase == 'TASK_SETUP' ? 'TASK_SETUP' : safePhase
+    def receiptPhase = phase in ['TASK_SETUP','BUILD_FAILURE'] ? phase : safePhase
     def directory = new File(gradle.rootProject.findProperty('gsipEvidenceOutput').toString()
         + '.faults')
     def receipt = new File(directory, 'fault-' + gsipFaultSequence.getAndIncrement() + '.json')
@@ -885,6 +891,14 @@ def gsipEmitFault = { phase, failure ->
         phase:receiptPhase,cause:cause]).getBytes('UTF-8')
     java.nio.file.Files.write(receipt.toPath(), payload,
         java.nio.file.StandardOpenOption.CREATE_NEW, java.nio.file.StandardOpenOption.WRITE)
+}
+gradle.buildFinished { result ->
+    try {
+        def failure = result.failure
+        if (failure != null && !gsipFaultObserved.get()) {
+            gsipEmitFault('BUILD_FAILURE', failure)
+        }
+    } catch (Throwable ignored) {}
 }
 gradle.projectsEvaluated {
     try {

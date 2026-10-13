@@ -3196,3 +3196,167 @@ def test_real_gradle_runtime_producers_precede_content_transforms(
         "native_acceptance_claimed": False,
     }
     (tmp_path / "producer-control.json").write_text(json.dumps(control, sort_keys=True) + "\n")
+
+
+@pytest.mark.parametrize("cause", ["ILLEGAL_STATE", "STACK_OVERFLOW", "OUT_OF_MEMORY"])
+def test_fixed_build_failure_channel_keeps_original_cli_status_caps_and_privacy(
+    cause: str, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path
+) -> None:
+    import subprocess
+
+    failures = []
+    def fail(args: list[str], *unused: Any) -> str:
+        if ":app:gsipRuntimeEvidence" not in args:
+            return "+--- org.synthetic:public:1.0"
+        graph = Path(args[-1].removeprefix("-PgsipEvidenceOutput="))
+        (graph.with_name(graph.name + ".faults") / "fault-0.json").write_text(json.dumps({
+            "schema": "gsip-fixed-fault-v1", "phase": "BUILD_FAILURE", "cause": cause,
+        }))
+        error = subprocess.CalledProcessError(
+            1, args, output="synthetic private stdout",
+            stderr="synthetic private " + "x" * audit.MAX_DIAGNOSTIC_BYTES,
+        )
+        failures.append(error)
+        raise error
+    monkeypatch.setattr(audit, "run", fail)
+    assert audit.main([
+        "android", str(tmp_path), str(tmp_path), str(tmp_path / "output.json"),
+        str(tmp_path / "key"),
+    ]) == 1
+    captured = capsys.readouterr()
+    assert "GSIP_FIXED_FAULT_V1|VALID|BUILD_FAILURE|" + cause in captured.err.splitlines()
+    assert "SIZE_REJECTED|UNINSPECTED" in captured.err
+    diagnostic = json.loads(captured.err.split("native-audit: diagnostic ", 1)[1])
+    assert set(diagnostic) == {"stage", "error_class", "source_line", "counts"}
+    assert diagnostic["error_class"] == "BUILD_TOOL"
+    assert diagnostic["stage"] == "android-gradle-inspection"
+    assert diagnostic["counts"] == {}
+    assert len(failures) == 1 and failures[0].returncode == 1
+    assert failures[0].__traceback__ is not None
+    assert not (tmp_path / "output.json").exists()
+    assert "synthetic private" not in captured.err and str(tmp_path) not in captured.err
+    assert captured.out == ""
+
+
+@pytest.mark.parametrize("mode", [
+    "success", "producer", "stack", "memory", "task", "setup", "configuration",
+    "unregistered", "cyclic", "depth", "existing_malformed", "existing_multiple",
+])
+def test_real_gradle_build_observer_preserves_failure_and_prior_fault(
+    mode: str, tmp_path: Path
+) -> None:
+    """Diagnostic-only callback, synthetic thrown errors; never exhaust memory or stack."""
+    import subprocess
+
+    selected = os.environ.get("GSIP_TEST_GRADLE_HOME")
+    if not selected:
+        pytest.skip("real Gradle observer control requires explicit verified tool home")
+    home = Path(selected)
+    if not home.is_absolute() or ".." in home.parts or not (home / "bin/gradle").is_file():
+        pytest.fail("invalid explicit Gradle tool home")
+    fixture_mode = (
+        "missing_producer" if mode == "task" else "missing_configuration"
+        if mode == "configuration" else "success" if mode in {"success", "setup"}
+        else "producer_failure"
+    )
+    project = tmp_path / "observer-fixture"
+    gradle_producer_fixture(project, fixture_mode)
+    if fixture_mode == "producer_failure":
+        error = {
+            "stack": "StackOverflowError", "memory": "OutOfMemoryError",
+        }.get(mode, "IllegalStateException")
+        path = project / "library/build.gradle"
+        path.write_text(path.read_text().replace(
+            "new IllegalStateException('synthetic-producer-failure')",
+            "new " + error + "('synthetic-private-'+('x'*70000))",
+        ))
+    task = audit.GRADLE_TASK
+    if mode == "setup":
+        path = project / "settings.gradle"
+        path.write_text(path.read_text().replace("':app',", "", 1))
+    elif mode == "unregistered":
+        task = "invalid initialization syntax !!!\n" + task
+    elif mode in {"cyclic", "depth"}:
+        construction = (
+            "def other=new IllegalStateException('synthetic-private'); "
+            "cause.initCause(other); other.initCause(cause)"
+            if mode == "cyclic" else
+            "for (int i=0; i<17; i++) { def outer=new IllegalStateException('synthetic-private'); "
+            "outer.initCause(cause); cause=outer }"
+        )
+        task += (
+            "\ngradle.projectsEvaluated { "
+            "def cause=new IllegalStateException('synthetic-private'); "
+            + construction + "; gsipEmitFault('BUILD_FAILURE',cause); "
+            + "throw new IllegalStateException('synthetic-private-'+('x'*70000)) }\n"
+        )
+    inspection = tmp_path / "inspection.gradle"
+    inspection.write_text(task)
+    graph = tmp_path / "resolved.json"
+    directory = graph.with_name(graph.name + ".faults")
+    directory.mkdir(mode=0o700)
+    before = {}
+    if mode in {"existing_malformed", "existing_multiple"}:
+        (directory / "fault-0.json").write_text('{"private":"synthetic-private"}')
+        if mode == "existing_multiple":
+            (directory / "fault-1.json").write_text(json.dumps({
+                "schema": "gsip-fixed-fault-v1", "phase": "BUILD_FAILURE", "cause": "UNKNOWN",
+            }))
+        before = {p.name: audit.sha(p.read_bytes()) for p in directory.iterdir()}
+    environment = dict(os.environ, GRADLE_USER_HOME=str(tmp_path / "gradle-user-home"))
+    completed = subprocess.run(  # noqa: S603 - explicit verified tool, bounded owned offline fixture
+        [str(home / "bin/gradle"), "--no-daemon", "--console=plain", "-I", str(inspection),
+         ":app:gsipRuntimeEvidence", "-PgsipEvidenceOutput=" + str(graph)],
+        cwd=project, env=environment, capture_output=True, timeout=120,
+    )
+    if len(completed.stdout) + len(completed.stderr) > 2_000_000:
+        pytest.fail("synthetic observer control exceeded fixed output bound")
+    if completed.returncode != (0 if mode == "success" else 1):
+        pytest.fail("observer changed original Gradle exit status")
+    entries = list(directory.iterdir())
+    fault = audit.read_fixed_fault(directory, tmp_path)
+    if mode == "success":
+        assert graph.is_file() and not entries and fault is None
+        candidate = graph.read_bytes()
+        # Remove only the new callback, keeping identical project/artifact paths and toolchain.
+        start = task.index("gradle.buildFinished { result ->\n")
+        end = task.index("gradle.projectsEvaluated {", start)
+        inspection.write_text(task[:start] + task[end:])
+        baseline = subprocess.run(  # noqa: S603 - same verified offline successful fixture
+            [str(home / "bin/gradle"), "--no-daemon", "--console=plain", "-I", str(inspection),
+             ":app:gsipRuntimeEvidence", "-PgsipEvidenceOutput=" + str(graph)],
+            cwd=project, env=environment, capture_output=True, timeout=120,
+        )
+        if baseline.returncode != 0:
+            pytest.fail("successful graph comparison failed")
+        assert graph.read_bytes() == candidate and not list(directory.iterdir())
+    else:
+        assert not graph.exists()
+        expected = {
+            "producer": ("BUILD_FAILURE", "ILLEGAL_STATE"),
+            "stack": ("BUILD_FAILURE", "STACK_OVERFLOW"),
+            "memory": ("BUILD_FAILURE", "OUT_OF_MEMORY"),
+            "task": ("DEBUG_ARTIFACTS", "FILE_MISSING"),
+            "setup": ("TASK_SETUP", "UNKNOWN"),
+            "configuration": ("BUILD_FAILURE", "CONFIGURATION_MISSING"),
+            "cyclic": ("BUILD_FAILURE", "UNKNOWN"),
+            "depth": ("BUILD_FAILURE", "UNKNOWN"),
+        }.get(mode)
+        assert fault == expected
+        assert len(entries) == (2 if mode == "existing_multiple" else 0 if mode == "unregistered"
+                                else 1)
+        if before:
+            assert {p.name: audit.sha(p.read_bytes()) for p in entries} == before
+        if expected:
+            assert completed.stderr.count(b"GSIP_RUNTIME_FAILURE_V1|") == 1
+            assert all(p.stat().st_size <= audit.MAX_FIXED_FAULT_BYTES for p in entries)
+            assert all(b"synthetic-private" not in p.read_bytes() for p in entries)
+    control = {
+        "mode": mode, "original_tool_exit_code": completed.returncode,
+        "graph_exists": graph.exists(), "fault": fault, "fault_file_count": len(entries),
+        "stdout_bytes": len(completed.stdout), "stderr_bytes": len(completed.stderr),
+        "stdout_sha256": audit.sha(completed.stdout), "stderr_sha256": audit.sha(completed.stderr),
+        "task_sha256": audit.sha(task.encode()), "raw_streams_persisted": False,
+        "native_acceptance_claimed": False,
+    }
+    (tmp_path / "observer-control.json").write_text(json.dumps(control, sort_keys=True) + "\n")

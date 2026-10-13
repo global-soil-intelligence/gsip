@@ -193,9 +193,9 @@ The existing context and four-field diagnostic remain unchanged, and the origina
 Gradle exception is rethrown; a receipt supplies no audit acceptance.
 
 The existing `projectsEvaluated` callback also records `TASK_SETUP` before rethrowing
-its original setup exception. Settings or initialization/compilation failures before
-that callback legitimately have no receipt and remain `UNKNOWN`. This uses public
-Gradle lifecycle and Java file APIs only within Python-emitted temporary build
+its original setup exception. Failures that prevent diagnostic registration or leave
+no usable output location legitimately have no receipt and remain `UNKNOWN`. This
+uses public Gradle lifecycle and Java file APIs only within Python-emitted temporary build
 configuration, with its exact task hash retained by the audit. It adds no shipped
 native source or dependency. Offline Gradle 8.14.3/Java 21 synthetic controls verified
 byte-identical successful graphs, preserved tool/CLI failure statuses for oversized
@@ -205,6 +205,30 @@ the hosted Android failure's underlying cause or establish a native product buil
 Both actual debug and release inputs remain required; there is no debug substitution
 or check skip. If the next CI run confirms absent release project outputs, their
 actual variant producers must run before inspection in a separate forward fix.
+
+A build-level observer additionally reads the public `BuildResult.failure` after the
+build finishes. Only a failed build with no earlier task/setup fault attempt can emit
+`BUILD_FAILURE`. It reuses the exclusive bounded file channel and existing cause
+classification; it does not rethrow, replace, suppress or alter the original build
+failure. Earlier faults are never replaced or duplicated, including a failed attempt
+to write a receipt. Malformed/multiple receipts and failures before registration remain
+`UNKNOWN`. Successful output/status and every mandatory graph check remain unchanged.
+
+The [public Gradle 8.14.3 callback](<https://docs.gradle.org/8.14.3/javadoc/org/gradle/api/invocation/Gradle.html#buildFinished(groovy.lang.Closure)>)
+is deprecated and unsupported with configuration caching. This diagnostic adapter is
+bound to the existing pinned operation with configuration caching disabled; it changes
+no cache or command flag. Future toolchain/cache changes need fresh evidence. The
+[BuildResult API](<https://docs.gradle.org/8.14.3/javadoc/org/gradle/BuildResult.html#getFailure()>)
+reports the original failed result. Offline controls prove a producer failure before
+task execution retains tool/CLI failure status and now yields fixed labels, with no
+raw private strings emitted. They do not establish the hosted failure's cause.
+
+Two additional exact public Java error types map to fixed `STACK_OVERFLOW` and
+`OUT_OF_MEMORY` labels. Their installed Java 21 source/class identity and synthetic
+thrown controls were verified; no stack or memory exhaustion is induced. No arbitrary
+class name, exception message or property is printed. Existing 16-object depth,
+identity-cycle and conflicting-label refusals remain intact; unsupported classes remain
+`UNKNOWN`. These labels are diagnostic coverage and are not a claim about hosted CI.
 
 ## Runtime artifact producer order
 
