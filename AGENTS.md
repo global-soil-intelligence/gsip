@@ -14,9 +14,11 @@ Read the [SPEC](docs/SPEC.md), including invariants I1–I15 and section 11 laun
 [deployment runbook](docs/PHASE1_DEPLOYMENT.md), [app-store plan](docs/APP_STORE.md),
 [legal-pack status](docs/legal/README.md) and [configuration example](.env.example).
 
-The v3.0 documents originated on `docs/spec-v3`; use that reviewed specification until it
-lands on `main`. Do not silently replace it with older documents on `main`. If governing
-instructions conflict, flag the conflict. Justin's explicit instructions take precedence.
+The governing specification is the current reviewed version on `main`. v3 originated on
+`docs/spec-v3` and is now merged; the library amendments add separately gated work without
+claiming production deployment. Read the current version and its status before implementation.
+If governing instructions conflict, flag the conflict. Justin's explicit instructions take
+precedence.
 
 ## Before each change
 
