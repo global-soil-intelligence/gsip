@@ -2,7 +2,7 @@
 
 GSIP is building an **open soil spectral reference library**, with smartphones as the accessible capture and sample-linking tool. The library connects camera observations and metadata to instrument spectra and verified laboratory evidence; open AI models and the soil map are downstream goals. Ordinary RGB phone photos are optical observations, not wavelength-resolved spectra. See the [v5 library proposal](docs/SPEC.md#16-open-soil-spectral-library-v5) and [implementation sequence](docs/BUILD_ORDER.md#library-first-implementation-sequence-v5-spec-16).
 
-GSIP is an open-source citizen-science project building a living global soil map with people and AI agents. A phone app (also a no-install web app) guides contributors through privacy-safe soil photography with a printable reference card. GSIP combines those observations with public soil-map priors and, later, open models to produce soil estimates with explicit uncertainty. Agents can read public cells, the protocol and dataset releases through a public API and an MCP server; see the [agent guide](docs/AGENTS.md).
+The existing collection foundation is a phone app (also a no-install web app) guides contributors through privacy-safe soil photography with a printable reference card. The current map supplies public soil-map priors; later evaluated library models will supply estimates with explicit uncertainty. Agents can read public cells, the protocol and dataset releases through a public API and an MCP server; see the [agent guide](docs/AGENTS.md).
 
 GSIP is not a laboratory replacement. Public outputs locate observations by k-anonymous H3 cells, never precise coordinates. Photos are sanitized before canonical storage and checked again before release.
 
