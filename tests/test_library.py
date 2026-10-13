@@ -188,3 +188,14 @@ def test_duplicate_json_fields_cannot_change_measurement_meaning(tmp_path: Path)
     incoming.write_text(data[:-1] + ', "synthetic": false}')
     with pytest.raises(ValueError):
         read_record(incoming)
+
+
+def test_crash_leftovers_are_removed_before_withdrawal(tmp_path: Path) -> None:
+    store = PrivateLibrary(tmp_path / "library")
+    store.add(LibraryRecord.model_validate(record()))
+    orphan = store.root / ".pending-crashed-write"
+    orphan.write_bytes(b"private incomplete record")
+    orphan.chmod(0o600)
+    store.withdraw(UUID(int=2), UUID(int=3))
+    assert not orphan.exists()
+    assert store.records() == []

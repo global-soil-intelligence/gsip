@@ -150,9 +150,16 @@ class PrivateLibrary:
         private_path(self.root)
         fd = os.open(self.root / ".lock", os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW, 0o600)
         try:
-            if os.fstat(fd).st_mode & 0o077:
+            if os.fstat(fd).st_mode & 0o077 or not stat.S_ISREG(os.fstat(fd).st_mode):
                 raise ValueError("store lock is not private")
             fcntl.flock(fd, fcntl.LOCK_EX)
+            # Only writers under this lock create .pending-* files. Remove crash remnants
+            # before any operation so withdrawal cannot leave incomplete private records.
+            leftovers = list(self.root.glob(".pending-*"))
+            for leftover in leftovers:
+                leftover.unlink()
+            if leftovers:
+                self._sync()
             yield
         finally:
             os.close(fd)
