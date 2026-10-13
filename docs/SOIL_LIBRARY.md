@@ -25,6 +25,11 @@ Sample context records depth in cm and wet/moist/dry/unknown condition. Optional
 
 ## Joining the shared data chain
 
+[The caller contract](LIBRARY_INTAKE_CONTRACT.md) describes the separate strict
+`gsip-library-intake-v1` envelope and fictional instrument-declaration example.
+Local record authority flags cannot be promoted into hosted authority. These
+parsers prepare validation only; they activate no phone or hosted intake.
+
 You can fork and extend the code, run a private local library node, and consume GSIP's public read API today. You cannot register that node to upload samples to GSIP using these commands. WP-LIB-4 schedules phone/private hosted intake and server verification; WP-LIB-5 schedules authenticated node exchange, physical-sample deduplication and rights propagation. Capture remains closed until the existing launch gates pass. Individual spectral publication remains blocked on the new fingerprinting/privacy review even if no coordinates are present.
 
 No trained or independently validated soil reconstruction model is provided by the record store. Scientific training requires paired field measurements, verified calibration, rights eligibility and disjoint independent evaluation. Biological relationships need actual assays and an expert-reviewed vocabulary; no camera or spectral record here asserts microbial composition.

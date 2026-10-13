@@ -1,0 +1,228 @@
+{
+  "description": "Fictional declarations only; no contributor or instrument data. Shared TS/Python conformance input.",
+  "instrument_cases": [
+    {
+      "name": "three-band-fictional",
+      "valid": true,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "wavelength-endpoints",
+      "valid": true,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[200.0,450.0,25000.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "fraction-endpoints",
+      "valid": true,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.0,0.5,1.0],\"uncertainty\":[0.0,0.5,1.0]}"
+    },
+    {
+      "name": "uppercase-uuid",
+      "valid": true,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"ABCDEFAB-CDEF-ABCD-EFAB-CDEFABCDEFAB\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "unknown-field",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"private_note\":\"fictional-only\"}"
+    },
+    {
+      "name": "unsupported-measurement-kind",
+      "valid": false,
+      "raw": "{\"kind\":\"camera_rgb\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "upper-case-digest",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "short-digest",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "long-digest",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "digest-trailing-newline",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\n\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "malformed-instrument-uuid",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"not-a-uuid\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "malformed-calibration-uuid",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"not-a-uuid\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "descending-wavelengths",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[550.0,450.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "repeated-wavelengths",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,450.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "low-wavelength",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[199.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "high-wavelength",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,25001.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "unaligned-reflectance",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "unaligned-uncertainty",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01]}"
+    },
+    {
+      "name": "percent-reflectance",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[30.0,40.0,50.0],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "negative-reflectance",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[-0.1,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "negative-uncertainty",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[-0.1,0.01,0.01]}"
+    },
+    {
+      "name": "large-uncertainty",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[1.01,0.01,0.01]}"
+    },
+    {
+      "name": "string-reflectance",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[\"0.3\",0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "boolean-reflectance",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[true,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "string-wavelength",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[\"450\",550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "boolean-wavelength",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[false,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "unsupported-unit",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"unit\":\"percent\"}"
+    },
+    {
+      "name": "original-file-bytes",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"source_file\":\"fictional-bytes\"}"
+    },
+    {
+      "name": "overflow-to-infinity",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[1e999,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "non-json-nan",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[NaN,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]}"
+    },
+    {
+      "name": "duplicate-source-key",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}"
+    },
+    {
+      "name": "escaped-duplicate-source-key",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"source\\u005fsha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}"
+    },
+    {
+      "name": "forbidden-authority-grant_id",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"grant_id\":\"00000000-0000-0000-0000-000000000004\"}"
+    },
+    {
+      "name": "forbidden-authority-consent_verified",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"consent_verified\":true}"
+    },
+    {
+      "name": "forbidden-authority-pairing_verified",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"pairing_verified\":true}"
+    },
+    {
+      "name": "forbidden-authority-withdrawn",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"withdrawn\":false}"
+    },
+    {
+      "name": "forbidden-authority-synthetic",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"synthetic\":false}"
+    },
+    {
+      "name": "forbidden-authority-holdout",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"holdout\":false}"
+    },
+    {
+      "name": "forbidden-authority-qa_status",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"qa_status\":\"pass\"}"
+    },
+    {
+      "name": "forbidden-authority-labels",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"labels\":[]}"
+    },
+    {
+      "name": "forbidden-authority-verifier_id",
+      "valid": false,
+      "raw": "{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"instrument_id\":\"00000000-0000-0000-0000-000000000006\",\"calibration_id\":\"00000000-0000-0000-0000-000000000007\",\"wavelength_nm\":[450.0,550.0,650.0],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"verifier_id\":\"00000000-0000-0000-0000-000000000009\"}"
+    }
+  ],
+  "band_count_cases": [
+    {
+      "count": 2,
+      "valid": false
+    },
+    {
+      "count": 3,
+      "valid": true
+    },
+    {
+      "count": 10000,
+      "valid": true
+    },
+    {
+      "count": 10001,
+      "valid": false
+    }
+  ]
+}
