@@ -1,14 +1,14 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
-**Version:** 9.0 draft — 2026-10-13 (SPEC §15.5–15.9 and §16.9–16.13)
-**Proposal status:** local documentation draft only; no implementation, federation rollout or production authority. The v9 architecture and new source-policy choices require Justin's review before dependent work.
+**Version:** 9.0 — 2026-10-13 (SPEC §15.5–15.9 and §16.9–16.13)
+**Owner approval:** Justin approved ordered #51–#56 source merges after green CI on 2026-10-13. After the specification merges, LIB-5A pure contracts and LIB-5B synthetic local preparation may proceed. Real-sharing source/retention/peer/credential choices remain unresolved; no federation rollout or production authority is granted.
 
-**Baseline:** v3 plus the v4 amendment merged in #38 and the v5 library foundation merged under Justin's 2026-10-12 owner authorization, with separately gated v6/v7 private intake. v8 proposes exact WP-6f database/worker/review/export authority. Implementation preparation and code merges follow their own prerequisite review/CI; all production gates remain required.
+**Baseline:** v3 plus the v4 amendment merged in #38 and the v5 library foundation merged under Justin's 2026-10-12 owner authorization, with separately gated v6/v7 private intake. v8 defines exact WP-6f database/worker/review/export authority under the approved photo policy. Implementation preparation and code merges follow their own prerequisite review/CI; all production gates remain required.
 **Builder:** Codex, acting for Justin Hart as human of record.
 **Independent review:** every PR is reviewed by fresh-context adversarial review agents (no memory of authoring the code) against the §5 review gates; findings and resolutions are posted to the PR. Justin Hart provides the final product-owner go/no-go. On 2026-10-12 he approved an owner exception: the extra non-author GitHub approval is no longer required for this owner-operated repository. Independent adversarial review and green CI remain required; an agent never submits an approving review or certifies the human DCO.
 **Product owner:** Justin Hart
-**Governing document:** `docs/SPEC.md` (v5 foundation, v6/v7 private intake and proposed v8 photo privacy architecture; existing launch gates preserved). If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
+**Governing document:** `docs/SPEC.md` (v5 foundation, v6/v7 private intake, v8 photo privacy and v9 bounded local exchange architecture; existing launch gates preserved). If this document and the spec conflict, the spec wins; flag the conflict instead of guessing. The v2.2 work plan, with the full WP-0 to WP-6 acceptance criteria, is archived in `docs/archive/v2.2/`.
 
 ---
 
@@ -366,17 +366,17 @@ The v5 foundation sequence is `docs/spec-v5` → WP-LIB-1 → WP-LIB-2 → WP-LI
 - [ ] `VITE_LIBRARY_INTAKE_LIVE=false` default preserves existing UI and sends no new RPC; capability probing does not change the legacy gate query or trigger anonymous sign-in. Actual intake also requires compatible capabilities, server library gate and existing capture gates.
 - [ ] Synthetic end-to-end capture → queued sample → owner-private unverified receipt → exact retry → withdrawal/deletion succeeds; the test artifact stays local, and the actual app/Pages artifact is rebuilt with both build flags false.
 
-**Proposed LIB-5 sequence (v9 draft, SPEC §16.9–16.13):** `docs/spec-v9` → `wp-lib-5a-exchange-contract` → `wp-lib-5b-private-exchange-ledger`. Architecture approval precedes implementation; this local draft does not establish that approval. Each package is a separate PR with independent adversarial review and green CI. `wp-lib-5c-scoped-peer-transport` remains blocked until the new source-sharing/privacy, peer-admission, credential/cleanup and same-material policy decisions are resolved. Preparing synthetic local code never permits real exchange, peer enrollment, production migration, deployment, public release or field training. Existing public readers remain anonymous/read-only and no service-role key or contributor session reaches an agent interface.
+**Approved local LIB-5 sequence (v9, SPEC §16.9–16.13):** `docs/spec-v9` → `wp-lib-5a-exchange-contract` → `wp-lib-5b-private-exchange-ledger`. Justin approved this local architecture on 2026-10-13; its specification merge precedes implementation. That approval excludes the unresolved real-sharing policies and transport in LIB-5C. Each package is a separate PR with independent adversarial review and green CI. `wp-lib-5c-scoped-peer-transport` remains blocked until the new source-sharing/privacy, peer-admission, credential/cleanup and same-material policy decisions are resolved. Preparing synthetic local code never permits real exchange, peer enrollment, production migration, deployment, public release or field training. Existing public readers remain anonymous/read-only and no service-role key or contributor session reaches an agent interface.
 
 **WP-LIB-5A: Strict private exchange event contract**
 
 Branch: `wp-lib-5a-exchange-contract`. Depends on the approved v9 amendment and existing LIB-1/4 contracts. Implement only the exact `gsip-node-exchange-v1` parser, exact-byte integrity/idempotency convention and synthetic TS/Python conformance corpus. No network, secret, listener, schema migration, real record export or scientific verification. Keep phone/library namespace distinct from an enrolled federation peer.
 
-- [ ] Strict raw UTF-8 parsing proves 2,000,000-byte and 12-level limits before unsafe allocation; unknown/duplicate fields, non-finite values, wrong types/UUIDs, unsafe sequence numbers and unsupported versions are refused generically.
+- [ ] Strict byte-only UTF-8 parsing proves 2,000,000-byte and 12-container limits before unsafe allocation; rejects BOM, malformed UTF-8, unpaired surrogates and fractional/exponent/negative-zero integer spellings; unknown/duplicate fields, non-finite values, wrong types/UUIDs, unsafe sequence numbers and unsupported versions are refused generically.
 - [ ] Both event variants accept only SPEC §16.10 fields; context and camera/instrument payloads retain LIB-1's units/bounds and RGB-versus-spectrum distinction. Raw files, images, precise/time/device-serial/person/path/URL/credential fields and caller authority/labels are rejected.
 - [ ] Exact retries retain identical transmitted bytes and digest. Same event identity with different bytes conflicts; no unproved cross-language canonical-number/signature claim.
 - [ ] Stream tuple and immutable event/sequence-slot ownership are explicit; the committed digest head advances only through verified contiguous predecessors. Out-of-order retirement restricts immediately without inventing chain progress; unrecoverable gaps remain held.
-- [ ] Synthetic tests fail without rejection, including malformed/deep/oversized input, fake rights/provenance, duplicate event/measurement identity and incorrect previous digest. Parser success remains an unverified declaration, never a credential, permission or physical-pair receipt.
+- [ ] Synthetic tests fail without rejection, including malformed/deep/oversized input, fake rights/provenance, conflicting event/measurement identity, stable identical retries, immutable sample/scientific binding, monotonic synthetic restriction and incorrect previous digest. Parser success remains an unverified declaration, never a credential, permission or physical-pair receipt.
 - [ ] No dependency or license change; no change to capture, photo publication, public APIs, local field baseline or production configuration.
 
 **WP-LIB-5B: Local private exchange ledger and rights simulator**
@@ -456,7 +456,7 @@ Historical v4.0 review/merge sequence (#38 and WP-APP-2A have merged; remaining 
 
 ## 8. Changelog
 
-- **v9.0 draft (2026-10-13):** splits LIB-5 into a strict local event contract, synthetic private ledger/rights simulator and separately held peer authority/transport. Flags unapproved private-sharing purpose, credential/cleanup and same-material policy; preserves anonymous readers and all scientific/privacy/production gates.
+- **v9.0 (2026-10-13):** owner-approved local architecture splits LIB-5 into a strict local event contract, synthetic private ledger/rights simulator and separately held peer authority/transport. Flags unapproved private-sharing purpose, credential/cleanup and same-material policy; preserves anonymous readers and all scientific/privacy/production gates.
 
 - **v8.0 proposed (2026-10-12):** defines separately reviewed WP-6fA private SQL authority, WP-6fB bounded detector/worker/personal-operator CLI and WP-6fC exact-byte export enforcement. Records default-closed owner-admin policy approval, contributor erasure, legacy structured-only compatibility and fresh actual-byte authorization, without detector selection/calibration, operator provisioning or production permission.
 
