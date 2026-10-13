@@ -8,7 +8,7 @@
 # supabase/migration-tests/stand_in.sql replaces the parts of Supabase the migrations touch; the
 # full pgTAP suite still runs on the real local stack (pnpm db:test).
 #
-# Needs PostgreSQL server binaries (PG_BIN, default `pg_config --bindir`) with the postgis and pgtap
+# Needs Python 3.11+ for concurrent synthetic transaction checks and PostgreSQL server binaries (PG_BIN, default `pg_config --bindir`) with the postgis and pgtap
 # extensions installed. Usage: scripts/db-migration-test.sh
 set -euo pipefail
 
@@ -16,8 +16,8 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TESTS="$REPO/supabase/migration-tests"
 PG_BIN="${PG_BIN:-$(pg_config --bindir)}"
 PORT="${PG_TEST_PORT:-55491}"
-DB=gsip_migration_test
-WORK="$(mktemp -d)"
+DB=gsip_lib4b_migration_test
+WORK="$(mktemp -d /tmp/gsip_lib4b_XXXXXXXX)"
 
 # PostgreSQL refuses to run its server as root; a root shell (a container) runs it as postgres.
 as_server() {
@@ -75,4 +75,9 @@ for test in "$TESTS"/*.test.sql; do
     status=1
   fi
 done
+# Run genuine concurrent transactions in this same disposable cluster before cleanup.
+if [ "$status" = 0 ]; then
+  python3 "$REPO/scripts/test-library-intake-concurrency.py" --native-psql \
+    --database "$DB" --socket "$WORK" --port "$PORT" || status=1
+fi
 exit "$status"
