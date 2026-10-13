@@ -31,8 +31,26 @@ location while you use the app, only when you first use each; it never uses loca
 background. On Android the position comes from your phone's own location services (which on
 many phones include Google Play services, as your phone's settings decide), and GSIP receives
 only the result. Photos you take for an observation, and observations waiting to sync, stay in
-the app's storage on your phone until they sync or you discard them; your phone's own backups
-may include that storage **[DECISION]**.
+the app's storage on your phone until they sync or you discard them.
+
+Our policy excludes the app's private queue, photo drafts and account session from cloud
+backups. Android builds exclude these stores from cloud backup; on Android 12 or newer,
+direct device-to-device transfer may retain them without sending them to cloud storage.
+Older Android versions exclude both backup and transfer. Physical-device backup/restore and
+transfer checks are required before release. Backups a provider already holds cannot be
+erased retroactively by updating the app.
+
+**iOS implementation is blocked/unverified:** the app's current WebKit storage has no verified
+cloud-backup exclusion yet. iOS store release waits for a separately reviewed storage solution
+and physical-device backup/restore checks; we do not claim that a simulator build or a setting
+for unrelated files excludes this data.
+
+Once the platform's cloud exclusion is implemented and verified, a fresh install or cloud
+restore starts a new anonymous account and does not recover unsynced work. Current iOS
+cloud-restore behavior is unverified, and older backups may still restore private data.
+A verified direct Android transfer may preserve the old account and queue. Until in-app
+e-mail linking ships, contributions from an inaccessible old account can be withdrawn through
+the privacy contact. Keep the old phone until its queued work has synced.
 
 ## What becomes public
 

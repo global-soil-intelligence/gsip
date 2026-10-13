@@ -3,7 +3,8 @@ name: App build
 # WP-APP-1: the GSIP phone app. The iOS and Android projects are generated from
 # apps/capture-pwa/capacitor.config.ts, given their permissions by scripts/app_permissions.py,
 # and built unsigned: an Android debug APK and an iOS simulator build, kept as artifacts.
-# Signing and store upload are out of scope (docs/APP_STORE.md).
+# WP-APP-2A applies CI versions and Android cloud-backup exclusions, checks the built
+# artifacts, and compares repeated builds. Signing/store upload remain owner gates.
 
 on:
   pull_request:
@@ -11,6 +12,9 @@ on:
       - apps/capture-pwa/**
       - packages/schema/**
       - scripts/app_permissions.py
+      - scripts/app_build.py
+      - tests/test_app_build.py
+      - tests/test_app_permissions.py
       - pnpm-lock.yaml
       - .github/workflows/app-build.yml
   push:
@@ -19,6 +23,9 @@ on:
       - apps/capture-pwa/**
       - packages/schema/**
       - scripts/app_permissions.py
+      - scripts/app_build.py
+      - tests/test_app_build.py
+      - tests/test_app_permissions.py
       - pnpm-lock.yaml
       - .github/workflows/app-build.yml
   workflow_dispatch:
@@ -66,6 +73,8 @@ jobs:
         run: pnpm exec cap add android
       - name: Apply the app's permissions
         run: python scripts/app_permissions.py apply-android apps/capture-pwa/android/app/src/main/AndroidManifest.xml
+      - name: Apply CI versions and Android backup rules
+        run: python scripts/app_build.py apply-android apps/capture-pwa/android/app "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
       - name: Check the app ships no closed SDK
         working-directory: apps/capture-pwa/android
         # bash -eo pipefail: a failed Gradle run fails the step, never passes it with no input.
@@ -84,10 +93,29 @@ jobs:
           aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2"
           "$aapt2" dump permissions apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk \
             | python scripts/app_permissions.py check-apk -
+      - name: Verify the first APK and preserve the comparison input
+        shell: bash
+        run: |
+          aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2"
+          python scripts/app_build.py check-apk apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"
+          cp apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/gsip-android-reference.apk"
+      - name: Repeat the Android build with the same inputs
+        working-directory: apps/capture-pwa/android
+        run: ./gradlew --no-daemon assembleDebug --rerun-tasks --no-build-cache
+      - name: Check repeated APK policy and record build evidence
+        shell: bash
+        run: |
+          aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2"
+          apk=apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk
+          "$aapt2" dump permissions "$apk" | python scripts/app_permissions.py check-apk -
+          python scripts/app_build.py check-apk "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"
+          python scripts/app_build.py receipt "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-android-reference.apk" apps/capture-pwa/android/app/build/outputs/apk/debug/gsip-android-build-receipt.json android "$aapt2"
       - uses: actions/upload-artifact@v7
         with:
           name: gsip-capture-android-debug
-          path: apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk
+            apps/capture-pwa/android/app/build/outputs/apk/debug/gsip-android-build-receipt.json
           if-no-files-found: error
           retention-days: 14
 
@@ -118,6 +146,8 @@ jobs:
         run: pnpm exec cap add ios
       - name: Apply the app's permissions
         run: python scripts/app_permissions.py apply-ios apps/capture-pwa/ios/App/App/Info.plist
+      - name: Apply CI versions to iOS
+        run: python scripts/app_build.py apply-ios apps/capture-pwa/ios/App/App/Info.plist "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
       - name: Build for the iOS simulator
         working-directory: apps/capture-pwa/ios/App
         run: >-
@@ -126,12 +156,30 @@ jobs:
           -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
       - name: Check the built app's permissions
         run: python scripts/app_permissions.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist
+      - name: Verify the first iOS build and preserve the comparison input
+        run: |
+          python scripts/app_build.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
+          ditto -c -k --sequesterRsrc --keepParent apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app "$RUNNER_TEMP/gsip-ios-reference.zip"
+      - name: Repeat the iOS build with the same inputs
+        working-directory: apps/capture-pwa/ios/App
+        run: >-
+          xcodebuild -project App.xcodeproj -scheme App -configuration Debug
+          -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+          -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build
+      - name: Check the repeated iOS build
+        run: |
+          python scripts/app_permissions.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist
+          python scripts/app_build.py check-ios apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json
       - name: Package the simulator build
         working-directory: apps/capture-pwa/ios/App/build/Build/Products/Debug-iphonesimulator
         run: ditto -c -k --sequesterRsrc --keepParent App.app "$GITHUB_WORKSPACE/gsip-capture-ios-simulator.zip"
+      - name: Record iOS build evidence
+        run: python scripts/app_build.py receipt gsip-capture-ios-simulator.zip "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-ios-reference.zip" gsip-ios-build-receipt.json ios
       - uses: actions/upload-artifact@v7
         with:
           name: gsip-capture-ios-simulator
-          path: gsip-capture-ios-simulator.zip
+          path: |
+            gsip-capture-ios-simulator.zip
+            gsip-ios-build-receipt.json
           if-no-files-found: error
           retention-days: 14
