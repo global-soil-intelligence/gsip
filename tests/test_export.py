@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import io
 import json
 import random
@@ -32,6 +33,7 @@ from pipeline.export import (
     publish_export,
 )
 from pipeline.k_anonymity import Observation, PublishedCell, assign_cells
+from pipeline.photo_export_privacy import PhotoExportBinding, PhotoPolicy, PhotoPrivacyAuthority
 from pipeline.qa import has_embedded_metadata, sanitize_jpeg
 
 BURLINGTON = h3.latlng_to_cell(44.4759, -73.2121, 8)
@@ -80,6 +82,7 @@ def owner_uid(contributor: str) -> str:
 def photo(shot: str, submission_id: str, contributor: str, qa_status: str = "pass") -> ExportPhoto:
     object_id = uuid.uuid5(uuid.NAMESPACE_URL, f"{submission_id}/{shot}")
     return ExportPhoto(
+        id=str(object_id),
         shot_type=shot,
         storage_path=f"{owner_uid(contributor)}/{submission_id}/{shot}/{object_id}.jpg",
         qa_status=qa_status,
@@ -161,12 +164,35 @@ def three_contributors_in_one_cell() -> list[ExportSubmission]:
     return [submission(index) for index in (1, 2, 3)]
 
 
+class SyntheticPrivacy:
+    policy_value = PhotoPolicy(
+        str(uuid.uuid5(uuid.NAMESPACE_URL, "gsip-test-policy")), 1, "screen-v1", "cal-v1"
+    )
+
+    def policy(self) -> PhotoPolicy | None:
+        return self.policy_value
+
+    def binding(self, photo_id: str) -> PhotoExportBinding | None:
+        return PhotoExportBinding(
+            photo_id, 1, hashlib.sha256(clean_photo()).hexdigest(), self.policy_value
+        )
+
+    def authorize(self, bindings: list[PhotoExportBinding]) -> set[str]:
+        return {item.photo_id for item in bindings}
+
+
 def build(
     submissions: list[ExportSubmission],
     root: Path,
     loader: Any = None,
 ) -> ExportResult:
-    return build_export(submissions, root, EXPORT_DATE, loader or (lambda _: clean_photo()))
+    return build_export(
+        submissions,
+        root,
+        EXPORT_DATE,
+        loader or (lambda _: clean_photo()),
+        photo_privacy=SyntheticPrivacy(),
+    )
 
 
 def load_rows(result: ExportResult) -> list[dict[str, Any]]:
@@ -769,6 +795,13 @@ def test_hub_replacement_precedes_atomic_public_cell_refresh_and_the_release_rec
             return CommitInfo(COMMIT)
 
     class RecordingSource(SupabaseExportSource):
+        @property
+        def photo_privacy(self) -> PhotoPrivacyAuthority:
+            return SyntheticPrivacy()
+
+        def withdrawn_grant_ids(self) -> set[str]:
+            return set()
+
         def refresh_h3_cells(self, cells: tuple[PublishedCell, ...]) -> None:
             events.append("cells")
 
@@ -799,6 +832,13 @@ def test_a_release_without_an_exact_commit_is_recorded_without_one(tmp_path: Pat
             return "https://huggingface.co/datasets/org/dataset"
 
     class RecordingSource(SupabaseExportSource):
+        @property
+        def photo_privacy(self) -> PhotoPrivacyAuthority:
+            return SyntheticPrivacy()
+
+        def withdrawn_grant_ids(self) -> set[str]:
+            return set()
+
         def refresh_h3_cells(self, cells: tuple[PublishedCell, ...]) -> None:
             pass
 
@@ -857,6 +897,13 @@ def test_failed_post_upload_refresh_is_retried_on_the_next_run(
             uploads += 1
 
     class RecoveringSource(SupabaseExportSource):
+        @property
+        def photo_privacy(self) -> PhotoPrivacyAuthority:
+            return SyntheticPrivacy()
+
+        def withdrawn_grant_ids(self) -> set[str]:
+            return set()
+
         failures_remaining = 3
 
         def record_release(

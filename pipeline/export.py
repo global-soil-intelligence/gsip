@@ -7,12 +7,14 @@ import math
 import os
 import re
 import shutil
+import stat
+import tempfile
 import time
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, Never
 from urllib.parse import quote
 
 import httpx
@@ -29,7 +31,13 @@ from pipeline.k_anonymity import (
     is_resolution_8_cell,
 )
 from pipeline.paths import StoragePathMismatch, verify_photo_path
-from pipeline.qa import MetadataSurvived, has_embedded_metadata, sanitize_jpeg
+from pipeline.photo_export_privacy import (
+    PhotoExportBinding,
+    PhotoPolicy,
+    PhotoPrivacyAuthority,
+    RpcPhotoPrivacy,
+)
+from pipeline.qa import has_embedded_metadata
 
 # Keys that must never appear anywhere in a public row. Point-level priors and elevation are
 # here because, matched against public rasters, they locate an observation more precisely than
@@ -52,6 +60,29 @@ FORBIDDEN_PUBLIC_KEYS = {
     "longitude",
     "owner_uid",
     "priors",
+    "sanitized_sha256",
+    "content_revision",
+    "policy_id",
+    "policy_revision",
+    "screening_version",
+    "calibration_version",
+    "detector_manifest_sha256",
+    "calibration_manifest_sha256",
+    "operator_id",
+    "operator_token",
+    "token_hash",
+    "privacy_status",
+    "photo_privacy",
+    "photo_bindings",
+    "source_submissions",
+    "card_exclusion",
+    "card_exception_used",
+    "face",
+    "scene_text",
+    "lease_id",
+    "lease_expires_at",
+    "review_id",
+    "privacy_reviews",
 }
 # QA checks whose scores are released. Location-derived scores (gps_plausibility encodes the
 # private GPS accuracy) are released as pass or fail only.
@@ -123,6 +154,7 @@ class ExportPhoto:
     calibration_status: str | None = None
     qa_checks: tuple[QaCheck, ...] = ()
     qa_model_version: str | None = None
+    id: str = ""
 
 
 @dataclass(frozen=True)
@@ -159,6 +191,11 @@ class ExportResult:
     set_aside: dict[str, int] = field(default_factory=dict)
     report: Path | None = None
     photos: int = 0
+    # Process-private evidence; never persisted in public artifacts, logs or reports.
+    photo_bindings: tuple[tuple[str, PhotoExportBinding], ...] = field(
+        default=(), repr=False, compare=False
+    )
+    source_submissions: tuple[ExportSubmission, ...] = field(default=(), repr=False, compare=False)
 
     def summary(self) -> dict[str, Any]:
         """Counts only: workflow logs of a public repository are public."""
@@ -319,10 +356,16 @@ def _public_photo(
     photo: ExportPhoto,
     temporary: Path,
     photo_loader: Callable[[str], bytes],
-) -> dict[str, Any]:
+    privacy: PhotoPrivacyAuthority,
+    policy: PhotoPolicy,
+    bindings: dict[str, PhotoExportBinding],
+) -> dict[str, Any] | None:
     grant = submission.grant
     if grant is None:
         raise RowSetAside("missing_grant")
+    binding = privacy.binding(photo.id)
+    if binding is None or binding.policy != policy or binding.photo_id != photo.id:
+        return None
     try:
         verify_photo_path(
             photo.storage_path, submission.owner_uid or "", submission.id, photo.shot_type
@@ -337,18 +380,14 @@ def _public_photo(
     if dirty:
         # Canonical photos were sanitized at ingest; metadata here is a systemic failure.
         raise ExportPrivacyError("Canonical export photo contains embedded metadata")
-    try:
-        sanitized, _ = sanitize_jpeg(raw_photo)
-    except MetadataSurvived as error:
-        raise ExportPrivacyError("Export photo metadata scan failed") from error
-    except (OSError, ValueError, Image.DecompressionBombError) as error:
-        raise RowSetAside("photo_unreadable") from error
-    if has_embedded_metadata(sanitized):
-        raise ExportPrivacyError("Export photo metadata scan failed")
+    # Clearance belongs to these bytes. A second lossy encoding cannot inherit it.
+    if hashlib.sha256(raw_photo).hexdigest() != binding.sanitized_sha256:
+        return None
     relative = Path("photos") / submission.id / f"{photo.shot_type}.jpg"
     destination = temporary / relative
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_bytes(sanitized)
+    destination.write_bytes(raw_photo)
+    bindings[str(relative)] = binding
     return {
         "attribution_name": grant.attribution_name,
         "calibration_status": photo.calibration_status,
@@ -363,6 +402,9 @@ def _row(
     submission: ExportSubmission,
     temporary: Path,
     photo_loader: Callable[[str], bytes],
+    privacy: PhotoPrivacyAuthority | None,
+    policy: PhotoPolicy | None,
+    bindings: dict[str, PhotoExportBinding],
 ) -> dict[str, Any]:
     assert_field_data(submission)
     if submission.grant is None:
@@ -385,10 +427,17 @@ def _row(
             (photo for photo in submission.photos if photo.qa_status == "pass"),
             key=lambda item: item.shot_type,
         )
-        if submission.grant.photos_publishable
+        if submission.grant.photos_publishable and privacy is not None and policy is not None
         else []
     )
-    photos = [_public_photo(submission, photo, temporary, photo_loader) for photo in releasable]
+    photos = []
+    if privacy is not None and policy is not None:
+        for photo in releasable:
+            public = _public_photo(
+                submission, photo, temporary, photo_loader, privacy, policy, bindings
+            )
+            if public is not None:
+                photos.append(public)
     return {
         "capture_method": submission.capture_method,
         "captured_at": submission.captured_at[:10],
@@ -469,12 +518,189 @@ def _write_report(
     return report
 
 
+def _write_public_files(
+    records: list[dict[str, Any]], root: Path, export_date: date, withheld: int
+) -> None:
+    _safe_artifact_files(root)
+    data_dir = root / "data"
+    if data_dir.exists():
+        shutil.rmtree(data_dir)
+    data_dir.mkdir()
+    if records:
+        parquet = data_dir / "train.parquet"
+        Dataset.from_list(records).to_parquet(str(parquet))
+        loaded = load_dataset("parquet", data_files=str(parquet), split="train")
+        if len(loaded) != len(records):
+            raise ValueError("Hugging Face Datasets round-trip changed the row count")
+    else:
+        (data_dir / "EMPTY.md").write_text(
+            "No releasable contributions were available for this export.\n", encoding="utf-8"
+        )
+    (root / "README.md").write_text(dataset_card(records, export_date, withheld), encoding="utf-8")
+    (root / "manifest.json").write_text(
+        json.dumps(_manifest(root), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+
+def _safe_artifact_files(root: Path) -> set[str]:
+    """Refuse links, special files and noncanonical paths without following or removing them."""
+    if not stat.S_ISDIR(root.lstat().st_mode):
+        raise ExportPrivacyError("Export artifact root is invalid")
+    files: set[str] = set()
+    pending = [root]
+    while pending:
+        directory = pending.pop()
+        with os.scandir(directory) as entries:
+            for entry in entries:
+                path = Path(entry.path)
+                relative = path.relative_to(root)
+                info = entry.stat(follow_symlinks=False)
+                if stat.S_ISDIR(info.st_mode):
+                    if relative.parts[0] not in {"data", "photos"} or (
+                        relative.parts[0] == "data" and len(relative.parts) != 1
+                    ):
+                        raise ExportPrivacyError("Export artifact inventory is invalid")
+                    pending.append(path)
+                elif stat.S_ISREG(info.st_mode) and info.st_nlink == 1:
+                    name = str(relative)
+                    if name not in {
+                        "README.md",
+                        "manifest.json",
+                        "data/train.parquet",
+                        "data/EMPTY.md",
+                    } and not (relative.parts[0] == "photos" and len(relative.parts) > 1):
+                        raise ExportPrivacyError("Export artifact inventory is invalid")
+                    files.add(name)
+                else:
+                    raise ExportPrivacyError("Export artifact contains an unsafe path")
+    return files
+
+
+def _verify_public_artifact(result: ExportResult) -> None:
+    files = _safe_artifact_files(result.target)
+    bindings = dict(result.photo_bindings)
+    expected = {"README.md", "manifest.json", *bindings}
+    expected.add("data/train.parquet" if result.rows else "data/EMPTY.md")
+    if files != expected or len(bindings) != result.photos:
+        raise ExportPrivacyError("Export artifact inventory is inconsistent")
+    for name, binding in bindings.items():
+        data = (result.target / name).read_bytes()
+        if hashlib.sha256(data).hexdigest() != binding.sanitized_sha256:
+            raise ExportPrivacyError("Export photo changed before publication")
+        if has_embedded_metadata(data):
+            raise ExportPrivacyError("Export photo contains embedded metadata")
+
+
+def _prune_private_media(
+    records: list[dict[str, Any]],
+    root: Path,
+    privacy: PhotoPrivacyAuthority | None,
+    bindings: dict[str, PhotoExportBinding],
+) -> bool:
+    _safe_artifact_files(root)
+    candidates: list[PhotoExportBinding] = []
+    path_bindings: dict[str, PhotoExportBinding] = {}
+    policy = privacy.policy() if privacy is not None else None
+    if policy is not None:
+        for record in records:
+            for photo in record["photos"]:
+                path = photo["path"]
+                binding = bindings.get(path)
+                if binding is None or binding.policy != policy:
+                    continue
+                destination = (root / path).resolve()
+                if not destination.is_relative_to(root.resolve()) or not path.startswith("photos/"):
+                    raise ExportPrivacyError("Photo artifact path is invalid")
+                try:
+                    actual = destination.read_bytes()
+                except OSError:
+                    continue
+                if hashlib.sha256(actual).hexdigest() != binding.sanitized_sha256:
+                    continue
+                if has_embedded_metadata(actual):
+                    raise ExportPrivacyError("Photo artifact contains embedded metadata")
+                candidates.append(binding)
+                path_bindings[path] = binding
+    try:
+        allowed = privacy.authorize(candidates) if privacy is not None and candidates else set()
+    except (httpx.HTTPError, ValueError, TypeError):
+        allowed = set()
+    _safe_artifact_files(root)
+    # Authorization can take time: bind the returned decision to bytes still present after
+    # the response, not only to the earlier request digest.
+    for path, binding in list(path_bindings.items()):
+        if binding.photo_id not in allowed:
+            continue
+        destination = (root / path).resolve()
+        if not destination.is_relative_to(root.resolve()):
+            raise ExportPrivacyError("Photo artifact path is invalid")
+        try:
+            actual = destination.read_bytes()
+        except OSError:
+            path_bindings.pop(path)
+            continue
+        if hashlib.sha256(actual).hexdigest() != binding.sanitized_sha256:
+            path_bindings.pop(path)
+        elif has_embedded_metadata(actual):
+            raise ExportPrivacyError("Photo artifact contains embedded metadata")
+    retained_paths: set[str] = set()
+    changed = False
+    for record in records:
+        retained = [
+            photo
+            for photo in record["photos"]
+            if photo["path"] in path_bindings and path_bindings[photo["path"]].photo_id in allowed
+        ]
+        changed = changed or len(retained) != len(record["photos"])
+        record["photos"] = retained
+        retained_paths.update(photo["path"] for photo in retained)
+    photos = root / "photos"
+    if photos.exists():
+        for file in photos.rglob("*"):
+            if file.is_file() or file.is_symlink():
+                relative = str(file.relative_to(root))
+                if relative not in retained_paths:
+                    file.unlink()
+                    changed = True
+        for directory in sorted(photos.rglob("*"), key=lambda item: len(item.parts), reverse=True):
+            if directory.is_dir() and not directory.is_symlink() and not any(directory.iterdir()):
+                directory.rmdir()
+        if not any(photos.iterdir()):
+            photos.rmdir()
+    return changed
+
+
+def _finish_private_staging(
+    records: list[dict[str, Any]],
+    root: Path,
+    export_date: date,
+    withheld: int,
+    privacy: PhotoPrivacyAuthority | None,
+    bindings: dict[str, PhotoExportBinding],
+) -> None:
+    # Each authorization is after writing final public references and immediately before
+    # promotion/upload. A removal requires a rewrite and another fresh authorization.
+    for _ in range(3):
+        _write_public_files(records, root, export_date, withheld)
+        if not _prune_private_media(records, root, privacy, bindings):
+            return
+    # Bounded fail-closed fallback when decisions keep changing during rewrites.
+    for record in records:
+        record["photos"] = []
+    shutil.rmtree(root / "photos", ignore_errors=True)
+    _write_public_files(records, root, export_date, withheld)
+
+
 def build_export(
     submissions: list[ExportSubmission],
     output_root: Path,
     export_date: date,
     photo_loader: Callable[[str], bytes],
+    *,
+    photo_privacy: PhotoPrivacyAuthority | None = None,
 ) -> ExportResult:
+    policy = photo_privacy.policy() if photo_privacy is not None else None
+    bindings: dict[str, PhotoExportBinding] = {}
     qualifying = sorted(
         (
             submission
@@ -487,17 +713,18 @@ def build_export(
         key=lambda submission: submission.id,
     )
     target = output_root / export_date.isoformat()
-    temporary = output_root / f".{export_date.isoformat()}.building"
-    if temporary.exists():
-        shutil.rmtree(temporary)
-    temporary.mkdir(parents=True)
+    output_root.mkdir(parents=True, exist_ok=True)
+    # Pre-publication bytes stay in a mode-0700 system directory, outside shared/cloud output.
+    temporary = Path(tempfile.mkdtemp(prefix="gsip-photo-export-", dir="/tmp"))
     set_aside: list[tuple[str, str]] = []
     built: dict[str, dict[str, Any]] = {}
     observations: list[Observation] = []
     try:
         for submission in qualifying:
             try:
-                built[submission.id] = _row(submission, temporary, photo_loader)
+                built[submission.id] = _row(
+                    submission, temporary, photo_loader, photo_privacy, policy, bindings
+                )
             except RowSetAside as reason:
                 shutil.rmtree(temporary / "photos" / submission.id, ignore_errors=True)
                 set_aside.append((submission.id, reason.code))
@@ -529,26 +756,11 @@ def build_export(
             assert_public_record(record)
             records.append(record)
 
-        data_dir = temporary / "data"
-        data_dir.mkdir()
-        if records:
-            parquet = data_dir / "train.parquet"
-            Dataset.from_list(records).to_parquet(str(parquet))
-            loaded = load_dataset("parquet", data_files=str(parquet), split="train")
-            if len(loaded) != len(records):
-                raise ValueError("Hugging Face Datasets round-trip changed the row count")
-        else:
-            (data_dir / "EMPTY.md").write_text(
-                "No releasable contributions were available for this export.\n",
-                encoding="utf-8",
-            )
-        (temporary / "README.md").write_text(
-            dataset_card(records, export_date, len(assignment.withheld)), encoding="utf-8"
+        _finish_private_staging(
+            records, temporary, export_date, len(assignment.withheld), photo_privacy, bindings
         )
-        (temporary / "manifest.json").write_text(
-            json.dumps(_manifest(temporary), indent=2, sort_keys=True) + "\n",
-            encoding="utf-8",
-        )
+        if temporary.stat().st_dev != output_root.stat().st_dev:
+            raise ExportInfrastructureError("Export output must support private atomic promotion")
         if target.exists():
             shutil.rmtree(target)
         temporary.replace(target)
@@ -567,6 +779,12 @@ def build_export(
         set_aside=counts,
         report=_write_report(output_root, export_date, set_aside, assignment.withheld),
         photos=sum(len(record["photos"]) for record in records),
+        photo_bindings=tuple(
+            (photo["path"], bindings[photo["path"]])
+            for record in records
+            for photo in record["photos"]
+        ),
+        source_submissions=tuple(submissions),
     )
 
 
@@ -592,6 +810,10 @@ class SupabaseExportSource:
             timeout=60,
             headers={"Authorization": f"Bearer {service_key}", "apikey": service_key},
         )
+
+    @property
+    def photo_privacy(self) -> PhotoPrivacyAuthority:
+        return RpcPhotoPrivacy(self.url, self.client)
 
     def _rows(self, path: str, page_size: int = 1000) -> list[dict[str, Any]]:
         rows: list[dict[str, Any]] = []
@@ -688,6 +910,7 @@ class SupabaseExportSource:
                 versions[shot] = str(event["model_version"])
             photos = tuple(
                 ExportPhoto(
+                    id=str(photo.get("id", "")),
                     shot_type=str(photo["shot_type"]),
                     storage_path=str(photo["storage_path"]),
                     qa_status=photo["qa_status"],
@@ -697,7 +920,7 @@ class SupabaseExportSource:
                 )
                 for photo in self._rows(
                     f"photos?submission_id=eq.{submission_id}&order=shot_type"
-                    "&select=shot_type,storage_path,qa_status,calibration_status"
+                    "&select=id,shot_type,storage_path,qa_status,calibration_status"
                 )
             )
             gold = _releasable_labels(
@@ -766,7 +989,62 @@ def publish_export(
     token: str,
     repo_id: str,
     api: HfApi | None = None,
-) -> None:
+) -> ExportResult:
+    privacy = source.photo_privacy
+    _safe_artifact_files(result.target)
+    # Cached/same-date artifacts with no live process-private evidence must be rebuilt.
+    if result.rows and not result.source_submissions:
+        result = build_export(
+            source.submissions(),
+            result.target.parent,
+            export_date,
+            source.photo,
+            photo_privacy=privacy,
+        )
+    publish_root = result.target.parent
+    for _ in range(3):
+        result = honour_late_withdrawals(
+            list(result.source_submissions),
+            result,
+            source.withdrawn_grant_ids,
+            lambda marked: build_export(
+                marked, publish_root, export_date, source.photo, photo_privacy=privacy
+            ),
+        )
+        # Recheck the bytes actually on disk, even when the same artifact was built earlier.
+        parquet = result.target / "data/train.parquet"
+        records = (
+            list(load_dataset("parquet", data_files=str(parquet), split="train"))
+            if parquet.exists()
+            else []
+        )
+        if len(records) != result.rows:
+            raise ExportPrivacyError("Cached artifact row count is inconsistent")
+        for record in records:
+            assert_public_record(record)
+        _finish_private_staging(
+            records,
+            result.target,
+            export_date,
+            result.withheld,
+            privacy,
+            dict(result.photo_bindings),
+        )
+        retained = {photo["path"] for record in records for photo in record["photos"]}
+        result = replace(
+            result,
+            photos=len(retained),
+            photo_bindings=tuple(pair for pair in result.photo_bindings if pair[0] in retained),
+        )
+        withdrawn = source.withdrawn_grant_ids()
+        if not any(
+            item.grant is not None and not item.grant.withdrawn and item.grant.id in withdrawn
+            for item in result.source_submissions
+        ):
+            break
+    else:
+        raise ExportHealthError("Rights kept changing before publication; refusing to publish")
+    _verify_public_artifact(result)
     hub = api or HfApi(token=token)
     commit = hub.upload_folder(
         repo_id=repo_id,
@@ -787,6 +1065,7 @@ def publish_export(
             revision if isinstance(revision, str) and HF_REVISION.match(revision) else None,
         )
     )
+    return result
 
 
 def _with_retries(step: Callable[[], None]) -> None:
@@ -800,8 +1079,13 @@ def _with_retries(step: Callable[[], None]) -> None:
             time.sleep(2**attempt)
 
 
+class ExportArgumentParser(argparse.ArgumentParser):
+    def error(self, message: str) -> Never:
+        raise ValueError("Invalid export arguments")
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build GSIP's fail-closed public dataset export")
+    parser = ExportArgumentParser(description="Build GSIP's fail-closed public dataset export")
     parser.add_argument("--date", type=date.fromisoformat, default=date.today())
     parser.add_argument("--output", type=Path, default=Path("output/export"))
     parser.add_argument("--push", action="store_true")
@@ -810,15 +1094,19 @@ def main() -> None:
         os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"]
     )
     submissions = source.submissions()
-    result = build_export(submissions, args.output, args.date, source.photo)
+    result = build_export(
+        submissions, args.output, args.date, source.photo, photo_privacy=source.photo_privacy
+    )
     result = honour_late_withdrawals(
         submissions,
         result,
         source.withdrawn_grant_ids,
-        lambda marked: build_export(marked, args.output, args.date, source.photo),
+        lambda marked: build_export(
+            marked, args.output, args.date, source.photo, photo_privacy=source.photo_privacy
+        ),
     )
     if args.push:
-        publish_export(
+        result = publish_export(
             source,
             result,
             args.date,
@@ -829,4 +1117,9 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        raise SystemExit(
+            "Export failed; verify private operator evidence before retrying"
+        ) from None
