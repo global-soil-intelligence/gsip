@@ -1,0 +1,463 @@
+{
+  "synthetic_only": true,
+  "event_cases": [
+    {
+      "name": "camera",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "instrument",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "retire-zero-handles",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"retire\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handles\":[]}}"
+    },
+    {
+      "name": "retire-100-handles",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"retire\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handles\":[\"00000000-0000-0000-0000-000000000064\",\"00000000-0000-0000-0000-000000000065\",\"00000000-0000-0000-0000-000000000066\",\"00000000-0000-0000-0000-000000000067\",\"00000000-0000-0000-0000-000000000068\",\"00000000-0000-0000-0000-000000000069\",\"00000000-0000-0000-0000-00000000006a\",\"00000000-0000-0000-0000-00000000006b\",\"00000000-0000-0000-0000-00000000006c\",\"00000000-0000-0000-0000-00000000006d\",\"00000000-0000-0000-0000-00000000006e\",\"00000000-0000-0000-0000-00000000006f\",\"00000000-0000-0000-0000-000000000070\",\"00000000-0000-0000-0000-000000000071\",\"00000000-0000-0000-0000-000000000072\",\"00000000-0000-0000-0000-000000000073\",\"00000000-0000-0000-0000-000000000074\",\"00000000-0000-0000-0000-000000000075\",\"00000000-0000-0000-0000-000000000076\",\"00000000-0000-0000-0000-000000000077\",\"00000000-0000-0000-0000-000000000078\",\"00000000-0000-0000-0000-000000000079\",\"00000000-0000-0000-0000-00000000007a\",\"00000000-0000-0000-0000-00000000007b\",\"00000000-0000-0000-0000-00000000007c\",\"00000000-0000-0000-0000-00000000007d\",\"00000000-0000-0000-0000-00000000007e\",\"00000000-0000-0000-0000-00000000007f\",\"00000000-0000-0000-0000-000000000080\",\"00000000-0000-0000-0000-000000000081\",\"00000000-0000-0000-0000-000000000082\",\"00000000-0000-0000-0000-000000000083\",\"00000000-0000-0000-0000-000000000084\",\"00000000-0000-0000-0000-000000000085\",\"00000000-0000-0000-0000-000000000086\",\"00000000-0000-0000-0000-000000000087\",\"00000000-0000-0000-0000-000000000088\",\"00000000-0000-0000-0000-000000000089\",\"00000000-0000-0000-0000-00000000008a\",\"00000000-0000-0000-0000-00000000008b\",\"00000000-0000-0000-0000-00000000008c\",\"00000000-0000-0000-0000-00000000008d\",\"00000000-0000-0000-0000-00000000008e\",\"00000000-0000-0000-0000-00000000008f\",\"00000000-0000-0000-0000-000000000090\",\"00000000-0000-0000-0000-000000000091\",\"00000000-0000-0000-0000-000000000092\",\"00000000-0000-0000-0000-000000000093\",\"00000000-0000-0000-0000-000000000094\",\"00000000-0000-0000-0000-000000000095\",\"00000000-0000-0000-0000-000000000096\",\"00000000-0000-0000-0000-000000000097\",\"00000000-0000-0000-0000-000000000098\",\"00000000-0000-0000-0000-000000000099\",\"00000000-0000-0000-0000-00000000009a\",\"00000000-0000-0000-0000-00000000009b\",\"00000000-0000-0000-0000-00000000009c\",\"00000000-0000-0000-0000-00000000009d\",\"00000000-0000-0000-0000-00000000009e\",\"00000000-0000-0000-0000-00000000009f\",\"00000000-0000-0000-0000-0000000000a0\",\"00000000-0000-0000-0000-0000000000a1\",\"00000000-0000-0000-0000-0000000000a2\",\"00000000-0000-0000-0000-0000000000a3\",\"00000000-0000-0000-0000-0000000000a4\",\"00000000-0000-0000-0000-0000000000a5\",\"00000000-0000-0000-0000-0000000000a6\",\"00000000-0000-0000-0000-0000000000a7\",\"00000000-0000-0000-0000-0000000000a8\",\"00000000-0000-0000-0000-0000000000a9\",\"00000000-0000-0000-0000-0000000000aa\",\"00000000-0000-0000-0000-0000000000ab\",\"00000000-0000-0000-0000-0000000000ac\",\"00000000-0000-0000-0000-0000000000ad\",\"00000000-0000-0000-0000-0000000000ae\",\"00000000-0000-0000-0000-0000000000af\",\"00000000-0000-0000-0000-0000000000b0\",\"00000000-0000-0000-0000-0000000000b1\",\"00000000-0000-0000-0000-0000000000b2\",\"00000000-0000-0000-0000-0000000000b3\",\"00000000-0000-0000-0000-0000000000b4\",\"00000000-0000-0000-0000-0000000000b5\",\"00000000-0000-0000-0000-0000000000b6\",\"00000000-0000-0000-0000-0000000000b7\",\"00000000-0000-0000-0000-0000000000b8\",\"00000000-0000-0000-0000-0000000000b9\",\"00000000-0000-0000-0000-0000000000ba\",\"00000000-0000-0000-0000-0000000000bb\",\"00000000-0000-0000-0000-0000000000bc\",\"00000000-0000-0000-0000-0000000000bd\",\"00000000-0000-0000-0000-0000000000be\",\"00000000-0000-0000-0000-0000000000bf\",\"00000000-0000-0000-0000-0000000000c0\",\"00000000-0000-0000-0000-0000000000c1\",\"00000000-0000-0000-0000-0000000000c2\",\"00000000-0000-0000-0000-0000000000c3\",\"00000000-0000-0000-0000-0000000000c4\",\"00000000-0000-0000-0000-0000000000c5\",\"00000000-0000-0000-0000-0000000000c6\",\"00000000-0000-0000-0000-0000000000c7\"]}}"
+    },
+    {
+      "name": "semantic-numeric-spelling",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":-0.0,\"depth_bottom_cm\":5e0,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "uppercase-uuid",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"ABCDEFAB-CDEF-ABCD-EFAB-CDEFABCDEFAB\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"ABCDEFAB-CDEF-ABCD-EFAB-CDEFABCDEFAB\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "escaped-known-keys",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event\\u005fid\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "maximum-sequence",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":9007199254740991,\"previous_event_sha256\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "forbidden-grant_id",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"grant_id\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-actor_id",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"actor_id\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-contributor_id",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"contributor_id\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-consent_verified",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"consent_verified\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-pairing_verified",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"pairing_verified\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-withdrawn",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"withdrawn\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-holdout",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"holdout\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-qa_status",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"qa_status\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-provenance_tier",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"provenance_tier\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-labels",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"labels\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-credential",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"credential\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-storage_path",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"storage_path\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-url",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"url\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-timestamp",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"timestamp\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-location",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"location\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-source_file",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"source_file\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "forbidden-node_id",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true,\"node_id\":\"fictional-private-only\"}}"
+    },
+    {
+      "name": "invalid-schema_version-25",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-library-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-kind-26",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"unknown\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-event_id-27",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000000000000000000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-event_id-28",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\\n\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-event_id-29",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":1,\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-previous_event_sha256-30",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":\"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\",\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-stream_sequence-31",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":-1,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-stream_sequence-32",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":9007199254740992,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "zero-with-predecessor",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "nonzero-null-predecessor",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":1,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "sequence-token-0.0",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0.0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "sequence-token-0e0",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0e0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "sequence-token--0",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":-0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "sequence-token-true",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":true,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "sequence-token-false",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":false,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "sequence-token-\"0\"",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":\"0\",\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "sequence-token-null",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":null,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "pixel-token-100.0",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100.0,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "pixel-token-1e2",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":1e2,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "pixel-token--0",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":-0,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "pixel-token-0",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":0,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "pixel-token-true",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":true,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "pixel-token-\"100\"",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":\"100\",\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "pixel-token-40000001",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":40000001,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-context-depth_top_cm",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":true,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-context-depth_bottom_cm",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":201,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-context-depth_top_cm",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":5,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-context-condition",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"frozen\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-measurement-mean_rgb",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-measurement-std_rgb",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,1.1,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-measurement-calibration_status",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"calibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-measurement-device_id",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000000000000000000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-measurement-card_present",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":1,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-instrument-wavelength_nm",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,450,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-instrument-wavelength_nm",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[199,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-instrument-reflectance",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-instrument-reflectance",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,40,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-instrument-uncertainty",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,-0.1,0.01]},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-instrument-instrument_id",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000000000000000000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01]},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "invalid-instrument-unit",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"instrument_reflectance\",\"source_sha256\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"instrument_id\":\"00000000-0000-0000-0000-000000000007\",\"calibration_id\":\"00000000-0000-0000-0000-000000000008\",\"wavelength_nm\":[450,550,650],\"reflectance\":[0.3,0.4,0.5],\"uncertainty\":[0.01,0.01,0.01],\"unit\":\"percent\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "retire-101-handles",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"retire\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handles\":[\"00000000-0000-0000-0000-000000000064\",\"00000000-0000-0000-0000-000000000065\",\"00000000-0000-0000-0000-000000000066\",\"00000000-0000-0000-0000-000000000067\",\"00000000-0000-0000-0000-000000000068\",\"00000000-0000-0000-0000-000000000069\",\"00000000-0000-0000-0000-00000000006a\",\"00000000-0000-0000-0000-00000000006b\",\"00000000-0000-0000-0000-00000000006c\",\"00000000-0000-0000-0000-00000000006d\",\"00000000-0000-0000-0000-00000000006e\",\"00000000-0000-0000-0000-00000000006f\",\"00000000-0000-0000-0000-000000000070\",\"00000000-0000-0000-0000-000000000071\",\"00000000-0000-0000-0000-000000000072\",\"00000000-0000-0000-0000-000000000073\",\"00000000-0000-0000-0000-000000000074\",\"00000000-0000-0000-0000-000000000075\",\"00000000-0000-0000-0000-000000000076\",\"00000000-0000-0000-0000-000000000077\",\"00000000-0000-0000-0000-000000000078\",\"00000000-0000-0000-0000-000000000079\",\"00000000-0000-0000-0000-00000000007a\",\"00000000-0000-0000-0000-00000000007b\",\"00000000-0000-0000-0000-00000000007c\",\"00000000-0000-0000-0000-00000000007d\",\"00000000-0000-0000-0000-00000000007e\",\"00000000-0000-0000-0000-00000000007f\",\"00000000-0000-0000-0000-000000000080\",\"00000000-0000-0000-0000-000000000081\",\"00000000-0000-0000-0000-000000000082\",\"00000000-0000-0000-0000-000000000083\",\"00000000-0000-0000-0000-000000000084\",\"00000000-0000-0000-0000-000000000085\",\"00000000-0000-0000-0000-000000000086\",\"00000000-0000-0000-0000-000000000087\",\"00000000-0000-0000-0000-000000000088\",\"00000000-0000-0000-0000-000000000089\",\"00000000-0000-0000-0000-00000000008a\",\"00000000-0000-0000-0000-00000000008b\",\"00000000-0000-0000-0000-00000000008c\",\"00000000-0000-0000-0000-00000000008d\",\"00000000-0000-0000-0000-00000000008e\",\"00000000-0000-0000-0000-00000000008f\",\"00000000-0000-0000-0000-000000000090\",\"00000000-0000-0000-0000-000000000091\",\"00000000-0000-0000-0000-000000000092\",\"00000000-0000-0000-0000-000000000093\",\"00000000-0000-0000-0000-000000000094\",\"00000000-0000-0000-0000-000000000095\",\"00000000-0000-0000-0000-000000000096\",\"00000000-0000-0000-0000-000000000097\",\"00000000-0000-0000-0000-000000000098\",\"00000000-0000-0000-0000-000000000099\",\"00000000-0000-0000-0000-00000000009a\",\"00000000-0000-0000-0000-00000000009b\",\"00000000-0000-0000-0000-00000000009c\",\"00000000-0000-0000-0000-00000000009d\",\"00000000-0000-0000-0000-00000000009e\",\"00000000-0000-0000-0000-00000000009f\",\"00000000-0000-0000-0000-0000000000a0\",\"00000000-0000-0000-0000-0000000000a1\",\"00000000-0000-0000-0000-0000000000a2\",\"00000000-0000-0000-0000-0000000000a3\",\"00000000-0000-0000-0000-0000000000a4\",\"00000000-0000-0000-0000-0000000000a5\",\"00000000-0000-0000-0000-0000000000a6\",\"00000000-0000-0000-0000-0000000000a7\",\"00000000-0000-0000-0000-0000000000a8\",\"00000000-0000-0000-0000-0000000000a9\",\"00000000-0000-0000-0000-0000000000aa\",\"00000000-0000-0000-0000-0000000000ab\",\"00000000-0000-0000-0000-0000000000ac\",\"00000000-0000-0000-0000-0000000000ad\",\"00000000-0000-0000-0000-0000000000ae\",\"00000000-0000-0000-0000-0000000000af\",\"00000000-0000-0000-0000-0000000000b0\",\"00000000-0000-0000-0000-0000000000b1\",\"00000000-0000-0000-0000-0000000000b2\",\"00000000-0000-0000-0000-0000000000b3\",\"00000000-0000-0000-0000-0000000000b4\",\"00000000-0000-0000-0000-0000000000b5\",\"00000000-0000-0000-0000-0000000000b6\",\"00000000-0000-0000-0000-0000000000b7\",\"00000000-0000-0000-0000-0000000000b8\",\"00000000-0000-0000-0000-0000000000b9\",\"00000000-0000-0000-0000-0000000000ba\",\"00000000-0000-0000-0000-0000000000bb\",\"00000000-0000-0000-0000-0000000000bc\",\"00000000-0000-0000-0000-0000000000bd\",\"00000000-0000-0000-0000-0000000000be\",\"00000000-0000-0000-0000-0000000000bf\",\"00000000-0000-0000-0000-0000000000c0\",\"00000000-0000-0000-0000-0000000000c1\",\"00000000-0000-0000-0000-0000000000c2\",\"00000000-0000-0000-0000-0000000000c3\",\"00000000-0000-0000-0000-0000000000c4\",\"00000000-0000-0000-0000-0000000000c5\",\"00000000-0000-0000-0000-0000000000c6\",\"00000000-0000-0000-0000-0000000000c7\",\"00000000-0000-0000-0000-0000000000c8\"]}}"
+    },
+    {
+      "name": "retire-duplicate-handles",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"retire\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handles\":[\"00000000-0000-0000-0000-000000000009\",\"00000000-0000-0000-0000-000000000009\"]}}"
+    },
+    {
+      "name": "duplicate-escaped-root",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"event\\u005fid\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "duplicate-context",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "duplicate-measurement",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":0,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "nonfinite-NaN",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":NaN,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "nonfinite-Infinity",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":Infinity,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "nonfinite--Infinity",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":-Infinity,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "nonfinite-1e999",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-node-exchange-v1\",\"event_id\":\"00000000-0000-0000-0000-000000000001\",\"source_peer_id\":\"00000000-0000-0000-0000-000000000002\",\"destination_peer_id\":\"00000000-0000-0000-0000-000000000003\",\"scope_id\":\"00000000-0000-0000-0000-000000000004\",\"stream_sequence\":0,\"previous_event_sha256\":null,\"kind\":\"declare\",\"payload\":{\"sample_handle\":\"00000000-0000-0000-0000-000000000005\",\"measurement_handle\":\"00000000-0000-0000-0000-000000000009\",\"protocol_version\":\"gsip-capture-v1\",\"context\":{\"depth_top_cm\":1e999,\"depth_bottom_cm\":5,\"condition\":\"dry\"},\"measurement\":{\"kind\":\"camera_rgb\",\"source_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"device_id\":\"00000000-0000-0000-0000-000000000006\",\"extractor_version\":\"rgb-summary-v1\",\"mean_rgb\":[0.2,0.3,0.4],\"std_rgb\":[0.01,0.02,0.03],\"pixel_count\":100,\"card_present\":false,\"calibration_status\":\"uncalibrated\"},\"synthetic_claim\":true}}"
+    },
+    {
+      "name": "malformed-74",
+      "valid": false,
+      "raw": ""
+    },
+    {
+      "name": "malformed-75",
+      "valid": false,
+      "raw": "{} {}"
+    },
+    {
+      "name": "malformed-76",
+      "valid": false,
+      "raw": "[]"
+    },
+    {
+      "name": "malformed-77",
+      "valid": false,
+      "raw": "null"
+    },
+    {
+      "name": "malformed-78",
+      "valid": false,
+      "raw": "false"
+    },
+    {
+      "name": "malformed-79",
+      "valid": false,
+      "raw": "["
+    },
+    {
+      "name": "malformed-80",
+      "valid": false,
+      "raw": "{\"x\":"
+    },
+    {
+      "name": "malformed-81",
+      "valid": false,
+      "raw": "{\"x\":01}"
+    },
+    {
+      "name": "malformed-82",
+      "valid": false,
+      "raw": "{\"x\":1,}"
+    },
+    {
+      "name": "malformed-83",
+      "valid": false,
+      "raw": "{\"x\":\"\\ud800\"}"
+    },
+    {
+      "name": "malformed-84",
+      "valid": false,
+      "raw": "{\"\\udfff\":0}"
+    }
+  ],
+  "byte_cases": [
+    {
+      "name": "BOM",
+      "hex": "efbbbf7b22736368656d615f76657273696f6e223a22677369702d6e6f64652d65786368616e67652d7631222c226576656e745f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303031222c22736f757263655f706565725f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303032222c2264657374696e6174696f6e5f706565725f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303033222c2273636f70655f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303034222c2273747265616d5f73657175656e6365223a302c2270726576696f75735f6576656e745f736861323536223a6e756c6c2c226b696e64223a226465636c617265222c227061796c6f6164223a7b2273616d706c655f68616e646c65223a2230303030303030302d303030302d303030302d303030302d303030303030303030303035222c226d6561737572656d656e745f68616e646c65223a2230303030303030302d303030302d303030302d303030302d303030303030303030303039222c2270726f746f636f6c5f76657273696f6e223a22677369702d636170747572652d7631222c22636f6e74657874223a7b2264657074685f746f705f636d223a302c2264657074685f626f74746f6d5f636d223a352c22636f6e646974696f6e223a22647279227d2c226d6561737572656d656e74223a7b226b696e64223a2263616d6572615f726762222c22736f757263655f736861323536223a2230303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030222c226465766963655f6964223a2230303030303030302d303030302d303030302d303030302d303030303030303030303036222c22657874726163746f725f76657273696f6e223a227267622d73756d6d6172792d7631222c226d65616e5f726762223a5b302e322c302e332c302e345d2c227374645f726762223a5b302e30312c302e30322c302e30335d2c22706978656c5f636f756e74223a3130302c22636172645f70726573656e74223a66616c73652c2263616c6962726174696f6e5f737461747573223a22756e63616c69627261746564227d2c2273796e7468657469635f636c61696d223a747275657d7d"
+    },
+    {
+      "name": "malformed-UTF8",
+      "hex": "7b22ff223a307d"
+    },
+    {
+      "name": "overlong-UTF8",
+      "hex": "7b2278223a22c080227d"
+    }
+  ],
+  "band_count_cases": [
+    {
+      "count": 2,
+      "valid": false
+    },
+    {
+      "count": 3,
+      "valid": true
+    },
+    {
+      "count": 10000,
+      "valid": true
+    },
+    {
+      "count": 10001,
+      "valid": false
+    }
+  ],
+  "camera_sha256": "3837eba2c357e4bf06bc219336c497d859efdabba402b2077abf7b9b65d0d35f"
+}
