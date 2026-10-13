@@ -814,6 +814,30 @@ export type Database = {
       }
     }
     Functions: {
+      authorize_photo_privacy_export: {
+        Args: { p_request: Json }
+        Returns: Json
+      }
+      claim_photo_privacy_job: { Args: never; Returns: Json }
+      complete_photo_privacy_job: {
+        Args: { p_lease_id: string; p_receipt: Json }
+        Returns: Json
+      }
+      fail_photo_privacy_job: {
+        Args: { p_lease_id: string; p_error_code: string }
+        Returns: Json
+      }
+      photo_privacy_capabilities: { Args: never; Returns: Json }
+      photo_privacy_receipt: { Args: { p_photo_id: string }; Returns: Json }
+      photo_privacy_review_context: {
+        Args: { p_photo_id: string; p_operator_token: string }
+        Returns: Json
+      }
+      record_photo_privacy_content: { Args: { p_request: Json }; Returns: Json }
+      review_photo_privacy: {
+        Args: { p_operator_token: string; p_request: Json }
+        Returns: Json
+      }
       apply_deletion_request: {
         Args: { p_request_id: string }
         Returns: {

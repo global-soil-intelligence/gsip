@@ -25,7 +25,7 @@ returns jsonb language sql immutable as $$
             'wavelength_nm',jsonb_build_array(400,500,600),
             'reflectance',jsonb_build_array(0.2,0.3,0.4), 'uncertainty',jsonb_build_array(0.01,0.02,0.03)));
 $$;
-create function pg_temp.seed_submission(p_index integer, p_owner integer default 1, p_grant uuid default null)
+create function pg_temp.seed_submission(p_index integer, p_owner integer default 1, p_grant uuid default null,p_fresh_photos boolean default false)
 returns void language plpgsql as $$
 declare uid uuid := pg_temp.id('3404',p_owner);
     sub uuid := pg_temp.id('b404',p_index);
@@ -34,8 +34,10 @@ begin
     values(sub,pg_temp.id('2404',p_owner),coalesce(p_grant,pg_temp.id('6404',p_owner)),
         'SRID=4326;POINT EMPTY',now(),'bare','dry',false,'synthetic fixture',now());
     insert into public.photos(id,submission_id,shot_type,storage_path) values
-        (pg_temp.id('d404',p_index*2),sub,'A',uid::text||'/'||sub::text||'/A/'||pg_temp.id('c404',p_index*2)::text||'.jpg'),
-        (pg_temp.id('d404',p_index*2+1),sub,'B',uid::text||'/'||sub::text||'/B/'||pg_temp.id('c404',p_index*2+1)::text||'.jpg');
+        (case when p_fresh_photos then gen_random_uuid() else pg_temp.id('d404',p_index*2) end,sub,'A',uid::text||'/'||sub::text||'/A/'||
+            (case when p_fresh_photos then gen_random_uuid() else pg_temp.id('c404',p_index*2) end)::text||'.jpg'),
+        (case when p_fresh_photos then gen_random_uuid() else pg_temp.id('d404',p_index*2+1) end,sub,'B',uid::text||'/'||sub::text||'/B/'||
+            (case when p_fresh_photos then gen_random_uuid() else pg_temp.id('c404',p_index*2+1) end)::text||'.jpg');
 end;
 $$;
 insert into public.terms_versions(version,published_at) values ('lib4b-test',now()-interval '100 days');
@@ -242,7 +244,8 @@ select is((select status from public.deletion_requests where contributor_id=pg_t
 update public.deletion_requests set requested_at=now()-interval '1 second' where contributor_id=pg_temp.id('2404',1);
 insert into public.contribution_grants(id,contributor_id,terms_version,accepted_at,attribution_name)
 values(pg_temp.id('6404',11),pg_temp.id('2404',1),'lib4b-test',now(),'Anonymous soil contributor');
-select pg_temp.seed_submission(8,1,pg_temp.id('6404',11));
+-- A fresh capture has fresh photo/object identities; withdrawn source UUIDs stay retired.
+select pg_temp.seed_submission(8,1,pg_temp.id('6404',11),true);
 set local role authenticated;
 set local "request.jwt.claims" = '{"sub":"34040000-0000-4000-8000-000000000001","role":"authenticated"}';
 select throws_ok($$select public.record_library_intake(jsonb_set(pg_temp.request(8),'{sample_id}',to_jsonb(pg_temp.id('f404',1)::text)))$$,
