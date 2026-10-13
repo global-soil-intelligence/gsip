@@ -343,6 +343,14 @@ The v5 foundation sequence is `docs/spec-v5` → WP-LIB-1 → WP-LIB-2 → WP-LI
 - [ ] `VITE_LIBRARY_INTAKE_LIVE=false` default preserves existing UI and sends no new RPC; capability probing does not change the legacy gate query or trigger anonymous sign-in. Actual intake also requires compatible capabilities, server library gate and existing capture gates.
 - [ ] Synthetic end-to-end capture → queued sample → owner-private unverified receipt → exact retry → withdrawal/deletion succeeds; the test artifact stays local, and the actual app/Pages artifact is rebuilt with both build flags false.
 
+**WP-SEC-1: Existing dependency security remediation**
+
+Branch: `wp-sec-1-dependency-remediation`. Update the four confirmed vulnerable resolutions (source-map-js, xcode's UUID dependency, fsspec and multidict) to the smallest compatible patched versions. Keep frozen installation, package release-age policy, native dependency/permission checks and full-history secret scanning unchanged. Record exact advisory, license, maintenance/release signal and artifact size for each updated package. No new runtime capability, production change or new service.
+
+- [ ] Frozen lockfiles install and resolve only patched versions of the four affected packages; explain any additional solver change.
+- [ ] CommonJS Xcode tooling still generates project IDs with the scoped UUID upgrade; UUID boundary regression and the existing Python/web/native suites pass.
+- [ ] Read back the repository's dependency-alert status after merge; do not call unavailable evidence zero findings.
+
 ## 5. Review gates (checked on every PR)
 
 1. Acceptance criteria demonstrably met (CI evidence or reproducible commands, not claims).
