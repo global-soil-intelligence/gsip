@@ -1,6 +1,7 @@
 # iOS private storage: feasibility before migration
 
-Status: v11 specification proposal, **blocked/unverified**. **No backend is selected.**
+Status: v11 specification approved and merged in [#68](https://github.com/global-soil-intelligence/gsip/pull/68); iOS protection remains **blocked/unverified**. **No backend is selected.**
+[APP-2C1](IOS_STORAGE_FEASIBILITY.md) records the source-only capability review and offline evidence checker.
 This package contains no migration or runtime implementation. It selects no new dependency,
 native code, account, signing material or service. It grants no deployment or capture authority.
 
