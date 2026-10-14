@@ -2974,7 +2974,8 @@ def validate_toolchain(value: Any, target: str) -> None:
         return
     aapt = text_value(tools["aapt2"], 128)
     if not re.fullmatch(
-        r"Android Asset Packaging Tool \(aapt\) [0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}-[0-9]{1,16}",
+        r"Android Asset Packaging Tool \(aapt\) [0-9]{1,4}\.[0-9]{1,4}"
+        r"(?:\.[0-9]{1,4})?-[0-9]{1,16}",
         aapt,
     ):
         refuse()

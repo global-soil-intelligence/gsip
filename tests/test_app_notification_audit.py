@@ -5191,3 +5191,109 @@ def test_selected_debug_scope_refuses_changed_missing_or_unsafe_included_inputs(
                 os.link(outside, path)
     with pytest.raises((audit.AuditError, FileNotFoundError)):
         audit.validate_debug_signing_scope(repo)
+
+
+@pytest.mark.parametrize(
+    "version",
+    [
+        "Android Asset Packaging Tool (aapt) 2.19-8678579",
+        "Android Asset Packaging Tool (aapt) 2.19-11948202",
+        "Android Asset Packaging Tool (aapt) 2.19.2-13409019",
+        "Android Asset Packaging Tool (aapt) 9999.9999-9999999999999999",
+        "Android Asset Packaging Tool (aapt) 9999.9999.9999-9999999999999999",
+    ],
+)
+def test_aapt2_version_accepts_documented_observed_and_existing_bounded_formats(
+    version: str
+) -> None:
+    tools = toolchain_fixture("android")
+    tools["aapt2"] = version
+    audit.validate_toolchain(tools, "android")
+
+
+@pytest.mark.parametrize(
+    "version",
+    [
+        "Android Asset Packaging Tool (aapt) 2-11948202",
+        "Android Asset Packaging Tool (aapt) 2.19.2.1-11948202",
+        "Android Asset Packaging Tool (aapt) 10000.19-11948202",
+        "Android Asset Packaging Tool (aapt) 2.10000-11948202",
+        "Android Asset Packaging Tool (aapt) 2.19.10000-11948202",
+        "Android Asset Packaging Tool (aapt) 2.19-12345678901234567",
+        "Android Asset Packaging Tool (aapt) 2.19-",
+        "Android Asset Packaging Tool (aapt) 2.19.2-",
+        "Android Asset Packaging Tool (aapt) 2.19--11948202",
+        "Android Asset Packaging Tool (aapt) +2.19-11948202",
+        "Android Asset Packaging Tool (aapt) 2.19+11948202",
+        "Android Asset Packaging Tool (aapt) 2.19-11948202-extra",
+        "Android Asset Packaging Tool (aapt) 2..19-11948202",
+        "Android Asset Packaging Tool (aapt) 2.19.-11948202",
+        "Android Asset Packaging Tool (aapt) 2.a-11948202",
+        "Android Asset Packaging Tool (aapt) 2.19-alpha",
+        "Android Asset Packaging Tool (aapt) 2.19-11948202 ",
+        " Android Asset Packaging Tool (aapt) 2.19-11948202",
+        "Android Asset Packaging Tool (aapt)  2.19-11948202",
+        "Android Asset Packaging Tool (aapt2) 2.19-11948202",
+        "Android Asset Packaging Tool (aapt) 2.19-11948202\n",
+        "Android Asset Packaging Tool (aapt) 2.19-11948202\t",
+        "Android Asset Packaging Tool (aapt) 2.19-11948202\x00",
+        "Android Asset Packaging Tool (aapt) ２.19-11948202",
+        "synthetic private sentinel",
+        "Android Asset Packaging Tool (aapt) " + "1" * 129,
+        "",
+        None,
+        False,
+        2.19,
+        b"Android Asset Packaging Tool (aapt) 2.19-11948202",
+        {"private": "synthetic"},
+        ["Android Asset Packaging Tool (aapt) 2.19-11948202"],
+    ],
+)
+def test_aapt2_version_keeps_exact_grammar_bounds_and_private_value_refusal(
+    version: object
+) -> None:
+    tools = toolchain_fixture("android")
+    tools["aapt2"] = version
+    with pytest.raises(audit.AuditError):
+        audit.validate_toolchain(tools, "android")
+
+
+@pytest.mark.parametrize("version", ["2.19-11948202", "2.19.2-13409019"])
+def test_aapt2_version_remains_bound_to_complete_actual_artifact_receipt(
+    version: str, tmp_path: Path
+) -> None:
+    artifact = tmp_path / "synthetic.apk"
+    zipped(artifact, b"synthetic", False)
+    value = genuine_build_receipt(artifact, "a" * 40)
+    value["toolchain"]["aapt2"] = "Android Asset Packaging Tool (aapt) " + version
+    audit.validate_build_receipt(value, artifact, artifact)
+    value["artifact_sha256"] = "f" * 64
+    with pytest.raises(audit.AuditError):
+        audit.validate_build_receipt(value, artifact, artifact)
+
+
+@pytest.mark.parametrize(
+    ("left_version", "right_version"),
+    [
+        ("2.19-11948202", "2.19-11948202"),
+        ("2.19.2-13409019", "2.19.2-13409019"),
+        ("2.19-11948202", "2.19.2-13409019"),
+        ("2.19-11948202", "2.19-8678579"),
+    ],
+)
+def test_aapt2_version_does_not_normalize_away_parent_candidate_toolchain_equality(
+    left_version: str, right_version: str, tmp_path: Path
+) -> None:
+    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
+    zipped(parent, b"parent", False)
+    zipped(candidate, b"candidate", False)
+    left, right, native = receipts(parent, candidate)
+    other = complete_native("a" * 40, right["artifact_sha256"])
+    left["toolchain"]["aapt2"] = "Android Asset Packaging Tool (aapt) " + left_version
+    right["toolchain"]["aapt2"] = "Android Asset Packaging Tool (aapt) " + right_version
+    if left_version != right_version:
+        with pytest.raises(audit.AuditError):
+            audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other)
+    else:
+        value = audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other)
+        assert value["identical_toolchain"]["aapt2"] == left["toolchain"]["aapt2"]

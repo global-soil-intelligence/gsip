@@ -551,3 +551,15 @@ before metadata discovery. Existing locked npm plugin build logic and controlled
 CI/global initialization remain explicit trust assumptions; no arbitrary Gradle
 initialization sandbox is claimed. The namespace, empty-R, source, archive,
 permission and original runtime/metadata task guards remain unchanged.
+
+The Android receipt parser accepts the documented AAPT2 version form with two
+numeric components, as well as the already supported three-component form. The
+[official AAPT2 version example](https://developer.android.com/tools/aapt2#version)
+is `Android Asset Packaging Tool (aapt) 2.19-8678579`; a version-only read of the
+existing copied SDK Build Tools 35.0.0 executable returned `2.19-11948202`. The
+exact prefix, one to four digits per component, one to sixteen digits in the
+numeric build suffix, 128-character ASCII/control-free limit, strict receipt
+schema and exact parent/candidate toolchain equality remain enforced. The actual
+version string in the failed hosted run was unavailable, so the local value is
+not attributed to that runner. This parser correction changes no build, runtime
+selection, source/licence guard, signing-key proof or native acceptance requirement.
