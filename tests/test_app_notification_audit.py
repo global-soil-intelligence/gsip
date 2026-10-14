@@ -4393,3 +4393,114 @@ def test_reviewed_digest_cannot_be_rebound_to_generic_recognized_declarations() 
     chain[0]["licenses"] = chain[0]["licenses"][:1]
     with pytest.raises(audit.AuditError):
         audit.validate_pom_chain(chain, expected)
+
+
+def cordova_compile_jar(generated: Path, variant: str, payload: bytes = CORDOVA_EMPTY_R) -> Path:
+    path = generated / (
+        f"build/intermediates/compile_library_classes_jar/{variant}/"
+        f"bundleLibCompileToJar{variant.capitalize()}/classes.jar"
+    )
+    path.parent.mkdir(parents=True)
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr(CORDOVA_R_MEMBER, payload)
+    return path
+
+
+@pytest.mark.parametrize("variant", ["debug", "release"])
+def test_generated_cordova_compile_role_accepts_only_proven_R_stub(
+    variant: str, graph: tuple[dict[str, Any], Path, Path, Path]
+) -> None:
+    data, repo, cache, _ = graph
+    generated, runtime, _ = cordova_output_project(repo)
+    compile_jar = cordova_compile_jar(generated, variant)
+    for index, view in enumerate(data["views"]):
+        view["projects"].append(":capacitor-cordova-android-plugins")
+        view["artifacts"].append(
+            {
+                "kind": "project",
+                "project": ":capacitor-cordova-android-plugins",
+                "file": str(runtime[index]),
+            }
+        )
+    result = audit.runtime_evidence(data, repo, cache, False)
+    assert len(compile_jar.read_bytes()) == 330
+    for view in result["runtime_views"]:
+        assert view["project_sources"][0]["project"] == ":capacitor-cordova-android-plugins"
+        assert view["resolved_runtime_inputs"][-1]["bytes"] == 22
+
+
+@pytest.mark.parametrize("variant", ["debug", "release"])
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "wrong_role",
+        "wrong_variant",
+        "wrong_filename",
+        "foreign_class",
+        "constructor",
+        "extra_member",
+        "hidden_payload",
+        "empty_compile",
+    ],
+)
+def test_generated_cordova_compile_role_cannot_hide_other_inputs(
+    variant: str, defect: str, tmp_path: Path
+) -> None:
+    generated, _, _ = cordova_output_project(tmp_path)
+    path = cordova_compile_jar(generated, variant)
+    if defect in {"wrong_role", "wrong_variant", "wrong_filename"}:
+        if defect == "wrong_role":
+            relative = (
+                path.relative_to(generated)
+                .as_posix()
+                .replace("compile_library_classes_jar", "unknown_compile_library_classes_jar")
+            )
+            other = generated / relative
+        elif defect == "wrong_variant":
+            other = (
+                path.parent.with_name(
+                    "bundleLibCompileToJar" + ("Release" if variant == "debug" else "Debug")
+                )
+                / "classes.jar"
+            )
+        else:
+            other = path.with_name("other.jar")
+        other.parent.mkdir(parents=True, exist_ok=True)
+        path.rename(other)
+    elif defect == "hidden_payload":
+        path.write_bytes(path.read_bytes() + b"synthetic private payload")
+    elif defect == "empty_compile":
+        path.write_bytes(b"PK\x05\x06" + b"\0" * 18)
+    else:
+        payload = CORDOVA_EMPTY_R
+        if defect == "foreign_class":
+            payload = payload.replace(b"plugins/R", b"plugins/X")
+        elif defect == "constructor":
+            payload = payload[:-11] + b"\x00" + payload[-10:]
+        with zipfile.ZipFile(path, "w") as archive:
+            archive.writestr(CORDOVA_R_MEMBER, payload)
+            if defect == "extra_member":
+                archive.writestr("Unexpected.class", b"synthetic")
+    with pytest.raises(audit.AuditError):
+        audit.validate_empty_cordova_project(generated)
+
+
+def test_native_workflow_builds_only_app_targets_and_keeps_repeat_flags() -> None:
+    import re
+    import shlex
+
+    commands = []
+    for line in (ROOT / ".github/workflows/app-build.yml").read_text().splitlines():
+        match = re.search(r"(?:^|\s)(\./gradlew\s+.+)$", line)
+        if match:
+            tokens = shlex.split(match[1])
+            if any(token.split(":")[-1] == "assembleDebug" for token in tokens):
+                commands.append(tokens)
+    assert len(commands) == 4
+    for command in commands:
+        assert [token for token in command if token.endswith("assembleDebug")] == [
+            ":app:assembleDebug"
+        ]
+        assert "--no-daemon" in command
+        assert ("--rerun-tasks" in command) == ("--no-build-cache" in command)
+    assert sum("--rerun-tasks" in command for command in commands) == 2

@@ -78,7 +78,11 @@ can appear in npm inspection; its Android project remains excluded from the runt
 
 The generated Cordova tree is scanned rather than excluding its build directory. Its
 only permitted JAR roles are the exact debug/release AGP runtime-classes and resource-R
-output paths. Runtime-classes JARs must be canonical 22-byte empty ZIPs. Resource JARs
+output paths, plus `compile_library_classes_jar/{debug|release}/bundleLibCompileToJar{Debug|Release}/classes.jar`.
+The compile-library role is supporting generated output, not an additional selected
+runtime input. Its actual debug and release archives each contain the same single
+generated R stub and receive the complete resource-JAR validation below; an empty
+22-byte compile-library ZIP is refused. Runtime-classes JARs must be canonical 22-byte empty ZIPs. Resource JARs
 must have exactly one fixed `capacitor/cordova/android/plugins/R.class` entry, with no
 extra members, ZIP comments, extra fields or hidden prefix/trailing payload. Its exact
 150-byte Java 8 class has no fields, interfaces, additional constants or attributes;
@@ -88,6 +92,14 @@ classes, namespaces, source/libs archives, any AAR or standalone `.so` library
 producer paths, unsafe links, nonregular files and oversized inputs are refused.
 Unreadable root or child directories refuse the audit rather than being skipped;
 the scan is bounded to 30,000 entries.
+
+Candidate and parent first/repeated APK builds invoke `:app:assembleDebug`. Actual
+Gradle 8.14.3/AGP 8.13.0 dry-run comparisons on both isolated sources retained all
+43 app tasks and their required compile-library producers. Unqualified
+`assembleDebug` also selected unrelated library aggregate tasks, including Cordova's
+`bundleDebugAar`; the app-qualified target did not select that unconsumed AAR bundle.
+The generated-project AAR ban remains unchanged. This is bounded task-selection
+evidence for these exact inputs, not a claim that a local APK or hosted build passed.
 
 **Assumption:** this empty generated R stub is the deterministic output of the pinned
 AGP 8.13.0 `BytecodeRClassWriterKt.generateOuterRClass` implementation for an empty

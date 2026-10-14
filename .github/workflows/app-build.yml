@@ -91,7 +91,7 @@ jobs:
           } | python ../../../scripts/app_permissions.py check-dependencies -
       - name: Build the debug APK
         working-directory: apps/capture-pwa/android
-        run: ./gradlew --no-daemon assembleDebug
+        run: ./gradlew --no-daemon :app:assembleDebug
       - name: Check the APK's permissions
         shell: bash
         run: |
@@ -106,7 +106,7 @@ jobs:
           cp apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/gsip-android-reference.apk"
       - name: Repeat the Android build with the same inputs
         working-directory: apps/capture-pwa/android
-        run: ./gradlew --no-daemon assembleDebug --rerun-tasks --no-build-cache
+        run: ./gradlew --no-daemon :app:assembleDebug --rerun-tasks --no-build-cache
       - name: Check repeated APK policy and record build evidence
         shell: bash
         run: |
@@ -141,7 +141,7 @@ jobs:
             ./gradlew --no-daemon -q :app:dependencies --configuration debugRuntimeClasspath
             ./gradlew --no-daemon -q :app:dependencies --configuration releaseRuntimeClasspath
           } | python ../../../scripts/app_permissions.py check-dependencies -
-          ./gradlew --no-daemon assembleDebug
+          ./gradlew --no-daemon :app:assembleDebug
           cd ../../..
           aapt2="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2"
           apk=apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk
@@ -149,7 +149,7 @@ jobs:
           python scripts/app_build.py check-apk "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"
           cp "$apk" "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk"
           cd apps/capture-pwa/android
-          ./gradlew --no-daemon assembleDebug --rerun-tasks --no-build-cache
+          ./gradlew --no-daemon :app:assembleDebug --rerun-tasks --no-build-cache
           cd ../../..
           "$aapt2" dump permissions "$apk" | python scripts/app_permissions.py check-apk -
           python scripts/app_build.py check-apk "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$aapt2"

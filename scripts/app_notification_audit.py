@@ -1258,6 +1258,10 @@ def validate_empty_cordova_project(generated: Path) -> None:
                 r"build/intermediates/compile_r_class_jar/(debug|release)/"
                 r"generate(Debug|Release)RFile/R\.jar",
                 relative,
+            ) or re.fullmatch(
+                r"build/intermediates/compile_library_classes_jar/(debug|release)/"
+                r"bundleLibCompileToJar(Debug|Release)/classes\.jar",
+                relative,
             )
             role = runtime or resource
             if role is None or role[1].capitalize() != role[2]:
