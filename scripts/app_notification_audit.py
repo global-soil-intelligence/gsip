@@ -628,7 +628,13 @@ def diagnostic(error: BaseException) -> dict[str, Any]:
     line = 0
     trace = error.__traceback__
     while trace is not None:
-        if trace.tb_frame.f_code.co_filename == __file__:
+        code = trace.tb_frame.f_code
+        if (
+            code.co_filename == __file__
+            and code is not refuse.__code__
+            and code is not contained.__code__
+            and code is not read.__code__
+        ):
             line = trace.tb_lineno
         trace = trace.tb_next
     return {

@@ -450,3 +450,13 @@ still require review for the actual distributed product. A parser pass supplies 
 legal compatibility opinion, counsel approval, store acceptance, deployment or
 physical-device evidence. Existing legal, owner, production and launch gates remain
 unchanged.
+
+The four-field failure diagnostic reports the last owned calling frame after
+excluding only the exact `refuse`, `contained` and `read` code objects by identity.
+Those wrappers perform shared refusal and descriptor-safe file checks; their
+implementation lines otherwise hide the calling guard. Unrelated owned code,
+including a distinct but structurally equal code object, remains eligible. If no
+other owned frame exists, `source_line` is zero. This changes no file selection,
+proof requirement, task, permission, limit, failure status or diagnostic field,
+and emits no path, exception message or input value. A caller line locates a
+failed check; it does not establish the missing file or approve native evidence.

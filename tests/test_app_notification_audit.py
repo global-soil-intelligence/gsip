@@ -4504,3 +4504,146 @@ def test_native_workflow_builds_only_app_targets_and_keeps_repeat_flags() -> Non
         assert "--no-daemon" in command
         assert ("--rerun-tasks" in command) == ("--no-build-cache" in command)
     assert sum("--rerun-tasks" in command for command in commands) == 2
+
+
+def diagnostic_owned_function(function: Any, name: str | None = None) -> Any:
+    from types import FunctionType
+
+    code = function.__code__.replace(co_filename=audit.__file__)
+    if name is not None:
+        code = code.replace(co_name=name, co_qualname=name)
+    return FunctionType(code, function.__globals__, closure=function.__closure__)
+
+
+@pytest.mark.parametrize("operation", ["read", "contained", "refuse"])
+def test_diagnostic_reports_last_owned_guard_caller_not_io_wrappers(
+    operation: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from collections.abc import Callable
+
+    path = tmp_path / "synthetic-private-missing-file"
+    calls: dict[str, Callable[[], object]] = {
+        "read": lambda: audit.read(path, (tmp_path,)),
+        "contained": lambda: audit.contained(path, (tmp_path,)),
+        "refuse": lambda: audit.refuse(),
+    }
+
+    def guard() -> Any:
+        return calls[operation]()
+
+    owned_guard = diagnostic_owned_function(guard)
+
+    def outer() -> Any:
+        return owned_guard()
+
+    owned_outer = diagnostic_owned_function(outer)
+    monkeypatch.setattr(audit, "_diagnostic_stage", "android-source-bindings")
+    monkeypatch.setattr(audit, "_diagnostic_counts", {"module_inputs": 2})
+    expected_type = audit.AuditError if operation == "refuse" else FileNotFoundError
+    with pytest.raises(expected_type) as caught:
+        owned_outer()
+    value = audit.diagnostic(caught.value)
+    assert value == {
+        "stage": "android-source-bindings",
+        "error_class": "AUDIT_REFUSAL" if operation == "refuse" else "MISSING_FILE",
+        "source_line": guard.__code__.co_firstlineno + 1,
+        "counts": {"module_inputs": 2},
+    }
+    assert "synthetic-private" not in json.dumps(value)
+    assert str(tmp_path) not in json.dumps(value)
+    assert set(value) == {"stage", "error_class", "source_line", "counts"}
+
+
+@pytest.mark.parametrize("wrapper_name", ["read", "contained", "refuse"])
+def test_diagnostic_preserves_unrelated_owned_frame_with_wrapper_name(
+    wrapper_name: str,
+) -> None:
+    failure = PermissionError("synthetic-private-message https://example.invalid/private")
+
+    def other() -> None:
+        raise failure
+
+    owned_other = diagnostic_owned_function(other, wrapper_name)
+    with pytest.raises(PermissionError) as caught:
+        owned_other()
+    value = audit.diagnostic(caught.value)
+    assert value["source_line"] == other.__code__.co_firstlineno + 1
+    assert value["error_class"] == "FILE_PERMISSION"
+    assert "synthetic-private" not in json.dumps(value)
+    assert "https://" not in json.dumps(value)
+
+
+def test_diagnostic_wrapper_exclusion_uses_exact_code_object_identity() -> None:
+    from types import FunctionType
+
+    cloned_code = audit.refuse.__code__.replace()
+    assert cloned_code == audit.refuse.__code__
+    assert cloned_code is not audit.refuse.__code__
+    clone = FunctionType(cloned_code, audit.__dict__)
+    with pytest.raises(audit.AuditError) as caught:
+        clone()
+    assert audit.diagnostic(caught.value)["source_line"] == cloned_code.co_firstlineno + 1
+
+
+@pytest.mark.parametrize("operation", ["read", "contained", "refuse"])
+def test_diagnostic_has_zero_line_when_only_original_owned_wrappers_exist(
+    operation: str, tmp_path: Path
+) -> None:
+    expected_type = audit.AuditError if operation == "refuse" else FileNotFoundError
+    with pytest.raises(expected_type) as caught:
+        if operation == "read":
+            audit.read(tmp_path / "synthetic-private-missing-file", (tmp_path,))
+        elif operation == "contained":
+            audit.contained(tmp_path / "synthetic-private-missing-file", (tmp_path,))
+        else:
+            audit.refuse()
+    assert audit.diagnostic(caught.value)["source_line"] == 0
+
+
+def test_diagnostic_has_zero_line_for_tracebackless_or_external_only_error() -> None:
+    error = FileNotFoundError("synthetic-private-message")
+    assert audit.diagnostic(error)["source_line"] == 0
+    with pytest.raises(FileNotFoundError) as caught:
+        raise error
+    assert audit.diagnostic(caught.value)["source_line"] == 0
+    assert "synthetic-private" not in json.dumps(audit.diagnostic(caught.value))
+
+
+def test_missing_file_main_keeps_failure_status_and_four_field_private_diagnostic(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path
+) -> None:
+    path = tmp_path / "synthetic-private-missing-file"
+
+    def collect(*args: Any) -> bytes:
+        audit.mark("android-source-bindings")
+        return audit.read(path, (tmp_path,))
+
+    monkeypatch.setattr(audit, "collect_android", diagnostic_owned_function(collect))
+    assert (
+        audit.main(
+            [
+                "android",
+                str(tmp_path),
+                str(tmp_path),
+                str(tmp_path / "out.json"),
+                str(tmp_path / "synthetic-private-key"),
+            ]
+        )
+        == 1
+    )
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    lines = captured.err.splitlines()
+    assert len(lines) == 2
+    assert lines[0] == "native-audit: evidence missing, invalid or unreviewed"
+    assert lines[1].startswith("native-audit: diagnostic ")
+    value = json.loads(lines[1].removeprefix("native-audit: diagnostic "))
+    assert value == {
+        "stage": "android-source-bindings",
+        "error_class": "MISSING_FILE",
+        "source_line": collect.__code__.co_firstlineno + 2,
+        "counts": {},
+    }
+    assert "synthetic-private" not in captured.err
+    assert str(tmp_path) not in captured.err
+    assert "https://" not in captured.err
