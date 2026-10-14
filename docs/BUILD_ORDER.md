@@ -1,7 +1,8 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
-**Version:** 11.0 — 2026-10-14 (approved iOS storage feasibility; SPEC §15.10)
+**Version:** 12.0 proposed — 2026-10-14 (conditional iOS native design; SPEC §15.11)
+**v12 amendment status:** proposal only. [The concrete native design](IOS_NATIVE_STORAGE_DESIGN.md) follows the APP-2C1 source audit merged in [#69](https://github.com/global-soil-intelligence/gsip/pull/69). No backend is admitted, no native-language exception is granted and all implementation/device/production gates remain held. Existing acceptance states are preserved.
 **v11 amendment status:** Justin approved and merged the specification in [#68](https://github.com/global-soil-intelligence/gsip/pull/68); APP-2C schedules source/feasibility review, conditional migration and separately authorized device proof. [APP-2C1](IOS_STORAGE_FEASIBILITY.md) records a source-only blocked result, not a selected storage backend. No backend is selected and all current source/launch/device gates remain.
 **v10 amendment status:** the four LIB-5B local accounting/fence/admission/root clarifications are merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60). The approved v9 LIB-5A contract source is merged in [#58](https://github.com/global-soil-intelligence/gsip/pull/58); the synthetic LIB-5B ledger/rights simulator is merged in [#64](https://github.com/global-soil-intelligence/gsip/pull/64).
 **Owner approval:** Justin approved ordered #51–#56 source merges after green CI on 2026-10-13; those source/specification merges are complete. LIB-5A and LIB-5B source are merged after their specification prerequisites. Real-sharing source/retention/peer/credential choices remain unresolved; no federation rollout or production authority is granted.
@@ -272,6 +273,31 @@ Branch: `wp-app-2c2-private-storage`. Depends on C1 review, approved exact backe
 - [ ] Migration tests cover verified copy before deletion, exact binary round trips, quota/corruption/partial commit, interruption at every step, idempotent recovery and incomplete legacy purge. Downgrade/restore cannot silently re-enable discarded/withdrawn state; check current ownership/server rights fences first. No guessed live WebKit internal-file rewrite.
 - [ ] Review SDK cookie/cache/preferences and camera/picker/temp/journal coverage; preserve generic bounded diagnostics, I7/I12 and current permission/closed-SDK checks. No real data or secret values in any fixture, log or artifact.
 
+**Proposed v12 APP-2C2 decomposition — all implementation held**
+
+The umbrella APP-2C2 criteria above remain unchanged and unchecked. SPEC §15.11 and [the concrete design](IOS_NATIVE_STORAGE_DESIGN.md) propose the following separate PRs in order. This records a candidate for review, not backend adoption. Justin's explicit architecture/native-language exception, exact file scope and passcode/recovery decisions are prerequisites to code; no exception is inferred from a design merge. C2 remains held until its full mechanism acceptance, and C3 remains a separate physical-device gate.
+
+**WP-APP-2C2A: Native primitives and bounded host prototype — held**
+
+Branch: `wp-app-2c2a-native-primitives`. Synthetic records only; enter after the exact scope/owner prerequisites above, not by assuming a Swift exception. No application migration or real device/account/signing action.
+
+- [ ] Bind actual native/platform inputs, licences/maintenance/size and fixed operation/limit contract. Fault tests prove excluded containment before SQLite open/recovery, actual DELETE/EXTRA settings, all journal/temp placement, serialized receipts and acknowledgment ordering. Separate process-kill from power-loss limits.
+- [ ] Prove clean/pending/unknown anchor state handling, no automatic reset/fallback, passcode/lifecycle holds and bounded main-frame host/bridge/prompt enforcement including dynamic class-name routes. Stop for another review if public seams cannot enforce it; no upstream fork or weakened checks.
+
+**WP-APP-2C2B: TypeScript private-store integration — held after A**
+
+Branch: `wp-app-2c2b-storage-integration`. Depends on independently reviewed/green A and approved exact typed facade, async SDK adapter, capacity/paging and callback lifecycle. No legacy migration.
+
+- [ ] Preserve every current six-store operation, exact bytes and atomic clears, owner/generation/revision/auth/lease/reminder fences, staging/receipt replay bounds and lost replies. Quota never evicts/truncates; late callbacks and unknown storage errors cannot create replacement accounts.
+- [ ] Prove bounded native paging/stream access, offline same-install restart, fresh hosted rights checks and separate OS notification cleanup; review all private temporary/native surfaces. Web/Android and permission/closed-SDK behavior remain unchanged.
+
+**WP-APP-2C2C: Legacy migration and recovery — held after B**
+
+Branch: `wp-app-2c2c-legacy-recovery`. Depends on independently reviewed/green B and a separately approved exact legacy-export/purge/reset protocol; no ordinary old-app bootstrap or guessed WebKit file editing.
+
+- [ ] Frozen isolated exporter copies all six stores/session/compatible SDK keys with bounded binary/schema/account checks, verified durable copy before deletion, and kill/quota/corruption/lost-reply tests at every transition. No native bridge await inside an IndexedDB transaction.
+- [ ] Unknown restore/downgrade, partial purge or anchor mismatch stays quarantined. Supported app-owned cleanup callbacks/readback do not establish physical erasure; preserve bytes until an explicitly approved recovery/reset decision. Bind residual limitations and the subsequent C3 device protocol without executing it.
+
 **WP-APP-2C3: Synthetic physical-device backup and recovery evidence — owner inputs required**
 
 Branch: `wp-app-2c3-backup-evidence`. Depends on reviewed C2 build, exact private experiment protocol and Justin's device/account/signing inputs. This scope grants no automatic device or account action.
@@ -492,6 +518,8 @@ GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function 
 Historical v4.0 review/merge sequence (#38 and WP-APP-2A have merged; remaining implementation and calibration gates still apply): WP-APP-1 → `docs/spec-v4` (Justin approval/merge) → WP-APP-2A → WP-APP-2B. Owner-authorized account-free WP-APP-2A preparation can start after the specification commit exists, while its PR remains stacked and awaits the merge sequence. WP-6f may be a separate branch after the approved specification, with no dependency on notifications, but stays blocked until that specification approval and its model/license/calibration gates. Retarget successors after Justin merges; merge main forward to resolve conflicts, never rebase or force-push the reviewed stack. §11 launch and production-command gates remain independent of this sequence.
 
 ## 8. Changelog
+
+- **v12.0 proposed (2026-10-14):** registers conditional APP-2C2A native prototype, APP-2C2B TypeScript integration and APP-2C2C legacy recovery. Keeps every existing acceptance state and adds only held criteria; native-language, passcode/recovery, device and production decisions remain separate.
 
 - **v11.0 proposed (2026-10-14):** schedules APP-2C1 exact-source feasibility, held APP-2C2 storage/migration and owner-input APP-2C3 physical backup evidence. Preserves current implementation and every existing acceptance box; no backend, native-language exception, new dependency or deployment permission is selected.
 
