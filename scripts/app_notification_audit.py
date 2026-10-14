@@ -7,6 +7,7 @@ inspection task is build configuration, never shipped app source. Missing eviden
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import io
 import json
@@ -36,6 +37,56 @@ MAX_ZIP_BYTES = 500_000_000
 MAX_ITEMS = 2_000
 TOKEN = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_.+-]{0,127}\Z")
 REPOSITORIES = ("https://dl.google.com/dl/android/maven2/", "https://repo.maven.apache.org/maven2/")
+# Reviewed Gradle Module Metadata 1.1 contexts, existing selected AndroidX dependencies.
+# Raw bytes are retained and revalidated offline; these are not missing-binary exemptions.
+MAX_GMM_BYTES = 65_536
+GMM_CONTEXTS: dict[tuple[str, str, str], tuple[str, int]] = {
+    ('androidx.annotation', 'annotation', '1.8.1'): (
+        "e6386e85afdd865044e216575e493ed39a63a6325bd925379a21429c3941c8b5",
+        34460,
+    ),
+    ('androidx.annotation', 'annotation-jvm', '1.8.1'): (
+        "c959e3b0cdc75c15efe01605fa56aa79f033e39238e150638b8fabde6aa121a0",
+        3225,
+    ),
+    ('androidx.collection', 'collection', '1.4.2'): (
+        "0326d2cf5adbe592312810ca1f71c6c0cc30f753c43f07c7402361b788a7784c",
+        30696,
+    ),
+    ('androidx.collection', 'collection-jvm', '1.4.2'): (
+        "aad6b3536c0f0e570aa733d5141d70fa6b9b3add370f73a311ca4ca5dee25448",
+        4570,
+    ),
+    ('androidx.graphics', 'graphics-shapes', '1.0.1'): (
+        "2d7f6d55042299f9c4f8478aa094bc4099a346902779ff3091fed1dfc2b62f53",
+        31934,
+    ),
+    ('androidx.graphics', 'graphics-shapes-android', '1.0.1'): (
+        "9a5508caf02d78fcf2729394e97e7b27a43786273e17ccb65bf8e1b00a598324",
+        5754,
+    ),
+}
+GMM_REDIRECTS: dict[
+    tuple[str, str, str], tuple[tuple[str, str, str], str, str, str]
+] = {('androidx.annotation', 'annotation', '1.8.1'): (('androidx.annotation',
+                                                   'annotation-jvm',
+                                                   '1.8.1'),
+                                                  'jvmRuntimeElements-published',
+                                                  'annotation-jvm-1.8.1.jar',
+                                                  'annotation-jvm-1.8.1.jar'),
+ ('androidx.collection', 'collection', '1.4.2'): (('androidx.collection',
+                                                   'collection-jvm',
+                                                   '1.4.2'),
+                                                  'jvmRuntimeElements-published',
+                                                  'collection-jvm-1.4.2.jar',
+                                                  'collection-jvm-1.4.2.jar'),
+ ('androidx.graphics', 'graphics-shapes', '1.0.1'): (('androidx.graphics',
+                                                      'graphics-shapes-android',
+                                                      '1.0.1'),
+                                                     'releaseRuntimeElements-published',
+                                                     'graphics-shapes-release.aar',
+                                                     'graphics-shapes-android-1.0.1.aar')}
+
 LICENSE_NAMES = {
     "Apache-2.0": {
         "apache license, version 2.0",
@@ -1120,6 +1171,45 @@ gradle.projectsEvaluated {
                 }
             }
         }
+// GSIP_SELECTED_REDIRECTS_BEGIN
+    def gsipSelectedRedirects = { components ->
+        def roots = ['androidx.annotation:annotation:1.8.1',
+            'androidx.collection:collection:1.4.2',
+            'androidx.graphics:graphics-shapes:1.0.1'] as Set
+        def redirects = []
+        components.each { component ->
+            def id = component.id
+            if (id instanceof ModuleComponentIdentifier
+                && roots.contains([id.group,id.module,id.version].join(':'))) {
+                def variants = component.variants
+                if (variants.any { it.externalVariant.present }) {
+                    if (variants.size() != 1) {
+                        throw new GradleException('Unsupported selected variant branch')
+                    }
+                    def source = variants[0]
+                    def target = source.externalVariant.get()
+                    if (!(target.owner instanceof ModuleComponentIdentifier)
+                        || target.externalVariant.present || source.owner != component.id
+                        || target.owner == component.id) {
+                        throw new GradleException('Unsupported selected variant route')
+                    }
+                    def selectedTarget = components.find { it.id == target.owner }
+                    if (selectedTarget == null || selectedTarget.variants.size() != 1
+                        || selectedTarget.variants[0].owner != target.owner
+                        || selectedTarget.variants[0].displayName != target.displayName) {
+                        throw new GradleException('Unselected variant route target')
+                    }
+                    def destination = target.owner
+                    redirects.add([source:[id.group,id.module,id.version],
+                        variant:source.displayName,
+                        target:[destination.group,destination.module,destination.version],
+                        target_variant:target.displayName])
+                }
+            }
+        }
+        redirects
+    }
+// GSIP_SELECTED_REDIRECTS_END
         doLast {
             def phase = 'DEBUG_CONFIGURATION'
             try {
@@ -1132,6 +1222,8 @@ gradle.projectsEvaluated {
                     def modules = []
                     def projects = []
                     phase = variant + '_COMPONENTS'
+                    def components = config.incoming.resolutionResult.allComponents
+                    def redirects = gsipSelectedRedirects(components)
                     config.incoming.resolutionResult.allComponents.each { component ->
                         def id = component.id
                         if (id instanceof ModuleComponentIdentifier) {
@@ -1171,8 +1263,10 @@ gradle.projectsEvaluated {
                         }
                         artifacts = resolved.collect { artifact -> describeArtifact(artifact) }
                     }
-                    [name:name,modules:modules.unique().sort { it.join(':') },
+                    def evidence = [name:name,modules:modules.unique().sort { it.join(':') },
                      projects:projects.unique().sort(),artifacts:artifacts]
+                    if (!redirects.empty) { evidence.redirects = redirects }
+                    evidence
                 }
                 phase = 'OUTPUT'
                 def output = new File(app.findProperty('gsipEvidenceOutput').toString())
@@ -1315,6 +1409,146 @@ def validate_empty_cordova_project(generated: Path) -> None:
                     refuse()
 
 
+def validate_gmm_document(value: Any) -> tuple[tuple[str, str, str], dict[str, Any]]:
+    proof = record(value, {"coordinate", "sha256", "bytes", "content_base64"})
+    coord = coordinate(proof["coordinate"])
+    expected = GMM_CONTEXTS.get(coord)
+    if expected is None:
+        refuse()
+    encoded = text_value(proof["content_base64"], (MAX_GMM_BYTES + 2) // 3 * 4)
+    raw = base64.b64decode(encoded, validate=True)
+    if (
+        base64.b64encode(raw).decode("ascii") != encoded
+        or not 0 < len(raw) <= MAX_GMM_BYTES
+        or (sha(raw), len(raw)) != expected
+        or evidence_digest(proof["sha256"]) != sha(raw)
+        or count(proof["bytes"], MAX_GMM_BYTES) != len(raw)
+    ):
+        refuse()
+    document = decoded(raw)
+    if document.get("formatVersion") != "1.1":
+        refuse()
+    return coord, document
+
+
+def gmm_document(coord: tuple[str, str, str], cache: Path, allow_fetch: bool) -> dict[str, Any]:
+    if coord not in GMM_CONTEXTS:
+        refuse()
+    group, artifact, version = coord
+    folder = cache / "modules-2/files-2.1" / group / artifact / version
+    matches = sorted(folder.glob(f"*/{artifact}-{version}.module"))
+    if len(matches) > 1:
+        refuse()
+    if matches:
+        raw = read(matches[0], (cache,), MAX_GMM_BYTES)
+    elif allow_fetch:
+        relative = f"{group.replace('.', '/')}/{artifact}/{version}/{artifact}-{version}.module"
+        raw = public_bytes(REPOSITORIES[0] + relative, MAX_GMM_BYTES)
+    else:
+        refuse()
+    proof = {
+        "coordinate": list(coord),
+        "sha256": sha(raw),
+        "bytes": len(raw),
+        "content_base64": base64.b64encode(raw).decode("ascii"),
+    }
+    validate_gmm_document(proof)
+    return proof
+
+
+def validate_gmm_redirect(
+    source: tuple[str, str, str],
+    value: Any,
+    selected: set[tuple[str, str, str]],
+    binaries: list[dict[str, Any]],
+) -> None:
+    expected = GMM_REDIRECTS.get(source)
+    if expected is None:
+        refuse()
+    target, variant, filename, location = expected
+    proof = record(value, {"variant", "target", "target_variant", "module_metadata"})
+    if (
+        proof["variant"] != variant
+        or proof["target_variant"] != variant
+        or coordinate(proof["target"]) != target
+        or source not in selected
+        or target not in selected
+        or source == target
+        or app_permissions.closed_dependencies(":".join(target))
+    ):
+        refuse()
+    documents = [validate_gmm_document(row) for row in items(proof["module_metadata"], 2)]
+    if len(documents) != 2 or [row[0] for row in documents] != [source, target]:
+        refuse()
+    variants = []
+    for _, document in documents:
+        matches = [
+            row for row in items(document.get("variants"), 100) if row.get("name") == variant
+        ]
+        if len(matches) != 1:
+            refuse()
+        variants.append(matches[0])
+    available = variants[0].get("available-at")
+    expected_location = f"../../{target[1]}/{target[2]}/{target[1]}-{target[2]}.module"
+    expected_available = {
+        "url": expected_location, "group": target[0], "module": target[1], "version": target[2]
+    }
+    if (
+        available != expected_available
+        or variants[0].get("files", [])
+        or "available-at" in variants[1]
+    ):
+        refuse()
+    files = items(variants[1].get("files"), 1)
+    if len(files) != 1:
+        refuse()
+    file = files[0]
+    if file.get("name") != filename or file.get("url") != location:
+        refuse()
+    size = count(file.get("size"), MAX_BINARY)
+    digest = evidence_digest(file.get("sha256"))
+    matches = [
+        row for row in binaries
+        if row.get("coordinate") == list(target) and row.get("filename") == filename
+    ]
+    if len(matches) != 1 or matches[0]["sha256"] != digest or matches[0]["bytes"] != size:
+        refuse()
+
+
+def bind_gmm_redirects(
+    value: Any,
+    modules: list[dict[str, Any]],
+    binaries: list[dict[str, Any]],
+    cache: Path,
+    allow_fetch: bool,
+) -> None:
+    selected = {coordinate(row["coordinate"]) for row in modules}
+    expected = selected & GMM_REDIRECTS.keys()
+    if not isinstance(value, list) or len(value) > len(GMM_REDIRECTS):
+        refuse()
+    seen = set()
+    for raw in value:
+        route = record(raw, {"source", "variant", "target", "target_variant"})
+        source = coordinate(route["source"])
+        if source not in expected or source in seen:
+            refuse()
+        target = coordinate(route["target"])
+        proof = {
+            "variant": route["variant"], "target": list(target),
+            "target_variant": route["target_variant"],
+            "module_metadata": [
+                gmm_document(coord, cache, allow_fetch) for coord in (source, target)
+            ],
+        }
+        validate_gmm_redirect(source, proof, selected, binaries)
+        next(row for row in modules if row["coordinate"] == list(source))[
+            "selected_variant_redirect"
+        ] = proof
+        seen.add(source)
+    if seen != expected:
+        refuse()
+
+
 def runtime_evidence(
     data: dict[str, Any], repo: Path, cache: Path, allow_fetch: bool
 ) -> dict[str, Any]:
@@ -1334,7 +1568,10 @@ def runtime_evidence(
     for view in views:
         if (
             not isinstance(view, dict)
-            or set(view) != {"name", "modules", "projects", "artifacts"}
+            or set(view) not in (
+                {"name", "modules", "projects", "artifacts"},
+                {"name", "modules", "projects", "artifacts", "redirects"},
+            )
             or not all(
                 isinstance(view[key], list) and len(view[key]) <= MAX_ITEMS
                 for key in ("modules", "projects", "artifacts")
@@ -1389,6 +1626,7 @@ def runtime_evidence(
             project_inputs=len(view["projects"]),
         )
         binaries = []
+        seen: dict[tuple[str, str], tuple[Path, dict[str, Any]]] = {}
         for artifact in view["artifacts"]:
             if (
                 not isinstance(artifact, dict)
@@ -1433,11 +1671,18 @@ def runtime_evidence(
                 identity = {"project": project}
             if file.suffix not in {".jar", ".aar"}:
                 refuse()
-            binaries.append(
-                {**identity, "filename": file.name, **zip_evidence(file, (repo, cache))}
-            )
+            binary = {**identity, "filename": file.name, **zip_evidence(file, (repo, cache))}
+            key = (json.dumps(identity, sort_keys=True, separators=(",", ":")), file.name)
+            previous = seen.get(key)
+            if previous is not None:
+                if previous[0] != file or previous[1] != binary:
+                    refuse()
+            else:
+                seen[key] = (file, binary)
+                binaries.append(binary)
         if not binaries:
             refuse()
+        bind_gmm_redirects(view.get("redirects", []), selected, binaries, cache, allow_fetch)
         receipts.append(
             {
                 "configuration": view["name"],
@@ -2440,12 +2685,22 @@ def validate_android(native: dict[str, Any], npm: dict[str, dict[str, Any]]) -> 
             refuse()
         configurations.add(name)
         modules = {}
+        redirects = {}
         for module in items(row["selected_modules"], MAX_ITEMS):
-            selected = record(module, {"coordinate", "pom_license_evidence"})
+            fields = {"coordinate", "pom_license_evidence"}
+            if isinstance(module, dict) and "selected_variant_redirect" in module:
+                fields.add("selected_variant_redirect")
+            selected = record(module, fields)
             coord = coordinate(selected["coordinate"])
             if coord in modules or app_permissions.closed_dependencies(":".join(coord)):
                 refuse()
             modules[coord] = validate_pom_chain(selected["pom_license_evidence"], coord)
+            if coord in GMM_REDIRECTS:
+                if "selected_variant_redirect" not in selected:
+                    refuse()
+                redirects[coord] = selected["selected_variant_redirect"]
+            elif "selected_variant_redirect" in selected:
+                refuse()
         projects = {}
         for project in items(row["project_sources"], MAX_ITEMS):
             if not isinstance(project, dict) or not isinstance(project.get("project"), str):
@@ -2508,9 +2763,11 @@ def validate_android(native: dict[str, Any], npm: dict[str, dict[str, Any]]) -> 
             if (identity, filename) in identities:
                 refuse()
             identities.add((identity, filename))
+        for coord, redirect in redirects.items():
+            validate_gmm_redirect(coord, redirect, set(modules), row["resolved_runtime_inputs"])
         if (
             any(
-                coord not in module_binaries
+                coord not in module_binaries and coord not in redirects
                 for coord, packaging in modules.items()
                 if packaging != "pom"
             )

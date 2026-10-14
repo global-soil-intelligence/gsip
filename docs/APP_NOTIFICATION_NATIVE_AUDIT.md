@@ -563,3 +563,51 @@ schema and exact parent/candidate toolchain equality remain enforced. The actual
 version string in the failed hosted run was unavailable, so the local value is
 not attributed to that runner. This parser correction changes no build, runtime
 selection, source/licence guard, signing-key proof or native acceptance requirement.
+
+Runtime evidence is normalized within each configuration only after every artifact
+occurrence passes the original identity, containment, descriptor, ZIP and licence
+evidence checks. Repeated references to the same canonical file under the same
+typed module/project identity and filename produce one identical proof row. A
+different canonical file refuses even when its bytes match; changed complete
+evidence for the same file also refuses. No occurrence is skipped before checking,
+and the original bounded input list, both configuration graphs and strict final
+validator duplicate rejection remain unchanged. No path or new receipt field is
+exported. Historical local parent and candidate graphs contained five repeated
+same-file groups per configuration; that observation does not identify the values
+in the failed hosted run.
+
+Selected Gradle Module Metadata redirects add a finite proof for the existing
+non-POM roots `androidx.annotation:annotation:1.8.1`,
+`androidx.collection:collection:1.4.2` and
+`androidx.graphics:graphics-shapes:1.0.1`. Gradle 8.14.3's public selected-variant
+API must report exactly one selected source variant and one external target that
+is also selected. This observes these three pinned roots, not every external
+bridge in the graph. Their six exact public `.module` documents are included as
+bounded raw-byte evidence and rechecked against reviewed SHA-256 and size pins
+offline. The selected source row must name the exact target, and the terminal
+row must bind the actual target binary's logical `files.name`, SHA-256 and size.
+The separately pinned `files.url` is its fetch location. In particular,
+`graphics-shapes-release.aar` is the cache identity;
+`graphics-shapes-android-1.0.1.aar` is its relative transport URL. No alternate
+filename or general backlink/URL fallback is accepted. The target metadata's
+existing root-component backlink is covered by its exact reviewed raw bytes.
+
+Every selected module and POM/licence proof, every actual binary and both runtime
+configurations remain present. The three roots require selected redirect proof
+even if a direct binary row is supplied. Unknown or malformed routes, variants,
+versions, documents, branches, cycles, deeper chains, missing or closed targets
+and mismatched terminal binaries refuse. Other modules retain the original
+complete direct-binary requirement and explicit validated `packaging=pom` rule.
+The latter already covers the existing coroutine root; no new exemption was
+added. An initial general bridge probe found that fourth POM bridge, and its
+failed three-route harness assumption is preserved.
+
+This changes the generated runtime metadata task to SHA-256 `f90e5f896bddf83530e304b315e79694c7992c87e79f3b53288b27067b66c856`; earlier
+`74ad` task references describe the preceding implementation. The one existing
+exact-task test updates its 64-character expected digest while retaining its
+assertion and every other prior test byte. Public build receipts retain their
+thirteen fields, and no workflow, permission, backup, signing-key equality,
+source, licence or scanner gate changes. The new nested selected-module evidence
+is an audit input, not a product API change. No dependency was added. The locked
+Gradle/Capacitor toolchain and controlled CI remain trust assumptions; this does
+not provide compiler attestation or certify device/store/production readiness.
