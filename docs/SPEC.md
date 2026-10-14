@@ -1,7 +1,8 @@
-# GSIP v11 — Open Soil Spectral Library Specification
+# GSIP v12 — Open Soil Spectral Library Specification
 
 **Project:** Global Soil Intelligence Project (globalsoilintelligence.com)
-**Version:** 11.0 — 2026-10-14 (approved iOS feasibility; no backend selected)
+**Version:** 12.0 proposed — 2026-10-14 (conditional native iOS storage design)
+**v12 amendment status:** proposal only. §15.11 and [the concrete iOS native design](IOS_NATIVE_STORAGE_DESIGN.md) propose a bounded synthetic mechanism review after APP-2C1 merged in [#69](https://github.com/global-soil-intelligence/gsip/pull/69). No backend is admitted, no native-language exception is granted and no implementation, migration, device or production action is authorized. Passcode/recovery policy and exact native scope require Justin’s explicit decisions.
 **v11 amendment status:** Justin approved and merged the specification in [#68](https://github.com/global-soil-intelligence/gsip/pull/68). §15.10 schedules iOS private-storage feasibility before any migration; [APP-2C1](IOS_STORAGE_FEASIBILITY.md) records the source-only blocked result. No backend is selected, no native-language exception is granted, and iOS backup protection remains blocked/unverified. This amendment changes no runtime, production or launch permission.
 **v10 amendment status:** the LIB-5B local accounting, reserved-fence, daily-admission and single-root clarification in §16.12 is merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60). LIB-5A remains governed by the approved v9 pure contract. No real-source grant, credential, cleanup-authentication or retention policy is selected.
 **v9 owner approval:** Justin approved ordered merges of #51–#56 on 2026-10-13 after green CI. Following this specification merge, §16.9–16.13 permits LIB-5A pure contracts and LIB-5B synthetic local preparation. Real peer sharing, credentials/cleanup authority and retention policy remain held for LIB-5C; production and launch gates are unchanged.
@@ -294,6 +295,8 @@ Community and agents: external contributors merged, partner labs onboarded, data
 
 ## 14. Changelog
 
+- **v12.0 proposed (2026-10-14):** adds a concrete conditional native iOS storage design and splits held prototype, integration and legacy-recovery work. Grants no native-language exception, backend admission, implementation or deployment; preserves passcode/recovery and physical-device gates.
+
 - **v11.0 proposed (2026-10-14):** adds iOS private-storage feasibility and complete residual/transaction/migration/device gates before backend selection. Records why the existing no-cloud API is unproven, preserves current behavior and all prior launch gates, and grants no native-language exception or production authority.
 
 - **v10.0 (2026-10-13; clarification merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60)):** clarifies only LIB-5B's retained-byte/metadata/staging accounting, pre-reserved permanent scope fences, independent source/recipient daily admission views and single-root synthetic aggregate boundary. Preserves the existing queued-byte cap and LIB-5A contract; chooses no real sharing, credential or retention policy and changes no production/capture/worker gate.
@@ -428,6 +431,14 @@ Any migration requires a separately reviewed exact backend, limits, commit/lifec
 APP-2C1 may document actual capabilities and blocked outcomes with synthetic/source-only evidence. APP-2C2 remains held until that review and a concrete supported mechanism are approved; custom native code additionally needs Justin's explicit native-language exception first. No new dependency/service or licence change is selected by this proposal. APP-2C3 requires separately authorized synthetic physical-device backup/restore evidence bound to exact build, OS, transport and store generations. Test updates, writes/replacements, interruption, actual cloud restore and residual coverage without opening production sign-in/capture or inspecting unrelated personal backup data. Report observed device coverage and limits, never a universal guarantee.
 
 No runtime/source merge, local policy test, simulator or dependency benchmark closes iOS backup, APP-2B notification-device, store/legal, production or §11 capture/photo-publication gates. A verified fresh cloud restore starts a new anonymous account and loses unsynced work; the existing privacy-contact route covers inaccessible old-account contributions until in-app e-mail linking exists. No real contributor data, credentials or precise points enter fixtures, reports, logs, issues or PRs.
+
+### 15.11 Proposed v12: conditional native iOS storage mechanism
+
+The [concrete candidate design](IOS_NATIVE_STORAGE_DESIGN.md) proposes an excluded app-owned system-SQLite store, independently checked Keychain anchor, bounded typed bridge and nonpersistent host for synthetic prototype review. It specifies exclusion before open/recovery, DELETE/EXTRA transaction and acknowledgment boundaries, original-account/generation/auth/reminder fences, isolated legacy copy/purge and quarantine on unknown restore or interrupted cross-store state. SQLite and Keychain are not one atomic store; source descriptions and co-restored local flags cannot prove every rollback or backup outcome. All §15.10 evidence and failure gates remain binding.
+
+**Proposal only: no backend is admitted; no native-language exception is granted; no implementation is authorized.** Justin must explicitly approve the exact architecture, native-language/file scope and passcode/recovery policy before APP-2C2A. A proposed Swift coordinator and direct native tests would be a narrow exception, not a change to §4 or BUILD_ORDER guardrail 1. Approval of this design alone does not grant it. APP-2C2B integration, APP-2C2C migration and APP-2C3 physical-device evidence remain separately held after their prerequisites; none selects a new dependency, service, licence, account/signing input or production permission.
+
+I1–I15, L1–L7, B1–B8, §11, every prior §15 requirement and the entire §16 contract are unchanged. Web/Android behavior and backup rules stay unchanged. iOS backup protection remains blocked/unverified until actual mechanism/device evidence exists; source/CI/simulator success cannot close that gate. No production migration/deployment, worker dispatch, Pages approval, capture/sign-in opening, photo publication or store submission follows from this amendment.
 
 ## 16. Open soil spectral library (v5 foundation; v6/v7 private intake)
 
