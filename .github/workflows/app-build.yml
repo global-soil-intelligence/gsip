@@ -119,7 +119,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p "$RUNNER_TEMP/gsip-app2b-evidence/android"
-          python -m scripts.app_notification_audit android "$GITHUB_WORKSPACE" "$HOME/.gradle/caches" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-native-audit.json" "$HOME/.android/debug.keystore"
+          python -m scripts.app_notification_audit android "$GITHUB_WORKSPACE" "$HOME/.gradle/caches" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-native-audit.json"
       - name: Build the exact APP-2B parent in an isolated checkout
         shell: bash
         run: |
@@ -156,7 +156,7 @@ jobs:
           cp "$apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent.apk"
           python scripts/app_build.py receipt "$apk" "$GITHUB_RUN_NUMBER" apps/capture-pwa/package.json "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-build-receipt.json" android "$aapt2"
           cd "$GITHUB_WORKSPACE"
-          python -m scripts.app_notification_audit android "$RUNNER_TEMP/gsip-app2b-parent" "$HOME/.gradle/caches" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-native-audit.json" "$HOME/.android/debug.keystore"
+          python -m scripts.app_notification_audit android "$RUNNER_TEMP/gsip-app2b-parent" "$HOME/.gradle/caches" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-native-audit.json"
           candidate_commit="$(git rev-parse HEAD)"
           cp "$RUNNER_TEMP/gsip-android-parent-repeat-reference.apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-parent-repeat-reference.apk"
           cp "$RUNNER_TEMP/gsip-android-reference.apk" "$RUNNER_TEMP/gsip-app2b-evidence/android/gsip-android-candidate-repeat-reference.apk"

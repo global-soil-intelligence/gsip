@@ -1458,7 +1458,165 @@ def runtime_evidence(
     }
 
 
-def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> None:
+MAX_DEBUG_SIGNING_LOCATOR = 8_192
+# Exact generated inputs from the pinned Capacitor CLI 8.5.2 template and update output.
+# This is a controlled no-flavor/no-variant-signing-override adapter, not arbitrary Gradle support.
+DEBUG_SIGNING_SCOPE = {
+    "build.gradle": {"46ade7db7afeb8049ccea59fce83095dca736ceb8c9acd79cc944e988c3357d9"},
+    "settings.gradle": {"6ce098d15ebd69b44c4ecd786bca1bdc366340d2459b2af4d7bb0ab317aa9669"},
+    "capacitor.settings.gradle": {
+        "b0de5228964cc9f91948cb0277688d377ad8ce9a9ed921c1e2009f03c7c292ea",
+        "38174855e3d1b05152c745e730081f34d17e18520f3f51c7aaa20f9abc1c7acf",
+    },
+    "variables.gradle": {"83d502c9ed8fcf1dd4791482067abeedbebae49fafe9cd14a8a1f5891deb0d88"},
+    "gradle.properties": {"3bab15c5b8bc4c2f4b6cf525497d15ad4abca53a460e6dd2eb0f0135817d31e6"},
+    "capacitor-cordova-android-plugins/build.gradle": {
+        "28e3fa281f4d1e388bf98abc7f5bb31e672516e385c165c719d201ed54b8236e"
+    },
+    "capacitor-cordova-android-plugins/cordova.variables.gradle": {
+        "b13104b34f7738abceec358ae8226ba5e64855e97babde54a115880e9b9bd47b"
+    },
+    "app/capacitor.build.gradle": {
+        "74310abc26144419455c1e6ff2e38dac2d3d476ab9e00671de009eaedea810de",
+        "1e9853951237c6f0ea40553502bcb30397bdcc15ad79841546e9165e479624f1",
+    },
+}
+DEBUG_SIGNING_APP_TEMPLATE = "a3bc1ec0e644b04050e9a3feeeea83119347987340252fea311fe0907823d3f9"
+DEBUG_SIGNING_TASK = r"""gradle.projectsEvaluated {
+    def app = gradle.rootProject.findProject(':app')
+    if (app == null) throw new GradleException('Unsupported debug signing metadata')
+    app.tasks.register('gsipDebugSigningLocator') {
+        doLast {
+            def android = app.extensions.findByName('android')
+            def api = android == null ? null : android.getClass().getClassLoader().loadClass(
+                'com.android.build.api.dsl.ApplicationExtension')
+            if (!app.plugins.hasPlugin('com.android.application') || api == null ||
+                    !api.isInstance(android) || !android.getProductFlavors().isEmpty() ||
+                    app.hasProperty('postBuildExtras')) {
+                throw new GradleException('Unsupported debug signing metadata')
+            }
+            for (def name : ['android.injected.signing.store.file',
+                    'android.injected.signing.store.password', 'android.injected.signing.key.alias',
+                    'android.injected.signing.key.password',
+                    'android.injected.signing.store.type']) {
+                if (app.hasProperty(name)) {
+                    throw new GradleException('Unsupported debug signing metadata')
+                }
+            }
+            def debug = android.getBuildTypes().findByName('debug')
+            def signing = debug == null ? null : debug.getSigningConfig()
+            def store = signing == null ? null : signing.getStoreFile()
+            if (debug == null || !debug.isDebuggable() || signing == null ||
+                    signing.getName() != 'debug' || signing.getKeyAlias() != 'AndroidDebugKey' ||
+                    store == null || !store.isAbsolute() || store.getName() != 'debug.keystore') {
+                throw new GradleException('Unsupported debug signing metadata')
+            }
+            def output = app.findProperty('gsipDebugSigningOutput')
+            if (!(output instanceof String) || !new File(output).isAbsolute()) {
+                throw new GradleException('Unsupported debug signing metadata')
+            }
+            def data = groovy.json.JsonOutput.toJson([
+                schema_version: 'gsip-selected-debug-signing-v1', build_type: 'debug',
+                signing_config: 'debug', debuggable: true, flavor_count: 0,
+                default_debug_alias: true, store_file: store.getAbsolutePath()
+            ]).getBytes(java.nio.charset.StandardCharsets.UTF_8)
+            if (data.length > 8192) throw new GradleException('Unsupported debug signing metadata')
+            java.nio.file.Files.write(new File(output).toPath(), data,
+                java.nio.file.StandardOpenOption.CREATE_NEW, java.nio.file.StandardOpenOption.WRITE)
+        }
+    }
+}
+"""
+
+
+def validate_debug_signing_scope(repo: Path) -> None:
+    android = repo / "apps/capture-pwa/android"
+    for name, permitted in DEBUG_SIGNING_SCOPE.items():
+        if sha(read(android / name, (repo,))) not in permitted:
+            refuse()
+    text = read(android / "app/build.gradle", (repo,)).decode("utf-8")
+    for pattern, replacement in (
+        (
+            r'(?m)^(\s*)namespace = "[A-Za-z_][A-Za-z_0-9]*(?:\.[A-Za-z_][A-Za-z_0-9]*)+"$',
+            'namespace = "TEMPLATE"',
+        ),
+        (
+            r'(?m)^(\s*)applicationId "[A-Za-z_][A-Za-z_0-9]*(?:\.[A-Za-z_][A-Za-z_0-9]*)+"$',
+            'applicationId "TEMPLATE"',
+        ),
+        (r"(?m)^(\s*)versionCode [1-9][0-9]{0,9}$", "versionCode 1"),
+        (r'(?m)^(\s*)versionName "[0-9]+\.[0-9]+(?:\.[0-9]+)?"$', 'versionName "TEMPLATE"'),
+    ):
+        text, count = re.subn(pattern, r"\g<1>" + replacement, text)
+        if count != 1:
+            refuse()
+    if sha(text.encode()) != DEBUG_SIGNING_APP_TEMPLATE:
+        refuse()
+
+
+def read_debug_signing_locator(locator: Path, temporary: Path) -> Path:
+    data = record(
+        decoded(read(locator, (temporary,), MAX_DEBUG_SIGNING_LOCATOR)),
+        {
+            "schema_version",
+            "build_type",
+            "signing_config",
+            "debuggable",
+            "flavor_count",
+            "default_debug_alias",
+            "store_file",
+        },
+    )
+    if (
+        data["schema_version"] != "gsip-selected-debug-signing-v1"
+        or data["build_type"] != "debug"
+        or data["signing_config"] != "debug"
+        or data["debuggable"] is not True
+        or type(data["flavor_count"]) is not int
+        or data["flavor_count"] != 0
+        or data["default_debug_alias"] is not True
+    ):
+        refuse()
+    value = data["store_file"]
+    if (
+        not isinstance(value, str)
+        or not 1 <= len(value) <= 4096
+        or not value.isascii()
+        or "\\" in value
+        or any(ord(character) < 32 or ord(character) == 127 for character in value)
+    ):
+        refuse()
+    path = Path(value)
+    if not path.is_absolute() or ".." in path.parts or path.name != "debug.keystore":
+        refuse()
+    return path
+
+
+def selected_debug_key(repo: Path) -> Path:
+    validate_debug_signing_scope(repo)
+    with tempfile.TemporaryDirectory(prefix="gsip-debug-signing-") as directory:
+        temporary = Path(directory)
+        task, locator = temporary / "locator.gradle", temporary / "locator.json"
+        task.write_text(DEBUG_SIGNING_TASK)
+        run(
+            [
+                str(repo / "apps/capture-pwa/android/gradlew"),
+                "--no-daemon",
+                "--console=plain",
+                "-I",
+                str(task),
+                ":app:gsipDebugSigningLocator",
+                f"-PgsipDebugSigningOutput={locator}",
+            ],
+            repo / "apps/capture-pwa/android",
+        )
+        if {entry.name for entry in temporary.iterdir()} != {task.name, locator.name}:
+            refuse()
+        return read_debug_signing_locator(locator, temporary)
+
+def collect_android(
+    repo: Path, cache: Path, output: Path, debug_key: Path | None = None
+) -> None:
     reset_fixed_fault()
     mark("android-dependency-trees")
     for configuration in ("debugRuntimeClasspath", "releaseRuntimeClasspath"):
@@ -1513,6 +1671,8 @@ def collect_android(repo: Path, cache: Path, output: Path, debug_key: Path) -> N
         raw = read(graph, (temporary,))
         result = runtime_evidence(decoded(raw), repo, cache, True)
     mark("android-source-bindings")
+    if debug_key is None:
+        debug_key = selected_debug_key(repo)
     result["build_only_environment_sha256"] = sha(build_environment.encode())
     result["runtime_tree_sha256"] = {
         configuration: sha(
@@ -3095,7 +3255,7 @@ def main(argv: list[str] | None = None) -> int:
     android.add_argument("repo", type=Path)
     android.add_argument("cache", type=Path)
     android.add_argument("output", type=Path)
-    android.add_argument("debug_key", type=Path)
+    android.add_argument("debug_key", type=Path, nargs="?", default=None)
     ios = commands.add_parser("ios")
     ios.add_argument("repo", type=Path)
     ios.add_argument("output", type=Path)

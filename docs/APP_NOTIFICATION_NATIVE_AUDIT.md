@@ -460,3 +460,94 @@ other owned frame exists, `source_line` is zero. This changes no file selection,
 proof requirement, task, permission, limit, failure status or diagnostic field,
 and emits no path, exception message or input value. A caller line locates a
 failed check; it does not establish the missing file or approve native evidence.
+
+The Android collector defaults to a selected-debug-store mode; an explicit debug-key
+path remains supported for compatibility. A separate Python-emitted Gradle task
+reads the configured app debug build type's public `signingConfig.storeFile` after
+configuration. It does not read the independent `signingConfigs.debug` entry, infer
+an Android preferences path, invoke `signingReport`, create or copy a key, or depend
+on build, signing or signing-validation tasks. The original runtime inspection task
+and its failure protocol remain byte-for-byte unchanged. The additional emitted
+Gradle configuration is CI tooling, not shipped native code or a new dependency.
+
+The metadata task requires the application plugin, no product flavors, a debuggable
+`debug` build type, its selected `debug` signing configuration and the pinned default
+debug alias. Injected signing properties or a post-build callback refuse without
+printing values. A fresh private temporary directory contains the task and a single
+exclusive, bounded, exact-schema locator. The locator carries only path metadata, is
+never logged or uploaded, and is removed with the temporary directory. Its lexical
+absolute path is preserved: traversal or unexpected names refuse, and the existing
+descriptor-safe read still rejects links, hard links, nonregular files and oversize
+inputs when hashing the selected disposable key. Missing metadata or key files fail;
+there is no fallback. Existing native receipt fields, the key hash and exact
+parent/candidate key-equality requirement remain unchanged. This adds no APK
+certificate or upstream compiler attestation.
+
+This adapter deliberately supports the controlled generated project, not arbitrary
+Gradle builds. It requires exact pinned root/settings/variables/properties/Cordova
+variable inputs and one of the two known parent/candidate Capacitor dependency
+scripts. Only exactly-once namespace, application ID and version literals with
+restricted syntax are normalized in the app template. Signing hooks, interpolation,
+escapes, duplicate declarations, flavors or variant overrides in these inputs
+refuse. Locked dependency build logic and the controlled workflow/CI initialization
+remain trust assumptions; the public variant signing API has no store-file getter,
+so arbitrary variant-specific signing replacement requires a separately reviewed
+adapter. No owner signing inputs, certificates, accounts or real-device acceptance
+are introduced.
+
+The scope comes from two distinct assets in the existing MIT Capacitor CLI 8.5.2:
+`assets/android-template.tar.gz`, SHA-256
+`5edb50a67a034556da8bb5fa54eb08211eaa952aac0949c75050ebcf0be97303`,
+contains `app/build.gradle`, SHA-256
+`b3a3835e3c6bf4b146ff224daa41b1de758aeba73ab52b030169f287f8d7953c`,
+and the primary `gradle.properties`, SHA-256
+`3bab15c5b8bc4c2f4b6cf525497d15ad4abca53a460e6dd2eb0f0135817d31e6`.
+The separate existing `assets/capacitor-cordova-android-plugins.tar.gz`, SHA-256
+`c9fa746751c74e786878e40b073fd3854c772b26716663cabbd8ebb874e39ba9`,
+still supplies the unchanged empty-R namespace provenance. A previous local offline
+fixture appended `android.builder.sdkDownload=false` to properties; that fixture
+addition is not accepted as production template evidence.
+
+The public API signatures are pinned to the existing
+`com.android.tools.build:gradle-api:8.13.0` JAR, SHA-256
+`3fec7962a3109f0a6b0b6e27c89ffcee75c88096263f1910d475f2e3b515757e`:
+`ApplicationExtension`/`CommonExtension.getBuildTypes`,
+`ApplicationVariantDimension.getSigningConfig`, and
+`SigningConfig.getStoreFile`. The local offline probe used copied tools/SDK/cache
+and private Android preferences with inherited `HOME`. Its dry-run selected only
+the metadata task; execution returned complete bounded metadata and created no key
+or APK. This proves the pinned metadata mechanism, not the selected location or
+success of a fresh hosted build. Fresh CI must still prove both actual artifacts,
+all runtime/source/licence checks, repeat builds and the shared-key comparison.
+
+The workflow argv contract changes from eight to seven Android command tokens when
+the guessed path is omitted. One existing test expectation changes by that single
+digit; all other old assertions stay intact, and a new compatibility control still
+checks the eight-token explicit-key form. The preserved baseline test prefix is
+byte-exact after erasing only that authorized one-byte contract change.
+
+The controlled input map includes both directly generated scripts that can otherwise
+execute project callbacks: `capacitor.settings.gradle` and the generated Cordova
+`build.gradle`. Capacitor CLI 8.5.2's `dist/android/update.js`, SHA-256
+`201b3440a2ee843c92d59505e66c8b3a13ac2382e5a3ccf503e6bd78c2777c3f`,
+generates the former from exact plugin project locations. Its approved parent and
+candidate hashes are respectively
+`b0de5228964cc9f91948cb0277688d377ad8ce9a9ed921c1e2009f03c7c292ea` and
+`38174855e3d1b05152c745e730081f34d17e18520f3f51c7aaa20f9abc1c7acf`.
+The generated Cordova descriptor is exactly 1,668 bytes, SHA-256
+`28e3fa281f4d1e388bf98abc7f5bb31e672516e385c165c719d201ed54b8236e`,
+in both roots. CLI update removes the empty dependency placeholder and adds
+`apply from: "cordova.variables.gradle"` to the existing 1,634-byte tar template
+`b05a25c58e19bb0874313f4b81421db5fced6ef3eae6a9db48f8fbc0f5b828ca`;
+the template and generated descriptor are distinct evidence.
+
+The finite include/apply graph covers eight directly executed generated Gradle
+scripts in both roots: root build/settings/variables/Capacitor settings, app build/
+Capacitor dependencies, and Cordova build/variables. Every one is pinned, with the
+restricted app-literal normalization already described. Root `gradle.properties`
+is separately pinned data. No other direct generated script was found in this
+controlled graph. Missing, changed, linked or nonregular included scripts refuse
+before metadata discovery. Existing locked npm plugin build logic and controlled
+CI/global initialization remain explicit trust assumptions; no arbitrary Gradle
+initialization sandbox is claimed. The namespace, empty-R, source, archive,
+permission and original runtime/metadata task guards remain unchanged.

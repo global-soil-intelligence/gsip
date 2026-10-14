@@ -1223,7 +1223,7 @@ def test_workflow_native_audit_commands_match_the_cli_contract() -> None:
     ]
     assert len(commands) == 6
     for argv in commands:
-        assert len(argv) == {"android": 8, "ios": 7, "compare": 14}[argv[3]]
+        assert len(argv) == {"android": 7, "ios": 7, "compare": 14}[argv[3]]
 
 
 def test_project_artifact_must_belong_to_its_inspected_package_output() -> None:
@@ -4647,3 +4647,547 @@ def test_missing_file_main_keeps_failure_status_and_four_field_private_diagnosti
     assert "synthetic-private" not in captured.err
     assert str(tmp_path) not in captured.err
     assert "https://" not in captured.err
+
+
+def debug_signing_metadata(store: Path) -> dict[str, object]:
+    return {
+        "schema_version": "gsip-selected-debug-signing-v1",
+        "build_type": "debug",
+        "signing_config": "debug",
+        "debuggable": True,
+        "flavor_count": 0,
+        "default_debug_alias": True,
+        "store_file": str(store),
+    }
+
+
+def signing_scope_fixture(repo: Path) -> None:
+    data = json.loads(
+        gzip.decompress(
+            bytes.fromhex(
+                "1f8b0800000000000213cd590b531b3912fe2b82a4ca90c59a9847207345ddb2e064e112a0c0c9a6"
+                "6ad9a2e419d956184b5392c6c6b5c5fdf6eb96663c33f698c765f7ea9c9401a9d5ea6ef5eb93fe5c"
+                "67691af43391c474a8599cf0f590e058322369920d850c492b5263ca64ac9588294e898859a164eb"
+                "46dec87c9cfc7923097c241b7393b288934372b38e0b8789eab3c428910869799288219711473e37"
+                "eb7e0d50a522e1d7f11d2cd24ad94badbef3c8527e6f6939f9956b03bbfa35311fb02cb1c74a0ec4"
+                "b0d81c3f15f94ee3678b809fb190e52e4b72d466cb4596e921b78fac5b2428974efcc0b18a39d97d"
+                "bf347e0e9604f9dfd20e7d5b15d372634fa5b13a1b73699da25799945c03717e18f71489a876c3f4"
+                "c80f9e7d91c27aca2a3bc6527b9122175335a3fb0401f900b63704f892586843ac226a2c2c196835"
+                "2676c4091cf51d1bf2983063b83548b545c62a1603018340ce223801186096e338d7924c791f8fc9"
+                "d0e5ed4efcb18664646d6ac22028dc6ea8d4102451998683038e419a303b507a1c0c34186aaaf49d"
+                "09faccf0e0a760fb609b770e3afdbd8368b0bfdd7f17b1fdfdb771b41fb1bdc1fbcea0b3b3b7bbbb"
+                "bbf7763bb04a2526400b0447f075e454a0519abe7ad7a9cb26865269ee092e99b5a8c62169ad5133"
+                "91e11a1d0a0bdfb1b93516c8c2b537d4445148df846bc75fafc3353bcac67d43e37eb896826f1a46"
+                "851440f5ef56b9cb83ff35ffe102b2374b79ed50344f38a8b8784ee09a6230eb4ad64fc0e603f074"
+                "5e2748b51a664cc7fe30c11d73335f56c6375a0555bbb0b9bdb7adcd2d524ee80cd653f8b351ee07"
+                "4c079aa7ca08b08228451fc0519d085d91daf9528bd22062e04048de8e948ed584159bb77df23181"
+                "d1513066420689e89b1648e37ed6378d79cae14b46954dc5384df83c42c80054ec69ce37848c922c"
+                "e621f9bdf5867e67baf5c7168a13e68c371b5757220b1c175312b361f9dbeb62f6284d8fdd5011ec"
+                "eb4fb18b14e82d240313246ca6321b2e8fccd91f97539fdcd40bb601b7c4afb681c0312313812d64"
+                "f81a87aeddc8b51b799c61eaf3da462b2ccf2ddfa2309ccb4e8b627ccf20f584fefbb5fbb1b04fce"
+                "a4d7b4b89ed320a5168c8a89b31f636852cd8d5161f14bdbd96acebd9b0f1fc3e8cbadb3c2abd15a"
+                "ce737da1c56c8a65b65846abf5d85559ab67856343e52386eb8988b839bbbe38873c3470f1eb5364"
+                "bb98a3df0d94e8c29f0764a3ba0874bfb79b8b7573a1e47b8674383674817725fe08d4da68b4d1bd"
+                "8fb8ab2284cfd9266a3884fa23e4406ddcac378947a4825aa232196f9185f95c1447e16a3a8f29b9"
+                "cccc889c2b0bd5c5977843a6a0a42598ff6fd6bd55d7b75c0313349b13db1b2c3417e4fca247ba27"
+                "a73dd2fbf5f49a7c38fdd45d23f017fcfeb17bdebd3aea754f48f7e8f857d23bfddcc54ea2e047b2"
+                "14cbd9cd3ad25e7d395f6a83f29e65a9acfaf2e53384e843376267e48c4d58ee57f46bf7eafaf4e2"
+                "fc767b5e7d7cf7f0dc150f0d5e75b3feac349b8fd309d302eb88c9cd85befe8cf4dae8fb5097355b"
+                "91519b16a01b9b99b17cfc8245898a58d296559fc0d5b9256e247afe8819287529d77606654e19fb"
+                "0b3a44f7de6a06c4b9bf2e8c6f94ced4e03e3d95b6133ee189afd42e02c974c43527909721262461"
+                "710c8e80ed69a6bdf82af707d71049d71c25093159bf9d2b6602e8905c8d45c91d6748d422b585d5"
+                "fd77538dc58f8fa08dcd4a4bcb265c1e83fd344b8af187228d2c1faa6bc6a11840036f47f5b6dfb5"
+                "4a3e90426f89f0807676e8dbd6caa565fa0817623bdca5f0cf25b64aef07f1d80dc98972210f3529"
+                "72b6d4d58ebe2e359afb1fd885ce489f274a0e6bec207760832a642c2622ce5842bc7149f538ddc1"
+                "997a37518f9ea680009a2429ceac30de0f9f8adbdc32730786e44c6e5868ffc01ed0f3d932a7c6ee"
+                "cf1aca70fa407f35f7d7a7a37dd1a3a118141bac6a65a0cce41ad35a38ada26f6d927f2e81a195cc"
+                "a1e274e83eedb40a44e8e4ce91cb13123412376edfcc16f7dea56fdde60f2b02efff31e4eafeda08"
+                "d6a1a5d54ccf9e01d4e7b5b22804058bdc651ab1fa8ae35800ec2b8e62810a8e61e7dd13d8be8ed0"
+                "1b77af9134ee5c671292eddd47d07ce31e8b548ddb2cb12af55b04ff9d55d8bf82fc7317c20b8c06"
+                "b4cefa4adb0bd9d51aba93c32a047ca81d5bc3d297f7242fed4a1e0787f5086a8a9e55f0f1af4686"
+                "1e052e725dc68bff2388a8f49062548e781193e1fcaac301b7e55456f082ea77fde597f6e5d5c559"
+                "f7b8474eba97ddf393eef9f169f79a5cf78eae7a45e57d8c107ecb8d0854979fbe7c3c3d271faf8e"
+                "4e3e7549f75baf7b8e273c6757af998f35938f31735bde005cd0640361ce209311c44d144f2e5d16"
+                "baacb768f3a28874ae5f7b5ef55b25dedf020de6a515b4f85c4b3d877f6d0643c37ac894b73640ca"
+                "a5f11d27f6a3298602769d7624dc4dde08820d320364209dc1bc75fd12d0d05cdc46a383d8bfffe1"
+                "418eb3629ea56134fc63f104a8e1d60a39fc5b0d9c072869ba94b8918f5e59d07c16b20b2820f994"
+                "f89b30404cfebf04e3dce63d794053998e839fe77c7ecaf9fc7c40f7e8f66d65026f10fc689d4349"
+                "52dc6b96c8cc83962665721cd5ac4b01b27e5015cf0664dea6bb2fd4c42f0d2af740cd6a54d05db3"
+                "2a55f8f783ea94ac40f80edd79a14ae5f2a7d56ac29fcdfa3522d51f54b48127e8b6433b2fd4b881"
+                "4f55758c6a1fc2282f262aa8a718cdaf489e98da530186f9e833cf3cecd168afc8e949976c0010a4"
+                "242f57e4da66b1509b2403446842a459583947cef88830d22a1b8e5c7642566fa60260b3825649c3"
+                "9e6f703593b372a94979e49f1f1c04845c87e799cbf20152c818ec014da66522310432e8484d311d"
+                "ceb7f4b0d3037b2e27422b8985994c04342fc8041f27c220984ea77962a350ac835845505b32ad81"
+                "3640cd8619c8e7b1d66d850f1dd971e2a5b9ce45354eb9b3af9f097456ee5dc7a06d6282a510a762"
+                "c6c7be1d05f88c767d457aa3b9b908e898323894284b9886420c6b0759e2574f39bb439a3170d0b3"
+                "ead9608791cbff7d32869dcd61fbdbf8beb3b7f36eece5fb6dc465e528b68a637227804543e0ff28"
+                "eb332706c800c0983ba4cd732141347fef41cc486560512513c4eb5ebfa900d413f3486529be5d14"
+                "989a92cf9533dafa2f2d3f0610216e739eb71ed539e3bf323c0ae7bb16140637a8d8a4d0e6d0ea8c"
+                "7b7be4fefbad78f622f80c1759f41970a031bbe3445807df35d7643a12d1a8203570b478f720e3a4"
+                "d01b0eb6c294605c793bfadcb3e59edd3c135c3b7f6a738b8bab9196214797ff2a6c834f6631de4b"
+                "21b33986c3f732ab5211051e1082c305264b53000ded1c2216d17edfd62556a460cb42e5dc0a9809"
+                "1aaa7a991951a415756cc55df88ac2b6eae67c65c67cc62da74fe32b2edd17d46aa1aa4d2d62e5b2"
+                "64bcd0d015587219dd1eced1df12302ca7e61821b26202a0aaa4687568a73347fe8fdcd1d4ae519e"
+                "7a37f2f43b4b7c2b6f1df9defb4b341f341b62a2aad11dd0f7e50d4ed3c39227db5ee2f61befdf89"
+                "3a2fbc93c9a9aa4f4638b98bd720db0b2cce16889a146b78cc41d21d5aeab7eaeaa97247b4fef01f"
+                "cd6aeba036210000"
+            )
+        )
+    )
+    for name, text in data.items():
+        path = repo / "apps/capture-pwa/android" / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text)
+
+
+def test_selected_debug_locator_uses_complete_metadata_not_home_guess(tmp_path: Path) -> None:
+    temporary = tmp_path / "private"
+    temporary.mkdir()
+    selected = tmp_path / "preferences/.android/debug.keystore"
+    selected.parent.mkdir(parents=True)
+    selected.write_bytes(b"synthetic disposable fixture, not a credential")
+    locator = temporary / "locator.json"
+    locator.write_text(json.dumps(debug_signing_metadata(selected)))
+    result = audit.read_debug_signing_locator(locator, temporary)
+    assert result == selected
+    assert result != Path.home() / ".android/debug.keystore"
+    assert audit.sha(audit.read(result, (result.parent,), audit.MAX_META)) == audit.sha(
+        selected.read_bytes()
+    )
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "missing",
+        "extra",
+        "schema",
+        "build_type",
+        "signing_config",
+        "debuggable",
+        "flavor_count",
+        "bool_flavors",
+        "alias",
+        "relative",
+        "parent",
+        "backslash",
+        "control",
+        "unicode",
+        "oversize_path",
+        "not_string",
+        "wrong_name",
+        "duplicate",
+        "oversize_receipt",
+        "empty",
+        "nan",
+    ],
+)
+def test_selected_debug_locator_refuses_incomplete_or_untrusted_metadata(
+    defect: str, tmp_path: Path
+) -> None:
+    locator = tmp_path / "locator.json"
+    data = debug_signing_metadata(tmp_path / "debug.keystore")
+    if defect == "missing":
+        del data["default_debug_alias"]
+    elif defect == "extra":
+        data["private"] = "synthetic private payload"
+    elif defect in {"schema", "build_type", "signing_config"}:
+        data[{"schema": "schema_version"}.get(defect, defect)] = "unreviewed"
+    elif defect in {"debuggable", "alias"}:
+        data[{"alias": "default_debug_alias"}.get(defect, defect)] = False
+    elif defect == "flavor_count":
+        data["flavor_count"] = 1
+    elif defect == "bool_flavors":
+        data["flavor_count"] = False
+    elif defect == "relative":
+        data["store_file"] = "debug.keystore"
+    elif defect == "parent":
+        data["store_file"] = str(tmp_path) + "/../debug.keystore"
+    elif defect == "backslash":
+        data["store_file"] = str(tmp_path) + "/synthetic\\debug.keystore"
+    elif defect == "control":
+        data["store_file"] = str(tmp_path) + "/synthetic\n/debug.keystore"
+    elif defect == "unicode":
+        data["store_file"] = str(tmp_path) + "/\u2603/debug.keystore"
+    elif defect == "oversize_path":
+        data["store_file"] = "/" + "x" * 4096 + "/debug.keystore"
+    elif defect == "not_string":
+        data["store_file"] = {"private": "synthetic"}
+    elif defect == "wrong_name":
+        data["store_file"] = str(tmp_path / "owner-release.keystore")
+    payload = json.dumps(data)
+    if defect == "duplicate":
+        payload = payload[:-1] + ', "store_file": "/synthetic/debug.keystore"}'
+    elif defect == "oversize_receipt":
+        payload = " " * (audit.MAX_DEBUG_SIGNING_LOCATOR + 1) + payload
+    elif defect == "empty":
+        payload = ""
+    elif defect == "nan":
+        payload = payload.replace('"flavor_count": 0', '"flavor_count": NaN')
+    locator.write_text(payload)
+    with pytest.raises((audit.AuditError, ValueError)):
+        audit.read_debug_signing_locator(locator, tmp_path)
+
+
+@pytest.mark.parametrize("defect", ["symlink", "hardlink", "directory", "outside", "fifo"])
+def test_selected_debug_locator_retains_descriptor_and_containment_guards(
+    defect: str, tmp_path: Path
+) -> None:
+    import os
+
+    private = tmp_path / "private"
+    private.mkdir()
+    outside = tmp_path / "outside.json"
+    outside.write_text(json.dumps(debug_signing_metadata(tmp_path / "debug.keystore")))
+    locator = private / "locator.json"
+    if defect == "symlink":
+        locator.symlink_to(outside)
+    elif defect == "hardlink":
+        os.link(outside, locator)
+    elif defect == "directory":
+        locator.mkdir()
+    elif defect == "fifo":
+        os.mkfifo(locator)
+    else:
+        locator = outside
+    with pytest.raises((audit.AuditError, ValueError)):
+        audit.read_debug_signing_locator(locator, private)
+
+
+def test_selected_debug_scope_accepts_only_controlled_generated_templates(tmp_path: Path) -> None:
+    signing_scope_fixture(tmp_path)
+    audit.validate_debug_signing_scope(tmp_path)
+    app = tmp_path / "apps/capture-pwa/android/app/build.gradle"
+    app.write_text(app.read_text().replace("versionCode 49", "versionCode 12345"))
+    audit.validate_debug_signing_scope(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "relative",
+    [
+        "app/build.gradle",
+        "app/capacitor.build.gradle",
+        "build.gradle",
+        "settings.gradle",
+        "variables.gradle",
+        "gradle.properties",
+        "capacitor-cordova-android-plugins/cordova.variables.gradle",
+    ],
+)
+def test_selected_debug_scope_refuses_signing_flavor_or_variant_override(
+    relative: str, tmp_path: Path
+) -> None:
+    signing_scope_fixture(tmp_path)
+    path = tmp_path / "apps/capture-pwa/android" / relative
+    path.write_text(path.read_text() + "\nandroidComponents { onVariants { } }\n")
+    with pytest.raises(audit.AuditError):
+        audit.validate_debug_signing_scope(tmp_path)
+
+
+@pytest.mark.parametrize("defect", ["none", "missing", "extra", "nonzero"])
+def test_selected_debug_key_is_fresh_metadata_only_with_no_fallback(
+    defect: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import subprocess
+
+    signing_scope_fixture(tmp_path)
+    selected = tmp_path / "selected/debug.keystore"
+    calls: list[list[str]] = []
+
+    def metadata_task(args: list[str], cwd: Path) -> str:
+        calls.append(args)
+        assert cwd == tmp_path / "apps/capture-pwa/android"
+        assert len(args) == 7 and args[-2] == ":app:gsipDebugSigningLocator"
+        task = Path(args[args.index("-I") + 1])
+        assert task.read_text() == audit.DEBUG_SIGNING_TASK
+        assert not any(
+            token in task.read_text()
+            for token in [
+                "dependsOn",
+                "finalizedBy",
+                "assembleDebug",
+                "validateSigning",
+                "storePassword",
+                "getStorePassword",
+                "getKeyPassword",
+                "signingReport",
+                "AndroidLocations",
+                "getCanonicalPath",
+                "getCanonicalFile",
+                "toRealPath",
+                ".normalize(",
+                "FileInputStream",
+                "Files.read",
+            ]
+        )
+        locator = Path(args[-1].split("=", 1)[1])
+        assert not locator.exists()
+        assert locator.parent == task.parent
+        assert not locator.is_relative_to(tmp_path)
+        if defect == "nonzero":
+            raise subprocess.CalledProcessError(1, args, stderr="synthetic private payload")
+        if defect != "missing":
+            locator.write_text(json.dumps(debug_signing_metadata(selected)))
+        if defect == "extra":
+            (locator.parent / "unreviewed.json").write_text("synthetic")
+        return ""
+
+    monkeypatch.setattr(audit, "run", metadata_task)
+    if defect == "none":
+        assert audit.selected_debug_key(tmp_path) == selected
+        assert not selected.exists()
+    else:
+        with pytest.raises((audit.AuditError, FileNotFoundError, subprocess.CalledProcessError)):
+            audit.selected_debug_key(tmp_path)
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize("explicit", [True, False])
+def test_android_cli_preserves_explicit_key_mode_and_selects_public_default(
+    explicit: bool,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    seen: list[Path | None] = []
+
+    def collect(repo: Path, cache: Path, output: Path, debug_key: Path | None) -> None:
+        seen.append(debug_key)
+
+    monkeypatch.setattr(audit, "collect_android", collect)
+    args = ["android", str(tmp_path), str(tmp_path), str(tmp_path / "out.json")]
+    if explicit:
+        args.append(str(tmp_path / "synthetic-explicit.key"))
+    assert len(args) + 3 == (8 if explicit else 7)
+    assert audit.main(args) == 0
+    assert seen == [tmp_path / "synthetic-explicit.key" if explicit else None]
+    assert capsys.readouterr().err == ""
+
+
+@pytest.mark.parametrize("same", [True, False])
+def test_selected_debug_mode_retains_actual_shared_key_hash_proof(
+    same: bool, tmp_path: Path
+) -> None:
+    parent, candidate = tmp_path / "parent.apk", tmp_path / "candidate.apk"
+    zipped(parent, b"parent", False)
+    zipped(candidate, b"candidate", False)
+    left, right, native = receipts(parent, candidate)
+    other = complete_native("a" * 40, right["artifact_sha256"])
+    key = tmp_path / "debug.keystore"
+    key.write_bytes(b"synthetic disposable key fixture, not credentials")
+    native["debug_signing_key_sha256"] = audit.sha(audit.read(key, (tmp_path,)))
+    if not same:
+        key.write_bytes(b"different synthetic disposable fixture")
+    other["debug_signing_key_sha256"] = audit.sha(audit.read(key, (tmp_path,)))
+    if same:
+        result = audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other)
+        assert (
+            result["android_shared_disposable_debug_key_sha256"]
+            == native["debug_signing_key_sha256"]
+        )
+    else:
+        with pytest.raises(audit.AuditError):
+            audit.feature_comparison(parent, candidate, left, right, "a" * 40, native, other)
+
+
+def test_workflow_has_no_hardcoded_debug_key_location_and_keeps_native_audits() -> None:
+    workflow = (ROOT / ".github/workflows/app-build.yml").read_text()
+    assert "$HOME/.android/debug.keystore" not in workflow
+    assert workflow.count("scripts.app_notification_audit android") == 2
+    assert workflow.count(":app:assembleDebug") == 4
+
+
+@pytest.mark.parametrize(
+    "field",
+    [
+        "schema_version",
+        "build_type",
+        "signing_config",
+        "debuggable",
+        "flavor_count",
+        "default_debug_alias",
+        "store_file",
+    ],
+)
+def test_selected_debug_locator_requires_every_bound_metadata_field(
+    field: str, tmp_path: Path
+) -> None:
+    locator = tmp_path / "locator.json"
+    data = debug_signing_metadata(tmp_path / "debug.keystore")
+    del data[field]
+    locator.write_text(json.dumps(data))
+    with pytest.raises(audit.AuditError):
+        audit.read_debug_signing_locator(locator, tmp_path)
+
+
+@pytest.mark.parametrize("field", ["namespace", "applicationId", "versionCode", "versionName"])
+@pytest.mark.parametrize(
+    "defect", ["interpolation", "escape", "quote", "newline", "duplicate", "syntax"]
+)
+def test_selected_debug_template_normalization_cannot_hide_other_code(
+    field: str, defect: str, tmp_path: Path
+) -> None:
+    signing_scope_fixture(tmp_path)
+    app = tmp_path / "apps/capture-pwa/android/app/build.gradle"
+    old = {
+        "namespace": '    namespace = "com.globalsoilintelligence.app"',
+        "applicationId": '        applicationId "com.globalsoilintelligence.app"',
+        "versionCode": "        versionCode 49",
+        "versionName": '        versionName "0.1.0"',
+    }[field]
+    replacement = {
+        "interpolation": "${signingConfig}",
+        "escape": r"\u0022",
+        "quote": '"; signingConfig = null; "',
+        "newline": "\nsigningConfig = null\n",
+        "duplicate": "\n" + old,
+        "syntax": "not-valid-syntax!",
+    }[defect]
+    text = app.read_text()
+    assert text.count(old) == 1
+    app.write_text(text.replace(old, old + replacement))
+    with pytest.raises(audit.AuditError):
+        audit.validate_debug_signing_scope(tmp_path)
+
+
+def test_selected_debug_locator_preserves_symlink_for_strict_key_read(tmp_path: Path) -> None:
+    real = tmp_path / "real"
+    real.mkdir()
+    (real / "debug.keystore").write_bytes(b"synthetic disposable fixture, not credentials")
+    link = tmp_path / "link"
+    link.symlink_to(real, target_is_directory=True)
+    selected = link / "debug.keystore"
+    locator = tmp_path / "locator.json"
+    locator.write_text(json.dumps(debug_signing_metadata(selected)))
+    result = audit.read_debug_signing_locator(locator, tmp_path)
+    assert result == selected
+    assert result != selected.resolve()
+    with pytest.raises(audit.AuditError):
+        audit.read(result, (result.parent,), audit.MAX_META)
+
+
+@pytest.mark.parametrize("explicit", [True, False])
+def test_collect_android_preserves_strict_selected_or_explicit_key_hash(
+    explicit: bool,
+    graph: tuple[dict[str, Any], Path, Path, Path],
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    data, repo, cache, _ = graph
+    output = tmp_path / "evidence/native.json"
+    output.parent.mkdir()
+    key = tmp_path / "preferences/debug.keystore"
+    key.parent.mkdir()
+    key.write_bytes(b"synthetic disposable key fixture, not credentials")
+    for name in (
+        "pnpm-lock.yaml",
+        "apps/capture-pwa/package.json",
+        "apps/capture-pwa/capacitor.config.ts",
+        "scripts/app_permissions.py",
+        "scripts/app_build.py",
+    ):
+        path = repo / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("synthetic source input")
+    zipped(
+        repo / "apps/capture-pwa/android/app/build/outputs/apk/debug/app-debug.apk",
+        b"synthetic",
+        False,
+    )
+    selected_calls: list[Path] = []
+
+    def select(root: Path) -> Path:
+        selected_calls.append(root)
+        return key
+
+    def fake_run(args: list[str], *unused: Any) -> str:
+        if ":app:gsipRuntimeEvidence" in args:
+            target = Path(
+                next(
+                    arg.split("=", 1)[1] for arg in args if arg.startswith("-PgsipEvidenceOutput=")
+                )
+            )
+            target.write_text(json.dumps(data))
+        return "synthetic dependency tree\n+--- org.example:example-runtime:1.2.3"
+
+    monkeypatch.setattr(audit, "run", fake_run)
+    monkeypatch.setattr(audit, "selected_debug_key", select)
+    audit.collect_android(repo, cache, output, key if explicit else None)
+    receipt = json.loads(output.read_bytes())
+    assert receipt["debug_signing_key_sha256"] == audit.sha(key.read_bytes())
+    assert selected_calls == ([] if explicit else [repo])
+    assert "store_file" not in receipt
+    assert "private" not in receipt
+    assert str(key) not in output.read_text()
+    assert (
+        audit.sha(audit.GRADLE_TASK.encode())
+        == "74ad3dceb4b32c77355793b1b1032ff638af2d4ebc3f14d731e6c540bdc85ea0"
+    )
+
+
+def known_included_generated_input(repo: Path, name: str, shape: str) -> Path:
+    signing_scope_fixture(repo)
+    path = repo / "apps/capture-pwa/android" / name
+    if shape == "parent" and name == "capacitor.settings.gradle":
+        path.write_text(path.read_text().split("\ninclude ':capacitor-local-notifications'")[0])
+    expected = (
+        "28e3fa281f4d1e388bf98abc7f5bb31e672516e385c165c719d201ed54b8236e"
+        if name.endswith("/build.gradle")
+        else {
+            "parent": "b0de5228964cc9f91948cb0277688d377ad8ce9a9ed921c1e2009f03c7c292ea",
+            "candidate": "38174855e3d1b05152c745e730081f34d17e18520f3f51c7aaa20f9abc1c7acf",
+        }[shape]
+    )
+    assert audit.sha(path.read_bytes()) == expected
+    return path
+
+
+@pytest.mark.parametrize(
+    "name", ["capacitor.settings.gradle", "capacitor-cordova-android-plugins/build.gradle"]
+)
+@pytest.mark.parametrize("shape", ["parent", "candidate"])
+def test_selected_debug_scope_requires_complete_known_directly_included_inputs(
+    name: str, shape: str, tmp_path: Path
+) -> None:
+    known_included_generated_input(tmp_path, name, shape)
+    audit.validate_debug_signing_scope(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "name", ["capacitor.settings.gradle", "capacitor-cordova-android-plugins/build.gradle"]
+)
+@pytest.mark.parametrize("shape", ["parent", "candidate"])
+@pytest.mark.parametrize(
+    "defect", ["missing", "unknown", "override", "symlink", "hardlink", "fifo"]
+)
+def test_selected_debug_scope_refuses_changed_missing_or_unsafe_included_inputs(
+    name: str, shape: str, defect: str, tmp_path: Path
+) -> None:
+    import os
+
+    repo = tmp_path / "repo"
+    path = known_included_generated_input(repo, name, shape)
+    audit.validate_debug_signing_scope(repo)
+    original = path.read_bytes()
+    if defect == "missing":
+        path.unlink()
+    elif defect == "unknown":
+        path.write_bytes(original + b"\n// synthetic unknown generated input\n")
+    elif defect == "override":
+        path.write_bytes(
+            original + b"\ngradle.projectsEvaluated { project(':app').android.buildTypes.debug."
+            b"signingConfig.storeFile = new File('synthetic-debug.keystore') }\n"
+        )
+    else:
+        path.unlink()
+        if defect == "fifo":
+            os.mkfifo(path)
+        else:
+            outside = tmp_path / "outside.gradle"
+            outside.write_bytes(original)
+            if defect == "symlink":
+                path.symlink_to(outside)
+            else:
+                os.link(outside, path)
+    with pytest.raises((audit.AuditError, FileNotFoundError)):
+        audit.validate_debug_signing_scope(repo)
