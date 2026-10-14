@@ -1,0 +1,307 @@
+{
+  "schema": "gsip-app2c2a-scope-v1",
+  "baseline": "6a652f94b220be7eeff49508283883c502baa527",
+  "owner_policy": {
+    "design": "approved-2026-10-14",
+    "passcode_required": true,
+    "preserve_quarantine": true,
+    "automatic_reset": false,
+    "accessibility": "kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly",
+    "synchronizable": false,
+    "access_group": "ordinary-default-only"
+  },
+  "document_grants_implementation": false,
+  "native_files": [
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Package.swift",
+      "kind": "manifest",
+      "imports": ["PackageDescription"],
+      "effect": "core-package-only"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageContract.swift",
+      "kind": "core",
+      "imports": ["Foundation"],
+      "effect": "bounded-values"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/ExcludedSQLiteStore.swift",
+      "kind": "core",
+      "imports": ["Foundation", "Darwin", "SQLite3", "CryptoKit"],
+      "effect": "excluded-fixed-sqlite"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/KeychainAnchor.swift",
+      "kind": "core",
+      "imports": ["Foundation", "Security"],
+      "effect": "synthetic-anchor"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageCoordinator.swift",
+      "kind": "core",
+      "imports": ["Foundation", "Dispatch"],
+      "effect": "serialized-coordinator"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/ExcludedSQLiteStoreTests.swift",
+      "kind": "core-test",
+      "imports": [
+        "XCTest",
+        "Foundation",
+        "Darwin",
+        "SQLite3",
+        "GSIPStorageCore"
+      ],
+      "effect": "direct-synthetic-tests"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/KeychainAnchorTests.swift",
+      "kind": "core-test",
+      "imports": ["XCTest", "Foundation", "Security", "GSIPStorageCore"],
+      "effect": "direct-synthetic-tests"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/StorageCoordinatorTests.swift",
+      "kind": "core-test",
+      "imports": ["XCTest", "Foundation", "Dispatch", "GSIPStorageCore"],
+      "effect": "direct-synthetic-tests"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/NativeTestDoubles.swift",
+      "kind": "core-test",
+      "imports": ["Foundation", "GSIPStorageCore"],
+      "effect": "direct-synthetic-tests"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeHostController.swift",
+      "kind": "host",
+      "imports": [
+        "Foundation",
+        "UIKit",
+        "WebKit",
+        "Capacitor",
+        "Cordova",
+        "GSIPStorageCore"
+      ],
+      "effect": "nonpersistent-held-host"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/BridgeMessageGate.swift",
+      "kind": "host",
+      "imports": ["Foundation", "WebKit", "Capacitor", "GSIPStorageCore"],
+      "effect": "main-frame-allowlist"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/AssetRequestGate.swift",
+      "kind": "host",
+      "imports": ["Foundation", "WebKit", "Capacitor", "GSIPStorageCore"],
+      "effect": "owned-asset-allowlist"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeDelegationHandler.swift",
+      "kind": "host",
+      "imports": [
+        "Foundation",
+        "UIKit",
+        "WebKit",
+        "Capacitor",
+        "GSIPStorageCore"
+      ],
+      "effect": "prompt-navigation-deny"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/OwnedTemporaryPhotoBroker.swift",
+      "kind": "host",
+      "imports": ["Foundation", "Darwin", "CryptoKit", "GSIPStorageCore"],
+      "effect": "synthetic-canary-broker"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeStorePlugin.swift",
+      "kind": "host",
+      "imports": ["Foundation", "Capacitor", "GSIPStorageCore"],
+      "effect": "typed-synthetic-operations"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeHostControllerTests.swift",
+      "kind": "host-test",
+      "imports": [
+        "XCTest",
+        "Foundation",
+        "UIKit",
+        "WebKit",
+        "Capacitor",
+        "Cordova",
+        "GSIPStorageCore",
+        "App"
+      ],
+      "effect": "direct-synthetic-tests"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/BridgeMessageGateTests.swift",
+      "kind": "host-test",
+      "imports": [
+        "XCTest",
+        "Foundation",
+        "WebKit",
+        "Capacitor",
+        "GSIPStorageCore",
+        "App"
+      ],
+      "effect": "direct-synthetic-tests"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/AssetRequestGateTests.swift",
+      "kind": "host-test",
+      "imports": [
+        "XCTest",
+        "Foundation",
+        "WebKit",
+        "Capacitor",
+        "GSIPStorageCore",
+        "App"
+      ],
+      "effect": "direct-synthetic-tests"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeDelegationHandlerTests.swift",
+      "kind": "host-test",
+      "imports": [
+        "XCTest",
+        "Foundation",
+        "UIKit",
+        "WebKit",
+        "Capacitor",
+        "GSIPStorageCore",
+        "App"
+      ],
+      "effect": "direct-synthetic-tests"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/OwnedTemporaryPhotoBrokerTests.swift",
+      "kind": "host-test",
+      "imports": [
+        "XCTest",
+        "Foundation",
+        "Darwin",
+        "CryptoKit",
+        "GSIPStorageCore",
+        "App"
+      ],
+      "effect": "direct-synthetic-tests"
+    },
+    {
+      "path": "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeStorePluginTests.swift",
+      "kind": "host-test",
+      "imports": [
+        "XCTest",
+        "Foundation",
+        "Capacitor",
+        "GSIPStorageCore",
+        "App"
+      ],
+      "effect": "direct-synthetic-tests"
+    }
+  ],
+  "support_files": [
+    "scripts/ios_storage_prototype.py",
+    "tests/test_ios_storage_prototype.py",
+    ".github/workflows/ios-storage-prototype.yml"
+  ],
+  "generated_edits": [
+    "App/App.xcodeproj/project.pbxproj",
+    "App/App/SceneDelegate.swift",
+    "App/App/Base.lproj/Main.storyboard",
+    "App/App/Info.plist",
+    "App/CapApp-SPM/Package.swift",
+    "App/App.xcodeproj/xcshareddata/xcschemes/GSIPStoragePrototype.xcscheme",
+    "App/App/public/index.html",
+    "App/App/public/gsip-activation.json",
+    "App/App/capacitor.config.json"
+  ],
+  "execution": {
+    "target": "future-disposable-ios-simulator-only",
+    "physical_device": false,
+    "macos_keychain": false,
+    "ordinary_app_wiring": false,
+    "signing": false,
+    "native_network": false,
+    "real_camera_or_location": false,
+    "automatic_package_registration": false,
+    "application_notification_routing": false,
+    "notification_operations": false
+  },
+  "namespaces": {
+    "bundle_id": "com.globalsoilintelligence.app.storageprototype",
+    "root": "Library/GSIPStoragePrototype-v1/<native-run-nonce>",
+    "database": "gsip-app2c2a.sqlite3",
+    "keychain_service": "com.globalsoilintelligence.app.storageprototype.synthetic.v1",
+    "keychain_account": "anchor-<native-run-nonce>",
+    "core_test_identity": "bind-fresh-ios-test-runner-never-ordinary-app"
+  },
+  "package": {
+    "targets": ["GSIPStorageCore", "GSIPStorageCoreTests"],
+    "external_dependencies": [],
+    "plugins": [],
+    "binary_targets": [],
+    "host_linkage": "fresh-existing-CapApp-SPM-products-only",
+    "npm_ios_is_swift_package": false
+  },
+  "limits": {
+    "max_counter": 9007199254740991,
+    "wrap_counters": false,
+    "chunk_bytes": 131072,
+    "frame_bytes": 524288,
+    "managed_bytes": 268435456
+  },
+  "prohibited": [
+    "ordinary-app-data",
+    "ordinary-app-registration",
+    "auth-sdk",
+    "legacy-export-migration",
+    "reset-or-new-account",
+    "arbitrary-path-sql-or-keychain-query",
+    "new-dependency-or-core-fork",
+    "entitlement-permission-background-mode-change",
+    "production-deployment-or-worker",
+    "capture-or-signin-opening",
+    "secret-or-photo-logging",
+    "weaker-keychain-class",
+    "real-camera-or-picker-integration",
+    "physical-device-or-backup-operation"
+  ],
+  "source_bindings": {
+    "pnpm-lock.yaml": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+    "apps/capture-pwa/capacitor.config.ts": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69",
+    "apps/capture-pwa/package.json": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115",
+    ".github/workflows/app-build.yml": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5",
+    "scripts/app_build.py": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4",
+    "scripts/app_permissions.py": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3",
+    "scripts/app_notification_audit.py": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
+    "tests/test_app_build.py": "5b1df866e578c3c78b301c94e1a6f136347194907c75ed71de3aee240c126757",
+    "tests/test_app_permissions.py": "511addd80ca24b30bf8a6f7291917dd56b5bcf305b0ed0f003d7a209139ecfda"
+  },
+  "artifact_boundary": "compiled-inputs-link-graph-and-bundle-not-debug-only",
+  "generated_copies": {
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Package.swift": "GSIPPrivateStorePrototype/Package.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageContract.swift": "GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageContract.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/ExcludedSQLiteStore.swift": "GSIPPrivateStorePrototype/Sources/GSIPStorageCore/ExcludedSQLiteStore.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/KeychainAnchor.swift": "GSIPPrivateStorePrototype/Sources/GSIPStorageCore/KeychainAnchor.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageCoordinator.swift": "GSIPPrivateStorePrototype/Sources/GSIPStorageCore/StorageCoordinator.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/ExcludedSQLiteStoreTests.swift": "GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/ExcludedSQLiteStoreTests.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/KeychainAnchorTests.swift": "GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/KeychainAnchorTests.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/StorageCoordinatorTests.swift": "GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/StorageCoordinatorTests.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/NativeTestDoubles.swift": "GSIPPrivateStorePrototype/Tests/GSIPStorageCoreTests/NativeTestDoubles.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeHostController.swift": "App/App/GSIPStorageHostPrototype/PrototypeHostController.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/BridgeMessageGate.swift": "App/App/GSIPStorageHostPrototype/BridgeMessageGate.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/AssetRequestGate.swift": "App/App/GSIPStorageHostPrototype/AssetRequestGate.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeDelegationHandler.swift": "App/App/GSIPStorageHostPrototype/PrototypeDelegationHandler.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/OwnedTemporaryPhotoBroker.swift": "App/App/GSIPStorageHostPrototype/OwnedTemporaryPhotoBroker.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Sources/GSIPStorageHostPrototype/PrototypeStorePlugin.swift": "App/App/GSIPStorageHostPrototype/PrototypeStorePlugin.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeHostControllerTests.swift": "App/GSIPStorageHostPrototypeTests/PrototypeHostControllerTests.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/BridgeMessageGateTests.swift": "App/GSIPStorageHostPrototypeTests/BridgeMessageGateTests.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/AssetRequestGateTests.swift": "App/GSIPStorageHostPrototypeTests/AssetRequestGateTests.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeDelegationHandlerTests.swift": "App/GSIPStorageHostPrototypeTests/PrototypeDelegationHandlerTests.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/OwnedTemporaryPhotoBrokerTests.swift": "App/GSIPStorageHostPrototypeTests/OwnedTemporaryPhotoBrokerTests.swift",
+    "apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/Tests/GSIPStorageHostPrototypeTests/PrototypeStorePluginTests.swift": "App/GSIPStorageHostPrototypeTests/PrototypeStorePluginTests.swift"
+  }
+}

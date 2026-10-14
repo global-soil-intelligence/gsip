@@ -1,8 +1,8 @@
 # Proposed iOS native private-storage design
 
-**Proposal only — v12, 2026-10-14. No backend is admitted. No native-language exception is granted.**
+**Prototype proposal only — v12, 2026-10-14. Architecture approved in #70; no backend is admitted. No native-language exception is granted.**
 Justin approved merging the source-only APP-2C1 audit in [#69](https://github.com/global-soil-intelligence/gsip/pull/69),
-now main `de9d1221b7c73e9be5c7e25ccaa24dcfa7903934`. That audit found no complete existing mechanism.
+reviewed baseline `de9d1221b7c73e9be5c7e25ccaa24dcfa7903934`. That audit found no complete existing mechanism.
 This document proposes a candidate for a separately authorized, synthetic native prototype;
 it implements no store, migration, native code or device experiment. iOS protection remains
 **blocked/unverified**. Design approval alone is not implementation permission.
@@ -12,6 +12,8 @@ remain binding. Web/Android behavior and Android backup rules remain unchanged. 
 Pages, worker, capture/sign-in, photo-publication, account/signing or store permission changes.
 I12 public/agent readers receive no session or privileged key. Tests and reports contain synthetic
 canaries only, generic outcomes and counts; no real contributor data, coordinates, tokens or paths.
+
+**Owner policy update (2026-10-14):** Justin approved merging [#70](https://github.com/global-soil-intelligence/gsip/pull/70) and its recommended passcode-required and preserve/quarantine/no-automatic-reset safeguards. These choices supersede their historical pending labels below. [Exact native scope](IOS_NATIVE_SCOPE.md) and implementation permission remain pending; no native code, private-data/device access or new exception is authorized.
 
 ## 1. Candidate and authority boundary
 
@@ -128,8 +130,8 @@ and device performance are unmeasured; these proposed limits confer no runtime c
 Co-restored local flags, hashes and revision counters cannot distinguish every older backup
 from a valid old state. Propose a separate small Keychain anchor with
 `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`, `synchronizable=false`, no sharing or additional access group
-(use only the app’s ordinary default access group), and no photo, session or token payload. This is a **passcode-required** product choice, pending
-Justin. Other ThisDeviceOnly classes can restore to the original device; they are not substitutes.
+(use only the app’s ordinary default access group), and no photo, session or token payload. This is a **passcode-required** product choice, approved by
+Justin on 2026-10-14. Other ThisDeviceOnly classes can restore to the original device; they are not substitutes.
 Passcode removal/reset invalidates this class; Keychain items may survive reinstall. Neither an
 absent database nor a missing/inaccessible anchor is proof of a fresh install.
 
@@ -281,7 +283,7 @@ in this specification package. Current runtime remains unchanged.
 
 ## 8. Owner decisions and assumptions
 
-All choices below are **pending**; preparing this proposal grants none of them.
+The design direction, passcode-required safeguard and preserve-quarantine/no-automatic-reset recommendation were approved with #70 on 2026-10-14. The table retains the alternatives/trade-offs reviewed; the native-language/file scope remains pending. A design merge or this status record grants no implementation permission.
 
 | Decision                          | Recommendation                                                                                                              | Alternative / consequence                                                                             |
 | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
@@ -293,8 +295,9 @@ All choices below are **pending**; preparing this proposal grants none of them.
 Assumptions: single app-owned, non-shared root/legacy store; current six-store and SDK source
 semantics; platform SQLite/Keychain availability; public Capacitor seams can be safely bounded;
 current supported OS/version matrix can meet the contract without silent target changes. Every
-assumption is an admission test, not a fact proven by prose. The pending passcode requirement and
-quarantine availability cost are product trade-offs, not already approved no-cloud policy details.
+assumption is an admission test, not a fact proven by prose. The passcode requirement and
+quarantine availability cost are now accepted product trade-offs; implementation/native scope
+and actual mechanism/device evidence remain separate.
 No new licence/service, account/signing input or scientific accuracy is claimed.
 
 ## 9. Primary references and source limits

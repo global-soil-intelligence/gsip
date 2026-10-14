@@ -1,8 +1,9 @@
-# GSIP v12 — Open Soil Spectral Library Specification
+# GSIP v13 — Open Soil Spectral Library Specification
 
 **Project:** Global Soil Intelligence Project (globalsoilintelligence.com)
-**Version:** 12.0 proposed — 2026-10-14 (conditional native iOS storage design)
-**v12 amendment status:** proposal only. §15.11 and [the concrete iOS native design](IOS_NATIVE_STORAGE_DESIGN.md) propose a bounded synthetic mechanism review after APP-2C1 merged in [#69](https://github.com/global-soil-intelligence/gsip/pull/69). No backend is admitted, no native-language exception is granted and no implementation, migration, device or production action is authorized. Passcode/recovery policy and exact native scope require Justin’s explicit decisions.
+**Version:** 13.0 proposed — 2026-10-14 (exact native prototype scope)
+**v13 amendment status:** [Exact native scope](IOS_NATIVE_SCOPE.md) is proposed for review only. Justin approved merging [#70](https://github.com/global-soil-intelligence/gsip/pull/70) and its recommended passcode-required/preserve-quarantine/no-automatic-reset safeguards on 2026-10-14. Those choices are resolved; the exact native-language/file/effect exception and implementation go remain pending. No backend is admitted or device/production authority granted.
+**v12 amendment status (historical proposal):** proposal only. §15.11 and [the concrete iOS native design](IOS_NATIVE_STORAGE_DESIGN.md) propose a bounded synthetic mechanism review after APP-2C1 merged in [#69](https://github.com/global-soil-intelligence/gsip/pull/69). No backend is admitted, no native-language exception is granted and no implementation, migration, device or production action is authorized. Passcode/recovery policy and exact native scope require Justin’s explicit decisions.
 **v11 amendment status:** Justin approved and merged the specification in [#68](https://github.com/global-soil-intelligence/gsip/pull/68). §15.10 schedules iOS private-storage feasibility before any migration; [APP-2C1](IOS_STORAGE_FEASIBILITY.md) records the source-only blocked result. No backend is selected, no native-language exception is granted, and iOS backup protection remains blocked/unverified. This amendment changes no runtime, production or launch permission.
 **v10 amendment status:** the LIB-5B local accounting, reserved-fence, daily-admission and single-root clarification in §16.12 is merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60). LIB-5A remains governed by the approved v9 pure contract. No real-source grant, credential, cleanup-authentication or retention policy is selected.
 **v9 owner approval:** Justin approved ordered merges of #51–#56 on 2026-10-13 after green CI. Following this specification merge, §16.9–16.13 permits LIB-5A pure contracts and LIB-5B synthetic local preparation. Real peer sharing, credentials/cleanup authority and retention policy remain held for LIB-5C; production and launch gates are unchanged.
@@ -295,6 +296,8 @@ Community and agents: external contributors merged, partner labs onboarded, data
 
 ## 14. Changelog
 
+- **v13.0 proposed (2026-10-14):** records approved v12/passcode/recovery choices and proposes a finite 21-Swift-file, three-support-file synthetic native scope. Grants no exception or implementation; preserves all prior contracts and acceptance states.
+
 - **v12.0 proposed (2026-10-14):** adds a concrete conditional native iOS storage design and splits held prototype, integration and legacy-recovery work. Grants no native-language exception, backend admission, implementation or deployment; preserves passcode/recovery and physical-device gates.
 
 - **v11.0 proposed (2026-10-14):** adds iOS private-storage feasibility and complete residual/transaction/migration/device gates before backend selection. Records why the existing no-cloud API is unproven, preserves current behavior and all prior launch gates, and grants no native-language exception or production authority.
@@ -439,6 +442,14 @@ The [concrete candidate design](IOS_NATIVE_STORAGE_DESIGN.md) proposes an exclud
 **Proposal only: no backend is admitted; no native-language exception is granted; no implementation is authorized.** Justin must explicitly approve the exact architecture, native-language/file scope and passcode/recovery policy before APP-2C2A. A proposed Swift coordinator and direct native tests would be a narrow exception, not a change to §4 or BUILD_ORDER guardrail 1. Approval of this design alone does not grant it. APP-2C2B integration, APP-2C2C migration and APP-2C3 physical-device evidence remain separately held after their prerequisites; none selects a new dependency, service, licence, account/signing input or production permission.
 
 I1–I15, L1–L7, B1–B8, §11, every prior §15 requirement and the entire §16 contract are unchanged. Web/Android behavior and backup rules stay unchanged. iOS backup protection remains blocked/unverified until actual mechanism/device evidence exists; source/CI/simulator success cannot close that gate. No production migration/deployment, worker dispatch, Pages approval, capture/sign-in opening, photo publication or store submission follows from this amendment.
+
+### 15.12 Proposed v13: exact synthetic native-code scope review
+
+Justin approved and merged #70 and explicitly accepted its recommended passcode-required anchor and preserve/quarantine/no-automatic-reset safeguards on 2026-10-14. These policy choices are no longer pending; they grant no private-data, Keychain, device or account access. [The exact scope](IOS_NATIVE_SCOPE.md) and [finite snapshot](ios-native-scope.json) request only 21 prospective Swift files plus three Python/CI support files, bounded imports/API effects and finite disposable generated-harness edits for APP-2C2A. No native source or harness is implemented here. The TypeScript/Python guardrail remains binding until Justin separately approves the exact native exception and prototype go; this document grants neither.
+
+The prototype remains isolated from ordinary application targets, assets, storage/Keychain identities and native build rules. A core-only package may use system SQLite/Foundation/Security/Dispatch/Darwin/SHA256 within the listed effects; host linkage reuses the freshly resolved existing Capacitor/Cordova products, without new package/version selection. No ordinary SDK/queue wiring, real camera/picker/location, network, legacy migration, reset/new account, extra file/module/core fork, signing/entitlement or device/production operation is included. Extra required wiring or unsupported public seams stop for amended scope. Current I1–I15, L1–L7, B1–B8, all prior §15 requirements and §16 remain unchanged.
+
+Tests protect the proposal's finite paths, policy and refusal boundaries; source/import checks, mocks, simulator or compile results cannot establish backup, power-loss, physical-erasure, backend or store readiness. APP-2C2B/C and APP-2C3 remain separately gated. No implementation criterion is checked by preparing/reviewing the scope, and no source merge authorizes production or capture/sign-in/photo opening.
 
 ## 16. Open soil spectral library (v5 foundation; v6/v7 private intake)
 
