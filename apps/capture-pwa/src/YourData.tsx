@@ -49,9 +49,11 @@ export function describeRequest(request: DeletionStatus): string {
 export function YourData({
   client,
   onQueueCleared,
+  onBeforeRightsRequest,
 }: {
   client: GsipClient
   onQueueCleared: () => Promise<unknown>
+  onBeforeRightsRequest?: () => Promise<unknown>
 }) {
   const [request, setRequest] = useState<DeletionStatus | null>(null)
   const [choice, setChoice] = useState<DeletionKind | null>(null)
@@ -97,6 +99,13 @@ export function YourData({
     if (!choice || !confirmed) return
     setBusy(true)
     try {
+      // Fence device reminders before the rights request. A device cleanup failure must never
+      // change a confirmed server request into an apparent failure or discard private content.
+      try {
+        await onBeforeRightsRequest?.()
+      } catch {
+        /* Report reminder cleanup separately. */
+      }
       const outcome = await requestDeletion(client, choice)
       // Every confirmed server outcome also fulfills the person's local clear intent.
       // A failed/uncertain request throws before this point and preserves local bytes.

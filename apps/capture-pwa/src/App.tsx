@@ -51,6 +51,8 @@ import {
   releaseHeld,
   retryDeadLettered,
   saveDraftPhoto,
+  indexedDbReminderStore,
+  queueReminderContext,
 } from './queue'
 import { drainQueue, isSyncEligible } from './sync'
 import {
@@ -65,6 +67,8 @@ import {
 import { TERMS_VERSION } from './terms'
 import type { QueueRecord, ShotType } from './types'
 import { YourData } from './YourData'
+import { selectReminderNotifications } from './platform/notifications'
+import { createSyncReminder, type ReminderView } from './syncReminder'
 
 // Files created after this moment were taken with the camera during this visit (WP-6e claim).
 const PAGE_LOADED_AT =
@@ -338,6 +342,45 @@ export function App() {
   // True while this screen is open. A closed screen starts no drain and sends nothing more, so
   // it never races the next screen (or a reopened app) for the same queued record.
   const open = useRef(false)
+  const queueSection = useRef<HTMLElement>(null)
+  const reminderAccess = useRef<{ owner: string | null; gate: ServiceState }>({
+    owner: null,
+    gate: 'unknown',
+  })
+  const [reminderView, setReminderView] = useState<ReminderView>({
+    enabled: false,
+    outcome: native ? 'off' : 'unsupported',
+  })
+  const [reminderBusy, setReminderBusy] = useState(false)
+  const reminder = useMemo(
+    () =>
+      createSyncReminder({
+        notifications: selectReminderNotifications(native),
+        store: indexedDbReminderStore,
+        context: () =>
+          queueReminderContext(
+            reminderAccess.current.owner,
+            live,
+            reminderAccess.current.gate,
+            libraryLive,
+          ),
+        focusQueue: () => queueSection.current?.focus(),
+        changed: (view) => {
+          if (open.current) setReminderView(view)
+        },
+      }),
+    [native, live, libraryLive],
+  )
+  const observeServiceState = useCallback(
+    (state: ServiceState) => {
+      if (reminderAccess.current.gate !== state) {
+        reminderAccess.current.gate = state
+        if (native) void reminder.gatesChanged().then(() => reminder.refresh())
+      }
+      setServiceState(state)
+    },
+    [native, reminder],
+  )
   const links = legalLinks()
   const loadMySoil = useCallback(
     () => (client ? mySoil(client) : Promise.resolve(null)),
@@ -410,6 +453,7 @@ export function App() {
 
   const refreshQueueState = useCallback(async () => {
     const records = await queued()
+    if (!open.current) return records
     setQueueCount(records.length)
     setDeadLetterCount(
       records.filter((record) => Boolean(record.deadLetteredAt)).length,
@@ -424,8 +468,9 @@ export function App() {
     setReconfirmCount(
       records.filter((record) => Boolean(record.termsExpiredAt)).length,
     )
+    if (native) void reminder.refresh()
     return records
-  }, [])
+  }, [native, reminder])
   const drainOnce = useCallback(async () => {
     const closed = () => !open.current
     if (!client || !navigator.onLine || closed()) return
@@ -439,7 +484,7 @@ export function App() {
     // open, and a closed gate must not burn the queued records' retry budget.
     const state = await fetchServiceState(client)
     if (closed()) return
-    setServiceState(state)
+    observeServiceState(state)
     if (state === 'closed') {
       await refreshQueueState()
       setStatus(PAUSED_MESSAGE)
@@ -455,7 +500,10 @@ export function App() {
       () => Date.now(),
       closed,
     )
-    if (result.synced) setSoilRefresh((count) => count + 1)
+    if (result.synced) {
+      setSoilRefresh((count) => count + 1)
+      if (native) void reminder.synced()
+    }
     const remaining = await refreshQueueState()
     const deadLetters = remaining.filter((record) =>
       Boolean(record.deadLetteredAt),
@@ -496,7 +544,7 @@ export function App() {
     } else {
       setStatus('Ready for your next observation.')
     }
-  }, [client, refreshQueueState])
+  }, [client, native, observeServiceState, refreshQueueState, reminder])
 
   // One drain at a time. A trigger that arrives mid-drain (coming online, the gate reopening, the
   // retry timer) is never dropped: it schedules exactly one follow-up drain, however many arrive.
@@ -536,7 +584,7 @@ export function App() {
       if (client) {
         const state = await fetchServiceState(client)
         if (cancelled) return
-        setServiceState(state)
+        observeServiceState(state)
       }
       await refreshQueueState()
       if (!cancelled) await sync()
@@ -549,7 +597,64 @@ export function App() {
       window.clearInterval(retry)
       window.removeEventListener('online', onOnline)
     }
-  }, [client, refreshQueueState, sync])
+  }, [client, observeServiceState, refreshQueueState, sync])
+
+  useEffect(() => {
+    if (!native) return
+    let observing = true
+    void reminder.start()
+    // Reuse the existing client. The callback is synchronous and keeps only the user ID,
+    // never a session/token or a new client/auth/network path.
+    let unsubscribe = () => undefined as void
+    try {
+      const subscription = client?.auth?.onAuthStateChange?.(
+        (event, session) => {
+          if (!observing) return
+          try {
+            const owner = session?.user.id ?? null
+            const previous = reminderAccess.current.owner
+            reminderAccess.current.owner = owner
+            if (
+              event === 'SIGNED_OUT' ||
+              (event !== 'INITIAL_SESSION' && previous !== owner)
+            )
+              void reminder.hold().then(() => {
+                if (observing) void reminder.refresh()
+              })
+            else void reminder.refresh()
+          } catch {
+            reminderAccess.current.owner = null
+            void reminder.hold()
+          }
+        },
+      ).data.subscription
+      unsubscribe = () => {
+        try {
+          subscription?.unsubscribe()
+        } catch {
+          /* Auth callback errors stay private. */
+        }
+      }
+    } catch {
+      reminderAccess.current.owner = null
+      void reminder.hold()
+    }
+    const refresh = () => {
+      if (observing) void reminder.refresh()
+    }
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') refresh()
+    }
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      observing = false
+      unsubscribe()
+      window.removeEventListener('focus', refresh)
+      document.removeEventListener('visibilitychange', onVisible)
+      void reminder.stop()
+    }
+  }, [client, native, reminder])
 
   async function locate() {
     if (!platform) return
@@ -1166,10 +1271,64 @@ export function App() {
           </form>
         )}
 
-        <section className="status-card" aria-live="polite">
+        <section
+          ref={queueSection}
+          tabIndex={-1}
+          className="status-card"
+          aria-live="polite"
+        >
           <div>
             <p className="step-number">Status</p>
             <h2>{status}</h2>
+            {native && (
+              <div role="group" aria-label="Device sync reminders">
+                <h3>Sync reminders</h3>
+                <p>
+                  One optional reminder to review unsynced work after about a
+                  day. Delivery can be delayed by your phone.
+                </p>
+                <button
+                  type="button"
+                  disabled={
+                    reminderBusy ||
+                    reminderView.enabled ||
+                    reminderView.outcome === 'unsupported' ||
+                    !live ||
+                    serviceState !== 'open' ||
+                    !client
+                  }
+                  onClick={() => {
+                    setReminderBusy(true)
+                    void reminder.enable().finally(() => setReminderBusy(false))
+                  }}
+                >
+                  Enable sync reminders
+                </button>
+                <button
+                  type="button"
+                  className="secondary"
+                  disabled={!reminderView.enabled && !reminderBusy}
+                  onClick={() => {
+                    void reminder.disable()
+                  }}
+                >
+                  Turn off sync reminders
+                </button>
+                <p role="status">
+                  {reminderView.outcome === 'cleanup_pending'
+                    ? 'Device reminder cleanup is pending. Open GSIP again to retry.'
+                    : reminderView.outcome === 'unsupported'
+                      ? 'Reminders are unavailable on this device. Capture still works.'
+                      : reminderView.outcome === 'permission_denied'
+                        ? 'Reminders are off. You can keep using GSIP.'
+                        : reminderView.outcome === 'held'
+                          ? 'Reminders are paused until this device and queued work are ready.'
+                          : reminderView.enabled
+                            ? 'Sync reminders are on.'
+                            : 'Sync reminders are off.'}
+                </p>
+              </div>
+            )}
             {heldCount > 0 && (
               <div
                 className="held-actions"
@@ -1287,6 +1446,9 @@ export function App() {
         {live && client && (
           <YourData
             client={client}
+            onBeforeRightsRequest={() =>
+              native ? reminder.hold() : Promise.resolve()
+            }
             onQueueCleared={async () => {
               // The queue and any photos taken here are gone; My Soil changes too.
               for (const shot of SHOTS) photoRequests.current[shot] += 1

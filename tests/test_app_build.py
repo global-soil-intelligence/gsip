@@ -431,7 +431,8 @@ def test_packaged_native_assets_refuse_open_capture_or_library(
 
 def test_library_indexeddb_stores_share_the_compiled_cloud_backup_exclusions() -> None:
     source = Path("apps/capture-pwa/src/queue.ts").read_text()
-    assert "'gsip-capture-v1', 3" in source
+    assert "'gsip-capture-v1', 4" in source
+    assert "db.createObjectStore('syncReminder')" in source
     for store in ("libraryDraft", "libraryNamespace", "queueState"):
         assert f"db.createObjectStore('{store}')" in source
     for modern in (False, True):

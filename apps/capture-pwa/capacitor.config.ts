@@ -17,7 +17,11 @@ const config: CapacitorConfig = {
     // No geolocation plugin on Android: it would compile Google's closed Play services location
     // SDK into the app (BUILD_ORDER guardrail 6). The web view's own location API asks for the
     // same foreground permissions instead.
-    includePlugins: ['@capacitor/camera', '@capacitor/filesystem'],
+    includePlugins: [
+      '@capacitor/camera',
+      '@capacitor/filesystem',
+      '@capacitor/local-notifications',
+    ],
   },
 }
 

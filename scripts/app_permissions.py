@@ -9,6 +9,8 @@ committed, so this script is where the app's permissions are decided:
   photo-library purpose strings; the app never triggers either prompt. No other usage
   description and no background location exist.
 * Android asks for location while the app is in use (coarse and fine), through the web view.
+  APP-2B adds opt-in notifications and boot restoration for one inexact pending reminder.
+  Exact alarms and wake locks are removed and rejected, including SDK-qualified forms.
   The camera opens the system camera app, which needs no permission because the app declares
   none. Camera, storage, media, microphone, background location and advertising-ID permissions
   that a library might declare are removed from the merged manifest.
@@ -60,6 +62,9 @@ TOOLS_NS = "http://schemas.android.com/tools"
 ANDROID_REQUESTED = (
     "android.permission.ACCESS_COARSE_LOCATION",
     "android.permission.ACCESS_FINE_LOCATION",
+    # APP-2B: explicit opt-in only; boot restores the bounded inexact one-shot after unlock.
+    "android.permission.POST_NOTIFICATIONS",
+    "android.permission.RECEIVE_BOOT_COMPLETED",
 )
 # Declared by no part of GSIP; removed in case a library's manifest brings them in. Without a
 # declared camera permission, the camera plugin opens the system camera app without asking.
@@ -74,10 +79,17 @@ ANDROID_REMOVED = (
     "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
     "android.permission.RECORD_AUDIO",
     "android.permission.WRITE_EXTERNAL_STORAGE",
+    "android.permission.SCHEDULE_EXACT_ALARM",
+    "android.permission.USE_EXACT_ALARM",
+    "android.permission.WAKE_LOCK",
 )
 # Runtime ("dangerous") and other sensitive Android permissions. Of these the app may hold only
-# the two location permissions.
+# foreground location and explicit opt-in notifications; boot is a normal permission.
 ANDROID_ALLOWED_SENSITIVE = frozenset(ANDROID_REQUESTED)
+ANDROID_FORBIDDEN = frozenset(
+    f"android.permission.{name}"
+    for name in ("SCHEDULE_EXACT_ALARM", "USE_EXACT_ALARM", "WAKE_LOCK")
+)
 ANDROID_SENSITIVE = frozenset(
     f"android.permission.{name}"
     for name in (
@@ -154,23 +166,35 @@ def parse_manifest(text: str) -> ET.Element:
     return ET.fromstring(text, parser=parser)  # noqa: S314
 
 
+def _permission_elements(root: ET.Element) -> list[ET.Element]:
+    return [
+        element
+        for element in root
+        if isinstance(element.tag, str)
+        and re.fullmatch(r"uses-permission(?:-sdk-\d+)?", element.tag)
+    ]
+
+
 def apply_android(text: str) -> str:
-    """The manifest with location while in use, and every unwanted permission removed."""
+    """Approved foreground/opt-in permissions; exact alarms and wake locks stay removed."""
 
     ET.register_namespace("android", ANDROID_NS)
     ET.register_namespace("tools", TOOLS_NS)
     root = parse_manifest(text)
-    for element in root.findall("uses-permission"):
+    removed_tags = {"uses-permission", "uses-permission-sdk-23"}
+    for element in _permission_elements(root):
         if _name(element) in ANDROID_REQUESTED or _name(element) in ANDROID_REMOVED:
+            removed_tags.add(str(element.tag))
             root.remove(element)
     for name in ANDROID_REQUESTED:
         ET.SubElement(root, "uses-permission", {f"{{{ANDROID_NS}}}name": name})
-    for name in ANDROID_REMOVED:
-        ET.SubElement(
-            root,
-            "uses-permission",
-            {f"{{{ANDROID_NS}}}name": name, f"{{{TOOLS_NS}}}node": "remove"},
-        )
+    for tag in sorted(removed_tags):
+        for name in ANDROID_REMOVED:
+            ET.SubElement(
+                root,
+                tag,
+                {f"{{{ANDROID_NS}}}name": name, f"{{{TOOLS_NS}}}node": "remove"},
+            )
     ET.indent(root, space="    ")
     return '<?xml version="1.0" encoding="utf-8"?>\n' + ET.tostring(root, encoding="unicode") + "\n"
 
@@ -179,11 +203,15 @@ def android_permission_problems(permissions: set[str]) -> list[str]:
     problems = [
         f"{name} is a sensitive permission GSIP does not request"
         for name in sorted(permissions)
-        if (name in ANDROID_SENSITIVE or name.startswith("android.permission.health."))
+        if (
+            name in ANDROID_SENSITIVE
+            or name in ANDROID_FORBIDDEN
+            or name.startswith("android.permission.health.")
+        )
         and name not in ANDROID_ALLOWED_SENSITIVE
     ]
     problems += [
-        f"{name} is missing, so location cannot be requested"
+        f"{name} is missing, so the approved capability cannot be used"
         for name in ANDROID_REQUESTED
         if name not in permissions
     ]
@@ -193,7 +221,7 @@ def android_permission_problems(permissions: set[str]) -> list[str]:
 def manifest_permissions(text: str) -> set[str]:
     return {
         _name(element)
-        for element in parse_manifest(text).findall("uses-permission")
+        for element in _permission_elements(parse_manifest(text))
         if not _removed(element)
     }
 
