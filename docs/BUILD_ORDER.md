@@ -1,8 +1,8 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
-**Version:** 11.0 proposed — 2026-10-14 (iOS storage feasibility; SPEC §15.10)
-**v11 amendment status:** proposal only; APP-2C schedules source/feasibility review, conditional migration and separately authorized device proof. No backend is selected and all current source/launch/device gates remain.
+**Version:** 11.0 — 2026-10-14 (approved iOS storage feasibility; SPEC §15.10)
+**v11 amendment status:** Justin approved and merged the specification in [#68](https://github.com/global-soil-intelligence/gsip/pull/68); APP-2C schedules source/feasibility review, conditional migration and separately authorized device proof. [APP-2C1](IOS_STORAGE_FEASIBILITY.md) records a source-only blocked result, not a selected storage backend. No backend is selected and all current source/launch/device gates remain.
 **v10 amendment status:** the four LIB-5B local accounting/fence/admission/root clarifications are merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60). The approved v9 LIB-5A contract source is merged in [#58](https://github.com/global-soil-intelligence/gsip/pull/58); the synthetic LIB-5B ledger/rights simulator is merged in [#64](https://github.com/global-soil-intelligence/gsip/pull/64).
 **Owner approval:** Justin approved ordered #51–#56 source merges after green CI on 2026-10-13; those source/specification merges are complete. LIB-5A and LIB-5B source are merged after their specification prerequisites. Real-sharing source/retention/peer/credential choices remain unresolved; no federation rollout or production authority is granted.
 
@@ -251,17 +251,17 @@ Acceptance criteria:
 - [ ] Android `check-dependencies` still rejects proprietary SDKs. List the chosen plugin's code license, release/maintenance signal, compressed/unpacked size and measured APK impact; inspect transitive dependencies rather than assume the plugin name proves compliance.
 - [ ] Android/iOS synthetic device evidence covers permission prompts/denial, scheduled reminder delivery and cancellation. Unsupported behavior is documented honestly; no claim of App Store guideline 4.2 acceptance follows from an artifact build.
 
-**Proposed APP-2C sequence: iOS private-storage feasibility, migration and device proof**
+**APP-2C sequence: iOS private-storage feasibility, migration and device proof**
 
 Architecture first: `docs/spec-v11`, SPEC §15.10 and [IOS_PRIVATE_STORAGE.md](IOS_PRIVATE_STORAGE.md). Existing TypeScript/Python-only, no-new-service/licence and no-production rules remain. No backend is selected. C2 remains held until an exact mechanism is independently reviewed and approved; custom native code requires Justin's explicit native-language exception before implementation. The existing filesystem API's directory name cannot satisfy a proof gate.
 
 **WP-APP-2C1: Source inventory and storage capability feasibility**
 
-Branch: `wp-app-2c1-storage-feasibility`. Depends on reviewed v11 specification. Scope: exact resolved source/API evidence, classified complete persistence inventory, generic capability/failure results and a concrete next mechanism proposal; negative evidence is a valid blocked result. No application migration, native implementation, real app-data read, signing/account or device action.
+Branch: `wp-app-2c1-storage-feasibility`. The v11 prerequisite is approved and merged in #68. [The source-only audit and offline checker](IOS_STORAGE_FEASIBILITY.md) bind a complete inventory and record blocked feasibility without selecting a backend. Scope: exact resolved source/API evidence, classified complete persistence inventory, generic capability/failure results and a concrete next mechanism proposal; negative evidence is a valid blocked result. No application migration, native implementation, real app-data read, signing/account or device action.
 
-- [ ] Bind actual npm/native versions, source digests, licences/maintenance/size and relevant API semantics. Generated resolution is not a repository-native lock. Existing readback/error/transaction gaps remain explicit; no positive capability is inferred from a method name or promise.
-- [ ] Inventory all six queue/draft/library/generation/reminder stores, session/last UID/compatible SDK keys, WebKit/native cookies/caches/preferences, camera/picker and proposed staging/journal remnants. Classify sensitive vs generic state and known vs unverified coverage.
-- [ ] Source/synthetic policy tests reject missing exclusion-before-write/readback/error propagation, unsafe replacement/transactions, implicit web fallback and false device proof. Record no-backend-selected/blocked results; choose no new language or dependency without its own required review.
+- [x] Bind actual npm/native versions, source digests, licences/maintenance/size and relevant API semantics. Generated resolution is not a repository-native lock. Existing readback/error/transaction gaps remain explicit; no positive capability is inferred from a method name or promise.
+- [x] Inventory all six queue/draft/library/generation/reminder stores, session/last UID/compatible SDK keys, WebKit/native cookies/caches/preferences, camera/picker and proposed staging/journal remnants. Classify sensitive vs generic state and known vs unverified coverage.
+- [x] Source/synthetic policy tests reject missing exclusion-before-write/readback/error propagation, unsafe replacement/transactions, implicit web fallback and false device proof. Record no-backend-selected/blocked results; choose no new language or dependency without its own required review.
 
 **WP-APP-2C2: Private-store migration — held pending concrete mechanism**
 

@@ -1,8 +1,8 @@
-# GSIP v11 proposed — Open Soil Spectral Library Specification
+# GSIP v11 — Open Soil Spectral Library Specification
 
 **Project:** Global Soil Intelligence Project (globalsoilintelligence.com)
-**Version:** 11.0 proposed — 2026-10-14 (iOS feasibility; no backend selected)
-**v11 amendment status:** proposal only. §15.10 schedules iOS private-storage feasibility before any migration. No backend is selected, no native-language exception is granted, and iOS backup protection remains blocked/unverified. This amendment changes no runtime, production or launch permission.
+**Version:** 11.0 — 2026-10-14 (approved iOS feasibility; no backend selected)
+**v11 amendment status:** Justin approved and merged the specification in [#68](https://github.com/global-soil-intelligence/gsip/pull/68). §15.10 schedules iOS private-storage feasibility before any migration; [APP-2C1](IOS_STORAGE_FEASIBILITY.md) records the source-only blocked result. No backend is selected, no native-language exception is granted, and iOS backup protection remains blocked/unverified. This amendment changes no runtime, production or launch permission.
 **v10 amendment status:** the LIB-5B local accounting, reserved-fence, daily-admission and single-root clarification in §16.12 is merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60). LIB-5A remains governed by the approved v9 pure contract. No real-source grant, credential, cleanup-authentication or retention policy is selected.
 **v9 owner approval:** Justin approved ordered merges of #51–#56 on 2026-10-13 after green CI. Following this specification merge, §16.9–16.13 permits LIB-5A pure contracts and LIB-5B synthetic local preparation. Real peer sharing, credentials/cleanup authority and retention policy remain held for LIB-5C; production and launch gates are unchanged.
 
