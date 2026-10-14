@@ -30,6 +30,9 @@ and [LIB-5B synthetic local simulator (#64)](https://github.com/global-soil-inte
 are also merged. Hosted deployment and activation, real peer sharing and scientific
 model validation remain gated; these tools do not open capture.
 
+Source for opt-in local sync reminders is merged in [APP-2B (#63)](https://github.com/global-soil-intelligence/gsip/pull/63).
+The device, backup, store, legal and production gates remain separate from source completion.
+
 ## Governing documents
 
 - [Architecture specification](docs/SPEC.md)

@@ -222,7 +222,7 @@ Acceptance criteria:
 
 ### Merged v4.0 specification follow-ups — separate implementation PRs
 
-The following packages schedule SPEC §15 without claiming it has been approved or implemented. Owner-approved policy decisions are recorded there. Capture and production anonymous sign-in remain closed. The specification PR carries no code, dependencies or migrations. Follow-up branches stack after WP-APP-1 until the existing stack merges, with this specification amendment as the first change for the new architecture. Already-authorized WP-APP-2A CI/Android backup preparation may be built and reviewed against this proposal after its specification commit; its merge follows specification approval. Notification architecture remains a proposal, and screening implementation has the stronger explicit approval-and-merge gate below. Justin retains final review and merge authority; the documented owner exception permits an explicitly authorized agent to execute ordered merges after green CI, without submitting an approving review.
+The following packages follow approved SPEC §15, merged in #38; their source status and remaining gates are recorded below. Owner-approved policy decisions are recorded there. Capture and production anonymous sign-in remain closed. The specification PR carries no code, dependencies or migrations. Follow-up branches stack after WP-APP-1 until the existing stack merges, with this specification amendment as the first change for the new architecture. Already-authorized WP-APP-2A CI/Android backup preparation may be built and reviewed against this proposal after its specification commit; its merge follows specification approval. APP-2B notification source is merged in [#63](https://github.com/global-soil-intelligence/gsip/pull/63), and screening implementation has the stronger explicit approval-and-merge gate below. Justin retains final review and merge authority; the documented owner exception permits an explicitly authorized agent to execute ordered merges after green CI, without submitting an approving review.
 
 **WP-APP-2A: Account-free app build readiness and private backup exclusions**
 
@@ -237,7 +237,7 @@ Acceptance criteria:
 - [ ] iOS backup protection is marked **blocked/unverified** until a separately specified reliable method passes synthetic real-device backup/restore checks. A no-cloud filesystem directory does not exclude existing IndexedDB/localStorage. Any storage migration requires its own architecture review and regression tests; any new native-language code requires Justin's exception first.
 - [ ] Existing permission and Android `check-dependencies` checks pass unchanged in strength; no new dependency/service or signing secret is needed.
 
-**WP-APP-2B: Local sync reminders in version 1 (proposal)**
+**WP-APP-2B: Local sync reminders in version 1 (source merged; device gates remain)**
 
 Branch: `wp-app-2b-local-notifications`. Depends on approved SPEC §15 and WP-APP-2A. Version 1 schedules opt-in on-device sync reminders only, using `@capacitor/local-notifications`, with no push service or location calculation. Nearby suggestions are deferred until Most Wanted and land-access eligibility inputs exist; their later implementation needs its own reviewed scope under SPEC §9. Notifications contain no private payload and do not invite contribution with capture closed. [The proposed plugin audit](PHOTO_PRIVACY_SCREENING.md#notification-candidate) must be refreshed for the pinned version in the implementation PR.
 

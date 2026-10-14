@@ -327,6 +327,10 @@ CI supplies the Android build number and iOS build number from a validated, boun
 
 ### 15.3 WP-APP-2B: local notifications in app version 1
 
+**Source status:** opt-in local sync reminder source is merged in [APP-2B (#63)](https://github.com/global-soil-intelligence/gsip/pull/63).
+Implementation and native dependency evidence are documented in [APP_SYNC_REMINDERS.md](APP_SYNC_REMINDERS.md) and
+[APP_NOTIFICATION_NATIVE_AUDIT.md](APP_NOTIFICATION_NATIVE_AUDIT.md). The existing device and launch requirements below remain unchanged.
+
 The §12 notification promise is scheduled as local notifications. Version 1 schedules opt-in sync reminders only, about unsynced work. Nearby suggestions are deferred until Most Wanted and land-access eligibility inputs exist, with a separately reviewed follow-up specifying their use. Use the open `@capacitor/local-notifications` plugin; no push service, push token, advertising SDK or proprietary location SDK. The [candidate audit](PHOTO_PRIVACY_SCREENING.md#notification-candidate) records license, maintenance and package size; implementation must recheck the pinned version and transitive Android dependencies.
 
 Reminder scheduling happens on the device and requires no location calculation or new location permission. Version 1 does not compute, schedule or expose nearby targets; it adds no background location, geofencing service or remote point upload. In the later follow-up, targets must obey §9 land-access/minor restrictions and cannot infer eligibility or an unobserved area from sparse or withheld public coverage. Notification permission is requested only after explicit opt-in; denial leaves the app usable.
