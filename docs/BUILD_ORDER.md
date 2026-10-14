@@ -1,8 +1,9 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
-**Version:** 12.0 proposed — 2026-10-14 (conditional iOS native design; SPEC §15.11)
-**v12 amendment status:** proposal only. [The concrete native design](IOS_NATIVE_STORAGE_DESIGN.md) follows the APP-2C1 source audit merged in [#69](https://github.com/global-soil-intelligence/gsip/pull/69). No backend is admitted, no native-language exception is granted and all implementation/device/production gates remain held. Existing acceptance states are preserved.
+**Version:** 13.0 proposed — 2026-10-14 (exact synthetic native scope; SPEC §15.12)
+**v13 amendment status:** exact APP-2C2A native scope is proposed in [IOS_NATIVE_SCOPE.md](IOS_NATIVE_SCOPE.md). Justin approved #70 and the passcode-required/preserve-quarantine/no-automatic-reset policy; do not re-ask those choices. Native-language/file/effect approval and implementation remain held. All existing acceptance states remain unchanged.
+**v12 amendment status (historical proposal):** proposal only. [The concrete native design](IOS_NATIVE_STORAGE_DESIGN.md) follows the APP-2C1 source audit merged in [#69](https://github.com/global-soil-intelligence/gsip/pull/69). No backend is admitted, no native-language exception is granted and all implementation/device/production gates remain held. Existing acceptance states are preserved.
 **v11 amendment status:** Justin approved and merged the specification in [#68](https://github.com/global-soil-intelligence/gsip/pull/68); APP-2C schedules source/feasibility review, conditional migration and separately authorized device proof. [APP-2C1](IOS_STORAGE_FEASIBILITY.md) records a source-only blocked result, not a selected storage backend. No backend is selected and all current source/launch/device gates remain.
 **v10 amendment status:** the four LIB-5B local accounting/fence/admission/root clarifications are merged in [#60](https://github.com/global-soil-intelligence/gsip/pull/60). The approved v9 LIB-5A contract source is merged in [#58](https://github.com/global-soil-intelligence/gsip/pull/58); the synthetic LIB-5B ledger/rights simulator is merged in [#64](https://github.com/global-soil-intelligence/gsip/pull/64).
 **Owner approval:** Justin approved ordered #51–#56 source merges after green CI on 2026-10-13; those source/specification merges are complete. LIB-5A and LIB-5B source are merged after their specification prerequisites. Real-sharing source/retention/peer/credential choices remain unresolved; no federation rollout or production authority is granted.
@@ -284,6 +285,13 @@ Branch: `wp-app-2c2a-native-primitives`. Synthetic records only; enter after the
 - [ ] Bind actual native/platform inputs, licences/maintenance/size and fixed operation/limit contract. Fault tests prove excluded containment before SQLite open/recovery, actual DELETE/EXTRA settings, all journal/temp placement, serialized receipts and acknowledgment ordering. Separate process-kill from power-loss limits.
 - [ ] Prove clean/pending/unknown anchor state handling, no automatic reset/fallback, passcode/lifecycle holds and bounded main-frame host/bridge/prompt enforcement including dynamic class-name routes. Stop for another review if public seams cannot enforce it; no upstream fork or weakened checks.
 
+**Exact v13 native-scope review — implementation still held**
+
+SPEC §15.12 and [the finite scope](IOS_NATIVE_SCOPE.md) propose exactly 21 future Swift files, three new Python/CI support files and nine finite generated-edit targets in a disposable synthetic harness. The core package has no new external dependency; host linking must reuse fresh existing Capacitor/Cordova selection. Passcode and preserve-quarantine/no-automatic-reset policy are approved by Justin with #70; the native-language/file/effect exception and prototype go are not. No scope preparation implements or checks off A/B/C/C3. Existing ordinary app/configuration/workflow/permission/lockfile behavior remains unchanged.
+
+- [ ] Justin explicitly approves the exact reviewed native/support/import/API-effect/generated-patch manifest and synthetic APP-2C2A implementation go. Any extra file/capability/wiring need stops for amended scope; no implicit exception or current private-data/Keychain/device access.
+- [ ] The authorized prototype records exact native inputs, finite generation/test membership and actual ordinary compile/link/bundle exclusion evidence, with unsupported simulator/passcode/public-seam states held. No DEBUG-only, mock, source or simulator result is promoted to physical backup/backend/store or production readiness.
+
 **WP-APP-2C2B: TypeScript private-store integration — held after A**
 
 Branch: `wp-app-2c2b-storage-integration`. Depends on independently reviewed/green A and approved exact typed facade, async SDK adapter, capacity/paging and callback lifecycle. No legacy migration.
@@ -518,6 +526,8 @@ GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function 
 Historical v4.0 review/merge sequence (#38 and WP-APP-2A have merged; remaining implementation and calibration gates still apply): WP-APP-1 → `docs/spec-v4` (Justin approval/merge) → WP-APP-2A → WP-APP-2B. Owner-authorized account-free WP-APP-2A preparation can start after the specification commit exists, while its PR remains stacked and awaits the merge sequence. WP-6f may be a separate branch after the approved specification, with no dependency on notifications, but stays blocked until that specification approval and its model/license/calibration gates. Retarget successors after Justin merges; merge main forward to resolve conflicts, never rebase or force-push the reviewed stack. §11 launch and production-command gates remain independent of this sequence.
 
 ## 8. Changelog
+
+- **v13.0 proposed (2026-10-14):** records accepted passcode/recovery policy and exact synthetic native-scope review before A. Adds two unchecked admission criteria; all 138 prior acceptance states and production/device/implementation gates remain.
 
 - **v12.0 proposed (2026-10-14):** registers conditional APP-2C2A native prototype, APP-2C2B TypeScript integration and APP-2C2C legacy recovery. Keeps every existing acceptance state and adds only held criteria; native-language, passcode/recovery, device and production decisions remain separate.
 
