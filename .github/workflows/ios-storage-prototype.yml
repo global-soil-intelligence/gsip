@@ -67,7 +67,7 @@ jobs:
         working-directory: ${{ runner.temp }}/gsip-app2c2a-ordinary-source/apps/capture-pwa
         run: pnpm exec cap add ios
       - name: Exercise the finite synthetic harness and audit ordinary isolation
-        run: python scripts/ios_storage_prototype.py run "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2c2a-ordinary-source/apps/capture-pwa/ios" "$RUNNER_TEMP/gsip-app2c2a"
+        run: python -m scripts.ios_storage_prototype run "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2c2a-ordinary-source/apps/capture-pwa/ios" "$RUNNER_TEMP/gsip-app2c2a"
       - uses: actions/upload-artifact@v7
         with:
           name: gsip-app2c2a-sanitized-receipt

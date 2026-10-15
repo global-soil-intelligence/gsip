@@ -663,8 +663,11 @@ def test_workflow_uses_independently_generated_exact_commit_copy() -> None:
     )
     assert 'checkout --detach "$source_commit"' in workflow
     invocation = next(
-        line for line in workflow.splitlines() if "ios_storage_prototype.py run" in line
+        line
+        for line in workflow.splitlines()
+        if "ios_storage_prototype" in line and " run " in line
     )
+    assert invocation.strip().startswith("run: python -m scripts.ios_storage_prototype run ")
     assert '"$RUNNER_TEMP/gsip-app2c2a-ordinary-source/apps/capture-pwa/ios"' in invocation
     assert '"$GITHUB_WORKSPACE/apps/capture-pwa/ios"' not in invocation
     assert "persist-credentials: false" in workflow
