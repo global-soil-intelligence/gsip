@@ -33,6 +33,13 @@ PLUGINS = (
     ("CapacitorGeolocation", "geolocation", "8.2.2"),
     ("CapacitorLocalNotifications", "local-notifications", "8.3.1"),
 )
+# Inert generated namespace/Podspec metadata: exact bytes are bound, never reconstructed.
+GENERATED_METADATA_SHA256 = {
+    "App/App/config.xml": "e9dcda493e663c5c4db9e3cb3bd968477a6e90aa8840bcbba40d72ed54b767ce",
+    "capacitor-cordova-ios-plugins/CordovaPluginsResources.podspec": (
+        "6ace787f88f8c8da88526ed2ecdf0b9bd659cdb64f56bd5e73a684e0d26b7e06"
+    ),
+}
 # No web app/auth SDK is present in this resource. Native XCTest owns admission.
 PROBE_HTML = (
     b'<!doctype html><meta charset="utf-8"><title>Synthetic storage '
@@ -244,12 +251,6 @@ def expected_generated(root: Path, members: dict[str, bytes]) -> dict[str, bytes
     info = replace_once(info, "\t<string>My App</string>", "        <string>GSIP Capture</string>")
     result["App/App/Info.plist"] = info.encode()
     result["App/CapApp-SPM/Package.swift"] = expected_package().encode()
-    result["App/App/config.xml"] = (
-        b"<?xml version='1.0' encoding='utf-8'?>\n<widget "
-        b'version="1.0.0" xmlns="http://www.w3.org/ns/widgets" '
-        b'xmlns:cdv="http://cordova.apache.org/ns/1.0">\n  <access '
-        b'origin="*" />\n  \n  \n</widget>'
-    )
     config = {
         "appId": "com.globalsoilintelligence.app",
         "appName": "GSIP Capture",
@@ -271,19 +272,6 @@ def expected_generated(root: Path, members: dict[str, bytes]) -> dict[str, bytes
         ],
     }
     result["App/App/capacitor.config.json"] = (json.dumps(config, indent="\t") + "\n").encode()
-    result[
-        "capacitor-cordova-ios-plugins/CordovaPluginsResources.podspec"
-    ] = b"""Pod::Spec.new do |s|
-  s.name = 'CordovaPluginsResources'
-  s.version = '0.0.105'
-  s.summary = 'Resources for Cordova plugins'
-  s.license = 'MIT'
-  s.homepage = 'https://capacitorjs.com/'
-  s.authors = { 'Ionic Team' => 'hi@ionicframework.com' }
-  s.source = { :git => 'https://github.com/ionic-team/capacitor.git', :tag => s.version.to_s }
-  s.resources = ['resources/*']
-end
-"""
     result["capacitor-cordova-ios-plugins/resources/.gitkeep"] = b"\n"
     result["capacitor-cordova-ios-plugins/sources/.gitkeep"] = b"\n"
     return result
@@ -533,8 +521,15 @@ def prepare(root: Path, fresh: Path, output: Path) -> dict[str, Any]:
         if relative.startswith("App/App/public/"):
             continue
         actual[relative] = regular_bytes(p)
-    require(set(actual) == set(expected), "unknown or missing generated input")
+    require(
+        set(actual) == set(expected) | set(GENERATED_METADATA_SHA256),
+        "unknown or missing generated input",
+    )
     require(all(actual[k] == expected[k] for k in expected), "generated preimage drift")
+    require(
+        all(digest(actual[k]) == checksum for k, checksum in GENERATED_METADATA_SHA256.items()),
+        "generated metadata drift",
+    )
     files = dict(actual)
     host = [Path(x["path"]).name for x in scope["native_files"] if x["kind"] == "host"]
     tests = [Path(x["path"]).name for x in scope["native_files"] if x["kind"] == "host-test"]

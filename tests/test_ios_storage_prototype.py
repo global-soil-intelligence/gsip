@@ -15,6 +15,63 @@ from scripts import ios_storage_prototype as prototype
 ROOT = Path(__file__).resolve().parents[1]
 
 
+# Readable inert CLI metadata fixtures; these namespace/homepage strings are never contacted.
+INERT_METADATA_FIXTURES = {
+    "App/App/config.xml": b"<?xml version='1.0' encoding='utf-8'?>\n<widget version=\""
+    b'1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://co'
+    b'rdova.apache.org/ns/1.0">\n  <access origin="*" />\n  \n  \n</wi'
+    b"dget>",
+    "capacitor-cordova-ios-plugins/CordovaPluginsResources.podspec": b"Pod::Spec.new do |s|"
+    b"\n  s.name = 'Cordova"
+    b"PluginsResources'\n  "
+    b"s.version = '0.0.105"
+    b"'\n  s.summary = 'Res"
+    b"ources for Cordova p"
+    b"lugins'\n  s.license "
+    b"= 'MIT'\n  s.homepage"
+    b" = 'https://capacito"
+    b"rjs.com/'\n  s.author"
+    b"s = { 'Ionic Team' ="
+    b"> 'hi@ionicframework"
+    b".com' }\n  s.source ="
+    b" { :git => 'https://"
+    b"github.com/ionic-tea"
+    b"m/capacitor.git', :t"
+    b"ag => s.version.to_s"
+    b" }\n  s.resources = ["
+    b"'resources/*']\ne"
+    b"nd\n",
+}
+
+
+@pytest.fixture(autouse=True)
+def owned_pinned_cli_template(
+    tmp_path_factory: pytest.TempPathFactory, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Unit fixtures may copy the package store's regular hardlinked bytes. Actual
+    # harness admission still uses the original strict reader and the copy install.
+    source = ROOT
+    installed = (source / "apps/capture-pwa/node_modules/@capacitor/cli").resolve(strict=True)
+    owned = tmp_path_factory.mktemp("pinned-template-root")
+    scope = prototype.load_scope(source)
+    paths = (
+        {"docs/ios-native-scope.json", ".github/workflows/ios-storage-prototype.yml"}
+        | set(scope["source_bindings"])
+        | {item["path"] for item in scope["native_files"]}
+    )
+    for relative in paths:
+        path = owned / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes((source / relative).read_bytes())
+    destination = owned / "apps/capture-pwa/node_modules/@capacitor/cli"
+    for relative in ("package.json", "assets/ios-spm-template.tar.gz"):
+        path = destination / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes((installed / relative).read_bytes())
+    prototype.template_inputs(owned)  # Real pinned version/length/hash/no-link admission.
+    monkeypatch.setitem(globals(), "ROOT", owned)
+
+
 def test_scope_and_fixed_bindings() -> None:
     scope = prototype.load_scope(ROOT)
     assert len(scope["native_files"]) == 21
@@ -87,7 +144,7 @@ def test_template_archive_is_bound() -> None:
 
 def fresh_fixture(root: Path, dest: Path) -> None:
     _, members = prototype.template_inputs(root)
-    expected = prototype.expected_generated(root, members)
+    expected = prototype.expected_generated(root, members) | INERT_METADATA_FIXTURES
     # Reproduce only the already selected local plugin metadata in the synthetic fixture.
     for _, slug, version in prototype.PLUGINS:
         relative = (
@@ -118,6 +175,8 @@ def test_finite_prepare_omits_ordinary_public_and_preserves_other_bytes(tmp_path
         "index.html",
         "gsip-activation.json",
     }
+    for relative, data in INERT_METADATA_FIXTURES.items():
+        assert (output / relative).read_bytes() == data == (fresh / relative).read_bytes()
     assert (output / "App/App/AppDelegate.swift").read_bytes() == (
         fresh / "App/App/AppDelegate.swift"
     ).read_bytes()
@@ -138,6 +197,7 @@ def test_finite_prepare_omits_ordinary_public_and_preserves_other_bytes(tmp_path
         "App/CapApp-SPM/Package.swift",
         "App/App/Base.lproj/Main.storyboard",
         "App/App/config.xml",
+        "capacitor-cordova-ios-plugins/CordovaPluginsResources.podspec",
     ],
 )
 def test_template_drift_stops_before_any_write(tmp_path: Path, target: str) -> None:
@@ -658,8 +718,7 @@ def test_workflow_uses_independently_generated_exact_commit_copy() -> None:
     workflow = (ROOT / ".github/workflows/ios-storage-prototype.yml").read_text()
     assert (
         'git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" '
-        '"$RUNNER_TEMP/gsip-app2c2a-ordinary-source"'
-        in workflow
+        '"$RUNNER_TEMP/gsip-app2c2a-ordinary-source"' in workflow
     )
     assert 'checkout --detach "$source_commit"' in workflow
     invocation = next(
@@ -671,3 +730,36 @@ def test_workflow_uses_independently_generated_exact_commit_copy() -> None:
     assert '"$RUNNER_TEMP/gsip-app2c2a-ordinary-source/apps/capture-pwa/ios"' in invocation
     assert '"$GITHUB_WORKSPACE/apps/capture-pwa/ios"' not in invocation
     assert "persist-credentials: false" in workflow
+
+
+@pytest.mark.parametrize("target", list(INERT_METADATA_FIXTURES))
+def test_missing_inert_metadata_stops_before_any_write(tmp_path: Path, target: str) -> None:
+    fresh = tmp_path / "workspace/apps/capture-pwa/ios"
+    fresh_fixture(ROOT, fresh)
+    (fresh / target).unlink()
+    output = tmp_path / "prototype"
+    with pytest.raises(prototype.PrototypeError, match="unknown or missing generated input"):
+        prototype.prepare(ROOT, fresh, output)
+    assert not output.exists()
+
+
+def test_metadata_fixture_bytes_match_exact_bindings() -> None:
+    assert set(INERT_METADATA_FIXTURES) == set(prototype.GENERATED_METADATA_SHA256)
+    for name, data in INERT_METADATA_FIXTURES.items():
+        assert hashlib.sha256(data).hexdigest() == prototype.GENERATED_METADATA_SHA256[name]
+
+
+def test_actual_template_reader_still_refuses_package_store_hardlinks(tmp_path: Path) -> None:
+    import os
+
+    installed = (ROOT / "apps/capture-pwa/node_modules/@capacitor/cli").resolve(strict=True)
+    owned = tmp_path / "hardlinked-template-root"
+    destination = owned / "apps/capture-pwa/node_modules/@capacitor/cli"
+    for relative in ("package.json", "assets/ios-spm-template.tar.gz"):
+        path = destination / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes((installed / relative).read_bytes())
+    archive = destination / "assets/ios-spm-template.tar.gz"
+    os.link(archive, tmp_path / "archive-alias")
+    with pytest.raises(prototype.PrototypeError, match="nonregular input refused"):
+        prototype.template_inputs(owned)
