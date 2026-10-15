@@ -812,10 +812,12 @@ def test_diagnostic_binary_unknown_and_oversized_logs_remain_bounded(tmp_path: P
     private = "opaque-private-diagnostic-value"
     allowed = {"KnownTests/testCase" + str(i) for i in range(20)}
     path.write_bytes(
-        b"\xff\x1b[31m" + private.encode() + b"\n"
+        b"\xff\x1b[31m"
+        + private.encode()
+        + b"\n"
         + "".join(
-            "Test Case '-[Module.KnownTests testCase" + str(i) + "]' failed: "
-            + private + "\n" for i in range(20)
+            "Test Case '-[Module.KnownTests testCase" + str(i) + "]' failed: " + private + "\n"
+            for i in range(20)
         ).encode()
     )
     categories, identities = prototype.private_failure_labels(path, allowed)
@@ -826,5 +828,37 @@ def test_diagnostic_binary_unknown_and_oversized_logs_remain_bounded(tmp_path: P
         stream.truncate(16 * 1024 * 1024 + 1)
     assert prototype.private_failure_labels(path, allowed) == (["diagnostic-size-held"], [])
     assert prototype.private_failure_labels(tmp_path / "missing", allowed) == (
-        ["diagnostic-unavailable"], []
+        ["diagnostic-unavailable"],
+        [],
     )
+
+
+def test_test_build_failure_is_not_mislabelled_as_ordinary_build(tmp_path: Path) -> None:
+    path = tmp_path / "build.log"
+    path.write_text("** TEST BUILD FAILED **\n")
+    assert prototype.private_failure_labels(path, set()) == (["native-build-failure"], [])
+
+
+@pytest.mark.parametrize(
+    "output",
+    [
+        b"Xcode 26.6\nBuild version 17F113\n",
+        b"Xcode 27.1\nBuild version 27A9275\n",
+        b"Xcode 27.0\nBuild version private-canary-version\n",
+        b"Xcode 27.0\nBuild version 27A266a\nextra\n",
+        b"",
+    ],
+)
+def test_toolchain_drift_is_refused_without_echoing_input(output: bytes) -> None:
+    with pytest.raises(prototype.PrototypeError, match="audited Xcode") as failure:
+        prototype.require_audited_xcode(output)
+    assert "private-canary-version" not in str(failure.value)
+
+
+def test_exact_audited_toolchain_and_workflow_binding() -> None:
+    prototype.require_audited_xcode(b"Xcode 27.0\nBuild version 27A266a\n")
+    workflow = (ROOT / ".github/workflows/ios-storage-prototype.yml").read_text()
+    assert "runs-on: xcode-27" in workflow
+    assert "DEVELOPER_DIR: /Applications/Xcode_27.0.app/Contents/Developer" in workflow
+    assert 'require_audited_xcode(subprocess.check_output(["xcodebuild", "-version"]))' in workflow
+    assert "sort -V" not in workflow and "xcode-select" not in workflow

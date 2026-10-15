@@ -29,7 +29,9 @@ env:
 
 jobs:
   synthetic-simulator:
-    runs-on: macos-latest
+    runs-on: xcode-27
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_27.0.app/Contents/Developer
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
@@ -45,11 +47,15 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Select and report Xcode
+      - name: Verify the audited Xcode toolchain
         run: |
-          newest="$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)"
-          if [ -n "$newest" ]; then sudo xcode-select -s "$newest"; fi
-          xcodebuild -version
+          test -d "$DEVELOPER_DIR"
+          python - <<'PYTHON'
+          import subprocess
+          from scripts.ios_storage_prototype import require_audited_xcode
+          require_audited_xcode(subprocess.check_output(["xcodebuild", "-version"]))
+          print("APP-2C2A audited Xcode 27.0 build 27A266a verified")
+          PYTHON
       - run: pnpm install --frozen-lockfile --package-import-method copy
       - name: Create an independent ordinary comparison checkout
         shell: bash

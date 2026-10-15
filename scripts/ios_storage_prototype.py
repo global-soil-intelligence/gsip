@@ -1450,6 +1450,7 @@ def audit_ordinary(
 # Only these fixed labels may leave the private tool logs.
 PRIVATE_STEP_LABELS = {
     "runtimes.json": "simulator-inventory",
+    "toolchain.log": "audited-toolchain",
     "created-simulator.txt": "simulator-create",
     "boot.log": "simulator-boot",
     "bootstatus.log": "simulator-ready",
@@ -1489,7 +1490,7 @@ def private_failure_labels(log: Path, expected_tests: set[str]) -> tuple[list[st
         "Unable to boot": "simulator-boot-failure",
         "TEST EXECUTE FAILED": "native-test-failure",
         "TEST BUILD FAILED": "native-build-failure",
-        "BUILD FAILED": "ordinary-build-failure",
+        "** BUILD FAILED **": "ordinary-build-failure",
         "Testing failed": "native-test-failure",
     }
     found_categories = sorted({label for token, label in categories.items() if token in text})
@@ -1601,6 +1602,13 @@ def bind_test_environment(derived: Path, expected_host: bool) -> Path:
     return plan
 
 
+def require_audited_xcode(output: bytes) -> None:
+    require(
+        output.splitlines() == [b"Xcode 27.0", b"Build version 27A266a"],
+        "audited Xcode 27.0 build 27A266a required",
+    )
+
+
 def execute(root: Path, fresh: Path, run_root: Path) -> dict[str, Any]:
     require(not run_root.exists() and not run_root.is_symlink(), "new run root required")
     require(os.uname().sysname == "Darwin", "iOS simulator toolchain required")
@@ -1610,6 +1618,8 @@ def execute(root: Path, fresh: Path, run_root: Path) -> dict[str, Any]:
     receipt = prepare(root, fresh, harness)
     evidence = run_root / "private-evidence"
     evidence.mkdir(mode=0o700)
+    run_private(["xcodebuild", "-version"], root, evidence / "toolchain.log")
+    require_audited_xcode(regular_bytes(evidence / "toolchain.log"))
     (evidence / "generated.json").write_text(json.dumps(receipt, sort_keys=True))
     runtimes = read_json_tool(
         ["xcrun", "simctl", "list", "runtimes", "-j"], root, evidence / "runtimes.json"
