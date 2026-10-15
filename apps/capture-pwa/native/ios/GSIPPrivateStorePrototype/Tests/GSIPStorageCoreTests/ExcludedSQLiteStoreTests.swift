@@ -9,7 +9,69 @@ final class ExcludedSQLiteStoreTests: XCTestCase {
     private func fixture() throws -> (ExcludedSQLiteStore, SyntheticRunIdentity, SyntheticFixtureAuthority) {
         let authority = try requiredSimulatorAuthority()
         let identity = try KeychainAnchor.makeRunIdentity(authority: authority)
-        return (try ExcludedSQLiteStore.createSyntheticFixture(authority: authority, identity: identity, owner: "synthetic-owner", protectedDataAvailable: { true }), identity, authority)
+        do {
+            return (try ExcludedSQLiteStore.createSyntheticFixture(authority: authority, identity: identity, owner: "synthetic-owner", protectedDataAvailable: { true }), identity, authority)
+        } catch {
+            reportFixtureBoundary(identity)
+            throw error
+        }
+    }
+    // Diagnostic only: fixed synthetic locations and booleans, never paths/errors/values.
+    // Nonthrowing and read-only; an observed failure still rethrows its original error.
+    private enum BoundaryDiagnosticContext { case fixtureFailure, validationControl }
+    private func reportFixtureBoundary(_ identity: SyntheticRunIdentity, context: BoundaryDiagnosticContext = .fixtureFailure) {
+        guard let library = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first else { return }
+        let resolved = library.resolvingSymlinksInPath().standardizedFileURL
+        let base = resolved.appendingPathComponent("GSIPStoragePrototype-v1", isDirectory: true)
+        let ownedRoot = base.appendingPathComponent(identity.nonce, isDirectory: true)
+        let database = ownedRoot.appendingPathComponent("gsip-app2c2a.sqlite3", isDirectory: false)
+        var parent = stat()
+        var ancestorSafe = lstat(resolved.path, &parent) == 0 && parent.st_mode & S_IFMT == S_IFDIR && parent.st_uid == geteuid()
+        for (part, url, directory) in [("base", base, true), ("root", ownedRoot, true), ("database", database, false)] {
+            var before = stat()
+            let present = ancestorSafe && lstat(url.path, &before) == 0
+            let kind = before.st_mode & S_IFMT
+            let expectedKind = present && kind == (directory ? S_IFDIR : S_IFREG)
+            let owned = present && before.st_uid == geteuid()
+            let linkPolicy = present && (kind == S_IFDIR || (kind == S_IFREG && before.st_nlink == 1))
+            let safe = expectedKind && owned && linkPolicy
+            var report: [String: Any] = [
+                "part": part, "ancestor_safe": ancestorSafe, "present": present,
+                "expected_kind": expectedKind, "owned": owned,
+                "private_mode": present && before.st_mode & 0o077 == 0,
+                "link_policy": linkPolicy,
+                "size_bounded": present && before.st_size >= 0 && UInt64(before.st_size) <= UInt64(StorageLimits.managedBytes),
+                "identity_stable": false, "protection_query_ok": false, "protection_available": false,
+                "protection_complete": false, "exclusion_query_ok": false, "exclusion_available": false,
+                "backup_excluded": false, "volume_query_ok": false, "volume_protection_available": false,
+                "volume_supports_protection": false
+            ]
+            if safe {
+                var fresh = URL(fileURLWithPath: url.path); fresh.removeAllCachedResourceValues()
+                let protection = try? fresh.resourceValues(forKeys: [.fileProtectionKey])
+                let exclusion = try? fresh.resourceValues(forKeys: [.isExcludedFromBackupKey])
+                let volume = try? fresh.resourceValues(forKeys: [.volumeSupportsFileProtectionKey])
+                let supports = volume?.allValues[.volumeSupportsFileProtectionKey] as? Bool
+                report["protection_query_ok"] = protection != nil
+                report["protection_available"] = protection?.fileProtection != nil
+                report["protection_complete"] = protection?.fileProtection == .complete
+                report["exclusion_query_ok"] = exclusion != nil
+                report["exclusion_available"] = exclusion?.isExcludedFromBackup != nil
+                report["backup_excluded"] = exclusion?.isExcludedFromBackup == true
+                report["volume_query_ok"] = volume != nil
+                report["volume_protection_available"] = supports != nil
+                report["volume_supports_protection"] = supports == true
+                var after = stat()
+                let stable = lstat(url.path, &after) == 0 && after.st_dev == before.st_dev && after.st_ino == before.st_ino && after.st_mode == before.st_mode && after.st_uid == before.st_uid
+                report["identity_stable"] = stable
+                ancestorSafe = safe && directory && stable
+            } else { ancestorSafe = false }
+            if let data = try? JSONSerialization.data(withJSONObject: report, options: [.sortedKeys]),
+               let encoded = String(data: data, encoding: .utf8) {
+                let marker = context == .fixtureFailure ? "GSIP_SQLITE_FIXTURE=" : "GSIP_SQLITE_CONTROL="
+                print(marker + encoded)
+            }
+        }
     }
     private func root(_ identity: SyntheticRunIdentity) -> URL {
         FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!.resolvingSymlinksInPath()
@@ -102,6 +164,7 @@ final class ExcludedSQLiteStoreTests: XCTestCase {
         try mutableRoot.setResourceValues(values)
         XCTAssertThrowsError(try store.validateBoundary())
         XCTAssertThrowsError(try ExcludedSQLiteStore(authority: authority, identity: identity, protectedDataAvailable: { true }))
+        reportFixtureBoundary(identity, context: .validationControl) // The deliberate negative control is never failure evidence.
     }
     func testDatabaseLeafSymlinkHardlinkAndReplacementAreRefused() throws {
         for mode in 0..<3 {

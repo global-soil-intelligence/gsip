@@ -942,3 +942,86 @@ def test_native_exception_diagnostics_report_fixed_holds_and_cocoa_categories_on
         "storage-hold-unavailable",
     ]
     assert identities == [] and private not in str(categories)
+
+
+def test_failed_native_fixture_emits_only_fixed_boolean_metadata(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import subprocess
+
+    private = "private-native-root-and-payload"
+    allowed = {
+        "part": "base", "ancestor_safe": True, "present": True,
+        "expected_kind": True, "owned": True,
+        "private_mode": True, "link_policy": True, "size_bounded": True,
+        "identity_stable": True, "protection_query_ok": True, "protection_available": False,
+        "protection_complete": False, "exclusion_query_ok": True, "exclusion_available": True,
+        "backup_excluded": True, "volume_query_ok": True, "volume_protection_available": True,
+        "volume_supports_protection": False,
+    }
+
+    def failed(args: list[str], **kwargs: Any) -> Any:
+        records = [allowed, allowed | {"path": private}, allowed | {"owned": private}]
+        kwargs["stdout"].write(
+            ("".join("GSIP_SQLITE_FIXTURE=" + json.dumps(x) + "\n" for x in records)
+             + private).encode()
+        )
+        return subprocess.CompletedProcess(args, 65)
+
+    monkeypatch.setattr(subprocess, "run", failed)
+    with pytest.raises(prototype.PrototypeError):
+        prototype.run_private(
+            ["xcodebuild", "test-without-building"], tmp_path, tmp_path / "core-test.log",
+            expected_tests={"KnownTests/testCase"},
+        )
+    output = capsys.readouterr().out
+    line = next(x for x in output.splitlines() if x.startswith("APP-2C2A bounded failure: "))
+    diagnostic = json.loads(line.split(": ", 1)[1])
+    assert diagnostic["fixture_metadata"] == [allowed]
+    assert private not in output and str(tmp_path) not in output
+
+
+def test_fixture_metadata_is_deduplicated_bounded_and_unknown_input_is_private(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "native.log"
+    valid = {key: False for key in prototype.FIXTURE_BOOLEAN_FIELDS} | {"part": "root"}
+    records = [valid, valid, valid | {"part": "private-path"}, valid | {"present": 1}]
+    records += [valid | {key: True} for key in sorted(prototype.FIXTURE_BOOLEAN_FIELDS)]
+    path.write_text("\n".join("GSIP_SQLITE_FIXTURE=" + json.dumps(x) for x in records))
+    observed = prototype.private_fixture_metadata(path)
+    assert len(observed) == 9 and observed[0] == valid
+    assert all(x["part"] == "root" for x in observed)
+    assert all(type(x[key]) is bool for x in observed for key in prototype.FIXTURE_BOOLEAN_FIELDS)
+    path.write_text('GSIP_SQLITE_FIXTURE={malformed}\nGSIP_SQLITE_FIXTURE=[]\n')
+    assert prototype.private_fixture_metadata(path) == []
+    with path.open("wb") as stream:
+        stream.truncate(16 * 1024 * 1024 + 1)
+    assert prototype.private_fixture_metadata(path) == []
+    assert prototype.private_fixture_metadata(tmp_path / "missing") == []
+
+
+def test_injected_decoder_recursion_failure_stays_private(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    path = tmp_path / "native.log"
+    path.write_text('GSIP_SQLITE_FIXTURE={"private":"not-output"}')
+
+    def unavailable_decoder(value: str) -> Any:
+        raise RecursionError("private-decoder-failure")
+
+    monkeypatch.setattr(json, "loads", unavailable_decoder)
+    assert prototype.private_fixture_metadata(path) == []
+
+
+def test_passing_suite_refuses_failure_marker_but_ignores_validation_control(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "native.log"
+    report = {key: False for key in prototype.FIXTURE_BOOLEAN_FIELDS} | {"part": "root"}
+    path.write_text("GSIP_SQLITE_FIXTURE=" + json.dumps(report))
+    with pytest.raises(prototype.PrototypeError, match="fixture-failure marker"):
+        prototype.require_clean_fixture_status(path)
+    path.write_text("GSIP_SQLITE_CONTROL=" + json.dumps(report))
+    prototype.require_clean_fixture_status(path)
+    assert prototype.private_fixture_metadata(path) == []

@@ -1563,6 +1563,50 @@ def private_test_progress(log: Path, expected_tests: set[str]) -> dict[str, Any]
     }
 
 
+
+FIXTURE_BOOLEAN_FIELDS = frozenset({
+    "ancestor_safe", "present", "expected_kind", "owned", "private_mode", "link_policy",
+    "size_bounded", "identity_stable", "protection_query_ok", "protection_available",
+    "protection_complete", "exclusion_query_ok", "exclusion_available", "backup_excluded",
+    "volume_query_ok", "volume_protection_available", "volume_supports_protection",
+})
+
+
+def private_fixture_metadata(log: Path) -> list[dict[str, Any]]:
+    """Bounded synthetic metadata hints only; never acceptance or raw resource values."""
+    try:
+        if log.stat().st_size > 16 * 1024 * 1024:
+            return []
+        text = regular_bytes(log).decode("utf-8", errors="replace")
+    except (OSError, PrototypeError):
+        return []
+    records: list[dict[str, Any]] = []
+    for line in text.splitlines():
+        if not line.startswith("GSIP_SQLITE_FIXTURE=") or len(line) > 2_048:
+            continue
+        try:
+            value = json.loads(line.removeprefix("GSIP_SQLITE_FIXTURE="))
+        except (ValueError, TypeError, RecursionError):
+            continue
+        if (
+            not isinstance(value, dict)
+            or set(value) != FIXTURE_BOOLEAN_FIELDS | {"part"}
+            or value["part"] not in ("base", "root", "database")
+            or any(type(value[key]) is not bool for key in FIXTURE_BOOLEAN_FIELDS)
+        ):
+            continue
+        if value not in records:
+            records.append(value)
+        if len(records) == 9:
+            break
+    return records
+
+
+
+def require_clean_fixture_status(log: Path) -> None:
+    require(not private_fixture_metadata(log), "fixture-failure marker in passing native suite")
+
+
 def run_private(
     args: list[str],
     cwd: Path,
@@ -1594,6 +1638,7 @@ def run_private(
             }
             if expected_tests:
                 diagnostic["progress"] = private_test_progress(log, expected_tests)
+                diagnostic["fixture_metadata"] = private_fixture_metadata(log)
             print("APP-2C2A bounded failure: " + json.dumps(diagnostic, sort_keys=True), flush=True)
             raise PrototypeError(
                 "owned native tool timed out at " + stage + "; evidence retained"
@@ -1608,6 +1653,7 @@ def run_private(
         }
         if expected_tests:
             diagnostic["progress"] = private_test_progress(log, expected_tests)
+            diagnostic["fixture_metadata"] = private_fixture_metadata(log)
         print("APP-2C2A bounded failure: " + json.dumps(diagnostic, sort_keys=True), flush=True)
         raise PrototypeError("native tool step failed at " + stage + "; private evidence retained")
 
@@ -1789,6 +1835,7 @@ def execute(root: Path, fresh: Path, run_root: Path) -> dict[str, Any]:
             require(audit_test_tree(root, name, tree) == summary.get("passedTests"))
             results[name] = classify_tests(summary)
             if name == "core":
+                require_clean_fixture_status(evidence / "core-test.log")
                 markers = re.findall(
                     r"^GSIP_SIMULATOR_ANCHOR=(held-group-unverified|held-api|api-readback)$",
                     regular_bytes(evidence / "core-test.log").decode(),
