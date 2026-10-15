@@ -51,12 +51,23 @@ jobs:
           if [ -n "$newest" ]; then sudo xcode-select -s "$newest"; fi
           xcodebuild -version
       - run: pnpm install --frozen-lockfile --package-import-method copy
-      - run: pnpm --filter @gsip/capture-pwa build:app
+      - name: Create an independent ordinary comparison checkout
+        shell: bash
+        run: |
+          source_commit="$(git rev-parse HEAD)"
+          git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2c2a-ordinary-source"
+          git -C "$RUNNER_TEMP/gsip-app2c2a-ordinary-source" checkout --detach "$source_commit"
+          test "$(git -C "$RUNNER_TEMP/gsip-app2c2a-ordinary-source" rev-parse HEAD)" = "$source_commit"
+      - name: Install and build the independent ordinary source
+        working-directory: ${{ runner.temp }}/gsip-app2c2a-ordinary-source
+        run: |
+          pnpm install --frozen-lockfile --package-import-method copy
+          pnpm --filter @gsip/capture-pwa build:app
       - name: Generate the untouched ordinary comparison project
-        working-directory: apps/capture-pwa
+        working-directory: ${{ runner.temp }}/gsip-app2c2a-ordinary-source/apps/capture-pwa
         run: pnpm exec cap add ios
       - name: Exercise the finite synthetic harness and audit ordinary isolation
-        run: python scripts/ios_storage_prototype.py run "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/apps/capture-pwa/ios" "$RUNNER_TEMP/gsip-app2c2a"
+        run: python scripts/ios_storage_prototype.py run "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2c2a-ordinary-source/apps/capture-pwa/ios" "$RUNNER_TEMP/gsip-app2c2a"
       - uses: actions/upload-artifact@v7
         with:
           name: gsip-app2c2a-sanitized-receipt

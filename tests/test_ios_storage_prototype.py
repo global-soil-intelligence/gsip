@@ -637,3 +637,25 @@ def test_ordinary_copy_head_must_match_candidate(
     monkeypatch.setattr(subprocess, "run", wrong_copy)
     with pytest.raises(prototype.PrototypeError):
         run_ordinary_fixture(case)
+
+
+def test_original_ordinary_generated_input_is_never_patched(tmp_path: Path) -> None:
+    output = tmp_path / "prototype"
+    with pytest.raises(prototype.PrototypeError, match="ordinary project cannot be modified"):
+        prototype.prepare(ROOT, ROOT / "apps/capture-pwa/ios", output)
+    assert not output.exists()
+
+
+def test_workflow_uses_independently_generated_exact_commit_copy() -> None:
+    workflow = (ROOT / ".github/workflows/ios-storage-prototype.yml").read_text()
+    assert (
+        'git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2c2a-ordinary-source"'
+        in workflow
+    )
+    assert 'checkout --detach "$source_commit"' in workflow
+    invocation = next(
+        line for line in workflow.splitlines() if "ios_storage_prototype.py run" in line
+    )
+    assert '"$RUNNER_TEMP/gsip-app2c2a-ordinary-source/apps/capture-pwa/ios"' in invocation
+    assert '"$GITHUB_WORKSPACE/apps/capture-pwa/ios"' not in invocation
+    assert "persist-credentials: false" in workflow
