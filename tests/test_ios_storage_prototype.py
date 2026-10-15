@@ -649,7 +649,8 @@ def test_original_ordinary_generated_input_is_never_patched(tmp_path: Path) -> N
 def test_workflow_uses_independently_generated_exact_commit_copy() -> None:
     workflow = (ROOT / ".github/workflows/ios-storage-prototype.yml").read_text()
     assert (
-        'git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" "$RUNNER_TEMP/gsip-app2c2a-ordinary-source"'
+        'git clone --no-hardlinks --no-checkout "$GITHUB_WORKSPACE" '
+        '"$RUNNER_TEMP/gsip-app2c2a-ordinary-source"'
         in workflow
     )
     assert 'checkout --detach "$source_commit"' in workflow
