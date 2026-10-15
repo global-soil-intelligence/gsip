@@ -143,4 +143,3 @@ final class PrototypeHostControllerTests: XCTestCase {
         XCTAssertTrue((controller.state) == (.suspended))
     }
 }
-
