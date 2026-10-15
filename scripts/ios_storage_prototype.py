@@ -1492,6 +1492,10 @@ def private_failure_labels(log: Path, expected_tests: set[str]) -> tuple[list[st
         "TEST BUILD FAILED": "native-build-failure",
         "** BUILD FAILED **": "ordinary-build-failure",
         "Testing failed": "native-test-failure",
+        "Timed out waiting": "runner-reported-timeout",
+        "code signature": "code-signature-diagnostic",
+        "dyld": "dynamic-loader-diagnostic",
+        "Test Suite '": "xctest-suite-started",
     }
     found_categories = sorted({label for token, label in categories.items() if token in text})
     failures: set[str] = set()
@@ -1506,6 +1510,42 @@ def private_failure_labels(log: Path, expected_tests: set[str]) -> tuple[list[st
         ):
             failures.add(identity)
     return found_categories or ["unclassified"], sorted(failures)[:16]
+
+
+def private_test_progress(log: Path, expected_tests: set[str]) -> dict[str, Any]:
+    """Observe only allowlisted case status; this never certifies test acceptance."""
+    unavailable = {
+        "available": False,
+        "observed_started": 0,
+        "observed_passed": 0,
+        "observed_failed": 0,
+        "unfinished_test_identities": [],
+    }
+    try:
+        if log.stat().st_size > 16 * 1024 * 1024:
+            return unavailable
+        text = regular_bytes(log).decode("utf-8", errors="replace")
+    except (OSError, PrototypeError):
+        return unavailable
+    statuses: dict[str, set[str]] = {"started": set(), "passed": set(), "failed": set()}
+    for class_name, method, status in re.findall(
+        r"(?m)^Test Case '-\[(?:[A-Za-z0-9_]+\.)?([A-Za-z0-9_]+) "
+        r"([A-Za-z0-9_]+)\]' (started|passed|failed)\b",
+        text,
+    ):
+        identity = class_name + "/" + method
+        if identity in expected_tests and re.fullmatch(
+            r"[A-Za-z0-9_]{1,128}/test\w{1,128}", identity
+        ):
+            statuses[status].add(identity)
+    unfinished = statuses["started"] - statuses["passed"] - statuses["failed"]
+    return {
+        "available": True,
+        "observed_started": len(statuses["started"]),
+        "observed_passed": len(statuses["passed"]),
+        "observed_failed": len(statuses["failed"]),
+        "unfinished_test_identities": sorted(unfinished)[:16],
+    }
 
 
 def run_private(
@@ -1531,29 +1571,29 @@ def run_private(
                 timeout=300 if "test-without-building" in args else 1800,
             )
         except subprocess.TimeoutExpired as error:
-            print(
-                "APP-2C2A bounded failure: "
-                + json.dumps({"stage": stage, "categories": ["timeout"]}, sort_keys=True),
-                flush=True,
-            )
+            categories, identities = private_failure_labels(log, expected_tests or set())
+            diagnostic: dict[str, Any] = {
+                "stage": stage,
+                "categories": sorted(set(categories) | {"timeout"}),
+                "test_identities": identities,
+            }
+            if expected_tests:
+                diagnostic["progress"] = private_test_progress(log, expected_tests)
+            print("APP-2C2A bounded failure: " + json.dumps(diagnostic, sort_keys=True), flush=True)
             raise PrototypeError(
                 "owned native tool timed out at " + stage + "; evidence retained"
             ) from error
     if result.returncode != 0:
         categories, identities = private_failure_labels(log, expected_tests or set())
-        print(
-            "APP-2C2A bounded failure: "
-            + json.dumps(
-                {
-                    "stage": stage,
-                    "exit": result.returncode,
-                    "categories": categories,
-                    "test_identities": identities,
-                },
-                sort_keys=True,
-            ),
-            flush=True,
-        )
+        diagnostic = {
+            "stage": stage,
+            "exit": result.returncode,
+            "categories": categories,
+            "test_identities": identities,
+        }
+        if expected_tests:
+            diagnostic["progress"] = private_test_progress(log, expected_tests)
+        print("APP-2C2A bounded failure: " + json.dumps(diagnostic, sort_keys=True), flush=True)
         raise PrototypeError("native tool step failed at " + stage + "; private evidence retained")
 
 
@@ -1632,6 +1672,10 @@ def execute(root: Path, fresh: Path, run_root: Path) -> dict[str, Any]:
     ]
     require(available, "no supported iOS simulator")
     runtime = sorted(available, key=lambda r: tuple(int(x) for x in r["version"].split(".")))[-1]
+    runtime_public = public_receipt(
+        {"simulator_runtime": {"version": runtime["version"], "build": runtime["buildversion"]}}
+    )["results"]["simulator_runtime"]
+    print("APP-2C2A runtime: " + json.dumps(runtime_public, sort_keys=True), flush=True)
     # Only this new simulator may be booted, tested, shut down or deleted.
     run_private(
         [

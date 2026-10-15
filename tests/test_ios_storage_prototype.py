@@ -862,3 +862,50 @@ def test_exact_audited_toolchain_and_workflow_binding() -> None:
     assert "DEVELOPER_DIR: /Applications/Xcode_27.0.app/Contents/Developer" in workflow
     assert 'require_audited_xcode(subprocess.check_output(["xcodebuild", "-version"]))' in workflow
     assert "sort -V" not in workflow and "xcode-select" not in workflow
+
+
+def test_partial_test_progress_is_allowlisted_and_distinguishes_unavailable(tmp_path: Path) -> None:
+    path = tmp_path / "test.log"
+    private = "opaque-private-status-payload"
+    path.write_text(
+        "Test Case '-[Module.KnownTests testDone]' started.\n"
+        "Test Case '-[Module.KnownTests testDone]' passed: " + private + "\n"
+        "Test Case '-[Module.KnownTests testStillRunning]' started.\n"
+        "Test Case '-[Module.Unknown testPrivate]' started.\n"
+    )
+    allowed = {"KnownTests/testDone", "KnownTests/testStillRunning"}
+    assert prototype.private_test_progress(path, allowed) == {
+        "available": True,
+        "observed_started": 2,
+        "observed_passed": 1,
+        "observed_failed": 0,
+        "unfinished_test_identities": ["KnownTests/testStillRunning"],
+    }
+    result = prototype.private_test_progress(tmp_path / "missing", allowed)
+    assert result["available"] is False
+    assert private not in str(result) and "testPrivate" not in str(result)
+
+
+def test_timeout_reports_only_allowlisted_partial_status_and_keeps_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import subprocess
+
+    def expired(args: list[str], **kwargs: Any) -> Any:
+        kwargs["stdout"].write(
+            b"Test Case '-[Module.KnownTests testActive]' started.\nprivate-canary-timeout"
+        )
+        kwargs["stdout"].flush()
+        raise subprocess.TimeoutExpired(args, 300, "private-canary-timeout")
+
+    monkeypatch.setattr(subprocess, "run", expired)
+    with pytest.raises(prototype.PrototypeError, match="timed out at core-test"):
+        prototype.run_private(
+            ["xcodebuild", "test-without-building"],
+            tmp_path,
+            tmp_path / "core-test.log",
+            expected_tests={"KnownTests/testActive"},
+        )
+    output = capsys.readouterr().out
+    assert "KnownTests/testActive" in output and '"observed_started": 1' in output
+    assert "private-canary-timeout" not in output and str(tmp_path) not in output
