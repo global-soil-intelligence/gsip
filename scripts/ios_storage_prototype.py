@@ -1447,10 +1447,77 @@ def audit_ordinary(
     }
 
 
+# Only these fixed labels may leave the private tool logs.
+PRIVATE_STEP_LABELS = {
+    "runtimes.json": "simulator-inventory",
+    "created-simulator.txt": "simulator-create",
+    "boot.log": "simulator-boot",
+    "bootstatus.log": "simulator-ready",
+    "shutdown.log": "simulator-shutdown",
+    "delete.log": "simulator-delete",
+}
+for _kind in ("core", "host"):
+    for _suffix in ("build.log", "test.log", "summary.json", "tests.json"):
+        PRIVATE_STEP_LABELS[f"{_kind}-{_suffix}"] = f"{_kind}-{_suffix.split('.')[0]}"
+for _configuration in ("debug", "release"):
+    for _suffix in ("build", "zip", "native-audit", "app_build.py", "app_permissions.py"):
+        PRIVATE_STEP_LABELS[f"ordinary-{_configuration}-{_suffix}.log"] = (
+            f"ordinary-{_configuration}-{_suffix.removesuffix('.py')}"
+        )
+for _helper in ("app_build.py", "app_permissions.py"):
+    PRIVATE_STEP_LABELS[f"ordinary-apply-{_helper}.log"] = (
+        f"ordinary-apply-{_helper.removesuffix('.py')}"
+    )
+
+
+def private_failure_labels(log: Path, expected_tests: set[str]) -> tuple[list[str], list[str]]:
+    """Return only fixed categories and already-authored test identities, never excerpts."""
+    try:
+        if log.stat().st_size > 16 * 1024 * 1024:
+            return ["diagnostic-size-held"], []
+        text = regular_bytes(log).decode("utf-8", errors="replace")
+    except (OSError, PrototypeError):
+        return ["diagnostic-unavailable"], []
+    categories = {
+        "error: no such module": "missing-module",
+        "Could not resolve package dependencies": "package-resolution",
+        "Missing package product": "missing-package-product",
+        "linker command failed": "linker-failure",
+        "Failed to load the test bundle": "test-bundle-load",
+        "Failed to establish communication": "test-runner-communication",
+        "Failed to launch": "test-runner-launch",
+        "Unable to boot": "simulator-boot-failure",
+        "TEST EXECUTE FAILED": "native-test-failure",
+        "TEST BUILD FAILED": "native-build-failure",
+        "BUILD FAILED": "ordinary-build-failure",
+        "Testing failed": "native-test-failure",
+    }
+    found_categories = sorted({label for token, label in categories.items() if token in text})
+    failures: set[str] = set()
+    for class_name, method in re.findall(
+        r"(?m)^Test Case '-\[(?:[A-Za-z0-9_]+\.)?([A-Za-z0-9_]+) "
+        r"([A-Za-z0-9_]+)\]' failed",
+        text,
+    ):
+        identity = class_name + "/" + method
+        if identity in expected_tests and re.fullmatch(
+            r"[A-Za-z0-9_]{1,128}/test\w{1,128}", identity
+        ):
+            failures.add(identity)
+    return found_categories or ["unclassified"], sorted(failures)[:16]
+
+
 def run_private(
-    args: list[str], cwd: Path, log: Path, *, env: dict[str, str] | None = None
+    args: list[str],
+    cwd: Path,
+    log: Path,
+    *,
+    env: dict[str, str] | None = None,
+    expected_tests: set[str] | None = None,
 ) -> None:
-    """Never relay tool output; an error is only a generic step label."""
+    """Raw tool output remains private; emit fixed stage/category labels only."""
+    stage = PRIVATE_STEP_LABELS.get(log.name, "private-tool")
+    print("APP-2C2A step: " + stage, flush=True)
     with log.open("wb") as stream:
         try:
             result = subprocess.run(  # noqa: S603 - fixed internal native/build commands, no shell
@@ -1463,8 +1530,30 @@ def run_private(
                 timeout=300 if "test-without-building" in args else 1800,
             )
         except subprocess.TimeoutExpired as error:
-            raise PrototypeError("owned native tool timed out; evidence retained") from error
-    require(result.returncode == 0, "native tool step failed; private evidence retained")
+            print(
+                "APP-2C2A bounded failure: "
+                + json.dumps({"stage": stage, "categories": ["timeout"]}, sort_keys=True),
+                flush=True,
+            )
+            raise PrototypeError(
+                "owned native tool timed out at " + stage + "; evidence retained"
+            ) from error
+    if result.returncode != 0:
+        categories, identities = private_failure_labels(log, expected_tests or set())
+        print(
+            "APP-2C2A bounded failure: "
+            + json.dumps(
+                {
+                    "stage": stage,
+                    "exit": result.returncode,
+                    "categories": categories,
+                    "test_identities": identities,
+                },
+                sort_keys=True,
+            ),
+            flush=True,
+        )
+        raise PrototypeError("native tool step failed at " + stage + "; private evidence retained")
 
 
 def read_json_tool(args: list[str], cwd: Path, log: Path) -> dict[str, Any]:
@@ -1600,6 +1689,7 @@ def execute(root: Path, fresh: Path, run_root: Path) -> dict[str, Any]:
                 ],
                 cwd,
                 evidence / (name + "-test.log"),
+                expected_tests=expected_native_tests(root, name),
             )
             summary = read_json_tool(
                 [

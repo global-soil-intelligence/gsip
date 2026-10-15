@@ -38,6 +38,7 @@ end
     ),
 }
 
+
 @pytest.fixture(autouse=True)
 def owned_pinned_cli_template(
     tmp_path_factory: pytest.TempPathFactory, monkeypatch: pytest.MonkeyPatch
@@ -757,3 +758,73 @@ def test_actual_template_reader_still_refuses_package_store_hardlinks(tmp_path: 
     os.link(archive, tmp_path / "archive-alias")
     with pytest.raises(prototype.PrototypeError, match="nonregular input refused"):
         prototype.template_inputs(owned)
+
+
+def test_failed_tool_diagnostics_never_echo_raw_output_or_unapproved_names(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import subprocess
+
+    private = "opaque-private-canary-payload"
+    allowed = "StorageCoordinatorTests/testSyntheticFailure"
+
+    def failed(args: list[str], **kwargs: Any) -> Any:
+        kwargs["stdout"].write(
+            (
+                "error: no such module " + private + "\n"
+                "Test Case '-[Module.StorageCoordinatorTests testSyntheticFailure]' failed\n"
+                "Test Case '-[Module.PrivateFixture testUnapproved]' failed\n" + private + "\n"
+            ).encode()
+        )
+        return subprocess.CompletedProcess(args, 65)
+
+    monkeypatch.setattr(subprocess, "run", failed)
+    with pytest.raises(prototype.PrototypeError, match="failed at core-test"):
+        prototype.run_private(
+            ["xcodebuild", "test-without-building"],
+            tmp_path,
+            tmp_path / "core-test.log",
+            expected_tests={allowed},
+        )
+    output = capsys.readouterr().out
+    assert allowed in output and "missing-module" in output and '"exit": 65' in output
+    assert private not in output and "testUnapproved" not in output and str(tmp_path) not in output
+
+
+def test_unknown_private_log_path_and_timeout_only_emit_fixed_labels(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import subprocess
+
+    def expired(args: list[str], **kwargs: Any) -> Any:
+        raise subprocess.TimeoutExpired(args, 300, "private-canary-timeout")
+
+    monkeypatch.setattr(subprocess, "run", expired)
+    with pytest.raises(prototype.PrototypeError, match="timed out at private-tool") as failure:
+        prototype.run_private(["private-command"], tmp_path, tmp_path / "unapproved-private-name")
+    combined = capsys.readouterr().out + str(failure.value)
+    assert "private-canary" not in combined and "unapproved-private-name" not in combined
+    assert "private-command" not in combined and str(tmp_path) not in combined
+
+
+def test_diagnostic_binary_unknown_and_oversized_logs_remain_bounded(tmp_path: Path) -> None:
+    path = tmp_path / "diagnostic.log"
+    private = "opaque-private-diagnostic-value"
+    allowed = {"KnownTests/testCase" + str(i) for i in range(20)}
+    path.write_bytes(
+        b"\xff\x1b[31m" + private.encode() + b"\n"
+        + "".join(
+            "Test Case '-[Module.KnownTests testCase" + str(i) + "]' failed: "
+            + private + "\n" for i in range(20)
+        ).encode()
+    )
+    categories, identities = prototype.private_failure_labels(path, allowed)
+    assert categories == ["unclassified"]
+    assert len(identities) == 16 and set(identities) <= allowed
+    assert private not in str((categories, identities))
+    with path.open("wb") as stream:
+        stream.truncate(16 * 1024 * 1024 + 1)
+    assert prototype.private_failure_labels(path, allowed) == (["diagnostic-size-held"], [])
+    assert prototype.private_failure_labels(tmp_path / "missing", allowed) == (
+        ["diagnostic-unavailable"], []
+    )
