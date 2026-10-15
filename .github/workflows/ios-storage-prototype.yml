@@ -1,0 +1,65 @@
+name: iOS storage prototype
+
+on:
+  pull_request:
+    paths:
+      - apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/**
+      - scripts/ios_storage_prototype.py
+      - tests/test_ios_storage_prototype.py
+      - .github/workflows/ios-storage-prototype.yml
+  push:
+    branches: [main]
+    paths:
+      - apps/capture-pwa/native/ios/GSIPPrivateStorePrototype/**
+      - scripts/ios_storage_prototype.py
+      - tests/test_ios_storage_prototype.py
+      - .github/workflows/ios-storage-prototype.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-storage-prototype-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VITE_CAPTURE_LIVE: 'false'
+  VITE_LIBRARY_INTAKE_LIVE: 'false'
+
+jobs:
+  synthetic-simulator:
+    runs-on: macos-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.9.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Select and report Xcode
+        run: |
+          newest="$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)"
+          if [ -n "$newest" ]; then sudo xcode-select -s "$newest"; fi
+          xcodebuild -version
+      - run: pnpm install --frozen-lockfile --package-import-method copy
+      - run: pnpm --filter @gsip/capture-pwa build:app
+      - name: Generate the untouched ordinary comparison project
+        working-directory: apps/capture-pwa
+        run: pnpm exec cap add ios
+      - name: Exercise the finite synthetic harness and audit ordinary isolation
+        run: python scripts/ios_storage_prototype.py run "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/apps/capture-pwa/ios" "$RUNNER_TEMP/gsip-app2c2a"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gsip-app2c2a-sanitized-receipt
+          path: ${{ runner.temp }}/gsip-app2c2a/public-receipt.json
+          if-no-files-found: error
+          retention-days: 14

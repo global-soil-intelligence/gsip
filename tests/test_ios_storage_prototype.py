@@ -1,0 +1,639 @@
+"""Synthetic policy regressions; mocked files never certify native behavior."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import plistlib
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from scripts import ios_storage_prototype as prototype
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_scope_and_fixed_bindings() -> None:
+    scope = prototype.load_scope(ROOT)
+    assert len(scope["native_files"]) == 21
+    assert len(scope["generated_copies"]) == 21
+    assert len(scope["generated_edits"]) == 9
+    prototype.validate_sources(ROOT)
+
+
+def test_exact_native_files_and_no_arbitrary_import(tmp_path: Path) -> None:
+    scope = prototype.load_scope(ROOT)
+    copy_sources(ROOT, tmp_path)
+    path = tmp_path / scope["native_files"][1]["path"]
+    path.write_text(path.read_text() + "\nimport Network\n")
+    with pytest.raises(prototype.PrototypeError):
+        prototype.validate_native(tmp_path, scope)
+
+
+def copy_sources(root: Path, dest: Path) -> None:
+    for item in prototype.load_scope(root)["native_files"]:
+        p = dest / item["path"]
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes((root / item["path"]).read_bytes())
+
+
+@pytest.mark.parametrize("name", ["Other.swift", "shim.h", "nested/Other.swift"])
+def test_no_unlisted_native_source(tmp_path: Path, name: str) -> None:
+    scope = prototype.load_scope(ROOT)
+    copy_sources(ROOT, tmp_path)
+    p = tmp_path / prototype.PREFIX / name
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("unapproved")
+    with pytest.raises(prototype.PrototypeError):
+        prototype.validate_native(tmp_path, scope)
+
+
+@pytest.mark.parametrize("part", ["../elsewhere", "/absolute", "x/../escape", "x//escape"])
+def test_path_policy_rejects_aliases(part: str) -> None:
+    with pytest.raises(prototype.PrototypeError):
+        prototype.safe_relative(part)
+
+
+def test_links_and_multiple_links_are_refused(tmp_path: Path) -> None:
+    original = tmp_path / "file"
+    original.write_bytes(b"synthetic")
+    alias = tmp_path / "alias"
+    alias.symlink_to(original)
+    with pytest.raises(prototype.PrototypeError):
+        prototype.regular_bytes(alias)
+    alias.unlink()
+    import os
+
+    os.link(original, alias)
+    with pytest.raises(prototype.PrototypeError):
+        prototype.regular_bytes(original)
+
+
+def test_exact_replacement_requires_single_anchor() -> None:
+    for content in ["missing", "x x"]:
+        with pytest.raises(prototype.PrototypeError):
+            prototype.replace_once(content, "x", "y")
+    assert prototype.replace_once("before @target after", "@target", "new") == "before new after"
+
+
+def test_template_archive_is_bound() -> None:
+    archive, members = prototype.template_inputs(ROOT)
+    assert len(archive) == 155545
+    assert hashlib.sha256(archive).hexdigest() == prototype.TEMPLATE_SHA
+    assert "App/App/AppDelegate.swift" in members
+
+
+def fresh_fixture(root: Path, dest: Path) -> None:
+    _, members = prototype.template_inputs(root)
+    expected = prototype.expected_generated(root, members)
+    # Reproduce only the already selected local plugin metadata in the synthetic fixture.
+    for _, slug, version in prototype.PLUGINS:
+        relative = (
+            f"../../../../../node_modules/.pnpm/"
+            f"@capacitor+{slug}@{version}_@capacitor+core@8.5.2/node_modules/"
+            f"@capacitor/{slug}"
+        )
+        package = (dest / "App/CapApp-SPM" / relative).resolve()
+        package.mkdir(parents=True, exist_ok=True)
+        (package / "package.json").write_text(json.dumps({"version": version}))
+    for relative, data in expected.items():
+        p = dest / relative
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(data)
+    public = dest / "App/App/public"
+    public.mkdir(parents=True)
+    (public / "private-original.js").write_text("ordinary-asset-never-copied")
+
+
+def test_finite_prepare_omits_ordinary_public_and_preserves_other_bytes(tmp_path: Path) -> None:
+    fresh = tmp_path / "workspace/apps/capture-pwa/ios"
+    fresh_fixture(ROOT, fresh)
+    output = tmp_path / "prototype"
+    receipt = prototype.prepare(ROOT, fresh, output)
+    assert set(receipt["edited"]) == set(prototype.load_scope(ROOT)["generated_edits"])
+    assert len(receipt["copied"]) == 21
+    assert {p.name for p in (output / "App/App/public").iterdir()} == {
+        "index.html",
+        "gsip-activation.json",
+    }
+    assert (output / "App/App/AppDelegate.swift").read_bytes() == (
+        fresh / "App/App/AppDelegate.swift"
+    ).read_bytes()
+    config = json.loads((output / "App/App/capacitor.config.json").read_bytes())
+    assert config["ios"]["handleApplicationNotifications"] is False
+    assert config["loggingBehavior"] == "none"
+    assert config["appId"] != "com.globalsoilintelligence.app"
+    assert "server" not in config
+
+
+@pytest.mark.parametrize(
+    "target",
+    [
+        "App/App.xcodeproj/project.pbxproj",
+        "App/App/SceneDelegate.swift",
+        "App/App/AppDelegate.swift",
+        "App/App/Info.plist",
+        "App/CapApp-SPM/Package.swift",
+        "App/App/Base.lproj/Main.storyboard",
+        "App/App/config.xml",
+    ],
+)
+def test_template_drift_stops_before_any_write(tmp_path: Path, target: str) -> None:
+    fresh = tmp_path / "workspace/apps/capture-pwa/ios"
+    fresh_fixture(ROOT, fresh)
+    p = fresh / target
+    p.write_bytes(p.read_bytes() + b"\nunreviewed")
+    output = tmp_path / "prototype"
+    with pytest.raises(prototype.PrototypeError):
+        prototype.prepare(ROOT, fresh, output)
+    assert not output.exists()
+
+
+def test_unknown_generated_input_stops(tmp_path: Path) -> None:
+    fresh = tmp_path / "workspace/apps/capture-pwa/ios"
+    fresh_fixture(ROOT, fresh)
+    (fresh / "App/Unexpected.swift").write_text("unreviewed")
+    with pytest.raises(prototype.PrototypeError):
+        prototype.prepare(ROOT, fresh, tmp_path / "out")
+
+
+def test_existing_destination_and_alias_are_not_modified(tmp_path: Path) -> None:
+    fresh = tmp_path / "workspace/apps/capture-pwa/ios"
+    fresh_fixture(ROOT, fresh)
+    output = tmp_path / "out"
+    output.mkdir()
+    sentinel = output / "keep"
+    sentinel.write_bytes(b"untouched")
+    with pytest.raises(prototype.PrototypeError):
+        prototype.prepare(ROOT, fresh, output)
+    assert sentinel.read_bytes() == b"untouched"
+
+
+def test_source_copy_map_and_patch_targets_do_not_overlap() -> None:
+    scope = prototype.load_scope(ROOT)
+    destinations = list(scope["generated_copies"].values())
+    assert len(set(destinations)) == len(destinations)
+    assert not set(destinations) & set(scope["generated_edits"])
+
+
+def test_missing_compile_or_link_evidence_cannot_pass(tmp_path: Path) -> None:
+    with pytest.raises(prototype.PrototypeError):
+        prototype.audit_ordinary(ROOT, tmp_path, tmp_path / "App.app")
+
+
+def test_native_result_missing_failures_or_zero_tests_refused() -> None:
+    for value in [
+        {},
+        {"result": "Passed", "passedTests": 0},
+        {"result": "Failed", "passedTests": 5, "failedTests": 1},
+    ]:
+        with pytest.raises(prototype.PrototypeError):
+            prototype.classify_tests(value)
+    value = prototype.classify_tests({"result": "Passed", "passedTests": 5, "failedTests": 0})
+    assert value["passed"] == 5
+    assert value["physical_device_backup_proven"] is False
+
+
+def test_public_receipt_has_no_raw_paths_or_payloads() -> None:
+    receipt = prototype.public_receipt({"core": {"passed": 2}})
+    assert receipt["production_changed"] is False
+    assert receipt["capture_opened"] is False
+    assert receipt["ordinary_backend_admitted"] is False
+    assert receipt["physical_device_backup_proven"] is False
+    assert "paths" not in receipt
+
+
+def test_native_link_directory_refused(tmp_path: Path) -> None:
+    scope = prototype.load_scope(ROOT)
+    copy_sources(ROOT, tmp_path)
+    (tmp_path / prototype.PREFIX / "alias").symlink_to(
+        tmp_path / prototype.PREFIX, target_is_directory=True
+    )
+    with pytest.raises(prototype.PrototypeError):
+        prototype.validate_native(tmp_path, scope)
+
+
+def test_output_cannot_be_nested_in_source_or_fresh(tmp_path: Path) -> None:
+    for output in [
+        ROOT / "unapproved-output",
+        tmp_path / "workspace/apps/capture-pwa/ios" / "nested",
+    ]:
+        with pytest.raises(prototype.PrototypeError):
+            prototype.validate_output(ROOT, tmp_path / "workspace/apps/capture-pwa/ios", output)
+        assert not output.exists()
+
+
+def test_skipped_critical_native_test_is_not_success() -> None:
+    with pytest.raises(prototype.PrototypeError):
+        prototype.classify_tests(
+            {"result": "Passed", "passedTests": 1, "failedTests": 0, "skippedTests": 1}
+        )
+
+
+def test_nested_private_receipt_fields_refused() -> None:
+    payloads: list[dict[str, Any]] = [
+        {"core": {"passed": 2, "private_path": "/private/synthetic"}},
+        {"unknown": {"raw": "synthetic"}},
+    ]
+    for payload in payloads:
+        with pytest.raises(prototype.PrototypeError):
+            prototype.public_receipt(payload)
+
+
+def test_unclassified_link_input_refused(tmp_path: Path) -> None:
+    p = tmp_path / "renamed.o"
+    p.write_bytes(b"synthetic-object")
+    with pytest.raises(prototype.PrototypeError):
+        prototype.classify_link_input(str(p), set(), tmp_path / "developer", tmp_path / "sdk", {})
+
+
+def test_hidden_link_map_object_cannot_be_ignored() -> None:
+    data = (
+        b"# Path: /synthetic/App\n# Object files:\n[  0] linker "
+        b"synthesized\n[  1] /hidden/renamed.o\n# Sections:\n# Symbols:\n"
+    )
+    _, names = prototype.link_map_inputs(data)
+    assert names == ["/hidden/renamed.o"]
+    with pytest.raises(prototype.PrototypeError):
+        prototype.classify_link_input(
+            names[0], set(), Path("/synthetic/Developer"), Path("/synthetic/SDK"), {}
+        )
+
+
+def test_native_binary_tree_hashes_bytes_not_only_info(tmp_path: Path) -> None:
+    p = tmp_path / "Binary"
+    p.write_bytes(b"approved-synthetic-binary")
+    rows = [{"path": "Binary", "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}]
+    prototype.bind_tree(tmp_path, rows)
+    p.write_bytes(b"different-synthetic-binary")
+    with pytest.raises(prototype.PrototypeError):
+        prototype.bind_tree(tmp_path, rows)
+
+
+def test_every_native_case_must_run_and_pass() -> None:
+    expected = prototype.expected_native_tests(ROOT, "core")
+    tree = {
+        "testNodes": [
+            {"nodeType": "Test Case", "nodeIdentifier": name + "()", "result": "Passed"}
+            for name in sorted(expected)
+        ]
+    }
+    assert prototype.audit_test_tree(ROOT, "core", tree) == len(expected)
+    tree["testNodes"].pop()
+    with pytest.raises(prototype.PrototypeError):
+        prototype.audit_test_tree(ROOT, "core", tree)
+
+
+def test_skipped_or_unknown_native_case_is_refused() -> None:
+    name = next(iter(prototype.expected_native_tests(ROOT, "host")))
+    for identifier, status in [(name, "Skipped"), ("Unknown/testUnknown", "Passed")]:
+        with pytest.raises(prototype.PrototypeError):
+            prototype.audit_test_tree(
+                ROOT,
+                "host",
+                {
+                    "testNodes": [
+                        {"nodeType": "Test Case", "nodeIdentifier": identifier, "result": status}
+                    ]
+                },
+            )
+
+
+@pytest.mark.parametrize("modern", [False, True])
+def test_actual_generated_host_xctestrun_directory_layout(tmp_path: Path, modern: bool) -> None:
+    products = tmp_path / "Build/Products"
+    app = products / "Debug-iphonesimulator/App.app"
+    app.mkdir(parents=True)
+    (app / "Info.plist").write_bytes(plistlib.dumps({"CFBundleIdentifier": prototype.BUNDLE_ID}))
+    target = {"TestHostPath": "__TESTROOT__/Debug-iphonesimulator/App.app"}
+    content: dict[str, Any] = (
+        {"TestConfigurations": [{"TestTargets": [target]}]}
+        if modern
+        else {"GSIPStorageHostPrototypeTests": target}
+    )
+    plan = products / "prototype.xctestrun"
+    plan.write_bytes(plistlib.dumps(content))
+    assert prototype.bind_test_environment(tmp_path, True) == plan
+    value = plistlib.loads(plan.read_bytes())
+    actual = (
+        value["TestConfigurations"][0]["TestTargets"][0]
+        if modern
+        else value["GSIPStorageHostPrototypeTests"]
+    )
+    assert (
+        actual["EnvironmentVariables"]["GSIP_PROTOTYPE_EXPECTED_BUNDLE_ID"] == prototype.BUNDLE_ID
+    )
+
+
+def ordinary_closure_fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
+    """A fake compiler graph tests refusal policy, never native correctness."""
+    import plistlib
+    import re
+    import shlex
+    import subprocess
+    import zipfile
+
+    from scripts import app_notification_audit as native_audit
+
+    root = tmp_path / "source"
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    (candidate / "native.swift").write_text('let canary = Data("GSIP synthetic alpha".utf8)\n')
+    derived = tmp_path / "derived"
+    bundle = derived / "Build/Products/Debug-iphonesimulator/App.app"
+    bundle.mkdir(parents=True)
+    developer = tmp_path / "Developer"
+    sdk = developer / "Platforms/iPhoneSimulator.platform/iPhoneSimulator.sdk"
+    sdk.mkdir(parents=True)
+    tool = developer / "Toolchains/Fake.xctoolchain/usr/bin"
+    tool.mkdir(parents=True)
+    (tool / "swiftc").write_bytes(b"fake compiler, not native evidence")
+    (tool / "clang").write_bytes(b"fake linker, not native evidence")
+    templates = {
+        name: b"// synthetic ordinary source\n"
+        for name in (
+            "App/App/AppDelegate.swift",
+            "App/App/SceneDelegate.swift",
+            "App/CapApp-SPM/Sources/CapApp-SPM/CapApp-SPM.swift",
+        )
+    }
+    for name, data in templates.items():
+        p = root / "apps/capture-pwa/ios" / name
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(data)
+    for name in ("pnpm-lock.yaml", "uv.lock"):
+        (root / name).write_text("synthetic lock\n")
+    selected = root / "apps/capture-pwa/ios/App/App/AppDelegate.swift"
+    swift_list = derived / "App.SwiftFileList"
+    swift_list.write_text(shlex.quote(str(selected)) + "\n")
+    obj = derived / "ordinary.o"
+    obj.write_bytes(b"\xcf\xfa\xed\xfe" + b"synthetic object")
+    output_map = derived / "App-OutputFileMap.json"
+    output_map.write_text(json.dumps({str(selected): {"object": str(obj)}}))
+    link_list = derived / "App.LinkFileList"
+    link_list.write_text(str(obj) + "\n")
+    executable = bundle / "App"
+    executable.write_bytes(b"\xcf\xfa\xed\xfe" + b"synthetic ordinary executable")
+    (bundle / "Info.plist").write_bytes(
+        plistlib.dumps(
+            {"CFBundleIdentifier": "com.globalsoilintelligence.app", "CFBundleExecutable": "App"}
+        )
+    )
+    (bundle / "public").mkdir()
+    (bundle / "public/gsip-activation.json").write_text(
+        '{"capture_live":false,"library_intake_live":false}'
+    )
+    link_map = derived / "App-LinkMap.txt"
+    link_map.write_text(
+        f"# Path: {executable}\n# Object files:\n[  0] linker synthesized\n"
+        f"[  1] {obj}\n# Sections:\n# Symbols:\n"
+    )
+    log = tmp_path / "build.log"
+    log.write_text(
+        f"builtin-SwiftDriver -- {tool}/swiftc -c @{swift_list} -output-file-map {output_map}\n"
+        f"{tool}/clang -target x86_64-apple-ios15.0-simulator -isysroot {sdk} "
+        f"-filelist {link_list} -Xlinker -map -Xlinker {link_map} -o {executable}\n"
+        "** BUILD SUCCEEDED **\n"
+    )
+    artifact = tmp_path / "ordinary.zip"
+
+    def zip_bundle() -> None:
+        with zipfile.ZipFile(artifact, "w") as archive:
+            for p in bundle.rglob("*"):
+                if p.is_file():
+                    archive.write(p, f"App.app/{p.relative_to(bundle).as_posix()}")
+
+    zip_bundle()
+    evidence = tmp_path / "native.json"
+    commit = "1" * 40
+    evidence.write_text(
+        json.dumps(
+            {
+                "source_commit": commit,
+                "source_inputs": {},
+                "npm_sources": [],
+                "spm": {"remote_source_packages": [], "binary_inputs": []},
+            }
+        )
+    )
+    monkeypatch.setattr(
+        prototype,
+        "load_scope",
+        lambda _: {"source_bindings": {}, "native_files": [{"path": "native.swift"}]},
+    )
+    monkeypatch.setattr(prototype, "validate_native", lambda *_: {"prototype": "2" * 64})
+    monkeypatch.setattr(prototype, "template_inputs", lambda _: (b"", templates))
+    monkeypatch.setattr(native_audit, "source_inputs", lambda _: {})
+    monkeypatch.setattr(native_audit, "npm_evidence", lambda *_: [])
+
+    def validate_receipt(receipt: dict[str, Any], expected: dict[str, Any]) -> None:
+        prototype.require(
+            receipt["source_commit"] == expected["source_commit"], "receipt source mismatch"
+        )
+
+    monkeypatch.setattr(native_audit, "validate_native", validate_receipt)
+    real_run, real_search = subprocess.run, re.search
+
+    def fake_git(args: list[str], **kwargs: Any) -> Any:
+        if args[0] == "/usr/bin/git":
+            return subprocess.CompletedProcess(args, 0, (commit + "\n").encode(), b"")
+        return real_run(args, **kwargs)
+
+    def developer_match(pattern: Any, text: Any, *args: Any, **kwargs: Any) -> Any:
+        if isinstance(pattern, str) and pattern.startswith("(/Applications/"):
+            return real_search(r"(.*)", str(developer))
+        return real_search(pattern, text, *args, **kwargs)
+
+    monkeypatch.setattr(subprocess, "run", fake_git)
+    monkeypatch.setattr(re, "search", developer_match)
+    return {
+        "root": candidate,
+        "derived": derived,
+        "bundle": bundle,
+        "source": root,
+        "native_path": evidence,
+        "artifact": artifact,
+        "build_log": log,
+        "output_map": output_map,
+        "object": obj,
+        "swift_list": swift_list,
+        "link_list": link_list,
+        "zip_bundle": zip_bundle,
+    }
+
+
+def run_ordinary_fixture(case: dict[str, Any]) -> dict[str, Any]:
+    return prototype.audit_ordinary(
+        case["root"],
+        case["derived"],
+        case["bundle"],
+        **{name: case[name] for name in ("source", "native_path", "artifact", "build_log")},
+    )
+
+
+def test_ordinary_closure_policy_accepts_complete_synthetic_graph(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    result = run_ordinary_fixture(ordinary_closure_fixture(tmp_path, monkeypatch))
+    assert result["ordinary_backend_admitted"] is False
+    assert result["emitted_code_inputs"] == 2
+
+
+def test_unused_output_map_cannot_admit_hidden_object(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    hidden = case["derived"] / "hidden.o"
+    hidden.write_bytes(b"\xcf\xfa\xed\xfehidden synthetic object")
+    rows = json.loads(case["output_map"].read_text())
+    next(iter(rows.values()))["object"] = str(hidden)
+    (case["derived"] / "unused-OutputFileMap.json").write_text(json.dumps(rows))
+    case["link_list"].write_text(str(hidden) + "\n")
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
+
+
+def test_compiler_map_must_match_actual_selected_source_list(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    case["swift_list"].write_text("")
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
+
+
+def test_release_whole_module_object_is_bound_to_actual_driver(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    rows = json.loads(case["output_map"].read_text())
+    for row in rows.values():
+        row.pop("object")
+    rows[""] = {"object": str(case["object"])}
+    case["output_map"].write_text(json.dumps(rows))
+    assert run_ordinary_fixture(case)["emitted_code_inputs"] == 2
+
+
+def test_ordinary_receipt_cannot_choose_expected_commit(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    value = json.loads(case["native_path"].read_text())
+    value["source_commit"] = "3" * 40
+    case["native_path"].write_text(json.dumps(value))
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
+
+
+def test_unlinked_bundle_code_refused_even_without_prototype_name(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    (case["bundle"] / "renamed").write_bytes(b"\xcf\xfa\xed\xfeforeign synthetic code")
+    case["zip_bundle"]()
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
+
+
+def test_zip_artifact_must_match_inspected_bundle_bytes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import zipfile
+
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    with zipfile.ZipFile(case["artifact"], "a") as archive:
+        archive.writestr("App.app/extra", b"synthetic")
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
+
+
+def test_unclassified_link_response_input_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    hidden = case["derived"] / "hidden.o"
+    hidden.write_bytes(b"synthetic foreign object")
+    response = case["derived"] / "unknown.response"
+    response.write_text(str(hidden) + "\n")
+    case["build_log"].write_text(case["build_log"].read_text().replace(" -o ", f" @{response} -o "))
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
+
+
+def test_literal_ld_list_preserves_paths_with_spaces(tmp_path: Path) -> None:
+    obj = tmp_path / "directory with spaces/ordinary.o"
+    obj.parent.mkdir()
+    obj.write_bytes(b"synthetic")
+    listing = tmp_path / "link.list"
+    listing.write_text(str(obj) + "\n")
+    assert prototype.listed_paths(listing) == [obj]
+
+
+def test_tree_receipt_rejects_duplicate_paths(tmp_path: Path) -> None:
+    item = tmp_path / "ordinary.o"
+    item.write_bytes(b"synthetic")
+    row = {"path": item.name, "sha256": hashlib.sha256(item.read_bytes()).hexdigest()}
+    with pytest.raises(prototype.PrototypeError):
+        prototype.bind_tree(tmp_path, [row, row])
+
+
+def test_unbound_swift_ast_input_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    hidden = case["derived"] / "hidden.swiftmodule"
+    hidden.write_bytes(b"synthetic foreign module")
+    case["build_log"].write_text(
+        case["build_log"]
+        .read_text()
+        .replace(" -o ", f" -Xlinker -add_ast_path -Xlinker {hidden} -o ")
+    )
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
+
+
+def test_renamed_native_canary_resource_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    (case["bundle"] / "renamed.data").write_bytes(b"prefix GSIP synthetic alpha suffix")
+    case["zip_bundle"]()
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
+
+
+def test_zip_special_file_type_is_refused(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    import stat
+    import zipfile
+
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    archive_path = case["artifact"]
+    with zipfile.ZipFile(archive_path) as archive:
+        rows = [(item, archive.read(item)) for item in archive.infolist()]
+    with zipfile.ZipFile(archive_path, "w") as archive:
+        for item, data in rows:
+            if item.filename == "App.app/App":
+                item.external_attr = (stat.S_IFIFO | 0o600) << 16
+            archive.writestr(item, data)
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
+
+
+def test_ordinary_copy_head_must_match_candidate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import subprocess
+
+    case = ordinary_closure_fixture(tmp_path, monkeypatch)
+    previous = subprocess.run
+
+    def wrong_copy(args: list[str], **kwargs: Any) -> Any:
+        if args[:3] == ["/usr/bin/git", "-C", str(case["source"])]:
+            return subprocess.CompletedProcess(args, 0, ("4" * 40 + "\n").encode(), b"")
+        return previous(args, **kwargs)
+
+    monkeypatch.setattr(subprocess, "run", wrong_copy)
+    with pytest.raises(prototype.PrototypeError):
+        run_ordinary_fixture(case)
