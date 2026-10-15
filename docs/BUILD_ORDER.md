@@ -192,6 +192,30 @@ Acceptance criteria:
 - [ ] The privacy disclosure test fails without the host entry; processor and language checks and
       documentation formatting pass. No dependency or licence changes.
 
+**WP-SITE-1F: Open soil spectral library website and announcement**
+Scope: communicate SPEC §16’s existing library mission across the five public site pages,
+search/social metadata and `llms.txt`; refresh the social preview; link the private local node
+and synthetic demo guide; update the repository description and draft a project announcement.
+This is a copy and release-preparation package, not an architecture amendment or deployment go.
+
+Acceptance criteria:
+
+- [ ] Smartphones are described as image/context/sample-link capture tools; ordinary RGB remains
+      uncalibrated and distinct from measured spectra. Same-sample instrument/lab evidence and
+      independent evaluation precede model claims; biological claims require assays.
+- [ ] Public capture and hosted library uploads stay closed. New releases remain structured-only
+      until photo screening is deployed and its calibration approved; individual spectra remain
+      private pending fingerprinting/privacy review. No global measured coverage is claimed.
+- [ ] Builders can find the entire public software stack, component entry points, private local
+      node tools and explicitly synthetic demo. Private nodes protect records, not proprietary
+      software. MIT, documentation CC BY 4.0, ODbL 1.0, CC BY-SA 4.0, withdrawal limits and
+      public-only agent access stay explicit. Hosted-service approval adds no software restriction.
+- [ ] Regression tests fail on the old copy; prerendering, hydration, accessibility, responsive
+      layout, lint, types, unit tests, build and asset budgets pass, with independent review.
+- [ ] The GitHub description is verified, a LinkedIn draft is prepared, and the closed Pages
+      artifact is reviewable. Justin retains merge and Pages deployment approval; no production,
+      DNS, account, dependency, licence or activation change is included.
+
 **WP-AGENT-1: Agent-readable GSIP**
 Scope:
 

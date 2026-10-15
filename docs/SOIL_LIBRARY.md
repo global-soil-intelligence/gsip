@@ -2,6 +2,17 @@
 
 GSIP's primary goal is an open soil spectral reference library. Smartphones collect guided images and context and link physical samples to instrument/lab evidence. Maps and AI models use that evidence. The v5 library foundation is implemented, with v6/v7 private intake specified in [SPEC §16](SPEC.md#16-open-soil-spectral-library-v5-foundation-v6v7-private-intake). The library tools and default-closed hosted intake are preparation; production deployment and public spectral data remain gated.
 
+## Open software, protected records
+
+All GSIP software source is public and MIT-licensed, including these library tools.
+A **private local node** is an instance whose operator controls its stored records and
+credentials. It is built from the same open source; you can inspect, run, fork and extend it.
+The [repository builder map](../README.md#build-on-gsip) links every major component.
+GSIP’s hosted-service admission and publication gates protect contributors and the canonical
+service; they do not add restrictions to the software’s existing licence. Released structured
+data and photos keep their separate ODbL 1.0 and CC BY-SA 4.0 terms. Unreleased contributor
+records and credentials are not public source assets.
+
 ## What you can run now
 
 Use the pinned Python environment (`uv sync --frozen --all-groups`). No extra dependency, account, secret, service-role key or network is needed by the library CLI itself. It runs on macOS/Linux, using filesystem locking. Windows is not supported by this first store implementation.

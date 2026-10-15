@@ -234,6 +234,12 @@ p {
   font-size: clamp(1.08rem, 1.5vw, 1.3rem);
 }
 
+.hero-stage {
+  max-width: 52ch;
+  margin-top: 22px;
+  font-size: 0.88rem;
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;

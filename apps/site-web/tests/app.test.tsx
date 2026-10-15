@@ -22,17 +22,17 @@ describe('public website', () => {
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: 'Build the world’s living soil map.',
+        name: 'Build the world’s open soil spectral library.',
       }),
     ).toBeTruthy()
     expect(
-      screen.getAllByRole('link', { name: 'Capture opening soon' }).length,
+      screen.getAllByRole('link', { name: 'Public capture closed' }).length,
     ).toBeGreaterThan(0)
     expect(
       screen
-        .getByRole('link', { name: 'Explore the map' })
+        .getByRole('link', { name: 'Build with GSIP' })
         .getAttribute('href'),
-    ).toBe('./map/')
+    ).toBe('https://github.com/global-soil-intelligence/gsip')
   })
 
   it('describes the dataset as unpublished when no destination is configured', () => {
@@ -41,12 +41,76 @@ describe('public website', () => {
     expect(
       screen.getByRole('heading', {
         level: 2,
-        name: 'The export is built. The public repository is not live yet.',
+        name: 'Public data releases remain gated.',
       }),
     ).toBeTruthy()
     expect(
       screen.queryByRole('link', { name: 'Open on Hugging Face' }),
     ).toBeNull()
+  })
+
+  it('connects builders to private local tools without offering public intake', () => {
+    render(<App page="home" />)
+    expect(
+      screen
+        .getByRole('link', { name: 'Run the synthetic library demo' })
+        .getAttribute('href'),
+    ).toBe(
+      'https://github.com/global-soil-intelligence/gsip/blob/main/docs/SOIL_LIBRARY.md#run-the-complete-local-demo',
+    )
+    expect(
+      screen.getByText(/Public capture and library uploads remain closed/),
+    ).toBeTruthy()
+    expect(screen.getByText(/private local library node/)).toBeTruthy()
+    expect(screen.getByText(/same physical samples/)).toBeTruthy()
+  })
+
+  it('offers the whole source stack to builders while keeping their records protected', () => {
+    render(<App page="home" />)
+    expect(
+      screen.getByRole('heading', { name: 'The whole stack is open source.' }),
+    ).toBeTruthy()
+    expect(
+      screen.getByText(
+        /apps, backend, data pipeline, library tools, modelling code, API/,
+      ),
+    ).toBeTruthy()
+    expect(
+      screen.getByText(/Your records and credentials remain protected/),
+    ).toBeTruthy()
+    expect(
+      screen
+        .getByRole('link', { name: 'Explore the whole project' })
+        .getAttribute('href'),
+    ).toBe('https://github.com/global-soil-intelligence/gsip#build-on-gsip')
+  })
+
+  it('distinguishes phone RGB, measured spectra and unvalidated biological claims', () => {
+    render(<App page="methods" />)
+    expect(
+      screen.getByText(/RGB images, not wavelength-resolved spectra/),
+    ).toBeTruthy()
+    expect(
+      screen.getByText(/uncalibrated, even with the reference card/),
+    ).toBeTruthy()
+    expect(
+      screen.getByText(/Biological relationships require actual assays/),
+    ).toBeTruthy()
+  })
+
+  it('keeps photo and spectral publication gates visible', () => {
+    render(<App page="data" />)
+    expect(
+      screen.getByText(
+        /structured data only until photo screening is deployed and its calibration approved/,
+      ),
+    ).toBeTruthy()
+    expect(
+      screen.getByText(
+        /Individual spectra remain private pending a fingerprinting and privacy review/,
+      ),
+    ).toBeTruthy()
+    expect(screen.getByText(/Copies already released may persist/)).toBeTruthy()
   })
 
   it('states the public and private location boundary', () => {
