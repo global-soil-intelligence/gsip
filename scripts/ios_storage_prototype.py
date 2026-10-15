@@ -1497,7 +1497,20 @@ def private_failure_labels(log: Path, expected_tests: set[str]) -> tuple[list[st
         "dyld": "dynamic-loader-diagnostic",
         "Test Suite '": "xctest-suite-started",
     }
-    found_categories = sorted({label for token, label in categories.items() if token in text})
+    found_labels = {label for token, label in categories.items() if token in text}
+    # Match fixed enum spellings only; never return an NSError description or value.
+    for hold in ("boundary", "unavailable", "unsupportedPlatform", "invalidRequest", "corrupt"):
+        if re.search(r'(?:caught error:|threw error:?) "' + hold + r'"', text):
+            found_labels.add("storage-hold-" + hold)
+    for code, label in {
+        4: "cocoa-no-such-file",
+        260: "cocoa-no-such-file",
+        257: "cocoa-read-permission",
+        513: "cocoa-write-permission",
+    }.items():
+        if re.search(r"Error Domain=NSCocoaErrorDomain Code=" + str(code) + r"\b", text):
+            found_labels.add(label)
+    found_categories = sorted(found_labels)
     failures: set[str] = set()
     for class_name, method in re.findall(
         r"(?m)^Test Case '-\[(?:[A-Za-z0-9_]+\.)?([A-Za-z0-9_]+) "
@@ -1528,6 +1541,7 @@ def private_test_progress(log: Path, expected_tests: set[str]) -> dict[str, Any]
     except (OSError, PrototypeError):
         return unavailable
     statuses: dict[str, set[str]] = {"started": set(), "passed": set(), "failed": set()}
+    latest: dict[str, str] = {}
     for class_name, method, status in re.findall(
         r"(?m)^Test Case '-\[(?:[A-Za-z0-9_]+\.)?([A-Za-z0-9_]+) "
         r"([A-Za-z0-9_]+)\]' (started|passed|failed)\b",
@@ -1538,7 +1552,8 @@ def private_test_progress(log: Path, expected_tests: set[str]) -> dict[str, Any]
             r"[A-Za-z0-9_]{1,128}/test\w{1,128}", identity
         ):
             statuses[status].add(identity)
-    unfinished = statuses["started"] - statuses["passed"] - statuses["failed"]
+            latest[identity] = status
+    unfinished = {identity for identity, status in latest.items() if status == "started"}
     return {
         "available": True,
         "observed_started": len(statuses["started"]),

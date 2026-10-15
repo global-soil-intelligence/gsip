@@ -909,3 +909,36 @@ def test_timeout_reports_only_allowlisted_partial_status_and_keeps_failure(
     output = capsys.readouterr().out
     assert "KnownTests/testActive" in output and '"observed_started": 1' in output
     assert "private-canary-timeout" not in output and str(tmp_path) not in output
+
+
+def test_restarted_case_is_reported_unfinished_even_after_an_earlier_pass(tmp_path: Path) -> None:
+    path = tmp_path / "test.log"
+    path.write_text(
+        "Test Case '-[Module.KnownTests testRestarted]' started.\n"
+        "Test Case '-[Module.KnownTests testRestarted]' passed.\n"
+        "Test Case '-[Module.KnownTests testRestarted]' started.\n"
+    )
+    progress = prototype.private_test_progress(path, {"KnownTests/testRestarted"})
+    assert progress["observed_started"] == progress["observed_passed"] == 1
+    assert progress["unfinished_test_identities"] == ["KnownTests/testRestarted"]
+
+
+def test_native_exception_diagnostics_report_fixed_holds_and_cocoa_categories_only(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "test.log"
+    private = "private-fixture-path-and-payload"
+    path.write_text(
+        'failed: caught error: "boundary"\n'
+        'failed: threw error "unavailable"\n'
+        'Error Domain=NSCocoaErrorDomain Code=260 "' + private + '"\n'
+        'Error Domain=NSCocoaErrorDomain Code=513 "' + private + '"\n'
+        'failed: caught error: "' + private + '"\n'
+        'Error Domain=PrivateDomain Code=999 "' + private + '"\n'
+    )
+    categories, identities = prototype.private_failure_labels(path, set())
+    assert categories == [
+        "cocoa-no-such-file", "cocoa-write-permission", "storage-hold-boundary",
+        "storage-hold-unavailable",
+    ]
+    assert identities == [] and private not in str(categories)
