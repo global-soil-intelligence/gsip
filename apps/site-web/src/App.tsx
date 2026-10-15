@@ -12,6 +12,7 @@ const publicApi = import.meta.env.VITE_GSIP_PUBLIC_API?.trim().replace(
   '',
 )
 const agentGuide = `${repository}/blob/main/docs/AGENTS.md`
+const libraryGuide = `${repository}/blob/main/docs/SOIL_LIBRARY.md`
 
 export const PAGES: readonly PageId[] = [
   'home',
@@ -27,9 +28,9 @@ export const pageMeta: Record<
 > = {
   about: {
     description:
-      'The mission, roadmap, and open-source community behind Global Soil Intelligence.',
+      'Building an open soil spectral reference library with smartphone observations, instrument spectra and laboratory evidence.',
     eyebrow: 'The project',
-    title: 'A shared map for the ground we depend on.',
+    title: 'A shared library for the ground we depend on.',
   },
   card: {
     description:
@@ -39,31 +40,31 @@ export const pageMeta: Record<
   },
   data: {
     description:
-      'GSIP public dataset scope, licensing, citation, and publication status.',
+      'Explore the soil library tools, planned public releases, licences and privacy boundaries.',
     eyebrow: 'Open data, honest boundaries',
     title: 'A dataset designed to be used—and scrutinized.',
   },
   home: {
     description:
-      'Photograph soil with your phone and help build a privacy-safe, open global soil dataset.',
-    eyebrow: 'Open citizen science for the ground beneath us',
-    title: 'Build the world’s living soil map.',
+      'An open soil spectral reference library in development: smartphone observations linked to instrument spectra and laboratory evidence.',
+    eyebrow: 'Open science for the ground beneath us',
+    title: 'Build the world’s open soil spectral library.',
   },
   methods: {
     description:
-      'How GSIP captures, sanitizes, grades, enriches, and publishes soil observations.',
+      'How phone images, measured spectra and laboratory evidence connect without overstating what they prove.',
     eyebrow: 'Methods in the open',
     title: 'Scientific honesty is part of the architecture.',
   },
 }
 
-/** The open dataset, described for search engines and agents (WP-AGENT-1). */
+/** Planned public releases, described without claiming measured spectral coverage. */
 const datasetJsonLd = {
   '@id': 'https://globalsoilintelligence.com/data/#dataset',
   '@type': 'Dataset',
-  name: 'GSIP public soil observations',
+  name: 'GSIP soil library public releases',
   description:
-    'Soil photographs taken by citizen scientists beside a printed colour reference card, with protocol metadata, per-photo quality checks and provenance tiers. Locations are k-anonymous H3 cells shared by at least 3 contributors, never precise points. Values are observations and estimates, not laboratory results.',
+    'Planned public releases from an open soil spectral reference library in development. Smartphone RGB images are not measured spectra; instrument spectra and verified laboratory evidence must be linked to the same physical samples. New releases contain structured data only until photo screening is deployed and its calibration approved; individual spectra remain private pending review. Public observation locations are k-anonymous H3 cells shared by at least 3 contributors, never precise points. Map priors are estimates, not laboratory results.',
   url: 'https://globalsoilintelligence.com/data/',
   // Two licences: the structured data and the photographs are licensed separately.
   license: [
@@ -73,19 +74,19 @@ const datasetJsonLd = {
   conditionsOfAccess:
     'Structured data under ODbL 1.0; contributed photographs under CC BY-SA 4.0, credited to their contributors.',
   isAccessibleForFree: true,
+  creativeWorkStatus: 'In development; public releases gated',
   creator: { '@id': 'https://globalsoilintelligence.com/#organization' },
   publisher: { '@id': 'https://globalsoilintelligence.com/#organization' },
   keywords: [
     'soil',
     'citizen science',
     'soil photographs',
-    'soil organic carbon',
+    'soil spectral library',
     'H3',
     'open data',
   ],
   measurementTechnique:
-    'Smartphone photographs with a printed colour reference card (GSIP capture protocol v1.1)',
-  spatialCoverage: { '@type': 'Place', name: 'Global' },
+    'Smartphone RGB observations with a reference card; separately recorded instrument reflectance and laboratory methods, linked by physical sample identity',
   // The repository page, not a download: its files change with every release.
   ...(datasetUrl ? { sameAs: datasetUrl } : {}),
 }
@@ -110,7 +111,7 @@ function CaptureLink({
           : pathFrom(page, 'about/#launch-status')
       }
     >
-      {captureLive ? 'Contribute an observation' : 'Capture opening soon'}
+      {captureLive ? 'Contribute an observation' : 'Public capture closed'}
     </a>
   )
 }
@@ -136,7 +137,7 @@ function Header({ page }: { page: PageId }) {
       <Brand page={page} />
       <nav aria-label="Primary navigation">
         <a href={pathFrom(page, 'map/')}>Map</a>
-        <a href={pathFrom(page, 'card/')}>Print card</a>
+        <a href={pathFrom(page, 'data/')}>Library</a>
         <a href={pathFrom(page, 'methods/')}>Methods</a>
         <CaptureLink className="nav-cta" page={page} />
       </nav>
@@ -149,7 +150,9 @@ function Footer({ page }: { page: PageId }) {
     <footer className="site-footer">
       <div className="footer-lead">
         <Brand page={page} />
-        <p>Open infrastructure for a living, privacy-safe global soil map.</p>
+        <p>
+          Building an open soil spectral library for future models and maps.
+        </p>
       </div>
       <div className="footer-links">
         <div>
@@ -253,70 +256,82 @@ function HomePage() {
             <p className="eyebrow">{pageMeta.home.eyebrow}</p>
             <h1>{pageMeta.home.title}</h1>
             <p className="hero-deck">
-              Photograph soil with your phone. Contribute a privacy-safe
-              observation. Help improve an open global dataset for researchers,
-              communities, and the land.
+              We’re building a shared reference library that connects smartphone
+              soil observations and sample metadata with instrument spectra and
+              laboratory evidence from the same physical samples. Open AI models
+              and better soil maps are the goal.
             </p>
             <div className="button-row">
-              <CaptureLink page="home" />
-              <a className="button button-secondary" href="./map/">
-                Explore the map
+              <a className="button button-primary" href={repository}>
+                Build with GSIP
+              </a>
+              <a
+                className="button button-secondary"
+                href={`${libraryGuide}#run-the-complete-local-demo`}
+              >
+                Run the synthetic library demo
               </a>
             </div>
+            <p className="hero-stage">
+              In development. Public capture and library uploads remain closed.
+            </p>
           </div>
-          <div className="hero-visual" aria-label="GSIP observation flow">
+          <div
+            className="hero-visual"
+            aria-label="The soil library’s evidence goal"
+          >
             <div className="orbit orbit-one" aria-hidden="true" />
             <div className="orbit orbit-two" aria-hidden="true" />
             <div className="hero-visual-card visual-phone">
               <span>01</span>
               <strong>Phone observation</strong>
-              <small>Two guided photos, one optional</small>
+              <small>Images + field context</small>
             </div>
             <div className="hero-visual-card visual-cell">
-              <span>08</span>
-              <strong>Private → H3</strong>
-              <small>No precise public point</small>
+              <span>02</span>
+              <strong>Same soil sample</strong>
+              <small>Instrument + lab evidence</small>
             </div>
             <div className="hero-visual-card visual-map">
-              <span>∞</span>
-              <strong>Open soil context</strong>
-              <small>A map that improves over time</small>
+              <span>03</span>
+              <strong>Future open AI</strong>
+              <small>Evaluate before mapping</small>
             </div>
           </div>
           <div className="trust-line">
             <span>Open source</span>
             <span>Precise locations stay private</span>
-            <span>Photo metadata is stripped</span>
+            <span>RGB ≠ measured spectra</span>
             <span>Uncertainty stays visible</span>
           </div>
         </section>
 
         <section className="section section-steps">
           <SectionHeading
-            eyebrow="One observation, four safeguards"
-            title="Simple in the field. Deliberate underneath."
+            eyebrow="The evidence we’re building toward"
+            title="A phone starts the record. Measurement builds the reference."
           />
           <ol className="steps-grid">
             {[
               [
                 'Print the card',
-                'Use the free A6 reference to standardize scale, lighting, and color.',
+                'Use the free A6 reference for geometry and image checks. RGB remains uncalibrated.',
                 './card/',
               ],
               [
-                'Photograph the soil',
-                'Capture the ground surface and a fresh face. A texture shot is optional.',
-                captureLive ? './capture/' : './about/#launch-status',
+                'Record the sample',
+                'Guided phone images and context are linked to a physical sample. Public capture is closed.',
+                './about/#launch-status',
               ],
               [
-                'Share privately',
-                'Precise coordinates support QA and priors but never enter a public artifact.',
+                'Pair measurements',
+                'Link instrument spectra and laboratory evidence to that same sample, with method and calibration records.',
                 './methods/',
               ],
               [
-                'Publish safely',
-                'The private pipeline strips metadata, grades quality, and releases H3-level output.',
-                './methods/',
+                'Evaluate, then share',
+                'Verify rights, pairing and quality before independent model evaluation or an eligible public release.',
+                './data/',
               ],
             ].map(([title, description, href], index) => (
               <li key={title}>
@@ -336,9 +351,11 @@ function HomePage() {
             <p className="eyebrow">Open soil context</p>
             <h2>See the patterns. Never the private point.</h2>
             <p>
-              Explore SoilGrids SOC, pH, and clay priors beside community
-              coverage aggregated into H3 cells. Existing maps are context—not
-              truth—and deeper zoom never invents finer source resolution.
+              The map is one way to use the library’s future evidence. Today it
+              offers SoilGrids SOC, pH, and clay context, with a layer for
+              eligible community coverage in H3 cells. These priors are
+              estimates, not new measurements; deeper zoom never invents finer
+              source resolution.
             </p>
             <a className="text-link" href="./map/">
               Open the global map <span aria-hidden="true">↗</span>
@@ -375,8 +392,9 @@ function HomePage() {
             <h2>One card. Any modern phone.</h2>
             <p>
               The free reference card gives every image a common scale, exposure
-              target, marker, and color reference. Print it at home, take it
-              outside, and keep it beside the soil.
+              target, marker, and color reference. It helps check the image; it
+              does not turn a phone into a spectrometer. Extracted soil RGB
+              remains uncalibrated.
             </p>
             <div className="button-row">
               <a className="button button-primary" href="./card/">
@@ -394,16 +412,16 @@ function HomePage() {
 
         <section className="section data-flywheel">
           <SectionHeading
-            eyebrow="The open data flywheel"
-            title="Every safe contribution makes the next map better."
+            eyebrow="From shared evidence to open models"
+            title="Build the reference before trusting the prediction."
           />
-          <div className="flow-row" aria-label="GSIP Phase 1 data flow">
+          <div className="flow-row" aria-label="GSIP library research plan">
             {[
-              ['Phone', 'Guided observation'],
-              ['Private ingest', 'Supabase + RLS'],
-              ['Deterministic QA', 'Sanitize + grade'],
-              ['Open dataset', 'H3-safe release'],
-              ['Future models', 'Open weights'],
+              ['Phone', 'Images + context'],
+              ['Sample', 'Shared physical identity'],
+              ['Measurement', 'Spectra + lab evidence'],
+              ['Evaluation', 'Independent validation'],
+              ['Future models', 'Open weights + maps'],
             ].map(([title, subtitle], index) => (
               <div className="flow-node" key={title}>
                 <span>{String(index + 1).padStart(2, '0')}</span>
@@ -417,13 +435,13 @@ function HomePage() {
             <div>
               <strong>
                 {datasetUrl
-                  ? 'Public dataset available'
-                  : 'Public dataset preparing for launch'}
+                  ? 'Public dataset destination'
+                  : 'Public data releases remain gated'}
               </strong>
               <p>
                 {datasetUrl
-                  ? 'The latest privacy-checked release is available on Hugging Face.'
-                  : 'The export pipeline is built. Publication waits for the reviewed destination and launch credentials.'}
+                  ? 'See the configured destination for its published release status and contents.'
+                  : 'Code and local tools are available now. Public releases wait for rights, privacy, scientific and operator gates.'}
               </p>
             </div>
             {datasetUrl ? (
@@ -438,7 +456,7 @@ function HomePage() {
           <div>
             <p className="eyebrow">Privacy by architecture</p>
             <h2>
-              The useful signal becomes public. Your exact location does not.
+              Sharing evidence starts with protecting the person behind it.
             </h2>
           </div>
           <div className="privacy-grid">
@@ -454,8 +472,9 @@ function HomePage() {
               <span>02</span>
               <h3>Metadata is stripped</h3>
               <p>
-                Photos are re-encoded and scanned at ingest and again before any
-                public export.
+                The pipeline sanitizes embedded metadata. Photo publication
+                stays held until screening is deployed and its calibration
+                approved.
               </p>
             </article>
             <article>
@@ -478,10 +497,11 @@ function HomePage() {
             The code, methods, and public artifacts are designed to travel.
           </h2>
           <p>
-            GSIP is open infrastructure: MIT-licensed code, ODbL structured
-            data, separately licensed contributed photos, and future open model
-            weights. Review the architecture, reproduce the pipeline, or help
-            improve the next release.
+            Fork the MIT-licensed code, run a private local library node, or
+            explore the synthetic demonstration. These tools do not register a
+            node for public sharing. We welcome developers, soil scientists and
+            spectroscopy labs to help build verified paired evidence and future
+            open models.
           </p>
           <div className="button-row">
             <a className="button button-primary" href={repository}>
@@ -526,8 +546,8 @@ function CardPage() {
               <h2>Color reference card</h2>
               <p>
                 Nine documented patches, a neutral reference, and an ArUco
-                marker support scale, perspective, exposure, and color
-                correction.
+                marker support geometry and image checks. Soil RGB remains
+                uncalibrated, even with the reference card.
               </p>
               <a
                 className="button button-primary"
@@ -628,7 +648,7 @@ function MethodsPage() {
         <InteriorHero page="methods" />
         <section className="interior-section">
           <SectionHeading
-            eyebrow="Phase 1 architecture"
+            eyebrow="Capture and release architecture"
             title="A fail-closed path from private capture to public context."
           />
           <div className="architecture-flow">
@@ -637,7 +657,10 @@ function MethodsPage() {
               ['Private ingest', 'RLS, quarantine, immutable grant'],
               ['Prior enrichment', 'SoilGrids, SSURGO, Open-Meteo'],
               ['Deterministic QA', 'Sanitize, sharpness, card, GPS, duplicate'],
-              ['Public release', 'H3 cells, safe metadata, licensed photos'],
+              [
+                'Gated public release',
+                'Eligible structured data; photos held pending screening',
+              ],
             ].map(([title, detail], index) => (
               <article key={title}>
                 <span>{String(index + 1).padStart(2, '0')}</span>
@@ -646,6 +669,45 @@ function MethodsPage() {
               </article>
             ))}
           </div>
+        </section>
+        <section className="interior-section">
+          <SectionHeading
+            eyebrow="Different evidence, connected by one sample"
+            title="A photograph is an observation. A spectrum is a measurement."
+          />
+          <div className="instruction-grid">
+            <article>
+              <h3>Phone images</h3>
+              <p>
+                Ordinary phones record RGB images, not wavelength-resolved
+                spectra. Extracted soil RGB is uncalibrated, even with the
+                reference card.
+              </p>
+            </article>
+            <article>
+              <h3>Measured spectra</h3>
+              <p>
+                A separate instrument records reflectance by wavelength. Pairing
+                it with the same physical sample requires verified identity,
+                method, calibration and uncertainty.
+              </p>
+            </article>
+            <article>
+              <h3>Laboratory evidence</h3>
+              <p>
+                Verified assays provide separate reference labels. Biological
+                relationships require actual assays and expert-reviewed terms;
+                images or spectra alone do not establish soil microbial
+                composition.
+              </p>
+            </article>
+          </div>
+          <p>
+            The local RGB-to-reflectance demo uses invented samples and spectra.
+            It demonstrates the software, not field accuracy. No independently
+            validated soil reconstruction model is provided; real models need
+            verified field pairs and independent spatial and device evaluation.
+          </p>
         </section>
         <section className="interior-section split-section">
           <div>
@@ -670,7 +732,7 @@ function MethodsPage() {
         <section className="interior-section qa-section">
           <SectionHeading
             eyebrow="Deterministic photo QA"
-            title="The gate is live before the first model."
+            title="Quality checks are built; photo publication stays gated."
           />
           <div className="qa-grid">
             {[
@@ -684,7 +746,7 @@ function MethodsPage() {
               ],
               [
                 'Reference card',
-                'Marker and patch extraction record calibration quality.',
+                'Marker and patch extraction support geometry and image checks, not calibrated reflectance.',
               ],
               [
                 'GPS plausibility',
@@ -747,18 +809,24 @@ function DataPage() {
         <section className="interior-section release-status">
           <div className="release-badge">
             <span className={datasetUrl ? 'status-live' : 'status-pending'} />
-            {datasetUrl ? 'Published' : 'Pre-publication'}
+            {datasetUrl ? 'Release destination configured' : 'Pre-publication'}
           </div>
           <div>
             <h2>
               {datasetUrl
-                ? 'The privacy-checked public dataset is available.'
-                : 'The export is built. The public repository is not live yet.'}
+                ? 'Check the public destination for release contents.'
+                : 'Public data releases remain gated.'}
             </h2>
             <p>
               The release job fails closed if a contribution lacks its immutable
               grant, contains a precise location field, or carries embedded
-              image metadata.
+              image metadata. New releases contain structured data only until
+              photo screening is deployed and its calibration approved.
+            </p>
+            <p>
+              Individual spectra remain private pending a fingerprinting and
+              privacy review, even without coordinates. An H3 cell alone does
+              not make a spectrum safe to publish.
             </p>
             {datasetUrl ? (
               <a className="button button-primary" href={datasetUrl}>
@@ -804,13 +872,15 @@ function DataPage() {
           />
           <div className="boundary-grid">
             <div>
-              <h3>Public</h3>
+              <h3>Eligible structured release fields</h3>
               <ul>
                 <li>k-anonymous H3 cells (resolution 8, 6 or 4)</li>
                 <li>Date-truncated capture time</li>
                 <li>Protocol context and per-photo QA checks</li>
-                <li>Verified gold labels</li>
-                <li>Sanitized photos with attribution</li>
+                <li>
+                  Verified, rights-eligible labels outside sealed holdouts
+                </li>
+                <li>Provenance tier and published licence terms</li>
               </ul>
             </div>
             <div>
@@ -828,22 +898,39 @@ function DataPage() {
         </section>
         <section className="interior-section citation-section">
           <p className="eyebrow">Citation and takedown</p>
-          <h2>Publication must remain traceable and reversible.</h2>
+          <h2>Publication must be traceable. Withdrawal has limits.</h2>
           <p>
             The generated dataset card carries source citations, schema, license
             boundaries, photo attribution, and export-date provenance. A public
-            contact and repository issue path will be published before real
-            contributions are released.
+            privacy contact will be published before real contributions are
+            released. Copies already released may persist; withdrawal removes
+            eligibility from future GSIP releases and requires affected
+            artifacts to be rebuilt. Do not post private contributor details in
+            public issues.
           </p>
+        </section>
+        <section className="interior-section citation-section">
+          <p className="eyebrow">Build on the library</p>
+          <h2>Start locally. Keep evidence and authority separate.</h2>
+          <p>
+            The private local store accepts typed camera RGB and instrument
+            reflectance records linked by sample identity. Local declarations
+            are not verified GSIP acceptance. Hosted uploads, node exchange and
+            public spectral releases remain gated.
+          </p>
+          <a className="text-link" href={libraryGuide}>
+            Library developer guide ↗
+          </a>
         </section>
         <section className="interior-section citation-section" id="agents">
           <p className="eyebrow">Agents and developers</p>
           <h2>Read the commons from code or an AI agent.</h2>
           <p>
-            A read-only API and an MCP server answer with the capture protocol,
-            the published cells and the latest release, and attach the licences
-            and citation to every answer. They read exactly what this site
-            shows: no precise locations and no private data.
+            The read-only API and MCP server are designed for the capture
+            protocol, eligible public cells and release metadata, with licences
+            and citations. Configured endpoints appear below. They expose no
+            precise locations or private library records, and offer no capture
+            or node-registration tool.
           </p>
           <p className="agent-links">
             <a href={agentGuide}>Agent guide</a>
@@ -869,32 +956,32 @@ function AboutPage() {
         <InteriorHero page="about" />
         <section className="interior-section mission-block">
           <p className="eyebrow">The thesis</p>
-          <h2>
-            A common protocol can turn millions of ordinary cameras into a
-            shared observation network.
-          </h2>
+          <h2>Make soil evidence easier to collect, connect and build on.</h2>
           <p>
-            Global Soil Intelligence applies the citizen-science flywheel to
-            soil: make contribution simple, protect the contributor, grade the
-            observation, publish useful open artifacts, and improve the system
-            as real evidence accumulates.
+            Smartphones are the accessible capture tool: images, field context
+            and physical sample links. Instrument spectra and verified
+            laboratory measurements supply reference evidence. GSIP aims to
+            connect them in an open library for researchers, communities and AI
+            builders, with soil maps as a downstream use. Understanding the soil
+            biome also requires biological measurements; a phone photo cannot
+            provide them.
           </p>
         </section>
         <section className="interior-section launch-status" id="launch-status">
           <div className="release-badge">
             <span className={captureLive ? 'status-live' : 'status-pending'} />
-            Phase 1
+            In development
           </div>
           <div>
             <h2>
               {captureLive
                 ? 'Public capture is open.'
-                : 'The public hub and map can launch before contribution writes.'}
+                : 'Open source now. Public capture remains closed.'}
             </h2>
             <p>
               {captureLive
                 ? 'The reviewed privacy, legal, authentication, and worker gates are active.'
-                : 'The capture application is built and tested. It remains visibly closed until contribution terms receive legal review and production authentication and workers are configured.'}
+                : 'Library uploads remain closed too. Opening them requires reviewed legal terms, privacy screening, scientific checks and a separate operator decision after the launch gates pass. No opening date is promised.'}
             </p>
           </div>
         </section>
@@ -906,26 +993,29 @@ function AboutPage() {
           <div className="roadmap-grid">
             <article>
               <span>Now</span>
-              <h3>Phase 1 · Capture + map</h3>
+              <h3>Local library tools</h3>
               <p>
-                Reference card, offline contribution, priors, deterministic QA,
-                privacy-safe map, and public export.
+                Typed measurement records, a private local store, staged optical
+                extraction and a synthetic paired-model demo. Public source and
+                build instructions are available now.
               </p>
             </article>
             <article>
               <span>Next</span>
-              <h3>Phase 2 · Open estimation</h3>
+              <h3>Verified paired evidence</h3>
               <p>
-                Soil-image QA, uncertainty-aware property estimation, model
-                cards, and gold-label calibration.
+                Field samples paired with calibrated instruments and laboratory
+                evidence, rights verification, privacy review and independent
+                evaluation before scientific or publication claims.
               </p>
             </article>
             <article>
               <span>Future</span>
-              <h3>Learning map</h3>
+              <h3>Open models and soil maps</h3>
               <p>
-                Fused correction layers, active-learning targets, on-device
-                inference, and wider research participation.
+                Train and evaluate models on eligible evidence, publish their
+                limits and uncertainty, and use validated outputs to inform maps
+                and further research.
               </p>
             </article>
           </div>

@@ -39,18 +39,18 @@ test('public hub explains the project and connects its core paths', async ({
   await expect(
     page.getByRole('heading', {
       level: 1,
-      name: 'Build the world’s living soil map.',
+      name: 'Build the world’s open soil spectral library.',
     }),
   ).toBeVisible()
   await expect(
-    page.getByRole('link', { name: 'Capture opening soon' }).first(),
+    page.getByRole('link', { name: 'Public capture closed' }).first(),
   ).toBeVisible()
   await expect(
-    page.getByRole('link', { name: 'Capture opening soon' }).first(),
+    page.getByRole('link', { name: 'Public capture closed' }).first(),
   ).toHaveAttribute('href', './about/#launch-status')
   await page
-    .getByRole('navigation', { name: 'Primary navigation' })
-    .getByRole('link', { name: 'Print card' })
+    .getByRole('contentinfo')
+    .getByRole('link', { name: 'Reference card' })
     .click()
   await expect(
     page.getByRole('heading', {

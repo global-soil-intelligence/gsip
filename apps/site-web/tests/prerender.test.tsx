@@ -72,6 +72,28 @@ describe('prerendered pages (WP-AGENT-1)', () => {
     expect(dataset).not.toHaveProperty('distribution')
   })
 
+  it('describes a developing library without inventing spectral coverage or downloads', () => {
+    const dataset = structuredData(render('data')).graph.find(
+      (node) => node['@type'] === 'Dataset',
+    )
+    expect(dataset?.creativeWorkStatus).toBe(
+      'In development; public releases gated',
+    )
+    expect(String(dataset?.description)).toMatch(
+      /RGB images are not measured spectra/,
+    )
+    expect(dataset).not.toHaveProperty('spatialCoverage')
+    expect(dataset).not.toHaveProperty('distribution')
+    const container = document.createElement('div')
+    container.innerHTML = render('home')
+    expect(container.textContent).toContain(
+      'Public capture and library uploads remain closed',
+    )
+    expect(container.querySelector('h1')?.textContent).toBe(
+      'Build the world’s open soil spectral library.',
+    )
+  })
+
   it.each(PAGES)(
     '%s hydrates the prerendered markup without a mismatch',
     async (page) => {

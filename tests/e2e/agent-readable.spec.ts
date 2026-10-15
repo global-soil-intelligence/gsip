@@ -2,11 +2,11 @@ import { expect, test } from '@playwright/test'
 
 // WP-AGENT-1: crawlers and agents that do not run JavaScript read the same pages people do.
 const PAGES: Array<[path: string, headline: string]> = [
-  ['', 'Build the world’s living soil map.'],
+  ['', 'Build the world’s open soil spectral library.'],
   ['card/', 'Give every phone camera a reference point.'],
   ['methods/', 'Scientific honesty is part of the architecture.'],
   ['data/', 'A dataset designed to be used—and scrutinized.'],
-  ['about/', 'A shared map for the ground we depend on.'],
+  ['about/', 'A shared library for the ground we depend on.'],
 ]
 
 test.describe('without JavaScript', () => {
@@ -26,6 +26,21 @@ test.describe('without JavaScript', () => {
           .textContent()) ?? '{}',
       )['@graph'] as Array<{ '@type': string }>
       const types = graph.map((node) => node['@type'])
+      const description = await page
+        .locator('meta[name="description"]')
+        .getAttribute('content')
+      expect(description).toBeTruthy()
+      expect(
+        await page
+          .locator('meta[property="og:description"]')
+          .getAttribute('content'),
+      ).toBe(description)
+      expect(
+        await page.locator('meta[property="og:title"]').getAttribute('content'),
+      ).toBe(headline)
+      expect(
+        await page.locator('meta[property="og:image"]').getAttribute('content'),
+      ).toBe('https://global-soil-intelligence.github.io/gsip/og-library.png')
       expect(types).toContain('Organization')
       expect(types.includes('Dataset')).toBe(path === '' || path === 'data/')
     })
@@ -77,5 +92,12 @@ test('llms.txt at the site root directs agents to the interfaces and terms', asy
   expect(text).toContain('(https://supabase.test/functions/v1/gsip-public/mcp)')
   expect(text).toContain('/docs/AGENTS.md)')
   expect(text).toMatch(/untrusted/)
+  expect(text).toContain('open soil spectral reference library in development')
+  expect(text).toContain('RGB images are not measured spectra')
+  expect(text).toContain('Public capture and library uploads remain closed')
+  expect(text).toContain('/docs/SOIL_LIBRARY.md)')
+  expect(text).toContain('private local nodes and a synthetic demo')
+  expect(text).toContain('structured data only until photo screening')
+  expect(text).toContain('individual spectra remain private')
   expect(text).not.toMatch(/soil[\s-]+test/i)
 })
