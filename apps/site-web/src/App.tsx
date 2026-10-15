@@ -493,19 +493,26 @@ function HomePage() {
 
         <section className="section open-source-feature">
           <p className="eyebrow">Built in the open</p>
-          <h2>
-            The code, methods, and public artifacts are designed to travel.
-          </h2>
+          <h2>The whole stack is open source.</h2>
           <p>
-            Fork the MIT-licensed code, run a private local library node, or
-            explore the synthetic demonstration. These tools do not register a
-            node for public sharing. We welcome developers, soil scientists and
-            spectroscopy labs to help build verified paired evidence and future
-            open models.
+            The apps, backend, data pipeline, library tools, modelling code, API
+            and reference-card generator are available in the public repository.
+            Fork, run, modify and extend the MIT-licensed software, or build on
+            one part of it.
+          </p>
+          <p>
+            Run a private local library node with the public source. Your
+            records and credentials remain protected. These tools do not
+            register a node for GSIP’s hosted service; public uploads stay
+            closed. We welcome developers, soil scientists and spectroscopy labs
+            to help build verified paired evidence and future open models.
           </p>
           <div className="button-row">
-            <a className="button button-primary" href={repository}>
-              View the source
+            <a
+              className="button button-primary"
+              href={`${repository}#build-on-gsip`}
+            >
+              Explore the whole project
             </a>
             <a className="button button-secondary" href="./about/">
               About the project
@@ -844,8 +851,9 @@ function DataPage() {
             <p className="license-code">MIT</p>
             <h2>Source code</h2>
             <p>
-              The applications, pipeline, schema package, and supporting tools
-              are open for use and self-hosting.
+              All GSIP software source is public: apps, backend, workers,
+              library, modelling tools, API and tests. Use, modify, self-host or
+              extend it under MIT. Dependencies retain their own licences.
             </p>
           </article>
           <article>

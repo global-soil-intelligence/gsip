@@ -206,8 +206,10 @@ Acceptance criteria:
 - [ ] Public capture and hosted library uploads stay closed. New releases remain structured-only
       until photo screening is deployed and its calibration approved; individual spectra remain
       private pending fingerprinting/privacy review. No global measured coverage is claimed.
-- [ ] Builders can find the source, private local node tools and explicitly synthetic demo.
-      MIT, ODbL 1.0, CC BY-SA 4.0, withdrawal limits and public-only agent access stay explicit.
+- [ ] Builders can find the entire public software stack, component entry points, private local
+      node tools and explicitly synthetic demo. Private nodes protect records, not proprietary
+      software. MIT, documentation CC BY 4.0, ODbL 1.0, CC BY-SA 4.0, withdrawal limits and
+      public-only agent access stay explicit. Hosted-service approval adds no software restriction.
 - [ ] Regression tests fail on the old copy; prerendering, hydration, accessibility, responsive
       layout, lint, types, unit tests, build and asset budgets pass, with independent review.
 - [ ] The GitHub description is verified, a LinkedIn draft is prepared, and the closed Pages

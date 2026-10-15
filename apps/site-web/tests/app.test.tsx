@@ -65,6 +65,26 @@ describe('public website', () => {
     expect(screen.getByText(/same physical samples/)).toBeTruthy()
   })
 
+  it('offers the whole source stack to builders while keeping their records protected', () => {
+    render(<App page="home" />)
+    expect(
+      screen.getByRole('heading', { name: 'The whole stack is open source.' }),
+    ).toBeTruthy()
+    expect(
+      screen.getByText(
+        /apps, backend, data pipeline, library tools, modelling code, API/,
+      ),
+    ).toBeTruthy()
+    expect(
+      screen.getByText(/Your records and credentials remain protected/),
+    ).toBeTruthy()
+    expect(
+      screen
+        .getByRole('link', { name: 'Explore the whole project' })
+        .getAttribute('href'),
+    ).toBe('https://github.com/global-soil-intelligence/gsip#build-on-gsip')
+  })
+
   it('distinguishes phone RGB, measured spectra and unvalidated biological claims', () => {
     render(<App page="methods" />)
     expect(

@@ -92,7 +92,7 @@ lines.push(
   '',
   '## Optional',
   '',
-  `- [Source code](${repository}): MIT-licensed code, specification and tests`,
+  `- [Source code](${repository}): full GSIP app, backend, library, modelling, API and test source under MIT; documentation CC BY 4.0`,
   '',
 )
 await writeFile(new URL('llms.txt', dist), lines.join('\n'))
