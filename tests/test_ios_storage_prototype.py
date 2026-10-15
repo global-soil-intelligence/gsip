@@ -17,32 +17,26 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Readable inert CLI metadata fixtures; these namespace/homepage strings are never contacted.
 INERT_METADATA_FIXTURES = {
-    "App/App/config.xml": b"<?xml version='1.0' encoding='utf-8'?>\n<widget version=\""
-    b'1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://co'
-    b'rdova.apache.org/ns/1.0">\n  <access origin="*" />\n  \n  \n</wi'
-    b"dget>",
-    "capacitor-cordova-ios-plugins/CordovaPluginsResources.podspec": b"Pod::Spec.new do |s|"
-    b"\n  s.name = 'Cordova"
-    b"PluginsResources'\n  "
-    b"s.version = '0.0.105"
-    b"'\n  s.summary = 'Res"
-    b"ources for Cordova p"
-    b"lugins'\n  s.license "
-    b"= 'MIT'\n  s.homepage"
-    b" = 'https://capacito"
-    b"rjs.com/'\n  s.author"
-    b"s = { 'Ionic Team' ="
-    b"> 'hi@ionicframework"
-    b".com' }\n  s.source ="
-    b" { :git => 'https://"
-    b"github.com/ionic-tea"
-    b"m/capacitor.git', :t"
-    b"ag => s.version.to_s"
-    b" }\n  s.resources = ["
-    b"'resources/*']\ne"
-    b"nd\n",
+    "App/App/config.xml": (
+        b"<?xml version='1.0' encoding='utf-8'?>\n"
+        b'<widget version="1.0.0" xmlns="http://www.w3.org/ns/widgets" '
+        b'xmlns:cdv="http://cordova.apache.org/ns/1.0">\n  <access origin="*" />\n  \n  \n'
+        b"</widget>"
+    ),
+    "capacitor-cordova-ios-plugins/CordovaPluginsResources.podspec": (
+        b"""Pod::Spec.new do |s|
+  s.name = 'CordovaPluginsResources'
+  s.version = '0.0.105'
+  s.summary = 'Resources for Cordova plugins'
+  s.license = 'MIT'
+  s.homepage = 'https://capacitorjs.com/'
+  s.authors = { 'Ionic Team' => 'hi@ionicframework.com' }
+  s.source = { :git => 'https://github.com/ionic-team/capacitor.git', :tag => s.version.to_s }
+  s.resources = ['resources/*']
+end
+"""
+    ),
 }
-
 
 @pytest.fixture(autouse=True)
 def owned_pinned_cli_template(
