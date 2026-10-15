@@ -520,9 +520,9 @@ def prepare(root: Path, fresh: Path, output: Path) -> dict[str, Any]:
     require(not output.exists() and not output.is_symlink(), "fresh destination required")
     for parent in output.parents:
         require(not parent.is_symlink(), "linked destination refused")
+    require(fresh != root / "apps/capture-pwa/ios", "ordinary project cannot be modified")
     require(fresh.is_dir() and not fresh.is_symlink())
     validate_output(root, fresh, output)
-    require(fresh != root / "apps/capture-pwa/ios", "ordinary project cannot be modified")
     actual: dict[str, bytes] = {}
     for p in fresh.rglob("*"):
         if p.is_symlink():

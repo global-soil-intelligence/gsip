@@ -639,10 +639,18 @@ def test_ordinary_copy_head_must_match_candidate(
         run_ordinary_fixture(case)
 
 
-def test_original_ordinary_generated_input_is_never_patched(tmp_path: Path) -> None:
+@pytest.mark.parametrize("generated_exists", [False, True])
+def test_original_ordinary_generated_input_is_never_patched(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, generated_exists: bool
+) -> None:
     output = tmp_path / "prototype"
+    fresh = ROOT / "apps/capture-pwa/ios"
+    original = Path.is_dir
+    monkeypatch.setattr(
+        Path, "is_dir", lambda path: generated_exists if path == fresh else original(path)
+    )
     with pytest.raises(prototype.PrototypeError, match="ordinary project cannot be modified"):
-        prototype.prepare(ROOT, ROOT / "apps/capture-pwa/ios", output)
+        prototype.prepare(ROOT, fresh, output)
     assert not output.exists()
 
 
