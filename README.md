@@ -20,18 +20,18 @@ software itself is public. GSIP’s hosted-service and publication approvals pro
 they do not add restrictions to the open-source software licence. Names and marks remain
 separate under [TRADEMARKS.md](TRADEMARKS.md).
 
-| Build with                                           | Public source and starting point                                                                 |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Phone and web capture app                            | [`apps/capture-pwa/`](apps/capture-pwa/) · [app build guide](docs/APP_STORE.md)                  |
-| Soil map and public website                          | [`apps/map-web/`](apps/map-web/) · [`apps/site-web/`](apps/site-web/)                            |
-| Library store, optical extraction and synthetic demo | [`pipeline/`](pipeline/) · [library developer guide](docs/SOIL_LIBRARY.md)                       |
-| Modelling and evaluation baseline                    | [`ml/`](ml/) · [synthetic demo and its limits](docs/SOIL_LIBRARY.md#run-the-complete-local-demo) |
+| Build with                                           | Public source and starting point                                                                  |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Phone and web capture app                            | [`apps/capture-pwa/`](apps/capture-pwa/) · [app build guide](docs/APP_STORE.md)                   |
+| Soil map and public website                          | [`apps/map-web/`](apps/map-web/) · [`apps/site-web/`](apps/site-web/)                             |
+| Library store, optical extraction and synthetic demo | [`pipeline/`](pipeline/) · [library developer guide](docs/SOIL_LIBRARY.md)                        |
+| Modelling and evaluation baseline                    | [`ml/`](ml/) · [synthetic demo and its limits](docs/SOIL_LIBRARY.md#run-the-complete-local-demo)  |
 | Shared schemas and exchange contracts                | [`packages/schema/`](packages/schema/) · [node exchange contract](docs/NODE_EXCHANGE_CONTRACT.md) |
-| Database, security policies and Edge Functions       | [`supabase/`](supabase/) · [local database commands](supabase/README.md)                         |
-| QA, rights, export and tile workers                  | [`pipeline/`](pipeline/) · [deployment runbook](docs/PHASE1_DEPLOYMENT.md)                       |
-| Public REST API and MCP server                       | [`packages/schema/src/agent/`](packages/schema/src/agent/) · [agent guide](docs/AGENTS.md)       |
-| Printable reference card                             | [`card/`](card/)                                                                                 |
-| Tests and reproducible build workflows               | [`tests/`](tests/) · [`.github/workflows/`](.github/workflows/)                                  |
+| Database, security policies and Edge Functions       | [`supabase/`](supabase/) · [local database commands](supabase/README.md)                          |
+| QA, rights, export and tile workers                  | [`pipeline/`](pipeline/) · [deployment runbook](docs/PHASE1_DEPLOYMENT.md)                        |
+| Public REST API and MCP server                       | [`packages/schema/src/agent/`](packages/schema/src/agent/) · [agent guide](docs/AGENTS.md)        |
+| Printable reference card                             | [`card/`](card/)                                                                                  |
+| Tests and build workflows                            | [`tests/`](tests/) · [`.github/workflows/`](.github/workflows/)                                   |
 
 The implemented source and tests are available now, including development branches and pull
 requests. Public source is not a promise that every planned feature is complete: real peer
