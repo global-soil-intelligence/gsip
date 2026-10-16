@@ -65,6 +65,8 @@ def handler_type(site: Path, capture: Path) -> type[SimpleHTTPRequestHandler]:
             pathname = unquote(urlsplit(path).path)
             if pathname.startswith("/gsip/capture/"):
                 base, relative = capture, pathname[len("/gsip/capture/") :]
+            elif pathname.startswith("/map/"):
+                base, relative = site / "map", pathname[len("/map/") :]
             elif pathname.startswith("/gsip/"):
                 base, relative = site, pathname[len("/gsip/") :]
             else:

@@ -216,6 +216,26 @@ Acceptance criteria:
       artifact is reviewable. Justin retains merge and Pages deployment approval; no production,
       DNS, account, dependency, licence or activation change is included.
 
+**WP-SITE-1G: Package the map worker and verify the built map**
+Scope: repair the existing MapLibre/Vite build so its worker and shared imports are emitted,
+served from the same origin, and configured before map construction. This implements the
+existing SPEC §8 map architecture; it changes no data, service, licence or capture authority.
+
+Acceptance criteria:
+
+- [ ] Vite bundles the pinned MapLibre worker and its dependencies; worker configuration
+      precedes every map construction. Full upstream licence notices ship with the artifact.
+      Root and repository-subpath deployments both work.
+- [ ] A browser regression fails on the old built artifact, loads the real worker as JavaScript,
+      rejects worker/page errors and proves worker-backed processing of synthetic public cells.
+      It uses no live backend, real contributor records or external tile service.
+- [ ] The loopback test server serves the built map at both layouts without widening capture's
+      synthetic-fixture route or permitting path traversal; its boundary tests stay effective.
+- [ ] Lint, types, unit/browser tests, the build and the unchanged 5 MiB whole-map budget pass;
+      the closed Pages artifact, independent review and exact-head CI are recorded. No new
+      dependency, CSP relaxation, merge or production deployment is included. Justin retains
+      merge and Pages approval; capture and library uploads stay closed.
+
 **WP-AGENT-1: Agent-readable GSIP**
 Scope:
 
