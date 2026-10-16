@@ -105,6 +105,7 @@ def test_main_cleans_fixture_and_binds_loopback(
             raise RuntimeError("synthetic stop")
 
     monkeypatch.setattr(e2e_server, "build_fixtures", build)
+    monkeypatch.setattr(e2e_server, "build_pilot_fixture", lambda root, pilot: None)
     monkeypatch.setattr(e2e_server, "ThreadingHTTPServer", Server)
     with pytest.raises(RuntimeError, match="synthetic stop"):
         e2e_server.main()
@@ -119,9 +120,7 @@ def test_playwright_uses_isolated_server_and_disallows_server_reuse() -> None:
 
 
 @pytest.mark.parametrize("layout", ["/gsip/map/", "/map/"])
-def test_canonical_map_routes_serve_the_same_built_artifact(
-    tmp_path: Path, layout: str
-) -> None:
+def test_canonical_map_routes_serve_the_same_built_artifact(tmp_path: Path, layout: str) -> None:
     site, fixture = tmp_path / "site", tmp_path / "fixture"
     handler = object.__new__(e2e_server.handler_type(site, fixture))
     assert handler.translate_path(f"{layout}index.html") == str(site / "map/index.html")
@@ -149,3 +148,55 @@ def test_root_map_alias_refuses_symlink_escape(tmp_path: Path) -> None:
     (site / "map/escaped-capture").symlink_to(fixture, target_is_directory=True)
     handler = object.__new__(e2e_server.handler_type(site, fixture))
     assert handler.translate_path("/map/escaped-capture/index.html") == str(site / ".not-found")
+
+
+def test_pilot_route_is_isolated_and_refuses_escape(tmp_path: Path) -> None:
+    pilot = tmp_path / "pilot"
+    handler = object.__new__(
+        e2e_server.handler_type(tmp_path / "site", tmp_path / "capture", pilot)
+    )
+    assert handler.translate_path("/gsip/pilot/index.html") == str(pilot / "index.html")
+    assert handler.translate_path("/gsip/pilot/%2e%2e/private") == str(tmp_path / "site/.not-found")
+
+
+def test_pilot_fixture_discards_inherited_target_and_remains_synthetic(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    pilot = tmp_path / "pilot"
+    monkeypatch.setenv("VITE_COLLECTION_SITE_ORIGIN", "https://unexpected.invalid")
+    observed: list[dict[str, Any]] = []
+
+    def run(command: list[str], **kwargs: Any) -> None:
+        observed.append(kwargs)
+        assert command[-1] == "invited-pilot-fixture"
+        assert kwargs["env"]["VITE_COLLECTION_SITE_ORIGIN"] == "http://127.0.0.1:4173"
+        assert kwargs["env"]["VITE_SUPABASE_URL"] == "https://supabase.test"
+        pilot.mkdir()
+        (pilot / "gsip-activation.json").write_text(
+            json.dumps(
+                {
+                    "version": "gsip-invited-browser-fixture-v1",
+                    "target": {
+                        "project_ref": "fixture",
+                        "supabase_url": "https://supabase.test",
+                        "site_origin": "http://127.0.0.1:4173",
+                    },
+                }
+            )
+        )
+
+    monkeypatch.setattr("e2e_server.which", lambda name: "/synthetic/bin/pnpm")
+    monkeypatch.setattr("e2e_server.subprocess.run", run)
+    e2e_server.build_pilot_fixture(tmp_path, pilot)
+    assert len(observed) == 1
+
+
+def test_closed_capture_alias_uses_closed_site_and_refuses_escape(tmp_path: Path) -> None:
+    site, fixture, pilot = tmp_path / "site", tmp_path / "fixture", tmp_path / "pilot"
+    handler = object.__new__(e2e_server.handler_type(site, fixture, pilot))
+    assert handler.translate_path("/gsip/closed-capture/index.html") == str(
+        site / "capture/index.html"
+    )
+    assert handler.translate_path("/gsip/closed-capture/%2e%2e/private") == str(
+        site / ".not-found"
+    )

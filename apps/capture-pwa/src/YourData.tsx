@@ -50,10 +50,12 @@ export function YourData({
   client,
   onQueueCleared,
   onBeforeRightsRequest,
+  onConfirmedCleanupPending,
 }: {
   client: GsipClient
   onQueueCleared: () => Promise<unknown>
   onBeforeRightsRequest?: () => Promise<unknown>
+  onConfirmedCleanupPending?: () => void
 }) {
   const [request, setRequest] = useState<DeletionStatus | null>(null)
   const [choice, setChoice] = useState<DeletionKind | null>(null)
@@ -65,7 +67,25 @@ export function YourData({
   const actionButtons = useRef<
     Partial<Record<DeletionKind, HTMLButtonElement>>
   >({})
+  const active = useRef(true)
+  const identityGeneration = useRef(0)
   const links = legalLinks()
+
+  useEffect(() => {
+    active.current = true
+    const subscription = client.auth?.onAuthStateChange?.((event) => {
+      if (!active.current || event === 'INITIAL_SESSION') return
+      identityGeneration.current += 1
+      setChoice(null)
+      setTyped('')
+      setBusy(false)
+    }).data.subscription
+    return () => {
+      active.current = false
+      identityGeneration.current += 1
+      subscription?.unsubscribe()
+    }
+  }, [client])
 
   useEffect(() => {
     let cancelled = false
@@ -97,6 +117,9 @@ export function YourData({
 
   async function confirm() {
     if (!choice || !confirmed) return
+    const generation = identityGeneration.current
+    const current = () =>
+      active.current && generation === identityGeneration.current
     setBusy(true)
     try {
       // Fence device reminders before the rights request. A device cleanup failure must never
@@ -106,22 +129,70 @@ export function YourData({
       } catch {
         /* Report reminder cleanup separately. */
       }
-      const outcome = await requestDeletion(client, choice)
+      if (!current()) return
+      let discarded = 0
+      let cleared = false
+      let localAttempted = false
+      const clearLocal = async () => {
+        localAttempted = true
+        if (!current()) return
+        discarded = await clearQueue(current)
+        if (!current()) return
+        await onQueueCleared()
+        cleared = current()
+      }
+      const confirmedDeleteCleanup = async () => {
+        try {
+          await clearLocal()
+        } catch (error) {
+          if (current()) onConfirmedCleanupPending?.()
+          throw error
+        }
+      }
+      const outcome =
+        choice === 'delete_account'
+          ? await requestDeletion(
+              client,
+              choice,
+              current,
+              confirmedDeleteCleanup,
+            )
+          : await requestDeletion(client, choice, current)
+      if (!current()) return
+      if (outcome === 'account_only') {
+        setMessage(
+          choice === 'delete_account'
+            ? 'Your sign-in account still exists, but no server contributions were found. No account deletion request was filed. Contact the inviting pilot organizer using the privacy notice contact to request removal of the unused account. Your drafts remain on this device.'
+            : 'No server contributions were found to withdraw. Your sign-in account still exists. No withdrawal request was filed. Contact the inviting pilot organizer using the privacy notice contact if you want the unused account removed. Your drafts remain on this device.',
+        )
+        close()
+        return
+      }
       // Every confirmed server outcome also fulfills the person's local clear intent.
       // A failed/uncertain request throws before this point and preserves local bytes.
-      const discarded = await clearQueue()
-      await onQueueCleared()
-      const local = discarded
-        ? ` ${discarded} observation${discarded > 1 ? 's' : ''} queued on this device ${discarded > 1 ? 'were' : 'was'} discarded.`
-        : ''
+      let cleanupPending = outcome === 'requested_cleanup_pending'
+      if (!localAttempted) {
+        try {
+          await clearLocal()
+        } catch {
+          cleanupPending = true
+        }
+      }
+      if (!current()) return
+      if (cleanupPending) onConfirmedCleanupPending?.()
+      const local = cleanupPending
+        ? ' Local cleanup is still pending. Private drafts may remain on this device; retry in Your data and confirm sign-out. The server request remains recorded.'
+        : discarded
+          ? ` ${discarded} observation${discarded > 1 ? 's' : ''} queued on this device ${discarded > 1 ? 'were' : 'was'} discarded.`
+          : ''
       if (outcome === 'already_open') {
         setMessage(
-          `A request is already in progress. You can make another once it completes. Private drafts and photos on this device were cleared.${local}`,
+          `A request is already in progress. You can make another once it completes.${cleared ? ' Private drafts and photos on this device were cleared.' : ''}${local}`,
         )
       } else {
         if (outcome === 'no_account') {
           setMessage(
-            `This device has no account, so nothing from it is stored on our servers.${local}`,
+            `No account is currently signed in on this device. Sign in to the existing account to manage server data. No server request was filed.${cleanupPending ? ' Local cleanup is still pending; your drafts may remain on this device.' : local}`,
           )
         } else {
           const filed: DeletionStatus = {
@@ -136,11 +207,12 @@ export function YourData({
       }
       close()
     } catch {
+      if (!current()) return
       setMessage(
         'The request could not be sent. Check your connection and try again.',
       )
     } finally {
-      setBusy(false)
+      if (current()) setBusy(false)
     }
   }
 

@@ -110,9 +110,10 @@ must explicitly establish invited accounts and gates; do not add a production le
 make earlier tests pass. Explain changed publication-positive assertions as a stronger held
 contract, preserving their original privacy/ownership protections and independent coverage.
 
-Independent review and green CI precede the implementation merge decision. Local Docker daemon,
-PostgreSQL/PostGIS/pgTAP, GDAL and Android tooling are unavailable in the current shell; report
-what ran locally and rely on actual CI results for those checks. No local pass proves a physical
+Independent review and green CI precede the implementation merge decision. The local Docker daemon was initially unavailable; it was subsequently started solely for
+isolated synthetic PostgreSQL16/PostGIS/pgTAP tests with no network or exposed ports. GDAL and
+Android tooling are not configured in the host shell. Report actual local and CI results; CI
+remains required. No local pass proves a physical
 phone, native storage, delivered email, operating worker or production deployment.
 
 The operator handoff lists all pending migrations, row counts, advisors and effective RLS/
@@ -122,3 +123,5 @@ target. Each production operation waits for Justin's separate exact-command go a
 mismatch. A real consenting-participant phone rehearsal is separately authorized and reported
 with counts/status only. Code/CI does not open capture, library intake, publication or native
 field collection.
+
+The implementation handoff and remaining owner gates are in [COLLECTION_PILOT_OPERATIONS.md](COLLECTION_PILOT_OPERATIONS.md).

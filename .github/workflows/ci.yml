@@ -39,8 +39,10 @@ jobs:
       - run: pnpm test
       - run: pnpm build
       - run: pnpm check:map-budget
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm exec playwright test --project=desktop-chrome
+      - name: Invited pilot on phone browser engines
+        run: pnpm exec playwright test tests/e2e/invited-pilot.spec.ts --project=mobile-chrome --project=mobile-safari
       - run: uv run ruff check .
       - run: uv run mypy
       - run: uv run pytest

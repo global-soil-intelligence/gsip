@@ -1,0 +1,56 @@
+name: Prepare invited browser review artifact
+
+# Build only. Deployment and opening capture/library intake need a separate owner go.
+on:
+  workflow_dispatch:
+    inputs:
+      reviewed_sha:
+        description: Exact reviewed source commit; must match the checked-out main commit
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    environment: github-pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.9.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: astral-sh/setup-uv@v7
+        with:
+          version: '0.5.5'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: pnpm install --frozen-lockfile
+      - name: Prepare the exact invited browser candidate
+        run: >-
+          uv run python scripts/build_collection.py
+          --reviewed-sha "$REVIEWED_SHA"
+          --project-ref toxldjgwkxtneoqsazym
+          --site-origin https://globalsoilintelligence.com
+          --prepare-review-artifact
+        env:
+          REVIEWED_SHA: ${{ inputs.reviewed_sha }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_GSIP_PUBLIC_API: ${{ vars.VITE_GSIP_PUBLIC_API }}
+          VITE_TERMS_URL: ${{ vars.VITE_TERMS_URL }}
+          VITE_PRIVACY_URL: ${{ vars.VITE_PRIVACY_URL }}
+          VITE_SAMPLING_RULES_URL: ${{ vars.VITE_SAMPLING_RULES_URL }}
+          VITE_PRIOR_TILES_BASE: ${{ vars.VITE_PRIOR_TILES_BASE }}
+      - uses: actions/upload-artifact@v7
+        with:
+          name: invited-browser-review-${{ github.sha }}
+          path: _collection_review/
+          retention-days: 7
+          if-no-files-found: error

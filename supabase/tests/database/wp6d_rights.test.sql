@@ -104,6 +104,14 @@ where contributor_id = '21600000-0000-4000-8000-00000000000a';
 grant select on grants_before to service_role;
 
 -- Only an auth user that exists can create a contributor.
+-- Explicit disposable invitation fixture; earlier ownership/privacy assertions stay effective.
+insert into auth.users(id,is_anonymous)
+select auth_uid,false from public.contributors where auth_uid is not null on conflict(id) do nothing;
+update auth.users set is_anonymous=false; -- every auth fixture in this rolled-back file is synthetic/permanent
+insert into private.collection_pilot_members(auth_uid)
+select id from auth.users where is_anonymous is false on conflict(auth_uid) do nothing;
+select public.set_library_intake_open(true);
+
 set local role authenticated;
 set local "request.jwt.claims" = '{"sub":"31600000-0000-4000-8000-0000000000ff","role":"authenticated"}';
 select throws_ok(

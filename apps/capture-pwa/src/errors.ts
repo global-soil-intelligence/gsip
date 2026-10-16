@@ -47,6 +47,16 @@ export class LibraryUnavailable extends Error {
   }
 }
 
+/** Admission is absent/expired/closed: preserve the queue without spending retry attempts. */
+export class PilotUnavailable extends Error {
+  constructor() {
+    super(
+      'Invited collection is paused. Sign in to your invited account to retry.',
+    )
+    this.name = 'PilotUnavailable'
+  }
+}
+
 /** Permanent caller identity/context conflict; private payload is never included. */
 export class LibraryConflict extends Error {
   constructor() {

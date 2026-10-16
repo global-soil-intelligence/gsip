@@ -76,7 +76,10 @@ export async function removeQueued(submissionId: string): Promise<void> {
  * Discards every observation still queued on this device, and any photos taken for one not yet
  * queued (WP-6d withdrawal and deletion).
  */
-export async function clearQueue(): Promise<number> {
+export async function clearQueue(
+  allowed: () => boolean = () => true,
+): Promise<number> {
+  if (!allowed()) return 0
   generation += 1
   const db = await database()
   const tx = db.transaction(
@@ -92,22 +95,27 @@ export async function clearQueue(): Promise<number> {
   )
   const records = await tx.objectStore('submissions').getAll()
   const revision = (await tx.objectStore('queueState').get('generation')) ?? 0
-  await tx.objectStore('queueState').put(revision + 1, 'generation')
   const reminder = checkedReminderState(
     await tx.objectStore('syncReminder').get('current'),
   )
-  await tx.objectStore('syncReminder').put(
-    {
-      ...reminder,
-      enabled: false,
-      epoch: reminder.epoch + 1,
-      cleanupPending: true,
-      cycleOpen: false,
-      consumed: false,
-    },
-    'current',
-  )
+  if (!allowed()) {
+    await tx.done
+    return 0
+  }
+  // Queue every write synchronously after the last identity check, within one transaction.
   await Promise.all([
+    tx.objectStore('queueState').put(revision + 1, 'generation'),
+    tx.objectStore('syncReminder').put(
+      {
+        ...reminder,
+        enabled: false,
+        epoch: reminder.epoch + 1,
+        cleanupPending: true,
+        cycleOpen: false,
+        consumed: false,
+      },
+      'current',
+    ),
     tx.objectStore('submissions').clear(),
     tx.objectStore('draftPhotos').clear(),
     tx.objectStore('libraryDraft').clear(),
@@ -188,9 +196,18 @@ async function discardMatching(
 }
 
 /** Library samples can only return to their original account; older captures keep their behavior. */
-export async function releaseHeld(currentUid?: string): Promise<void> {
+export async function releaseHeld(
+  currentUid?: string,
+  pilot = false,
+): Promise<void> {
   await updateQueued((record) => {
     if (!record.heldAt) return record
+    if (pilot || record.collectionMode === 'invited_private')
+      return record.collectionMode === 'invited_private' &&
+        currentUid &&
+        record.ownerUid === currentUid
+        ? { ...record, heldAt: undefined }
+        : record
     if (record.library)
       return currentUid && record.ownerUid === currentUid
         ? { ...record, heldAt: undefined }
@@ -255,6 +272,7 @@ export async function putIfCurrent(
   record: QueueRecord,
   revision: number,
   existingOnly = true,
+  allowed: () => boolean = () => true,
 ): Promise<boolean> {
   const tx = (await database()).transaction(
     ['submissions', 'queueState'],
@@ -264,10 +282,10 @@ export async function putIfCurrent(
   const exists =
     !existingOnly ||
     Boolean(await tx.objectStore('submissions').get(record.submissionId))
-  if (current === revision && exists)
-    await tx.objectStore('submissions').put(record)
+  const permitted = current === revision && exists && allowed()
+  if (permitted) await tx.objectStore('submissions').put(record)
   await tx.done
-  return current === revision && exists
+  return permitted
 }
 
 export async function savedLibraryDraft(): Promise<LibraryDraft | undefined> {

@@ -26,6 +26,14 @@ update public.service_state set capture_open = true where singleton;
 -- ---------------------------------------------------------------------------------------------
 -- Path binding (launch blocker 4)
 -- ---------------------------------------------------------------------------------------------
+-- Explicit disposable invitation fixture; earlier ownership/privacy assertions stay effective.
+insert into auth.users(id,is_anonymous)
+select auth_uid,false from public.contributors where auth_uid is not null on conflict(id) do nothing;
+update auth.users set is_anonymous=false; -- every auth fixture in this rolled-back file is synthetic/permanent
+insert into private.collection_pilot_members(auth_uid)
+select id from auth.users where is_anonymous is false on conflict(auth_uid) do nothing;
+select public.set_library_intake_open(true);
+
 set local role authenticated;
 set local "request.jwt.claims" = '{"sub":"31000000-0000-4000-8000-000000000001","role":"authenticated"}';
 
@@ -287,7 +295,7 @@ set local "request.jwt.claims" = '{"sub":"31000000-0000-4000-8000-000000000002",
 select throws_ok(
     $$insert into public.contribution_grants (id, contributor_id, terms_version, accepted_at, attribution_name)
       values ('41000000-0000-4000-8000-000000000009', '21000000-0000-4000-8000-000000000002', 'test-v1', now(), 'Anonymous soil contributor')$$,
-    '42501',
+    'LI001',
     null,
     'closed capture refuses new grants'
 );
@@ -296,7 +304,7 @@ select throws_ok(
       values ('51000000-0000-4000-8000-000000000009', '21000000-0000-4000-8000-000000000002',
         '41000000-0000-4000-8000-000000000002',
         extensions.st_setsrid(extensions.st_makepoint(-72.58, 44.26), 4326), now(), 'pending')$$,
-    '42501',
+    'LI001',
     null,
     'closed capture refuses new submissions'
 );
@@ -304,7 +312,7 @@ select throws_ok(
     $$insert into public.photos (submission_id, shot_type, storage_path) values (
         '51000000-0000-4000-8000-000000000002', 'A',
         '31000000-0000-4000-8000-000000000002/51000000-0000-4000-8000-000000000002/A/61000000-0000-4000-8000-00000000000f.jpg')$$,
-    '42501',
+    'LI001',
     null,
     'closed capture refuses new photo rows'
 );
@@ -312,7 +320,7 @@ select throws_ok(
     $$insert into storage.objects (bucket_id, name, owner) values ('incoming-photos',
         '31000000-0000-4000-8000-000000000002/51000000-0000-4000-8000-000000000002/A/61000000-0000-4000-8000-00000000000f.jpg',
         '31000000-0000-4000-8000-000000000002')$$,
-    '42501',
+    'LI001',
     null,
     'closed capture refuses quarantine uploads'
 );
@@ -348,22 +356,23 @@ select throws_ok(
     'payload contains 1 cell(s) that are malformed or not k-anonymous',
     'a cell whose index does not match its resolution is refused'
 );
-select is(
-    public.refresh_public_h3_cells('[
+select throws_ok(
+    $$select public.refresh_public_h3_cells('[
         {"h3_index":"882bac94b5fffff","resolution":8,"n_submissions":5,"n_contributors":3,"latest_submission_date":"2026-10-01"},
         {"h3_index":"862bac947ffffff","resolution":6,"n_submissions":3,"n_contributors":3,"latest_submission_date":"2026-09-30"},
         {"h3_index":"842bac9ffffffff","resolution":4,"n_submissions":7,"n_contributors":4,"latest_submission_date":"2026-09-29"}
-    ]'::jsonb),
-    3,
-    'k-anonymous cells at resolutions 8, 6 and 4 publish'
+    ]'::jsonb)$$,
+    'CP001',
+    null,
+    'valid k-anonymous cells remain held at every resolution'
 );
 reset role;
 set local role anon;
 set local "request.jwt.claims" = '{"role":"anon"}';
 select is(
-    (select array_agg(resolution order by resolution) from public.h3_cells),
-    array[4, 6, 8]::smallint[],
-    'anon reads multi-resolution aggregates only'
+    (select count(*) from public.h3_cells),
+    0::bigint,
+    'held refresh publishes no aggregate to anonymous readers'
 );
 reset role;
 

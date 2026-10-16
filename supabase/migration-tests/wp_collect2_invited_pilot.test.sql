@@ -1,0 +1,25 @@
+-- Additive pilot migration preserves existing rows, rights, gates and private payloads.
+begin;
+create extension if not exists pgtap with schema extensions;
+set local search_path=public,extensions;
+select no_plan();
+select is((select count(*) from public.h3_cells),(select cells from private.collect2_test_baseline),'existing public cells survive the new hold');
+select is((select count(*) from public.dataset_releases),(select releases from private.collect2_test_baseline),'existing release records survive the new hold');
+select is((select count(*) from public.contributors),(select contributors from private.collect2_test_baseline),'existing contributors survive');
+select is((select count(*) from public.contribution_grants),(select grants from private.collect2_test_baseline),'immutable grants survive');
+select is((select count(*) from public.submissions),(select submissions from private.collect2_test_baseline),'existing submissions survive');
+select is((select count(*) from public.photos),(select photos from private.collect2_test_baseline),'existing private photos survive');
+select is((select count(*) from public.gold_labels),(select labels from private.collect2_test_baseline),'held-out labels survive');
+select is((select capture_open from public.service_state),(select capture_open from private.collect2_test_baseline),'capture gate is unchanged');
+select is((select intake_open from private.library_service_state),(select intake_open from private.collect2_test_baseline),'library gate is unchanged');
+select is((select encode(extensions.digest(convert_to(jsonb_agg(to_jsonb(s)-'collection_scope' order by s.id)::text,'UTF8'),'sha256'),'hex') from public.submissions s),(select submission_sha256 from private.collect2_test_baseline),'all original submission fields are unchanged');
+select ok((select bool_and(collection_scope='legacy') from public.submissions),'only pre-existing rows receive legacy classification');
+select is((select count(*) from private.collection_pilot_members),0::bigint,'no auth user is automatically invited');
+select is(pg_get_functiondef('public.apply_deletion_request(uuid)'::regprocedure),(select apply_definition from private.collect2_test_baseline),'rights worker apply definition unchanged');
+select is(pg_get_functiondef('public.complete_deletion_request(uuid)'::regprocedure),(select complete_definition from private.collect2_test_baseline),'rights worker complete definition unchanged');
+select ok(not has_schema_privilege('authenticated','private','usage') and not has_schema_privilege('anon','private','usage'),'private schema stays hidden');
+set local role service_role;
+select is(public.collection_publication_capabilities()->>'publication_allowed','false','migration supplies no publication go');
+reset role;
+select * from finish();
+rollback;

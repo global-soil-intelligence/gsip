@@ -30,3 +30,7 @@ apps/capture-pwa/ios/
 
 # Agent worktrees (for example Claude Code subagents) are local scratch copies.
 .claude/worktrees/
+
+# Separately reviewed browser collection artifacts; never deploy via ordinary Pages/native.
+_collection_capture/
+_collection_review/

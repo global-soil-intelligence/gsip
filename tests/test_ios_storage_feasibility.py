@@ -1,4 +1,8 @@
-"""APP-2C1 verifies source evidence; no test certifies a native storage backend."""
+"""APP-2C1 contract tests use synthetic inputs; no test renews a historical source audit.
+
+The production profile/hashes stay sealed. Current application changes must fail that profile
+until separately reviewed; unit fixtures neither adopt those bytes nor certify native storage.
+"""
 
 from __future__ import annotations
 
@@ -6,7 +10,6 @@ import hashlib
 import importlib.util
 import json
 import os
-import shutil
 import socket
 import subprocess
 import sys
@@ -36,10 +39,33 @@ def seeded(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[ModuleType,
     repository = tmp_path / "repository"
     public.mkdir()
     repository.mkdir()
+    repository_bindings = []
     for binding in module.REPOSITORY_SOURCES:
         target = repository / binding.path
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(ROOT / binding.path, target)
+        # Fixed synthetic bytes isolate unit reader/inventory coverage from mutable app source.
+        # These are not a refreshed source profile, application snapshot or native acceptance.
+        data = (
+            b"// APP-2C1 synthetic unit repository fixture; not reviewed application source.\n"
+            + f"// Synthetic binding path: {binding.path}\n".encode()
+        )
+        if binding.path == "apps/capture-pwa/src/queue.ts":
+            data += b"\n".join(
+                f"db.createObjectStore('{store}')".encode()
+                for store in (
+                    "submissions",
+                    "draftPhotos",
+                    "libraryDraft",
+                    "libraryNamespace",
+                    "queueState",
+                    "syncReminder",
+                )
+            )
+        target.write_bytes(data)
+        repository_bindings.append(
+            module.SourceBinding(binding.path, len(data), hashlib.sha256(data).hexdigest())
+        )
+    monkeypatch.setattr(module, "REPOSITORY_SOURCES", tuple(repository_bindings))
     data = b"// synthetic public source fixture\n"
     (public / "synthetic.source").write_bytes(data)
     binding = module.SourceBinding("synthetic.source", len(data), hashlib.sha256(data).hexdigest())
@@ -58,6 +84,29 @@ def assert_blocked(report: dict[str, object]) -> None:
         assert report[key] is False
     assert report["resolution_scope"] == "observed-generated-not-a-lock"
     assert report["next_gate"] == "app2c2-held"
+
+
+def test_synthetic_unit_repository_cannot_renew_the_historical_source_review(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    historical = loaded().REPOSITORY_SOURCES
+    module, public, repository = seeded(tmp_path, monkeypatch)
+    assert [(item.path, item.size, item.sha256) for item in module.REPOSITORY_SOURCES] != [
+        (item.path, item.size, item.sha256) for item in historical
+    ]
+    for binding in module.REPOSITORY_SOURCES:
+        assert (
+            (repository / binding.path)
+            .read_bytes()
+            .startswith(
+                b"// APP-2C1 synthetic unit repository fixture; not reviewed application source.\n"
+            )
+        )
+    assert_blocked(checked(module, public, repository))
+    # Patching unit inputs must never renew the sealed production profile or admit drift.
+    monkeypatch.setattr(module, "REPOSITORY_SOURCES", historical)
+    with pytest.raises(module.AuditError):
+        checked(module, public, repository)
 
 
 def test_known_source_review_can_never_be_storage_or_device_acceptance(
@@ -273,7 +322,15 @@ def test_cli_failure_never_echoes_paths_claims_or_exception_details(
 def test_verified_source_cli_exits_blocked_instead_of_readiness_success(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    module, public, _ = seeded(tmp_path, monkeypatch)
+    module, public, repository = seeded(tmp_path, monkeypatch)
+    original_audit = module.audit
+
+    def synthetic_audit(public_root: Path) -> dict[str, object]:
+        return cast(dict[str, object], original_audit(public_root, repository))
+
+    # Exercise the CLI's blocked-result handling with the explicit synthetic repository.
+    # The production CLI still binds current ROOT against the unchanged historical hashes.
+    monkeypatch.setattr(module, "audit", synthetic_audit)
     assert module.main([str(public)]) == 3
     captured = capsys.readouterr()
     assert captured.err == ""

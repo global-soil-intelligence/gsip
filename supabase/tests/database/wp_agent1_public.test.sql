@@ -4,7 +4,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(14);
+select no_plan();
 
 -- Every table and view in the public schema that the anonymous role can read, at table or column
 -- level. A new table readable by anon fails here until it is reviewed and listed.
@@ -39,9 +39,11 @@ select is(
        and has_function_privilege('anon', p.oid, 'execute')
        and p.oid not in ('public.capture_is_open()'::regprocedure,
            'public.library_intake_capabilities()'::regprocedure,
-           'private.library_intake_capabilities()'::regprocedure)),
+           'private.library_intake_capabilities()'::regprocedure,
+           'public.collection_pilot_capabilities()'::regprocedure,
+           'private.collection_pilot_capabilities()'::regprocedure)),
     0::bigint,
-    'anonymous execution is limited to the exact capture gate and library capability signatures'
+    'anonymous execution is limited to exact capture/library/pilot capability signatures'
 );
 
 select results_eq(
@@ -65,58 +67,22 @@ select ok(
     and not has_table_privilege('service_role', 'public.dataset_releases', 'truncate'),
     'only the server records a release, and nobody rewrites one'
 );
+-- Transaction-local shape clone preserves unique/version/revision constraint regression.
+create temporary table release_shape (like public.dataset_releases including all);
+insert into release_shape(version,rows,photos,hf_revision)
+values('2026-10-11',120,236,'0123456789abcdef0123456789abcdef01234567');
+select throws_ok($$insert into release_shape(version,rows,photos,hf_revision) values('2026-10-11',120,236,'0123456789abcdef0123456789abcdef01234567')$$,'23505',null,'release shape still refuses duplicate exact commits');
+insert into release_shape(version,rows,photos) values('2026-10-10',5,9) on conflict(version,hf_revision) do nothing;
+insert into release_shape(version,rows,photos) values('2026-10-10',5,9) on conflict(version,hf_revision) do nothing;
+select is((select count(*) from release_shape where version='2026-10-10'),1::bigint,'release shape retry without revision remains idempotent');
+select throws_ok($$insert into release_shape(version,rows,photos,hf_revision) values('2026-10-11',1,1,'main')$$,'23514',null,'release shape requires exact revision');
+select throws_ok($$insert into release_shape(version,rows,photos) values('latest',1,1)$$,'23514',null,'release shape requires a dated version');
 set local role service_role;
-select lives_ok(
-    $$insert into public.dataset_releases (version, rows, photos, hf_revision)
-      values ('2026-10-11', 120, 236, '0123456789abcdef0123456789abcdef01234567')$$,
-    'the export records a release'
-);
-insert into public.dataset_releases (version, rows, photos, hf_revision)
-values ('2026-10-11', 120, 236, '0123456789abcdef0123456789abcdef01234567')
-on conflict (version, hf_revision) do nothing;
-select is(
-    (select count(*) from public.dataset_releases),
-    1::bigint,
-    'retrying the record of the same push adds nothing'
-);
-select throws_ok(
-    $$insert into public.dataset_releases (version, rows, photos, hf_revision)
-      values ('2026-10-11', 120, 236, '0123456789abcdef0123456789abcdef01234567')$$,
-    '23505',
-    null,
-    'a pushed commit is recorded once'
-);
-insert into public.dataset_releases (version, rows, photos) values ('2026-10-10', 5, 9)
-on conflict (version, hf_revision) do nothing;
-insert into public.dataset_releases (version, rows, photos) values ('2026-10-10', 5, 9)
-on conflict (version, hf_revision) do nothing;
-select is(
-    (select count(*) from public.dataset_releases where version = '2026-10-10'),
-    1::bigint,
-    'a push without a reported commit is recorded once too'
-);
-select throws_ok(
-    $$insert into public.dataset_releases (version, rows, photos, hf_revision)
-      values ('2026-10-11', 1, 1, 'main')$$,
-    '23514',
-    null,
-    'a release names an exact Hugging Face commit'
-);
-select throws_ok(
-    $$insert into public.dataset_releases (version, rows, photos) values ('latest', 1, 1)$$,
-    '23514',
-    null,
-    'a release version is its export date'
-);
+select throws_ok($$insert into public.dataset_releases(version,rows,photos,hf_revision) values('2026-10-11',120,236,'0123456789abcdef0123456789abcdef01234567')$$,'CP001',null,'even a valid service-role public release is held');
 reset role;
 set local role anon;
 set local "request.jwt.claims" = '{"role":"anon"}';
-select results_eq(
-    $$select version, rows, photos, hf_revision from public.dataset_releases order by version desc$$,
-    $$values ('2026-10-11'::text, 120, 236, '0123456789abcdef0123456789abcdef01234567'::text),
-             ('2026-10-10'::text, 5, 9, null::text)$$,
-    'anyone reads the releases'
-);
+select is((select count(*) from public.dataset_releases),0::bigint,'anonymous readers see no new held release');
 select throws_ok(
     $$select geom_precise from public.submissions$$,
     '42501',

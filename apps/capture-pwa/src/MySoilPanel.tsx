@@ -57,9 +57,11 @@ type State =
 export function MySoil({
   load,
   refreshKey,
+  privatePilot = false,
 }: {
   load: () => Promise<MySoilEntry[] | null>
   refreshKey: number
+  privatePilot?: boolean
 }) {
   const [state, setState] = useState<State>({ kind: 'loading' })
   const [onlineAgain, setOnlineAgain] = useState(0)
@@ -102,8 +104,9 @@ export function MySoil({
         )}
         {state.kind === 'no_account' && (
           <p>
-            Nothing yet. Your first synced observation creates this device’s
-            private account, and it will appear here.
+            {privatePilot
+              ? 'Sign in to your existing invited account to see its observations. Collection never creates an account.'
+              : 'Nothing yet. Your first synced observation creates this device’s private account, and it will appear here.'}
           </p>
         )}
         {state.kind === 'ready' && state.entries.length === 0 && (
@@ -112,7 +115,7 @@ export function MySoil({
         {state.kind === 'ready' && state.entries.length > 0 && (
           <ul className="my-soil-list">
             {state.entries.map((entry) => {
-              const area = publicAreaText(entry)
+              const area = privatePilot ? null : publicAreaText(entry)
               return (
                 <li key={entry.id}>
                   <strong>{day(entry.capturedAt)}</strong>
@@ -130,6 +133,12 @@ export function MySoil({
           </ul>
         )}
       </div>
+      {privatePilot && (
+        <p>
+          Pilot observations remain private and unverified. They are held from
+          public maps, exports and field training.
+        </p>
+      )}
     </section>
   )
 }

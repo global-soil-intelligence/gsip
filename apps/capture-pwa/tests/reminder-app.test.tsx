@@ -141,7 +141,8 @@ it('existing account changes clear the reminder and never transfer explicit inte
   )
   expect(mocks.schedule).toHaveBeenCalledTimes(1)
   cleanup()
-  expect(mocks.unsubscribe).toHaveBeenCalledTimes(1)
+  // The reminder observer and the independent rights-confirmation fence both unsubscribe.
+  expect(mocks.unsubscribe).toHaveBeenCalledTimes(2)
 })
 it('an unsubscribed auth callback does not read a stale session or restart device reminders', async () => {
   render(<App />)

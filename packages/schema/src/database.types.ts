@@ -646,6 +646,7 @@ export type Database = {
       }
       submissions: {
         Row: {
+          collection_scope: 'legacy' | 'private_pilot'
           actor_id: string
           capture_method: string
           captured_at: string
@@ -671,6 +672,7 @@ export type Database = {
           surface_condition: string | null
         }
         Insert: {
+          collection_scope?: never
           // Set by the server (trigger) from the contributor; clients cannot write it.
           actor_id?: string
           capture_method?: string
@@ -697,6 +699,7 @@ export type Database = {
           surface_condition?: string | null
         }
         Update: {
+          collection_scope?: never
           actor_id?: string
           capture_method?: string
           captured_at?: string
@@ -890,6 +893,8 @@ export type Database = {
         Args: { p_submission_id: string }
         Returns: string
       }
+      collection_pilot_capabilities: { Args: never; Returns: Json }
+      collection_publication_capabilities: { Args: never; Returns: Json }
       library_intake_capabilities: { Args: never; Returns: Json }
       my_library_intake_receipt: {
         Args: { p_intake_id: string }

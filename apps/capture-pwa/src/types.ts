@@ -11,6 +11,8 @@ export type QueuedPhoto = {
 }
 
 export type CaptureDraft = {
+  /** Local transport fence only. The server independently assigns immutable collection scope. */
+  collectionMode?: 'invited_private'
   /** When the person accepted the terms (submit time); records from older builds lack it. */
   acceptedAt?: string
   accuracyM: number | null
