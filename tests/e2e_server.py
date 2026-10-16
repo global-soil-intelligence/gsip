@@ -59,11 +59,61 @@ def build_fixtures(root: Path, capture: Path) -> None:
         raise ValueError("Unexpected synthetic fixture activation")
 
 
-def handler_type(site: Path, capture: Path) -> type[SimpleHTTPRequestHandler]:
+def build_pilot_fixture(root: Path, pilot: Path) -> None:
+    pnpm = which("pnpm")
+    if pnpm is None:
+        raise ValueError("Pinned pnpm executable is required")
+    env = {
+        key: value
+        for key, value in os.environ.items()
+        if not key.startswith(("VITE_", "SUPABASE_"))
+    }
+    env.update(
+        VITE_CAPTURE_LIVE="true",
+        VITE_LIBRARY_INTAKE_LIVE="true",
+        VITE_COLLECTION_MODE="invited_private",
+        VITE_COLLECTION_PROJECT_REF="fixture",
+        VITE_COLLECTION_SITE_ORIGIN="http://127.0.0.1:4173",
+        VITE_SUPABASE_URL="https://supabase.test",
+        VITE_SUPABASE_PUBLISHABLE_KEY="fixture",
+        VITE_COLLECTION_FIXTURE_OUTPUT=str(pilot),
+        GITHUB_SHA="f" * 40,
+    )
+    subprocess.run(  # noqa: S603 - isolated synthetic build, never deployable
+        [
+            pnpm,
+            "--filter",
+            "@gsip/capture-pwa",
+            "exec",
+            "vite",
+            "build",
+            "--mode",
+            "invited-pilot-fixture",
+        ],
+        cwd=root,
+        env=env,
+        check=True,
+    )
+    receipt = json.loads((pilot / "gsip-activation.json").read_text())
+    if receipt.get("version") != "gsip-invited-browser-fixture-v1" or receipt.get("target") != {
+        "project_ref": "fixture",
+        "supabase_url": "https://supabase.test",
+        "site_origin": "http://127.0.0.1:4173",
+    }:
+        raise ValueError("Unexpected synthetic pilot fixture")
+
+
+def handler_type(
+    site: Path, capture: Path, pilot: Path | None = None
+) -> type[SimpleHTTPRequestHandler]:
     class Handler(SimpleHTTPRequestHandler):
         def translate_path(self, path: str) -> str:
             pathname = unquote(urlsplit(path).path)
-            if pathname.startswith("/gsip/capture/"):
+            if pilot is not None and pathname.startswith("/gsip/pilot/"):
+                base, relative = pilot, pathname[len("/gsip/pilot/") :]
+            elif pathname.startswith("/gsip/closed-capture/"):
+                base, relative = site / "capture", pathname[len("/gsip/closed-capture/") :]
+            elif pathname.startswith("/gsip/capture/"):
                 base, relative = capture, pathname[len("/gsip/capture/") :]
             elif pathname.startswith("/map/"):
                 base, relative = site / "map", pathname[len("/map/") :]
@@ -89,10 +139,13 @@ def handler_type(site: Path, capture: Path) -> type[SimpleHTTPRequestHandler]:
 
 def main() -> None:
     with TemporaryDirectory(prefix="gsip-e2e-capture-") as directory:
-        capture = Path(directory)
+        capture = Path(directory) / "capture"
+        pilot = Path(directory) / "pilot"
+        capture.mkdir()
         build_fixtures(ROOT, capture)
+        build_pilot_fixture(ROOT, pilot)
         with ThreadingHTTPServer(
-            ("127.0.0.1", 4173), handler_type(ROOT / "_site", capture)
+            ("127.0.0.1", 4173), handler_type(ROOT / "_site", capture, pilot)
         ) as server:
             server.serve_forever()
 

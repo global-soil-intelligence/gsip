@@ -79,6 +79,31 @@ function fakeClient({
 }
 
 describe('rights requests', () => {
+  it.each(['withdraw_contributions', 'delete_account'] as const)(
+    'distinguishes an unused existing account for %s without creating or deleting it',
+    async (kind) => {
+      const { calls, client } = fakeClient({ contributor: false })
+      expect(await requestDeletion(client, kind)).toBe('account_only')
+      expect(calls).toEqual(['from:contributors'])
+    },
+  )
+  it('preserves a confirmed deletion and signs out when local cleanup fails', async () => {
+    const { calls, client } = fakeClient({})
+    expect(
+      await requestDeletion(
+        client,
+        'delete_account',
+        () => true,
+        async () => {
+          throw new Error('Synthetic local cleanup failure')
+        },
+      ),
+    ).toBe('requested_cleanup_pending')
+    expect(calls).toContain('signOut:global')
+    expect(
+      calls.some((call) => call.startsWith('insert:deletion_requests:')),
+    ).toBe(true)
+  })
   it('reports no account, without signing in, when this device never had one', async () => {
     const { calls, client } = fakeClient({ session: false })
     expect(await requestDeletion(client, 'delete_account')).toBe('no_account')
@@ -100,10 +125,10 @@ describe('rights requests', () => {
     expect(calls).toEqual([])
   })
 
-  it('reports no account for a session that never became a contributor', async () => {
+  it('reports an account without contributions for a session that never became a contributor', async () => {
     const { calls, client } = fakeClient({ contributor: false })
     expect(await requestDeletion(client, 'withdraw_contributions')).toBe(
-      'no_account',
+      'account_only',
     )
     expect(calls.some((call) => call.startsWith('insert:'))).toBe(false)
   })

@@ -105,6 +105,14 @@ values
     ('submission-photos', '30000000-0000-4000-8000-000000000001/submission/B/a.jpg', '30000000-0000-4000-8000-000000000001'),
     ('incoming-photos', '30000000-0000-4000-8000-000000000002/submission/B/b.jpg', '30000000-0000-4000-8000-000000000002');
 
+-- Explicit disposable invitation fixture; earlier ownership/privacy assertions stay effective.
+insert into auth.users(id,is_anonymous)
+select auth_uid,false from public.contributors where auth_uid is not null on conflict(id) do nothing;
+update auth.users set is_anonymous=false; -- every auth fixture in this rolled-back file is synthetic/permanent
+insert into private.collection_pilot_members(auth_uid)
+select id from auth.users where is_anonymous is false on conflict(auth_uid) do nothing;
+select public.set_library_intake_open(true);
+
 set local role authenticated;
 set local "request.jwt.claims" = '{"sub":"30000000-0000-4000-8000-000000000001","role":"authenticated"}';
 select is((select count(*) from public.submissions), 1::bigint, 'owner sees only own precise submission');
@@ -177,9 +185,11 @@ select throws_ok(
 reset role;
 
 set local role service_role;
-select lives_ok(
+select throws_ok(
     $$select public.refresh_public_h3_cells('[]'::jsonb)$$,
-    'service-role export worker can atomically refresh public H3 aggregates'
+    'CP001',
+    null,
+    'service-role refresh is held independently of QA rights'
 );
 select lives_ok(
     $$update public.submissions

@@ -10,6 +10,7 @@ import {
   AccountChanged,
   LibraryConflict,
   LibraryUnavailable,
+  PilotUnavailable,
   isWithdrawal,
   RecordWithdrawn,
   TermsReconfirmationNeeded,
@@ -21,6 +22,13 @@ import { fuzzLocation } from './geo'
 import { claimColumns } from './provenance'
 import { acceptanceExpired, TERMS_VERSION } from './terms'
 import type { QueueRecord } from './types'
+import {
+  fetchPilotAdmission,
+  isInvitedPilot,
+  isRightsView,
+  pilotOwner,
+  validExistingAccountReturnUrl,
+} from './pilot'
 
 export type GsipClient = SupabaseClient<Database>
 
@@ -123,6 +131,7 @@ export async function recordOwner(
   client: GsipClient | null,
 ): Promise<string | undefined> {
   if (!client) return undefined
+  if (isInvitedPilot()) return (await pilotOwner(client)) ?? undefined
   try {
     const { data } = await client.auth.getSession()
     const uid = data.session?.user.id
@@ -144,6 +153,18 @@ async function senderUid(
   client: GsipClient,
   record: QueueRecord,
 ): Promise<string> {
+  if (isInvitedPilot()) {
+    const uid = await pilotOwner(client)
+    if (
+      !uid ||
+      !record.ownerUid ||
+      record.ownerUid !== uid ||
+      record.collectionMode !== 'invited_private'
+    )
+      throw new AccountChanged()
+    rememberUid(uid)
+    return uid
+  }
   const { data, error } = await client.auth.getSession()
   if (error) throw error
   const uid = data.session?.user.id
@@ -162,7 +183,16 @@ async function senderUid(
 }
 
 function refusal(error: unknown): unknown {
-  return isWithdrawal(error) ? new RecordWithdrawn() : error
+  if (isWithdrawal(error)) return new RecordWithdrawn()
+  if (
+    isInvitedPilot() &&
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    ['42501', 'PGRST301', 'PGRST303'].includes(String(error.code))
+  )
+    return new PilotUnavailable()
+  return error
 }
 
 function insertGrant(
@@ -201,15 +231,20 @@ function needsNewAcceptance(
   )
 }
 
-async function contributorId(client: GsipClient, uid: string): Promise<string> {
+async function contributorId(
+  client: GsipClient,
+  uid: string,
+  authorize: () => Promise<void>,
+): Promise<string> {
   const existing = await client
     .from('contributors')
     .select('id')
     .eq('auth_uid', uid)
     .maybeSingle()
-  if (existing.error) throw existing.error
+  if (existing.error) throw refusal(existing.error)
   if (existing.data) return existing.data.id
 
+  await authorize()
   const created = await client
     .from('contributors')
     .insert({
@@ -236,7 +271,21 @@ export async function submitQueued(
   client: GsipClient,
   record: QueueRecord,
   checkpoint: (record: QueueRecord) => Promise<void> = async () => undefined,
+  current: () => boolean = () => true,
 ): Promise<void> {
+  const authorize = async () => {
+    if (!isInvitedPilot()) return
+    if (!current()) throw new PilotUnavailable()
+    if (!isCaptureLive() || !isLibraryIntakeLive()) throw new PilotUnavailable()
+    if (record.collectionMode !== 'invited_private' || !record.ownerUid)
+      throw new AccountChanged()
+    const uid = await pilotOwner(client)
+    if (!current()) throw new PilotUnavailable()
+    if (!uid || uid !== record.ownerUid) throw new AccountChanged()
+    if ((await fetchPilotAdmission(client)) !== 'open' || !current())
+      throw new PilotUnavailable()
+  }
+  await authorize()
   const deviceRevision = record.library ? await queueRevision() : undefined
   // Presence requires completion: never silently send a library record down the legacy path.
   if (record.library !== undefined) {
@@ -282,19 +331,20 @@ export async function submitQueued(
     if (record.ownerUid !== uid) throw new AccountChanged()
   }
   if (!record.library?.photosFinalized) {
-    const contributor = await contributorId(client, uid)
+    const contributor = await contributorId(client, uid, authorize)
     const grant = await client
       .from('contribution_grants')
       .select('id')
       .eq('id', record.grantId)
       .maybeSingle()
-    if (grant.error) throw grant.error
+    if (grant.error) throw refusal(grant.error)
     if (!grant.data) {
       // The grant records when the person accepted the terms, never the photo's own timestamp.
       // WP-6e (I9): the original acceptance always goes first. The server refuses a withdrawn one
       // as withdrawn (WD001) before it checks its age, so an observation its person withdrew is
       // dropped, never re-accepted. Only an acceptance it refused as expired, or under terms this
       // build no longer presents, is held for the person to accept the current terms again.
+      await authorize()
       const original = await insertGrant(
         client,
         record,
@@ -305,12 +355,13 @@ export async function submitQueued(
       if (original.error) {
         if (isWithdrawal(original.error)) throw new RecordWithdrawn()
         if (!needsNewAcceptance(original.error, record, Date.now()))
-          throw original.error
+          throw refusal(original.error)
         if (
           !record.reconfirmedAt ||
           acceptanceExpired(record.reconfirmedAt, Date.now())
         )
           throw new TermsReconfirmationNeeded()
+        await authorize()
         const renewed = await insertGrant(
           client,
           record,
@@ -328,8 +379,9 @@ export async function submitQueued(
       .select('id')
       .eq('id', record.submissionId)
       .maybeSingle()
-    if (existingSubmission.error) throw existingSubmission.error
+    if (existingSubmission.error) throw refusal(existingSubmission.error)
     if (!existingSubmission.data) {
+      await authorize()
       const created = await client.from('submissions').insert({
         captured_at: record.capturedAt,
         contributor_id: contributor,
@@ -353,6 +405,7 @@ export async function submitQueued(
     for (const photo of record.photos) {
       if (record.library) await checkpoint(record)
       const path = photoStoragePath(uid, record, photo)
+      await authorize()
       const uploaded = await client.storage
         .from('incoming-photos')
         .upload(path, photo.bytes, {
@@ -360,7 +413,10 @@ export async function submitQueued(
           upsert: false,
         })
       if (uploaded.error && !duplicateUpload(uploaded.error))
-        throw uploaded.error
+        throw isInvitedPilot() &&
+          [401, 403].includes(Number(uploaded.error.statusCode))
+          ? new PilotUnavailable()
+          : uploaded.error
 
       const existingPhoto = await client
         .from('photos')
@@ -368,8 +424,9 @@ export async function submitQueued(
         .eq('submission_id', record.submissionId)
         .eq('shot_type', photo.shotType)
         .maybeSingle()
-      if (existingPhoto.error) throw existingPhoto.error
+      if (existingPhoto.error) throw refusal(existingPhoto.error)
       if (!existingPhoto.data) {
+        await authorize()
         const created = await client.from('photos').insert({
           shot_type: photo.shotType,
           storage_path: path,
@@ -382,6 +439,7 @@ export async function submitQueued(
     // Shots A and B are uploaded: finalize so the server can settle QA status.
     // Finalize is idempotent, so a retry after a lost response is safe.
     if (record.library) await checkpoint(record)
+    await authorize()
     const finalized = await client.rpc('finalize_submission', {
       p_submission_id: record.submissionId,
     })
@@ -397,6 +455,7 @@ export async function submitQueued(
     const request = parseLibraryIntakeRequest(
       JSON.stringify(record.library.request),
     )
+    await authorize()
     const intake = await client.rpc('record_library_intake', {
       p_request: request as unknown as Json,
     })
@@ -418,6 +477,7 @@ export async function submitQueued(
   // The durable prior_jobs row is created by the submission trigger. This
   // best-effort invocation starts enrichment immediately; an upstream outage
   // must not retain private capture data in the device queue after upload.
+  await authorize()
   await client.functions.invoke('prior-attach', {
     body: { submissionId: record.submissionId },
   })
@@ -430,7 +490,12 @@ export type DeletionStatus = {
   requestedAt: string
   status: 'pending' | 'processing' | 'completed'
 }
-export type DeletionOutcome = 'requested' | 'already_open' | 'no_account'
+export type DeletionOutcome =
+  | 'requested'
+  | 'requested_cleanup_pending'
+  | 'already_open'
+  | 'no_account'
+  | 'account_only'
 
 /**
  * The signed-in contributor, or null when this device holds no account at all. Rights requests
@@ -484,9 +549,26 @@ export async function latestDeletionRequest(
 export async function requestDeletion(
   client: GsipClient,
   kind: DeletionKind,
+  current: () => boolean = () => true,
+  beforeSignOut?: () => Promise<void>,
 ): Promise<DeletionOutcome> {
-  const contributor = await existingContributor(client)
-  if (!contributor) return 'no_account'
+  const { data: initial, error: sessionError } = await client.auth.getSession()
+  if (sessionError) throw sessionError
+  if (!current()) throw new AccountChanged()
+  const uid = initial.session?.user.id
+  if (!uid) return 'no_account'
+  const found = await client
+    .from('contributors')
+    .select('id')
+    .eq('auth_uid', uid)
+    .maybeSingle()
+  if (found.error) throw found.error
+  const contributor = found.data?.id
+  if (!current()) throw new AccountChanged()
+  if (!contributor) return 'account_only'
+  const { data: latest, error: latestError } = await client.auth.getSession()
+  if (latestError) throw latestError
+  if (!current() || latest.session?.user.id !== uid) throw new AccountChanged()
   const { error } = await client
     .from('deletion_requests')
     .insert({ contributor_id: contributor, kind })
@@ -495,10 +577,26 @@ export async function requestDeletion(
     throw error
   }
   if (kind === 'delete_account') {
-    forgetUid()
-    // Global sign-out revokes the account's refresh tokens everywhere; this device's session is
-    // removed even if the revocation call fails.
-    await client.auth.signOut({ scope: 'global' })
+    // Clear the confirming account's local bytes before our own sign-out invalidates UI.
+    let cleanupPending = false
+    try {
+      await beforeSignOut?.()
+    } catch {
+      cleanupPending = true
+    }
+    try {
+      const { data: after, error: afterError } = await client.auth.getSession()
+      if (afterError || !current() || after.session?.user.id !== uid)
+        return 'requested_cleanup_pending'
+      forgetUid()
+      // Global sign-out revokes the account's refresh tokens everywhere; this device's session is
+      // removed even if the revocation call fails.
+      const signedOut = await client.auth.signOut({ scope: 'global' })
+      if (signedOut.error) cleanupPending = true
+    } catch {
+      cleanupPending = true
+    }
+    return cleanupPending ? 'requested_cleanup_pending' : 'requested'
   }
   return 'requested'
 }
@@ -517,6 +615,14 @@ export async function sendSignInLink(
   redirectTo: string,
   switchAccount = false,
 ): Promise<SignInLinkOutcome> {
+  if (isInvitedPilot() || isRightsView(false)) {
+    if (!validExistingAccountReturnUrl(redirectTo)) return 'failed'
+    const { error } = await client.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo, shouldCreateUser: false },
+    })
+    return error ? 'failed' : 'sent'
+  }
   const { data } = await client.auth.getSession()
   if (data.session?.user.is_anonymous && !switchAccount) {
     const { error } = await client.auth.updateUser(

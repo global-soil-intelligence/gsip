@@ -195,6 +195,14 @@ insert into public.contribution_grants (id, contributor_id, terms_version, accep
 values ('41700000-0000-4000-8000-0000000000b1', '21700000-0000-4000-8000-00000000000b', 'test-v1', now(), 'Anonymous soil contributor');
 update public.service_state set capture_open = true where singleton;
 
+-- Explicit disposable invitation fixture; earlier ownership/privacy assertions stay effective.
+insert into auth.users(id,is_anonymous)
+select auth_uid,false from public.contributors where auth_uid is not null on conflict(id) do nothing;
+update auth.users set is_anonymous=false; -- every auth fixture in this rolled-back file is synthetic/permanent
+insert into private.collection_pilot_members(auth_uid)
+select id from auth.users where is_anonymous is false on conflict(auth_uid) do nothing;
+select public.set_library_intake_open(true);
+
 set local role authenticated;
 set local "request.jwt.claims" = '{"sub":"31700000-0000-4000-8000-00000000000b","role":"authenticated"}';
 select lives_ok(
@@ -517,6 +525,8 @@ select throws_ok(
 -- A withdrawn acceptance is refused as withdrawn before the window is checked, so the capture app
 -- can tell an observation to drop (WD001) from one to hold for a new acceptance (42501).
 insert into auth.users (id) values ('31700000-0000-4000-8000-00000000000c');
+update auth.users set is_anonymous=false where id='31700000-0000-4000-8000-00000000000c';
+insert into private.collection_pilot_members(auth_uid) values('31700000-0000-4000-8000-00000000000c');
 insert into public.contributors (id, auth_uid, handle)
 values ('21700000-0000-4000-8000-00000000000c', '31700000-0000-4000-8000-00000000000c', 'provenance-c');
 insert into public.deletion_requests (contributor_id, kind)

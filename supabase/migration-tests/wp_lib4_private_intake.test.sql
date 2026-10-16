@@ -20,7 +20,7 @@ select ok(
     and (select nspacl::text from pg_namespace where nspname='private') is not distinct from (select private_acl from private.lib4b_test_baseline)
     and (select array_agg(p.polname::text || ':' || pg_get_expr(p.polqual,p.polrelid) || ':' ||
         coalesce(pg_get_expr(p.polwithcheck,p.polrelid),'') order by p.polname)
-        from pg_policy p where p.polrelid='public.submissions'::regclass) is not distinct from
+        from pg_policy p where p.polrelid='public.submissions'::regclass and p.polname not in ('submissions_pilot_insert','submissions_pilot_update')) is not distinct from
         (select submission_policies from private.lib4b_test_baseline),
     'photo/private-schema ACLs and existing submission RLS are unchanged');
 select * from finish();

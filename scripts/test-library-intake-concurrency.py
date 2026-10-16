@@ -53,7 +53,8 @@ def create_fixture(command: list[str]) -> Fixture:
     sql = f"""
     insert into public.terms_versions(version,published_at)
         values({literal(terms)},now()-interval '1 day');
-    insert into auth.users(id) values({literal(auth)});
+    insert into auth.users(id,is_anonymous) values({literal(auth)},false);
+    insert into private.collection_pilot_members(auth_uid) values({literal(auth)});
     insert into public.contributors(id,auth_uid,handle)
         values({literal(contributor)},{literal(auth)},{literal("race-" + uuid4().hex[:20])});
     insert into public.contribution_grants(id,contributor_id,terms_version,accepted_at,
@@ -168,6 +169,64 @@ def race(command: list[str], *, operation: str, operation_first: bool) -> dict[s
     return {"order": order, "passed": True, **counts}
 
 
+def pilot_admission_race(
+    command: list[str], *, operation: str, operation_first: bool
+) -> dict[str, Any]:
+    f = create_fixture(command)
+    if operation == "revocation":
+        mutation = (
+            "update private.collection_pilot_members set revoked_at=now() where auth_uid="
+            + literal(f.auth)
+            + ";"
+        )
+        expected_error = "42501"
+    elif operation == "capture_close":
+        mutation = "update public.service_state set capture_open=false;"
+        expected_error = "LI001"
+    else:
+        mutation = "select public.set_library_intake_open(false);"
+        expected_error = "LI001"
+    admission = caller(f) + intake(f)
+    first, second = (mutation, admission) if operation_first else (admission, mutation)
+    script = "begin;" + first + "\n\\echo PILOT_RACE_LOCK_HELD\nselect pg_sleep(1.5);commit;\n"
+    process = subprocess.Popen(  # noqa: S603 - fixed disposable local PostgreSQL command.
+        command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
+    if process.stdin is None or process.stdout is None:
+        raise RuntimeError("pilot race connection has no local input/output")
+    process.stdin.write(script)
+    process.stdin.flush()
+    while True:
+        line = process.stdout.readline()
+        if "PILOT_RACE_LOCK_HELD" in line:
+            break
+        if not line:
+            process.kill()
+            raise RuntimeError("pilot race first operation failed before its lock")
+    started = time.monotonic()
+    result = run(command, "begin;" + second + "commit;", success=not operation_first)
+    if time.monotonic() - started < 0.5:
+        raise RuntimeError("pilot race did not serialize admission and closure")
+    process.stdin.close()
+    process.wait(timeout=30)
+    if process.returncode:
+        raise RuntimeError("pilot race first transaction failed")
+    if operation_first and (result.returncode == 0 or expected_error not in result.stderr):
+        raise RuntimeError("closed or revoked invitation admitted a late write")
+    result = run(
+        command,
+        "select count(*) from private.library_intakes where submission_id="
+        + literal(f.submission)
+        + ";",
+    )
+    if int(result.stdout.strip()) != (0 if operation_first else 1):
+        raise RuntimeError("pilot race left unexpected private admission state")
+    return {
+        "order": operation + "_then_intake" if operation_first else "intake_then_" + operation,
+        "passed": True,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--database", required=True)
@@ -182,7 +241,8 @@ def main() -> None:
     if not re.fullmatch(r"gsip_lib4b_[a-z0-9_]+", args.database):
         parser.error("target must be an explicitly disposable gsip_lib4b_* database")
     if args.socket and not re.fullmatch(
-        r"/tmp/gsip_lib4b_[a-zA-Z0-9_]+", args.socket  # noqa: S108 - mktemp-owned test socket
+        r"/tmp/gsip_lib4b_[a-zA-Z0-9_]+",  # noqa: S108 - mktemp-owned test socket
+        args.socket,
     ):
         parser.error("socket must belong to an explicitly disposable gsip_lib4b_* cluster")
     if args.port != 5432 and not 55490 <= args.port <= 55599:
@@ -218,6 +278,11 @@ def main() -> None:
         for operation in ("withdrawal", "source_delete", "holdout")
         for operation_first in (False, True)
     ]
+    outcomes.extend(
+        pilot_admission_race(command, operation=operation, operation_first=operation_first)
+        for operation in ("revocation", "capture_close", "library_close")
+        for operation_first in (False, True)
+    )
     print(
         json.dumps(
             {"synthetic_only": True, "production_access": False, "races": outcomes}, sort_keys=True

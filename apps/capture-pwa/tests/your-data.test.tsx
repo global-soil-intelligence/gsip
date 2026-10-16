@@ -110,6 +110,7 @@ describe('your data', () => {
     expect(mocks.requestDeletion).toHaveBeenCalledWith(
       { hosted: true },
       'withdraw_contributions',
+      expect.any(Function),
     )
     expect(
       screen.getByText(/1 observation queued on this device was discarded/i),
@@ -207,7 +208,7 @@ describe('your data accessibility and edge cases', () => {
     )
   })
 
-  it('says a device with no account has nothing stored, and clears its queue', async () => {
+  it('says no account is signed in without claiming server data is absent, and clears its queue', async () => {
     mocks.requestDeletion.mockResolvedValue('no_account')
     await enqueue(record)
     render(<App />)
@@ -215,7 +216,10 @@ describe('your data accessibility and edge cases', () => {
     type('WITHDRAW')
     fireEvent.click(confirmButton())
 
-    expect(await screen.findByText(/this device has no account/i)).toBeDefined()
+    expect(
+      await screen.findByText(/no account is currently signed in/i),
+    ).toBeDefined()
+    expect(screen.queryByText(/nothing.*stored on our servers/i)).toBeNull()
     expect(await queued()).toEqual([])
   })
 })

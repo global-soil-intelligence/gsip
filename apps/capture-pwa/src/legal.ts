@@ -2,8 +2,8 @@ import { isNativeApp } from './platform'
 import { siteLink } from './platform/links'
 
 /**
- * Links to the contribution terms, privacy notice and sampling rules (WP-6d). Until counsel
- * approves hosted versions, they point at the drafts in the repository.
+ * Links to the contribution terms, privacy notice and sampling rules (WP-6d). Until the
+ * product owner adopts hosted versions, they point at the drafts in the repository.
  */
 const REPOSITORY_DOCS =
   'https://github.com/global-soil-intelligence/gsip/blob/main/docs/legal'

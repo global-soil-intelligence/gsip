@@ -69,6 +69,13 @@ import type { QueueRecord, ShotType } from './types'
 import { YourData } from './YourData'
 import { selectReminderNotifications } from './platform/notifications'
 import { createSyncReminder, type ReminderView } from './syncReminder'
+import {
+  existingAccountReturnUrl,
+  fetchPilotAdmission,
+  isInvitedPilot,
+  isRightsView,
+  pilotOwner,
+} from './pilot'
 
 // Files created after this moment were taken with the camera during this visit (WP-6e claim).
 const PAGE_LOADED_AT =
@@ -302,13 +309,23 @@ function CaptureClosed() {
 
 export function App() {
   const formRef = useRef<HTMLFormElement>(null)
-  const live = isCaptureLive()
-  const libraryLive = isLibraryIntakeLive()
+  const native = useMemo(() => isNativeApp(), [])
+  const pilot = isInvitedPilot()
+  const [rightsView, setRightsView] = useState(() => isRightsView(native))
+  const live = isCaptureLive() && !rightsView && (!pilot || !native)
+  const libraryLive = isLibraryIntakeLive() && live
+  const [admission, setAdmission] = useState<ServiceState>('unknown')
+  const [invitedOwner, setInvitedOwner] = useState<string | null>(null)
+  const authGeneration = useRef(0)
+  const rightsHold = useRef(false)
+  const [authEpoch, setAuthEpoch] = useState(0)
+  const [rightsCleanupPending, setRightsCleanupPending] = useState(false)
+  const canCollect =
+    live && (!pilot || (admission === 'open' && Boolean(invitedOwner)))
   const [libraryDraft, setLibraryDraft] = useState<LibraryDraft | null>(null)
   const [libraryConflictCount, setLibraryConflictCount] = useState(0)
   const [heldLibraryCount, setHeldLibraryCount] = useState(0)
   // WP-APP-1: the phone app uses the native camera and location; browsers use the web ones.
-  const native = useMemo(() => isNativeApp(), [])
   const [platform, setPlatform] = useState<Platform | null>(() =>
     native ? null : webPlatform(),
   )
@@ -316,10 +333,10 @@ export function App() {
   // Camera and picker share one intent counter per shot: a later choice always wins.
   const photoRequests = useRef<Record<ShotType, number>>({ A: 0, B: 0, C: 0 })
   const [soilRefresh, setSoilRefresh] = useState(0)
+  const authEnabled = live || rightsView
   const client = useMemo(
-    () =>
-      isCaptureLive() && isServiceConfigured() ? createGsipClient() : null,
-    [],
+    () => (authEnabled && isServiceConfigured() ? createGsipClient() : null),
+    [authEnabled],
   )
   const [serviceState, setServiceState] = useState<ServiceState>('unknown')
   const [attributionError, setAttributionError] = useState<string | null>(null)
@@ -333,7 +350,11 @@ export function App() {
   const [heldCount, setHeldCount] = useState(0)
   const [reconfirmCount, setReconfirmCount] = useState(0)
   const [emailInUse, setEmailInUse] = useState(false)
-  const [status, setStatus] = useState('Ready for your first observation.')
+  const [status, setStatus] = useState(
+    rightsView
+      ? 'Use your existing account to manage your data.'
+      : 'Ready for your first observation.',
+  )
   const [publicCell, setPublicCell] = useState<string | null>(null)
   const [email, setEmail] = useState('')
   const syncPromise = useRef<Promise<void> | null>(null)
@@ -385,6 +406,56 @@ export function App() {
     () => (client ? mySoil(client) : Promise.resolve(null)),
     [client],
   )
+  const refreshAdmission = useCallback(async () => {
+    if (!client || !pilot || rightsView || native) return null
+    const generation = authGeneration.current
+    const uid = await pilotOwner(client)
+    const state = uid ? await fetchPilotAdmission(client) : 'closed'
+    if (!open.current || generation !== authGeneration.current) return null
+    setInvitedOwner(uid)
+    setAdmission(state)
+    return { uid, state, generation }
+  }, [client, pilot, rightsView, native])
+
+  useEffect(() => {
+    if (native) return
+    const changed = () => {
+      authGeneration.current += 1
+      setRightsView(isRightsView(false))
+      if (isRightsView(false))
+        setStatus('Use your existing account to manage your data.')
+    }
+    window.addEventListener('hashchange', changed)
+    return () => window.removeEventListener('hashchange', changed)
+  }, [native])
+
+  useEffect(() => {
+    if (!client || native || (!pilot && !rightsView)) return
+    let observing = true
+    const invalidate = () => {
+      authGeneration.current += 1
+      setAdmission('unknown')
+      setInvitedOwner(null)
+      setAuthEpoch((value) => value + 1)
+      // Supabase auth callbacks must finish before another Auth call begins.
+      void Promise.resolve().then(() => {
+        if (observing) void refreshAdmission()
+      })
+    }
+    const subscription =
+      client.auth.onAuthStateChange(invalidate).data.subscription
+    const onFocus = () => {
+      void refreshAdmission()
+    }
+    window.addEventListener('focus', onFocus)
+    void refreshAdmission()
+    return () => {
+      observing = false
+      authGeneration.current += 1
+      subscription.unsubscribe()
+      window.removeEventListener('focus', onFocus)
+    }
+  }, [client, native, pilot, rightsView, refreshAdmission])
 
   useEffect(() => {
     if (platform) return
@@ -471,8 +542,22 @@ export function App() {
     return records
   }, [native, reminder])
   const drainOnce = useCallback(async () => {
-    const closed = () => !open.current
-    if (!client || !navigator.onLine || closed()) return
+    const generation = authGeneration.current
+    const closed = () =>
+      !open.current ||
+      rightsHold.current ||
+      (pilot && generation !== authGeneration.current)
+    if (!client || !live || rightsView || !navigator.onLine || closed()) return
+    if (pilot) {
+      const access = await refreshAdmission()
+      if (closed()) return
+      if (!access?.uid || access.state !== 'open') {
+        setStatus(
+          'Invited collection is paused. Sign in to your invited account; queued observations stay on this device.',
+        )
+        return
+      }
+    }
     const records = await indexedDbQueue.list()
     if (closed()) return
     if (!records.some((record) => isSyncEligible(record))) {
@@ -493,9 +578,11 @@ export function App() {
     const result = await drainQueue(
       indexedDbQueue,
       (record, checkpoint) =>
-        record.library
-          ? submitQueued(client, record, checkpoint)
-          : submitQueued(client, record),
+        pilot
+          ? submitQueued(client, record, checkpoint, () => !closed())
+          : record.library
+            ? submitQueued(client, record, checkpoint)
+            : submitQueued(client, record),
       () => Date.now(),
       closed,
     )
@@ -543,7 +630,17 @@ export function App() {
     } else {
       setStatus('Ready for your next observation.')
     }
-  }, [client, native, observeServiceState, refreshQueueState, reminder])
+  }, [
+    client,
+    native,
+    observeServiceState,
+    refreshQueueState,
+    reminder,
+    live,
+    rightsView,
+    pilot,
+    refreshAdmission,
+  ])
 
   // One drain at a time. A trigger that arrives mid-drain (coming online, the gate reopening, the
   // retry timer) is never dropped: it schedules exactly one follow-up drain, however many arrive.
@@ -578,6 +675,7 @@ export function App() {
   }, [])
 
   useEffect(() => {
+    if (!live || rightsView) return
     let cancelled = false
     void (async () => {
       if (client) {
@@ -596,7 +694,7 @@ export function App() {
       window.clearInterval(retry)
       window.removeEventListener('online', onOnline)
     }
-  }, [client, observeServiceState, refreshQueueState, sync])
+  }, [client, observeServiceState, refreshQueueState, sync, live, rightsView])
 
   useEffect(() => {
     if (!native) return
@@ -735,7 +833,9 @@ export function App() {
       outcome = await sendSignInLink(
         client,
         email,
-        window.location.href.split('#')[0],
+        pilot || rightsView
+          ? existingAccountReturnUrl(rightsView)
+          : window.location.href.split('#')[0],
         switchAccount,
       )
     } catch {
@@ -756,8 +856,33 @@ export function App() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const formElement = event.currentTarget
+    if (
+      !live ||
+      rightsView ||
+      rightsHold.current ||
+      (pilot && (!client || native))
+    )
+      return
+    const generation = authGeneration.current
+    const current = () =>
+      open.current &&
+      !rightsHold.current &&
+      generation === authGeneration.current
+    const initialAccess = pilot ? await refreshAdmission() : null
+    if (
+      pilot &&
+      (!initialAccess?.uid ||
+        initialAccess.state !== 'open' ||
+        generation !== authGeneration.current)
+    ) {
+      setStatus(
+        'Sign in to your invited account while collection is open before queueing an observation.',
+      )
+      return
+    }
     const unsupportedPhoto = Array.from(
-      event.currentTarget.querySelectorAll<HTMLInputElement>(
+      formElement.querySelectorAll<HTMLInputElement>(
         'input[type="file"][name^="shot-"]',
       ),
     ).some((input) =>
@@ -767,7 +892,6 @@ export function App() {
       setStatus('Choose JPEG photos before continuing.')
       return
     }
-    const formElement = event.currentTarget
     const form = new FormData(formElement)
     const numericLatitude = Number(latitude)
     const numericLongitude = Number(longitude)
@@ -795,6 +919,12 @@ export function App() {
       setStatus('Confirm the sampling rules before queueing this observation.')
       return
     }
+    if (pilot && form.get('terms') !== 'on') {
+      setStatus(
+        'Accept the contribution terms before queueing this observation.',
+      )
+      return
+    }
     const submitRevision = await queueRevision()
     const now = Date.now()
     let shots: ShotPhotos
@@ -819,7 +949,24 @@ export function App() {
       return photo ? [queuedPhoto(photo, shot)] : []
     })
     // WP-6d: an observation is only ever sent as the account it was made under.
-    const ownerUid = await recordOwner(client)
+    const ownerUid =
+      pilot && client
+        ? ((await pilotOwner(client)) ?? undefined)
+        : await recordOwner(client)
+    if (
+      pilot &&
+      (!ownerUid ||
+        ownerUid !== initialAccess?.uid ||
+        generation !== authGeneration.current ||
+        !client ||
+        (await fetchPilotAdmission(client)) !== 'open')
+    ) {
+      setStatus(
+        'Your sign-in or collection access changed. Nothing was queued.',
+      )
+      return
+    }
+    if (pilot && !current()) return
     let library: QueueRecord['library']
     if (libraryDraft) {
       if (libraryDraft.ownerUid && libraryDraft.ownerUid !== ownerUid) {
@@ -842,7 +989,9 @@ export function App() {
         libraryDraft.deviceRevision !== submitRevision
       )
         return
+      if (pilot && !current()) return
       if (!(await saveLibraryDraft(libraryDraft, submitRevision))) return
+      if (pilot && !current()) return
       await Promise.all(
         SHOTS.flatMap((shot) =>
           shots[shot]
@@ -850,8 +999,10 @@ export function App() {
             : [],
         ),
       )
+      if (pilot && !current()) return
     }
     const record: QueueRecord = {
+      ...(pilot ? { collectionMode: 'invited_private' as const } : {}),
       accuracyM: accuracy,
       acceptedAt: new Date(now).toISOString(),
       attributionName,
@@ -877,9 +1028,18 @@ export function App() {
       surfaceCondition: String(form.get('surface-condition')),
       termsVersion: TERMS_VERSION,
     }
-    if (library) {
-      if (!(await putIfCurrent(record, submitRevision, false))) return
+    if (library || pilot) {
+      if (
+        !(await putIfCurrent(
+          record,
+          submitRevision,
+          false,
+          pilot ? current : undefined,
+        ))
+      )
+        return
     } else await enqueue(record)
+    if (pilot && !current()) return
     setLibraryDraft(null)
     setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
     formRef.current?.reset()
@@ -925,8 +1085,9 @@ export function App() {
           <p className="eyebrow">Two photos. One card. One living planet.</p>
           <h1>Help map the ground beneath us.</h1>
           <p className="lede">
-            Photograph soil with the free GSIP card. Your precise location stays
-            private; the public map sees only a broad hexagonal cell.
+            {pilot
+              ? 'Invited collection stores your soil photographs and observations privately and unverified. Pilot records are held from public maps, exports and field training.'
+              : 'Photograph soil with the free GSIP card. Your precise location stays private; the public map sees only a broad hexagonal cell.'}
           </p>
           <a
             className="card-link"
@@ -942,12 +1103,32 @@ export function App() {
         <aside className="privacy-note">
           <strong>Privacy by design</strong>
           <span>
-            Precise coordinates and original photos remain private. Public data
-            is H3-fuzzed.
+            {pilot
+              ? 'Pilot records remain private. A stored declaration does not verify its instrument, calibration or physical pairing.'
+              : 'Precise coordinates and original photos remain private. Public data is H3-fuzzed.'}
           </span>
         </aside>
 
-        {!live && <CaptureClosed />}
+        {!live && !rightsView && <CaptureClosed />}
+        {rightsCleanupPending && (
+          <p role="status">
+            A confirmed server request is recorded. Local cleanup is still
+            pending. Contact the pilot organizer if private drafts remain on
+            this device.
+          </p>
+        )}
+
+        {rightsView && (
+          <section aria-labelledby="rights-heading">
+            <h2 id="rights-heading">Your data and account</h2>
+            <p role="status">{status}</p>
+            <p>
+              Collection is closed in this view. Sign in to your existing
+              account to withdraw contributions or request deletion. No
+              observations are queued or uploaded here.
+            </p>
+          </section>
+        )}
 
         {live && serviceState === 'closed' && (
           <p className="config-warning" role="status">
@@ -955,15 +1136,23 @@ export function App() {
           </p>
         )}
 
-        {live && (
+        {(live || rightsView) && (
           <section className="signin-card" aria-labelledby="signin-heading">
             <div>
-              <p className="step-number">Optional account</p>
-              <h2 id="signin-heading">Keep contributing privately</h2>
+              <p className="step-number">
+                {pilot || rightsView ? 'Existing account' : 'Optional account'}
+              </p>
+              <h2 id="signin-heading">
+                {pilot || rightsView
+                  ? 'Sign in to your account'
+                  : 'Keep contributing privately'}
+              </h2>
               <p>
-                {native
-                  ? 'Submit anonymously: no sign-up is needed.'
-                  : 'Submit anonymously now, or use a magic link to keep contributing from more than one device.'}
+                {pilot || rightsView
+                  ? 'Use the email address of your owner-provisioned account. This flow never creates an account.'
+                  : native
+                    ? 'Submit anonymously: no sign-up is needed.'
+                    : 'Submit anonymously now, or use a magic link to keep contributing from more than one device.'}
               </p>
             </div>
             {native ? (
@@ -1005,7 +1194,15 @@ export function App() {
           </section>
         )}
 
-        {live && (
+        {pilot && live && !canCollect && (
+          <p role="status">
+            {invitedOwner
+              ? 'Invited collection is paused or this account has no active invitation. Your data controls remain available.'
+              : 'Sign in to your invited account before collecting. No upload is allowed until current access is confirmed.'}
+          </p>
+        )}
+
+        {canCollect && (
           <form ref={formRef} onSubmit={(event) => void submit(event)}>
             <fieldset>
               <legend>
@@ -1209,7 +1406,9 @@ export function App() {
                 <span>04</span> Grant & submit
               </legend>
               <label>
-                Public photo attribution name or pseudonym
+                {pilot
+                  ? 'Attribution name or pseudonym'
+                  : 'Public photo attribution name or pseudonym'}
                 <input
                   name="attribution"
                   minLength={1}
@@ -1222,7 +1421,9 @@ export function App() {
               </label>
               <p className="field-hint" id="attribution-hint">
                 {attributionError ??
-                  'This name is published with your photo’s area and date. Keep the default to stay anonymous, or use a pseudonym rather than your real name.'}
+                  (pilot
+                    ? 'This name is recorded with your immutable contribution grant. Pilot records stay private; use the default or a pseudonym rather than your real name.'
+                    : 'This name is published with your photo’s area and date. Keep the default to stay anonymous, or use a pseudonym rather than your real name.')}
               </p>
               <label className="terms">
                 <input type="checkbox" name="sampling-rules" required />{' '}
@@ -1242,7 +1443,9 @@ export function App() {
               <label className="terms">
                 <input type="checkbox" name="terms" required />{' '}
                 <span>
-                  I am at least 16, or a teacher contributing for my class. I
+                  {pilot
+                    ? 'I am at least 18. I'
+                    : 'I am at least 16, or a teacher contributing for my class. I'}{' '}
                   own these photos and grant GSIP permission to include
                   structured contribution data in the ODbL 1.0 database and
                   publish sanitized photos under CC BY-SA 4.0, under the{' '}
@@ -1270,184 +1473,204 @@ export function App() {
           </form>
         )}
 
-        <section
-          ref={queueSection}
-          tabIndex={-1}
-          className="status-card"
-          aria-live="polite"
-        >
-          <div>
-            <p className="step-number">Status</p>
-            <h2>{live ? status : 'Collection is closed.'}</h2>
-            {native && (
-              <div role="group" aria-label="Device sync reminders">
-                <h3>Sync reminders</h3>
-                <p>
-                  One optional reminder to review unsynced work after about a
-                  day. Delivery can be delayed by your phone.
-                </p>
-                <button
-                  type="button"
-                  disabled={
-                    reminderBusy ||
-                    reminderView.enabled ||
-                    reminderView.outcome === 'unsupported' ||
-                    !live ||
-                    serviceState !== 'open' ||
-                    !client
-                  }
-                  onClick={() => {
-                    setReminderBusy(true)
-                    void reminder.enable().finally(() => setReminderBusy(false))
-                  }}
-                >
-                  Enable sync reminders
-                </button>
-                <button
-                  type="button"
-                  className="secondary"
-                  disabled={!reminderView.enabled && !reminderBusy}
-                  onClick={() => {
-                    void reminder.disable()
-                  }}
-                >
-                  Turn off sync reminders
-                </button>
-                <p role="status">
-                  {reminderView.outcome === 'cleanup_pending'
-                    ? 'Device reminder cleanup is pending. Open GSIP again to retry.'
-                    : reminderView.outcome === 'unsupported'
-                      ? 'Reminders are unavailable on this device. Capture still works.'
-                      : reminderView.outcome === 'permission_denied'
-                        ? 'Reminders are off. You can keep using GSIP.'
-                        : reminderView.outcome === 'held'
-                          ? 'Reminders are paused until this device and queued work are ready.'
-                          : reminderView.enabled
-                            ? 'Sync reminders are on.'
-                            : 'Sync reminders are off.'}
-                </p>
-              </div>
-            )}
-            {heldCount > 0 && (
-              <div
-                className="held-actions"
-                role="group"
-                aria-label="Observations from another account"
-              >
-                <p>
-                  {heldCount} observation{heldCount > 1 ? 's were' : ' was'}{' '}
-                  made under an account that is no longer signed in on this
-                  device. {heldCount > 1 ? 'They stay' : 'It stays'} here and{' '}
-                  {heldCount > 1 ? 'are' : 'is'} not sent unless you choose.
-                </p>
-                {heldLibraryCount > 0 && (
+        {!rightsView && (
+          <section
+            ref={queueSection}
+            tabIndex={-1}
+            className="status-card"
+            aria-live="polite"
+          >
+            <div>
+              <p className="step-number">Status</p>
+              <h2>{live ? status : 'Collection is closed.'}</h2>
+              {native && (
+                <div role="group" aria-label="Device sync reminders">
+                  <h3>Sync reminders</h3>
                   <p>
-                    Private library samples stay bound to their original
-                    account. Return to that account to retry; this button cannot
-                    transfer them.
+                    One optional reminder to review unsynced work after about a
+                    day. Delivery can be delayed by your phone.
                   </p>
-                )}
-                <button
-                  type="button"
-                  className="secondary"
-                  onClick={() => {
-                    void discardHeld().then(refreshQueueState)
-                  }}
+                  <button
+                    type="button"
+                    disabled={
+                      reminderBusy ||
+                      reminderView.enabled ||
+                      reminderView.outcome === 'unsupported' ||
+                      !live ||
+                      serviceState !== 'open' ||
+                      !client
+                    }
+                    onClick={() => {
+                      setReminderBusy(true)
+                      void reminder
+                        .enable()
+                        .finally(() => setReminderBusy(false))
+                    }}
+                  >
+                    Enable sync reminders
+                  </button>
+                  <button
+                    type="button"
+                    className="secondary"
+                    disabled={!reminderView.enabled && !reminderBusy}
+                    onClick={() => {
+                      void reminder.disable()
+                    }}
+                  >
+                    Turn off sync reminders
+                  </button>
+                  <p role="status">
+                    {reminderView.outcome === 'cleanup_pending'
+                      ? 'Device reminder cleanup is pending. Open GSIP again to retry.'
+                      : reminderView.outcome === 'unsupported'
+                        ? 'Reminders are unavailable on this device. Capture still works.'
+                        : reminderView.outcome === 'permission_denied'
+                          ? 'Reminders are off. You can keep using GSIP.'
+                          : reminderView.outcome === 'held'
+                            ? 'Reminders are paused until this device and queued work are ready.'
+                            : reminderView.enabled
+                              ? 'Sync reminders are on.'
+                              : 'Sync reminders are off.'}
+                  </p>
+                </div>
+              )}
+              {heldCount > 0 && (
+                <div
+                  className="held-actions"
+                  role="group"
+                  aria-label="Observations from another account"
                 >
-                  Discard {heldCount > 1 ? 'them' : 'it'}
-                </button>
+                  <p>
+                    {heldCount} observation{heldCount > 1 ? 's were' : ' was'}{' '}
+                    made under an account that is no longer signed in on this
+                    device. {heldCount > 1 ? 'They stay' : 'It stays'} here and{' '}
+                    {heldCount > 1 ? 'are' : 'is'} not sent unless you choose.
+                  </p>
+                  {heldLibraryCount > 0 && (
+                    <p>
+                      Private library samples stay bound to their original
+                      account. Return to that account to retry; this button
+                      cannot transfer them.
+                    </p>
+                  )}
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() => {
+                      void discardHeld().then(refreshQueueState)
+                    }}
+                  >
+                    Discard {heldCount > 1 ? 'them' : 'it'}
+                  </button>
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() => {
+                      void recordOwner(client)
+                        .then((uid) => releaseHeld(uid, pilot))
+                        .then(refreshQueueState)
+                        .then(() => sync())
+                    }}
+                  >
+                    {pilot || heldLibraryCount === heldCount
+                      ? 'Retry from the original account'
+                      : 'Send'}{' '}
+                    {heldCount > 1 ? 'them' : 'it'} from this device’s account
+                  </button>
+                </div>
+              )}
+              {libraryConflictCount > 0 && (
+                <div
+                  role="group"
+                  aria-label="Private samples needing attention"
+                >
+                  <p>
+                    {libraryConflictCount} private sample(s) have an immutable
+                    identity or context conflict. They remain on this device
+                    until you discard them.
+                  </p>
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() =>
+                      void discardLibraryConflicts().then(refreshQueueState)
+                    }
+                  >
+                    Discard conflicted private samples
+                  </button>
+                </div>
+              )}
+              {reconfirmCount > 0 && (
+                <div
+                  className="held-actions"
+                  role="group"
+                  aria-label="Observations waiting for the contribution terms"
+                >
+                  <p>
+                    {reconfirmCount} observation
+                    {reconfirmCount > 1 ? 's' : ''} waited more than 30 days to
+                    sync, so the{' '}
+                    <a href={links.terms} target="_blank" rel="noreferrer">
+                      contribution terms
+                    </a>{' '}
+                    must be accepted again before{' '}
+                    {reconfirmCount > 1 ? 'they are' : 'it is'} sent. Nothing
+                    else about {reconfirmCount > 1 ? 'them' : 'it'} changes.
+                  </p>
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() => {
+                      void reconfirmTerms(
+                        new Date().toISOString(),
+                        TERMS_VERSION,
+                      )
+                        .then(refreshQueueState)
+                        .then(() => sync())
+                    }}
+                  >
+                    Accept the terms again and send
+                  </button>
+                </div>
+              )}
+              {deadLetterCount > 0 && (
                 <button
                   type="button"
                   className="secondary"
                   onClick={() => {
-                    void recordOwner(client)
-                      .then((uid) => releaseHeld(uid))
+                    void retryDeadLettered()
                       .then(refreshQueueState)
                       .then(() => sync())
                   }}
                 >
-                  {heldLibraryCount === heldCount
-                    ? 'Retry from the original account'
-                    : 'Send'}{' '}
-                  {heldCount > 1 ? 'them' : 'it'} from this device’s account
+                  Retry failed observations
                 </button>
-              </div>
-            )}
-            {libraryConflictCount > 0 && (
-              <div role="group" aria-label="Private samples needing attention">
-                <p>
-                  {libraryConflictCount} private sample(s) have an immutable
-                  identity or context conflict. They remain on this device until
-                  you discard them.
-                </p>
-                <button
-                  type="button"
-                  className="secondary"
-                  onClick={() =>
-                    void discardLibraryConflicts().then(refreshQueueState)
-                  }
-                >
-                  Discard conflicted private samples
-                </button>
-              </div>
-            )}
-            {reconfirmCount > 0 && (
-              <div
-                className="held-actions"
-                role="group"
-                aria-label="Observations waiting for the contribution terms"
-              >
-                <p>
-                  {reconfirmCount} observation
-                  {reconfirmCount > 1 ? 's' : ''} waited more than 30 days to
-                  sync, so the{' '}
-                  <a href={links.terms} target="_blank" rel="noreferrer">
-                    contribution terms
-                  </a>{' '}
-                  must be accepted again before{' '}
-                  {reconfirmCount > 1 ? 'they are' : 'it is'} sent. Nothing else
-                  about {reconfirmCount > 1 ? 'them' : 'it'} changes.
-                </p>
-                <button
-                  type="button"
-                  className="secondary"
-                  onClick={() => {
-                    void reconfirmTerms(new Date().toISOString(), TERMS_VERSION)
-                      .then(refreshQueueState)
-                      .then(() => sync())
-                  }}
-                >
-                  Accept the terms again and send
-                </button>
-              </div>
-            )}
-            {deadLetterCount > 0 && (
-              <button
-                type="button"
-                className="secondary"
-                onClick={() => {
-                  void retryDeadLettered()
-                    .then(refreshQueueState)
-                    .then(() => sync())
-                }}
-              >
-                Retry failed observations
-              </button>
-            )}
-          </div>
-          {publicCell && <HexPreview cell={publicCell} />}
-        </section>
-
-        {live && client && (
-          <MySoil load={loadMySoil} refreshKey={soilRefresh} />
+              )}
+            </div>
+            {publicCell && <HexPreview cell={publicCell} />}
+          </section>
         )}
 
         {live && client && (
+          <MySoil
+            key={`soil-${authEpoch}`}
+            load={loadMySoil}
+            refreshKey={soilRefresh}
+            privatePilot={pilot}
+          />
+        )}
+
+        {(live || rightsView) && client && (
           <YourData
+            key={`rights-${authEpoch}`}
             client={client}
-            onBeforeRightsRequest={() =>
-              native ? reminder.hold() : Promise.resolve()
-            }
+            onConfirmedCleanupPending={() => setRightsCleanupPending(true)}
+            onBeforeRightsRequest={() => {
+              authGeneration.current += 1
+              rightsHold.current = true
+              setAdmission('unknown')
+              return native ? reminder.hold() : Promise.resolve()
+            }}
             onQueueCleared={async () => {
               // The queue and any photos taken here are gone; My Soil changes too.
               for (const shot of SHOTS) photoRequests.current[shot] += 1
@@ -1455,6 +1678,7 @@ export function App() {
               setLibraryDraft(null)
               setSoilRefresh((count) => count + 1)
               await refreshQueueState()
+              setRightsCleanupPending(false)
             }}
           />
         )}

@@ -146,6 +146,8 @@ def submission(
         provenance_tier=-1 if synthetic and tier == 0 else tier,
         status="qa_pass",
         surface_condition="moist",
+        # Trusted synthetic source fixture only; never infer this classification for real data.
+        collection_scope="legacy",
     )
 
 
@@ -162,6 +164,20 @@ def http_error(status: int) -> httpx.HTTPStatusError:
 
 def three_contributors_in_one_cell() -> list[ExportSubmission]:
     return [submission(index) for index in (1, 2, 3)]
+
+
+class SyntheticExportSource(SupabaseExportSource):
+    """Explicit synthetic approval preserves tests of the independent legacy contracts.
+
+    The actual collection migration returns held and exposes no publication-enabling operation.
+    No production source, environment variable or CLI argument uses this test-only subclass.
+    """
+
+    def collection_publication_capabilities(self) -> dict[str, Any]:
+        return {
+            "version": "gsip-collection-publication-v1",
+            "publication_allowed": True,
+        }
 
 
 class SyntheticPrivacy:
@@ -488,7 +504,7 @@ def test_postgrest_reads_all_1001_rows() -> None:
         content_range = f"{start}-{last}/{len(rows)}" if page else f"*/{len(rows)}"
         return httpx.Response(200, headers={"Content-Range": content_range}, json=page)
 
-    source = SupabaseExportSource("https://supabase.test", "service-key")
+    source = SyntheticExportSource("https://supabase.test", "service-key")
     source.client.close()
     source.client = httpx.Client(transport=httpx.MockTransport(handler))
     try:
@@ -511,6 +527,7 @@ def test_source_attaches_per_photo_qa_and_keeps_the_contributor_private() -> Non
                 "h3_r8": BURLINGTON,
                 "id": submission_id,
                 "is_synthetic": False,
+                "collection_scope": "legacy",
                 "land_cover": "cropland",
                 "precip_flag": None,
                 "status": "qa_pass",
@@ -587,7 +604,7 @@ def load_from(
             200, headers={"Content-Range": f"0-{len(body) - 1}/{len(body)}"}, json=body
         )
 
-    source = SupabaseExportSource("https://supabase.test", "service-key")
+    source = SyntheticExportSource("https://supabase.test", "service-key")
     source.client.close()
     source.client = httpx.Client(transport=httpx.MockTransport(handler))
     try:
@@ -610,6 +627,7 @@ def source_tables(
                 "h3_r8": BURLINGTON,
                 "id": "73f0400e-5c64-5a6e-90d1-000000000001",
                 "is_synthetic": False,
+                "collection_scope": "legacy",
                 "land_cover": "cropland",
                 "precip_flag": None,
                 "status": "qa_pass",
@@ -794,7 +812,7 @@ def test_hub_replacement_precedes_atomic_public_cell_refresh_and_the_release_rec
             upload.update(kwargs)
             return CommitInfo(COMMIT)
 
-    class RecordingSource(SupabaseExportSource):
+    class RecordingSource(SyntheticExportSource):
         @property
         def photo_privacy(self) -> PhotoPrivacyAuthority:
             return SyntheticPrivacy()
@@ -831,7 +849,7 @@ def test_a_release_without_an_exact_commit_is_recorded_without_one(tmp_path: Pat
         def upload_folder(self, **kwargs: Any) -> str:
             return "https://huggingface.co/datasets/org/dataset"
 
-    class RecordingSource(SupabaseExportSource):
+    class RecordingSource(SyntheticExportSource):
         @property
         def photo_privacy(self) -> PhotoPrivacyAuthority:
             return SyntheticPrivacy()
@@ -862,7 +880,7 @@ def test_the_release_record_is_an_append_only_post_with_counts_only() -> None:
         sent.append(request)
         return httpx.Response(201)
 
-    source = SupabaseExportSource("https://supabase.test", "service-key")
+    source = SyntheticExportSource("https://supabase.test", "service-key")
     source.client.close()
     source.client = httpx.Client(transport=httpx.MockTransport(handler))
     try:
@@ -896,7 +914,7 @@ def test_failed_post_upload_refresh_is_retried_on_the_next_run(
             nonlocal uploads
             uploads += 1
 
-    class RecoveringSource(SupabaseExportSource):
+    class RecoveringSource(SyntheticExportSource):
         @property
         def photo_privacy(self) -> PhotoPrivacyAuthority:
             return SyntheticPrivacy()
@@ -948,7 +966,7 @@ def test_public_cell_refresh_sends_k_anonymous_cells_and_clears_an_empty_release
         requests.append(json.loads(request.content))
         return httpx.Response(200, json=1)
 
-    source = SupabaseExportSource("https://supabase.test", "service-key")
+    source = SyntheticExportSource("https://supabase.test", "service-key")
     source.client.close()
     source.client = httpx.Client(transport=httpx.MockTransport(handler))
     try:

@@ -60,6 +60,10 @@ select is(
     'legacy grants keep an unknown receipt time'
 );
 
+-- Explicit disposable invitation for the historical acceptance case; no deployment backfill.
+update auth.users set is_anonymous=false where id='e1000000-0000-4000-8000-000000000003';
+insert into private.collection_pilot_members(auth_uid) values('e1000000-0000-4000-8000-000000000003');
+select public.set_library_intake_open(true);
 update public.service_state set capture_open = true where singleton;
 set local role authenticated;
 set local "request.jwt.claims" = '{"sub":"e1000000-0000-4000-8000-000000000003","role":"authenticated"}';

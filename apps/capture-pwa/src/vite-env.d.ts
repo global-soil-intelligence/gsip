@@ -4,6 +4,7 @@
 declare const __GSIP_CLIENT_VERSION__: string
 
 interface ImportMetaEnv {
+  readonly VITE_COLLECTION_MODE?: string
   readonly VITE_CAPTURE_LIVE?: string
   readonly VITE_LIBRARY_INTAKE_LIVE?: string
   readonly VITE_PRIVACY_URL?: string

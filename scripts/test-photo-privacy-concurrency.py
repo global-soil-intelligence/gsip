@@ -65,7 +65,10 @@ def fixture(command: list[str], stage: str) -> Fixture:
     sql = f"""
     insert into public.terms_versions(version,published_at) values({literal(terms)},
         now()-interval '1 day');
-    insert into auth.users(id) values({literal(auth)});
+    insert into auth.users(id,is_anonymous) values({literal(auth)},false);
+    insert into private.collection_pilot_members(auth_uid) values({literal(auth)});
+    update public.service_state set capture_open=true;
+    select public.set_library_intake_open(true);
     insert into public.contributors(id,auth_uid,handle) values({literal(contributor)},
         {literal(auth)},{literal("privacy-race-" + uuid4().hex[:16])});
     insert into public.contribution_grants(id,contributor_id,terms_version,accepted_at,

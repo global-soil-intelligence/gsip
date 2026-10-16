@@ -47,6 +47,7 @@ FORBIDDEN_PUBLIC_KEYS = {
     "camera_metadata_private",
     "capture_evidence_private",
     "contributor_id",
+    "collection_scope",
     "device_model",
     "elevation",
     "geom_precise",
@@ -101,6 +102,7 @@ MAX_SET_ASIDE_SHARE = 0.10
 SET_ASIDE_ALLOWANCE = 3
 MISSING_OBJECT_STATUSES = {400, 404}
 HF_REVISION = re.compile(r"^[0-9a-f]{40}$")
+COLLECTION_PUBLICATION_VERSION = "gsip-collection-publication-v1"
 
 
 class ExportPrivacyError(ValueError):
@@ -180,6 +182,9 @@ class ExportSubmission:
     provenance_tier: int | None
     status: str
     surface_condition: str | None
+    # Missing classification is unknown even for pure callers. Trusted synthetic fixtures
+    # explicitly name legacy scope; the real REST adapter always requires the server field.
+    collection_scope: str | None = None
 
 
 @dataclass(frozen=True)
@@ -223,6 +228,13 @@ def assert_public_record(value: Any, path: str = "record") -> None:
             assert_public_record(child, f"{path}[{index}]")
 
 
+def assert_releasable_collection_scope(value: Any) -> None:
+    """Pilot classification is independent of QA, rights, tiers and publication approval."""
+
+    if value != "legacy" or type(value) is not str:
+        raise ExportPrivacyError("An ineligible collection scope reached the export")
+
+
 def assert_field_data(submission: ExportSubmission) -> None:
     """I10, I11: every released row is non-synthetic field data with a server-assigned tier.
 
@@ -230,6 +242,7 @@ def assert_field_data(submission: ExportSubmission) -> None:
     one means a query or the database invariant broke, so the whole release aborts.
     """
 
+    assert_releasable_collection_scope(submission.collection_scope)
     tier = submission.provenance_tier
     if submission.is_synthetic or type(tier) is not int or tier not in RELEASABLE_TIERS:
         raise ExportPrivacyError("A synthetic or untiered row reached the release")
@@ -699,6 +712,10 @@ def build_export(
     *,
     photo_privacy: PhotoPrivacyAuthority | None = None,
 ) -> ExportResult:
+    # Refuse the entire source before policy reads, staging or public aggregation. Silently
+    # filtering a pilot row could still publish a release built from an unsupported source.
+    for submission in submissions:
+        assert_releasable_collection_scope(submission.collection_scope)
     policy = photo_privacy.policy() if photo_privacy is not None else None
     bindings: dict[str, PhotoExportBinding] = {}
     qualifying = sorted(
@@ -815,10 +832,57 @@ class SupabaseExportSource:
     def photo_privacy(self) -> PhotoPrivacyAuthority:
         return RpcPhotoPrivacy(self.url, self.client)
 
+    def collection_publication_capabilities(self) -> Any:
+        """Read the service-only contract. This package's migration always returns held.
+
+        No local environment variable, command flag or cached approval can enable publication.
+        Synthetic test sources explicitly provide an allow response only to preserve coverage
+        of the legacy rights, photo and export contracts behind this independent guard.
+        """
+
+        def pairs(values: list[tuple[str, Any]]) -> dict[str, Any]:
+            result: dict[str, Any] = {}
+            for key, value in values:
+                if key in result:
+                    raise ValueError("Ambiguous collection publication capability")
+                result[key] = value
+            return result
+
+        def nonfinite(value: str) -> Never:
+            raise ValueError("Invalid collection publication capability")
+
+        content = bytearray()
+        with self.client.stream(
+            "POST", f"{self.url}/rest/v1/rpc/collection_publication_capabilities", json={}
+        ) as response:
+            response.raise_for_status()
+            for chunk in response.iter_bytes():
+                if len(content) + len(chunk) > 4096:
+                    raise ValueError("Oversized collection publication capability")
+                content.extend(chunk)
+        return json.loads(
+            content.decode("utf-8"), object_pairs_hook=pairs, parse_constant=nonfinite
+        )
+
+    def assert_publication_allowed(self) -> None:
+        try:
+            capability = self.collection_publication_capabilities()
+            allowed = (
+                isinstance(capability, dict)
+                and set(capability) == {"version", "publication_allowed"}
+                and capability["version"] == COLLECTION_PUBLICATION_VERSION
+                and capability["publication_allowed"] is True
+            )
+        except (httpx.HTTPError, ValueError, TypeError, RecursionError):
+            allowed = False
+        if not allowed:
+            raise ExportPrivacyError("Collection publication is held or unsupported")
+
     def _rows(self, path: str, page_size: int = 1000) -> list[dict[str, Any]]:
         rows: list[dict[str, Any]] = []
         expected_total: int | None = None
         for start in range(0, 2_147_483_647, page_size):
+            self.assert_publication_allowed()
             response = self.client.get(
                 f"{self.url}/rest/v1/{path}",
                 headers={
@@ -847,6 +911,7 @@ class SupabaseExportSource:
         raise ValueError("PostgREST pagination exceeded the supported row range")
 
     def photo(self, storage_path: str) -> bytes:
+        self.assert_publication_allowed()
         path = quote(storage_path, safe="/")
         response = self.client.get(
             f"{self.url}/storage/v1/object/authenticated/submission-photos/{path}"
@@ -861,6 +926,7 @@ class SupabaseExportSource:
         }
 
     def submissions(self) -> list[ExportSubmission]:
+        self.assert_publication_allowed()
         withdrawn = self.withdrawn_grant_ids()
         reviews = {
             (str(row["contributor_id"]), str(row["attribution_name"])): str(row["decision"])
@@ -874,8 +940,12 @@ class SupabaseExportSource:
             "&order=id&select="
             "id,contributor_id,h3_r8,h3_r6,captured_at,land_cover,surface_condition,disturbed,"
             "precip_flag,status,is_synthetic,grant_id,provenance_tier,location_source,"
-            "capture_method,contributor:contributors(auth_uid)"
+            "capture_method,collection_scope,contributor:contributors(auth_uid)"
         )
+        # Validate the complete page set before reading any row's grant, photo or label data.
+        # REST records must carry their server-owned classification explicitly, never a default.
+        for row in rows:
+            assert_releasable_collection_scope(row.get("collection_scope"))
         exported: list[ExportSubmission] = []
         for row in rows:
             submission_id = str(row["id"])
@@ -951,6 +1021,7 @@ class SupabaseExportSource:
                     provenance_tier=row["provenance_tier"],
                     status=str(row["status"]),
                     surface_condition=row["surface_condition"],
+                    collection_scope=row["collection_scope"],
                 )
             )
         return exported
@@ -961,6 +1032,7 @@ class SupabaseExportSource:
         Each pushed commit is recorded once, so a retry after a lost response changes nothing.
         """
 
+        self.assert_publication_allowed()
         response = self.client.post(
             f"{self.url}/rest/v1/dataset_releases",
             params={"on_conflict": "version,hf_revision"},
@@ -975,6 +1047,7 @@ class SupabaseExportSource:
         response.raise_for_status()
 
     def refresh_h3_cells(self, cells: tuple[PublishedCell, ...]) -> None:
+        self.assert_publication_allowed()
         response = self.client.post(
             f"{self.url}/rest/v1/rpc/refresh_public_h3_cells",
             json={"payload": [cell.payload() for cell in cells]},
@@ -990,6 +1063,9 @@ def publish_export(
     repo_id: str,
     api: HfApi | None = None,
 ) -> ExportResult:
+    source.assert_publication_allowed()
+    for submission in result.source_submissions:
+        assert_releasable_collection_scope(submission.collection_scope)
     privacy = source.photo_privacy
     _safe_artifact_files(result.target)
     # Cached/same-date artifacts with no live process-private evidence must be rebuilt.
@@ -1045,7 +1121,9 @@ def publish_export(
     else:
         raise ExportHealthError("Rights kept changing before publication; refusing to publish")
     _verify_public_artifact(result)
+    source.assert_publication_allowed()
     hub = api or HfApi(token=token)
+    source.assert_publication_allowed()
     commit = hub.upload_folder(
         repo_id=repo_id,
         repo_type="dataset",
@@ -1053,18 +1131,26 @@ def publish_export(
         commit_message=f"GSIP public export {export_date.isoformat()}",
         delete_patterns=["photos/**", "data/**"],
     )
-    _with_retries(lambda: source.refresh_h3_cells(result.cells))
+
+    def refresh() -> None:
+        source.assert_publication_allowed()
+        source.refresh_h3_cells(result.cells)
+
+    _with_retries(refresh)
     # The release is recorded last, once the data and the public cells agree. A failure here
     # fails the run, and the next run pushes and records again.
     revision = getattr(commit, "oid", None)
-    _with_retries(
-        lambda: source.record_release(
+
+    def record_release_step() -> None:
+        source.assert_publication_allowed()
+        source.record_release(
             export_date.isoformat(),
             result.rows,
             result.photos,
             revision if isinstance(revision, str) and HF_REVISION.match(revision) else None,
         )
-    )
+
+    _with_retries(record_release_step)
     return result
 
 
@@ -1093,6 +1179,7 @@ def main() -> None:
     source = SupabaseExportSource(
         os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"]
     )
+    source.assert_publication_allowed()
     submissions = source.submissions()
     result = build_export(
         submissions, args.output, args.date, source.photo, photo_privacy=source.photo_privacy

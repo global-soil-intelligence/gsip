@@ -73,6 +73,13 @@ select ok(not has_table_privilege('authenticated','private.library_samples','sel
     and not has_table_privilege('service_role','private.library_intakes','update'),
     'clients cannot read/write private tables and service role cannot rewrite claims');
 
+-- Explicit disposable invitation fixture; earlier ownership/privacy assertions stay effective.
+insert into auth.users(id,is_anonymous)
+select auth_uid,false from public.contributors where auth_uid is not null on conflict(id) do nothing;
+update auth.users set is_anonymous=false; -- every auth fixture in this rolled-back file is synthetic/permanent
+insert into private.collection_pilot_members(auth_uid)
+select id from auth.users where is_anonymous is false on conflict(auth_uid) do nothing;
+
 set local role anon;
 select lives_ok($$select public.library_intake_capabilities()$$,'anonymous capability read succeeds without an account');
 select throws_ok($$select public.record_library_intake(pg_temp.request(1))$$,'42501',null,'anonymous intake is refused');

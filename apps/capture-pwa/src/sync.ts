@@ -2,6 +2,7 @@ import {
   AccountChanged,
   LibraryConflict,
   LibraryUnavailable,
+  PilotUnavailable,
   QueueDiscarded,
   RecordWithdrawn,
   TermsReconfirmationNeeded,
@@ -121,7 +122,12 @@ async function drainUnlocked(
         summary.discarded += 1
         continue
       }
-      if (error instanceof LibraryUnavailable) {
+      // Auth/view changes during a request cannot consume an owned record's retry budget.
+      if (stopped()) break
+      if (
+        error instanceof LibraryUnavailable ||
+        error instanceof PilotUnavailable
+      ) {
         // A checkpoint may already contain completed photo stages; preserve it unchanged.
         summary.paused = (summary.paused ?? 0) + 1
         continue

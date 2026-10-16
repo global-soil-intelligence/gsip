@@ -1,3 +1,7 @@
+import {
+  collectionBuild,
+  assertCollectionOutput,
+} from '../../scripts/collection-build-contract.mts'
 import react from '@vitejs/plugin-react'
 import { loadEnv } from 'vite'
 import { defineConfig } from 'vitest/config'
@@ -17,10 +21,17 @@ export default defineConfig(({ mode }) => {
   const env = { ...loadEnv(mode, '.', 'VITE_'), ...process.env }
   const captureLive = env.VITE_CAPTURE_LIVE === 'true'
   const libraryLive = env.VITE_LIBRARY_INTAKE_LIVE === 'true'
+  const collection = collectionBuild(mode, env)
   return {
     base: './',
+    ...(collection.output
+      ? { build: { outDir: collection.output, emptyOutDir: true } }
+      : {}),
     define: {
       __GSIP_CLIENT_VERSION__: JSON.stringify(clientVersion),
+      'import.meta.env.VITE_COLLECTION_MODE': JSON.stringify(
+        collection.receipt ? 'invited_private' : 'closed',
+      ),
       'import.meta.env.VITE_CAPTURE_LIVE': JSON.stringify(String(captureLive)),
       'import.meta.env.VITE_LIBRARY_INTAKE_LIVE': JSON.stringify(
         String(libraryLive),
@@ -30,14 +41,25 @@ export default defineConfig(({ mode }) => {
       react(),
       {
         name: 'gsip-activation-receipt',
+        configResolved(config) {
+          assertCollectionOutput(collection, config.build.outDir, config.root)
+        },
         generateBundle() {
+          if (collection.receipt && !collection.fixture)
+            assertCollectionOutput(
+              collection,
+              collection.output!,
+              process.cwd(),
+            )
           this.emitFile({
             type: 'asset',
             fileName: 'gsip-activation.json',
-            source: JSON.stringify({
-              capture_live: captureLive,
-              library_intake_live: libraryLive,
-            }),
+            source: JSON.stringify(
+              collection.receipt ?? {
+                capture_live: captureLive,
+                library_intake_live: libraryLive,
+              },
+            ),
           })
         },
       },

@@ -15,7 +15,7 @@ alter default privileges in schema public grant all on sequences to anon, authen
 
 create schema if not exists auth;
 grant usage on schema auth to anon, authenticated, service_role;
-create table if not exists auth.users (id uuid primary key);
+create table if not exists auth.users (id uuid primary key, is_anonymous boolean default false);
 create or replace function auth.uid() returns uuid language sql stable as $$
   select coalesce(
     nullif(current_setting('request.jwt.claim.sub', true), ''),

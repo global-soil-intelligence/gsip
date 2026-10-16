@@ -408,7 +408,7 @@ def test_closed_gate_revalidates_same_date_photo_artifact_before_upload(tmp_path
         def policy(self) -> PhotoPolicy | None:
             return None
 
-    class Source(SupabaseExportSource):
+    class Source(fixtures.SyntheticExportSource):
         @property
         def photo_privacy(self) -> Closed:
             return Closed()
@@ -451,7 +451,7 @@ def test_last_minute_withdrawal_is_rebuilt_and_k_anonymity_recomputed(tmp_path: 
     assert grant is not None
     withdrawn_id = grant.id
 
-    class Source(SupabaseExportSource):
+    class Source(fixtures.SyntheticExportSource):
         @property
         def photo_privacy(self) -> fixtures.SyntheticPrivacy:
             return fixtures.SyntheticPrivacy()
@@ -565,7 +565,7 @@ def test_empty_cached_artifact_cannot_upload_orphan_media(tmp_path: Path) -> Non
             checks += 1
             return None
 
-    class Source(SupabaseExportSource):
+    class Source(fixtures.SyntheticExportSource):
         @property
         def photo_privacy(self) -> Closed:
             return Closed()
@@ -617,7 +617,7 @@ def test_withdrawal_during_final_photo_rpc_rebuilds_structured_rows(tmp_path: Pa
 
     authority = Withdrawing()
 
-    class Source(SupabaseExportSource):
+    class Source(fixtures.SyntheticExportSource):
         @property
         def photo_privacy(self) -> Withdrawing:
             return authority
@@ -710,7 +710,7 @@ def closed_source() -> SupabaseExportSource:
         def policy(self) -> PhotoPolicy | None:
             return None
 
-    class Source(SupabaseExportSource):
+    class Source(fixtures.SyntheticExportSource):
         @property
         def photo_privacy(self) -> Closed:
             return Closed()
