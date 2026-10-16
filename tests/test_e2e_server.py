@@ -116,3 +116,36 @@ def test_playwright_uses_isolated_server_and_disallows_server_reuse() -> None:
     assert "uv run python tests/e2e_server.py" in config
     assert "reuseExistingServer: false" in config
     assert "VITE_CAPTURE_LIVE: 'true'" not in config
+
+
+@pytest.mark.parametrize("layout", ["/gsip/map/", "/map/"])
+def test_canonical_map_routes_serve_the_same_built_artifact(
+    tmp_path: Path, layout: str
+) -> None:
+    site, fixture = tmp_path / "site", tmp_path / "fixture"
+    handler = object.__new__(e2e_server.handler_type(site, fixture))
+    assert handler.translate_path(f"{layout}index.html") == str(site / "map/index.html")
+    assert handler.translate_path(f"{layout}assets/worker.js?cache=synthetic") == str(
+        site / "map/assets/worker.js"
+    )
+
+
+@pytest.mark.parametrize(
+    "path",
+    ["/capture/index.html", "/map/../capture/index.html", "/map/%2e%2e/capture/index.html"],
+)
+def test_root_map_alias_does_not_open_root_capture_or_escape_its_subtree(
+    tmp_path: Path, path: str
+) -> None:
+    site, fixture = tmp_path / "site", tmp_path / "fixture"
+    handler = object.__new__(e2e_server.handler_type(site, fixture))
+    assert handler.translate_path(path) == str(site / ".not-found")
+
+
+def test_root_map_alias_refuses_symlink_escape(tmp_path: Path) -> None:
+    site, fixture = tmp_path / "site", tmp_path / "fixture"
+    (site / "map").mkdir(parents=True)
+    fixture.mkdir()
+    (site / "map/escaped-capture").symlink_to(fixture, target_is_directory=True)
+    handler = object.__new__(e2e_server.handler_type(site, fixture))
+    assert handler.translate_path("/map/escaped-capture/index.html") == str(site / ".not-found")

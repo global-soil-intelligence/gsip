@@ -10,10 +10,23 @@ import {
   priorSource,
 } from '../src/mapData'
 
+const workerConfig = vi.hoisted(() => ({
+  constructMap: vi.fn(),
+  setWorkerUrl: vi.fn(),
+}))
+
+vi.mock('maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url', () => ({
+  default: '/synthetic-map-worker.js',
+}))
+
 vi.mock('maplibre-gl', () => ({
+  setWorkerUrl: workerConfig.setWorkerUrl,
   addProtocol: vi.fn(),
   AttributionControl: class {},
   Map: class {
+    constructor() {
+      workerConfig.constructMap()
+    }
     addControl() {}
     on() {}
     remove() {}
@@ -104,6 +117,16 @@ describe('prior legends', () => {
 })
 
 describe('public map', () => {
+  it('configures the bundled worker before constructing a map', () => {
+    render(<App />)
+    expect(workerConfig.setWorkerUrl).toHaveBeenCalledWith(
+      '/synthetic-map-worker.js',
+    )
+    expect(workerConfig.setWorkerUrl.mock.invocationCallOrder[0]).toBeLessThan(
+      workerConfig.constructMap.mock.invocationCallOrder[0],
+    )
+  })
+
   it('offers all Phase 1 layers, units, and a contribution path', () => {
     render(<App />)
     expect(screen.getByRole('link', { name: /contribute/i })).toBeDefined()

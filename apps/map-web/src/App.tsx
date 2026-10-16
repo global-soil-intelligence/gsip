@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as maplibregl from 'maplibre-gl'
+import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 import type { Map as MapLibreMap, MapLayerMouseEvent } from 'maplibre-gl'
 import { Protocol } from 'pmtiles'
 import { legendGradient, legendLabels } from '@gsip/schema'
@@ -15,6 +16,9 @@ import {
   wmsLegendUrl,
 } from './mapData'
 import 'maplibre-gl/dist/maplibre-gl.css'
+
+// MapLibre's dynamic sibling URL is invisible to Vite; bundle the complete worker.
+maplibregl.setWorkerUrl(mapWorkerUrl)
 
 let protocolRegistered = false
 
