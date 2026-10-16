@@ -1,7 +1,8 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
-**Version:** 13.0 proposed — 2026-10-14 (exact synthetic native scope; SPEC §15.12)
+**Version:** 14.0 proposed — 2026-10-16 (collection readiness; SPEC §11.1)
+**v14 amendment status:** records Justin's decision that outside counsel does not gate collection. WP-COLLECT-1 prepares policy/readiness; WP-COLLECT-2 remains a separate, review-gated collection build/auth/publication-boundary package. Audience, operational exceptions and every production go remain unresolved. No current packaging check is removed or weakened.
 **v13 amendment status:** exact APP-2C2A native scope is proposed in [IOS_NATIVE_SCOPE.md](IOS_NATIVE_SCOPE.md). Justin approved #70 and the passcode-required/preserve-quarantine/no-automatic-reset policy; do not re-ask those choices. Native-language/file/effect approval and implementation remain held. All existing acceptance states remain unchanged.
 **v12 amendment status (historical proposal):** proposal only. [The concrete native design](IOS_NATIVE_STORAGE_DESIGN.md) follows the APP-2C1 source audit merged in [#69](https://github.com/global-soil-intelligence/gsip/pull/69). No backend is admitted, no native-language exception is granted and all implementation/device/production gates remain held. Existing acceptance states are preserved.
 **v11 amendment status:** Justin approved and merged the specification in [#68](https://github.com/global-soil-intelligence/gsip/pull/68); APP-2C schedules source/feasibility review, conditional migration and separately authorized device proof. [APP-2C1](IOS_STORAGE_FEASIBILITY.md) records a source-only blocked result, not a selected storage backend. No backend is selected and all current source/launch/device gates remain.
@@ -62,6 +63,24 @@ gsip/
 Tooling: pnpm workspaces; ESLint + Prettier; Vitest + Playwright; uv, ruff, mypy --strict, pytest; pgTAP via `supabase test db`. `pnpm test`, `uv run pytest` and `pnpm db:test` from the root run everything.
 
 ## 4. Work packages
+
+### Collection readiness (SPEC §11.1; proposed, no activation authority)
+
+**WP-COLLECT-1 — Owner-reviewed collection policy and readiness** ([issue #78](https://github.com/global-soil-intelligence/gsip/issues/78))
+
+Record Justin's removal of the outside-counsel prerequisite. Preserve I1–I15/B1–B8, immutable grants, private data, default-closed builds and every publication/production hold. Define local storage versus hosted intake, recommend an invited adult browser pilot, and document the missing implementation, schema, operational proof and owner decisions. Contribution documents remain drafts until Justin resolves their factual inputs and adopts a version; no agent supplies acceptance or invents policy details. No code, dependency, schema, worker or configuration change.
+
+Acceptance: coherent SPEC/runbook/document status; a concrete readiness matrix and sequencing; no assertion that merged source is deployed or that collection is already ready; independent review and document-format/processor checks.
+
+**WP-COLLECT-2 — Bounded collection build, account flow and publication boundary (held)**
+
+Depends on reviewed/merged v14 and the owner's audience/account decision. Implement a separately explicit browser collection-artifact path, preserving the default Pages/native closed paths, protected Pages approval and exact activation-manifest validation. Invited mode requires an existing owner-provisioned account and never falls back to anonymous account creation; public signup/anonymous mode needs its own reviewed abuse-control/CAPTCHA plan and approval. Keep existing submission/library gates, owner binding, rights/holdout/quota checks and unverified receipts. Specify an enforceable collection-only publication hold, including manual export/public-cell refresh paths, before real collection. No new paid/closed service or dependency without its own approval and audit.
+
+Acceptance tests must fail on current behavior and prove: ordinary Pages/native paths refuse open artifacts; collection packaging rejects unknown/missing/mismatched mode/manifest and only admits the reviewed target; unauthenticated/expired/wrong-owner callers never create an anonymous account or upload; valid invited sign-in and lost-response/idempotent retries work; an absent library capability holds before mutation; real collection cannot flow to export, map refresh, photos, spectra or field training; withdrawal/deletion clears covered payloads and preserves refusals. Add a synthetic browser end-to-end rehearsal and closed rollback proof. CI/review/merge do not authorize deployment.
+
+**Operator sequence after the source prerequisite:** refresh production inventory/counts/gates and security; run migration regression and show only the reviewed pending migration plan; obtain a separate migration go; verify closed schema/capabilities; finalize/adopt/publish the contributor notices and version; prove the required cleanup/rights/sanitization operations and the publication hold; configure only the owner-approved account/provider/tier choices; then present an exact collection artifact, target and activation/rollback commands for a separate go. Do not create accounts, dispatch workers, flip gates, deploy or migrate while preparing this package.
+
+The independent **WP-SITE-1H** copy repair may correct the contradictory closed-page status and remove an assertion that only a legal review blocks collection. It changes no activation behavior and requires a negative regression proving the page remains closed with no upload controls. Collection readiness is tracked in [COLLECTION_READINESS.md](COLLECTION_READINESS.md).
 
 ### Completed (Phase 0 and Phase 1 code)
 
@@ -130,13 +149,13 @@ Acceptance criteria:
 - [ ] vitest: every prior layer's legend is generated from the palette file; the deploy gate rejects archives that are missing or carry another palette version.
 
 **WP-6d: Contributor rights and launch paperwork**
-Fixes the mechanisms behind launch blocker 7; counsel still approves the text.
+Fixes the mechanisms behind launch blocker 7; Justin adopts the complete contributor text before collection (SPEC §11.1). Outside counsel is optional for that project gate.
 Scope:
 
 1. **Requests.** `deletion_requests` (kinds `withdraw_contributions` and `delete_account`; owner insert and select; one open request per contributor; an empty withdrawal completes when filed) and append-only, untruncatable `grant_withdrawals` (service role). Filing a request withdraws every grant the contributor holds in the same transaction, so publication stops at once. Nothing a request covers comes back: a grant accepted at or before a request, or any grant once an account deletion is requested, is refused with SQLSTATE `WD001`, as are submissions, photo rows and uploads under a withdrawn grant; a contributor can be created only for an auth user that exists.
 2. **Rights worker.** `pipeline/rights_worker.py` (service role, hourly workflow, 20-minute budget, requests with data first) deletes every submission under a withdrawn grant (cascading) and every object in either bucket under the contributor's folder that no remaining submission owns (one database snapshot), and for `delete_account` also withdraws any remaining grant, deletes the auth user through the Admin API and only then pseudonymizes the contributor row and replaces the attribution names on its grants with the default pseudonym (the only change a grant ever undergoes). Idempotent; a failed step returns the request to the queue after a one-hour wait; a failed run opens an issue, and a request older than 25 days fails the run. Every run also deletes canonical photo objects that no photo row owns, and the QA worker undoes a promotion whose photo was withdrawn mid-check.
 3. **Export filters.** Withdrawn grants never export, and the export re-reads withdrawals just before publishing, rebuilding once without late ones (or refusing to publish if they keep arriving). Photos publish only under the default pseudonym or an approved attribution (`attribution_reviews`, service role, with a small review CLI); otherwise the row is released without photos until review.
-4. **Legal pack drafts** in `docs/legal/`, each marked "Draft — requires counsel review": terms, privacy notice with processor list, withdrawal and deletion procedure (including Hugging Face history), classroom and minors policy, sampling and land-access rules.
+4. **Legal pack drafts** in `docs/legal/`, each marked "Draft — awaiting product-owner adoption": terms, privacy notice with processor list, withdrawal and deletion procedure (including Hugging Face history), classroom and minors policy, sampling and land-access rules.
 5. **Capture.** A "Your data" panel to withdraw contributions or delete the account, with typed confirmation and status (account deletion revokes every session); queued observations record their account and are never sent as another or a new account (held for the person to discard or release); `WD001` refusals drop the observation; adding an e-mail upgrades an anonymous account in place; acknowledgement of the sampling rules and the age statement before queueing; terms, privacy and sampling-rules links from `VITE_TERMS_URL`, `VITE_PRIVACY_URL` and `VITE_SAMPLING_RULES_URL` (HTTPS or same-site only), defaulting to the drafts in the repository.
 6. **Rights function boundary (SPEC §6).** A later additive migration moves the guarded auth-existence and upload-check bodies to `private` behind unchanged public invoker signatures with definition-time bound SQL-standard bodies. It preserves authenticated and service-role execution, including the upload-helper grant, and adds restrictive false policies to the two service-only rights tables without granting client access.
 
@@ -184,7 +203,7 @@ host; it does not build or publish archives, change workflows or authorize deplo
 Acceptance criteria:
 
 - [ ] The privacy notice identifies GitHub Pages as the map tile host and discloses browser
-      requests; its counsel-review status remains unchanged.
+      requests; its draft/owner-adoption status remains unchanged; SPEC §11.1 removes outside-counsel sign-off as a collection prerequisite.
 - [ ] The plan requires SoilGrids-only values, palette and checksum evidence, a tile target of
       700 MB or less, a whole site well below 1 GB, and verified Pages 206 range responses.
 - [ ] WMS remains the fallback until every condition passes; release publication and Pages
@@ -370,7 +389,7 @@ Acceptance requirements for source and separately gated deployment:
 - [ ] Private CLI tests reject unauthorized review, preserve audit decisions, suppress private payloads from logs and prevent withdrawn content from reappearing. Only explicit human clearance can overturn a flagged result; no automatic blur exists.
 - [ ] Every code/runtime dependency and exact model artifact has verified separate licenses, source/payload digest, maintenance signal and size. An MIT wrapper cannot imply an MIT weight license; unresolved artifacts cannot be deployed.
 - [ ] Before photo publication, WP-6f is deployed and Justin approves calibration evidence from private synthetic/staged evaluation: per-category sample counts, misses/false positives and uncertainty, high-recall thresholds and unsupported cases. Start with face and scene-text screening; add a dedicated plate detector only if staged evaluation exposes a material gap and its exact artifact has verified code and weight licenses. No claimed GSIP recall is borrowed from an upstream benchmark; an ineligible unselected plate candidate does not become a mandatory dependency.
-- [ ] Contributor-facing/legal copy explains individual photo withholding, private review and residual privacy limits, subject to counsel review. Any immutable older release is identified honestly; no retroactive erasure claim.
+- [ ] Contributor-facing copy explains individual photo withholding, private review and residual privacy limits, subject to product-owner adoption. Any immutable older release is identified honestly; no retroactive erasure claim.
 - [ ] No raw images, precise points, OCR strings or private screening metadata enter public fixtures/reports, CI logs or agent surfaces; I7/I11/I12 tests cover the new path.
 
 **WP-6f implementation details (merged v8 architecture, SPEC §15.5–15.9):** `docs/spec-v8` → `wp-6fa-private-photo-privacy` → `wp-6fb-photo-privacy-worker` → `wp-6fc-photo-export-enforcement`, separate independently reviewed PRs with green CI. The architecture is merged in [#52](https://github.com/global-soil-intelligence/gsip/pull/52), and the three source packages are merged in #53–#55 after their specification/predecessor prerequisites. Owner-authorized code merges supply no production migration, dispatch, model approval, operator credential or photo-publication permission.
@@ -536,7 +555,7 @@ Branch: `wp-sec-1-dependency-remediation`. Update the four confirmed vulnerable 
 4. Tests test behavior (reviewers may run mutation spot-checks).
 5. No scope creep: work outside the WP goes to a separate PR.
 6. Each new dependency justified in the PR (license, maintenance, size).
-7. Licensing boundaries explicit: ODbL 1.0 data, CC BY-SA 4.0 photos, MIT code. Public launch stays blocked until counsel approves the legal pack.
+7. Licensing boundaries explicit: ODbL 1.0 data, CC BY-SA 4.0 photos, MIT code. Complete contributor notices require Justin's adoption; the applicable collection/public-launch gates in SPEC §11 and §11.1 remain required.
 
 ## 6. Environment variables (`.env.example`)
 

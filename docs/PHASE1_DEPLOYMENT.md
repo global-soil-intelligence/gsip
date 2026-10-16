@@ -16,6 +16,17 @@ Phase 1 stack was published as:
 | WP5     | MapLibre public map and PMTiles path       | #8           | Hosted aggregate-only surface active; per-submission residue removed      |
 | WP6     | Fail-closed Hugging Face export            | #9           | Hosted atomic refresh active; retries added; Hub awaits destination/token |
 
+## Collection readiness is a separate operator gate
+
+Justin removed outside-counsel sign-off as a collection prerequisite on 2026-10-16. This does
+not adopt the draft notices or enable hosted writes. Follow [COLLECTION_READINESS.md](COLLECTION_READINESS.md)
+and SPEC §11.1 before a first collection release. The recommended invited browser pilot needs
+a separately reviewed collection-artifact/account path and a verified publication hold; the
+ordinary Pages/native packaging still refuses open flags. Present exact commands and target,
+obtain each production go, and preserve all prior row-count, migration, RLS, secret and rollback
+requirements. Any exception to existing calibration/tile/paid-tier launch prerequisites is a
+separate bounded owner decision, not an implication of this document.
+
 ## Automated proof
 
 - Python: Ruff, strict mypy over production and tests, 29 tests including hostile images, queue
@@ -34,7 +45,7 @@ These are intentionally not bypassed by code:
 1. Independent review findings are resolved and CI passes before protected `main` can merge;
    Justin gives the product-owner go/no-go. His 2026-10-12 owner exception removes the additional
    non-author GitHub approval requirement. No agent submits an approving review.
-2. Complete legal review of the ODbL 1.0 / CC BY-SA 4.0 contribution terms, then confirm enabling
+2. Justin adopts complete ODbL 1.0 / CC BY-SA 4.0 contribution terms and contributor notices, then separately decides enabling
    anonymous sign-in in production Supabase.
 3. Add `SUPABASE_SERVICE_ROLE_KEY` as a GitHub secret for the scheduled prior, photo-QA, and export
    workers.
@@ -105,7 +116,7 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    `uv run python -m pipeline.attribution_review list`, then `approve` or `reject` with
    `--contributor`, `--name-json` (paste the name exactly as `list` prints it) and `--reviewer`.
    Until a name is approved its observations are released without photos.
-4. The legal pack in `docs/legal/` is a draft. When counsel approves it, publish the approved
+4. The legal pack in `docs/legal/` is a draft. When Justin adopts complete text, publish the approved
    versions and set the repository variables `VITE_TERMS_URL`, `VITE_PRIVACY_URL` and
    `VITE_SAMPLING_RULES_URL` (HTTPS or same-site paths); until then the capture app links to the
    drafts in the repository. Capture stays closed until this is done.
@@ -126,7 +137,7 @@ QA workflow, dispatch the nightly export, and complete the stranger-with-a-phone
    days and not in the future; the server records `received_at`. A device whose observation waited
    more than 30 days first offers the original acceptance (so a withdrawn observation is dropped),
    and only then asks its person to accept the current terms again.
-3. When counsel approves new terms: insert the version into `terms_versions` with its
+3. When Justin adopts new terms: insert the version into `terms_versions` with its
    `published_at` and hosted `url`, change `TERMS_VERSION` in `apps/capture-pwa/src/terms.ts`, and
    deploy Pages. Retire the previous version (`retired_at`) only after the new build has been live
    for at least a day: an acceptance given on an un-updated device after retirement is refused.

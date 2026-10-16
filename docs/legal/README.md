@@ -1,8 +1,12 @@
 # GSIP legal pack
 
-> **Draft — requires counsel review.** None of these documents is in force. Capture stays closed
-> (`service_state.capture_open = false`) until counsel approves them and the other SPEC section 11
-> launch gates pass.
+> **Draft — awaiting product-owner adoption.** None of these documents is in force. Justin
+> directed on 2026-10-16 that outside counsel must not be a prerequisite for starting collection.
+> He must still resolve the applicable factual/policy inputs and adopt a complete version before
+> contributors accept it. [SPEC §11.1](../SPEC.md#111-owner-reviewed-collection-readiness-v14-proposal)
+> and [collection readiness](../COLLECTION_READINESS.md) preserve consent, privacy, withdrawal,
+> licences, technical checks and separate production/publication gates. This decision does not
+> establish legal compliance, approve placeholders or open capture.
 
 | Document                                                | Covers                                                                                    |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
@@ -12,9 +16,11 @@
 | [Classroom and minors](CLASSROOM_AND_MINORS.md)         | The age policy and how classes contribute under a teacher of record.                      |
 | [Sampling and land access](SAMPLING_AND_LAND_ACCESS.md) | Where and how contributors may dig; contributors acknowledge these before every queueing. |
 
-## Decisions for counsel
+## Decisions for the product owner
 
-Each document marks open points as **[DECISION]**. In brief:
+Each document marks open points as **[DECISION]**. Justin resolves and adopts the applicable
+choices; he may seek specialist advice where useful. No choice or effective notice is inferred
+from removing the outside-counsel prerequisite. In brief:
 
 1. **Controller details.** Viridis LLC's registered address and privacy contact, and whether an EU
    or UK representative is needed (Art. 27 GDPR / UK GDPR) if the app is offered there.

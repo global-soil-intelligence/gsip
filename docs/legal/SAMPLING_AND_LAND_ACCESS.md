@@ -1,6 +1,6 @@
 # Sampling and land-access rules
 
-> **Draft — requires counsel review.** Not in force. The capture app asks contributors to confirm
+> **Draft — awaiting product-owner adoption.** Not in force. The capture app asks contributors to confirm
 > these rules before every observation is queued.
 
 ## Only where you may dig

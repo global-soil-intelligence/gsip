@@ -1,6 +1,6 @@
 # Withdrawal and deletion procedure
 
-> **Draft — requires counsel review.** Not in force. The mechanisms are implemented (WP-6d); the
+> **Draft — awaiting product-owner adoption.** Not in force. The mechanisms are implemented (WP-6d); the
 > Hugging Face history policy is a **[DECISION]** point.
 
 ## What a contributor can ask for
