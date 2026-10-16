@@ -1,6 +1,6 @@
 # First soil collection: readiness and owner decisions
 
-**WP-COLLECT-1 / SPEC v14 proposal — 2026-10-16. No production authority.**
+**WP-COLLECT-1 / SPEC v14 merged #79; WP-COLLECT-2 source authorized — 2026-10-16. No production authority.**
 
 Justin directed that outside counsel must not delay starting soil collection. This records
 that project-policy decision and prepares the technical path. It does not adopt incomplete
@@ -23,8 +23,7 @@ Use owner-provisioned accounts and keep public signup and anonymous sign-in disa
 must require a valid invited login and never auto-create an anonymous account. Existing code's
 email login is not proof of that complete first-use flow; WP-COLLECT-2 must implement and test it.
 Public self-service collection is an alternative requiring an explicit account/abuse-control
-plan and the owner's CAPTCHA/provider/hosting decisions. The audience is not selected by this
-proposal; the request for the owner's preference remains open.
+plan and the owner's CAPTCHA/provider/hosting decisions. Justin selected the invited phone-browser pilot and authorized #82 source implementation after merging #79/#81; enrollment, capacity/duration and production remain held.
 
 Keep pilot submissions and linked records private, with ownership/RLS, quotas, provenance,
 immutable grants, holdout and withdrawal controls. Photographs must have working sanitization
@@ -66,7 +65,7 @@ These production and Auth reads were verified independently on 2026-10-16 at 22:
 
 ## Sequence and acceptance evidence
 
-1. Review/merge the specification; Justin chooses the audience and any bounded pilot exceptions.
+1. The v14 specification is merged (#79); Justin selected invited browser contributors and authorized #82 implementation. Record any bounded pilot exceptions separately.
 2. Build/review WP-COLLECT-2. Negative tests prove closed defaults, strict collection-mode
    packaging, sign-in refusal/no anonymous fallback, missing-capability refusal before writes,
    wrong-owner/race/retry/withdrawal behavior and enforceable publication holds. Rehearse only
