@@ -287,12 +287,11 @@ export function coarseDeviceModel(): string {
 function CaptureClosed() {
   return (
     <section className="closed-card" aria-labelledby="closed-heading">
-      <p className="step-number">Opening soon</p>
-      <h2 id="closed-heading">Contributions open after our launch review.</h2>
+      <p className="step-number">Collection status</p>
+      <h2 id="closed-heading">Collection is not open yet.</h2>
       <p>
-        GSIP is completing its privacy and legal review before accepting
-        observations. You can print the reference card and explore the public
-        map now.
+        GSIP is preparing its collection service. You can print the reference
+        card and explore the public map now.
       </p>
       <a className="card-link" href={siteLink('../map/')}>
         Explore the map ↗
@@ -1279,7 +1278,7 @@ export function App() {
         >
           <div>
             <p className="step-number">Status</p>
-            <h2>{status}</h2>
+            <h2>{live ? status : 'Collection is closed.'}</h2>
             {native && (
               <div role="group" aria-label="Device sync reminders">
                 <h3>Sync reminders</h3>
