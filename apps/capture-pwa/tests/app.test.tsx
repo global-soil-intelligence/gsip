@@ -18,22 +18,46 @@ describe('capture experience', () => {
     expect(screen.getByLabelText(/B · Fresh face/i)).toBeDefined()
     expect(screen.getByLabelText(/C · Moist texture/i)).toBeDefined()
     expect(screen.getByText(/two photos\. one card/i)).toBeDefined()
+    expect(
+      screen.getByRole('heading', {
+        name: 'Ready for your first observation.',
+      }),
+    ).toBeDefined()
+    expect(
+      screen.queryByRole('heading', { name: 'Collection is closed.' }),
+    ).toBeNull()
     expect(document.body.textContent?.toLowerCase()).not.toContain('soil test')
     expect(document.body.textContent?.toLowerCase()).not.toContain('history')
   })
 
-  it('stays closed unless the build opens capture', () => {
-    render(<App />)
-    expect(
-      screen.getByRole('heading', {
-        name: /contributions open after our launch review/i,
-      }),
-    ).toBeDefined()
-    expect(screen.queryByLabelText(/B · Fresh face/i)).toBeNull()
-    expect(
-      screen.queryByRole('button', { name: /queue observation/i }),
-    ).toBeNull()
-  })
+  it.each([undefined, 'false'])(
+    'reports collection closed without upload controls for capture flag %s',
+    (captureFlag) => {
+      vi.stubEnv('VITE_CAPTURE_LIVE', captureFlag)
+      render(<App />)
+      expect(
+        screen.getByRole('heading', { name: 'Collection is not open yet.' }),
+      ).toBeDefined()
+      expect(
+        screen.getByRole('heading', { name: 'Collection is closed.' }),
+      ).toBeDefined()
+      expect(
+        screen.queryByRole('heading', {
+          name: 'Ready for your first observation.',
+        }),
+      ).toBeNull()
+      expect(document.body.textContent).not.toMatch(/privacy and legal review/i)
+      expect(screen.queryByLabelText(/A · Context/i)).toBeNull()
+      expect(screen.queryByLabelText(/B · Fresh face/i)).toBeNull()
+      expect(screen.queryByLabelText(/C · Moist texture/i)).toBeNull()
+      expect(
+        screen.queryByRole('button', { name: /queue observation/i }),
+      ).toBeNull()
+      expect(
+        screen.getByRole('link', { name: /explore the map/i }),
+      ).toBeDefined()
+    },
+  )
 
   it('warns that a typed attribution name is published with the area and date', () => {
     vi.stubEnv('VITE_CAPTURE_LIVE', 'true')

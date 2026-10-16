@@ -80,7 +80,7 @@ Acceptance tests must fail on current behavior and prove: ordinary Pages/native 
 
 **Operator sequence after the source prerequisite:** refresh production inventory/counts/gates and security; run migration regression and show only the reviewed pending migration plan; obtain a separate migration go; verify closed schema/capabilities; finalize/adopt/publish the contributor notices and version; prove the required cleanup/rights/sanitization operations and the publication hold; configure only the owner-approved account/provider/tier choices; then present an exact collection artifact, target and activation/rollback commands for a separate go. Do not create accounts, dispatch workers, flip gates, deploy or migrate while preparing this package.
 
-The independent **WP-SITE-1H** copy repair may correct the contradictory closed-page status and remove an assertion that only a legal review blocks collection. It changes no activation behavior and requires a negative regression proving the page remains closed with no upload controls. Collection readiness is tracked in [COLLECTION_READINESS.md](COLLECTION_READINESS.md).
+The independent **WP-SITE-1H** ([issue #80](https://github.com/global-soil-intelligence/gsip/issues/80)) copy repair may correct the contradictory closed-page status and remove an assertion that only a legal review blocks collection. It changes no activation behavior and requires a negative regression proving the page remains closed with no upload controls. Collection readiness is tracked in [COLLECTION_READINESS.md](COLLECTION_READINESS.md).
 
 ### Completed (Phase 0 and Phase 1 code)
 
