@@ -1,6 +1,6 @@
 # Classroom and minors policy
 
-> **Draft — requires counsel review.** Not in force. The age threshold and the consent model are
+> **Draft — awaiting product-owner adoption.** Not in force. The age threshold and the consent model are
 > **[DECISION]** points.
 
 ## Age

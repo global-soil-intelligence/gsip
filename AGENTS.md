@@ -144,5 +144,7 @@ respective go. Verify protocol 200, resolution-9 cell 400 and four MCP tools. Ke
 their stores. Do not dispatch export until Justin has created the Hugging Face dataset and
 set `HF_DATASET_REPO` and `HF_TOKEN`. Tile-host approval remains conditional on the owner
 policy and deployment go. Deploy Pages with capture closed, then check prerendered pages and
-`llms.txt`. DNS, required `validate` status, counsel's legal approval and legal URLs, CAPTCHA,
-Supabase paid tier and opening capture are Justin's actions.
+`llms.txt`. DNS, required `validate` status, owner adoption/publication of contributor notices, CAPTCHA,
+Supabase paid tier and opening capture are Justin's actions. SPEC §11.1 records his
+2026-10-16 decision that outside counsel is not a collection prerequisite; complete
+notices, contributor acceptance and all technical/production gates remain required.

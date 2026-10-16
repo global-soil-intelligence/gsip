@@ -4,7 +4,7 @@ The GSIP phone app (WP-APP-1) is the capture app in `apps/capture-pwa` wrapped w
 (`com.globalsoilintelligence.app`, "GSIP Capture"). It is the main contribution funnel (SPEC
 section 4). This page records what the stores will ask and what GSIP answers. Signing, store
 listings and upload are not built yet (WP-APP-2); items marked **[DECISION]** need the product
-owner or counsel.
+owner; outside-counsel sign-off is not a collection prerequisite (SPEC §11.1).
 
 ## How the app is built
 
@@ -69,7 +69,7 @@ The app asks for camera/location when those features are used, and notifications
 ## Privacy labels
 
 Answers for Apple's App Privacy details and Google Play's Data safety form. They follow
-`docs/legal/PRIVACY.md`, which counsel must approve first.
+`docs/legal/PRIVACY.md`, which the product owner must complete and adopt before collection. Store submissions remain separately gated.
 
 | Data                                                            | Collected                      | Linked to the person                | Purpose                                              | Shared                                                                                                                                                                            |
 | --------------------------------------------------------------- | ------------------------------ | ----------------------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -253,6 +253,11 @@ App and Pages builds explicitly keep `VITE_CAPTURE_LIVE=false` and
 from the same values compiled into its code. Pages packaging and native APK/iOS
 artifact checks refuse an open flag or a missing receipt; synthetic open builds
 stay local. The independent hosted capability gate also defaults closed.
+
+SPEC §11.1 proposes a separately reviewed browser-only collection-artifact path. It is not
+implemented by this amendment and does not change the native/default Pages refusal above.
+Invited browser collection makes no claim about iOS backup exclusion, native device checks,
+notifications, signing or store readiness; their existing gates remain in force.
 
 Library draft context, strict declaration JSON bytes, namespace/account bindings
 and the queue generation fence use the existing `gsip-capture-v1` WebKit/browser

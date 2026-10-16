@@ -1,6 +1,6 @@
 # GSIP contribution terms
 
-> **Draft — requires counsel review.** Not in force. Terms version when approved: **[DECISION]**.
+> **Draft — awaiting product-owner adoption.** Not in force. Terms version when approved: **[DECISION]**.
 
 ## 1. Who we are
 

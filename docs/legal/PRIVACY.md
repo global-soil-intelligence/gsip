@@ -1,7 +1,7 @@
 # GSIP privacy notice
 
-> **Draft — requires counsel review.** Not in force. Lawful bases, retention periods and transfer
-> mechanisms marked **[DECISION]** need counsel's confirmation.
+> **Draft — awaiting product-owner adoption.** Not in force. Lawful bases, retention periods and transfer
+> mechanisms marked **[DECISION]** need the product owner's resolution before adoption.
 
 ## Who is responsible
 
@@ -62,6 +62,15 @@ e-mail linking ships, contributions from an inaccessible old account can be with
 the privacy contact. Keep the old phone until its queued work has synced.
 
 ## What becomes public
+
+**Current collection/release status:** public capture and hosted library uploads are closed.
+The proposed first collection mode stores finalized photographs, sample context and optional
+bounded instrument declarations privately and unverified. It publishes no pilot observation,
+photo or spectrum and does not train a field model. Exact audience, contact, retention and
+processor notices must be adopted before that mode is enabled. An instrument declaration does
+not verify its source file, calibration or physical pairing. The paragraphs below describe the
+later eligible public-release plan, not an automatic consequence of private collection. Photo
+publication additionally waits for deployed screening and owner-approved calibration.
 
 The open dataset (nightly, under ODbL 1.0 and CC BY-SA 4.0) and the public map contain, for each
 released observation: a hexagonal area that at least **three different contributors** share
