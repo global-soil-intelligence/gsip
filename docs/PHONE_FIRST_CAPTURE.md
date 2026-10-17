@@ -5,7 +5,7 @@ WP-COLLECT-3 implements SPEC §5.1. Justin authorized pushing these source updat
 ## What stays true
 
 - A context photo (A) and fresh-face close-up (B) remain required; texture photo C remains optional. Sampling requires permission and the existing safety/rights acknowledgments.
-- Missing a physical card alone does not fail QA. Sharpness, exposure, privacy, admission and all other gates still apply. Cardless photos stay uncalibrated; `camera_rgb` does not become measured spectra or a verified biological/laboratory result.
+- Missing a physical card alone does not fail QA. Sharpness, exposure, privacy, admission and all other gates still apply. Cardless photos stay uncalibrated RGB source evidence, not automatically extracted `camera_rgb` summary records. Extraction still follows SPEC §16.3 and is not added here. Neither kind becomes measured spectra or a verified biological/laboratory result.
 - An ordinary observation does not automatically register a library sample or enroll a federation peer. Sample registration is explicit, with real declared depth. Never infer or default missing depth to zero.
 - Preserve I1–I15, L1–L7, B1–B8, exact photo evidence, strict instrument declarations, queue ownership, withdrawal, private pilot admission and publication holds. Keep both activation flags false in default Pages/native builds.
 - No new dependency, service, licence, native code, permission, schema or camera API is selected.
