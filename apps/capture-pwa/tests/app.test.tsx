@@ -17,7 +17,9 @@ describe('capture experience', () => {
     expect(screen.getByLabelText(/A · Context/i)).toBeDefined()
     expect(screen.getByLabelText(/B · Fresh face/i)).toBeDefined()
     expect(screen.getByLabelText(/C · Moist texture/i)).toBeDefined()
-    expect(screen.getByText(/two photos\. one card/i)).toBeDefined()
+    expect(
+      screen.getByText(/two required photos\. one optional/i),
+    ).toBeDefined()
     expect(
       screen.getByRole('heading', {
         name: 'Ready for your first observation.',
@@ -28,6 +30,44 @@ describe('capture experience', () => {
     ).toBeNull()
     expect(document.body.textContent?.toLowerCase()).not.toContain('soil test')
     expect(document.body.textContent?.toLowerCase()).not.toContain('history')
+  })
+
+  it('explains card-free capture before the form and keeps optional physical help reachable', () => {
+    vi.stubEnv('VITE_CAPTURE_LIVE', 'true')
+    render(<App />)
+    const guidance = screen.getByText('No printed card needed.')
+    const form = screen
+      .getByRole('button', { name: /queue observation/i })
+      .closest('form')!
+    expect(
+      guidance.compareDocumentPosition(form) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).not.toBe(0)
+    expect(
+      screen
+        .getByRole('link', { name: /optional printable A6 card/i })
+        .getAttribute('href'),
+    ).toMatch(/reference-card\/gsip-reference-card-v1-color\.pdf$/)
+    const help = screen
+      .getByText('Optional physical reference card')
+      .closest('details')!
+    expect(help).not.toBeNull()
+    expect(help.open).toBe(false)
+    fireEvent.click(screen.getByText('Optional physical reference card'))
+    expect(help.open).toBe(true)
+    expect(help.textContent).toMatch(/not a certified reflectance target/i)
+    expect(screen.getAllByText('Frame the soil for this shot')).toHaveLength(3)
+    expect(screen.queryByText(/keep card \+ soil/i)).toBeNull()
+    expect(document.querySelector('video')).toBeNull()
+    expect(
+      (screen.getByLabelText(/A · Context/i) as HTMLInputElement).required,
+    ).toBe(true)
+    expect(
+      (screen.getByLabelText(/B · Fresh face/i) as HTMLInputElement).required,
+    ).toBe(true)
+    expect(
+      (screen.getByLabelText(/C · Moist texture/i) as HTMLInputElement)
+        .required,
+    ).toBe(false)
   })
 
   it.each([undefined, 'false'])(

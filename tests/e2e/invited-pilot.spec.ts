@@ -102,6 +102,23 @@ for (const rights of ['withdrawal', 'account deletion'] as const) {
     await page.clock.install()
     await page.goto('/gsip/pilot/')
     await expect(
+      page.getByText('No printed card needed.', { exact: true }),
+    ).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: /optional printable A6 card/i }),
+    ).toHaveAttribute(
+      'href',
+      /reference-card\/gsip-reference-card-v1-color\.pdf$/,
+    )
+    const cardHelp = page.getByText('Optional physical reference card', {
+      exact: true,
+    })
+    await cardHelp.click()
+    await expect(
+      page.getByText(/not a certified reflectance target/),
+    ).toBeVisible()
+
+    await expect(
       page.getByRole('button', { name: /queue observation/i }),
     ).toHaveCount(0)
     await expect(page.locator('input[type=file]')).toHaveCount(0)
@@ -137,6 +154,18 @@ for (const rights of ['withdrawal', 'account deletion'] as const) {
     await expect(
       page.getByRole('checkbox', { name: /add a private library sample/i }),
     ).toBeChecked()
+    await expect(page.getByLabel('Depth top (cm)')).toHaveValue('')
+    await expect(page.getByLabel('Depth bottom (cm)')).toHaveValue('')
+    const advanced = page.getByText(
+      'Advanced: instrument declaration (optional)',
+      { exact: true },
+    )
+    await expect(advanced).toBeVisible()
+    await expect(page.getByLabel(/Instrument declaration JSON/)).toBeHidden()
+    await advanced.click()
+    await expect(page.getByLabel(/Instrument declaration JSON/)).toBeVisible()
+    await advanced.click()
+    await expect(page.getByLabel(/Instrument declaration JSON/)).toBeHidden()
     await page.getByLabel('Depth top (cm)').fill('0')
     await page.getByLabel('Depth bottom (cm)').fill('5')
     await expect(

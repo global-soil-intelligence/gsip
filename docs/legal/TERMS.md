@@ -63,7 +63,7 @@ release may keep using those copies under ODbL 1.0 and CC BY-SA 4.0.
 
 - Follow the [sampling and land-access rules](SAMPLING_AND_LAND_ACCESS.md); you confirm this each
   time you queue an observation.
-- Photograph soil and the reference card only. No people, faces, vehicle number plates, house
+- Photograph soil and, if you choose, the physical reference card only. No people, faces, vehicle number plates, house
   numbers, documents or anything else that identifies a person or a private address.
 - Attribution names must not be another person's name without their consent, impersonate anyone,
   contain insults, links or contact details, or advertise. We review typed names before publishing

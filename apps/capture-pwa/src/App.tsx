@@ -143,7 +143,7 @@ function PhotoField({
         />
       )}
       <div className="camera-guide" aria-hidden="true">
-        <span>Keep card + soil inside the guide</span>
+        <span>Frame the soil for this shot</span>
       </div>
       <input
         name={name}
@@ -189,7 +189,7 @@ async function webPhotos(
   return Object.fromEntries(entries) as ShotPhotos
 }
 
-/** A preview of a photo the app took, for the person to check the card is in frame. */
+/** A preview of the selected photo for the person to review before queueing. */
 function usePreview(photo: CapturedPhoto | null): string | null {
   const [url, setUrl] = useState<string | null>(null)
   useEffect(() => {
@@ -246,7 +246,7 @@ function NativePhotoField({
         />
       ) : (
         <div className="camera-guide" aria-hidden="true">
-          <span>Keep card + soil inside the guide</span>
+          <span>Frame the soil for this shot</span>
         </div>
       )}
       <p className="photo-state" aria-live="polite">
@@ -1082,12 +1082,17 @@ export function App() {
 
       <main>
         <section className="hero">
-          <p className="eyebrow">Two photos. One card. One living planet.</p>
+          <p className="eyebrow">Two required photos. One optional.</p>
           <h1>Help map the ground beneath us.</h1>
           <p className="lede">
             {pilot
               ? 'Invited collection stores your soil photographs and observations privately and unverified. Pilot records are held from public maps, exports and field training.'
-              : 'Photograph soil with the free GSIP card. Your precise location stays private; the public map sees only a broad hexagonal cell.'}
+              : 'Photograph soil with your phone. Your precise location stays private; the public map sees only a broad hexagonal cell.'}
+          </p>
+          <p>
+            <strong>No printed card needed.</strong> Take photos A and B with
+            your phone; photo C is optional. Without a physical card, the
+            photographs remain uncalibrated camera evidence.
           </p>
           <a
             className="card-link"
@@ -1096,8 +1101,17 @@ export function App() {
             )}
             download
           >
-            Download the printable A6 card ↗
+            Download the optional printable A6 card ↗
           </a>
+          <details>
+            <summary>Optional physical reference card</summary>
+            <p>
+              If you choose the card, keep the whole printed card in the photo,
+              use even daylight and avoid glare. It is a physical aid, not a
+              certified reflectance target. A screen illustration does not
+              calibrate a photograph.
+            </p>
+          </details>
         </section>
 
         <aside className="privacy-note">
@@ -1209,8 +1223,10 @@ export function App() {
                 <span>01</span> Capture the soil
               </legend>
               <p>
-                Use even daylight. Keep the whole reference card visible and
-                avoid glare.
+                Use even daylight and avoid glare. Show the ground around the
+                sample in A and a fresh face in B only where you have permission
+                to sample. The printed card is optional. The framing
+                illustrations below are instructions outside the system camera.
               </p>
               <div className="photo-grid">
                 {native ? (

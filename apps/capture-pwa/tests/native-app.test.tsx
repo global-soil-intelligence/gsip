@@ -305,6 +305,12 @@ describe('the phone app (WP-APP-1)', () => {
 
   it('links to the public site and leaves e-mail sign-in for a later version', () => {
     render(<App />)
+    expect(screen.getByText('No printed card needed.')).toBeDefined()
+    expect(
+      screen.getByText('Optional physical reference card').closest('details')
+        ?.open,
+    ).toBe(false)
+    expect(mocks.takePhoto).not.toHaveBeenCalled()
     expect(
       screen
         .getByRole('link', { name: 'GSIP public map' })

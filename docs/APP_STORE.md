@@ -42,7 +42,7 @@ The app asks for camera/location when those features are used, and notifications
 
 | Platform    | Permission                                                               | When it is asked                 | Purpose string                                                                                                                  |
 | ----------- | ------------------------------------------------------------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| iOS         | Camera (`NSCameraUsageDescription`)                                      | First "Take photo"               | GSIP uses the camera to photograph soil beside the printed reference card.                                                      |
+| iOS         | Camera (`NSCameraUsageDescription`)                                      | First "Take photo"               | GSIP uses the camera to photograph soil. The printed reference card is optional.                                                |
 | iOS         | Location when in use (`NSLocationWhenInUseUsageDescription`)             | First "Use my current location"  | GSIP records where each soil photo was taken, privately. Only a broad area shared by at least 3 contributors is ever published. |
 | Android     | Location while in use (`ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`) | First "Use my current location"  | Android shows its own prompt; the form explains the use beside the button.                                                      |
 | iOS/Android | Local notifications (`POST_NOTIFICATIONS` on Android 13+)                | Explicit "Enable sync reminders" | One generic reminder to review unsynced work; denial leaves capture usable.                                                     |
@@ -185,8 +185,8 @@ subscriptions would need store billing.
 - No sign-in is needed: the first synced observation creates the device's anonymous account.
   E-mail sign-in, to use one account on several devices, needs deep links (universal links and
   app links on `globalsoilintelligence.com`) and comes in a later version; the app says so.
-- Reviewers can photograph any patch of soil with the printed reference card (the PDF is linked
-  in the app) and use the manual latitude and longitude fields.
+- Reviewers can photograph soil with or without a printed reference card (the optional PDF is
+  linked in the app) and use the manual latitude and longitude fields where sampling is permitted.
 - The CAPTCHA planned for anonymous sign-ins before launch (SPEC section 11) must accept the
   app's origins (`capacitor://localhost` on iOS, `https://localhost` on Android).
   **[DECISION]** when the provider is chosen.

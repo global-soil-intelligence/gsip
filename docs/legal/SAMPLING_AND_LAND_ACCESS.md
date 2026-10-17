@@ -28,6 +28,6 @@
 
 ## Keep photos about the soil
 
-Photograph the soil and the reference card only: no people, faces, vehicle number plates, house
+Photograph the soil and, if you choose, the physical reference card only: no people, faces, vehicle number plates, house
 numbers, signs naming a private address, or documents. Photos are published under CC BY-SA 4.0, and
 anything in them can be seen by anyone.

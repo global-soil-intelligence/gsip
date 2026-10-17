@@ -67,7 +67,7 @@ const TOOLS: readonly ToolDefinition[] = [
     name: 'get_protocol',
     title: 'GSIP capture protocol',
     description:
-      'How a GSIP observation is made: the printed reference card, photo shots A, B and C, sampling rules, recorded descriptions, quality checks, privacy rules, provenance tiers, and property names and units.',
+      'How a GSIP observation is made: required phone photos A and B, optional photo C and an optional physical reference card, sampling rules, recorded descriptions, quality checks, privacy rules, provenance tiers, and property names and units. No printed card is needed.',
     input: noInputSchema,
     output: RESPONSE_SCHEMAS.protocol,
     run: async () => getProtocol(),

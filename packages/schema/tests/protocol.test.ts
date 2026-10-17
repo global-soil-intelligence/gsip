@@ -15,6 +15,25 @@ describe('the capture protocol served to people and agents', () => {
     expect(design).toContain(`MARKER_ID = ${CAPTURE_PROTOCOL.card.marker.id}`)
   })
 
+  it('makes printing optional without changing required shots or the protocol shape', () => {
+    expect(CAPTURE_PROTOCOL.version).toBe('1.1')
+    expect(CAPTURE_PROTOCOL.card.optional).toBe(true)
+    expect(CAPTURE_PROTOCOL.summary).toMatch(/No printed card is needed/)
+    expect(CAPTURE_PROTOCOL.card.without_card).toMatch(/uncalibrated/)
+    expect(
+      CAPTURE_PROTOCOL.shots.map(({ id, required }) => ({ id, required })),
+    ).toEqual([
+      { id: 'A', required: true },
+      { id: 'B', required: true },
+      { id: 'C', required: false },
+    ])
+    for (const shot of CAPTURE_PROTOCOL.shots.slice(0, 2))
+      expect(shot.instructions).toMatch(/optional physical reference card/)
+    expect(CAPTURE_PROTOCOL.quality_checks.join(' ')).toMatch(
+      /not reflectance calibration/,
+    )
+  })
+
   it('offers the descriptions the database accepts', () => {
     const landCovers = /land_cover in \(([^)]*)\)/.exec(schema)?.[1] ?? ''
     expect(

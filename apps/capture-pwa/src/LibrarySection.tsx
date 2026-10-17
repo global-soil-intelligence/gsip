@@ -141,42 +141,51 @@ export function LibrarySection({
             Enter the sampled depth bounds yourself: 0 ≤ top &lt; bottom ≤ 200
             cm. Leave condition unknown when it was not recorded.
           </p>
-          <label>
-            Instrument declaration JSON (optional)
-            <input
-              type="file"
-              accept="application/json,.json"
-              disabled={busy}
-              onChange={(event) => {
-                const file = event.currentTarget.files?.[0]
-                event.currentTarget.value = ''
-                if (file) void attach(file)
-              }}
-            />
-          </label>
-          <p>
-            Accepts only measurement_id and an instrument_reflectance
-            measurement with declared source hash, instrument/calibration IDs
-            and aligned wavelength, reflectance and uncertainty arrays. Local
-            library records, lab reports, CSV, PDF and original instrument files
-            are unsupported. Imported files elsewhere on your device remain
-            outside GSIP’s deletion control.
-          </p>
+          <details>
+            <summary>Advanced: instrument declaration (optional)</summary>
+            <label>
+              Instrument declaration JSON (optional)
+              <input
+                type="file"
+                accept="application/json,.json"
+                disabled={busy}
+                onChange={(event) => {
+                  const file = event.currentTarget.files?.[0]
+                  event.currentTarget.value = ''
+                  if (file) void attach(file)
+                }}
+              />
+            </label>
+            <p>
+              Accepts only measurement_id and an instrument_reflectance
+              measurement with declared source hash, instrument/calibration IDs
+              and aligned wavelength, reflectance and uncertainty arrays. Local
+              library records, lab reports, CSV, PDF and original instrument
+              files are unsupported. Imported files elsewhere on your device
+              remain outside GSIP’s deletion control.
+            </p>
+          </details>
           {value.instrument && (
-            <button
-              type="button"
-              className="secondary"
-              onClick={() => {
-                picker.current += 1
-                void onChange({
-                  ...value,
-                  instrument: null,
-                  declarationBytes: null,
-                })
-              }}
-            >
-              Remove declaration
-            </button>
+            <>
+              <p>
+                Instrument declaration attached privately. Origin, calibration
+                and physical pairing remain unverified.
+              </p>
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => {
+                  picker.current += 1
+                  void onChange({
+                    ...value,
+                    instrument: null,
+                    declarationBytes: null,
+                  })
+                }}
+              >
+                Remove declaration
+              </button>
+            </>
           )}
         </>
       )}

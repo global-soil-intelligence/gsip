@@ -39,6 +39,13 @@ def test_ios_gets_a_purpose_string_for_each_request_and_nothing_else() -> None:
     assert not any(key.startswith("NSLocationAlways") for key in applied)
 
 
+def test_camera_purpose_explains_the_reference_is_optional() -> None:
+    purpose = permissions.apply_ios(template_plist())["NSCameraUsageDescription"].lower()
+    assert "soil" in purpose
+    assert "optional" in purpose
+    assert "reference card" in purpose
+
+
 def test_ios_drops_other_usages_and_background_location() -> None:
     plist = template_plist() | {
         "NSLocationAlwaysAndWhenInUseUsageDescription": "always",
