@@ -1,6 +1,6 @@
-# Optional live browser camera guide — design for review
+# Optional live browser camera guide — approved design
 
-WP-COLLECT-4, SPEC v17 §5.2, [issue #88](https://github.com/global-soil-intelligence/gsip/issues/88). Source baseline: merged main `a2529906a320b2be0339c48cf8dce2b6688f58cf` after owner-approved #86 then #87. Justin requested this design on 2026-10-16. **This document grants no implementation, merge, camera/device access or production authority.** No live camera feature has been built or exercised by this proposal.
+WP-COLLECT-4, SPEC v17 §5.2, [design issue #88](https://github.com/global-soil-intelligence/gsip/issues/88). Source baseline: merged main `a2529906a320b2be0339c48cf8dce2b6688f58cf` after owner-approved #86 then #87. Justin approved merging [#89](https://github.com/global-soil-intelligence/gsip/pull/89) and the reviewed source-build sequence with a subsequent “go”. [COLLECT-4A #90](https://github.com/global-soil-intelligence/gsip/issues/90) prepares the pure session/queue/shared-writer boundary; live preview is still 4B, after reviewed/green/merged 4A. **This document itself grants no implementation, merge, camera/device access or production authority.** The owner's separate source go supplies bounded implementation authority only; no live camera feature has been built or exercised by 4A.
 
 ## Proposed product and owner review choices
 

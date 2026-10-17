@@ -1,6 +1,7 @@
 import 'fake-indexeddb/auto'
 import { IDBFactory } from 'fake-indexeddb'
 import {
+  act,
   cleanup,
   fireEvent,
   render,
@@ -33,13 +34,40 @@ afterEach(() => {
   cleanup()
   vi.unstubAllEnvs()
   vi.unstubAllGlobals()
+  vi.restoreAllMocks()
 })
-async function start() {
+async function start(waitForRestore = true) {
   const { App } = await import('../src/App')
   render(<App />)
+  if (waitForRestore) {
+    await waitFor(() =>
+      expect(
+        (screen.getByLabelText(/A · Context/) as HTMLInputElement).disabled,
+      ).toBe(false),
+    )
+    const checkbox = screen.queryByRole('checkbox', {
+      name: /add a private library sample/i,
+    })
+    if (checkbox)
+      await waitFor(() =>
+        expect(
+          (checkbox.closest('fieldset') as HTMLFieldSetElement).disabled,
+        ).toBe(false),
+      )
+  }
   return import('../src/queue')
 }
 async function optIn() {
+  await waitFor(() => {
+    const checkbox = screen.getByRole('checkbox', {
+      name: /add a private library sample/i,
+    }) as HTMLInputElement
+    expect(checkbox.disabled).toBe(false)
+    expect((checkbox.closest('fieldset') as HTMLFieldSetElement).disabled).toBe(
+      false,
+    )
+    expect(checkbox.checked).toBe(false)
+  })
   fireEvent.click(
     screen.getByRole('checkbox', { name: /add a private library sample/i }),
   )
@@ -222,6 +250,259 @@ it('queues A+B without a card, optional C or invented library context', async ()
   expect(
     screen.queryByText(/stored_private_unverified|already_stored/),
   ).toBeNull()
+})
+
+it('does not present a refused picker save as ready and allows a fresh choice', async () => {
+  const q = await start()
+  const refused = vi
+    .spyOn(q, 'saveDraftPhoto')
+    .mockResolvedValueOnce(false as never)
+  const file = new File([new Uint8Array([255, 216, 255, 1])], 'synthetic.jpg', {
+    type: 'image/jpeg',
+  })
+  fireEvent.change(screen.getByLabelText(/A · Context/), {
+    target: { files: [file] },
+  })
+  await screen.findByText(/Photo A could not be saved.*Choose it again/)
+  expect(screen.queryByText('Photo A ready on this device')).toBeNull()
+  expect(await q.draftPhotos()).toEqual({})
+  refused.mockRestore()
+  await chooseShots(['A'])
+  await screen.findByText('Photo A ready on this device')
+})
+
+it('holds a restored library context with no original revision until explicit restart', async () => {
+  const q = await import('../src/queue')
+  await q.queueRevision()
+  const { newLibraryDraft } = await import('../src/library')
+  const legacy = { ...newLibraryDraft(uuid), depthTop: '0', depthBottom: '5' }
+  const { openDB } = await import('idb')
+  const db = await openDB('gsip-capture-v1')
+  await db.put('libraryDraft', legacy, 'current')
+  db.close()
+  await start()
+  await screen.findByLabelText('Depth top (cm)')
+  await screen.findByText(/original revision.*discard.*start/i)
+  expect((await q.savedLibraryDraft())?.deviceRevision).toBeUndefined()
+  expect(
+    (screen.getByLabelText('Depth top (cm)') as HTMLInputElement).disabled,
+  ).toBe(true)
+  const clearLibrary = q.clearLibraryDraft
+  let finishClear!: () => void
+  const clearing = new Promise<void>((resolve) => {
+    finishClear = resolve
+  })
+  vi.spyOn(q, 'clearLibraryDraft').mockImplementationOnce(async () => {
+    await clearing
+    await clearLibrary()
+  })
+  fireEvent.click(
+    screen.getByRole('checkbox', { name: /add a private library sample/i }),
+  )
+  await waitFor(() =>
+    expect(screen.queryByLabelText('Depth top (cm)')).toBeNull(),
+  )
+  expect(
+    (
+      screen
+        .getByRole('checkbox', { name: /add a private library sample/i })
+        .closest('fieldset') as HTMLFieldSetElement
+    ).disabled,
+  ).toBe(true)
+  const restart = optIn()
+  await act(async () => finishClear())
+  await restart
+  await waitFor(async () =>
+    expect((await q.savedLibraryDraft())?.deviceRevision).toBe(
+      await q.queueRevision(),
+    ),
+  )
+})
+
+it('does not refill discarded state from delayed initial restores or delete fresh successor drafts', async () => {
+  const q = await import('../src/queue')
+  const { newLibraryDraft } = await import('../src/library')
+  const revision = await q.queueRevision()
+  const photo = {
+    bytes: new Uint8Array([255, 216, 255, 1]),
+    mimeType: 'image/jpeg' as const,
+    method: 'file' as const,
+    takenAt: 1,
+  }
+  const original = { ...newLibraryDraft(uuid), deviceRevision: revision }
+  let photos!: (value: Awaited<ReturnType<typeof q.draftPhotos>>) => void
+  let context!: (value: typeof original) => void
+  const restorePhotos = vi.spyOn(q, 'draftPhotos').mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        photos = resolve
+      }),
+  )
+  const restoreContext = vi
+    .spyOn(q, 'savedLibraryDraft')
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          context = resolve
+        }),
+    )
+  await start(false)
+  await waitFor(() => {
+    expect(restorePhotos).toHaveBeenCalledOnce()
+    expect(restoreContext).toHaveBeenCalledOnce()
+  })
+  fireEvent.click(
+    screen.getByRole('button', {
+      name: /discard draft photos and private sample/i,
+    }),
+  )
+  await screen.findByText('Photos discarded.')
+  const successor = await q.queueRevision()
+  const fresh = { ...newLibraryDraft(uuid), deviceRevision: successor }
+  await q.saveDraftPhoto('B', photo, successor)
+  await q.saveLibraryDraft(fresh, successor)
+  await act(async () => {
+    photos({ A: photo })
+    context(original)
+  })
+  await waitFor(() =>
+    expect(
+      (screen.getByLabelText(/A · Context/) as HTMLInputElement).disabled,
+    ).toBe(false),
+  )
+  expect(screen.queryByText('Photo A ready on this device')).toBeNull()
+  expect(screen.queryByLabelText('Depth top (cm)')).toBeNull()
+  expect((await q.draftPhotos()).B?.takenAt).toBe(1)
+  expect((await q.savedLibraryDraft())?.sampleId).toBe(fresh.sampleId)
+})
+
+it('keeps newer library edits when an older refused save finishes later', async () => {
+  const q = await start()
+  await optIn()
+  let finish!: (value: boolean) => void
+  vi.spyOn(q, 'saveLibraryDraft').mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve
+      }),
+  )
+  fireEvent.change(screen.getByLabelText('Depth top (cm)'), {
+    target: { value: '1' },
+  })
+  fireEvent.change(screen.getByLabelText('Depth bottom (cm)'), {
+    target: { value: '5' },
+  })
+  await waitFor(async () =>
+    expect((await q.savedLibraryDraft())?.depthBottom).toBe('5'),
+  )
+  await act(async () => finish(false))
+  expect(
+    (screen.getByLabelText('Depth top (cm)') as HTMLInputElement).value,
+  ).toBe('1')
+  expect(
+    (screen.getByLabelText('Depth bottom (cm)') as HTMLInputElement).value,
+  ).toBe('5')
+  expect(screen.queryByText(/no usable original revision/)).toBeNull()
+  expect((await q.savedLibraryDraft())?.depthTop).toBe('1')
+})
+
+it('holds photo reuse after library opt-out without erasing persisted bytes or rebinding selections', async () => {
+  const q = await start()
+  await optIn()
+  await chooseShots(['A', 'B'])
+  const before = structuredClone(await q.draftPhotos())
+  const revision = await q.queueRevision()
+  fireEvent.click(
+    screen.getByRole('checkbox', { name: /add a private library sample/i }),
+  )
+  await screen.findByText(
+    'Private sample removed. Choose photos again before queueing.',
+  )
+  expect(await q.queueRevision()).toBe(revision + 1)
+  expect(await q.draftPhotos()).toEqual(before)
+  expect(screen.queryByText('Photo A ready on this device')).toBeNull()
+  expect(screen.queryByText('Photo B ready on this device')).toBeNull()
+  fillObservation()
+  submitObservation()
+  await screen.findByText('Add photos A and B before continuing.')
+  expect(await q.queued()).toEqual([])
+  await chooseShots(['A', 'B'])
+  await screen.findByText('Photo B ready on this device')
+  submitObservation()
+  await waitFor(async () => expect(await q.queued()).toHaveLength(1))
+  expect((await q.queued())[0]!.library).toBeUndefined()
+})
+
+it('keeps a failed explicit library removal held and visible for another discard attempt', async () => {
+  const q = await start()
+  await optIn()
+  const original = (await q.savedLibraryDraft())!
+  vi.spyOn(q, 'clearLibraryDraft').mockRejectedValueOnce(
+    new Error('synthetic storage refusal'),
+  )
+  fireEvent.click(
+    screen.getByRole('checkbox', { name: /add a private library sample/i }),
+  )
+  await screen.findByText(
+    'The private draft could not be saved. Try again before queueing.',
+  )
+  expect(
+    (screen.getByLabelText('Depth top (cm)') as HTMLInputElement).disabled,
+  ).toBe(true)
+  expect((await q.savedLibraryDraft())?.sampleId).toBe(original.sampleId)
+  fireEvent.click(
+    screen.getByRole('checkbox', { name: /add a private library sample/i }),
+  )
+  await screen.findByText(
+    'Private sample removed. Choose photos again before queueing.',
+  )
+  expect(await q.savedLibraryDraft()).toBeUndefined()
+})
+
+it('can start fresh context and declaration after discarding an unresolved older declaration read', async () => {
+  const q = await start()
+  await optIn()
+  const original = (await q.savedLibraryDraft())!
+  let finish!: (value: string) => void
+  const text = vi.fn(
+    () =>
+      new Promise<string>((resolve) => {
+        finish = resolve
+      }),
+  )
+  fireEvent.change(screen.getByLabelText(/Instrument declaration JSON/), {
+    target: { files: [{ size: 1, text } as unknown as File] },
+  })
+  await waitFor(() => expect(text).toHaveBeenCalledOnce())
+  fireEvent.click(
+    screen.getByRole('button', {
+      name: /discard draft photos and private sample/i,
+    }),
+  )
+  await screen.findByText('Photos discarded.')
+  expect(
+    (
+      screen.getByRole('checkbox', {
+        name: /add a private library sample/i,
+      }) as HTMLInputElement
+    ).disabled,
+  ).toBe(false)
+  await optIn()
+  const fresh = (await q.savedLibraryDraft())!
+  expect(fresh.sampleId).not.toBe(original.sampleId)
+  fireEvent.change(screen.getByLabelText(/Instrument declaration JSON/), {
+    target: {
+      files: [
+        new File([JSON.stringify(instrument)], 'fresh.json', {
+          type: 'application/json',
+        }),
+      ],
+    },
+  })
+  await screen.findByText(/Declaration saved privately/)
+  await act(async () => finish(JSON.stringify(instrument)))
+  expect((await q.savedLibraryDraft())?.sampleId).toBe(fresh.sampleId)
+  expect((await q.savedLibraryDraft())?.instrument).toEqual(instrument)
 })
 
 it('imports one strict declaration privately and clears bytes with the draft', async () => {
