@@ -275,10 +275,10 @@
     "apps/capture-pwa/package.json": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115",
     ".github/workflows/app-build.yml": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5",
     "scripts/app_build.py": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4",
-    "scripts/app_permissions.py": "111625053cc53b81a9e14a0cce21399e6a8b1ed282e92ec159ecac112682c0a3",
+    "scripts/app_permissions.py": "f6aecb3fb95ebe6984830f3361e8e3ec451a283bd8dfee7a1b3e34df8dcefed6",
     "scripts/app_notification_audit.py": "b92c23192b8b88f8cb864ae438b8b34d84d018dfaa6c0d01cbe95af8b6b8df8d",
     "tests/test_app_build.py": "5b1df866e578c3c78b301c94e1a6f136347194907c75ed71de3aee240c126757",
-    "tests/test_app_permissions.py": "511addd80ca24b30bf8a6f7291917dd56b5bcf305b0ed0f003d7a209139ecfda"
+    "tests/test_app_permissions.py": "77b20644fd20fd12c9a8c73b2a4f39eb3c4556b5ed8312d1c7729f2236d392ca"
   },
   "artifact_boundary": "compiled-inputs-link-graph-and-bundle-not-debug-only",
   "generated_copies": {
