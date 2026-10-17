@@ -78,7 +78,7 @@ Every page uses the same compact header:
 
 - Global Soil Intelligence wordmark → `/`
 - Explore map → `/map/`
-- Print card → `/card/`
+- Optional reference card → `/card/`
 - Methods → `/methods/`
 - Primary button → `/capture/`
 
@@ -112,10 +112,10 @@ Do not claim that GSIP currently predicts SOC, pH, CEC, nitrogen, or texture fro
 
 Use a four-step horizontal sequence on desktop and vertical sequence on mobile:
 
-1. Print or open the reference-card guide.
+1. Read the phone capture guide; no printed card is needed.
 2. Photograph the ground surface and a fresh soil face.
 3. Share a location privately and accept the contribution licenses.
-4. The private QA pipeline sanitizes, grades, and publishes only safe H3-level output.
+4. The private pipeline sanitizes and grades observations; publication remains separately gated.
 
 Each step links to either `/card/`, `/capture/`, or `/methods/`.
 
@@ -131,8 +131,9 @@ The card links to `/map/`. It must never render synthetic contribution cells as 
 
 ### 4.4 Reference card
 
-Show a rendered preview of the committed A6 color card and explain why it improves scale, lighting,
-and color consistency. Provide distinct download buttons:
+Show a rendered preview of the optional A6 color card. Explain its support for geometric reference
+and color/exposure normalization, without promising certified reflectance calibration or measured
+spectra. Make clear that capture accepts photos without a card. Provide distinct download buttons:
 
 - Download color card
 - Download black-and-white card
@@ -177,7 +178,7 @@ future Hugging Face organization. Do not collect email addresses in v1.
 - Shot A, B, and optional C instructions.
 - Color and B&W PDF previews and downloads.
 - A6, 100% scale, no “fit to page,” and consumer-printer guidance.
-- Link directly to capture after printing.
+- Link directly to capture, whether or not the person chooses to print a card.
 
 ### `/methods/`
 

@@ -13,7 +13,7 @@ import {
 const protocolDataSchema = z
   .record(z.string(), z.unknown())
   .describe(
-    'The capture protocol (SPEC section 5): card, shots, sampling rules, properties',
+    'The capture protocol (SPEC section 5): phone photos, an optional reference card, sampling rules and properties',
   )
 
 export const RESPONSE_SCHEMAS = {
@@ -76,7 +76,7 @@ export function openApiDocument(serverUrl: string): Record<string, unknown> {
         get: {
           operationId: 'getProtocol',
           summary:
-            'The capture protocol: card, shots, sampling rules and properties',
+            'The capture protocol: phone photos, an optional reference card, sampling rules and properties',
           responses: { '200': ok('The protocol', 'ProtocolResponse') },
         },
       },

@@ -130,7 +130,31 @@ describe('MCP, earlier revisions (initialize handshake)', () => {
         destructiveHint: false,
       })
     }
+    expect(tools[0].description).toMatch(/optional physical reference card/)
     expect(tools[1].inputSchema.required).toEqual(['cell'])
+  })
+
+  it('serves the same optional-card protocol through its read-only tool', async () => {
+    const { json } = await post({
+      jsonrpc: '2.0',
+      id: 31,
+      method: 'tools/call',
+      params: { name: 'get_protocol', arguments: {} },
+    })
+    expect(json.result.isError).toBe(false)
+    expect(json.result.structuredContent.data.card.optional).toBe(true)
+    expect(json.result.structuredContent.data.summary).toMatch(
+      /No printed card is needed/,
+    )
+    expect(
+      json.result.structuredContent.data.shots.map(
+        (shot: { id: string; required: boolean }) => [shot.id, shot.required],
+      ),
+    ).toEqual([
+      ['A', true],
+      ['B', true],
+      ['C', false],
+    ])
   })
 
   it('returns structured content with a text copy, carrying licence and citation', async () => {

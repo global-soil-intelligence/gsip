@@ -34,8 +34,8 @@ export const pageMeta: Record<
   },
   card: {
     description:
-      'Print the GSIP reference card and follow the standard soil photography protocol.',
-    eyebrow: 'A common visual standard',
+      'No printed card is needed. Download the optional GSIP reference card and follow the phone-photo protocol.',
+    eyebrow: 'An optional physical reference',
     title: 'Give every phone camera a reference point.',
   },
   data: {
@@ -86,7 +86,7 @@ const datasetJsonLd = {
     'open data',
   ],
   measurementTechnique:
-    'Smartphone RGB observations with a reference card; separately recorded instrument reflectance and laboratory methods, linked by physical sample identity',
+    'Smartphone RGB observations with an optional physical reference card; separately recorded instrument reflectance and laboratory methods, linked by physical sample identity',
   // The repository page, not a download: its files change with every release.
   ...(datasetUrl ? { sameAs: datasetUrl } : {}),
 }
@@ -314,14 +314,14 @@ function HomePage() {
           <ol className="steps-grid">
             {[
               [
-                'Print the card',
-                'Use the free A6 reference for geometry and image checks. RGB remains uncalibrated.',
-                './card/',
+                'Take two phone photos',
+                'No printed card is needed. Capture context and a fresh-face close-up where you have permission to sample.',
+                './about/#launch-status',
               ],
               [
-                'Record the sample',
-                'Guided phone images and context are linked to a physical sample. Public capture is closed.',
-                './about/#launch-status',
+                'Add context',
+                'Record the place and surface condition. Library sample registration is optional and requires your real declared depth. Public capture is closed.',
+                './methods/',
               ],
               [
                 'Pair measurements',
@@ -388,17 +388,17 @@ function HomePage() {
             />
           </div>
           <div>
-            <p className="eyebrow">A shared visual standard</p>
-            <h2>One card. Any modern phone.</h2>
+            <p className="eyebrow">A shared visual aid</p>
+            <h2>An optional physical reference.</h2>
             <p>
-              The free reference card gives every image a common scale, exposure
-              target, marker, and color reference. It helps check the image; it
-              does not turn a phone into a spectrometer. Extracted soil RGB
-              remains uncalibrated.
+              If you have the free physical reference card, include it for
+              geometry and image checks. No printed card is needed. A card does
+              not turn a phone into a spectrometer; phone photographs and any
+              separately extracted soil RGB remain uncalibrated.
             </p>
             <div className="button-row">
               <a className="button button-primary" href="./card/">
-                Print the reference card
+                Optional reference card
               </a>
               <a
                 className="button button-quiet"
@@ -540,6 +540,14 @@ function CardPage() {
     <PageShell page="card">
       <main id="main-content">
         <InteriorHero page="card" />
+        <section className="interior-section">
+          <p>
+            No printed card is needed. Photos A and B are required, and photo C
+            is optional. If you choose the physical card, use the free downloads
+            and printing instructions below. Missing a card alone never fails
+            QA; every other quality, privacy and admission gate still applies.
+          </p>
+        </section>
         <section className="interior-section card-download-grid">
           <article className="download-card">
             <img
@@ -619,17 +627,18 @@ function CardPage() {
           <div className="shot-grid">
             <article>
               <span>A</span>
-              <h3>Context</h3>
+              <h3>Context · required</h3>
               <p>
-                Undisturbed ground surface from roughly 30 cm, card visible.
+                Undisturbed ground surface from roughly 30 cm. Include the
+                optional physical card if you have one.
               </p>
             </article>
             <article>
               <span>B</span>
-              <h3>Fresh face</h3>
+              <h3>Fresh face · required</h3>
               <p>
                 Scrape 2–3 cm, then photograph the exposed soil from roughly 15
-                cm.
+                cm. Include the optional physical card if you have one.
               </p>
             </article>
             <article>
@@ -660,10 +669,16 @@ function MethodsPage() {
           />
           <div className="architecture-flow">
             {[
-              ['Capture PWA', 'Photos, protocol context, private GPS'],
+              [
+                'Capture PWA',
+                'Phone photos, optional card, context, private GPS',
+              ],
               ['Private ingest', 'RLS, quarantine, immutable grant'],
               ['Prior enrichment', 'SoilGrids, SSURGO, Open-Meteo'],
-              ['Deterministic QA', 'Sanitize, sharpness, card, GPS, duplicate'],
+              [
+                'Deterministic QA',
+                'Sanitize, sharpness, optional card, GPS, duplicate',
+              ],
               [
                 'Gated public release',
                 'Eligible structured data; photos held pending screening',
@@ -688,7 +703,10 @@ function MethodsPage() {
               <p>
                 Ordinary phones record RGB images, not wavelength-resolved
                 spectra. Extracted soil RGB is uncalibrated, even with the
-                reference card.
+                reference card. No printed card is needed. A photograph does not
+                automatically create an extracted optical record or register a
+                library sample. Sample registration is optional and needs your
+                real declared depth.
               </p>
             </article>
             <article>
@@ -749,11 +767,11 @@ function MethodsPage() {
               ],
               [
                 'Image quality',
-                'Sharpness and exposure are judged on the soil itself, with the reference card masked out.',
+                'Sharpness and exposure are checked on the candidate soil region. A detected physical card is masked out; without one, the candidate region is the whole frame.',
               ],
               [
-                'Reference card',
-                'Marker and patch extraction support geometry and image checks, not calibrated reflectance.',
+                'Optional reference card',
+                'Missing a card alone never fails QA. Marker and patch extraction support geometry and image checks, not calibrated reflectance.',
               ],
               [
                 'GPS plausibility',

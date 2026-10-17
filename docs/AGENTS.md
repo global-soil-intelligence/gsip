@@ -45,14 +45,14 @@ Machine-readable entry points:
 All endpoints are `GET` (and `HEAD`), anonymous, and answer `application/json` with
 `Access-Control-Allow-Origin: *`.
 
-| Endpoint                                    | Returns                                                                      | Cached |
-| ------------------------------------------- | ---------------------------------------------------------------------------- | ------ |
-| `/v1`                                       | An index of the endpoints                                                    | 1 h    |
-| `/v1/openapi.json`                          | The OpenAPI 3.1 description                                                  | 1 h    |
-| `/v1/protocol`                              | The capture protocol: card, shots, sampling rules, properties, privacy rules | 1 h    |
-| `/v1/cells/{cell}`                          | One cell's published state and the coarser published cells containing it     | 5 min  |
-| `/v1/cells?within={cell}&limit=100&after=…` | Published cells inside a cell, in index order, one page at a time            | 5 min  |
-| `/v1/releases/latest`                       | The latest dataset release and its exact Hugging Face revision               | 5 min  |
+| Endpoint                                    | Returns                                                                            | Cached |
+| ------------------------------------------- | ---------------------------------------------------------------------------------- | ------ |
+| `/v1`                                       | An index of the endpoints                                                          | 1 h    |
+| `/v1/openapi.json`                          | The OpenAPI 3.1 description                                                        | 1 h    |
+| `/v1/protocol`                              | The capture protocol: required A+B, optional C/card, sampling, properties, privacy | 1 h    |
+| `/v1/cells/{cell}`                          | One cell's published state and the coarser published cells containing it           | 5 min  |
+| `/v1/cells?within={cell}&limit=100&after=…` | Published cells inside a cell, in index order, one page at a time                  | 5 min  |
+| `/v1/releases/latest`                       | The latest dataset release and its exact Hugging Face revision                     | 5 min  |
 
 `within` must be at resolution 8 or coarser; `limit` is 1 to 500 (default 100); pass the previous
 page's `next` as `after` until `next` is `null`.

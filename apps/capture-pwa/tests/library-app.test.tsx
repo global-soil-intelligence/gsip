@@ -84,9 +84,152 @@ it('starts with blank depths and persists declared unknown context through resta
     (await (await import('../src/queue')).savedLibraryDraft())?.sampleId,
   ).toBe(first.sampleId)
 })
+it('keeps advanced instrument input collapsed and persisted attachments apparent after restart', async () => {
+  const q = await start()
+  await optIn()
+  const input = screen.getByLabelText(/Instrument declaration JSON/)
+  const disclosure = input.closest('details')!
+  expect(disclosure).not.toBeNull()
+  expect(disclosure.open).toBe(false)
+  fireEvent.click(
+    screen.getByText('Advanced: instrument declaration (optional)'),
+  )
+  expect(disclosure.open).toBe(true)
+  fireEvent.change(input, {
+    target: {
+      files: [
+        new File([JSON.stringify(instrument)], 'synthetic.json', {
+          type: 'application/json',
+        }),
+      ],
+    },
+  })
+  await screen.findByText(/Declaration saved privately/)
+  const originalBytes = Array.from(
+    (await q.savedLibraryDraft())!.declarationBytes!,
+  )
+  fireEvent.click(
+    screen.getByText('Advanced: instrument declaration (optional)'),
+  )
+  expect(disclosure.open).toBe(false)
+  expect(
+    screen
+      .getByText(/Instrument declaration attached privately/)
+      .closest('details'),
+  ).toBeNull()
+  fireEvent.click(
+    screen.getByText('Advanced: instrument declaration (optional)'),
+  )
+  expect(disclosure.open).toBe(true)
+  expect(Array.from((await q.savedLibraryDraft())!.declarationBytes!)).toEqual(
+    originalBytes,
+  )
+  const stored = (await q.savedLibraryDraft())!
+  expect(document.body.textContent).not.toContain(stored.nodeId)
+  expect(document.body.textContent).not.toContain(stored.sampleId)
+  cleanup()
+  vi.resetModules()
+  const restored = await start()
+  const restoredInput = await screen.findByLabelText(
+    /Instrument declaration JSON/,
+  )
+  const collapsed = restoredInput.closest('details')!
+  expect(collapsed.open).toBe(false)
+  const attached = screen.getByText(/Instrument declaration attached privately/)
+  expect(attached.closest('details')).toBeNull()
+  const remove = screen.getByRole('button', { name: 'Remove declaration' })
+  expect(remove.closest('details')).toBeNull()
+  expect((await restored.savedLibraryDraft())?.instrument).toEqual(instrument)
+  fireEvent.click(remove)
+  await waitFor(async () =>
+    expect((await restored.savedLibraryDraft())?.instrument).toBeNull(),
+  )
+  expect((await restored.savedLibraryDraft())?.declarationBytes).toBeNull()
+  expect(
+    screen.queryByText(/Instrument declaration attached privately/),
+  ).toBeNull()
+})
+
+function fillObservation() {
+  for (const [label, value] of [
+    ['Latitude', '1'],
+    ['Longitude', '1'],
+    ['Land cover', 'bare'],
+    ['Surface condition', 'dry'],
+  ])
+    fireEvent.change(screen.getByLabelText(label), { target: { value } })
+  fireEvent.click(screen.getByRole('checkbox', { name: /sampling rules/i }))
+  fireEvent.click(screen.getByRole('checkbox', { name: /I own these photos/i }))
+}
+function submitObservation() {
+  fireEvent.submit(
+    screen.getByRole('button', { name: /queue observation/i }).closest('form')!,
+  )
+}
+async function chooseShots(shots: Array<'A' | 'B'>) {
+  const q = await import('../src/queue')
+  for (const shot of shots)
+    fireEvent.change(screen.getByLabelText(new RegExp(`${shot} ·`)), {
+      target: {
+        files: [
+          new File(
+            [new Uint8Array([255, 216, 255, shot === 'A' ? 1 : 2])],
+            `synthetic-${shot}.jpg`,
+            { type: 'image/jpeg' },
+          ),
+        ],
+      },
+    })
+  await waitFor(async () =>
+    expect(Object.keys(await q.draftPhotos()).sort()).toEqual(shots),
+  )
+}
+it.each([{ shots: [] }, { shots: ['A'] }, { shots: ['B'] }] as Array<{
+  shots: Array<'A' | 'B'>
+}>)(
+  'requires both photos when the saved-picker path has shots $shots',
+  async ({ shots }) => {
+    const q = await start()
+    await chooseShots(shots)
+    fillObservation()
+    submitObservation()
+    await screen.findByText('Add photos A and B before continuing.')
+    expect(await q.queued()).toEqual([])
+    expect(await q.savedLibraryDraft()).toBeUndefined()
+  },
+)
+it('queues A+B without a card, optional C or invented library context', async () => {
+  const q = await start()
+  expect(screen.queryByLabelText('Depth top (cm)')).toBeNull()
+  await chooseShots(['A', 'B'])
+  fillObservation()
+  submitObservation()
+  await waitFor(async () => expect(await q.queued()).toHaveLength(1))
+  const [record] = await q.queued()
+  expect(record.library).toBeUndefined()
+  expect(record.photos.map((photo) => photo.shotType)).toEqual(['A', 'B'])
+  expect(record.photos.map((photo) => Array.from(photo.bytes))).toEqual([
+    [255, 216, 255, 1],
+    [255, 216, 255, 2],
+  ])
+  expect(Object.keys(record.claims!).sort()).toEqual([
+    'captureMethod',
+    'clientVersion',
+    'ingestPath',
+    'locationSource',
+  ])
+  expect(await q.savedLibraryDraft()).toBeUndefined()
+  expect(
+    screen.queryByText(/stored_private_unverified|already_stored/),
+  ).toBeNull()
+})
+
 it('imports one strict declaration privately and clears bytes with the draft', async () => {
   const q = await start()
   await optIn()
+  fireEvent.click(
+    screen.getByText('Advanced: instrument declaration (optional)'),
+  )
   const raw = JSON.stringify(instrument),
     file = new File([raw], 'private.json', { type: 'application/json' })
   fireEvent.change(screen.getByLabelText(/Instrument declaration JSON/), {
@@ -173,6 +316,9 @@ it('synthetic form-to-private-receipt-to-exact-retry-to-withdrawal lifecycle', a
   fireEvent.change(screen.getByLabelText('Depth bottom (cm)'), {
     target: { value: '5' },
   })
+  fireEvent.click(
+    screen.getByText('Advanced: instrument declaration (optional)'),
+  )
   const file = new File([JSON.stringify(instrument)], 'synthetic.json', {
     type: 'application/json',
   })

@@ -21,7 +21,7 @@ const PROPERTY_DESCRIPTIONS = {
 export const CAPTURE_PROTOCOL = {
   version: PROTOCOL_VERSION,
   summary:
-    'Two photos of soil beside a free printed reference card, a private location and three one-tap descriptions. GSIP grades every photo, publishes only k-anonymous H3 cells, and reports estimates with uncertainty, never laboratory results.',
+    'Two phone photos of soil, a private location and three one-tap descriptions. No printed card is needed; a physical reference card is optional. GSIP grades every photo, publishes only k-anonymous H3 cells, and reports estimates with uncertainty, never laboratory results.',
   card: {
     format: 'A6 (105 mm x 148 mm), colour or black-and-white edition',
     patches: [
@@ -39,7 +39,7 @@ export const CAPTURE_PROTOCOL = {
     scale_line_mm: 20,
     optional: true,
     without_card:
-      'Accepted, marked uncalibrated and down-weighted in training. GSIP never rejects a willing contributor; it grades the data instead.',
+      'Accepted, marked uncalibrated and down-weighted in otherwise eligible training. Missing a card alone does not fail QA; every other quality, privacy and admission gate still applies. A phone photograph is not a measured spectrum.',
   },
   shots: [
     {
@@ -47,14 +47,14 @@ export const CAPTURE_PROTOCOL = {
       name: 'Context',
       required: true,
       instructions:
-        'Undisturbed ground from about 30 cm, with the card in frame.',
+        'Undisturbed ground from about 30 cm. Include the optional physical reference card if available.',
     },
     {
       id: 'B',
       name: 'Fresh face',
       required: true,
       instructions:
-        'Scrape 2 to 3 cm to expose fresh soil, then photograph from about 15 cm with the card in frame. This is the primary analysis image.',
+        'Scrape 2 to 3 cm to expose fresh soil where you have permission, then photograph from about 15 cm. Include the optional physical reference card if available. This is the primary analysis image.',
     },
     {
       id: 'C',
@@ -90,9 +90,9 @@ export const CAPTURE_PROTOCOL = {
     'Device model and allowlisted, non-location camera fields',
   ],
   quality_checks: [
-    'soil_region: at least 20 % of the frame remains as soil once the card is masked',
-    'sharpness and exposure, measured on the soil only',
-    'card_detection: records calibrated or uncalibrated; never fails a photo',
+    'soil_region: at least 20 % of the frame remains as a soil candidate after masking any detected card; without a card, the whole frame is the candidate',
+    'sharpness and exposure, measured on the candidate soil region',
+    'card_detection: records legacy calibrated or uncalibrated patch-processing status, not reflectance calibration; a missing card never fails a photo',
     'gps_plausibility: an accuracy radius above 250 m or a gross mismatch with soil maps goes to human review',
     'duplicate: a near-duplicate photo goes to human review, never to rejection',
   ],

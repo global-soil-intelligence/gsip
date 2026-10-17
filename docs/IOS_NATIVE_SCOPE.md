@@ -131,6 +131,15 @@ Upload bounded sanitized receipts only, not app/SQLite/Keychain/fault/temporary 
 XCTest result bundles. Raw native output must be captured privately and screened before any
 publication; test assertions/logging must not print canary payloads, paths or session-like values.
 
+**COLLECT-3 binding maintenance (2026-10-16):** the separately reviewed phone-first package
+changes only the ordinary app camera-purpose text in `scripts/app_permissions.py` and adds its
+optional-card regression in `tests/test_app_permissions.py`. The manifest refreshes exactly those
+two source hashes so the unchanged integrity validator continues to reject drift. Every other
+binding, the historical baseline, native file/effect scope, prohibited operation, permission policy
+and prototype approval restriction above stays intact. This maintenance grants no new native
+exception, prototype execution, production or activation authority; APP-2C2A itself still cannot
+change ordinary application/permission code under its frozen scope.
+
 The helper receives a **fresh runner-owned disposable copy**, never ordinary generated App or
 existing simulator/app data. Pin exact CLI version, source/templates and every generated preimage;
 reject changed/missing/duplicate/unknown template anchors, links, special files and traversal before

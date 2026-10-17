@@ -2,7 +2,7 @@
 
 GSIP is building an **open soil spectral reference library**, with smartphones as the accessible capture and sample-linking tool. The library connects camera observations and metadata to instrument spectra and verified laboratory evidence; open AI models and the soil map are downstream goals. Ordinary RGB phone photos are optical observations, not wavelength-resolved spectra. See the [library specification](docs/SPEC.md#16-open-soil-spectral-library-v5-foundation-v6v7-private-intake) and [implementation sequence](docs/BUILD_ORDER.md#library-first-implementation-sequence-spec-16).
 
-The collection foundation includes a phone app and a no-install web app for guided, privacy-safe soil photography with a printable reference card. The current map supplies public soil-map priors; later evaluated library models will supply estimates with explicit uncertainty. Agents can read public cells, the protocol and dataset releases through a public API and an MCP server; see the [agent guide](docs/AGENTS.md).
+The collection foundation includes a phone app and a no-install web app for guided, privacy-safe soil photography; no printed card is needed. A free physical reference card is optional. Ordinary photo observations and explicitly registered library samples remain distinct; sample registration asks for real declared depth. See the [phone-first capture scope](docs/PHONE_FIRST_CAPTURE.md). The current map supplies public soil-map priors; later evaluated library models will supply estimates with explicit uncertainty. Agents can read public cells, the protocol and dataset releases through a public API and an MCP server; see the [agent guide](docs/AGENTS.md).
 
 GSIP is not a laboratory replacement. Public outputs locate observations by k-anonymous H3 cells, never precise coordinates. Photos are sanitized before canonical storage and checked again before release.
 
@@ -30,7 +30,7 @@ separate under [TRADEMARKS.md](TRADEMARKS.md).
 | Database, security policies and Edge Functions       | [`supabase/`](supabase/) · [local database commands](supabase/README.md)                          |
 | QA, rights, export and tile workers                  | [`pipeline/`](pipeline/) · [deployment runbook](docs/PHASE1_DEPLOYMENT.md)                        |
 | Public REST API and MCP server                       | [`packages/schema/src/agent/`](packages/schema/src/agent/) · [agent guide](docs/AGENTS.md)        |
-| Printable reference card                             | [`card/`](card/)                                                                                  |
+| Optional printable reference card                    | [`card/`](card/)                                                                                  |
 | Tests and build workflows                            | [`tests/`](tests/) · [`.github/workflows/`](.github/workflows/)                                   |
 
 The implemented source and tests are available now, including development branches and pull

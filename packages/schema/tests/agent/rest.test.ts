@@ -53,6 +53,8 @@ describe('REST routes', () => {
     expect(response.headers.get('cache-control')).toBe('public, max-age=3600')
     expect(response.headers.get('access-control-allow-origin')).toBe('*')
     expect(body.data.version).toBe('1.1')
+    expect(body.data.card.optional).toBe(true)
+    expect(body.data.summary).toMatch(/No printed card is needed/)
     expect(body.data.shots.map((shot: { id: string }) => shot.id)).toEqual([
       'A',
       'B',
@@ -215,6 +217,9 @@ describe('REST routes', () => {
   it('describes itself with OpenAPI 3.1', async () => {
     const { body } = await get('/v1/openapi.json')
     expect(body.openapi).toBe('3.1.0')
+    expect(body.paths['/v1/protocol'].get.summary).toMatch(
+      /optional reference card/,
+    )
     expect(body.servers).toEqual([{ url: BASE }])
     expect(Object.keys(body.paths)).toEqual([
       '/v1/protocol',

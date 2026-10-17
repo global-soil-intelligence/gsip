@@ -37,7 +37,7 @@ from typing import Any
 
 IOS_PURPOSES = {
     "NSCameraUsageDescription": (
-        "GSIP uses the camera to photograph soil beside the printed reference card."
+        "GSIP uses the camera to photograph soil. The printed reference card is optional."
     ),
     "NSLocationWhenInUseUsageDescription": (
         "GSIP records where each soil photo was taken, privately. Only a broad area shared by "
