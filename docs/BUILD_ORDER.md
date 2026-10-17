@@ -1,7 +1,8 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
-**Version:** 15.0 proposed — 2026-10-16 (invited collection implementation; SPEC §11.2)
+**Version:** 16.0 proposed — 2026-10-16 (phone-first optional-card guidance; SPEC §5.1)
+**v16 amendment status:** Justin authorized source updates following the card-overlay research. WP-COLLECT-3 clarifies the already optional card and simplifies progressive library details. A live camera guide, automatic unknown-depth sample registration and every production/activation action remain outside that package.
 **v15 amendment status:** Justin approved ordered merges #79/#81 and building #82 for invited phone-browser contributors. The source contract is in [COLLECTION_PILOT_DESIGN.md](COLLECTION_PILOT_DESIGN.md); implementation is authorized, all production and activation gates remain held.
 **v14 amendment status (approved/merged #79):** records Justin's decision that outside counsel does not gate collection. WP-COLLECT-1 prepares policy/readiness; WP-COLLECT-2 remains a separate, review-gated collection build/auth/publication-boundary package. The invited audience is selected; operational exceptions, enrollment and every production go remain unresolved. No current packaging check is removed or weakened.
 **v13 amendment status:** exact APP-2C2A native scope is proposed in [IOS_NATIVE_SCOPE.md](IOS_NATIVE_SCOPE.md). Justin approved #70 and the passcode-required/preserve-quarantine/no-automatic-reset policy; do not re-ask those choices. Native-language/file/effect approval and implementation remain held. All existing acceptance states remain unchanged.
@@ -80,6 +81,22 @@ Depends on reviewed/merged v14 (#79); Justin selected invited browser accounts a
 Acceptance tests must fail on current behavior and prove: ordinary Pages/native paths refuse open artifacts; collection packaging rejects unknown/missing/mismatched mode/manifest and only admits the reviewed target; unauthenticated/expired/wrong-owner callers never create an anonymous account or upload; valid invited sign-in and lost-response/idempotent retries work; an absent library capability holds before mutation; real collection cannot flow to export, map refresh, photos, spectra or field training; withdrawal/deletion clears covered payloads and preserves refusals. Add a synthetic browser end-to-end rehearsal and closed rollback proof. CI/review/merge do not authorize deployment.
 
 **Operator sequence after the source prerequisite:** refresh production inventory/counts/gates and security; run migration regression and show only the reviewed pending migration plan; obtain a separate migration go; verify closed schema/capabilities; finalize/adopt/publish the contributor notices and version; prove the required cleanup/rights/sanitization operations and the publication hold; configure only the owner-approved account/provider/tier choices; then present an exact collection artifact, target and activation/rollback commands for a separate go. Do not create accounts, dispatch workers, flip gates, deploy or migrate while preparing this package.
+
+**WP-COLLECT-3 — Phone-first observations with an optional reference card** ([issue #85](https://github.com/global-soil-intelligence/gsip/issues/85))
+
+Branch: `wp-collect-3-phone-first-capture`. Depends on source-merged COLLECT-2 (#84) and the specification-first v16 clarification. Follow SPEC §5.1 and [PHONE_FIRST_CAPTURE.md](PHONE_FIRST_CAPTURE.md). Preserve I1–I15, L1–L7 and B1–B8, required A+B/optional C, existing QA/admission/rights/closed-build behavior and honest uncalibrated camera records. Align first-party website/app/protocol/builder instructions so printing is never a prerequisite. Keep card downloads and physical-reference help reachable. Reveal advanced optional instrument JSON on request while preserving strict validation/persistence/clear behavior and blank, required declared depth on explicit sample opt-in. No new dependency, permission, camera implementation, schema, account, service, measurement tier or licence.
+
+Acceptance:
+
+- [ ] Fail-before regressions prove visible optional-card guidance and reachable optional physical-reference help in app, native fallback and public/prerendered protocol/site copy.
+- [ ] A+B remain necessary, C optional; ordinary observations queue with no library sample/instrument/depth invented. Opted-in sample depth stays blank until supplied.
+- [ ] Advanced instrument JSON starts collapsed, works when explicitly opened, and retains strict invalid/import/clear and draft-recovery behavior.
+- [ ] Existing sharp-cardless/uncalibrated QA, closed landing, explicit authenticated rights recovery, invited admission, queue/rights, built-artifact and native permission/SDK checks still pass; no test is weakened.
+- [ ] Independent review and required CI are green. Default Pages/native artifacts keep both flags false; no deployment, field experiment, photo publication or scientific accuracy claim.
+
+**WP-COLLECT-4 — Optional live browser framing guide (future design hold)**
+
+Before implementation, specify explicit video-only permission, an in-page camera/guide that never composites into saved evidence, still-image resolution/format limits, orientation/crop matching, late-response fences, lifecycle track cleanup and an accessible camera/gallery fallback. Preserve existing native camera paths and permission policy. Browser mocks alone do not prove physical-phone quality; qualify actual iPhone/Android behavior separately. No RAW/flash/exposure control or universal-smartphone claim is assumed. This entry schedules design only; it grants no implementation, new native exception or deployment authority. Unknown-depth/default sample registration requires a separate reviewed contract if selected.
 
 The independent **WP-SITE-1H** ([issue #80](https://github.com/global-soil-intelligence/gsip/issues/80)) copy repair may correct the contradictory closed-page status and remove an assertion that only a legal review blocks collection. It changes no activation behavior and requires a negative regression proving the page remains closed with no upload controls. Collection readiness is tracked in [COLLECTION_READINESS.md](COLLECTION_READINESS.md).
 
