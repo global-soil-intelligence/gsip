@@ -425,9 +425,22 @@ describe('owner-bound guide handoff', () => {
         context(revision),
       )
       expect(outcome.status).toBe(problem === 'exact' ? 'committed' : 'held')
-      expect(await q.savedLibraryDraft()).toEqual(
-        problem === 'exact' ? undefined : structuredClone(saved),
-      )
+      const remaining = await q.savedLibraryDraft()
+      if (problem === 'exact') expect(remaining).toBeUndefined()
+      else {
+        expect(remaining).toBeDefined()
+        const { declarationBytes: actualBytes, ...actualContext } = remaining!
+        const { declarationBytes: expectedBytes, ...expectedContext } = saved
+        expect(actualContext).toEqual(expectedContext)
+        expect(Object.prototype.toString.call(actualBytes)).toBe(
+          Object.prototype.toString.call(expectedBytes),
+        )
+        expect(actualBytes?.byteLength).toBe(expectedBytes.byteLength)
+        // Check every byte without a generic matcher's millions of per-property assertions.
+        expect(
+          actualBytes?.every((byte, index) => byte === expectedBytes[index]),
+        ).toBe(true)
+      }
       expect((await q.queued()).length).toBe(problem === 'exact' ? 1 : 0)
       expect(await q.queueRevision()).toBe(
         revision + (problem === 'exact' ? 1 : 0),
