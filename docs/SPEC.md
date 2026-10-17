@@ -1,7 +1,8 @@
-# GSIP v15 — Open Soil Spectral Library Specification
+# GSIP v16 — Open Soil Spectral Library Specification
 
 **Project:** Global Soil Intelligence Project (globalsoilintelligence.com)
-**Version:** 15.0 proposed — 2026-10-16 (invited collection implementation contract)
+**Version:** 16.0 proposed — 2026-10-16 (phone-first optional-card guidance)
+**v16 amendment status:** Justin authorized pushing the phone-first source updates on 2026-10-16 after the card-overlay research. This amendment clarifies the existing cardless policy and schedules WP-COLLECT-3; it changes no measurement tier, schema, camera API, permission or activation gate. The live browser guide remains a separately reviewed follow-up. Source implementation and CI authorize no merge, deployment or collection opening.
 **v15 amendment status:** Justin authorized merging #79 and #81 and implementing #82 for an invited phone-browser pilot on 2026-10-16. This amendment specifies the minimal source contract before implementation. Source review/CI does not authorize a migration, account provisioning, worker run, release, deployment or opening either collection gate. Duration/capacity, effective notices and any bounded launch-gate exceptions remain owner decisions.
 **v14 amendment status (approved/merged #79):** Justin directed on 2026-10-16 that outside counsel must not be a prerequisite for starting soil collection. That owner policy decision is recorded here. The private-collection mode, its implementation scope and deployment plan below are proposals for review; they do not adopt draft terms, open capture or grant production authority. Justin subsequently selected invited phone-browser contributors and authorized source implementation for #82; no production action is authorized.
 **v13 amendment status:** [Exact native scope](IOS_NATIVE_SCOPE.md) is proposed for review only. Justin approved merging [#70](https://github.com/global-soil-intelligence/gsip/pull/70) and its recommended passcode-required/preserve-quarantine/no-automatic-reset safeguards on 2026-10-14. Those choices are resolved; the exact native-language/file/effect exception and implementation go remain pending. No backend is admitted or device/production authority granted.
@@ -103,19 +104,19 @@ The QA and export workers are the only bridge from private to public data. Agent
 
 The protocol is the biggest determinant of dataset quality. It must stay cheap enough for anyone, worldwide.
 
-**The GSIP Reference Card** — a free, printable A6 card (colour and black-and-white editions) with 8 colour patches plus neutral grey, an ArUco marker (`DICT_4X4_50`, ID 7) for detection, scale and perspective, a 20 mm scale line, and printed protocol reminders.
+**The optional GSIP Reference Card** — a free, printable A6 card (colour and black-and-white editions) with 8 colour patches plus neutral grey, an ArUco marker (`DICT_4X4_50`, ID 7) for detection, scale and perspective, a 20 mm scale line, and printed protocol reminders.
 
 **Shot sequence per submission:**
 
-1. **Shot A — context (required):** undisturbed ground from about 30 cm, card in frame.
-2. **Shot B — fresh face (required):** scrape 2–3 cm to expose fresh soil; close-up from about 15 cm, card in frame. _(Primary analysis image.)_
+1. **Shot A — context (required):** undisturbed ground from about 30 cm; include the physical reference card if available.
+2. **Shot B — fresh face (required):** scrape 2–3 cm to expose fresh soil; close-up from about 15 cm; include the physical reference card if available. _(Primary analysis image.)_
 3. **Shot C — texture (optional):** moistened soil ball or ribbon in hand. Judged on its own: a failed shot C is left out of the release and never fails the submission.
 
 **Where and how to sample:** only where you have permission to dig; never in protected areas, on graves or archaeological sites, or near buried utilities; replace the scraped soil. Classroom contributions run under a teacher of record. The legal pack (WP-6d) sets the age policy.
 
 **Recorded metadata:** GPS position with accuracy radius and its source (device GPS or manual pin), capture time of shot B as recorded by the device, device model, and allowlisted non-location camera fields extracted at ingest. Raw EXIF/XMP/ICC is never retained. **One-tap prompts:** land cover (7 icons), surface condition (dry/moist/wet), disturbed (yes/no). **Public attribution:** defaults to the pseudonym "Anonymous soil contributor". Capture warns that a typed name is published with the observation's area and date. **Auto-enriched at ingest:** precipitation in the 3 days before capture (Open-Meteo forecast API, or its archive API for older captures) and elevation (Copernicus GLO-90 via the Open-Meteo Elevation API), both queried at the resolution-9 cell centre.
 
-**Card-less submissions are accepted** but marked "uncalibrated" and down-weighted in training. Never reject a willing contributor; grade the data instead.
+**No printed card is needed to contribute. Card-less submissions are accepted** but marked "uncalibrated" and down-weighted in any otherwise eligible training. Missing a card alone is not a QA rejection; both required shots and every other consent, quality, privacy and admission gate still apply. The card is an optional photographed physical reference, not a condition of participation or a certified reflectance target. A drawn screen guide supplies no calibration; ordinary phone photographs remain `camera_rgb` evidence under L1–L4.
 
 **Finalize:** after uploading, the client calls `finalize_submission`, which records `finalized_at` once shots A and B exist. QA processes each photo as soon as it arrives (so raw uploads leave quarantine quickly) and settles the submission's status only after finalize.
 
@@ -140,6 +141,14 @@ Before stripping, ingest applies the EXIF orientation and converts embedded colo
 | Both passed                                               | `qa_pass`         |
 
 **Upstream fair use (I14):** prior lookups are cached per resolution-9 cell; each upstream source has a database token bucket (SoilGrids: one call at a time, at most 5 a minute). Claiming a job and paying for its calls is one atomic step, so a request that cannot be claimed or must wait spends nothing and consumes no attempt. Owners can start only their own unstarted job; only the service worker retries.
+
+### 5.1 Phone-first guidance (WP-COLLECT-3)
+
+Start with ordinary phone photos and declared context; printing and advanced instrument details are optional. Align website/app, public protocol, builder guidance and camera purpose copy with the existing cardless acceptance. Keep the optional PDF reachable and retain the physical-card instructions for those choosing it. Current framing illustrations are instructions outside the system camera, not a live preview or a calibration overlay. Never draw a marker, colour patch or guide into submitted evidence pixels.
+
+An ordinary observation is distinct from an explicitly registered library sample (§16.8). Registration remains opt-in and requires the person's real depth bounds; do not invent depth, instrument identity or a sample record to reduce taps. Advanced declaration JSON is revealed only on request, with unchanged strict validation, persistence, ownership and clearing. No new camera, auth, queue, schema, transport or permission behavior is introduced. The explicit rights view may restore existing-account authentication for withdrawal/recovery while intake stays closed; ordinary closed/default/native landing starts no authentication, camera or upload.
+
+[PHONE_FIRST_CAPTURE.md](PHONE_FIRST_CAPTURE.md) records the bounded implementation and research limits. A live browser framing guide is a future separate package requiring its own detailed lifecycle/fallback design, review and actual-phone qualification; it is not shipped by COLLECT-3. Neither an overlay nor an RGB photograph is an instrument-measured spectrum or evidence of biological composition. All collection, photo-publication, field-training, native-device, production and merge gates remain in force.
 
 ## 6. Data schema (Postgres/PostGIS, canonical)
 
