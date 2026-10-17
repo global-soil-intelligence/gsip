@@ -2,7 +2,7 @@
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
 **Version:** 17.0 proposed — 2026-10-16 (live browser guide design; SPEC §5.2)
-**v17 amendment status:** source merges #86/#87 are owner-approved and complete. WP-COLLECT-4 is now designed for review in LIVE_CAMERA_GUIDE.md; no camera implementation or production action is authorized by this amendment.
+**v17 amendment status (approved/merged #89):** Justin approved the design and reviewed source-build sequence with a subsequent “go”. WP-COLLECT-4A ([#90](https://github.com/global-soil-intelligence/gsip/issues/90)) prepares the session/queue and declared shared-writer boundary before live preview. 4B still requires reviewed, green and merged 4A. No actual camera/device or production action is authorized; every deployment/activation gate remains held.
 **v16 amendment status:** Justin authorized source updates following the card-overlay research. WP-COLLECT-3 clarifies the already optional card and simplifies progressive library details. A live camera guide, automatic unknown-depth sample registration and every production/activation action remain outside that package.
 **v15 amendment status:** Justin approved ordered merges #79/#81 and building #82 for invited phone-browser contributors. The source contract is in [COLLECTION_PILOT_DESIGN.md](COLLECTION_PILOT_DESIGN.md); implementation is authorized, all production and activation gates remain held.
 **v14 amendment status (approved/merged #79):** records Justin's decision that outside counsel does not gate collection. WP-COLLECT-1 prepares policy/readiness; WP-COLLECT-2 remains a separate, review-gated collection build/auth/publication-boundary package. The invited audience is selected; operational exceptions, enrollment and every production go remain unresolved. No current packaging check is removed or weakened.
@@ -95,7 +95,7 @@ Acceptance:
 - [ ] Existing sharp-cardless/uncalibrated QA, closed landing, explicit authenticated rights recovery, invited admission, queue/rights, built-artifact and native permission/SDK checks still pass; no test is weakened.
 - [ ] Independent review and required CI are green. Default Pages/native artifacts keep both flags false; no deployment, field experiment, photo publication or scientific accuracy claim.
 
-**WP-COLLECT-4 — Optional live browser framing guide** ([issue #88](https://github.com/global-soil-intelligence/gsip/issues/88); v17 design for review, implementation held)
+**WP-COLLECT-4 — Optional live browser framing guide** ([design #88](https://github.com/global-soil-intelligence/gsip/issues/88), approved/merged #89; 4A source build [#90](https://github.com/global-soil-intelligence/gsip/issues/90), 4B waits for reviewed/green/merged 4A)
 
 Follow SPEC §5.2, [LIVE_CAMERA_GUIDE.md](LIVE_CAMERA_GUIDE.md) and the prospective browser-camera-design.json scope. First version: invited existing-account browser only, explicit video-only start, plain SVG outside saved pixels, full-frame JPEG snapshot and review. Guide mode starts with an empty observation, retains its photos in RAM and never mixes/replaces picker drafts. The existing picker remains the fallback; switching discards unqueued guide photos after confirmation. No new dependency, native code/permission, backend schema, IndexedDB store/version, measurement tier or activation flag.
 

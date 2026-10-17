@@ -159,9 +159,10 @@ describe('your data', () => {
     const { newLibraryDraft } = await import('../src/library')
     const draft = {
       ...newLibraryDraft('00000000-0000-4000-8000-000000000001'),
+      deviceRevision: await q.queueRevision(),
       declarationBytes: new Uint8Array([123, 125]),
     }
-    await q.saveLibraryDraft(draft, await q.queueRevision())
+    await q.saveLibraryDraft(draft, draft.deviceRevision)
     await q.saveDraftPhoto('B', {
       bytes: new Uint8Array([255, 216, 255, 1]),
       mimeType: 'image/jpeg',

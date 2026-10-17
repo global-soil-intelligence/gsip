@@ -20,6 +20,7 @@ const mocks = vi.hoisted(() => ({
   getCurrentPosition: vi.fn(),
   submitQueued: vi.fn(async (): Promise<void> => undefined),
   takePhoto: vi.fn(),
+  recordOwner: vi.fn(async (): Promise<string | undefined> => undefined),
 }))
 
 vi.mock('@capacitor/camera', () => ({
@@ -36,7 +37,7 @@ vi.mock('../src/supabase', () => ({
   existingContributor: async () => null,
   fetchServiceState: async () => 'open',
   isServiceConfigured: () => true,
-  recordOwner: async () => undefined,
+  recordOwner: mocks.recordOwner,
   sendSignInLink: async () => 'sent',
   latestDeletionRequest: async () => null,
   requestDeletion: async () => 'requested',
@@ -64,6 +65,8 @@ beforeEach(async () => {
     vi.fn(async () => new Response(JPEG, { status: 200 })),
   )
   mocks.takePhoto.mockReset()
+  mocks.recordOwner.mockReset()
+  mocks.recordOwner.mockResolvedValue(undefined)
   mocks.takePhoto.mockResolvedValue({
     type: 0,
     saved: false,
@@ -391,4 +394,57 @@ it('a later camera shot B supersedes a pending saved-file read for the same shot
   await waitFor(async () =>
     expect((await draftPhotos()).B?.method).toBe('camera'),
   )
+})
+
+it('refuses a late camera result at its original revision and permits an explicit fresh retry', async () => {
+  const q = await import('../src/queue')
+  let finish!: (value: unknown) => void
+  mocks.takePhoto.mockReturnValueOnce(
+    new Promise((resolve) => {
+      finish = resolve
+    }),
+  )
+  render(<App />)
+  fireEvent.click(await takeButton('A'))
+  await screen.findByText(/opening the camera/i)
+  await q.clearDraftPhotos()
+  await act(async () =>
+    finish({
+      type: 0,
+      saved: false,
+      uri: OUTPUT,
+      webPath: 'https://localhost/_capacitor_file_/PIC.jpg',
+    }),
+  )
+  await screen.findByText(/Photo A could not be saved.*Choose it again/)
+  expect(screen.queryByText('Photo A ready')).toBeNull()
+  expect(await q.draftPhotos()).toEqual({})
+  await take('A')
+  expect((await q.draftPhotos()).A?.method).toBe('camera')
+})
+
+it('never resurrects ordinary native photos when a clear wins during the owner lookup', async () => {
+  const q = await import('../src/queue')
+  render(<App />)
+  await take('A')
+  await take('B')
+  typeLocation()
+  let finish!: (owner: string | undefined) => void
+  mocks.recordOwner.mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve
+      }),
+  )
+  describeAndSubmit()
+  await waitFor(() => expect(mocks.recordOwner).toHaveBeenCalledOnce())
+  await q.clearDraftPhotos()
+  await act(async () => finish(undefined))
+  await screen.findByText(
+    'The draft changed while queueing. Choose the photos again before queueing.',
+  )
+  expect(await q.queued()).toEqual([])
+  expect(mocks.submitQueued).not.toHaveBeenCalled()
+  expect(screen.queryByText('Photo A ready')).toBeNull()
+  expect(await q.draftPhotos()).toEqual({})
 })

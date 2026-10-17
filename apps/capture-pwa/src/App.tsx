@@ -44,7 +44,6 @@ import {
   putIfCurrent,
   discardHeld,
   draftPhotos,
-  enqueue,
   indexedDbQueue,
   queued,
   reconfirmTerms,
@@ -121,7 +120,9 @@ function PhotoField({
   onChooseFile,
   savedPhoto,
   shot,
+  disabled = false,
 }: {
+  disabled?: boolean
   savedPhoto?: CapturedPhoto | null
   shot?: ShotType
   onChooseFile?: (file: File) => void
@@ -151,6 +152,7 @@ function PhotoField({
         accept="image/jpeg"
         capture="environment"
         required={!optional && !onChooseFile}
+        disabled={disabled}
         onChange={(event) => {
           const file = event.currentTarget.files?.[0]
           if (file && onChooseFile) onChooseFile(file)
@@ -323,6 +325,14 @@ export function App() {
   const canCollect =
     live && (!pilot || (admission === 'open' && Boolean(invitedOwner)))
   const [libraryDraft, setLibraryDraft] = useState<LibraryDraft | null>(null)
+  const libraryIntent = useRef(0)
+  const [libraryHeld, setLibraryHeld] = useState(false)
+  const [libraryWriting, setLibraryWriting] = useState(false)
+  const [libraryReading, setLibraryReading] = useState(false)
+  const [restoringPhotos, setRestoringPhotos] = useState(native || libraryLive)
+  const [restoringLibrary, setRestoringLibrary] = useState(libraryLive)
+  const [draftsClearing, setDraftsClearing] = useState(false)
+  const clearingDrafts = useRef(false)
   const [libraryConflictCount, setLibraryConflictCount] = useState(0)
   const [heldLibraryCount, setHeldLibraryCount] = useState(0)
   // WP-APP-1: the phone app uses the native camera and location; browsers use the web ones.
@@ -332,6 +342,7 @@ export function App() {
   const [nativePhotos, setNativePhotos] = useState<ShotPhotos>(NO_PHOTOS)
   // Camera and picker share one intent counter per shot: a later choice always wins.
   const photoRequests = useRef<Record<ShotType, number>>({ A: 0, B: 0, C: 0 })
+  const photoRevisions = useRef<Partial<Record<ShotType, number>>>({})
   const [soilRefresh, setSoilRefresh] = useState(0)
   const authEnabled = live || rightsView
   const client = useMemo(
@@ -480,17 +491,43 @@ export function App() {
   useEffect(() => {
     if (!native && !libraryLive) return
     let cancelled = false
-    draftPhotos().then(
-      (saved) => {
-        if (cancelled) return
+    const requests = { ...photoRequests.current }
+    const generation = authGeneration.current
+    void (async () => {
+      try {
+        const revision = await queueRevision()
+        const saved = await draftPhotos()
+        const currentRevision = await queueRevision()
+        if (
+          cancelled ||
+          rightsHold.current ||
+          generation !== authGeneration.current ||
+          revision !== currentRevision
+        )
+          return
+        for (const shot of SHOTS)
+          if (requests[shot] === photoRequests.current[shot] && saved[shot])
+            photoRevisions.current[shot] = revision
         setNativePhotos((current) => ({
-          A: current.A ?? saved.A ?? null,
-          B: current.B ?? saved.B ?? null,
-          C: current.C ?? saved.C ?? null,
+          A:
+            requests.A === photoRequests.current.A
+              ? (current.A ?? saved.A ?? null)
+              : current.A,
+          B:
+            requests.B === photoRequests.current.B
+              ? (current.B ?? saved.B ?? null)
+              : current.B,
+          C:
+            requests.C === photoRequests.current.C
+              ? (current.C ?? saved.C ?? null)
+              : current.C,
         }))
-      },
-      () => undefined,
-    )
+      } catch {
+        // A failed restore never invents a selected photo.
+      } finally {
+        if (!cancelled) setRestoringPhotos(false)
+      }
+    })()
     return () => {
       cancelled = true
     }
@@ -499,25 +536,103 @@ export function App() {
   useEffect(() => {
     if (!libraryLive) return
     let cancelled = false
-    void savedLibraryDraft().then((saved) => {
-      if (!cancelled) setLibraryDraft(saved ?? null)
-    })
+    const intent = libraryIntent.current
+    const generation = authGeneration.current
+    void (async () => {
+      try {
+        const revision = await queueRevision()
+        const saved = await savedLibraryDraft()
+        const currentRevision = await queueRevision()
+        if (
+          cancelled ||
+          intent !== libraryIntent.current ||
+          rightsHold.current ||
+          generation !== authGeneration.current ||
+          revision !== currentRevision
+        )
+          return
+        setLibraryDraft(saved ?? null)
+        setLibraryHeld(
+          Boolean(
+            saved &&
+            (!Number.isSafeInteger(saved.deviceRevision) ||
+              saved.deviceRevision !== revision),
+          ),
+        )
+      } catch {
+        setStatus(
+          'The private draft could not be restored. Try again before queueing.',
+        )
+      } finally {
+        if (!cancelled) setRestoringLibrary(false)
+      }
+    })()
     return () => {
       cancelled = true
     }
   }, [libraryLive])
 
   async function changeLibraryDraft(next: LibraryDraft | null) {
-    const revision = next?.deviceRevision ?? (await queueRevision())
+    const previous = libraryDraft
+    const intent = ++libraryIntent.current
+    const generation = authGeneration.current
+    const current = () =>
+      open.current &&
+      !rightsHold.current &&
+      !clearingDrafts.current &&
+      intent === libraryIntent.current &&
+      generation === authGeneration.current
+    const revision = next?.deviceRevision
+    if (
+      next &&
+      (revision === undefined ||
+        !Number.isSafeInteger(revision) ||
+        revision < 0)
+    ) {
+      setLibraryHeld(true)
+      setStatus(
+        'This private draft has no usable original revision. Discard it and start again.',
+      )
+      return false
+    }
     setLibraryDraft(next)
+    setLibraryWriting(true)
     try {
       if (next) {
-        if (!(await saveLibraryDraft(next, revision))) setLibraryDraft(null)
-      } else await clearLibraryDraft()
+        const saved = await saveLibraryDraft(next, revision!, current)
+        const currentRevision = await queueRevision()
+        if (!current()) return false
+        if (!saved || revision !== currentRevision) {
+          setLibraryHeld(true)
+          setStatus(
+            'The private draft could not be saved. Discard it and start again.',
+          )
+          return false
+        }
+      } else {
+        await clearLibraryDraft()
+        if (!current()) return false
+        for (const shot of SHOTS) photoRequests.current[shot] += 1
+        photoRevisions.current = {}
+        setNativePhotos(NO_PHOTOS)
+        setStatus(
+          'Private sample removed. Choose photos again before queueing.',
+        )
+      }
+      if (!current()) return false
+      setLibraryHeld(false)
+      return true
     } catch {
-      setStatus(
-        'The private draft could not be saved. Try again before queueing.',
-      )
+      if (current()) {
+        if (!next) setLibraryDraft(previous)
+        setLibraryHeld(Boolean(next ?? previous))
+        setStatus(
+          'The private draft could not be saved. Try again before queueing.',
+        )
+      }
+      return false
+    } finally {
+      if (intent === libraryIntent.current) setLibraryWriting(false)
     }
   }
 
@@ -774,25 +889,50 @@ export function App() {
     shot: ShotType,
     photo: CapturedPhoto,
     revision: number,
+    current: () => boolean,
   ) {
-    if (revision !== (await queueRevision())) return
+    let saved = false
+    try {
+      saved = await saveDraftPhoto(shot, photo, revision, current)
+    } catch {
+      // Keep persistence failures distinct from invalid photo bytes.
+    }
+    if (!current()) return
+    if (!saved || revision !== (await queueRevision())) {
+      if (!current()) return
+      setNativePhotos((photos) => ({ ...photos, [shot]: null }))
+      delete photoRevisions.current[shot]
+      setStatus(
+        `Photo ${shot} could not be saved. Choose it again before queueing.`,
+      )
+      return
+    }
+    if (!current()) return
+    photoRevisions.current[shot] = revision
     setNativePhotos((current) => ({ ...current, [shot]: photo }))
-    await saveDraftPhoto(shot, photo, revision)
     setStatus(`Photo ${shot} is ready.`)
   }
 
   async function takeNativePhoto(shot: ShotType) {
     if (platform?.camera.kind !== 'native') return
     const request = ++photoRequests.current[shot]
+    const generation = authGeneration.current
+    const current = () =>
+      open.current &&
+      !rightsHold.current &&
+      !clearingDrafts.current &&
+      request === photoRequests.current[shot] &&
+      generation === authGeneration.current
     const revision = await queueRevision()
+    if (!current()) return
     setStatus('Opening the camera… If it does not open, use a saved photo.')
     try {
       const photo = await platform.camera.takePhoto()
-      if (request !== photoRequests.current[shot]) return
-      if (photo) await keepNativePhoto(shot, photo, revision)
+      if (!current()) return
+      if (photo) await keepNativePhoto(shot, photo, revision, current)
       else setStatus('No photo was taken.')
     } catch (error) {
-      if (request !== photoRequests.current[shot]) return
+      if (!current()) return
       setStatus(
         PHOTO_PROBLEMS[
           error instanceof PhotoRefused ? error.problem : 'failed'
@@ -803,13 +943,21 @@ export function App() {
 
   async function chooseNativePhoto(shot: ShotType, file: File) {
     const request = ++photoRequests.current[shot]
+    const generation = authGeneration.current
+    const current = () =>
+      open.current &&
+      !rightsHold.current &&
+      !clearingDrafts.current &&
+      request === photoRequests.current[shot] &&
+      generation === authGeneration.current
     const revision = await queueRevision()
+    if (!current()) return
     try {
       const photo = await photoFromFile(file, PAGE_LOADED_AT, Date.now())
-      if (request !== photoRequests.current[shot]) return
-      await keepNativePhoto(shot, photo, revision)
+      if (!current()) return
+      await keepNativePhoto(shot, photo, revision, current)
     } catch (error) {
-      if (request !== photoRequests.current[shot]) return
+      if (!current()) return
       setStatus(
         PHOTO_PROBLEMS[
           error instanceof PhotoRefused ? error.problem : 'not_jpeg'
@@ -818,12 +966,26 @@ export function App() {
     }
   }
 
-  function discardNativePhotos() {
+  async function discardNativePhotos() {
+    if (clearingDrafts.current) return
+    clearingDrafts.current = true
+    setDraftsClearing(true)
     for (const shot of SHOTS) photoRequests.current[shot] += 1
-    setNativePhotos(NO_PHOTOS)
-    setLibraryDraft(null)
-    void clearDraftPhotos().catch(() => undefined)
-    setStatus('Photos discarded.')
+    libraryIntent.current += 1
+    setLibraryWriting(false)
+    try {
+      await clearDraftPhotos()
+      setNativePhotos(NO_PHOTOS)
+      photoRevisions.current = {}
+      setLibraryDraft(null)
+      setLibraryHeld(false)
+      setStatus('Photos discarded.')
+    } catch {
+      setStatus('The drafts could not be discarded. Try again.')
+    } finally {
+      clearingDrafts.current = false
+      setDraftsClearing(false)
+    }
   }
 
   async function sendMagicLink(switchAccount = false) {
@@ -864,12 +1026,34 @@ export function App() {
       (pilot && (!client || native))
     )
       return
+    if (
+      restoringPhotos ||
+      restoringLibrary ||
+      libraryReading ||
+      libraryWriting ||
+      draftsClearing
+    ) {
+      setStatus('Wait for the draft to finish saving before queueing.')
+      return
+    }
+    if (libraryHeld) {
+      setStatus(
+        'This private draft has no usable original revision. Discard it and start again.',
+      )
+      return
+    }
     const generation = authGeneration.current
+    const draftIntent = libraryIntent.current
+    const requests = { ...photoRequests.current }
     const current = () =>
       open.current &&
       !rightsHold.current &&
-      generation === authGeneration.current
+      !clearingDrafts.current &&
+      generation === authGeneration.current &&
+      draftIntent === libraryIntent.current &&
+      SHOTS.every((shot) => requests[shot] === photoRequests.current[shot])
     const initialAccess = pilot ? await refreshAdmission() : null
+    if (!current()) return
     if (
       pilot &&
       (!initialAccess?.uid ||
@@ -926,6 +1110,7 @@ export function App() {
       return
     }
     const submitRevision = await queueRevision()
+    if (!current()) return
     const now = Date.now()
     let shots: ShotPhotos
     try {
@@ -939,9 +1124,22 @@ export function App() {
       )
       return
     }
+    if (!current()) return
     // SPEC I2: shots A and B are required; the browser's `required` covers only its own form.
     if (!shots.A || !shots.B) {
       setStatus('Add photos A and B before continuing.')
+      return
+    }
+    if (
+      (native || libraryLive) &&
+      SHOTS.some(
+        (shot) =>
+          shots[shot] && photoRevisions.current[shot] !== submitRevision,
+      )
+    ) {
+      setStatus(
+        'The draft photos changed on this device. Choose them again before queueing.',
+      )
       return
     }
     const capturedPhotos = SHOTS.flatMap((shot) => {
@@ -953,6 +1151,7 @@ export function App() {
       pilot && client
         ? ((await pilotOwner(client)) ?? undefined)
         : await recordOwner(client)
+    if (!current()) return
     if (
       pilot &&
       (!ownerUid ||
@@ -984,22 +1183,49 @@ export function App() {
         return
       }
       // Persist private context and photo bytes before the durable queue write.
-      if (
-        libraryDraft.deviceRevision !== undefined &&
-        libraryDraft.deviceRevision !== submitRevision
-      )
+      if (libraryDraft.deviceRevision !== submitRevision) {
+        setLibraryHeld(true)
+        setStatus(
+          'This private draft has no usable original revision. Discard it and start again.',
+        )
         return
-      if (pilot && !current()) return
-      if (!(await saveLibraryDraft(libraryDraft, submitRevision))) return
-      if (pilot && !current()) return
-      await Promise.all(
+      }
+      if (!current()) return
+      if (
+        !(await saveLibraryDraft(
+          libraryDraft,
+          libraryDraft.deviceRevision,
+          current,
+        ))
+      ) {
+        if (current())
+          setStatus(
+            'The private draft could not be saved. Discard it and start again.',
+          )
+        return
+      }
+      if (!current()) return
+      const saved = await Promise.all(
         SHOTS.flatMap((shot) =>
           shots[shot]
-            ? [saveDraftPhoto(shot, shots[shot]!, submitRevision)]
+            ? [
+                saveDraftPhoto(
+                  shot,
+                  shots[shot]!,
+                  photoRevisions.current[shot],
+                  current,
+                ),
+              ]
             : [],
         ),
       )
-      if (pilot && !current()) return
+      if (!current()) return
+      if (saved.some((result) => !result)) {
+        setStatus(
+          'The draft photos could not be saved. Choose them again before queueing.',
+        )
+        return
+      }
     }
     const record: QueueRecord = {
       ...(pilot ? { collectionMode: 'invited_private' as const } : {}),
@@ -1028,23 +1254,30 @@ export function App() {
       surfaceCondition: String(form.get('surface-condition')),
       termsVersion: TERMS_VERSION,
     }
-    if (library || pilot) {
-      if (
-        !(await putIfCurrent(
-          record,
-          submitRevision,
-          false,
-          pilot ? current : undefined,
-        ))
-      )
-        return
-    } else await enqueue(record)
-    if (pilot && !current()) return
+    if (!(await putIfCurrent(record, submitRevision, false, current))) {
+      if (current()) {
+        photoRevisions.current = {}
+        setNativePhotos(NO_PHOTOS)
+        setStatus(
+          'The draft changed while queueing. Choose the photos again before queueing.',
+        )
+      }
+      return
+    }
+    if (!current()) return
+    libraryIntent.current += 1
+    for (const shot of SHOTS) photoRequests.current[shot] += 1
+    clearingDrafts.current = true
+    setDraftsClearing(true)
     setLibraryDraft(null)
+    setLibraryHeld(false)
     setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
     formRef.current?.reset()
     setNativePhotos(NO_PHOTOS)
+    photoRevisions.current = {}
     await clearDraftPhotos().catch(() => undefined)
+    clearingDrafts.current = false
+    setDraftsClearing(false)
     setLatitude('')
     setLongitude('')
     setAccuracy(null)
@@ -1239,7 +1472,9 @@ export function App() {
                   ).map(([shot, label, optional]) => (
                     <NativePhotoField
                       key={shot}
-                      disabled={platform === null}
+                      disabled={
+                        platform === null || draftsClearing || restoringPhotos
+                      }
                       label={label}
                       optional={optional}
                       photo={nativePhotos[shot]}
@@ -1253,6 +1488,7 @@ export function App() {
                 ) : (
                   <>
                     <PhotoField
+                      disabled={draftsClearing || restoringPhotos}
                       savedPhoto={libraryLive ? nativePhotos.A : undefined}
                       shot="A"
                       name="shot-a"
@@ -1264,6 +1500,7 @@ export function App() {
                       }
                     />
                     <PhotoField
+                      disabled={draftsClearing || restoringPhotos}
                       savedPhoto={libraryLive ? nativePhotos.B : undefined}
                       shot="B"
                       name="shot-b"
@@ -1275,6 +1512,7 @@ export function App() {
                       }
                     />
                     <PhotoField
+                      disabled={draftsClearing || restoringPhotos}
                       savedPhoto={libraryLive ? nativePhotos.C : undefined}
                       shot="C"
                       onChooseFile={
@@ -1294,6 +1532,7 @@ export function App() {
                   <button
                     type="button"
                     className="secondary discard-photos"
+                    disabled={draftsClearing}
                     onClick={discardNativePhotos}
                   >
                     Discard these photos
@@ -1403,9 +1642,17 @@ export function App() {
 
             {libraryLive && (
               <LibrarySection
+                key={`library-${authEpoch}-${libraryDraft?.intakeId ?? 'empty'}`}
                 client={client}
                 value={libraryDraft}
                 onChange={changeLibraryDraft}
+                held={libraryHeld}
+                disabled={
+                  restoringLibrary ||
+                  draftsClearing ||
+                  (libraryWriting && !libraryDraft)
+                }
+                onPendingChange={setLibraryReading}
               />
             )}
             {libraryLive && !native && (
@@ -1476,7 +1723,18 @@ export function App() {
                   this submission, and that I can withdraw it later.
                 </span>
               </label>
-              <button className="submit-button" type="submit">
+              <button
+                className="submit-button"
+                type="submit"
+                disabled={
+                  restoringPhotos ||
+                  restoringLibrary ||
+                  libraryReading ||
+                  libraryWriting ||
+                  draftsClearing ||
+                  libraryHeld
+                }
+              >
                 Queue observation securely
               </button>
               {!client && (
@@ -1690,6 +1948,11 @@ export function App() {
             onQueueCleared={async () => {
               // The queue and any photos taken here are gone; My Soil changes too.
               for (const shot of SHOTS) photoRequests.current[shot] += 1
+              libraryIntent.current += 1
+              photoRevisions.current = {}
+              setLibraryWriting(false)
+              setLibraryReading(false)
+              setLibraryHeld(false)
               setNativePhotos(NO_PHOTOS)
               setLibraryDraft(null)
               setSoilRefresh((count) => count + 1)

@@ -96,6 +96,12 @@ Map the complete existing exported API before changing callers:
 
 - Queue: `enqueue`, `queued`, `removeQueued`, `clearQueue`, `queueRevision`, `putIfCurrent`,
   `discardHeld`, `discardLibraryConflicts`, `releaseHeld`, `reconfirmTerms`, `retryDeadLettered`.
+- Browser guide only (COLLECT-4A): `enqueueGuideObservation` reconciles an existing immutable
+  identity or atomically inserts, consumes exact owned library context and advances revision
+  over `submissions`, `queueState`, `draftPhotos` and `libraryDraft`. It performs no blanket
+  cleanup. The guide contract excludes native clients; this catalog entry grants no native
+  operation, opcode or implementation scope. A future native adapter must refuse it unless
+  separately specified and reviewed, rather than silently dropping its transaction fences.
 - Drafts/library: `saveDraftPhoto`, `draftPhotos`, `clearDraftPhotos`, `savedLibraryDraft`,
   `saveLibraryDraft`, `libraryNodeForOwner`, `bindLibraryOwner`, `rememberLibraryOwner`,
   `clearLibraryDraft`, `libraryNamespaceOwner`.

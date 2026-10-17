@@ -1,5 +1,10 @@
 import { type DBSchema, type IDBPDatabase, openDB } from 'idb'
-import type { LibraryDraft } from './library'
+import {
+  MAX_LIBRARY_INTAKE_BYTES,
+  parseInstrumentDeclaration,
+} from '@gsip/schema'
+import { type LibraryDraft, queueLibraryDraft } from './library'
+import { isJpeg, MAX_PHOTO_BYTES } from './platform/camera'
 import type { CapturedPhoto } from './platform/types'
 import type { QueueRecord, ShotType } from './types'
 import { acceptanceExpired, TERMS_VERSION } from './terms'
@@ -134,15 +139,27 @@ export async function saveDraftPhoto(
   shotType: ShotType,
   photo: CapturedPhoto,
   revision?: number,
-): Promise<void> {
+  allowed: () => boolean = () => true,
+): Promise<boolean> {
+  const snapshot = structuredClone(photo)
   const tx = (await database()).transaction(
     ['draftPhotos', 'queueState'],
     'readwrite',
   )
+  void tx.done.catch(() => undefined)
   const current = (await tx.objectStore('queueState').get('generation')) ?? 0
-  if (revision === undefined || revision === current)
-    await tx.objectStore('draftPhotos').put({ photo, shotType })
+  const permitted =
+    (revision === undefined || revision === current) && allowed()
+  if (permitted) {
+    await tx.objectStore('draftPhotos').put({ photo: snapshot, shotType })
+    if (!allowed()) {
+      tx.abort()
+      await tx.done.catch(() => undefined)
+      return false
+    }
+  }
   await tx.done
+  return permitted && allowed()
 }
 
 export async function draftPhotos(): Promise<
@@ -295,39 +312,305 @@ export async function savedLibraryDraft(): Promise<LibraryDraft | undefined> {
 export async function saveLibraryDraft(
   draft: LibraryDraft,
   revision: number,
+  allowed: () => boolean = () => true,
 ): Promise<boolean> {
+  const snapshot = structuredClone(draft)
   const tx = (await database()).transaction(
     ['libraryDraft', 'queueState'],
     'readwrite',
   )
+  void tx.done.catch(() => undefined)
   const current = (await tx.objectStore('queueState').get('generation')) ?? 0
-  if (current === revision)
-    await tx.objectStore('libraryDraft').put(draft, 'current')
+  const permitted =
+    validRevision(snapshot.deviceRevision) &&
+    snapshot.deviceRevision === revision &&
+    current === revision &&
+    allowed()
+  if (permitted) {
+    await tx.objectStore('libraryDraft').put(snapshot, 'current')
+    if (!allowed()) {
+      tx.abort()
+      await tx.done.catch(() => undefined)
+      return false
+    }
+  }
   await tx.done
-  return current === revision
+  return permitted && allowed()
+}
+
+function validRevision(revision: unknown): revision is number {
+  return (
+    typeof revision === 'number' &&
+    Number.isSafeInteger(revision) &&
+    revision >= 0 &&
+    revision < Number.MAX_SAFE_INTEGER
+  )
+}
+
+/** IndexedDB may return a typed array from another realm; reject every other view kind. */
+function isUint8Array(value: unknown): value is Uint8Array {
+  return (
+    ArrayBuffer.isView(value) &&
+    Object.prototype.toString.call(value) === '[object Uint8Array]'
+  )
+}
+
+export type GuideEnqueueContext = {
+  ownerUid: string
+  revision: number
+  /** Current same-owner authentication, rights and invited admission, including after awaits. */
+  allowed: () => boolean
+  /** Original session, observation and shot intents. Required only for a NEW insertion. */
+  originalContextCurrent: () => boolean
+}
+
+export type GuideEnqueueResult = {
+  status: 'committed' | 'reconciled' | 'held'
+  revision: number
+}
+
+/** Exact private values, independent of JSON key order and typed-array serialization. */
+function sameValue(left: unknown, right: unknown): boolean {
+  if (Object.is(left, right)) return true
+  if (left instanceof Uint8Array || right instanceof Uint8Array)
+    return (
+      left instanceof Uint8Array &&
+      right instanceof Uint8Array &&
+      left.length === right.length &&
+      left.every((byte, index) => byte === right[index])
+    )
+  if (!left || !right || typeof left !== 'object' || typeof right !== 'object')
+    return false
+  if (Array.isArray(left) !== Array.isArray(right)) return false
+  const leftFields = Object.keys(left)
+  const rightFields = Object.keys(right)
+  return (
+    leftFields.length === rightFields.length &&
+    leftFields.every(
+      (key) =>
+        Object.hasOwn(right, key) &&
+        sameValue(
+          (left as Record<string, unknown>)[key],
+          (right as Record<string, unknown>)[key],
+        ),
+    )
+  )
+}
+
+/** Sync and personal reconfirmation may advance after the original snapshot was committed. */
+function immutableQueueValues(record: QueueRecord): unknown {
+  const value = { ...record }
+  for (const field of [
+    'deadLetteredAt',
+    'heldAt',
+    'nextRetryAt',
+    'libraryConflictAt',
+    'reconfirmedAt',
+    'reconfirmedTermsVersion',
+    'syncAttempts',
+    'termsExpiredAt',
+  ] as const)
+    delete value[field]
+  if (value.library) {
+    value.library = { ...value.library }
+    delete value.library.photosFinalized
+  }
+  return value
+}
+
+function matchesGuideLibrary(
+  saved: LibraryDraft | undefined,
+  snapshot: QueueRecord,
+  context: GuideEnqueueContext,
+): boolean {
+  if (!snapshot.library) return saved === undefined
+  if (
+    !saved ||
+    saved.ownerUid !== context.ownerUid ||
+    !validRevision(saved.deviceRevision) ||
+    saved.deviceRevision !== context.revision ||
+    saved.submissionId !== snapshot.submissionId ||
+    (saved.declarationBytes !== null &&
+      (!isUint8Array(saved.declarationBytes) ||
+        saved.declarationBytes.byteLength > MAX_LIBRARY_INTAKE_BYTES))
+  )
+    return false
+  try {
+    const library = queueLibraryDraft(saved)
+    // Raw declaration bytes are independently parsed; an object cannot substitute for them.
+    if (library.declarationBytes === null) {
+      if (saved.instrument !== null) return false
+    } else if (
+      !sameValue(
+        parseInstrumentDeclaration(
+          new TextDecoder('utf-8', { fatal: true }).decode(
+            library.declarationBytes,
+          ),
+        ),
+        saved.instrument,
+      )
+    )
+      return false
+    return sameValue(library, snapshot.library)
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Commit one RAM-only invited guide observation using the existing four stores. This is a local
+ * durable result, never a hosted receipt. A frozen identity can reconcile uncertain completion
+ * after its original session/revision expired, without consuming another draft or replacing sync
+ * progress. New work must still own its original session and all empty photo slots.
+ */
+export async function enqueueGuideObservation(
+  record: QueueRecord,
+  originalContext: GuideEnqueueContext,
+): Promise<GuideEnqueueResult> {
+  const snapshot = structuredClone(record)
+  const context = { ...originalContext }
+  const held = (revision: number): GuideEnqueueResult => ({
+    status: 'held',
+    revision,
+  })
+  if (
+    !context.ownerUid ||
+    snapshot.ownerUid !== context.ownerUid ||
+    snapshot.collectionMode !== 'invited_private' ||
+    !context.allowed()
+  )
+    return held(context.revision)
+  const db = await database()
+  if (!context.allowed()) return held(context.revision)
+  const tx = db.transaction(
+    ['submissions', 'queueState', 'draftPhotos', 'libraryDraft'],
+    'readwrite',
+  )
+  // Attach immediately: a failing request and transaction completion can reject together.
+  void tx.done.catch(() => undefined)
+  let revision = context.revision
+  const finishHeld = async () => {
+    await tx.done
+    return held(revision)
+  }
+  try {
+    const submissions = tx.objectStore('submissions')
+    const existing = await submissions.get(snapshot.submissionId)
+    if (!context.allowed()) return await finishHeld()
+    revision = (await tx.objectStore('queueState').get('generation')) ?? 0
+    if (!context.allowed()) return await finishHeld()
+    if (existing) {
+      const matches =
+        existing.collectionMode === 'invited_private' &&
+        existing.ownerUid === context.ownerUid &&
+        snapshot.ownerUid === context.ownerUid &&
+        sameValue(
+          immutableQueueValues(existing),
+          immutableQueueValues(snapshot),
+        )
+      await tx.done
+      return matches && context.allowed()
+        ? { status: 'reconciled', revision }
+        : held(revision)
+    }
+    if (
+      !validRevision(revision) ||
+      !validRevision(context.revision) ||
+      revision !== context.revision ||
+      !context.originalContextCurrent() ||
+      !['A', 'B'].every((shot) =>
+        snapshot.photos.some((photo) => photo.shotType === shot),
+      ) ||
+      snapshot.photos.length > 3 ||
+      new Set(snapshot.photos.map((photo) => photo.shotType)).size !==
+        snapshot.photos.length ||
+      snapshot.photos.some(
+        (photo) =>
+          photo.mimeType !== 'image/jpeg' ||
+          photo.bytes.byteLength > MAX_PHOTO_BYTES ||
+          !isJpeg(photo.bytes) ||
+          !['A', 'B', 'C'].includes(photo.shotType),
+      )
+    )
+      return await finishHeld()
+    const photos = await tx.objectStore('draftPhotos').getAll()
+    if (!context.allowed()) return await finishHeld()
+    const libraryStore = tx.objectStore('libraryDraft')
+    const library = await libraryStore.get('current')
+    if (
+      !context.allowed() ||
+      !context.originalContextCurrent() ||
+      photos.length !== 0 ||
+      !matchesGuideLibrary(library, snapshot, context)
+    )
+      return await finishHeld()
+    const successor = revision + 1
+    // No awaits between the final predicates and submission of every atomic mutation.
+    const writes: Promise<unknown>[] = []
+    const schedule = (request: Promise<unknown>) => {
+      void request.catch(() => undefined)
+      writes.push(request)
+    }
+    schedule(submissions.add(snapshot))
+    if (snapshot.library) schedule(libraryStore.delete('current'))
+    schedule(tx.objectStore('queueState').put(successor, 'generation'))
+    await Promise.all(writes)
+    if (!context.allowed() || !context.originalContextCurrent()) {
+      tx.abort()
+      await tx.done.catch(() => undefined)
+      return held(revision)
+    }
+    await tx.done
+    generation += 1
+    return context.allowed()
+      ? { status: 'committed', revision: successor }
+      : held(successor)
+  } catch (error) {
+    try {
+      tx.abort()
+    } catch {
+      // A storage abort may already have ended this transaction.
+    }
+    await tx.done.catch(() => undefined)
+    throw error
+  }
 }
 
 export async function libraryNodeForOwner(
   ownerUid?: string,
   revision?: number,
+  allowed: () => boolean = () => true,
 ): Promise<string> {
-  const tx = (await database()).transaction(
-    ['libraryNamespace', 'queueState'],
-    'readwrite',
-  )
-  const current = (await tx.objectStore('queueState').get('generation')) ?? 0
-  if (revision !== undefined && current !== revision) {
+  const refused = () => new Error('Private draft was discarded.')
+  if (!allowed()) throw refused()
+  const db = await database()
+  if (!allowed()) throw refused()
+  const tx = db.transaction(['libraryNamespace', 'queueState'], 'readwrite')
+  void tx.done.catch(() => undefined)
+  try {
+    const current = (await tx.objectStore('queueState').get('generation')) ?? 0
+    if (!allowed() || (revision !== undefined && current !== revision))
+      throw refused()
+    const store = tx.objectStore('libraryNamespace')
+    let saved = await store.get('current')
+    if (!allowed()) throw refused()
+    if (!saved || saved.ownerUid !== ownerUid) {
+      saved = { nodeId: crypto.randomUUID(), ownerUid }
+      await store.put(saved, 'current')
+      if (!allowed()) throw refused()
+    }
     await tx.done
-    throw new Error('Private draft was discarded.')
+    if (!allowed()) throw refused()
+    return saved.nodeId
+  } catch (error) {
+    try {
+      tx.abort()
+    } catch {
+      // An already completed transaction cannot be aborted.
+    }
+    await tx.done.catch(() => undefined)
+    throw error
   }
-  const store = tx.objectStore('libraryNamespace')
-  let saved = await store.get('current')
-  if (!saved || saved.ownerUid !== ownerUid) {
-    saved = { nodeId: crypto.randomUUID(), ownerUid }
-    await store.put(saved, 'current')
-  }
-  await tx.done
-  return saved.nodeId
 }
 
 /** Persist the first sender binding before any capture mutation; do not transfer a known node. */
