@@ -1,17 +1,17 @@
 cff-version: 1.2.0
-message: "If you use GSIP software, please cite it using these metadata. AI coding tools are documented in the repository history and are not listed as authors."
-title: "Global Soil Intelligence Project (GSIP)"
+message: 'If you use GSIP software, please cite it using these metadata. AI coding tools are documented in the repository history and are not listed as authors.'
+title: 'Global Soil Intelligence Project (GSIP)'
 type: software
 authors:
   - family-names: Hart
-    given-names: "Justin D."
-    affiliation: "Viridis LLC"
-    orcid: "https://orcid.org/0009-0008-3082-2482"
-repository-code: "https://github.com/global-soil-intelligence/gsip"
-abstract: "Open soil spectral reference library tooling: phone and web capture, sample linking, data pipeline, library tools, modelling code, API and a reference-card generator."
+    given-names: 'Justin D.'
+    affiliation: 'Viridis LLC'
+    orcid: 'https://orcid.org/0009-0008-3082-2482'
+repository-code: 'https://github.com/global-soil-intelligence/gsip'
+abstract: 'Open soil spectral reference library tooling: phone and web capture, sample linking, data pipeline, library tools, modelling code, API and a reference-card generator.'
 license: MIT
 keywords:
-  - "soil science"
-  - "spectral library"
-  - "citizen science"
-  - "open data"
+  - 'soil science'
+  - 'spectral library'
+  - 'citizen science'
+  - 'open data'
