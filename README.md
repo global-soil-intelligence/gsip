@@ -91,6 +91,16 @@ The device, backup, store, legal and production gates remain separate from sourc
 
 Code is MIT. Databases and structured data are ODbL 1.0. Contributed photos are CC BY-SA 4.0 with recorded contributor grants and pre-launch legal review. Names and marks are covered by [TRADEMARKS.md](TRADEMARKS.md).
 
+## Status, AI use and citation
+
+GSIP is in its collection phase. Soil estimates are not laboratory results, and no model output
+has been peer reviewed or field-validated. Most of the code was written with AI coding agents
+(mainly OpenAI Codex, some Claude by Anthropic), as the `Co-Authored-By` trailers in the history
+show; [CONTRIBUTING.md](CONTRIBUTING.md) sets the rules for agent-written contributions. Justin D.
+Hart (Viridis LLC, ORCID [0009-0008-3082-2482](https://orcid.org/0009-0008-3082-2482)) reviews
+changes and is accountable for the project. Cite with [CITATION.cff](CITATION.cff); there is no
+tagged release or Zenodo record yet.
+
 ## Contributing and security
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow, DCO sign-off and rules for agent-written contributions. Report vulnerabilities privately using [SECURITY.md](SECURITY.md).
