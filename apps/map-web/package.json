@@ -13,19 +13,19 @@
   },
   "dependencies": {
     "@gsip/schema": "workspace:*",
-    "@supabase/supabase-js": "2.117.2",
+    "@supabase/supabase-js": "2.118.0",
     "h3-js": "4.5.0",
-    "maplibre-gl": "6.11.2",
+    "maplibre-gl": "6.16.0",
     "pmtiles": "4.5.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@testing-library/react": "16.3.3",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "@vitejs/plugin-react": "6.1.1",
+    "@vitejs/plugin-react": "6.1.2",
     "jsdom": "29.1.1",
-    "vite": "8.3.1"
+    "vite": "8.3.5"
   }
 }
