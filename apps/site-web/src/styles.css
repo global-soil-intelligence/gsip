@@ -1121,6 +1121,13 @@ p {
   font-size: 0.74rem;
 }
 
+/* Two columns with narrow page margins: the tilted ring's box would pass the right edge. */
+@media (min-width: 921px) and (max-width: 1280px) {
+  .orbit-one {
+    inset: 10% 14% 8% 1%;
+  }
+}
+
 @media (max-width: 920px) {
   :root {
     --page: min(100% - 36px, 760px);
@@ -1262,6 +1269,11 @@ p {
 
   .hero-visual {
     min-height: 500px;
+  }
+
+  /* The tilted ring's box is wider than the ring. Inset it so the box stays on a narrow screen. */
+  .orbit-one {
+    inset: 10% 16% 8% 9%;
   }
 
   .visual-phone,
