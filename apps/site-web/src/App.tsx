@@ -3,6 +3,18 @@ import type { ReactNode } from 'react'
 export type PageId = 'about' | 'card' | 'data' | 'home' | 'methods'
 
 const repository = 'https://github.com/global-soil-intelligence/gsip'
+
+// WP-SITE-1H: the other open projects Viridis LLC stewards. Plain addresses only:
+// no query string, nothing about the visitor, and no link to a paid offer (B1-B8).
+export const RELATED_PROJECTS = [
+  { name: 'VergeCommon', href: 'https://vergecommon.com/' },
+  { name: 'Dendritic Forest Management', href: 'https://dendriticforest.com/' },
+  {
+    name: 'Viridis Conservation',
+    href: 'https://viridisconservation.com/ecosystem',
+  },
+] as const
+export const STEWARDSHIP_LINE = 'GSIP is stewarded by Viridis LLC.'
 const captureLive = import.meta.env.VITE_CAPTURE_LIVE === 'true'
 const datasetUrl = import.meta.env.VITE_DATASET_URL?.trim()
 // The deployed gsip-public function (WP-AGENT-1). Unset until it is live, so the site never
@@ -167,6 +179,14 @@ function Footer({ page }: { page: PageId }) {
           <a href={pathFrom(page, 'about/')}>About</a>
           <a href={repository}>Source code</a>
         </div>
+        <div>
+          <p className="footer-label">Related projects</p>
+          {RELATED_PROJECTS.map((project) => (
+            <a key={project.href} href={project.href} rel="noreferrer">
+              {project.name}
+            </a>
+          ))}
+        </div>
       </div>
       <div className="footer-legal">
         <p>
@@ -174,7 +194,7 @@ function Footer({ page }: { page: PageId }) {
         </p>
         <p>
           GSIP is not a replacement for laboratory analysis. Estimates must
-          carry uncertainty.
+          carry uncertainty. {STEWARDSHIP_LINE}
         </p>
       </div>
     </footer>

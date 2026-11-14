@@ -280,6 +280,20 @@ Acceptance criteria:
       dependency, CSP relaxation, merge or production deployment is included. Justin retains
       merge and Pages approval; capture and library uploads stay closed.
 
+**WP-SITE-1H: Related open projects and stewardship line**
+Scope: the public site footer names the other open projects Viridis LLC stewards and states
+who stewards GSIP. This is a copy and navigation package. It changes no data, service,
+licence, dependency, capture authority or activation flag.
+
+Acceptance criteria:
+
+- [ ] Every prerendered page's footer links VergeCommon, Dendritic Forest Management and
+      Viridis Conservation, and carries the sentence "GSIP is stewarded by Viridis LLC."
+- [ ] No page states a price, uses purchase language or links to a paid offer (B1–B8). Links are
+      plain https addresses with no query string; no tracker or analytics is added.
+- [ ] A regression test fails on the old footer; lint, the language check, types, unit tests,
+      the build and the site budget pass. Capture and library uploads stay closed.
+
 **WP-AGENT-1: Agent-readable GSIP**
 Scope:
 

@@ -3,7 +3,7 @@ import { StrictMode } from 'react'
 import { hydrateRoot, type Root } from 'react-dom/client'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { App, PAGES } from '../src/App'
+import { App, PAGES, RELATED_PROJECTS, STEWARDSHIP_LINE } from '../src/App'
 import { headline, render } from '../src/prerender'
 
 const roots: Root[] = []
@@ -50,6 +50,48 @@ describe('prerendered pages (WP-AGENT-1)', () => {
       expect(types.includes('Dataset')).toBe(page === 'home' || page === 'data')
       // The data can never close its own script element.
       expect(raw).not.toContain('<')
+    },
+  )
+
+  it.each(PAGES)(
+    '%s names the related open projects and its steward, and sells nothing (WP-SITE-1H)',
+    (page) => {
+      const container = document.createElement('div')
+      container.innerHTML = render(page)
+      const footer = container.querySelector('footer.site-footer')
+      expect(footer).not.toBeNull()
+
+      expect(RELATED_PROJECTS.map((project) => project.href)).toEqual([
+        'https://vergecommon.com/',
+        'https://dendriticforest.com/',
+        'https://viridisconservation.com/ecosystem',
+      ])
+      for (const project of RELATED_PROJECTS) {
+        const link = footer?.querySelector(`a[href="${project.href}"]`)
+        expect(link?.textContent).toBe(project.name)
+        const url = new URL(project.href)
+        expect(url.protocol).toBe('https:')
+        expect(url.search).toBe('')
+        expect(url.hash).toBe('')
+      }
+      expect(STEWARDSHIP_LINE).toBe('GSIP is stewarded by Viridis LLC.')
+      expect(footer?.textContent).toContain(STEWARDSHIP_LINE)
+
+      // B1-B8: no price, purchase language or paid offer anywhere on the page.
+      const text = container.textContent ?? ''
+      expect(text).not.toMatch(
+        /[$€£]\s?\d|per month|subscribe|buy now|checkout/i,
+      )
+      const hrefs = [...container.querySelectorAll('a[href]')].map(
+        (anchor) => anchor.getAttribute('href') ?? '',
+      )
+      expect(
+        hrefs.filter((href) =>
+          /land-plans|pricing|request-access|stripe/i.test(href),
+        ),
+      ).toEqual([])
+      // No link on the page carries tracking parameters.
+      expect(hrefs.filter((href) => /[?&](utm_|ref=)/i.test(href))).toEqual([])
     },
   )
 
