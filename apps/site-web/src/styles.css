@@ -1070,8 +1070,14 @@ p {
 
 .footer-links {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
+}
+
+@media (max-width: 640px), (min-width: 921px) and (max-width: 1080px) {
+  .footer-links {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .footer-links > div {
