@@ -32,6 +32,26 @@ test('public information pages have no serious accessibility violations', async 
   expect(failures).toEqual([])
 })
 
+test('public information pages do not scroll sideways', async ({ page }) => {
+  // WP-SITE-1J: the hero's tilted ring made the home page wider than the screen on phones
+  // (11 px at 390 px) and in the narrow two-column layout (6 px at 1024 px).
+  const widths = [320, 360, 390, 412, 480, 921, 1024, 1100]
+  const overflow: Array<{ page: string; width: number; extra: number }> = []
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: 844 })
+    for (const path of ['', 'card/', 'methods/', 'data/', 'about/']) {
+      await page.goto(`/gsip/${path}`)
+      const extra = await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
+      )
+      if (extra > 1) overflow.push({ page: path || '/', width, extra })
+    }
+  }
+  expect(overflow).toEqual([])
+})
+
 test('public hub explains the project and connects its core paths', async ({
   page,
 }) => {
