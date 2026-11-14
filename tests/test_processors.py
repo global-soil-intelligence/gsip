@@ -58,6 +58,7 @@ URL = re.compile(
 NOT_CONTACTED = {
     "127.0.0.1": "local development server",
     "creativecommons.org": "photo licence link in API responses and site metadata (never fetched)",
+    "dendriticforest.com": "site footer link to a sibling open project (never fetched)",
     "localhost": "local development server",
     "ns.adobe.com": "XMP namespace identifier, matched when stripping metadata",
     "opendatacommons.org": "data licence link in API responses and site metadata (never fetched)",
@@ -65,6 +66,8 @@ NOT_CONTACTED = {
     "schemas.android.com": "Android XML namespace identifiers in the app permission script",
     "schema.org": "JSON-LD vocabulary identifier",
     "soilgrids.org": "citation link in the dataset card",
+    "vergecommon.com": "site footer link to a sibling open project (never fetched)",
+    "viridisconservation.com": "site footer link to the steward's page (never fetched)",
     "www.sitemaps.org": "sitemap XML namespace identifier",
     "www.w3.org": "SVG and XML namespace identifiers",
 }

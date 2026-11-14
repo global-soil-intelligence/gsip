@@ -3,7 +3,7 @@ import { StrictMode } from 'react'
 import { hydrateRoot, type Root } from 'react-dom/client'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { App, PAGES } from '../src/App'
+import { App, PAGES, RELATED_PROJECTS, STEWARDSHIP_LINE } from '../src/App'
 import { headline, render } from '../src/prerender'
 
 const roots: Root[] = []
@@ -50,6 +50,64 @@ describe('prerendered pages (WP-AGENT-1)', () => {
       expect(types.includes('Dataset')).toBe(page === 'home' || page === 'data')
       // The data can never close its own script element.
       expect(raw).not.toContain('<')
+    },
+  )
+
+  it.each(PAGES)(
+    '%s links the steward and two sibling projects, and sells nothing (WP-SITE-1I)',
+    (page) => {
+      const container = document.createElement('div')
+      container.innerHTML = render(page)
+      const footer = container.querySelector('footer.site-footer')
+      const label = [...(footer?.querySelectorAll('.footer-label') ?? [])].find(
+        (node) => node.textContent === 'From the steward',
+      )
+      const links = [...(label?.parentElement?.querySelectorAll('a') ?? [])]
+
+      // Literal expectations against the rendered footer, not the exported list.
+      expect(
+        links.map((link) => [link.textContent, link.getAttribute('href')]),
+      ).toEqual([
+        ['VergeCommon', 'https://vergecommon.com/'],
+        ['Dendritic Forest Management', 'https://dendriticforest.com/'],
+        ['Viridis Conservation', 'https://viridisconservation.com/ecosystem'],
+      ])
+      expect(RELATED_PROJECTS).toHaveLength(3)
+      for (const link of links) {
+        const url = new URL(link.getAttribute('href') ?? '')
+        expect(url.protocol).toBe('https:')
+        expect(url.search).toBe('')
+        expect(url.hash).toBe('')
+        expect(link.getAttribute('rel')).toBe('noreferrer')
+        expect(link.hasAttribute('target')).toBe(false)
+      }
+      expect(STEWARDSHIP_LINE).toBe('GSIP is stewarded by Viridis LLC.')
+      expect(footer?.querySelector('.footer-legal')?.textContent).toContain(
+        'GSIP is stewarded by Viridis LLC.',
+      )
+
+      // No GSIP page states a price or links straight to a checkout, pricing or
+      // access-request page, and no link carries a tracking parameter.
+      const visible = container.cloneNode(true) as HTMLElement
+      for (const script of visible.querySelectorAll('script')) script.remove()
+      expect(visible.textContent ?? '').not.toMatch(
+        /[$€£]\s?\d|\b(?:USD|EUR|GBP)\s?\d|\bper month\b|\bbuy now\b/i,
+      )
+      const hrefs = [...container.querySelectorAll('a[href]')].map(
+        (anchor) => anchor.getAttribute('href') ?? '',
+      )
+      expect(
+        hrefs.filter((href) =>
+          /\/(?:checkout|pricing|project-pricing|land-plans|request-access)(?:[/?#]|$)|\/\/(?:[\w-]+\.)*stripe\.com\//i.test(
+            href,
+          ),
+        ),
+      ).toEqual([])
+      expect(
+        hrefs.filter((href) =>
+          /[?&](?:utm_[a-z]+|ref|source|gclid|fbclid|mc_cid)=/i.test(href),
+        ),
+      ).toEqual([])
     },
   )
 

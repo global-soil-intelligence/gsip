@@ -1070,8 +1070,14 @@ p {
 
 .footer-links {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
+}
+
+@media (max-width: 640px), (min-width: 921px) and (max-width: 1080px) {
+  .footer-links {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .footer-links > div {
@@ -1113,6 +1119,13 @@ p {
   margin-bottom: 0;
   color: rgba(244, 240, 228, 0.72);
   font-size: 0.74rem;
+}
+
+/* Two columns with narrow page margins: the tilted ring's box would pass the right edge. */
+@media (min-width: 921px) and (max-width: 1280px) {
+  .orbit-one {
+    inset: 10% 14% 8% 1%;
+  }
 }
 
 @media (max-width: 920px) {
@@ -1256,6 +1269,11 @@ p {
 
   .hero-visual {
     min-height: 500px;
+  }
+
+  /* The tilted ring's box is wider than the ring. Inset it so the box stays on a narrow screen. */
+  .orbit-one {
+    inset: 10% 16% 8% 9%;
   }
 
   .visual-phone,
