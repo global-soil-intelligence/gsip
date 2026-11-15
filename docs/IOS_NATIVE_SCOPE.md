@@ -140,6 +140,18 @@ and prototype approval restriction above stays intact. This maintenance grants n
 exception, prototype execution, production or activation authority; APP-2C2A itself still cannot
 change ordinary application/permission code under its frozen scope.
 
+**Vite dependency binding maintenance (2026-11-01):** the separately reviewed workspace
+dependency maintenance reuses the coherent manifest/lockfile update from
+[#94](https://github.com/global-soil-intelligence/gsip/pull/94): all three web apps pin Vite
+8.3.3 instead of 8.3.1, with its recorded transitive lockfile refresh. The snapshot refreshes
+only `pnpm-lock.yaml` and `apps/capture-pwa/package.json` to those exact reviewed bytes;
+the integrity validator and its tests still reject drift. The historical baseline, other
+seven source bindings, Capacitor/native package pins, native graph selection, file/import/API
+scope, owner policy, prohibited operations and `document_grants_implementation:false` remain
+unchanged. This maintenance neither admits the held prototype nor proves native build/device
+compatibility. Native execution, physical storage/backup acceptance, implementation exceptions,
+production, capture and library activation retain their separate approval and evidence gates.
+
 The helper receives a **fresh runner-owned disposable copy**, never ordinary generated App or
 existing simulator/app data. Pin exact CLI version, source/templates and every generated preimage;
 reject changed/missing/duplicate/unknown template anchors, links, special files and traversal before

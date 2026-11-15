@@ -270,9 +270,9 @@
     "physical-device-or-backup-operation"
   ],
   "source_bindings": {
-    "pnpm-lock.yaml": "da0d4b977e27b31e419e234cb5e4b2f2935d33874b6db828eed4231d257aad19",
+    "pnpm-lock.yaml": "90e0926f5c452c35210fed53e78fcc7dfd10a2c7ed6670224f58742c6c630f0d",
     "apps/capture-pwa/capacitor.config.ts": "90c2d96cd148b7b34c4c4bc2b94a6feec74410de4f00c5862ff5da5f1cad4a69",
-    "apps/capture-pwa/package.json": "b7f0439a1342222b4c05689047f81c6a7b577891b40836c0e7431b304717a115",
+    "apps/capture-pwa/package.json": "8040cfb0c89c6ed7ec4b753f313427b8b01c5db527b06150544f7327f131e06b",
     ".github/workflows/app-build.yml": "5d99a740ce556194e0a127a16dfee75f9aeff43b0c0d281e1cba39f0e23659f5",
     "scripts/app_build.py": "50e7501695da192996ad5790184ef29793de6f9357b8acce6edd3a9d5f5a06d4",
     "scripts/app_permissions.py": "f6aecb3fb95ebe6984830f3361e8e3ec451a283bd8dfee7a1b3e34df8dcefed6",
