@@ -1,7 +1,10 @@
 # Withdrawal and deletion procedure
 
 > **Draft — awaiting product-owner adoption.** Not in force. The mechanisms are implemented (WP-6d).
-> Proposed choices for the invited pilot are filled in below (WP-COLLECT-5). They are proposals prepared by an agent, not legal advice, and take effect only if the product owner adopts them.
+> Proposed choices for the invited pilot are filled in below (WP-COLLECT-5, WP-COLLECT-5B). They are proposals prepared by an agent, not legal advice, and take effect only if the product owner adopts them.
+>
+> In this document "the steward" means whoever is the controller under the privacy notice. For the
+> invited pilot that is proposed to be the product owner's Montana company (WP-COLLECT-5B).
 
 ## What a contributor can ask for
 

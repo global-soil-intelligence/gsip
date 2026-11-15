@@ -1,12 +1,14 @@
 # GSIP privacy notice
 
 > **Draft — awaiting product-owner adoption.** Not in force. Proposed terms version on adoption: `2026-11-14-v1`.
-> Proposed choices for the invited pilot are filled in below (WP-COLLECT-5). They are proposals prepared by an agent, not legal advice, and take effect only if the product owner adopts them.
+> Proposed choices for the invited pilot are filled in below (WP-COLLECT-5, WP-COLLECT-5B). They are proposals prepared by an agent, not legal advice, and take effect only if the product owner adopts them.
 
 ## Who is responsible
 
-**Viridis LLC** stewards GSIP and is the controller of the personal data described here. Privacy
-contact: **[owner input: privacy and legal contact mailbox, and postal address]**. The invited pilot is offered only to adults who live in the United
+**Viridis LLC** stewards GSIP. Proposed for the invited pilot: the product owner's Montana company,
+referred to here by the working name "Viridis North" (its registered name is to be confirmed before
+adoption), is the controller of the personal data described here and is "we" in this notice.
+How the steward and this company relate is to be settled before adoption; see the [legal README](README.md). Privacy contact: **[owner input: privacy and legal contact mailbox, and postal address]**. The invited pilot is offered only to adults who live in the United
 States, so no representative in the European Union or the United Kingdom is appointed. That must
 be decided again before GSIP is offered to people there.
 
@@ -126,22 +128,23 @@ visitor's IP address to ISRIC, as listed above. This hosting decision does not p
 notice in force or authorize publication.
 
 **International transfers:** these providers may process data in the United States and in other
-countries. The invited pilot is offered only to adults who live in the United States. The region
-of the Supabase project and a transfer mechanism for each provider must be confirmed before GSIP
-is offered to people outside the United States.
+countries. The invited pilot is offered only to adults who live in the United States. The
+repository records the Supabase project's region as `us-east-1` (United States); that record and
+a transfer mechanism for each provider must be confirmed before GSIP is offered to people outside
+the United States.
 
 ## How long we keep it
 
-| Data                                    | Kept                                                                                                                                                                                                                                                                                         |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Original uploads                        | Until checked, and never beyond about a day: an hourly job deletes any original older than 24 hours                                                                                                                                                                                          |
-| Account and observations                | Until you withdraw them or delete your account; then deleted within 30 days (normally within the hour)                                                                                                                                                                                       |
-| Observations that failed quality checks | Kept privately, flagged, to improve quality checks; deleted when you withdraw or delete your account. Proposed: also within 24 months of submission (no automated job enforces this yet)                                                                                                     |
-| Grant and withdrawal records            | The grant's identifier, terms version, date and licences, kept as the record of what was licensed; attribution names are replaced with the default pseudonym when an account is deleted                                                                                                      |
-| Your contributor record                 | After account deletion, a random identifier with no link to your sign-in, e-mail or name, kept so the grant and withdrawal records stay consistent                                                                                                                                           |
-| Rights-request records                  | What was requested and when it was done, without content. Proposed: 3 years after the request was completed (no automated job enforces this yet)                                                                                                                                             |
-| Cached map lookups                      | Soil-map and elevation answers for an area of about 0.1 km², with no link to any person, for up to a year                                                                                                                                                                                    |
-| Hosting, audit logs and backups         | As each provider keeps them: Supabase keeps database backups, its sign-in audit log and its request logs for the periods set by the service plan the steward chooses. Those periods are not verified yet and must be stated here before adoption. GSIP's own worker logs contain counts only |
+| Data                                    | Kept                                                                                                                                                                                                                                                                               |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Original uploads                        | Until checked, and never beyond about a day: an hourly job deletes any original older than 24 hours                                                                                                                                                                                |
+| Account and observations                | Until you withdraw them or delete your account; then deleted within 30 days (normally within the hour)                                                                                                                                                                             |
+| Observations that failed quality checks | Kept privately, flagged, to improve quality checks; deleted when you withdraw or delete your account. Proposed: also within 24 months of submission (no automated job enforces this yet)                                                                                           |
+| Grant and withdrawal records            | The grant's identifier, terms version, date and licences, kept as the record of what was licensed; attribution names are replaced with the default pseudonym when an account is deleted                                                                                            |
+| Your contributor record                 | After account deletion, a random identifier with no link to your sign-in, e-mail or name, kept so the grant and withdrawal records stay consistent                                                                                                                                 |
+| Rights-request records                  | What was requested and when it was done, without content. Proposed: 3 years after the request was completed (no automated job enforces this yet)                                                                                                                                   |
+| Cached map lookups                      | Soil-map and elevation answers for an area of about 0.1 km², with no link to any person, for up to a year                                                                                                                                                                          |
+| Hosting, audit logs and backups         | As each provider keeps them: Supabase keeps database backups, its sign-in audit log and its request logs for the periods set by the service plan we choose. Those periods are not verified yet and must be stated here before adoption. GSIP's own worker logs contain counts only |
 
 ## Your rights
 

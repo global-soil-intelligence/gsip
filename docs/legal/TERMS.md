@@ -1,12 +1,16 @@
 # GSIP contribution terms
 
 > **Draft — awaiting product-owner adoption.** Not in force. Proposed terms version on adoption: `2026-11-14-v1`.
-> Proposed choices for the invited pilot are filled in below (WP-COLLECT-5). They are proposals prepared by an agent, not legal advice, and take effect only if the product owner adopts them.
+> Proposed choices for the invited pilot are filled in below (WP-COLLECT-5, WP-COLLECT-5B). They are proposals prepared by an agent, not legal advice, and take effect only if the product owner adopts them.
 
 ## 1. Who we are
 
 The Global Soil Intelligence Project (GSIP) is an open citizen-science project stewarded by
-**Viridis LLC** ("we"). Contact: **[owner input: privacy and legal contact mailbox, and postal address]**.
+**Viridis LLC**. Proposed for the invited pilot: these terms are between you and the product owner's
+Montana company, referred to here by the working name "Viridis North" ("we"; its registered name is
+to be confirmed before adoption). Where these terms say "we" about running GSIP as a whole, that
+includes Viridis LLC as steward. How the steward and this company relate is to be settled before adoption; see the [legal README](README.md).
+Contact: **[owner input: privacy and legal contact mailbox, and postal address]**.
 
 ## 2. What GSIP is, and is not
 
@@ -107,6 +111,7 @@ We may suspend accounts that break these terms. You may stop at any time and del
 
 ## 10. Governing law
 
-Proposed, and dependent on which Viridis company is the controller: these terms are governed by the laws of the State of Vermont, United States. The courts of Vermont
-have jurisdiction, except where the law of the place you live gives you the right to bring a claim
+Proposed, and inferred from the product owner's choice of the Montana company as controller (the
+governing law and courts were not chosen separately): these terms are governed by
+the laws of the State of Montana, United States. The courts of Montana have jurisdiction, except where the law of the place you live gives you the right to bring a claim
 there.
