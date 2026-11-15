@@ -1,7 +1,8 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
-**Version:** 17.0 proposed — 2026-10-16 (live browser guide design; SPEC §5.2)
+**Version:** 18.0 proposed — 2026-11-15 (card editions and colour normalisation; SPEC §17)
+**v18 amendment status (proposed):** registers docs/spec-v18 and WP-CARD-3 under Justin's 15 November 2026 delegation of source builds and merges. No production, estimator, training or collection action is authorized.
 **v17 amendment status (approved/merged #89):** Justin approved the design and reviewed source-build sequence with a subsequent “go”. WP-COLLECT-4A ([#90](https://github.com/global-soil-intelligence/gsip/issues/90)) prepares the session/queue and declared shared-writer boundary before live preview. 4B still requires reviewed, green and merged 4A. No actual camera/device or production action is authorized; every deployment/activation gate remains held.
 **v16 amendment status:** Justin authorized source updates following the card-overlay research. WP-COLLECT-3 clarifies the already optional card and simplifies progressive library details. A live camera guide, automatic unknown-depth sample registration and every production/activation action remain outside that package.
 **v15 amendment status:** Justin approved ordered merges #79/#81 and building #82 for invited phone-browser contributors. The source contract is in [COLLECTION_PILOT_DESIGN.md](COLLECTION_PILOT_DESIGN.md); implementation is authorized, all production and activation gates remain held.
@@ -119,6 +120,24 @@ Acceptance:
 - [ ] On synthetic photographs at ten angles, at 560 and 1100 pixels wide, rotated by quarter turns, compressed, and under colour cast, tone change, vignette and noise, every patch is read from inside its own cell; the card's corners and its scale in both directions match the photograph.
 - [ ] A mirrored photo, a card cut off by the frame, a card too small, a half-covered patch, glare over a repeated patch or a ramp step, a ramp out of order, a clipped patch, no card, two node cards and an A6 card are each refused. An evenly covered ordinary patch is a stated limit.
 - [ ] Lint, type checks and the Python suite pass; independent review has no open finding. Recognising the node card in the pipeline, colour correction, choosing a printer and characterising a run are separate packages.
+
+**docs/spec-v18 — Card editions, colour normalisation and estimate basis (SPEC §17).** Branch `docs/spec-v18`. Specification only. Three points are Justin's 15 November 2026 direction: photo plus soil maps, a physical colour control in the photo, and a card people can order. The rest is the authoring agent's proposal: the node card beside the A6 card in QA, a per-photo normalisation for the estimator only, and no image evidence from photos that are not normalised, pending held-out evidence. No code, schema, permission or activation change.
+
+Acceptance:
+
+- [ ] SPEC §17, its header status and changelog entry agree with each other and with CARD_SPEC.md; no sentence claims measured accuracy. The language guard does not scan these files, so the I5 read is done by hand and recorded in the pull request.
+- [ ] The meaning of `calibration_status`, `camera_rgb` records, L1–L7, B3, card-less contribution and every existing gate are unchanged; lint passes; independent review has no open finding.
+
+**WP-CARD-3 — QA recognises both card editions and fits the colour normalisation (SPEC §17.2–17.3).** Branch `wp-card-3-pipeline-correction`. Depends on merged docs/spec-v18. `pipeline/qa.py`, `card/design.py` and `card/validate.py` stay byte-identical, because the photo-privacy configuration binds them. New modules `pipeline/cards.py`, `pipeline/colour_correction.py` and `pipeline/qa_cards.py` find and mask every card and fit the normalisation; `pipeline/qa_worker.py` calls the new entry point and takes `card_detected` from the card finding. `photos.card_color_correction` changes from a patch dictionary to a versioned object, in the existing column; `pipeline/export.py` forbids that key in public rows. The new entry point records QA version `deterministic-v3`, because node-card photos, two A6 cards and an A6 card cut by the frame are judged differently (SPEC §17.2); `QA_MODEL_VERSION` in `pipeline/qa.py` is untouched. No migration, no app change, no production action.
+
+Acceptance:
+
+- [ ] A photo with no card, or with one A6 card, gets the same events, status, `calibration_status`, hash and stored bytes from the new entry point as from `pipeline/qa.py`, and `card_detected` is true exactly when a card is present; only the recorded version differs.
+- [ ] A node card is masked from soil QA; a sharp node card beside blurred soil fails sharpness. A card that is refused, too small or cut off by the frame is masked, gives no record and never rejects the photo; two cards (A6 and node, two node, two A6) give no record and both are masked.
+- [ ] On synthetic photos under colour cast and tone change, which is the model being fitted, the normalised soil colour is within 2.5 (CIE76) of the true colour for both editions. Outside the model, a 30 % light fall-off is not normalised and a 15 % fall-off passes with a larger error; a black-and-white card and a card whose colours do not fit (residual above 5.0) are not normalised.
+- [ ] The stored photo bytes are unchanged; `card_color_correction` is a forbidden public key; the three bound files are unchanged against main. Lint, type checks and the Python suite pass; independent review has no open finding.
+
+Held follow-ups: flatness and clipping refusals for the A6 reader; a public-copy package for "down-weighted" and "uncalibrated, even with the reference card"; handling of legacy unversioned `card_color_correction` rows by any future reader.
 
 **WP-COLLECT-5 — Proposed notice choices and pilot bounds for the invited pilot.** Branch `wp-collect-5-pilot-notice-choices`. Documentation only. Justin asked on 14 November 2026 for the open points in `docs/legal/` to be filled in. Each **[DECISION]** point in the five notices now carries a proposed choice, or is marked as an owner input or left open, for the invited, adult, United States-only phone-browser pilot, summarized in [docs/legal/README.md](legal/README.md), and [COLLECTION_READINESS.md](COLLECTION_READINESS.md) records proposed pilot bounds. Every document keeps its "Draft — awaiting product-owner adoption. Not in force." banner. This package adopts nothing, publishes no terms version, selects no processor, publishes no contact address and opens nothing. It changes no code, schema, dependency, licence or activation flag.
 
@@ -680,6 +699,8 @@ GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function 
 Historical v4.0 review/merge sequence (#38 and WP-APP-2A have merged; remaining implementation and calibration gates still apply): WP-APP-1 → `docs/spec-v4` (Justin approval/merge) → WP-APP-2A → WP-APP-2B. Owner-authorized account-free WP-APP-2A preparation can start after the specification commit exists, while its PR remains stacked and awaits the merge sequence. WP-6f may be a separate branch after the approved specification, with no dependency on notifications, but stays blocked until that specification approval and its model/license/calibration gates. Retarget successors after Justin merges; merge main forward to resolve conflicts, never rebase or force-push the reviewed stack. §11 launch and production-command gates remain independent of this sequence.
 
 ## 8. Changelog
+
+- **v18.0 proposed (2026-11-15):** registers docs/spec-v18 and WP-CARD-3 (both card editions in QA, per-photo colour normalisation). Adds unchecked criteria only; every existing acceptance state and production gate remains.
 
 - **v13.0 proposed (2026-10-14):** records accepted passcode/recovery policy and exact synthetic native-scope review before A. Adds two unchecked admission criteria; all 138 prior acceptance states and production/device/implementation gates remain.
 

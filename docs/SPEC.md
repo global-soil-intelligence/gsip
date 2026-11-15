@@ -1,7 +1,8 @@
-# GSIP v17 — Open Soil Spectral Library Specification
+# GSIP v18 — Open Soil Spectral Library Specification
 
 **Project:** Global Soil Intelligence Project (globalsoilintelligence.com)
-**Version:** 17.0 proposed — 2026-10-16 (optional live browser camera guide design)
+**Version:** 18.0 proposed — 2026-11-15 (reference card editions, colour normalisation and estimate basis)
+**v18 amendment status (proposed; three points owner-directed):** on 2026-11-15 Justin asked for "photo plus historic soil maps", a colour control "for control reference" physically in the picture, and a card a contributor can order. §17 turns those three points into rules; everything else in §17 is the authoring agent's proposal. It is merged under Justin's same-day delegation ("you make the calls keep building as needed"), which covers source builds and merges only. It changes no table, permission or activation gate, and authorizes no production action, estimator, model, printer, price or collection opening.
 **v17 amendment status (approved/merged #89):** Justin's subsequent “go” approved the reviewed design and its source-build sequence. COLLECT-4A now prepares the pure guide session, atomic queue handoff and declared shared-writer fixes under [#90](https://github.com/global-soil-intelligence/gsip/issues/90). COLLECT-4B remains dependent on reviewed, green and merged 4A. No actual camera/device access, production action, deployment or collection opening is authorized. Default Pages/native capture and library uploads remain closed.
 **v16 amendment status (approved/merged #86; COLLECT-3 source merged #87):** Justin authorized pushing the phone-first source updates on 2026-10-16 after the card-overlay research. This amendment clarifies the existing cardless policy and schedules WP-COLLECT-3; it changes no measurement tier, schema, camera API, permission or activation gate. The live browser guide remains a separately reviewed follow-up. Source implementation and CI authorize no merge, deployment or collection opening.
 **v15 amendment status:** Justin authorized merging #79 and #81 and implementing #82 for an invited phone-browser pilot on 2026-10-16. This amendment specifies the minimal source contract before implementation. Source review/CI does not authorize a migration, account provisioning, worker run, release, deployment or opening either collection gate. Duration/capacity, effective notices and any bounded launch-gate exceptions remain owner decisions.
@@ -105,7 +106,7 @@ The QA and export workers are the only bridge from private to public data. Agent
 
 The protocol is the biggest determinant of dataset quality. It must stay cheap enough for anyone, worldwide.
 
-**The optional GSIP Reference Card** — a free, printable A6 card (colour and black-and-white editions) with 8 colour patches plus neutral grey, an ArUco marker (`DICT_4X4_50`, ID 7) for detection, scale and perspective, a 20 mm scale line, and printed protocol reminders.
+**The optional GSIP Reference Card** — a free, printable A6 card (colour and black-and-white editions) with 8 colour patches plus neutral grey, an ArUco marker (`DICT_4X4_50`, ID 7) for detection, scale and perspective, a 20 mm scale line, and printed protocol reminders. A second optional edition, the credit-card-size node card (ArUco ID 12), is defined in §17.2; QA recognises it once WP-CARD-3 merges.
 
 **Shot sequence per submission:**
 
@@ -117,7 +118,7 @@ The protocol is the biggest determinant of dataset quality. It must stay cheap e
 
 **Recorded metadata:** GPS position with accuracy radius and its source (device GPS or manual pin), capture time of shot B as recorded by the device, device model, and allowlisted non-location camera fields extracted at ingest. Raw EXIF/XMP/ICC is never retained. **One-tap prompts:** land cover (7 icons), surface condition (dry/moist/wet), disturbed (yes/no). **Public attribution:** defaults to the pseudonym "Anonymous soil contributor". Capture warns that a typed name is published with the observation's area and date. **Auto-enriched at ingest:** precipitation in the 3 days before capture (Open-Meteo forecast API, or its archive API for older captures) and elevation (Copernicus GLO-90 via the Open-Meteo Elevation API), both queried at the resolution-9 cell centre.
 
-**No printed card is needed to contribute. Card-less submissions are accepted** but marked "uncalibrated" and down-weighted in any otherwise eligible training. Missing a card alone is not a QA rejection; both required shots and every other consent, quality, privacy and admission gate still apply. The card is an optional photographed physical reference, not a condition of participation or a certified reflectance target. A drawn screen guide supplies no calibration; ordinary phone photographs remain uncalibrated RGB source evidence. Producing a `camera_rgb` summary record still follows §16.3 and is not added by COLLECT-3.
+**No printed card is needed to contribute. Card-less submissions are accepted** but marked "uncalibrated" and down-weighted in any otherwise eligible training. For the soil estimator, §17.4 proposes exclusion in place of "down-weighted", pending evidence. Missing a card alone is not a QA rejection; both required shots and every other consent, quality, privacy and admission gate still apply. The card is an optional photographed physical reference, not a condition of participation or a certified reflectance target. A drawn screen guide supplies no calibration; ordinary phone photographs remain uncalibrated RGB source evidence. Producing a `camera_rgb` summary record still follows §16.3 and is not added by COLLECT-3.
 
 **Finalize:** after uploading, the client calls `finalize_submission`, which records `finalized_at` once shots A and B exist. QA processes each photo as soon as it arrives (so raw uploads leave quarantine quickly) and settles the submission's status only after finalize.
 
@@ -126,7 +127,7 @@ The protocol is the biggest determinant of dataset quality. It must stay cheap e
 1. is-soil classifier _(ML; joins in Phase 2)_.
 2. Soil region: the card is located from the marker homography and masked with a margin; at least 20 % of the frame must remain as soil.
 3. Sharpness and exposure on the soil region only.
-4. Card detection and colour-patch extraction ("calibrated" or "uncalibrated").
+4. Card detection and colour-patch extraction ("calibrated" or "uncalibrated"). §17.3 adds a separate private `normalised` flag; this field keeps its meaning.
 5. GPS plausibility: an accuracy radius above 250 m, or a gross mismatch with the priors, routes to human review; a missing radius scores as unknown and passes.
 6. Near-duplicate perceptual hash on the soil region; a match routes to human review, never to rejection.
 
@@ -341,6 +342,8 @@ Science: coarse-texture accuracy and SOC RMSE on the holdout, interval coverage,
 Community and agents: external contributors merged, partner labs onboarded, dataset downloads and citations, agent integrations operating under a human of record, share of verified labels from agents.
 
 ## 14. Changelog
+
+- **v18.0 proposed (2026-11-15):** adds §17. Recognises the optional credit-card-size node card beside the A6 card; defines a per-photo colour normalisation fitted to the photographed card, for the estimator only, with a private `normalised` flag; states that no soil-property estimate rests on a photograph alone; proposes that photos which are not normalised supply no image evidence to the estimator until held-out evidence supports them. Card-less contribution stays open. `calibration_status`, `camera_rgb` records, L1–L7 and every gate are unchanged. No schema, permission or activation change.
 
 - **v15.0 proposed (2026-10-16):** records the invited browser implementation go and specifies server membership, immutable pilot classification, an independent default-held publication boundary, existing-account login/rights after rollback and separate strict browser artifact packaging. No production or activation authority.
 
@@ -687,6 +690,73 @@ These are unresolved real-sharing choices, not approvals inferred from existing 
 **Explicit assumptions:** (1) private peer exchange is a new purpose not yet authorized by the current legal drafts; (2) a federation peer is distinct from a phone/library namespace; (3) available software can validate bytes and lineage without verifying real physical material; (4) no network/key mechanism, measured-spectrum privacy clearance, reference-data license or lab adapter is selected by this proposal; (5) the proposed quotas/size/retry values require operational measurement before rollout; (6) library fixtures remain synthetic and code/CI success supplies no evidence of a useful field model or soil-biome finding.
 
 Acceptance evidence is separate per package. LIB-5A proves strict schemas, resource bounds, stable retries, conflicts and forbidden authority fields with synthetic TS/Python conformance tests. LIB-5B proves private filesystem handling, tombstones-before-erasure, delayed/duplicate/conflicting events, alias restrictions, queue bounds and disconnection holds with a fake authority/transport that never performs network I/O. After owner decisions, LIB-5C needs additive role/migration tests, real two-connection rights races in both orders and partial-lock boundaries, scoped credential revocation, recipient/source isolation, honest old-worker completion and end-to-end synthetic peer cleanup. Every package preserves public anonymous reads and existing app/capture/photo/holdout gates; each new dependency needs its license, maintenance signal and size before adoption. No code merge, green check or receipt authorizes production peer enrollment or private/public data transfer.
+
+## 17. Reference card editions, colour normalisation and estimate basis (v18)
+
+**Status: proposed.** Owner-directed on 2026-11-15, in Justin's words: (a) "photo plus historic soil maps"; (b) a colour control "for control reference"; (c) a card "the user [can] order … to become a citizen opensource soil node contributor". Everything else here is the authoring agent's proposal: the "never a photo alone" reading of (a), the two-card rule, the method, the limits and §17.4. This section grants no production, deployment, estimator, model-release, purchasing or collection authority. I1–I15, L1–L7 and B1–B8 remain binding.
+
+### 17.1 Rules added
+
+These are rules, numbered K1–K4 so as not to collide with existing labels.
+
+- **K1 — No estimate from a photograph alone.** This section authorizes no estimator. When one is separately approved, a soil-property estimate that leaves the server never has the basis `image` alone; `image` stays in the schema for internal decomposition. Public and agent-visible estimates are per published cell only (I7, I12), and carry intervals (I5). _Check:_ when an estimate schema exists, a test rejects a returned estimate whose basis is `image`.
+- **K2 — The control is in the photograph.** Only a physical reference card photographed with the soil can normalise a photo. A drawn guide, an on-screen colour bar or a phone's own white balance is not a control (§5.1). _Check:_ no code path sets `normalised` without a card reading; fixture tests for card-less photos.
+- **K3 — Evidence pixels are never altered.** Normalisation produces numbers stored beside a photo. The stored and published photograph is the sanitized original. _Check:_ a test that the stored bytes equal the sanitizer's output.
+- **K4 — Contributing stays free.** A printed card is optional. The A6 card, a home print of the node card and card-less contribution all remain (B3). A measured print run is never a condition of `normalised`. _Check:_ the same limit applies to both editions and to every run code.
+
+### 17.2 Two card editions
+
+The A6 card of §5 (ArUco ID 7) and the node card of [CARD_SPEC.md](../card/CARD_SPEC.md) (ISO ID-1, ArUco ID 12, nine colours, a five-step neutral ramp, a print-run code) are both reference cards. Once WP-CARD-3 merges, QA looks for either; until then CARD_SPEC's warning against using a node card in a submission stands.
+
+- **Masking (I8).** Every detected ID 7 or ID 12 marker masks its card from soil QA, projected from that marker's own homography, whatever the card's size or completeness. A mirrored card is not detected at all and is therefore not masked; that is a stated limit.
+- **One card.** A photo with two cards, of either edition, has no card reading: nothing says which one shares the soil's light. Both are still masked.
+- **Refusal is not rejection.** A card that is found but cannot be read is masked and the photo is `uncalibrated`. It never fails QA for that reason.
+- **What changes for existing photos, and the version.** A photo with no card, or with one whole A6 card, is judged exactly as before. Three cases change: a node-card photo (masked and `calibrated` instead of unmasked and `uncalibrated`); two A6 cards (`uncalibrated`, both masked, where the first marker used to be taken); and an A6 card cut by the frame (`uncalibrated`, where it used to be `calibrated`). The card-aware gate therefore records QA version `deterministic-v3` (I13).
+- **Run code.** The pipeline does not read or store the run code. The code is printed on the card and is visible in any published photograph that shows it, so it links observations from one run (CARD_SPEC). If a later package reads it, the value stays private, never enters a public artifact, log, issue or fixture, and any release keyed by run needs a linkage review first.
+
+### 17.3 Colour normalisation
+
+**What it is, and is not.** A per-photo colour normalisation for the soil estimator only. It is not reflectance or colorimetric calibration (L3). `camera_rgb` library records stay uncalibrated sRGB and never carry normalised values (L1, §16.2–16.3); WP-LIB-2 is unchanged. The published `calibration_status` keeps its meaning (one reference card's patches were read), with the three outcome changes listed in §17.2. Normalisation has its own private flag, `normalised`.
+
+**Reading the card.** The node card is read under CARD_SPEC's refusals. The A6 card is read by a new reader that takes the photographed patch colours and requires every patch window to lie inside the photo; `card/validate.py` stays byte-identical. The A6 reader has no flatness, clipping or cover refusal, so a covered A6 patch is caught only by the residual below.
+
+**The fit**, in encoded sRGB code values:
+
+1. a per-channel piecewise-linear tone curve through the card's neutral steps (the node card's five-step ramp; the A6 card's black, grey and white), with the end segments extended;
+2. then a least-squares affine map (3 x 3 plus offset) over all patches.
+
+**The residual** is the largest CIE76 (D65) difference between a patch's reference value and the value predicted for it when that patch is left out of step 2. The tone curve is not refitted, so the figure is somewhat optimistic. A photo is `normalised` when the residual is at most 5.0. That limit is provisional, comes from synthetic photographs, and is the same for both editions. A black-and-white card, or any card whose patches do not span colour, is never normalised.
+
+**The soil colour** is the median of the normalised soil-region pixels within three card-widths of the card's centre, in sRGB and CIELAB (normalise, then take the median). The soil region is a geometric candidate (§16.3): it can include background, a hand or shade.
+
+**Limits**, stated wherever the result is shown:
+
+- Reference values are the card's digital targets until a print run has been measured with an instrument. The normalisation brings different phones and lights toward a common scale. A home print adds its own unknown error.
+- The card and the soil must share the same light. On synthetic photographs, light falling off by 30 % across the frame spoiled the fit and the photo was not normalised; a 15 % fall passed, with a colour error of about 5 to 6 against about 1 in even light. Shade on the soil and not on the card is not detected at all.
+- Every number here is from synthetic photographs that follow the fitted model. No printed card and no phone has been used.
+
+**Storage.** The patches, edition, fit, residual, `normalised` and soil colour are stored in the existing `photos.card_color_correction` field as a versioned object. That field is readable by the photo's owner under row-level security and by the service role, and is never exported. Rows written before this version hold a plain patch dictionary without a version. No table or column is added.
+
+### 17.4 What a future estimator may use (proposal)
+
+This would replace the "down-weighted" sentence of §5 for the soil estimator only. It authorizes no training and no estimator.
+
+- **Normalised photos** may supply image evidence to an estimator and to its training, only where every existing gate allows: QA pass, an unwithdrawn grant, I11, the WP-6f screening state, L5 and §11.1 (no field training in the pilot).
+- **Other photos** are accepted, stored, screened and released exactly as before, and may train the QA model as before. They would supply no image evidence to a soil-property estimate and stay out of estimator training, until held-out evidence shows that including them helps on phones the model has not seen. That evidence and Justin's decision are recorded here before the rule changes.
+
+Screening interaction: the current scene-text screen uses no card exclusion, and §15.4's permitted exception covers the A6 card only. Expect most carded photos to go to private review and to be unavailable for training until cleared.
+
+Reason: desk tests by the authoring agent on one openly licensed set of phone photographs with laboratory values suggested that models trained without a shared colour reference behave erratically on a phone they have not seen, and that a photo and a map prior together do better than either. The scripts and data are not in this repository, the prior was simulated, and the tests did not try mixing unreferenced photos into training. They motivate a cautious default. They are not evidence under L7 and predict nothing about GSIP's accuracy.
+
+### 17.5 Open owner decisions and assumptions
+
+- **Adopting §17.4.** §17.4 is a proposal. Until Justin adopts it, §5's "down-weighted" sentence governs.
+- **Where no map prior exists** (I3; SoilGrids masks built-up land), should a normalised photo alone ever yield a property estimate? K1 says no. That excludes many urban gardens and is Justin's call.
+- **Estimates without a photo** (`prior` or `neighbors` only) are allowed by K1 but go beyond "photo plus soil maps". Whether to show them is Justin's call.
+- **§7's Munsell row** says "near-deterministic with card". §17.3's limits qualify that: with digital targets and unmeasured prints it is a normalised colour, not a measured one.
+- **Public copy** (`/v1/protocol` and the site) still says "down-weighted" and "uncalibrated, even with the reference card". It is unchanged until a separate copy package.
+- No printed node card has been photographed, no print run has been measured, no printer is chosen and no price is set.
+- Fusion weights, the nearby-gold method and any accuracy claim wait for paired field data (§16) and the sealed holdout (I15).
 
 ---
 
