@@ -5,8 +5,18 @@ import {
   attributionProblem,
   normalizeAttribution,
 } from '@gsip/schema'
+import { BrowserPhotoGuide, type GuideView } from './BrowserPhotoGuide'
 import { captureTime, isCaptureLive } from './capture'
 import { fuzzLocation } from './geo'
+import {
+  createGuideSession,
+  guideAccessAllowed,
+  GUIDE_MAX_RETAINED_BYTES,
+  type GuideAccess,
+  type GuideEntry,
+  type GuideSession,
+  type GuideToken,
+} from './guideSession'
 import { HexPreview } from './HexPreview'
 import { LibrarySection } from './LibrarySection'
 import {
@@ -27,6 +37,14 @@ import {
   selectPlatform,
   webPlatform,
 } from './platform'
+import {
+  BrowserCamera,
+  browserCameraPorts,
+  browserCameraSupported,
+  type CameraEnvironment,
+  type CameraLost,
+  type CameraStartProblem,
+} from './platform/browserCamera'
 import { photoFromFile, queuedPhoto } from './platform/camera'
 import { siteLink } from './platform/links'
 import {
@@ -38,6 +56,7 @@ import {
   clearDraftPhotos,
   clearLibraryDraft,
   discardLibraryConflicts,
+  enqueueGuideObservation,
   savedLibraryDraft,
   saveLibraryDraft,
   queueRevision,
@@ -278,6 +297,832 @@ function NativePhotoField({
   )
 }
 
+/**
+ * WP-COLLECT-4B: the optional framing guide for the invited browser pilot
+ * (docs/LIVE_CAMERA_GUIDE.md). One camera controller exists per page, made only when the person
+ * first presses Start camera.
+ */
+let pageCamera: BrowserCamera | null = null
+function guideCamera(): BrowserCamera {
+  pageCamera ??= new BrowserCamera(browserCameraPorts(window))
+  return pageCamera
+}
+
+const GUIDE_ACCESS_WAIT_MS = 5_000
+const GUIDE_ACCESS_REFRESH_MS = 5_000
+const GUIDE_REVISION_POLL_MS = 1_000
+const GUIDE_ACCESS_PROBLEM =
+  'Your sign-in or collection access could not be confirmed. Check your connection and try again.'
+const GUIDE_CHANGED =
+  'Your sign-in or the drafts on this device changed, so the guide photos were discarded.'
+const GUIDE_START_PROBLEMS: Record<CameraStartProblem, string> = {
+  busy: 'The camera is still finishing its last step. Try again in a moment.',
+  cancelled: 'The camera was turned off.',
+  denied:
+    'The camera was not allowed. Use the camera or gallery instead, or allow the camera in your browser settings.',
+  dimensions:
+    'This camera feed is outside the size the guide accepts. Use the camera or gallery instead.',
+  failed:
+    'The camera could not start. Try again, or use the camera or gallery.',
+  playback:
+    'The camera preview could not play. Try again, or use the camera or gallery.',
+  refused: GUIDE_ACCESS_PROBLEM,
+  timeout:
+    'The camera did not start in time. Try again, or use the camera or gallery.',
+  unavailable: 'No usable camera was found. Use the camera or gallery instead.',
+}
+const GUIDE_LOST: Record<CameraLost, string> = {
+  dimensions:
+    'The camera feed changed to a size the guide does not accept. Start it again, or use the camera or gallery.',
+  ended: 'The camera stopped. Start it again when you are ready.',
+  muted: 'The camera was interrupted. Start it again when you are ready.',
+  preview_timeout:
+    'The camera was left on for a minute, so it was turned off. Start it again when you are ready.',
+}
+const GUIDE_SHOTS: Record<ShotType, string> = {
+  A: 'A · Context / 30 cm',
+  B: 'B · Fresh face / 15 cm',
+  C: 'C · Moist texture',
+}
+
+type GuideFacts = Pick<
+  GuideEntry,
+  | 'libraryDraft'
+  | 'pendingPickerReads'
+  | 'persistedPhotosEmpty'
+  | 'pickerPhotosEmpty'
+  | 'restorationComplete'
+>
+
+type GuideUi = {
+  /** Guide mode is on: the picker fields are replaced by guide slots. */
+  active: boolean
+  /** The shot the guide window is open for. */
+  shot: ShotType | null
+  view: GuideView
+  /** Display copies of the chosen photos. Hidden while held. */
+  photos: ShotPhotos
+  /** Camera off and photos hidden until the person asks for a fresh check. */
+  held: boolean
+  confirmDiscard: boolean
+  /** One frozen observation is waiting for its queue result. */
+  pending: boolean
+  queuing: boolean
+}
+
+const GUIDE_OFF: GuideUi = {
+  active: false,
+  shot: null,
+  view: { kind: 'ready' },
+  photos: NO_PHOTOS,
+  held: false,
+  confirmDiscard: false,
+  pending: false,
+  queuing: false,
+}
+
+type GuideOptions = {
+  /** A fresh, verified access result through App's own client, or null. */
+  access(): Promise<GuideAccess | null>
+  /** The current draft and picker facts, or null when they changed while being read. */
+  facts(): Promise<GuideFacts | null>
+  /** The screen is open and no rights request holds collection. */
+  alive(): boolean
+  /** App's current sign-in generation. */
+  generation(): number
+  say(message: string): void
+}
+
+/**
+ * Joins the pure guide session to the camera controller. It imports no account or network code:
+ * App passes the access check in. Every explicit action takes a fresh access result through one
+ * shared refresh, or holds.
+ */
+function useBrowserGuide(options: GuideOptions) {
+  const [ui, setUi] = useState<GuideUi>(GUIDE_OFF)
+  const latest = useRef(options)
+  latest.current = options
+  const [guide] = useState(() => {
+    let session: GuideSession | null = null
+    let sessionRevision = -1
+    let sessionOwner: string | null = null
+    let held = false
+    let observationId = ''
+    let token: GuideToken | null = null
+    let shot: ShotType | null = null
+    let video: HTMLVideoElement | null = null
+    let lastAccess: GuideAccess | null = null
+    let flight: Promise<GuideAccess | null> | null = null
+    let queuing = false
+    // One action at a time. Closing or reopening the window frees it, so a slow check begun for
+    // an earlier window never blocks a press in the current one.
+    let work: object | null = null
+    const begin = () => (work ? null : (work = {}))
+    const done = (mine: object) => {
+      if (work === mine) work = null
+    }
+    // Bumped whenever the window opens or closes: work begun for an earlier window is dropped.
+    let opened = 0
+    const say = (message: string) => latest.current.say(message)
+    const display = (photos: Partial<ShotPhotos> | null): ShotPhotos => ({
+      A: photos?.A ?? null,
+      B: photos?.B ?? null,
+      C: photos?.C ?? null,
+    })
+
+    /** One refresh at a time, with a soft wait; unresolved work is joined, never replaced. */
+    const fresh = (): Promise<GuideAccess | null> => {
+      if (!flight) {
+        const started: Promise<GuideAccess | null> = latest.current
+          .access()
+          .catch(() => null)
+          .then((access) => {
+            if (flight === started) flight = null
+            // A check with no answer leaves the last answer in place; its own age limits it.
+            if (access) lastAccess = access
+            return access
+          })
+        flight = started
+      }
+      const current = flight
+      return new Promise((resolve) => {
+        const timer = window.setTimeout(
+          () => resolve(null),
+          GUIDE_ACCESS_WAIT_MS,
+        )
+        void current.then((access) => {
+          window.clearTimeout(timer)
+          resolve(access)
+        })
+      })
+    }
+
+    const end = (message?: string) => {
+      pageCamera?.stop()
+      const ended = session
+      session = null
+      token = null
+      shot = null
+      opened += 1
+      work = null
+      held = false
+      queuing = false
+      ended?.cancel(true)
+      setUi(GUIDE_OFF)
+      if (message) say(message)
+    }
+
+    const problem = (message: string, retry: boolean) =>
+      setUi((current) =>
+        current.shot
+          ? { ...current, view: { kind: 'problem', message, retry } }
+          : current,
+      )
+
+    const hold = () => {
+      const current = session
+      if (!current) return
+      pageCamera?.stop()
+      if (token) current.cancelRetake(token)
+      token = null
+      shot = null
+      opened += 1
+      work = null
+      held = true
+      current.hold()
+      // Nothing private stays in the page's state while held, a review candidate included.
+      setUi((value) => ({
+        ...value,
+        shot: null,
+        view: { kind: 'ready' },
+        photos: NO_PHOTOS,
+        held: true,
+        confirmDiscard: false,
+      }))
+    }
+
+    /** Applies one access result. False when the guide can no longer be used as it was. */
+    const observed = (current: GuideSession, access: GuideAccess): boolean => {
+      if (current.observe(access, Date.now())) return true
+      const state = current.state()
+      if (state.phase === 'closed' && state.outcome !== 'pending')
+        end(GUIDE_CHANGED)
+      else hold()
+      return false
+    }
+
+    /** An action whose access could not be confirmed: camera off, photos hidden, check later. */
+    const unconfirmed = () => {
+      hold()
+      say(GUIDE_ACCESS_PROBLEM)
+    }
+
+    /** The session can hold itself when a lease lapses; the page then shows the held state. */
+    const settle = (current: GuideSession) => {
+      if (session === current && current.state().phase === 'held') hold()
+    }
+
+    return {
+      active: () => session !== null,
+      /** The owner this guide was opened for, whatever later checks returned. */
+      owner: () => (session ? sessionOwner : null),
+      setVideo(element: HTMLVideoElement | null) {
+        // The window can leave the page without Cancel, for example when the form is hidden
+        // while the account cannot be confirmed. Its camera and unreviewed work go with it.
+        if (!element && video) {
+          pageCamera?.stop()
+          if (session && token) session.cancelRetake(token)
+          token = null
+          opened += 1
+          work = null
+          setUi((value) =>
+            value.view.kind === 'ready'
+              ? value
+              : { ...value, view: { kind: 'ready' } },
+          )
+        }
+        video = element
+      },
+      end,
+      hold,
+
+      async enter() {
+        if (session) return
+        const mine = begin()
+        if (!mine) return
+        try {
+          const access = await fresh()
+          if (!latest.current.alive() || session) return
+          if (!access || !guideAccessAllowed(access, Date.now()))
+            return say(
+              'Sign in to your invited account while collection is open to use the framing guide.',
+            )
+          const facts = await latest.current.facts()
+          if (!latest.current.alive() || session) return
+          const id = crypto.randomUUID()
+          const created =
+            facts &&
+            createGuideSession(
+              {
+                sessionId: crypto.randomUUID(),
+                observationId: id,
+                access,
+                ...facts,
+              },
+              Date.now(),
+            )
+          if (!created)
+            return say(
+              facts && (!facts.pickerPhotosEmpty || !facts.persistedPhotosEmpty)
+                ? 'The framing guide starts with an empty observation. Discard the photos already chosen, then start the guide.'
+                : 'The framing guide cannot start yet. Wait for the draft to finish saving, or discard a private sample that belongs to another account, then try again.',
+            )
+          session = created
+          sessionRevision = access.revision
+          sessionOwner = access.ownerUid
+          held = false
+          observationId = id
+          setUi({ ...GUIDE_OFF, active: true })
+          say(
+            'Framing guide on. Guide photos are not saved until you queue the observation.',
+          )
+        } catch {
+          say(
+            'The framing guide could not start. Use the camera or gallery instead.',
+          )
+        } finally {
+          done(mine)
+        }
+      },
+
+      open(next: ShotType) {
+        const state = session?.state()
+        if (!state || state.outcome === 'pending' || state.phase === 'held')
+          return
+        shot = next
+        opened += 1
+        work = null
+        setUi((current) =>
+          current.active && !current.held
+            ? {
+                ...current,
+                shot: next,
+                view: { kind: 'ready' },
+                confirmDiscard: false,
+              }
+            : current,
+        )
+      },
+
+      /** Only ever called from the person's Start camera press. */
+      async start() {
+        const current = session
+        const element = video
+        const wanted = shot
+        const intent = opened
+        if (!current || !element || !wanted) return
+        const mine = begin()
+        if (!mine) return
+        // This press, in this window, on this video element, and nothing later.
+        const stale = () =>
+          session !== current || opened !== intent || video !== element
+        try {
+          setUi((value) => ({ ...value, view: { kind: 'requesting' } }))
+          const access = await fresh()
+          if (stale()) return
+          if (!access) return unconfirmed()
+          const started = current.start(wanted, access, Date.now())
+          if (!started) {
+            if (session === current) observed(current, access)
+            return problem(GUIDE_START_PROBLEMS.busy, true)
+          }
+          token = started
+          const camera = guideCamera()
+          camera.onLost((reason) => {
+            if (token !== started) return
+            current.cancelRetake(started)
+            token = null
+            problem(GUIDE_LOST[reason], true)
+          })
+          camera.onGeometry((frame) =>
+            setUi((value) =>
+              token === started && value.view.kind === 'preview'
+                ? { ...value, view: { kind: 'preview', frame } }
+                : value,
+            ),
+          )
+          let admitted = false
+          const result = await camera.start(element, {
+            // Runs once whenever the browser's request ends, even long after a cancel.
+            requestSettled: () => {
+              admitted = current.permissionResolved(
+                started,
+                lastAccess ?? access,
+                Date.now(),
+              )
+            },
+            granted: () => admitted,
+          })
+          if (!result.ok) {
+            // A start that never took the camera's slot never reports it settled.
+            if (result.problem === 'busy')
+              current.permissionResolved(started, access, Date.now())
+            current.cancelRetake(started)
+            if (token !== started) return
+            token = null
+            problem(
+              GUIDE_START_PROBLEMS[result.problem],
+              result.problem !== 'denied',
+            )
+            return settle(current)
+          }
+          const ready = await fresh()
+          if (
+            stale() ||
+            token !== started ||
+            !ready ||
+            !current.playbackReady(started, ready, Date.now())
+          ) {
+            camera.stop()
+            current.cancelRetake(started)
+            if (token !== started) return
+            token = null
+            if (!ready) return unconfirmed()
+            problem(GUIDE_ACCESS_PROBLEM, true)
+            return settle(current)
+          }
+          setUi((value) => ({
+            ...value,
+            view: { kind: 'preview', frame: result.frame },
+          }))
+        } catch {
+          pageCamera?.stop()
+          if (token) current.cancelRetake(token)
+          token = null
+          problem(GUIDE_START_PROBLEMS.failed, true)
+        } finally {
+          done(mine)
+        }
+      },
+
+      async shutter() {
+        const current = session
+        const active = token
+        if (!current || !active) return
+        const mine = begin()
+        if (!mine) return
+        try {
+          const access = await fresh()
+          if (token !== active) return
+          const camera = guideCamera()
+          const fail = (message: string) => {
+            camera.stop()
+            current.cancelRetake(active)
+            if (token !== active) return
+            token = null
+            problem(message, true)
+          }
+          if (!access) return unconfirmed()
+          // Validation, the session's own check and the copy happen with no await between.
+          let bound = false
+          const capture = camera.capture((frame) => {
+            bound = current.shutter(active, frame, access, Date.now())
+            return bound
+          })
+          if (!capture.ok) {
+            // The session reserved its encoder for this frame, but no encoder ever started.
+            if (bound) current.encoded(active, null, null, access, Date.now())
+            if (capture.problem === 'not_ready' || capture.problem === 'busy')
+              return
+            return fail(
+              capture.problem === 'refused'
+                ? GUIDE_ACCESS_PROBLEM
+                : 'The photo could not be taken. Start the camera again, or use the camera or gallery.',
+            )
+          }
+          setUi((value) => ({ ...value, view: { kind: 'encoding' } }))
+          const result = await capture.encoded
+          const report = (
+            photo: CapturedPhoto | null,
+            decoded: { width: number; height: number } | null,
+          ) =>
+            current.encoded(
+              active,
+              photo,
+              decoded,
+              lastAccess ?? access,
+              Date.now(),
+            )
+          let kept = false
+          if (result.ok) kept = report(result.photo, result.decoded)
+          // After a timeout the encoder is still working; its slot frees when it ends.
+          else if (result.problem === 'timeout')
+            void capture.settled.then(() => report(null, null))
+          else report(null, null)
+          // The session keeps one copy and the page shows another: count both. Queueing makes
+          // short-lived copies beyond this bound.
+          if (
+            kept &&
+            current.state().retainedBytes * 2 > GUIDE_MAX_RETAINED_BYTES
+          ) {
+            current.cancelRetake(active)
+            kept = false
+          }
+          if (token !== active) return
+          if (!kept || !result.ok) {
+            current.cancelRetake(active)
+            token = null
+            return problem(
+              'The photo could not be prepared. Take it again, or use the camera or gallery.',
+              true,
+            )
+          }
+          setUi((value) => ({
+            ...value,
+            view: { kind: 'review', photo: result.photo },
+          }))
+        } finally {
+          done(mine)
+        }
+      },
+
+      async use() {
+        const current = session
+        const active = token
+        if (!current || !active) return
+        const mine = begin()
+        if (!mine) return
+        try {
+          const access = await fresh()
+          if (token !== active) return
+          if (!access) return unconfirmed()
+          if (!current.accept(active, access, Date.now())) {
+            if (session === current && !observed(current, access)) return
+            return say(GUIDE_ACCESS_PROBLEM)
+          }
+          const photos = current.photos(access, Date.now())
+          token = null
+          shot = null
+          opened += 1
+          setUi((value) => ({
+            ...value,
+            shot: null,
+            view: { kind: 'ready' },
+            photos: display(photos),
+          }))
+          say(
+            `Photo ${active.shotType} is chosen. It is not saved until you queue the observation.`,
+          )
+        } finally {
+          done(mine)
+        }
+      },
+
+      /** Cancel or Escape: the camera goes off; photos already chosen stay. */
+      close() {
+        pageCamera?.stop()
+        if (session && token) session.cancelRetake(token)
+        token = null
+        shot = null
+        opened += 1
+        work = null
+        setUi((value) => ({ ...value, shot: null, view: { kind: 'ready' } }))
+      },
+
+      /** Back to the camera or gallery. Chosen guide photos are lost only after a confirmation. */
+      leave(confirmed: boolean): boolean {
+        const current = session
+        if (!current) return true
+        pageCamera?.stop()
+        if (token) current.cancelRetake(token)
+        token = null
+        shot = null
+        opened += 1
+        work = null
+        if (!confirmed && !current.cancel(false)) {
+          setUi((value) => ({ ...value, shot: null, confirmDiscard: true }))
+          return false
+        }
+        end('Framing guide off. Use the camera or gallery for each photo.')
+        return true
+      },
+
+      keep() {
+        setUi((value) => ({ ...value, confirmDiscard: false }))
+      },
+
+      /** The person's explicit request to check access again after the page was away. */
+      async resume() {
+        const current = session
+        if (!current) return
+        const mine = begin()
+        if (!mine) return
+        try {
+          const access = await fresh()
+          if (session !== current) return
+          if (!access) return say(GUIDE_ACCESS_PROBLEM)
+          if (!current.resume(access, Date.now())) {
+            if (current.state().phase === 'closed') end(GUIDE_CHANGED)
+            else say(GUIDE_ACCESS_PROBLEM)
+            return
+          }
+          const pending = current.state().outcome === 'pending'
+          held = false
+          setUi((value) => ({
+            ...value,
+            held: false,
+            pending,
+            photos: display(current.photos(access, Date.now())),
+          }))
+          say(
+            pending
+              ? 'An observation is waiting to finish queueing. Press Queue observation again.'
+              : 'Guide photos are shown again. They are not saved until you queue the observation.',
+          )
+        } finally {
+          done(mine)
+        }
+      },
+
+      /** The shared periodic check. True when a guide session took the refresh. */
+      refresh(): boolean {
+        const current = session
+        if (!current) return false
+        if (queuing) return true
+        void fresh().then((access) => {
+          if (session !== current || queuing) return
+          if (!held) {
+            if (!access) unconfirmed()
+            else observed(current, access)
+            return
+          }
+          // Already held: the page changes only if this answer ends the guide.
+          if (!access || current.observe(access, Date.now())) return
+          const state = current.state()
+          if (state.phase === 'closed' && state.outcome !== 'pending')
+            end(GUIDE_CHANGED)
+        })
+        return true
+      },
+
+      async poll(revision: () => Promise<number>) {
+        const current = session
+        const known = lastAccess
+        if (!current || !known || queuing) return
+        let now: number
+        try {
+          now = await revision()
+        } catch {
+          return
+        }
+        if (session !== current || queuing || now === sessionRevision) return
+        observed(current, { ...known, revision: now })
+      },
+
+      /**
+       * Freezes one observation and commits it with the photo and library stores in one
+       * transaction. A retry reuses the same frozen identity; nothing is minted twice.
+       */
+      async queue(
+        libraryDraft: LibraryDraft | null,
+        build: (
+          photos: { A: CapturedPhoto; B: CapturedPhoto; C?: CapturedPhoto },
+          observation: string,
+          ownerUid: string,
+          now: number,
+        ) => QueueRecord | string,
+      ): Promise<boolean> {
+        const current = session
+        if (!current || queuing) return false
+        queuing = true
+        setUi((value) => ({ ...value, queuing: true }))
+        try {
+          const access = await fresh()
+          if (session !== current) return false
+          const now = Date.now()
+          const ownerUid = access?.ownerUid
+          if (!access || !ownerUid) {
+            say(GUIDE_ACCESS_PROBLEM)
+            return false
+          }
+          let pending =
+            current.state().outcome === 'pending'
+              ? current.pending(access, now)
+              : null
+          if (current.state().outcome === 'pending' && !pending) {
+            observed(current, access)
+            say(GUIDE_ACCESS_PROBLEM)
+            return false
+          }
+          if (!pending) {
+            if (!current.setLibraryDraft(libraryDraft, access, now)) {
+              if (observed(current, access))
+                say(
+                  libraryDraft
+                    ? 'Enter valid sample depth bounds and a supported declaration, or discard the private sample, before queueing.'
+                    : 'The guide is not ready to queue. Close the guide window and try again.',
+                )
+              return false
+            }
+            const photos = current.photos(access, now)
+            if (!photos?.A || !photos.B) {
+              say('Add photos A and B before continuing.')
+              return false
+            }
+            const record = build(
+              { A: photos.A, B: photos.B, C: photos.C },
+              observationId,
+              ownerUid,
+              now,
+            )
+            if (typeof record === 'string') {
+              say(record)
+              return false
+            }
+            pending = current.freeze(record, access, now)
+            if (!pending) {
+              say('Nothing was queued. Check the photos and try again.')
+              return false
+            }
+            setUi((value) => ({ ...value, pending: true }))
+          }
+          const frozen = pending
+          const result = await enqueueGuideObservation(frozen.record, {
+            ownerUid,
+            revision: frozen.revision,
+            allowed: () =>
+              latest.current.alive() &&
+              session === current &&
+              lastAccess !== null &&
+              lastAccess.ownerUid === ownerUid &&
+              latest.current.generation() === access.authGeneration &&
+              guideAccessAllowed(lastAccess, Date.now()),
+            originalContextCurrent: () =>
+              lastAccess !== null &&
+              current.originalContextCurrent(
+                frozen.token,
+                lastAccess,
+                Date.now(),
+                frozen.attemptGeneration,
+              ),
+          })
+          if (session !== current) return false
+          if (
+            result.status === 'held' ||
+            !current.complete(frozen.token, result)
+          ) {
+            say(
+              result.revision === frozen.revision
+                ? 'Nothing was queued yet. The observation is unchanged: press Queue observation to try again, or turn the guide off to discard it.'
+                : 'The drafts on this device changed while queueing. Press Queue observation once more. If it still cannot be queued, turn the guide off and take the photos again.',
+            )
+            return false
+          }
+          session = null
+          token = null
+          shot = null
+          held = false
+          setUi(GUIDE_OFF)
+          return true
+        } catch {
+          if (session === current)
+            say(
+              'The observation could not be saved on this device. Press Queue observation to try again.',
+            )
+          return false
+        } finally {
+          queuing = false
+          setUi((value) =>
+            value.active ? { ...value, queuing: false } : value,
+          )
+        }
+      },
+    }
+  })
+
+  useEffect(() => {
+    if (!ui.active) return
+    const onHidden = () => {
+      if (document.visibilityState === 'hidden') guide.hold()
+    }
+    document.addEventListener('visibilitychange', onHidden)
+    window.addEventListener('pagehide', guide.hold)
+    return () => {
+      document.removeEventListener('visibilitychange', onHidden)
+      window.removeEventListener('pagehide', guide.hold)
+    }
+  }, [ui.active, guide])
+
+  // Server revocation and other tabs are seen through these checks, not pushed. They run only
+  // while a visible guide session exists.
+  useEffect(() => {
+    if (!ui.active) return
+    const visible = () => document.visibilityState === 'visible'
+    let polling = false
+    // The access check keeps running while held, so the page finds out when the account can be
+    // confirmed again. It never shows the photos or starts the camera: that takes a press.
+    const refresh = window.setInterval(() => {
+      if (visible()) guide.refresh()
+    }, GUIDE_ACCESS_REFRESH_MS)
+    const poll = window.setInterval(() => {
+      if (!visible() || polling || ui.held) return
+      polling = true
+      void guide.poll(queueRevision).finally(() => {
+        polling = false
+      })
+    }, GUIDE_REVISION_POLL_MS)
+    return () => {
+      window.clearInterval(refresh)
+      window.clearInterval(poll)
+    }
+  }, [ui.active, ui.held, guide])
+
+  useEffect(() => () => guide.end(), [guide])
+
+  return { ui, ...guide }
+}
+
+function GuideSlot({
+  disabled,
+  onOpen,
+  photo,
+  shot,
+}: {
+  disabled: boolean
+  onOpen: () => void
+  photo: CapturedPhoto | null
+  shot: ShotType
+}) {
+  const preview = usePreview(photo)
+  return (
+    <div
+      className="photo-field"
+      role="group"
+      aria-labelledby={`guide-${shot}-label`}
+    >
+      <span id={`guide-${shot}-label`}>{GUIDE_SHOTS[shot]}</span>
+      <small>{shot === 'C' ? 'Optional confidence boost' : 'Required'}</small>
+      {preview && (
+        <img
+          className="photo-preview"
+          src={preview}
+          alt={`Guide photo ${shot}, not saved yet`}
+        />
+      )}
+      <p className="photo-state">
+        {photo
+          ? `Photo ${shot} chosen, not saved until queued`
+          : `No photo ${shot} yet`}
+      </p>
+      <button type="button" disabled={disabled} onClick={onOpen}>
+        {photo
+          ? `Retake photo ${shot} with the guide`
+          : `Take photo ${shot} with the guide`}
+      </button>
+    </div>
+  )
+}
+
 export function coarseDeviceModel(): string {
   const navigatorWithHints = navigator as Navigator & {
     userAgentData?: { brands?: Array<{ brand: string }>; platform?: string }
@@ -321,6 +1166,12 @@ export function App() {
   const authGeneration = useRef(0)
   const rightsHold = useRef(false)
   const [authEpoch, setAuthEpoch] = useState(0)
+  // WP-COLLECT-4B: set while a guide session exists, so focus and the guide share one refresh.
+  const guideLink = useRef<{
+    refresh(): boolean
+    owner(): string | null
+  } | null>(null)
+  const pickerReads = useRef(0)
   const [rightsCleanupPending, setRightsCleanupPending] = useState(false)
   const canCollect =
     live && (!pilot || (admission === 'open' && Boolean(invitedOwner)))
@@ -453,10 +1304,24 @@ export function App() {
         if (observing) void refreshAdmission()
       })
     }
-    const subscription =
-      client.auth.onAuthStateChange(invalidate).data.subscription
+    const subscription = client.auth.onAuthStateChange((_event, session) => {
+      // The sign-in library repeats SIGNED_IN and TOKEN_REFRESHED for the same person, for
+      // example each time the page returns from the background. With a guide open, the same
+      // owner is a reason to check access again through the guide's shared refresh, which
+      // verifies the owner with the server; anything else is a change.
+      const owner = guideLink.current?.owner()
+      if (owner && session?.user?.id === owner) {
+        // Supabase auth callbacks must finish before another Auth call begins.
+        void Promise.resolve().then(() => {
+          if (observing && !guideLink.current?.refresh())
+            void refreshAdmission()
+        })
+        return
+      }
+      invalidate()
+    }).data.subscription
     const onFocus = () => {
-      void refreshAdmission()
+      if (!guideLink.current?.refresh()) void refreshAdmission()
     }
     window.addEventListener('focus', onFocus)
     void refreshAdmission()
@@ -950,9 +1815,16 @@ export function App() {
       !clearingDrafts.current &&
       request === photoRequests.current[shot] &&
       generation === authGeneration.current
-    const revision = await queueRevision()
-    if (!current()) return
+    pickerReads.current += 1
+    let revision: number
     try {
+      revision = await queueRevision()
+    } catch (error) {
+      pickerReads.current -= 1
+      throw error
+    }
+    try {
+      if (!current()) return
       const photo = await photoFromFile(file, PAGE_LOADED_AT, Date.now())
       if (!current()) return
       await keepNativePhoto(shot, photo, revision, current)
@@ -963,6 +1835,8 @@ export function App() {
           error instanceof PhotoRefused ? error.problem : 'not_jpeg'
         ],
       )
+    } finally {
+      pickerReads.current -= 1
     }
   }
 
@@ -986,6 +1860,217 @@ export function App() {
       clearingDrafts.current = false
       setDraftsClearing(false)
     }
+  }
+
+  // WP-COLLECT-4B: the optional framing guide. Offered only where every conjunct holds; the
+  // rights hold and a fresh, verified, nonanonymous owner are checked again at every action.
+  const guideSupported = useMemo(
+    () => browserCameraSupported(window as unknown as CameraEnvironment),
+    [],
+  )
+  const guideEligible =
+    pilot &&
+    !native &&
+    !rightsView &&
+    libraryLive &&
+    canCollect &&
+    guideSupported
+  const guideAccess = useCallback(async (): Promise<GuideAccess | null> => {
+    if (!client) return null
+    const result = await refreshAdmission()
+    // No owner or no answer is an unknown, not a change: the guide holds and the person can
+    // check again. A real sign-out arrives as an auth event and ends the guide there.
+    if (!result || !result.uid || result.state === 'unknown') return null
+    const revision = await queueRevision()
+    if (!open.current || result.generation !== authGeneration.current)
+      return null
+    return {
+      pilot,
+      native,
+      rightsView,
+      libraryLive,
+      canCollect: live && result.state === 'open' && Boolean(result.uid),
+      rightsHold: rightsHold.current,
+      ownerUid: result.uid,
+      anonymous: !result.uid,
+      authGeneration: result.generation,
+      revision,
+      verifiedAt: Date.now(),
+    }
+  }, [client, refreshAdmission, pilot, native, rightsView, libraryLive, live])
+  const guideDrafts = useRef({
+    settled: false,
+    pickerEmpty: true,
+    libraryDraft: null as LibraryDraft | null,
+  })
+  guideDrafts.current = {
+    settled:
+      !restoringPhotos &&
+      !restoringLibrary &&
+      !libraryReading &&
+      !libraryWriting &&
+      !draftsClearing &&
+      !libraryHeld,
+    pickerEmpty: SHOTS.every((shot) => !nativePhotos[shot]),
+    libraryDraft,
+  }
+  const guide = useBrowserGuide({
+    access: guideAccess,
+    async facts() {
+      const before = await queueRevision()
+      const saved = await draftPhotos()
+      if (before !== (await queueRevision())) return null
+      const drafts = guideDrafts.current
+      return {
+        restorationComplete: drafts.settled,
+        pendingPickerReads: pickerReads.current,
+        pickerPhotosEmpty: drafts.pickerEmpty,
+        persistedPhotosEmpty: SHOTS.every((shot) => !saved[shot]),
+        libraryDraft: drafts.libraryDraft,
+      }
+    },
+    alive: () => open.current && !rightsHold.current,
+    generation: () => authGeneration.current,
+    say: setStatus,
+  })
+  guideLink.current = guide
+  const guideActive = guide.active
+  const endGuide = guide.end
+  // A new sign-in, a sign-out or the rights view ends the guide and releases its photos.
+  useEffect(() => {
+    return () => {
+      if (guideActive())
+        endGuide(
+          'Your sign-in or this view changed, so the guide photos were discarded.',
+        )
+    }
+  }, [authEpoch, rightsView, guideActive, endGuide])
+  const leaveGuide = (confirmed: boolean) => {
+    if (!guide.leave(confirmed)) return
+    // The person starts the picker themselves; focus only shows where it is.
+    window.setTimeout(
+      () =>
+        formRef.current
+          ?.querySelector<HTMLInputElement>('input[type="file"]')
+          ?.focus(),
+      0,
+    )
+  }
+
+  async function submitGuide(formElement: HTMLFormElement) {
+    if (
+      libraryReading ||
+      libraryWriting ||
+      draftsClearing ||
+      restoringLibrary
+    ) {
+      setStatus('Wait for the draft to finish saving before queueing.')
+      return
+    }
+    if (libraryHeld) {
+      setStatus(
+        'This private draft has no usable original revision. Discard it and start again.',
+      )
+      return
+    }
+    const form = new FormData(formElement)
+    const numericLatitude = Number(latitude)
+    const numericLongitude = Number(longitude)
+    if (
+      latitude === '' ||
+      longitude === '' ||
+      !Number.isFinite(numericLatitude) ||
+      !Number.isFinite(numericLongitude)
+    ) {
+      setStatus('Add a valid location before continuing.')
+      return
+    }
+    const attributionName = normalizeAttribution(
+      String(form.get('attribution') ?? ''),
+    )
+    if (attributionProblem(attributionName)) {
+      setAttributionError(
+        'Use letters, numbers, spaces and simple punctuation, with no links or e-mail addresses.',
+      )
+      setStatus('Check the public attribution name before continuing.')
+      return
+    }
+    setAttributionError(null)
+    if (form.get('sampling-rules') !== 'on') {
+      setStatus('Confirm the sampling rules before queueing this observation.')
+      return
+    }
+    // The person accepts the grant themselves, for this observation.
+    if (form.get('terms') !== 'on') {
+      setStatus(
+        'Accept the contribution terms before queueing this observation.',
+      )
+      return
+    }
+    const draft = libraryDraft
+    const queuedNow = await guide.queue(
+      draft,
+      (photos, observationId, ownerUid, now) => {
+        let library: QueueRecord['library']
+        if (draft) {
+          if (draft.ownerUid && draft.ownerUid !== ownerUid)
+            return 'This private draft belongs to its original account. Return to that account or discard the draft before creating a new sample.'
+          try {
+            library = queueLibraryDraft(draft)
+          } catch {
+            return 'Enter valid sample depth bounds and a supported declaration before queueing.'
+          }
+        }
+        return {
+          collectionMode: 'invited_private' as const,
+          accuracyM: accuracy,
+          acceptedAt: new Date(now).toISOString(),
+          attributionName,
+          capturedAt: captureTime({ lastModified: photos.B.takenAt }, now),
+          // WP-6e: claims only. The server never lets them raise a provenance tier.
+          claims: {
+            captureMethod: weakestMethod([photos.A.method, photos.B.method]),
+            clientVersion: CLIENT_VERSION,
+            ingestPath: platform?.ingestPath ?? 'web',
+            locationSource,
+          },
+          deviceModel: coarseDeviceModel(),
+          disturbed: form.get('disturbed') === 'yes',
+          grantId: crypto.randomUUID(),
+          library,
+          landCover: String(form.get('land-cover')),
+          latitude: numericLatitude,
+          longitude: numericLongitude,
+          ownerUid,
+          photos: SHOTS.flatMap((shot) => {
+            const photo = photos[shot]
+            return photo ? [queuedPhoto(photo, shot)] : []
+          }),
+          queuedAt: new Date().toISOString(),
+          submissionId: library?.request.submission_id ?? observationId,
+          surfaceCondition: String(form.get('surface-condition')),
+          termsVersion: TERMS_VERSION,
+        }
+      },
+    )
+    if (!queuedNow || !open.current) return
+    // The transaction consumed exactly this observation's private sample. Nothing else is
+    // cleared: a draft another tab started at the new revision stays.
+    libraryIntent.current += 1
+    setLibraryDraft(null)
+    setLibraryHeld(false)
+    setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
+    formRef.current?.reset()
+    setLatitude('')
+    setLongitude('')
+    setAccuracy(null)
+    setLocationSource('unknown')
+    await refreshQueueState()
+    if (navigator.onLine && client) await sync()
+    else
+      setStatus(
+        'Saved offline. It will sync automatically when this device reconnects.',
+      )
   }
 
   async function sendMagicLink(switchAccount = false) {
@@ -1026,6 +2111,11 @@ export function App() {
       (pilot && (!client || native))
     )
       return
+    // WP-COLLECT-4B: guide photos live in RAM and take their own guarded queue transaction.
+    if (guide.ui.active) {
+      await submitGuide(formElement)
+      return
+    }
     if (
       restoringPhotos ||
       restoringLibrary ||
@@ -1485,6 +2575,18 @@ export function App() {
                       onTake={() => void takeNativePhoto(shot)}
                     />
                   ))
+                ) : guide.ui.active ? (
+                  SHOTS.map((shot) => (
+                    <GuideSlot
+                      key={shot}
+                      shot={shot}
+                      photo={guide.ui.held ? null : guide.ui.photos[shot]}
+                      disabled={
+                        guide.ui.held || guide.ui.pending || guide.ui.queuing
+                      }
+                      onOpen={() => guide.open(shot)}
+                    />
+                  ))
                 ) : (
                   <>
                     <PhotoField
@@ -1527,6 +2629,83 @@ export function App() {
                   </>
                 )}
               </div>
+              {guideEligible && !guide.ui.active && (
+                <div className="guide-entry">
+                  <button
+                    type="button"
+                    className="secondary"
+                    disabled={!guideDrafts.current.settled}
+                    onClick={() => void guide.enter()}
+                  >
+                    Use the optional framing guide
+                  </button>
+                  <p className="field-hint">
+                    The guide shows a plain outline over a live camera preview.
+                    It starts with an empty observation, and its photos are not
+                    saved until you queue. They can show less detail than your
+                    phone’s own camera.
+                  </p>
+                </div>
+              )}
+              {guide.ui.active && (
+                <div className="guide-entry">
+                  {guide.ui.held && (
+                    <>
+                      <p role="status">
+                        The camera is off and the guide photos are hidden
+                        because this page was away or your access could not be
+                        confirmed.
+                      </p>
+                      <button type="button" onClick={() => void guide.resume()}>
+                        Check access and show guide photos
+                      </button>
+                    </>
+                  )}
+                  {guide.ui.pending && !guide.ui.held && (
+                    <p role="status">
+                      This observation is waiting to finish queueing. Press
+                      Queue observation again.
+                    </p>
+                  )}
+                  {guide.ui.confirmDiscard ? (
+                    <div role="group" aria-label="Discard guide photos?">
+                      <p>
+                        Leaving the guide discards the guide photos. They are
+                        not saved anywhere.
+                      </p>
+                      <button type="button" onClick={() => leaveGuide(true)}>
+                        Discard guide photos
+                      </button>
+                      <button type="button" autoFocus onClick={guide.keep}>
+                        Keep guide photos
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      className="secondary"
+                      disabled={guide.ui.queuing}
+                      onClick={() => leaveGuide(false)}
+                    >
+                      Use the camera or gallery instead
+                    </button>
+                  )}
+                </div>
+              )}
+              {guide.ui.shot && (
+                <BrowserPhotoGuide
+                  shot={guide.ui.shot}
+                  shotLabel={GUIDE_SHOTS[guide.ui.shot]}
+                  view={guide.ui.view}
+                  onVideo={guide.setVideo}
+                  onStart={() => void guide.start()}
+                  onShutter={() => void guide.shutter()}
+                  onUse={() => void guide.use()}
+                  onRetake={() => void guide.start()}
+                  onCancel={guide.close}
+                  onFallback={() => leaveGuide(false)}
+                />
+              )}
               {native &&
                 (nativePhotos.A || nativePhotos.B || nativePhotos.C) && (
                   <button
@@ -1655,7 +2834,7 @@ export function App() {
                 onPendingChange={setLibraryReading}
               />
             )}
-            {libraryLive && !native && (
+            {libraryLive && !native && !guide.ui.active && (
               <button
                 type="button"
                 className="secondary"
@@ -1942,6 +3121,7 @@ export function App() {
             onBeforeRightsRequest={() => {
               authGeneration.current += 1
               rightsHold.current = true
+              guide.end()
               setAdmission('unknown')
               return native ? reminder.hold() : Promise.resolve()
             }}
