@@ -118,6 +118,14 @@ Acceptance:
 - [ ] The proposals are labelled as prepared by an agent and not legal advice. The owner-only inputs are named: the contact mailbox, postal address and controlling company; the hosting plan and its retention periods; the Supabase project region; approval and audit of a sign-in e-mail provider; and an impact record for any launch-gate exception.
 - [ ] The language check, lint, the processor-list test and the Python suite pass; independent review has no open finding. Adoption, the `TERMS_VERSION` source change, publication of a terms version, account creation, migration and activation remain separate owner steps.
 
+**WP-COLLECT-5B — Record the owner's choice of controller for the invited pilot.** Branch `wp-collect-5b-controller-montana`. Follows WP-COLLECT-5. Documentation only. Asked which company is the controller, Justin answered "Montana" on 14 November 2026. The draft terms, privacy notice and withdrawal procedure now propose the Montana company (working name Viridis North) as the controller for the invited pilot and Montana as the governing law, and record the Supabase region the repository already states. Viridis LLC remains the project steward everywhere else, and in the withdrawal procedure "the steward" is read as the controller for the pilot; no governance, specification, trademark or site text changes. This supersedes the "controlling company" and "Supabase project region" owner inputs listed under WP-COLLECT-5; the registered name and confirmation of the live region remain owner inputs. Nothing is adopted and every banner stays.
+
+Acceptance:
+
+- [ ] The terms, the privacy notice and the legal README agree on the controller and the governing law, each marked as proposed, with the registered company name and the contact still owner inputs.
+- [ ] The difference between the named steward and the proposed controller is stated as a point to settle before adoption.
+- [ ] The language check, lint, the processor-list test and the Python suite pass; independent review has no open finding.
+
 The independent **WP-SITE-1H** ([issue #80](https://github.com/global-soil-intelligence/gsip/issues/80)) copy repair may correct the contradictory closed-page status and remove an assertion that only a legal review blocks collection. It changes no activation behavior and requires a negative regression proving the page remains closed with no upload controls. Collection readiness is tracked in [COLLECTION_READINESS.md](COLLECTION_READINESS.md).
 
 ### Completed (Phase 0 and Phase 1 code)
