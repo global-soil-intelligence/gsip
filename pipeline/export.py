@@ -46,6 +46,8 @@ FORBIDDEN_PUBLIC_KEYS = {
     "actor_id",
     "camera_metadata_private",
     "capture_evidence_private",
+    # Section 17: the colour record is for the estimator only and never a public value.
+    "card_color_correction",
     "contributor_id",
     "collection_scope",
     "device_model",

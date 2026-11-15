@@ -24,7 +24,7 @@ Generate with `python -m card.generate`. Validate a photograph with `python -m c
 
 A credit-card-size edition for people who order a printed card. It is optional. The free A6 card above stays the way in, and nobody has to buy anything to contribute.
 
-**Do not use a node card in a submission yet.** The capture pipeline does not recognise it. A node card in a submitted photo is counted as soil: its marker and patches enter the sharpness, exposure and duplicate checks, and the photo is marked uncalibrated. That changes only when a separate package teaches the pipeline to find it.
+**In a submission.** Photo QA finds the node card, masks it out of the soil checks and, when the card can be read, fits a per-photo colour normalisation (SPEC §17). That normalisation is for a future estimator only. It is not calibration: the reference values are digital targets, and no printed card has been tested.
 
 The card is ISO ID-1 (CR80) landscape: 85.6 x 53.98 mm. The marker is ArUco `DICT_4X4_50`, ID 12, at 24 x 24 mm, with a light border at least 4 mm wide. ID 12 differs from the A6 card's ID 7, so a detector knows which layout it sees. Unlike IDs 8, 9, 17 and 47, it does not read as itself in a mirror, so a mirrored photo is refused.
 

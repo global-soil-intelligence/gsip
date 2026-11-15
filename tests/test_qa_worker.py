@@ -10,7 +10,7 @@ import numpy as np
 import pytest
 from PIL import ExifTags, Image
 
-from pipeline.qa import evaluate_photo
+from pipeline.qa_cards import evaluate_photo_with_cards
 from pipeline.qa_worker import (
     StoragePathMismatch,
     SupabaseQaWorker,
@@ -229,9 +229,9 @@ def test_zero_valued_prior_reaches_gps_plausibility(
 
     def capture_priors(*args: Any, **kwargs: Any) -> Any:
         captured_priors.update(kwargs["priors"])
-        return evaluate_photo(*args, **kwargs)
+        return evaluate_photo_with_cards(*args, **kwargs)
 
-    monkeypatch.setattr("pipeline.qa_worker.evaluate_photo", capture_priors)
+    monkeypatch.setattr("pipeline.qa_worker.evaluate_photo_with_cards", capture_priors)
     worker = WorkerHarness(
         b"unused",
         prior_rows=[{"property": "sand", "value": 0}],
@@ -473,3 +473,62 @@ def test_client_claims_are_never_read() -> None:
     for claim in claims:
         assert claim not in select
     assert worker.photo_updates["good"]["capture_evidence_private"]["exif_time_present"] is False
+
+
+class CardHarness(WorkerHarness):
+    """Also records the QA events the worker writes."""
+
+    def __init__(self, good: bytes) -> None:
+        super().__init__(b"unused", good=good)
+        self.event_rows: list[dict[str, Any]] = []
+
+    def _rest(self, method: str, path: str, **kwargs: Any) -> httpx.Response:
+        if method == "POST" and path.startswith("qa_events"):
+            self.event_rows.extend(kwargs["json"])
+        return super()._rest(method, path, **kwargs)
+
+
+def _node_card_photo(*, cover: bool) -> bytes:
+    import cv2
+    import numpy as np
+    from test_qa import jpeg as scene_jpeg
+    from test_qa import soil_texture
+
+    from card.node_fixtures import canonical_node_card
+
+    scene = soil_texture(1)
+    card = canonical_node_card()
+    height = round(card.shape[0] * 560 / card.shape[1])
+    scene[250 : 250 + height, 60:620] = cv2.resize(
+        card, (560, height), interpolation=cv2.INTER_AREA
+    )
+    if cover:
+        from card.node_design import PATCHES
+
+        sky = next(patch for patch in PATCHES if patch.name == "sky")
+        scale = 560 / 85.6
+        centre = (round(60 + (sky.x_mm + 3) * scale), round(250 + (sky.y_mm + 5) * scale))
+        cv2.circle(scene, centre, 16, (150, 170, 210), -1)
+    return scene_jpeg(np.ascontiguousarray(scene))
+
+
+def test_the_worker_stores_the_versioned_colour_record_for_a_readable_card() -> None:
+    worker = CardHarness(_node_card_photo(cover=False))
+    assert worker.process_one("good", 0)
+    update = worker.photo_updates["good"]
+    assert update["card_detected"] is True
+    assert update["calibration_status"] == "calibrated"
+    assert update["card_color_correction"]["version"] == 2
+    assert update["card_color_correction"]["edition"] == "node"
+    assert worker.event_rows
+    assert {row["model_version"] for row in worker.event_rows} == {"deterministic-v3"}
+
+
+def test_the_worker_marks_a_refused_card_as_detected_with_no_record() -> None:
+    worker = CardHarness(_node_card_photo(cover=True))
+    assert worker.process_one("good", 0)
+    update = worker.photo_updates["good"]
+    assert update["card_detected"] is True
+    assert update["card_color_correction"] is None
+    assert update["calibration_status"] == "uncalibrated"
+    assert update["qa_status"] == "pass"

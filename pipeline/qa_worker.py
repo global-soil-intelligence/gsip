@@ -11,7 +11,7 @@ import httpx
 
 from pipeline.paths import StoragePathMismatch, expected_photo_path_pattern, verify_photo_path
 from pipeline.provenance import capture_evidence
-from pipeline.qa import evaluate_photo
+from pipeline.qa_cards import evaluate_photo_with_cards
 
 __all__ = [
     "MAX_QA_ATTEMPTS",
@@ -223,7 +223,7 @@ class SupabaseQaWorker:
                 latitude=latitude,
                 longitude=longitude,
             )
-            result = evaluate_photo(
+            result = evaluate_photo_with_cards(
                 raw.content,
                 accuracy_m=submission["gps_accuracy_m"],
                 existing_hashes=existing_hashes,
@@ -244,7 +244,7 @@ class SupabaseQaWorker:
                     "calibration_status": result.calibration_status,
                     "camera_metadata_private": result.camera_metadata,
                     "card_color_correction": result.card_color_correction,
-                    "card_detected": result.card_color_correction is not None,
+                    "card_detected": result.card_detected,
                     "perceptual_hash": result.perceptual_hash,
                     "qa_status": result.status,
                     "sharpness_score": next(

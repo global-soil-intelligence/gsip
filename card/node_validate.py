@@ -48,15 +48,10 @@ def _colour_image(image: np.ndarray) -> np.ndarray:
     return image
 
 
-def node_card_transform(image: np.ndarray) -> np.ndarray | None:
-    """Return the homography from image pixels to canonical node-card pixels, or None.
+def _node_markers(image: np.ndarray) -> list[np.ndarray]:
+    """Corner quadrilaterals of every node-card marker in the photograph."""
 
-    None when the node card's marker is not found exactly once, when it is too small to place
-    the far patches, or when the card does not lie wholly inside the photograph. An A6 card or a
-    mirrored photograph is not a node card."""
-
-    image = _colour_image(image)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(_colour_image(image), cv2.COLOR_BGR2GRAY)
     dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
     parameters = cv2.aruco.DetectorParameters()
     # The marker is small and the far patches are three marker-widths away, so its corners are
@@ -65,15 +60,14 @@ def node_card_transform(image: np.ndarray) -> np.ndarray | None:
     detector = cv2.aruco.ArucoDetector(dictionary, parameters)
     corners, ids, _ = detector.detectMarkers(gray)
     if ids is None:
-        return None
-    found = np.where(ids.flatten() == MARKER_ID)[0]
-    # Two node cards in one frame are ambiguous; refuse to guess which one is the control.
-    if len(found) != 1:
-        return None
-    source = corners[int(found[0])].reshape(4, 2).astype(np.float32)
-    sides = np.linalg.norm(source - np.roll(source, -1, axis=0), axis=1)
-    if float(sides.min()) < MIN_MARKER_SIDE_PX:
-        return None
+        return []
+    return [
+        corners[int(index)].reshape(4, 2).astype(np.float32)
+        for index in np.where(ids.flatten() == MARKER_ID)[0]
+    ]
+
+
+def _transform_from(marker: np.ndarray) -> np.ndarray:
     destination = np.array(
         [
             _point(MARKER_X_MM, MARKER_Y_MM),
@@ -83,7 +77,42 @@ def node_card_transform(image: np.ndarray) -> np.ndarray | None:
         ],
         dtype=np.float32,
     )
-    transform = cast(np.ndarray, cv2.getPerspectiveTransform(source, destination))
+    return cast(np.ndarray, cv2.getPerspectiveTransform(marker, destination))
+
+
+def node_card_outlines(image: np.ndarray) -> list[np.ndarray]:
+    """Where each node card lies in the photograph, as four corners, whether or not it is usable.
+
+    For masking a card out of the soil: a card that is too small, cut off by the frame or one of
+    two is still not soil. The corners may lie outside the photograph."""
+
+    outlines = []
+    for marker in _node_markers(image):
+        try:
+            corners = node_card_corners(_transform_from(marker))
+        except (np.linalg.LinAlgError, cv2.error):
+            continue
+        if bool(np.isfinite(corners).all()):
+            outlines.append(corners)
+    return outlines
+
+
+def node_card_transform(image: np.ndarray) -> np.ndarray | None:
+    """Return the homography from image pixels to canonical node-card pixels, or None.
+
+    None when the node card's marker is not found exactly once, when it is too small to place
+    the far patches, or when the card does not lie wholly inside the photograph. An A6 card or a
+    mirrored photograph is not a node card."""
+
+    markers = _node_markers(image)
+    # Two node cards in one frame are ambiguous; refuse to guess which one is the control.
+    if len(markers) != 1:
+        return None
+    source = markers[0]
+    sides = np.linalg.norm(source - np.roll(source, -1, axis=0), axis=1)
+    if float(sides.min()) < MIN_MARKER_SIDE_PX:
+        return None
+    transform = _transform_from(source)
     height, width = image.shape[:2]
     projected = node_card_corners(transform)
     inside = (
