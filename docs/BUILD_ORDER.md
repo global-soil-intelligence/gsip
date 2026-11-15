@@ -105,6 +105,14 @@ Follow SPEC §5.2, [LIVE_CAMERA_GUIDE.md](LIVE_CAMERA_GUIDE.md) and the prospect
 
 **Held follow-ups:** mixed picker/guide sources, durable guide restart recovery or per-shot persisted replacement first require an owner/selection-bound draft contract; no claim that the existing unowned draft store supplies it. ImageCapture stills, RAW/flash/exposure controls, native preview and unknown-depth/default sample registration need later reviewed scope. No device operation, useful scientific accuracy or universal-smartphone claim follows from a source/CI pass.
 
+**WP-COLLECT-5 — Proposed notice choices and pilot bounds for the invited pilot.** Branch `wp-collect-5-pilot-notice-choices`. Documentation only. Justin asked on 14 November 2026 for the open points in `docs/legal/` to be filled in. Each **[DECISION]** point in the five notices now carries a proposed choice, or is marked as an owner input or left open, for the invited, adult, United States-only phone-browser pilot, summarized in [docs/legal/README.md](legal/README.md), and [COLLECTION_READINESS.md](COLLECTION_READINESS.md) records proposed pilot bounds. Every document keeps its "Draft — awaiting product-owner adoption. Not in force." banner. This package adopts nothing, publishes no terms version, selects no processor, publishes no contact address and opens nothing. It changes no code, schema, dependency, licence or activation flag.
+
+Acceptance:
+
+- [ ] No **[DECISION]** marker remains in the five notices; the one point left blank is marked as an owner input. Every notice still says it is a draft and not in force, and says where it describes the later public service and not the pilot.
+- [ ] The proposals are labelled as prepared by an agent and not legal advice. The owner-only inputs are named: the contact mailbox, postal address and controlling company; the hosting plan and its retention periods; the Supabase project region; approval and audit of a sign-in e-mail provider; and an impact record for any launch-gate exception.
+- [ ] The language check, lint, the processor-list test and the Python suite pass; independent review has no open finding. Adoption, the `TERMS_VERSION` source change, publication of a terms version, account creation, migration and activation remain separate owner steps.
+
 The independent **WP-SITE-1H** ([issue #80](https://github.com/global-soil-intelligence/gsip/issues/80)) copy repair may correct the contradictory closed-page status and remove an assertion that only a legal review blocks collection. It changes no activation behavior and requires a negative regression proving the page remains closed with no upload controls. Collection readiness is tracked in [COLLECTION_READINESS.md](COLLECTION_READINESS.md).
 
 ### Completed (Phase 0 and Phase 1 code)

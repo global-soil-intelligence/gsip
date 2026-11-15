@@ -1,7 +1,7 @@
 # Withdrawal and deletion procedure
 
-> **Draft — awaiting product-owner adoption.** Not in force. The mechanisms are implemented (WP-6d); the
-> Hugging Face history policy is a **[DECISION]** point.
+> **Draft — awaiting product-owner adoption.** Not in force. The mechanisms are implemented (WP-6d).
+> Proposed choices for the invited pilot are filled in below (WP-COLLECT-5). They are proposals prepared by an agent, not legal advice, and take effect only if the product owner adopts them.
 
 ## What a contributor can ask for
 
@@ -16,6 +16,11 @@ the person proves control of the account by signing in. Anonymous contributors w
 e-mail address keep the same account, so they can make the request from any device; a person who
 signs in to a different account must withdraw the anonymous contributions from the device that made
 them.
+
+**In the invited pilot** there are no anonymous accounts, so the last sentence describes the
+later public service. An invited account that has not yet made an observation has no contributor
+record, so **Your data** cannot file a deletion for it. Ask the organizer who invited you, or the
+privacy contact, to delete that account.
 
 ## What happens, and when
 
@@ -58,9 +63,9 @@ its record through a race is found and deleted on the next run.
 
 - Releases built after the request exclude the observations, and the public map cells are
   recomputed from each release; a cell that falls below three contributors is withheld.
-- Earlier releases remain in the dataset repository's history on Hugging Face. **[DECISION:]** the
-  steward squashes that history (so earlier revisions are no longer served by GSIP) either monthly
-  or within 30 days of a request.
+- Earlier releases remain in the dataset repository's history on Hugging Face. The steward squashes
+  that history (so earlier revisions are no longer served by GSIP) within 30 days of a request.
+  The invited pilot publishes nothing, so there is no release history for pilot contributions.
 - Copies others already downloaded under ODbL 1.0 and CC BY-SA 4.0 cannot be recalled.
 
 ## Operator checklist

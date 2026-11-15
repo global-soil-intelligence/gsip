@@ -169,7 +169,7 @@ within 30 days; **Withdraw my contributions…** keeps the account and removes t
 Both also discard what is still queued, and any photos taken, on the device. Google Play also
 asks for a web page where people can request deletion without the app. An anonymous app account
 cannot be identified from the web, so that page is the privacy contact in
-`docs/legal/PRIVACY.md` **[DECISION: contact address]**.
+`docs/legal/PRIVACY.md` (the contact is still an owner input there).
 
 ## Payments
 
