@@ -727,12 +727,12 @@ The A6 card of §5 (ArUco ID 7) and the node card of [CARD_SPEC.md](../card/CARD
 
 **The residual** is the largest CIE76 (D65) difference between a patch's reference value and the value predicted for it when that patch is left out of step 2. The tone curve is not refitted, so the figure is somewhat optimistic. A photo is `normalised` when the residual is at most 5.0. That limit is provisional, comes from synthetic photographs, and is the same for both editions. A black-and-white card, or any card whose patches do not span colour, is never normalised.
 
-**The soil colour** is the median of the normalised soil-region pixels within three card-widths of the card's centre, in sRGB and CIELAB (normalise, then take the median). The soil region is a geometric candidate (§16.3): it can include background, a hand or shade.
+**The soil colour** is the median of the normalised soil-region pixels in a band about half a card wide around the card, in sRGB and CIELAB (normalise, then take the median). The soil region is a geometric candidate (§16.3): it can include background, a hand or shade.
 
 **Limits**, stated wherever the result is shown:
 
 - Reference values are the card's digital targets until a print run has been measured with an instrument. The normalisation brings different phones and lights toward a common scale. A home print adds its own unknown error.
-- The card and the soil must share the same light. On synthetic photographs, light falling off by 30 % across the frame spoiled the fit and the photo was not normalised; a 15 % fall passed, with a colour error of about 5 to 6 against about 1 in even light. Shade on the soil and not on the card is not detected at all.
+- The card and the soil must share the same light, and uneven light is not reliably detected. On synthetic photographs with light falling off 30 to 45 % across the frame, most photos were still normalised, with colour errors up to about 15 (CIE76) against 2.5 or less in even light. Shade on the soil and not on the card is not detected at all. A check for uneven light is a held follow-up.
 - Every number here is from synthetic photographs that follow the fitted model. No printed card and no phone has been used.
 
 **Storage.** The patches, edition, fit, residual, `normalised` and soil colour are stored in the existing `photos.card_color_correction` field as a versioned object. That field is readable by the photo's owner under row-level security and by the service role, and is never exported. Rows written before this version hold a plain patch dictionary without a version. No table or column is added.

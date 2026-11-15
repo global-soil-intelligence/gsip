@@ -57,6 +57,32 @@ the submission with shots A and B, `settle_submission()` derives it from those t
 section 5). A failed optional shot C is simply left out of releases. Each run also settles finalized
 submissions whose photos finished QA before finalize arrived.
 
+## Both card editions and colour normalisation (SPEC §17, WP-CARD-3)
+
+The worker calls `pipeline/qa_cards.py`, which repeats the gate above step for step.
+`pipeline/qa.py` is bound by the photo-privacy configuration and is not edited. A photo with no
+card, or with one A6 card, gets the same events, status, hash and stored bytes as before. Results are recorded as
+`deterministic-v3`, because node-card photos, two A6 cards and an A6 card cut by the frame are
+judged differently.
+
+- Every A6 (marker 7) or node (marker 12) card found is masked from the soil checks, usable or not.
+  `photos.card_detected` is true when any card is found.
+- When exactly one card is in the frame and its patches are read, `calibration_status` is
+  `calibrated`, as before, and `photos.card_color_correction` holds a versioned object: the
+  photographed patches, the fitted tone curve and matrix, the leave-one-patch-out residual, a
+  `normalised` flag (residual at most 5.0, CIE76) and the soil colour beside the card.
+- Two cards, a refused node card, or a node card too small or cut off give no record. An A6 card
+  has no minimum size and gives a record whenever all nine patch windows are inside the photo.
+- A card never rejects a photo by being unreadable. Masking it can still leave too little soil,
+  or leave only blurred soil, and those checks apply as they always have.
+- Uneven light is not reliably caught. In synthetic photos with light falling off 30 to 45 % across
+  the frame, most were still normalised, with colour errors up to about 15 (CIE76) against 2.5 or less in
+  even light. Low-quality JPEGs sit close to the 5.0 limit and are often not normalised.
+
+The normalisation is for a future estimator only. It is not reflectance or colorimetric
+calibration, it never enters a `camera_rgb` library record, and the record is never exported.
+The stored photograph is never altered. Every threshold comes from synthetic photographs.
+
 Thresholds are provisional until the 50-photo field pilot calibrates them. Card-less photos remain
 eligible and are explicitly `uncalibrated`. A Phase 2 soil classifier can implement the
 `SoilClassifier` protocol without changing the ingest contract.
