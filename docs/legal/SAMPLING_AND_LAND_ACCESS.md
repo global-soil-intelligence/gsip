@@ -1,7 +1,9 @@
 # Sampling and land-access rules
 
 > **Draft — awaiting product-owner adoption.** Not in force. The capture app asks contributors to confirm
-> these rules before every observation is queued.
+> these rules before every observation is queued. In the invited pilot every participant is an adult
+> and no photo is published; the lines about children and about publication describe the later public
+> service. The photo rules apply in the pilot all the same.
 
 ## Only where you may dig
 

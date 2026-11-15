@@ -45,6 +45,23 @@ No agent accepts for a contributor, publishes placeholders as effective terms, c
 licence or retroactively rewrites an existing grant. Counsel may be consulted, but outside
 counsel sign-off is not this project's collection prerequisite.
 
+## Proposed pilot bounds (WP-COLLECT-5, not adopted)
+
+Prepared by an agent on 14 November 2026 at Justin's request. These are proposals and not legal
+advice. Justin adopts, changes or rejects each; none is in effect and none authorizes an operation.
+SPEC §11.1 requires each exception to be an explicit, bounded owner decision with its impact
+recorded. No impact record has been written.
+
+| Bound                       | Proposal                                                                                                                                                                                                                   |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cohort                      | 5 to 10 invited adults whom Justin knows, aged 18 or over, living in the United States                                                                                                                                     |
+| Duration                    | 30 days from the first invitation, then intake closes for a review before any widening                                                                                                                                     |
+| First participant           | Suggested: Justin, on a phone and land he chooses, for the consenting-participant rehearsal                                                                                                                                |
+| Calibration and prior tiles | Suggested exception for this private pilot only: the 50-photo QA calibration and prior tiles are not required, because no pilot record is published, mapped or used to train. Needs an owner decision and an impact record |
+| Paid hosting                | Stays required unless the owner decides otherwise. It concerns the hosting of private participant data (backups, availability, workers), not publication, and is tied to the retention periods in the privacy notice       |
+| What stays required         | Adopted notices and terms version, the migration and its checks, owner-provisioned accounts with signup and anonymous sign-in off, cleanup, rights and the publication hold                                                |
+| After the pilot             | Pilot records stay private and unverified and cannot later be promoted to a public release ([pilot operations](COLLECTION_PILOT_OPERATIONS.md))                                                                            |
+
 ## Readiness matrix
 
 | Item                          | Current evidence / remaining work                                                                                                                                                                                                                                                                                                                                                                                       |
