@@ -529,6 +529,15 @@ Remaining **WP-APP-2 store-release scope** stays gated: Apple/Google accounts, s
 
 Scope: update only `README.md`, `docs/SPEC.md` and this build order with verified merged-source/specification status and PR links. This factual documentation package adds no architecture, runtime behavior, dependency or future implementation promise. Acceptance: every completion claim is bound to a merged PR present on `main`; existing documentation link, language and formatting checks pass; all existing acceptance boxes, invariants and deployment/calibration/operator/model/photo/capture/real-peer/scientific/device gates remain intact. Source and CI verification never supplies external-readiness evidence.
 
+**WP-DOC-2: Open-source front door after v18**
+
+Branch `wp-doc-2-open-source-readiness`. Scope: `README.md`, `.github/ISSUE_TEMPLATE/config.yml` and this entry. The README names both reference cards, states where the science stands with links to merged pull requests, and lists four help-wanted issues (#114 to #117). The issue-template chooser gains private security reporting and the contributing guide. Documentation only: no runtime behaviour, dependency, architecture or gate changes, and no claim of accuracy or of open capture.
+
+Acceptance:
+
+- [ ] Every completion claim added by this package links to a merged pull request, and every stated gap to an open issue or a SPEC section; nothing claims measured accuracy, calibration, an estimator, an orderable card or open capture.
+- [ ] `pnpm lint` and `tests/test_coding_guidance.py`, `tests/test_spec_v4.py` and `tests/test_collection_build.py` pass. The language guard does not scan the README, so that read is done by hand. Independent review has no open finding.
+
 **WP-AGENT-0: Coding-agent guidance**
 Scope: add root `AGENTS.md` for repository contributors, linking the public-reader guide at
 `docs/AGENTS.md`; collect the invariant, reviewed-stack, privacy, verification and per-step
