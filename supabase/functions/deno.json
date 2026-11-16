@@ -4,6 +4,6 @@
   },
   "imports": {
     "h3-js": "npm:h3-js@4.5.0",
-    "zod": "npm:zod@4.6.5"
+    "zod": "npm:zod@4.6.6"
   }
 }
