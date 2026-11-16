@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security or privacy problem
+    url: https://github.com/global-soil-intelligence/gsip/security/advisories/new
+    about: Report vulnerabilities and any exposure of contributor data privately, not in a public issue.
+  - name: How to contribute
+    url: https://github.com/global-soil-intelligence/gsip/blob/main/CONTRIBUTING.md
+    about: Workflow, sign-off and the rules for agent-written contributions.
