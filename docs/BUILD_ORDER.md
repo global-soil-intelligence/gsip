@@ -658,6 +658,17 @@ Branch: `wp-lib-5c-scoped-peer-transport`. Depends on LIB-5A/5B, original-source
 
 **LIB-5 assumptions and unresolved choices:** this proposal treats private peer sharing as a new unapproved purpose; known lineage identity as weaker than verified physical pairing; recipient handles as weaker than anonymity; and size/quota/retry values as provisional. Recommended rollout is owner-enrolled peers and explicit recipient opt-in, with same-owner aliases only and real sharing held until consent/privacy/credential decisions are approved. Released-data-only tools may remain public anonymous consumers; they are not evidence that private federation exists. Code and data licenses remain unchanged, no new default service/dependency is selected, and no program collects real samples or trains/publishes automatically.
 
+**WP-SEC-2: Second dependency security remediation**
+
+Branch: `wp-sec-2-dependency-remediation`. Scope: `packages/schema/package.json`, the root `package.json`, `pnpm-lock.yaml`, `supabase/functions/deno.json`, `supabase/functions/deno.lock`, `tests/test_dependency_pins.py`, [DEPENDENCY_REMEDIATION.md](DEPENDENCY_REMEDIATION.md), the `pnpm-lock.yaml` binding in `docs/ios-native-scope.json` with its note in `docs/IOS_NATIVE_SCOPE.md`, and this entry. Moves zod to 4.6.6 in both places that resolve it (pnpm and the Edge Functions' Deno import map), serialize-javascript to 7.1.4 in the lockfile, and vitest to 4.1.12. Replaces Dependabot #110 and #105. No new dependency, no override, no age exemption, no application source change, no production action. Three build-tooling advisories (minimatch, glob, deepmerge) stay open with reasons recorded.
+
+Acceptance:
+
+- [ ] The npm lockfile changes only zod, serialize-javascript and the vitest release set; a frozen install passes the supply-chain check with no new exclusion.
+- [ ] `deno.json` and `deno.lock` pin zod 4.6.6 with the registry integrity; `deno check` passes in CI; a test fails if the Deno pin and the schema package's zod version, or their integrity hashes, differ.
+- [ ] Lint, type checks, all JavaScript tests, the build and both size budgets pass; native CI builds both platforms.
+- [ ] The remediation note lists licence, release date and reason for each update, and each advisory left open with why; dependency-alert state is read back after merge.
+
 **WP-SEC-1: Existing dependency security remediation**
 
 Branch: `wp-sec-1-dependency-remediation`. Update the four confirmed vulnerable resolutions (source-map-js, xcode's UUID dependency, fsspec and multidict) to the smallest compatible patched versions. Keep frozen installation, package release-age policy, native dependency/permission checks and full-history secret scanning unchanged. Record exact advisory, license, maintenance/release signal and artifact size for each updated package. No new runtime capability, production change or new service.

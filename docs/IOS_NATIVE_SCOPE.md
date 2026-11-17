@@ -152,6 +152,17 @@ unchanged. This maintenance neither admits the held prototype nor proves native 
 compatibility. Native execution, physical storage/backup acceptance, implementation exceptions,
 production, capture and library activation retain their separate approval and evidence gates.
 
+**Security dependency binding maintenance (2026-11-16):** WP-SEC-2 moves zod to 4.6.6,
+serialize-javascript to 7.1.4 and the vitest release set to 4.1.12 in the lockfile
+([DEPENDENCY_REMEDIATION.md](DEPENDENCY_REMEDIATION.md)). The snapshot refreshes only the
+`pnpm-lock.yaml` binding to those exact bytes; the integrity validator and its tests still reject
+drift. The other source bindings, the Capacitor and native package pins, the native graph
+selection, the file, import and API scope, owner policy, prohibited operations and
+`document_grants_implementation:false` are unchanged. This maintenance neither admits the held
+prototype nor proves native build or device compatibility. Native execution, physical storage and
+backup acceptance, implementation exceptions, production, capture and library activation keep
+their separate approval and evidence gates.
+
 The helper receives a **fresh runner-owned disposable copy**, never ordinary generated App or
 existing simulator/app data. Pin exact CLI version, source/templates and every generated preimage;
 reject changed/missing/duplicate/unknown template anchors, links, special files and traversal before
