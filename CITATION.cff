@@ -2,6 +2,8 @@ cff-version: 1.2.0
 message: 'If you use GSIP software, please cite it using these metadata. AI coding tools are documented in the repository history and are not listed as authors.'
 title: 'Global Soil Intelligence Project (GSIP)'
 type: software
+version: 0.1.0
+date-released: '2026-11-16'
 authors:
   - family-names: Hart
     given-names: 'Justin D.'

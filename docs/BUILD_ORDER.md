@@ -538,6 +538,15 @@ Acceptance:
 - [ ] Every completion claim added by this package links to a merged pull request, and every stated gap to an open issue or a SPEC section; nothing claims measured accuracy, calibration, an estimator, an orderable card or open capture.
 - [ ] `pnpm lint` and `tests/test_coding_guidance.py`, `tests/test_spec_v4.py` and `tests/test_collection_build.py` pass. The language guard does not scan the README, so that read is done by hand. Independent review has no open finding.
 
+**WP-DOC-3: First tagged pre-release and Discussions**
+
+Branch: `wp-doc-3-first-release`. Scope: `README.md`, `CITATION.cff`, `CHANGELOG.md`, `.github/ISSUE_TEMPLATE/config.yml` and this entry. Justin approved on 16 November 2026 turning on GitHub Discussions, turning off the empty Wiki and cutting a first tagged release. This package records software version 0.1.0 in the citation file, adds a changelog that says what the snapshot is and is not, and links Discussions. The tag `v0.1.0` is created on the merge commit, the same day, as a GitHub pre-release. Documentation only. It is a software snapshot: no data or photo release, no Zenodo record, no opening of capture and no accuracy claim. No deployment follows beyond the routine Pages rebuild that every merge to main requests; the tag triggers only the secret scan.
+
+Acceptance:
+
+- [ ] `CITATION.cff` parses and carries version 0.1.0 and the release date; the README and changelog describe a pre-release source snapshot and claim no launch, estimator, calibration, validation, store release or hosted service. The language guard does not scan these files, so that read is done by hand.
+- [ ] `pnpm lint` and `tests/test_coding_guidance.py`, `tests/test_spec_v4.py` and `tests/test_collection_build.py` pass. At pull-request time `git ls-remote --tags origin v0.1.0` is empty; after merge the tag points at the merge commit, the GitHub release is marked pre-release, and its only assets are the automatic source archives.
+
 **WP-AGENT-0: Coding-agent guidance**
 Scope: add root `AGENTS.md` for repository contributors, linking the public-reader guide at
 `docs/AGENTS.md`; collect the invariant, reviewed-stack, privacy, verification and per-step

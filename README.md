@@ -70,7 +70,9 @@ Good places to start, each with its constraints written out:
 - [#117](https://github.com/global-soil-intelligence/gsip/issues/117) Add the node card and the
   normalisation wording to public copy.
 
-To take one, comment on the issue. A maintainer registers the work package in
+Questions and ideas are welcome in
+[Discussions](https://github.com/global-soil-intelligence/gsip/discussions). To take an issue,
+comment on it. A maintainer registers the work package in
 [BUILD_ORDER](docs/BUILD_ORDER.md) and gives you its id before you open a pull request. Then
 follow [CONTRIBUTING.md](CONTRIBUTING.md): tests for every behaviour change, and no real
 contributor data anywhere in the repository. Hosted capture is closed, so nobody can submit soil
@@ -134,8 +136,9 @@ has been peer reviewed or field-validated. Most of the code was written with AI 
 (mainly OpenAI Codex, some Claude by Anthropic), as the `Co-Authored-By` trailers in the history
 show; [CONTRIBUTING.md](CONTRIBUTING.md) sets the rules for agent-written contributions. Justin D.
 Hart (Viridis LLC, ORCID [0009-0008-3082-2482](https://orcid.org/0009-0008-3082-2482)) reviews
-changes and is accountable for the project. Cite with [CITATION.cff](CITATION.cff); there is no
-tagged release or Zenodo record yet.
+changes and is accountable for the project. Cite with [CITATION.cff](CITATION.cff). This source is versioned 0.1.0, a
+pre-release snapshot marked by the `v0.1.0` tag; see the [changelog](CHANGELOG.md). There is no
+Zenodo record or DOI yet.
 
 ## Contributing and security
 
