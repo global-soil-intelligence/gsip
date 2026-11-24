@@ -99,7 +99,7 @@ export type LibraryIntakeCapabilities = z.infer<
 >
 
 /** Check raw object keys before JSON.parse discards duplicates, including escaped aliases. */
-function rejectDuplicateKeys(raw: string): void {
+export function rejectDuplicateKeys(raw: string): void {
   let position = 0
   const invalid = (): never => {
     throw new Error('Invalid private JSON')

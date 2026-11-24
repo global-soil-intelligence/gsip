@@ -32,6 +32,7 @@ separate under [TRADEMARKS.md](TRADEMARKS.md).
 | Public REST API and MCP server                       | [`packages/schema/src/agent/`](packages/schema/src/agent/) · [agent guide](docs/AGENTS.md)        |
 | Reference cards (A6 and node card) and detectors     | [`card/`](card/) · [card guide](card/CARD_SPEC.md)                                                |
 | Card-aware photo checks and colour normalisation     | [`pipeline/qa_cards.py`](pipeline/qa_cards.py) · [photo QA notes](pipeline/PHOTO_QA.md)           |
+| Capture procedure, field kit and acquisition record  | [`docs/capture-protocol.md`](docs/capture-protocol.md) · [field kit](docs/field-kit.md)           |
 | Tests and build workflows                            | [`tests/`](tests/) · [`.github/workflows/`](.github/workflows/)                                   |
 
 The implemented source and tests are available now, including development branches and pull
@@ -56,6 +57,22 @@ for acceptance criteria. Public capture and hosted library uploads remain closed
   Uneven light between card and soil is not reliably caught
   ([#114](https://github.com/global-soil-intelligence/gsip/issues/114)).
 - **No field validation.** Nothing here predicts real-world accuracy.
+- **A standard way to take the photos (proposed, untested).** A reviewer from the soil
+  spectroscopy community pointed out that the photo pipeline is only part of what is needed:
+  light, distance, angle, phone hardware and phone software all change the colours recorded, so
+  photos must be taken the same way every time, with a colour reference. In response there is
+  now a written [capture procedure](docs/capture-protocol.md), a [field kit list](docs/field-kit.md)
+  and a [plan for the first real test](docs/validation-plan.md). None of it has been tried with
+  a printed card or a phone. The procedure was written from general photographic practice; the
+  three papers it cites were not read in full when it was written.
+- **What the app records about a capture.** An optional checklist in the capture app records
+  what the person says they did (light, locked white balance and exposure, HDR, filters and
+  flash off, angle, distance). The app cannot read camera settings, and it does not detect the
+  reference card: its detector is a stub, so every observation the app queues is marked
+  uncalibrated. The record stays on the phone; the service has no place to store it yet.
+- **Calibrated and uncalibrated are kept apart, in one place only.** Capture records written
+  for dataset preparation go into separate calibrated and uncalibrated files. The public release
+  format is unchanged: it still labels each photo's status inside one file.
 
 ## Help wanted
 

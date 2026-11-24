@@ -1,7 +1,8 @@
-# GSIP v18 — Open Soil Spectral Library Specification
+# GSIP v19 — Open Soil Spectral Library Specification
 
 **Project:** Global Soil Intelligence Project (globalsoilintelligence.com)
-**Version:** 18.0 proposed — 2026-11-15 (reference card editions, colour normalisation and estimate basis)
+**Version:** 19.0 proposed — 2026-11-23 (standard capture procedure and acquisition record)
+**v19 amendment status (proposed; not adopted):** on 2026-11-23 Justin asked for the outside feedback on capture consistency to be turned into a standard capture procedure, a field kit and acquisition metadata, in one draft pull request. §18 records the rules that request stated; the field names, the resolution-9 area, the reuse of `calibrated`/`uncalibrated` and every default in the procedure are the authoring agent's proposal. At Justin's direction the specification text and the source arrive in the same draft pull request, not on a separate `docs/spec-v19` branch first. It changes no table, permission or activation gate, and authorizes no production action, estimator, model, purchase, print run or collection opening.
 **v18 amendment status (proposed; three points owner-directed):** on 2026-11-15 Justin asked for "photo plus historic soil maps", a colour control "for control reference" physically in the picture, and a card a contributor can order. §17 turns those three points into rules; everything else in §17 is the authoring agent's proposal. It is merged under Justin's same-day delegation ("you make the calls keep building as needed"), which covers source builds and merges only. It changes no table, permission or activation gate, and authorizes no production action, estimator, model, printer, price or collection opening.
 **v17 amendment status (approved/merged #89):** Justin's subsequent “go” approved the reviewed design and its source-build sequence. COLLECT-4A now prepares the pure guide session, atomic queue handoff and declared shared-writer fixes under [#90](https://github.com/global-soil-intelligence/gsip/issues/90). COLLECT-4B remains dependent on reviewed, green and merged 4A. No actual camera/device access, production action, deployment or collection opening is authorized. Default Pages/native capture and library uploads remain closed.
 **v16 amendment status (approved/merged #86; COLLECT-3 source merged #87):** Justin authorized pushing the phone-first source updates on 2026-10-16 after the card-overlay research. This amendment clarifies the existing cardless policy and schedules WP-COLLECT-3; it changes no measurement tier, schema, camera API, permission or activation gate. The live browser guide remains a separately reviewed follow-up. Source implementation and CI authorize no merge, deployment or collection opening.
@@ -342,6 +343,8 @@ Science: coarse-texture accuracy and SOC RMSE on the holdout, interval coverage,
 Community and agents: external contributors merged, partner labs onboarded, dataset downloads and citations, agent integrations operating under a human of record, share of verified labels from agents.
 
 ## 14. Changelog
+
+- **v19.0 proposed (2026-11-23):** adds §18. A written standard capture procedure for prepared samples and field profiles, a field kit list and a validation plan; a private, optional acquisition block (`gsip-capture-acquisition-v1`) on camera records, with library records accepting `gsip-library-v2`; a card gate under which only one detected, identified reference card makes a capture `calibrated`; calibrated and uncalibrated capture records kept in separate files. No table, permission, public protocol text, release format or activation gate changes. Nothing is tested with a printed card or a phone.
 
 - **v18.0 proposed (2026-11-15):** adds §17. Recognises the optional credit-card-size node card beside the A6 card; defines a per-photo colour normalisation fitted to the photographed card, for the estimator only, with a private `normalised` flag; states that no soil-property estimate rests on a photograph alone; proposes that photos which are not normalised supply no image evidence to the estimator until held-out evidence supports them. Card-less contribution stays open. `calibration_status`, `camera_rgb` records, L1–L7 and every gate are unchanged. No schema, permission or activation change.
 
@@ -757,6 +760,49 @@ Reason: desk tests by the authoring agent on one openly licensed set of phone ph
 - **Public copy** (`/v1/protocol` and the site) still says "down-weighted" and "uncalibrated, even with the reference card". It is unchanged until a separate copy package.
 - No printed node card has been photographed, no print run has been measured, no printer is chosen and no price is set.
 - Fusion weights, the nearby-gold method and any accuracy claim wait for paired field data (§16) and the sealed holdout (I15).
+
+## 18. Standard capture procedure and acquisition record (v19)
+
+**Status: proposed.** Owner-directed on 2026-11-23 as five rules, restated below as C1–C5 so as not to collide with I1–I15, L1–L7 or K1–K4. Everything else here is the authoring agent's proposal. This section grants no production, deployment, estimator, purchasing or collection authority. I1–I15, L1–L7, K1–K4 and B1–B8 remain binding, and §5's cardless acceptance is unchanged: the procedure is an option, never a condition of contributing (K4).
+
+### 18.1 Rules added
+
+- **C1 — A phone photograph is an RGB observation.** It is never called a spectrum, and neither the procedure, the acquisition block nor the checklist states or implies a soil-property estimate (restates L1 and K1 for the new text). _Check:_ the block's only observation kind is `rgb_photo` and unknown fields are refused; a test reads the new documents and app copy.
+- **C2 — A capture made under the standard carries acquisition metadata:** device make and model, operating system and app version, exposure time, ISO, white-balance and exposure lock, HDR, filters and flash state, lighting, camera angle, distance or field of view, reference card ID and version, time, and a place only with consent. Every field is required inside the block and an unknown value is written out (L3). _Check:_ the shared conformance corpus refuses a block with any field missing; the app attaches a block to every observation it queues.
+- **C3 — No detected reference card means `uncalibrated`,** and uncalibrated capture records are never placed in an export list with calibrated ones. Only exactly one detected card of an edition GSIP can read makes a capture `calibrated`; nothing a person ticks in the app does (K2). In a local library record the status is a local declaration like the others (L5): the offline extractor sets it from what it finds, a hand-written record can still claim it, and it is untrusted until canonical ingest. _Check:_ gate and partition tests in both languages; the contract refuses an unknown card edition and a `calibrated` capture whose summary saw no card.
+- **C4 — The colour normalisation is deterministic:** the same image and card give the same values. _Check:_ a pinned digest of the colour record on generated photographs.
+- **C5 — Contracts stay backward compatible:** the block is optional wherever it is attached, the library record version is bumped to `gsip-library-v2`, and a version-1 record validates and is stored as the same bytes. _Check:_ a pinned digest of a version-1 record.
+
+### 18.2 The procedure, the kit and the test
+
+[capture-protocol.md](capture-protocol.md) gives the steps for prepared samples (air-dried, sieved to 2 mm, fixed tray) and field profiles (cleaned face, card in the plane of the face): diffuse light, no direct sun, camera square to the surface, fixed distance, locked white balance and exposure, no HDR or filters, several photos per sample. [field-kit.md](field-kit.md) lists a low-cost kit and a commercial colour card; every price in it is an estimate. [validation-plan.md](validation-plan.md) is the first test with a real print and real phones. The procedure's defaults, including the 30 cm distance, are proposals. §5 still says "about 15 cm" for shot B; the two are reconciled only when the owner adopts a distance.
+
+### 18.3 The acquisition block
+
+`gsip-capture-acquisition-v1` is a strict, bounded JSON object defined once in `@gsip/schema` and mirrored in `pipeline/capture_acquisition.py`, with one fictional corpus exercising both. It is a set of statements about a capture, verified by nothing, and can raise no provenance tier (I10).
+
+- **Private (I7).** It names a device and a time. It is a forbidden key in public rows. It is not sent by the app: the phone keeps it with the queued observation, and the service has no column for it. A column needs its own migration and review.
+- **Place.** Absent unless the person consents. With consent it holds one resolution-9 H3 cell, the grain already sent to outside processors (I7), never a point.
+- **Time.** The block holds the capture time. L3 keeps exact timestamps private and the library guide kept them out of the record contract; a version-2 library record with a block therefore carries a private timestamp it did not carry before. This is a stated change for the owner to accept or reverse.
+- **Two statuses with one name.** The block's `calibration_status` has the meaning of `photos.calibration_status` (§5, §17.2): one reference card was detected and identified. A `camera_rgb` measurement's own `calibration_status` stays `uncalibrated` (L1, §17.3): its three channel summaries are uncalibrated sRGB whatever the capture. Renaming one of them is an open owner decision.
+- **Card identity.** Exactly `gsip-a6` or `gsip-node`, version `v1`; any other value is refused. The node card's run code is not recorded (§17.2).
+
+### 18.4 What is and is not built
+
+- **App.** An optional, collapsed checklist records what the person states. The app reads no camera setting. Its card detector is a stub that answers "not run", so every observation the app queues is `uncalibrated`. A real detector needs an image library and therefore a dependency review.
+- **Pipeline.** The offline extractor of §16.3 replaces a template's card claim with what `pipeline/cards.py` finds. Its RGB summary masks only the A6 card (WP-LIB-2 is unchanged), so a photo with a node card is left `uncalibrated` there: the card's own pixels are in the summary. It also fills exposure time, ISO, make and model from the photograph's allowlisted metadata where the block left them unknown. `write_partitions` writes calibrated and uncalibrated capture records to separate private files.
+- **Not changed.** The public protocol text (`/v1/protocol`), the hosted QA worker, the database, and the nightly public release, which still lists each photo's own `calibration_status` inside one file. Applying C3 to the public release changes its format and its artifact inventory checks and is a separate package.
+- **Not tested.** No printed card, no phone, no real light. The three papers the procedure cites were not read in full by the authoring agent.
+
+### 18.5 Open owner decisions
+
+- Adopt, change or reject C1–C5 and the block's field names.
+- The capture time inside library records (§18.3), against L3.
+- One name for two calibration statuses (§18.3).
+- The default distance, against §5's "about 15 cm".
+- Whether to split the public release by calibration status.
+- Whether to add a server column for the block, and whether the app should then send it.
+- The procedure document does not name the person whose feedback prompted it. Naming them needs the owner's decision and that person's agreement.
 
 ---
 

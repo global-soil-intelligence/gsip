@@ -602,3 +602,33 @@ footer {
   gap: 0.5rem;
   margin-top: 0.75rem;
 }
+
+/* WP-COLLECT-6: optional capture checklist. */
+.capture-checklist {
+  margin: 1rem 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid #18362b2b;
+  border-radius: 0.8rem;
+  background: #fffdf5;
+}
+.capture-checklist summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.capture-checklist label {
+  display: block;
+  margin: 0.6rem 0;
+}
+.capture-checklist .checklist-items {
+  margin: 0.6rem 0;
+  padding: 0;
+  list-style: none;
+}
+.capture-checklist .checklist-warning,
+.capture-checklist .checklist-status {
+  margin: 0.6rem 0;
+  padding: 0.6rem 0.75rem;
+  border-left: 3px solid #8a5a00;
+  background: #f4f0e5;
+  font-size: 0.9rem;
+}

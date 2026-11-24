@@ -6,6 +6,8 @@ import {
   normalizeAttribution,
 } from '@gsip/schema'
 import { BrowserPhotoGuide, type GuideView } from './BrowserPhotoGuide'
+import { CaptureChecklist } from './CaptureChecklist'
+import { buildAcquisition, EMPTY_CHECKLIST } from './captureStandard'
 import { captureTime, isCaptureLive } from './capture'
 import { fuzzLocation } from './geo'
 import {
@@ -1176,6 +1178,8 @@ export function App() {
   const canCollect =
     live && (!pilot || (admission === 'open' && Boolean(invitedOwner)))
   const [libraryDraft, setLibraryDraft] = useState<LibraryDraft | null>(null)
+  // WP-COLLECT-6: the person's statements about how the photos were taken; this device only.
+  const [checklist, setChecklist] = useState(EMPTY_CHECKLIST)
   const libraryIntent = useRef(0)
   const [libraryHeld, setLibraryHeld] = useState(false)
   const [libraryWriting, setLibraryWriting] = useState(false)
@@ -2021,12 +2025,23 @@ export function App() {
             return 'Enter valid sample depth bounds and a supported declaration before queueing.'
           }
         }
+        const capturedAt = captureTime({ lastModified: photos.B.takenAt }, now)
         return {
           collectionMode: 'invited_private' as const,
           accuracyM: accuracy,
           acceptedAt: new Date(now).toISOString(),
+          acquisition: buildAcquisition({
+            appVersion: CLIENT_VERSION,
+            capturedAt,
+            checklist,
+            latitude: numericLatitude,
+            longitude: numericLongitude,
+            now,
+            photo: photos.B.bytes,
+            userAgent: navigator.userAgent,
+          }),
           attributionName,
-          capturedAt: captureTime({ lastModified: photos.B.takenAt }, now),
+          capturedAt,
           // WP-6e: claims only. The server never lets them raise a provenance tier.
           claims: {
             captureMethod: weakestMethod([photos.A.method, photos.B.method]),
@@ -2061,6 +2076,8 @@ export function App() {
     setLibraryHeld(false)
     setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
     formRef.current?.reset()
+    // What was stated, and the consent to keep an area, belong to one observation only.
+    setChecklist(EMPTY_CHECKLIST)
     setLatitude('')
     setLongitude('')
     setAccuracy(null)
@@ -2317,12 +2334,23 @@ export function App() {
         return
       }
     }
+    const capturedAt = captureTime({ lastModified: shots.B.takenAt }, now)
     const record: QueueRecord = {
       ...(pilot ? { collectionMode: 'invited_private' as const } : {}),
       accuracyM: accuracy,
       acceptedAt: new Date(now).toISOString(),
+      acquisition: buildAcquisition({
+        appVersion: CLIENT_VERSION,
+        capturedAt,
+        checklist,
+        latitude: numericLatitude,
+        longitude: numericLongitude,
+        now,
+        photo: shots.B.bytes,
+        userAgent: navigator.userAgent,
+      }),
       attributionName,
-      capturedAt: captureTime({ lastModified: shots.B.takenAt }, now),
+      capturedAt,
       // WP-6e: claims only. The server never lets them raise a provenance tier.
       claims: {
         captureMethod: weakestMethod([shots.A.method, shots.B.method]),
@@ -2363,6 +2391,8 @@ export function App() {
     setLibraryHeld(false)
     setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
     formRef.current?.reset()
+    // What was stated, and the consent to keep an area, belong to one observation only.
+    setChecklist(EMPTY_CHECKLIST)
     setNativePhotos(NO_PHOTOS)
     photoRevisions.current = {}
     await clearDraftPhotos().catch(() => undefined)
@@ -2819,6 +2849,7 @@ export function App() {
               </div>
             </fieldset>
 
+            <CaptureChecklist value={checklist} onChange={setChecklist} />
             {libraryLive && (
               <LibrarySection
                 key={`library-${authEpoch}-${libraryDraft?.intakeId ?? 'empty'}`}

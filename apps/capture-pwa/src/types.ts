@@ -1,3 +1,4 @@
+import type { CaptureAcquisition } from '@gsip/schema'
 import type { QueuedLibrary } from './library'
 import type { ProvenanceClaims } from './provenance'
 
@@ -15,6 +16,11 @@ export type CaptureDraft = {
   collectionMode?: 'invited_private'
   /** When the person accepted the terms (submit time); records from older builds lack it. */
   acceptedAt?: string
+  /**
+   * WP-COLLECT-6: how the photos were taken, as stated at capture. Kept on this device only;
+   * nothing sends it yet. Records from older builds lack it and sync exactly as before.
+   */
+  acquisition?: CaptureAcquisition
   accuracyM: number | null
   attributionName: string
   capturedAt: string
