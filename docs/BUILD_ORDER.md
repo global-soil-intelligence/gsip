@@ -1,7 +1,8 @@
 # GSIP Build Order — Work Plan
 
 **Project:** Global Soil Intelligence Project (open soil spectral library, captured through smartphones, for people and agents)
-**Version:** 18.0 proposed — 2026-11-15 (card editions and colour normalisation; SPEC §17)
+**Version:** 19.0 proposed — 2026-11-23 (standard capture procedure and acquisition record; SPEC §18)
+**v19 amendment status (proposed):** registers WP-COLLECT-6 at Justin's 23 November 2026 direction, as one draft pull request carrying SPEC §18 and the source together. No production, estimator, training, purchasing or collection action is authorized.
 **v18 amendment status (proposed):** registers docs/spec-v18 and WP-CARD-3 under Justin's 15 November 2026 delegation of source builds and merges. No production, estimator, training or collection action is authorized.
 **v17 amendment status (approved/merged #89):** Justin approved the design and reviewed source-build sequence with a subsequent “go”. WP-COLLECT-4A ([#90](https://github.com/global-soil-intelligence/gsip/issues/90)) prepares the session/queue and declared shared-writer boundary before live preview. 4B still requires reviewed, green and merged 4A. No actual camera/device or production action is authorized; every deployment/activation gate remains held.
 **v16 amendment status:** Justin authorized source updates following the card-overlay research. WP-COLLECT-3 clarifies the already optional card and simplifies progressive library details. A live camera guide, automatic unknown-depth sample registration and every production/activation action remain outside that package.
@@ -154,6 +155,19 @@ Acceptance:
 - [ ] The terms, the privacy notice and the legal README agree on the controller and the governing law, each marked as proposed, with the registered company name and the contact still owner inputs.
 - [ ] The difference between the named steward and the proposed controller is stated as a point to settle before adoption.
 - [ ] The language check, lint, the processor-list test and the Python suite pass; independent review has no open finding.
+
+**WP-COLLECT-6 — Standard capture procedure, field kit and acquisition record (SPEC §18).** Branch `wp-collect-6-capture-standard`. Justin asked on 23 November 2026 for outside feedback on capture consistency to become a standard procedure and field kit, in one draft pull request. Adds [capture-protocol.md](capture-protocol.md), [field-kit.md](field-kit.md) and [validation-plan.md](validation-plan.md); the `gsip-capture-acquisition-v1` block in `packages/schema/src/captureAcquisition.ts` and `pipeline/capture_acquisition.py` with a shared fictional corpus; `gsip-library-v2` with one optional member in `pipeline/library.py`; the card gate in `pipeline/phone_optics.py`; an optional checklist and a stub card detector in the capture app; `acquisition` as a forbidden public key in `pipeline/export.py`; and `scripts/list_photo_galleries.py`, which reads album and licence metadata only. `pipeline/qa.py`, `card/design.py` and `card/validate.py` stay byte-identical. No migration, no new dependency, no change to the public protocol text, the hosted worker, the release format or any activation flag. The specification text arrives with the source at the owner's direction, which departs from the usual specification-first order.
+
+Acceptance:
+
+- [ ] C1: the block's only observation kind is `rgb_photo`; unknown fields, wavelengths and soil-property values are refused in both languages; a test reads the three documents and the new app copy for a photo called a spectrum or a claimed soil property.
+- [ ] C2: every listed field is required inside the block, with unknown written out; a place is refused without consent and a point is refused always; every observation the app queues carries a valid block; the block is a forbidden public key and nothing sends it.
+- [ ] C3: only one detected, identified card is `calibrated`, in both languages; the extractor overrules a template that claims a card; calibrated and uncalibrated records are written to separate files and a mixed list is refused; a record without a block is uncalibrated.
+- [ ] C4: the colour record of a generated photograph gives the same pinned digest on every run, for both card editions, and a different image or card gives another.
+- [ ] C5: a version-1 library record validates, re-imports idempotently and has the same stored-bytes digest as on `main`; the new member is optional and refused on version-1 and instrument records.
+- [ ] Lint, type checks, the JavaScript and Python suites and the builds pass; the three bound files are unchanged against `main`; independent review has no open finding. The draft pull request is not merged, tagged, released or deployed.
+
+Held follow-ups: a real card detector in the app, with its dependency review; a server column for the block and sending it; splitting the public release by calibration status; reading a commercial colour card; the public-copy change for §5's distance and "down-weighted" wording; running the validation plan; checking the procedure against the three cited papers; an instrument measurement of a print.
 
 The independent **WP-SITE-1H** ([issue #80](https://github.com/global-soil-intelligence/gsip/issues/80)) copy repair may correct the contradictory closed-page status and remove an assertion that only a legal review blocks collection. It changes no activation behavior and requires a negative regression proving the page remains closed with no upload controls. Collection readiness is tracked in [COLLECTION_READINESS.md](COLLECTION_READINESS.md).
 
@@ -728,6 +742,8 @@ GSIP_PUBLIC_INSTANCE_LIMIT_PER_MINUTE=1200   # gsip-public ceiling per function 
 Historical v4.0 review/merge sequence (#38 and WP-APP-2A have merged; remaining implementation and calibration gates still apply): WP-APP-1 → `docs/spec-v4` (Justin approval/merge) → WP-APP-2A → WP-APP-2B. Owner-authorized account-free WP-APP-2A preparation can start after the specification commit exists, while its PR remains stacked and awaits the merge sequence. WP-6f may be a separate branch after the approved specification, with no dependency on notifications, but stays blocked until that specification approval and its model/license/calibration gates. Retarget successors after Justin merges; merge main forward to resolve conflicts, never rebase or force-push the reviewed stack. §11 launch and production-command gates remain independent of this sequence.
 
 ## 8. Changelog
+
+- **v19.0 proposed (2026-11-23):** registers WP-COLLECT-6 (standard capture procedure, field kit, acquisition record; SPEC §18). Adds unchecked criteria only; every existing acceptance state and production gate remains.
 
 - **v18.0 proposed (2026-11-15):** registers docs/spec-v18 and WP-CARD-3 (both card editions in QA, per-photo colour normalisation). Adds unchecked criteria only; every existing acceptance state and production gate remains.
 

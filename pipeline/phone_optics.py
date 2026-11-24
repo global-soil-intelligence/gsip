@@ -12,6 +12,8 @@ import numpy as np
 from PIL import Image
 
 from card.validate import card_transform
+from pipeline.capture_acquisition import with_pipeline_findings
+from pipeline.cards import find_cards
 from pipeline.library import (
     CameraRgb,
     LibraryRecord,
@@ -60,7 +62,21 @@ def extract_phone_record(raw: bytes, template: LibraryRecord) -> LibraryRecord:
     if not isinstance(template.measurement, CameraRgb):
         raise ValueError("camera template required")
     measurement = summarize_rgb(raw, template.measurement.device_id)
-    return LibraryRecord.model_validate(template.model_dump() | {"measurement": measurement})
+    updated: dict[str, object] = {"measurement": measurement}
+    if template.acquisition is not None:
+        # The card gate is the pipeline's finding, never the template's claim (WP-COLLECT-6).
+        clean, metadata = sanitize_jpeg(raw)
+        image = cv2.imdecode(np.frombuffer(clean, dtype=np.uint8), cv2.IMREAD_COLOR)
+        if image is None:
+            raise ValueError("invalid image")
+        cards = find_cards(image)
+        updated["acquisition"] = with_pipeline_findings(
+            template.acquisition,
+            card_outlines=len(cards.outlines),
+            edition=cards.reading.edition if cards.reading is not None else None,
+            camera_metadata=metadata,
+        )
+    return LibraryRecord.model_validate(template.model_dump() | updated)
 
 
 def main(argv: list[str] | None = None) -> int:

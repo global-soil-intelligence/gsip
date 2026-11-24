@@ -16,6 +16,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from pipeline.capture_acquisition import CaptureAcquisition
+
 Finite = Annotated[float, Field(strict=True, allow_inf_nan=False)]
 Fraction = Annotated[Finite, Field(ge=0, le=1)]
 Digest = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
@@ -102,7 +104,9 @@ class LabLabel(StrictRecord):
 
 
 class LibraryRecord(StrictRecord):
-    schema_version: Literal["gsip-library-v1"]
+    # v2 (WP-COLLECT-6) adds one optional member, ``acquisition``. A v1 record is unchanged: it
+    # validates as before and is stored as the same bytes.
+    schema_version: Literal["gsip-library-v1", "gsip-library-v2"]
     measurement_id: UUID
     node_id: UUID
     sample_id: UUID
@@ -117,6 +121,19 @@ class LibraryRecord(StrictRecord):
     qa_status: Literal["pending", "pass", "fail", "review"]
     measurement: Annotated[CameraRgb | InstrumentReflectance, Field(discriminator="kind")]
     labels: Annotated[tuple[LabLabel, ...], Field(max_length=32)]
+    # How the photograph was taken. Optional, v2 only, camera records only. Its
+    # ``calibration_status`` says whether one reference card was detected in the capture; the
+    # measurement's own ``calibration_status`` describes the RGB summary, which stays
+    # uncalibrated sRGB (SPEC L1).
+    acquisition: CaptureAcquisition | None = None
+
+    @model_validator(mode="after")
+    def acquisition_belongs(self) -> Self:
+        if self.acquisition is None:
+            return self
+        if self.schema_version != "gsip-library-v2" or not isinstance(self.measurement, CameraRgb):
+            raise ValueError("acquisition needs a v2 camera record")
+        return self
 
     @property
     def sample_key(self) -> tuple[UUID, UUID]:
@@ -124,9 +141,12 @@ class LibraryRecord(StrictRecord):
 
 
 def encoded(record: LibraryRecord) -> bytes:
-    return json.dumps(
-        record.model_dump(mode="json"), sort_keys=True, separators=(",", ":")
-    ).encode()
+    data = record.model_dump(mode="json")
+    # A record without the optional block is stored exactly as before it existed, so stores
+    # written by earlier versions keep their identities.
+    if data["acquisition"] is None:
+        del data["acquisition"]
+    return json.dumps(data, sort_keys=True, separators=(",", ":")).encode()
 
 
 def private_path(path: Path) -> None:

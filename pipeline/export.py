@@ -43,6 +43,8 @@ from pipeline.qa import has_embedded_metadata
 # here because, matched against public rasters, they locate an observation more precisely than
 # its published cell (SPEC I7).
 FORBIDDEN_PUBLIC_KEYS = {
+    # WP-COLLECT-6: how a photo was taken names a device and a time, and stays private.
+    "acquisition",
     "actor_id",
     "camera_metadata_private",
     "capture_evidence_private",
