@@ -57,10 +57,15 @@ def block(name: str = "complete-calibrated-fictional") -> dict[str, Any]:
 
 
 def camera_v2(number: int = 1, name: str = "complete-calibrated-fictional") -> dict[str, object]:
-    return library_record(number) | {
+    made = library_record(number) | {
         "schema_version": "gsip-library-v2",
         "acquisition": block(name),
     }
+    if block(name)["calibration_status"] == "calibrated":
+        measurement = made["measurement"]
+        assert isinstance(measurement, dict)
+        made["measurement"] = measurement | {"card_present": True}
+    return made
 
 
 # ---- the shared corpus ---------------------------------------------------------------------
@@ -84,6 +89,8 @@ def test_rejections_are_generic_and_bounded() -> None:
         parse_acquisition(b" " * 8_001)
     with pytest.raises(ValueError):
         parse_acquisition('{"lighting":"shade","lighting":"overcast"}')
+    with pytest.raises(ValueError, match="^invalid capture acquisition$"):
+        parse_acquisition(chr(0xD800))
 
 
 # ---- S1: RGB observations, never spectra, no soil-property estimate -------------------------
@@ -112,28 +119,75 @@ STANDARD_COPY = (
     "packages/schema/src/captureAcquisition.ts",
     "scripts/list_photo_galleries.py",
 )
-# A sentence may use the word only to say what a phone photo is not, or to name an instrument.
-_DENIAL = re.compile(
-    r"\b(not|never|no|neither|nor|without|instrument|spectrometer|library)\b", re.IGNORECASE
+# Proper names and instrument terms that contain the word without describing a phone photo.
+_NAMES = re.compile(
+    r"open soil spectral library|soil spectroscopy|spectrophotometer|spectrometer", re.IGNORECASE
 )
 _SPECTRAL = re.compile(r"spectr(?:um|a|al)\b", re.IGNORECASE)
+_NEGATION = r"\b(?:not|never|no|nothing|none|neither|nor|without)\b"
+_PROPERTY = (
+    r"(?:organic carbon|organic matter|carbon|soc|texture|clay|sand|silt|ph|nitrogen|"
+    r"fertility|moisture|soil propert(?:y|ies))"
+)
 _CLAIM = re.compile(
-    r"\b(predicts?|estimates?|measures?|determines?|detects?)\s+(?:the\s+)?(?:soil\s+)?"
-    r"(organic carbon|carbon|soc|texture|clay|sand|silt|ph|nitrogen|fertility|moisture)\b",
+    r"\b(?:predict|estimat|measur|determin|detect|infer|report|reveal|tell)\w*\b"
+    r"(?:\W+\w+){0,6}?\W+" + _PROPERTY + r"\b",
     re.IGNORECASE,
 )
 
 
+def copy_problems(text: str) -> list[str]:
+    """Sentences that call a photo a spectrum or claim a soil property.
+
+    A sentence may use either only after a negation in the same sentence: it must be saying
+    what a phone photo is not, or what the procedure does not do."""
+
+    problems = []
+    if re.search(r"soil[\s-]+test", text, re.IGNORECASE):
+        problems.append("soil test")
+    for sentence in re.split(r"(?<=[.!?])\s+|\n\s*\n|\n[-*|#] ?", text):
+        plain = _NAMES.sub("", " ".join(sentence.split()))
+        for pattern in (_SPECTRAL, _CLAIM):
+            found = pattern.search(plain)
+            if found and not re.search(_NEGATION, plain[: found.start()], re.IGNORECASE):
+                problems.append(plain[:140])
+    return problems
+
+
+@pytest.mark.parametrize(
+    "sentence",
+    [
+        "Each phone photo is stored as a spectrum in the library.",
+        "The app estimates soil organic carbon with no delay.",
+        "The photo gives an estimate of organic carbon.",
+        "This photo predicts your soil's clay content.",
+        "Take the photo to measure your soil's pH.",
+        "The colour reveals soil fertility.",
+        "A phone photo is a spectrum, not a guess.",
+        "This is a soil test you can do at home.",
+    ],
+)
+def test_s1_the_copy_check_catches_an_overclaim(sentence: str) -> None:
+    assert copy_problems(sentence)
+
+
+@pytest.mark.parametrize(
+    "sentence",
+    [
+        "A phone photo is an RGB observation, not a spectrum.",
+        "Nothing here estimates, predicts or reports any soil property from a photograph.",
+        "Feedback came from the Open Soil Spectral Library community.",
+        "If a spectrophotometer can be borrowed, measure each print's patches.",
+        "Note the moisture state and record it.",
+    ],
+)
+def test_s1_the_copy_check_allows_a_denial_and_plain_instructions(sentence: str) -> None:
+    assert not copy_problems(sentence)
+
+
 @pytest.mark.parametrize("path", STANDARD_COPY)
 def test_s1_no_copy_calls_a_phone_photo_a_spectrum_or_claims_a_soil_property(path: str) -> None:
-    text = (ROOT / path).read_text(encoding="utf-8")
-    assert not re.search(r"soil[\s-]+test", text, re.IGNORECASE)
-    for sentence in re.split(r"(?<=[.!?])\s+|\n\s*\n|\n[-*|#] ?", text):
-        if _SPECTRAL.search(sentence):
-            assert _DENIAL.search(sentence), f"{path}: {sentence.strip()[:120]}"
-        assert not _CLAIM.search(sentence) or _DENIAL.search(sentence), (
-            f"{path}: {sentence.strip()[:120]}"
-        )
+    assert not copy_problems((ROOT / path).read_text(encoding="utf-8")), path
 
 
 @pytest.mark.parametrize("path", STANDARD_DOCS)
@@ -249,6 +303,8 @@ def test_s3_only_one_detected_identified_card_is_calibrated() -> None:
         ("none", "gsip-node", "v1"),
         ("not_run", "gsip-a6", "v1"),
         ("one", "Not A Card Id", "v1"),
+        ("one", "totally-made-up", "x9"),
+        ("one", "gsip-node", "v2"),
     ):
         status, card = card_gate(*finding)
         assert status == "uncalibrated"
@@ -256,6 +312,8 @@ def test_s3_only_one_detected_identified_card_is_calibrated() -> None:
     assert gate_from_qa(card_outlines=0, edition=None)[0] == "uncalibrated"
     assert gate_from_qa(card_outlines=2, edition=None)[1].detection == "multiple"
     assert gate_from_qa(card_outlines=1, edition=None)[0] == "uncalibrated"
+    for odd in (-1, True, 1.0):
+        assert gate_from_qa(card_outlines=odd, edition="a6")[0] == "uncalibrated"  # type: ignore[arg-type]
     for edition, (card_id, version) in CARD_EDITIONS.items():
         status, card = gate_from_qa(card_outlines=1, edition=edition)
         assert (status, card.card_id, card.card_version) == ("calibrated", card_id, version)
@@ -273,17 +331,67 @@ def test_s3_the_pipeline_overrules_a_client_that_claims_a_card() -> None:
         "card_id": None,
         "card_version": None,
     }
-    two = extract_phone_record(
-        jpeg(with_node(with_node(flat_soil(4), x=600, y=80), x=600, y=500)), claimed
-    )
+    two = extract_phone_record(jpeg(with_a6(with_node(flat_soil(4), x=600, y=80))), claimed)
     assert two.acquisition is not None and two.acquisition.calibration_status == "uncalibrated"
-    one = extract_phone_record(jpeg(with_node(flat_soil(5))), claimed)
+    assert two.acquisition.reference_card.detection == "multiple"
+    one = extract_phone_record(jpeg(with_a6(flat_soil(5))), claimed)
     assert one.acquisition is not None
     assert one.acquisition.calibration_status == "calibrated"
-    assert one.acquisition.reference_card.card_id == "gsip-node"
+    assert one.acquisition.reference_card.card_id == "gsip-a6"
     # The RGB summary itself stays uncalibrated sRGB whatever the capture's status (SPEC L1).
     assert one.measurement.kind == "camera_rgb"
     assert one.measurement.calibration_status == "uncalibrated"
+    # The card was masked out of the summary: it matches the same soil with no card.
+    bare = extract_phone_record(jpeg(flat_soil(5)), claimed)
+    assert one.measurement.card_present and bare.measurement.kind == "camera_rgb"
+    assert one.measurement.mean_rgb == pytest.approx(bare.measurement.mean_rgb, abs=0.01)
+
+
+def test_s3_a_card_the_summary_did_not_mask_is_never_calibrated() -> None:
+    """The summary masks only the A6 card, so a node card's own pixels are in the mean."""
+
+    claimed = LibraryRecord.model_validate(camera_v2())
+    node = extract_phone_record(jpeg(with_node(flat_soil(5))), claimed)
+    assert node.measurement.kind == "camera_rgb" and not node.measurement.card_present
+    assert node.acquisition is not None
+    assert node.acquisition.calibration_status == "uncalibrated"
+    assert node.acquisition.reference_card.model_dump() == {
+        "detection": "one",
+        "card_id": None,
+        "card_version": None,
+    }
+    # The record contract refuses the contradiction outright.
+    contradictory = camera_v2()
+    measurement = contradictory["measurement"]
+    assert isinstance(measurement, dict)
+    contradictory["measurement"] = measurement | {"card_present": False}
+    with pytest.raises(ValueError):
+        LibraryRecord.model_validate(contradictory)
+
+
+def test_s3_a_hand_written_record_cannot_name_a_card_gsip_cannot_read(tmp_path: Path) -> None:
+    forged = camera_v2()
+    acquisition = forged["acquisition"]
+    assert isinstance(acquisition, dict)
+    acquisition["reference_card"] = {
+        "detection": "one",
+        "card_id": "totally-made-up",
+        "card_version": "x9",
+    }
+    with pytest.raises(ValueError):
+        LibraryRecord.model_validate(forged)
+    with pytest.raises(ValueError, match="^invalid capture acquisition$") as caught:
+        partition_by_calibration([{"acquisition": acquisition | {"lighting": "SECRET-VALUE"}}])
+    assert "SECRET" not in str(caught.value) and caught.value.__cause__ is None
+    # A failed write leaves nothing behind, so the same directory can be used again.
+    target = tmp_path / "export"
+    with pytest.raises(TypeError):
+        write_partitions([{"acquisition": block(), "bad": object()}], target)
+    assert not target.exists()
+    assert write_partitions([{"acquisition": block()}], target) == {
+        "calibrated": 1,
+        "uncalibrated": 0,
+    }
 
 
 def test_s3_findings_never_keep_a_claimed_card() -> None:
@@ -412,6 +520,9 @@ def test_s5_the_new_field_is_optional_and_belongs_to_version_2_camera_records(
     # A version-1 record cannot carry the version-2 member.
     with pytest.raises(ValueError):
         LibraryRecord.model_validate(library_record(3) | {"acquisition": block()})
+    # An explicit null is absence: accepted, and stored as plain version-1 bytes.
+    nulled = LibraryRecord.model_validate(library_record(1) | {"acquisition": None})
+    assert hashlib.sha256(encoded(nulled)).hexdigest() == V1_CAMERA_SHA256
     # An instrument record has no camera to describe.
     with pytest.raises(ValueError):
         LibraryRecord.model_validate(

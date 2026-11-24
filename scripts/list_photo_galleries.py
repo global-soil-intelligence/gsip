@@ -11,7 +11,10 @@ redistributes, trains on or publishes a photo.
 Needs a Flickr API key in ``FLICKR_API_KEY`` (see ``.env.example``). Not run against the live
 service by GSIP: the tests use recorded-shape fixtures only.
 
-    uv run python -m scripts.list_photo_galleries > galleries.json
+No gallery is built in: name each public account you want listed, on the command line. An
+account belongs to a person, so GSIP keeps no list of them in the repository.
+
+    uv run python -m scripts.list_photo_galleries --flickr-user <profile address> > galleries.json
 """
 
 from __future__ import annotations
@@ -22,8 +25,7 @@ import os
 import sys
 import time
 from collections import Counter
-from collections.abc import Callable
-from dataclasses import dataclass
+from collections.abc import Callable, Sequence
 from typing import Any
 
 import httpx
@@ -35,25 +37,6 @@ MAX_ALBUMS = 200
 MAX_PAGES_PER_ALBUM = 20
 PAGE_SIZE = 500
 PAUSE_SECONDS = 1.0
-
-
-@dataclass(frozen=True)
-class Candidate:
-    name: str
-    kind: str
-    url: str
-    note: str
-
-
-# Galleries people have pointed GSIP to. Being listed says nothing about licence or suitability.
-CANDIDATES: tuple[Candidate, ...] = (
-    Candidate(
-        name="SSSNC soil photo albums",
-        kind="flickr_user",
-        url="https://www.flickr.com/photos/jakelley/",
-        note="Suggested in feedback of November 2026; ownership and licences not verified.",
-    ),
-)
 
 
 class GalleryError(RuntimeError):
@@ -81,6 +64,15 @@ def _call(client: httpx.Client, api_key: str, method: str, **params: str) -> dic
     return body
 
 
+def _count(value: object) -> int:
+    """A page count from the host, or 1 when it is missing or not a number."""
+
+    try:
+        return max(1, int(str(value)))
+    except ValueError:
+        return 1
+
+
 def _text(value: object) -> str:
     """Flickr wraps text as ``{"_content": "..."}``. Titles are other people's text: data only."""
 
@@ -106,8 +98,10 @@ def list_flickr_user(
     profile_url: str,
     *,
     pause: Callable[[float], None] = time.sleep,
-) -> list[dict[str, Any]]:
-    """Albums of one public account, each with a photo count and a licence tally."""
+) -> tuple[list[dict[str, Any]], bool]:
+    """Albums of one public account, each with a photo count and a licence tally.
+
+    The second value is true when the account has more albums than were listed."""
 
     user = _call(client, api_key, "flickr.urls.lookupUser", url=profile_url)
     user_id = str(user.get("user", {}).get("id", ""))
@@ -117,8 +111,12 @@ def list_flickr_user(
     sets = _call(
         client, api_key, "flickr.photosets.getList", user_id=user_id, per_page=str(MAX_ALBUMS)
     )
+    listed = sets.get("photosets", {})
+    found = listed.get("photoset", [])
     albums: list[dict[str, Any]] = []
-    for album in sets.get("photosets", {}).get("photoset", [])[:MAX_ALBUMS]:
+    # More albums than one bounded request returns: say so instead of looking complete.
+    more = _count(listed.get("pages")) > 1 or len(found) > MAX_ALBUMS
+    for album in found[:MAX_ALBUMS]:
         if not isinstance(album, dict) or not album.get("id"):
             continue
         album_id = str(album["id"])
@@ -138,7 +136,7 @@ def list_flickr_user(
                 page=str(page),
             )
             listing = body.get("photoset", {})
-            pages = int(listing.get("pages", 1) or 1)
+            pages = _count(listing.get("pages"))
             for photo in listing.get("photo", []):
                 if isinstance(photo, dict):
                     tally[str(photo.get("license", "unknown"))] += 1
@@ -160,19 +158,17 @@ def list_flickr_user(
                 ],
             }
         )
-    return albums
+    return albums, more
 
 
-def build_listing(client: httpx.Client, api_key: str) -> dict[str, Any]:
+def build_listing(
+    client: httpx.Client, api_key: str, profile_urls: Sequence[str]
+) -> dict[str, Any]:
     galleries = []
-    for candidate in CANDIDATES:
-        entry: dict[str, Any] = {
-            "name": candidate.name,
-            "url": candidate.url,
-            "note": candidate.note,
-        }
+    for url in profile_urls:
+        entry: dict[str, Any] = {"url": url}
         try:
-            entry["albums"] = list_flickr_user(client, api_key, candidate.url)
+            entry["albums"], entry["albums_truncated"] = list_flickr_user(client, api_key, url)
         except GalleryError as error:
             entry["error"] = str(error)
         galleries.append(entry)
@@ -186,14 +182,29 @@ def build_listing(client: httpx.Client, api_key: str) -> dict[str, Any]:
     }
 
 
+def _public_profile(value: str) -> str:
+    if not value.startswith("https://www.flickr.com/photos/") or len(value) > 200:
+        raise argparse.ArgumentTypeError("expected https://www.flickr.com/photos/<account>/")
+    return value
+
+
 def main(argv: list[str] | None = None) -> int:
-    argparse.ArgumentParser(description=__doc__.splitlines()[0]).parse_args(argv)
+    parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
+    parser.add_argument(
+        "--flickr-user",
+        action="append",
+        type=_public_profile,
+        required=True,
+        help="public profile address of an account to list; repeat for more",
+    )
+    args = parser.parse_args(argv)
     api_key = os.environ.get("FLICKR_API_KEY", "").strip()
     if not api_key:
         print("Set FLICKR_API_KEY to list galleries; nothing was requested.", file=sys.stderr)
         return 2
     with httpx.Client(timeout=20.0, follow_redirects=False) as client:
-        print(json.dumps(build_listing(client, api_key), indent=2, sort_keys=True))
+        listing = build_listing(client, api_key, args.flickr_user[:10])
+        print(json.dumps(listing, indent=2, sort_keys=True))
     return 0
 
 

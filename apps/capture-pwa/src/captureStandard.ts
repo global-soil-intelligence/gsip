@@ -144,7 +144,9 @@ export function osFamily(userAgent: string): string | null {
 
 function timestamp(capturedAt: string, now: number): string {
   const parsed = Date.parse(capturedAt)
-  return new Date(Number.isFinite(parsed) ? parsed : now).toISOString()
+  const iso = new Date(Number.isFinite(parsed) ? parsed : now).toISOString()
+  // Years outside 0001 to 9999 print in a longer form the record does not accept.
+  return /^(?!0000)\d{4}-/.test(iso) ? iso : new Date(now).toISOString()
 }
 
 function areaCell(
@@ -182,63 +184,105 @@ export type AcquisitionInput = {
   now?: number
 }
 
-/**
- * The acquisition block for a new observation. It always returns a valid block: a value the
- * app cannot read or the person did not state is written as `unknown` or `null`. The card gate
- * sets `calibration_status`; nothing the person ticks can make a capture `calibrated`.
- */
-export function buildAcquisition(input: AcquisitionInput): CaptureAcquisition {
+/** Nothing stated, nothing read: valid whatever went wrong while building the real block. */
+function minimalAcquisition(): CaptureAcquisition {
+  return CaptureAcquisitionSchema.parse({
+    schema_version: CAPTURE_ACQUISITION_VERSION,
+    standard_version: CAPTURE_STANDARD_VERSION,
+    observation_kind: 'rgb_photo',
+    procedure: 'unspecified',
+    device: {
+      make: null,
+      model: null,
+      os_name: null,
+      os_version: null,
+      app_version: 'unknown',
+    },
+    camera: {
+      exposure_time_s: null,
+      iso: null,
+      exposure: 'unknown',
+      white_balance: 'unknown',
+      hdr: 'unknown',
+      filters: 'unknown',
+      flash: 'unknown',
+      angle: 'unknown',
+      distance_cm: null,
+      field_of_view_cm: null,
+    },
+    lighting: 'unknown',
+    ...cardGate({ detection: 'not_run' }),
+    replicate_count: null,
+    captured_at: new Date(Date.now()).toISOString(),
+    location: { consent: false, h3_r9: null },
+  })
+}
+
+function statedAcquisition(input: AcquisitionInput): CaptureAcquisition {
   const { checklist } = input
-  const now = input.now ?? Date.now()
+  const now = Number.isFinite(input.now) ? (input.now as number) : Date.now()
   let finding: CardFinding
   try {
     finding = (input.detector ?? stubCardDetector).detect(input.photo)
   } catch {
     finding = { detection: 'not_run' }
   }
-  const candidate = {
+  const text = (value: unknown) => (typeof value === 'string' ? value : '')
+  const shareArea = checklist.shareArea === true
+  return CaptureAcquisitionSchema.parse({
     schema_version: CAPTURE_ACQUISITION_VERSION,
     standard_version: CAPTURE_STANDARD_VERSION,
     observation_kind: 'rgb_photo',
-    procedure: checklist.procedure,
+    procedure:
+      checklist.procedure in PROCEDURE_LABELS
+        ? checklist.procedure
+        : 'unspecified',
     device: {
       make: null,
       model: null,
-      os_name: osFamily(input.userAgent ?? ''),
+      os_name: osFamily(text(input.userAgent)),
       os_version: null,
-      app_version: input.appVersion,
+      app_version: /^[0-9A-Za-z][0-9A-Za-z.+_-]{0,63}$/.test(input.appVersion)
+        ? input.appVersion
+        : 'unknown',
     },
     camera: {
       exposure_time_s: null,
       iso: null,
-      exposure: checklist.exposureLocked ? 'locked' : 'unknown',
-      white_balance: checklist.whiteBalanceLocked ? 'locked' : 'unknown',
-      hdr: checklist.hdrOff ? 'off' : 'unknown',
-      filters: checklist.filtersOff ? 'off' : 'unknown',
-      flash: checklist.flashOff ? 'off' : 'unknown',
-      angle: checklist.cameraSquare ? 'nadir' : 'unknown',
-      distance_cm: bounded(checklist.distanceCm, 1, 500),
-      field_of_view_cm: bounded(checklist.fieldOfViewCm, 1, 1_000),
+      exposure: checklist.exposureLocked === true ? 'locked' : 'unknown',
+      white_balance:
+        checklist.whiteBalanceLocked === true ? 'locked' : 'unknown',
+      hdr: checklist.hdrOff === true ? 'off' : 'unknown',
+      filters: checklist.filtersOff === true ? 'off' : 'unknown',
+      flash: checklist.flashOff === true ? 'off' : 'unknown',
+      angle: checklist.cameraSquare === true ? 'nadir' : 'unknown',
+      distance_cm: bounded(text(checklist.distanceCm), 1, 500),
+      field_of_view_cm: bounded(text(checklist.fieldOfViewCm), 1, 1_000),
     },
-    lighting: checklist.lighting,
-    ...cardGate(finding),
-    replicate_count: wholeNumber(checklist.replicateCount, 1, 20),
-    captured_at: timestamp(input.capturedAt, now),
+    lighting:
+      checklist.lighting in LIGHTING_LABELS ? checklist.lighting : 'unknown',
+    ...cardGate(finding ?? { detection: 'not_run' }),
+    replicate_count: wholeNumber(text(checklist.replicateCount), 1, 20),
+    captured_at: timestamp(text(input.capturedAt), now),
     location: {
-      consent: checklist.shareArea,
-      h3_r9: areaCell(checklist.shareArea, input.latitude, input.longitude),
+      consent: shareArea,
+      h3_r9: areaCell(shareArea, input.latitude, input.longitude),
     },
-  }
-  const parsed = CaptureAcquisitionSchema.safeParse(candidate)
-  if (parsed.success) return parsed.data
-  // A corrupted checklist or version string must not cost the person their observation.
-  return CaptureAcquisitionSchema.parse({
-    ...candidate,
-    procedure: 'unspecified',
-    device: { ...candidate.device, os_name: null, app_version: 'unknown' },
-    lighting: 'unknown',
-    ...cardGate({ detection: 'not_run' }),
   })
+}
+
+/**
+ * The acquisition block for a new observation. It never throws: a value the app cannot read
+ * or the person did not state is written as `unknown` or `null`, and if building the block
+ * fails for any reason the observation still gets a valid block that states nothing. The card
+ * gate sets `calibration_status`; nothing the person ticks can make a capture `calibrated`.
+ */
+export function buildAcquisition(input: AcquisitionInput): CaptureAcquisition {
+  try {
+    return statedAcquisition(input)
+  } catch {
+    return minimalAcquisition()
+  }
 }
 
 /** How many of the checklist's statements were made, for the summary line. */

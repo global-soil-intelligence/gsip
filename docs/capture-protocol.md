@@ -25,10 +25,9 @@ What it does not do:
   targets, not instrument measurements of a print, so this is not colorimetric or reflectance
   calibration.
 
-This procedure was prompted by feedback from José Lucas Safanelli (Woodwell Climate Research
-Center, Open Soil Spectral Library) in November 2026, who pointed to the standard practice of
-drone (UAV) RGB survey photography and to reference colour cards. He has not reviewed this
-document, and naming him implies no endorsement.
+This procedure was prompted by outside feedback from the soil spectroscopy community in
+November 2026, which pointed to the standard practice of drone (UAV) RGB survey photography and
+to reference colour cards. Nobody outside the project has reviewed this document.
 
 ## The eight rules
 
@@ -41,7 +40,7 @@ a summary of common practice, not a quotation from one standard.
 | 2   | Camera square to the subject          | Nadir (straight-down) images                                 | Lens axis at 90° to the soil surface: straight down on a tray, square on a face |
 | 3   | Fixed distance                        | Constant height above ground, so every pixel covers the same | One distance, set with a physical guide, the same for every photo in a series   |
 | 4   | Locked white balance                  | Fixed white balance, never automatic                         | Lock it before the first photo and leave it                                     |
-| 5   | Locked exposure                       | Fixed shutter, aperture and ISO for a flight                 | Lock exposure and focus on the soil, not on the card                            |
+| 5   | Locked exposure                       | Fixed shutter, aperture and ISO for a flight                 | Lock exposure on the grey card, in the light you will use; focus on the soil    |
 | 6   | No processing that varies by scene    | No HDR, no scene modes; unedited images                      | HDR off, filters off, portrait and night modes off, flash off, 1× lens, no zoom |
 | 7   | A reference target in the same light  | Reference panel photographed with each flight                | One reference card in every photo, flat, in the plane of the soil               |
 | 8   | Repeats and a record of what was done | Overlapping images and a flight log                          | At least three photos per sample, and the acquisition record below              |
@@ -56,10 +55,13 @@ a summary of common practice, not a quotation from one standard.
    No digital zoom.
 4. **Turn off** HDR, night mode, portrait mode, filters, "scene optimiser" or similar, live or
    motion photos, and the flash. Save as JPEG at the highest quality.
-5. **Lock white balance and exposure.** In a camera app with manual ("Pro") controls, choose the
-   daylight white-balance preset and a fixed ISO and shutter. In the stock camera app, press and
-   hold on the soil until the exposure and focus lock indicator appears. If your phone cannot
-   lock white balance, leave that item unticked; the record will say "not stated".
+5. **Lock white balance and exposure on the grey card.** Hold the grey card from the kit in the
+   light you will use so that it fills the frame, and lock exposure and white balance on it: in
+   a camera app with manual ("Pro") controls, set them there; in the stock camera app, press and
+   hold until the lock indicator appears. Put the grey card away, then focus on the soil without
+   releasing the lock. Do not meter on the soil itself: dark soil makes the camera brighten the
+   frame and clip the card's white patch. If your phone cannot lock one of them, leave that item
+   unticked; the record will say "not stated".
 6. **Check the light.** Soil and card must be in the same light, with no shadow edge, no sunlit
    patch and no coloured reflection from clothing, a wall or leaves. Your own shadow counts as
    shade only if it covers the soil and the card completely.
@@ -71,8 +73,9 @@ a summary of common practice, not a quotation from one standard.
 
 For soil brought indoors or to a table.
 
-1. **Air-dry** the sample at room temperature, out of direct sun, until it no longer darkens a
-   paper towel. Do not oven-dry.
+1. **Air-dry** the sample at room temperature, out of direct sun, spread thin, until it looks
+   and feels dry and crumbles. That is a working rule proposed here, not a laboratory
+   criterion. Do not oven-dry.
 2. **Crush gently** to break clods, without grinding stones or grains. Remove roots and litter.
 3. **Sieve to 2 mm.** Photograph the fraction that passes.
 4. **Fill the tray** from the kit to the rim, at least 1 cm deep, so that no tray bottom shows.
@@ -119,13 +122,14 @@ For a pit wall, a road cut or a cleaned auger core laid on a board.
 
 Each observation queued by the app carries an acquisition record
 (`gsip-capture-acquisition-v1`). A value the app cannot read, or that you did not state, is
-written as `unknown` or `null`; nothing is guessed.
+written as `unknown` or `null`; nothing is guessed. What you tick applies to one observation:
+the checklist, including the area consent, clears after each one is queued.
 
 | Field                             | Where it comes from today                                                  |
 | --------------------------------- | -------------------------------------------------------------------------- |
-| Device make and model             | Not read by the app. Filled from the photo's own metadata when present     |
+| Device make and model             | Not read by the app: always empty                                          |
 | Operating system, app version     | Operating-system family and the app build. No OS version is read           |
-| Exposure time, ISO                | Not read by the app. Filled from the photo's own metadata when present     |
+| Exposure time, ISO                | Not read by the app: always empty                                          |
 | White balance and exposure locked | Your tick in the checklist                                                 |
 | HDR off, filters off, flash off   | Your tick in the checklist                                                 |
 | Lighting                          | Your choice: shade, overcast, diffuser, direct sun, artificial, not stated |
@@ -136,6 +140,10 @@ written as `unknown` or `null`; nothing is guessed.
 | Number of photos of the sample    | The number you enter                                                       |
 | Time                              | The capture time of the primary photo                                      |
 | Location                          | Nothing, unless you tick the consent box; then one area of about 0.1 km²   |
+
+Make, model, exposure time and ISO are filled from a photo's own metadata in one place only: the
+offline extractor for staged, synthetic images described in the
+[soil library guide](SOIL_LIBRARY.md). Nothing fills them for an observation queued by the app.
 
 Three limits to know:
 

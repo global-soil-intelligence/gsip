@@ -31,6 +31,7 @@ export function CaptureChecklist({
     <details className="capture-checklist">
       <summary>
         Standard capture checklist (optional) · {done} of {total} stated
+        {value.shareArea ? ' · approximate area kept' : ''}
       </summary>
       <p>
         Taking every photo the same way lets photos from different phones and
@@ -71,7 +72,7 @@ export function CaptureChecklist({
         </select>
       </label>
       {value.lighting === 'direct_sun' && (
-        <p role="note" className="checklist-warning">
+        <p role="status" className="checklist-warning">
           Direct sun gives hard shadows and glare. If you can, shade the soil
           and the card together and take the photo again.
         </p>

@@ -19,7 +19,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Annotated, Any, Literal, Self, TypeVar
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, model_validator
 
 ACQUISITION_VERSION = "gsip-capture-acquisition-v1"
 STANDARD_VERSION = "gsip-capture-standard-v1"
@@ -30,15 +30,24 @@ CardDetection = Literal["not_run", "none", "one", "multiple"]
 
 _LABEL = r"^[0-9A-Za-z][0-9A-Za-z .,()+_/-]*$"
 _VERSION = r"^[0-9A-Za-z][0-9A-Za-z.+_-]*$"
-_CARD_ID = r"^[a-z0-9][a-z0-9-]*$"
-_CARD_VERSION = r"^[0-9A-Za-z][0-9A-Za-z.-]*$"
 _UTC = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$")
 
 Label = Annotated[str, Field(min_length=1, max_length=64, pattern=_LABEL)]
 Version = Annotated[str, Field(min_length=1, max_length=64, pattern=_VERSION)]
-CardId = Annotated[str, Field(min_length=1, max_length=48, pattern=_CARD_ID)]
-CardVersion = Annotated[str, Field(min_length=1, max_length=24, pattern=_CARD_VERSION)]
+# Only the two GSIP editions ``pipeline.cards`` can read. Nothing else can be named.
+CardId = Literal["gsip-a6", "gsip-node"]
+CardVersion = Literal["v1"]
 Number = Annotated[float, Field(strict=True, allow_inf_nan=False)]
+
+
+def _whole(value: object) -> object:
+    # JSON has one number type: 100.0 and 1e2 are the integer 100 to every other reader.
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    return value
+
+
+Whole = Annotated[int, BeforeValidator(_whole), Field(strict=True)]
 Record = TypeVar("Record")
 
 
@@ -58,7 +67,7 @@ class Device(_Strict):
 
 class Camera(_Strict):
     exposure_time_s: Annotated[Number, Field(gt=0, le=30)] | None
-    iso: Annotated[int, Field(strict=True, ge=1, le=1_000_000)] | None
+    iso: Annotated[Whole, Field(ge=1, le=1_000_000)] | None
     exposure: Literal["locked", "auto", "unknown"]
     white_balance: Literal["locked", "auto", "unknown"]
     hdr: Literal["off", "on", "unknown"]
@@ -78,7 +87,7 @@ class ReferenceCard(_Strict):
 class Location(_Strict):
     consent: Annotated[bool, Field(strict=True)]
     # A resolution-9 H3 cell: the grain GSIP already sends to outside processors (SPEC I7).
-    h3_r9: Annotated[str, Field(pattern=r"^89[0-9a-f]{13}$")] | None
+    h3_r9: Annotated[str, Field(pattern=r"^89[0-9a-f]{8}[37bf]ffff$")] | None
 
 
 class CaptureAcquisition(_Strict):
@@ -92,7 +101,7 @@ class CaptureAcquisition(_Strict):
     lighting: Literal["shade", "overcast", "diffuser", "direct_sun", "artificial", "unknown"]
     reference_card: ReferenceCard
     calibration_status: CalibrationStatus
-    replicate_count: Annotated[int, Field(strict=True, ge=1, le=20)] | None
+    replicate_count: Annotated[Whole, Field(ge=1, le=20)] | None
     captured_at: str
     location: Location
 
@@ -131,13 +140,22 @@ def _unique(pairs: list[tuple[str, object]]) -> dict[str, object]:
 def parse_acquisition(raw: bytes | str) -> CaptureAcquisition:
     """Validate one block. Errors are generic: a rejected block's values stay private."""
 
-    data = raw.encode() if isinstance(raw, str) else raw
     try:
+        data = raw.encode() if isinstance(raw, str) else raw
         if len(data) > MAX_ACQUISITION_BYTES:
             raise ValueError("too large")
-        return CaptureAcquisition.model_validate(json.loads(data, object_pairs_hook=_unique))
+        # Decode strictly first: ``json.loads`` on bytes would quietly accept a byte-order mark.
+        text = data.decode("utf-8")
+        return CaptureAcquisition.model_validate(json.loads(text, object_pairs_hook=_unique))
     except Exception:  # noqa: BLE001 - validator errors can carry private values
         raise ValueError("invalid capture acquisition") from None
+
+
+# The editions ``pipeline.cards`` can read, as they are named in an acquisition block.
+CARD_EDITIONS: Mapping[str, tuple[str, str]] = {
+    "a6": ("gsip-a6", "v1"),
+    "node": ("gsip-node", "v1"),
+}
 
 
 def card_gate(
@@ -148,30 +166,15 @@ def card_gate(
     A card the person says they used, a card that was not looked for, no card and two cards are
     all ``uncalibrated``."""
 
-    identified = (
-        detection == "one"
-        and isinstance(card_id, str)
-        and isinstance(card_version, str)
-        and re.fullmatch(_CARD_ID, card_id) is not None
-        and len(card_id) <= 48
-        and re.fullmatch(_CARD_VERSION, card_version) is not None
-        and len(card_version) <= 24
-    )
+    identified = detection == "one" and (card_id, card_version) in CARD_EDITIONS.values()
     return (
         "calibrated" if identified else "uncalibrated",
         ReferenceCard(
             detection=detection,
-            card_id=card_id if identified else None,
-            card_version=card_version if identified else None,
+            card_id=card_id if identified else None,  # type: ignore[arg-type]
+            card_version=card_version if identified else None,  # type: ignore[arg-type]
         ),
     )
-
-
-# The editions ``pipeline.cards`` can read, as they are named in an acquisition block.
-CARD_EDITIONS: Mapping[str, tuple[str, str]] = {
-    "a6": ("gsip-a6", "v1"),
-    "node": ("gsip-node", "v1"),
-}
 
 
 def gate_from_qa(
@@ -179,6 +182,8 @@ def gate_from_qa(
 ) -> tuple[CalibrationStatus, ReferenceCard]:
     """The gate for what photo QA found: how many cards, and the edition of the one it read."""
 
+    if type(card_outlines) is not int or card_outlines < 0:
+        return card_gate("not_run")
     if card_outlines == 0:
         return card_gate("none")
     if card_outlines > 1:
@@ -198,7 +203,10 @@ def calibration_status_of(record: object) -> CalibrationStatus:
     )
     if acquisition is None:
         return "uncalibrated"
-    return CaptureAcquisition.model_validate(acquisition).calibration_status
+    try:
+        return CaptureAcquisition.model_validate(acquisition).calibration_status
+    except Exception:  # noqa: BLE001 - validator errors can carry private values
+        raise ValueError("invalid capture acquisition") from None
 
 
 def partition_by_calibration(
@@ -233,19 +241,23 @@ def write_partitions(records: Iterable[object], directory: Path) -> dict[str, in
     Returns counts only."""
 
     parts = partition_by_calibration(list(records))
-    directory.mkdir(mode=0o700, exist_ok=False)
-    counts: dict[str, int] = {}
+    # Everything is checked and serialised before anything is created, so a failure leaves no
+    # half-written directory behind.
+    written: dict[CalibrationStatus, list[str]] = {}
     for status, items in parts.items():
         assert_unmixed(items, status)
-        lines = [
+        written[status] = [
             json.dumps(_json_value(item), sort_keys=True, separators=(",", ":")) for item in items
         ]
+    directory.mkdir(mode=0o700, exist_ok=False)
+    counts: dict[str, int] = {}
+    for status, lines in written.items():
         descriptor = os.open(
             directory / f"{status}.jsonl", os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600
         )
         with os.fdopen(descriptor, "w", encoding="utf-8") as output:
             output.write("".join(line + "\n" for line in lines))
-        counts[status] = len(items)
+        counts[status] = len(lines)
     return counts
 
 

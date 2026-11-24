@@ -114,6 +114,8 @@ describe('capture acquisition contract', () => {
       { detection: 'none', cardId: 'gsip-node', cardVersion: 'v1' },
       { detection: 'not_run', cardId: 'gsip-a6', cardVersion: 'v1' },
       { detection: 'one', cardId: 'Not A Card Id', cardVersion: 'v1' },
+      { detection: 'one', cardId: 'totally-made-up', cardVersion: 'x9' },
+      { detection: 'one', cardId: 'gsip-a6', cardVersion: 'v2' },
     ] as const) {
       const gate = cardGate(finding)
       expect(gate.calibration_status).toBe('uncalibrated')

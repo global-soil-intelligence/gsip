@@ -769,7 +769,7 @@ Reason: desk tests by the authoring agent on one openly licensed set of phone ph
 
 - **C1 — A phone photograph is an RGB observation.** It is never called a spectrum, and neither the procedure, the acquisition block nor the checklist states or implies a soil-property estimate (restates L1 and K1 for the new text). _Check:_ the block's only observation kind is `rgb_photo` and unknown fields are refused; a test reads the new documents and app copy.
 - **C2 — A capture made under the standard carries acquisition metadata:** device make and model, operating system and app version, exposure time, ISO, white-balance and exposure lock, HDR, filters and flash state, lighting, camera angle, distance or field of view, reference card ID and version, time, and a place only with consent. Every field is required inside the block and an unknown value is written out (L3). _Check:_ the shared conformance corpus refuses a block with any field missing; the app attaches a block to every observation it queues.
-- **C3 — No detected reference card means `uncalibrated`,** and uncalibrated capture records are never placed in an export list with calibrated ones. Only exactly one detected, identified card makes a capture `calibrated`; a person's statement never does (K2). _Check:_ gate and partition tests in both languages.
+- **C3 — No detected reference card means `uncalibrated`,** and uncalibrated capture records are never placed in an export list with calibrated ones. Only exactly one detected card of an edition GSIP can read makes a capture `calibrated`; nothing a person ticks in the app does (K2). In a local library record the status is a local declaration like the others (L5): the offline extractor sets it from what it finds, a hand-written record can still claim it, and it is untrusted until canonical ingest. _Check:_ gate and partition tests in both languages; the contract refuses an unknown card edition and a `calibrated` capture whose summary saw no card.
 - **C4 — The colour normalisation is deterministic:** the same image and card give the same values. _Check:_ a pinned digest of the colour record on generated photographs.
 - **C5 — Contracts stay backward compatible:** the block is optional wherever it is attached, the library record version is bumped to `gsip-library-v2`, and a version-1 record validates and is stored as the same bytes. _Check:_ a pinned digest of a version-1 record.
 
@@ -785,12 +785,12 @@ Reason: desk tests by the authoring agent on one openly licensed set of phone ph
 - **Place.** Absent unless the person consents. With consent it holds one resolution-9 H3 cell, the grain already sent to outside processors (I7), never a point.
 - **Time.** The block holds the capture time. L3 keeps exact timestamps private and the library guide kept them out of the record contract; a version-2 library record with a block therefore carries a private timestamp it did not carry before. This is a stated change for the owner to accept or reverse.
 - **Two statuses with one name.** The block's `calibration_status` has the meaning of `photos.calibration_status` (§5, §17.2): one reference card was detected and identified. A `camera_rgb` measurement's own `calibration_status` stays `uncalibrated` (L1, §17.3): its three channel summaries are uncalibrated sRGB whatever the capture. Renaming one of them is an open owner decision.
-- **Card identity.** `gsip-a6` or `gsip-node`, version `v1`. The node card's run code is not recorded (§17.2).
+- **Card identity.** Exactly `gsip-a6` or `gsip-node`, version `v1`; any other value is refused. The node card's run code is not recorded (§17.2).
 
 ### 18.4 What is and is not built
 
 - **App.** An optional, collapsed checklist records what the person states. The app reads no camera setting. Its card detector is a stub that answers "not run", so every observation the app queues is `uncalibrated`. A real detector needs an image library and therefore a dependency review.
-- **Pipeline.** The offline extractor of §16.3 replaces a template's card claim with what `pipeline/cards.py` finds, and fills exposure time, ISO, make and model from the photograph's allowlisted metadata where the block left them unknown. `write_partitions` writes calibrated and uncalibrated capture records to separate private files.
+- **Pipeline.** The offline extractor of §16.3 replaces a template's card claim with what `pipeline/cards.py` finds. Its RGB summary masks only the A6 card (WP-LIB-2 is unchanged), so a photo with a node card is left `uncalibrated` there: the card's own pixels are in the summary. It also fills exposure time, ISO, make and model from the photograph's allowlisted metadata where the block left them unknown. `write_partitions` writes calibrated and uncalibrated capture records to separate private files.
 - **Not changed.** The public protocol text (`/v1/protocol`), the hosted QA worker, the database, and the nightly public release, which still lists each photo's own `calibration_status` inside one file. Applying C3 to the public release changes its format and its artifact inventory checks and is a separate package.
 - **Not tested.** No printed card, no phone, no real light. The three papers the procedure cites were not read in full by the authoring agent.
 
@@ -802,7 +802,7 @@ Reason: desk tests by the authoring agent on one openly licensed set of phone ph
 - The default distance, against §5's "about 15 cm".
 - Whether to split the public release by calibration status.
 - Whether to add a server column for the block, and whether the app should then send it.
-- Whether the procedure document may name the person whose feedback prompted it.
+- The procedure document does not name the person whose feedback prompted it. Naming them needs the owner's decision and that person's agreement.
 
 ---
 

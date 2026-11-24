@@ -12,6 +12,7 @@ import respx
 from scripts import list_photo_galleries as galleries
 
 KEY = "fictional-key"
+PROFILE = "https://www.flickr.com/photos/fictional-account/"
 
 
 def reply(payload: dict[str, Any]) -> httpx.Response:
@@ -52,9 +53,10 @@ def test_lists_albums_with_licence_tallies_and_requests_no_image(
     monkeypatch.setattr(galleries, "PAUSE_SECONDS", 0.0)
     route = respx.get(galleries.FLICKR_API).mock(side_effect=router)
     with httpx.Client() as client:
-        listing = galleries.build_listing(client, KEY)
+        listing = galleries.build_listing(client, KEY, [PROFILE])
     [gallery] = listing["galleries"]
     [album] = gallery["albums"]
+    assert gallery["albums_truncated"] is False
     assert album["title_untrusted"] == "Fictional album"
     assert album["photos_counted"] == 3 and album["truncated"] is False
     assert album["licences"] == [
@@ -80,7 +82,7 @@ def test_a_refused_request_is_reported_without_the_key() -> None:
         return_value=httpx.Response(200, json={"stat": "fail", "message": KEY})
     )
     with httpx.Client() as client:
-        listing = galleries.build_listing(client, KEY)
+        listing = galleries.build_listing(client, KEY, [PROFILE])
     assert listing["galleries"][0]["error"] == "gallery request refused: flickr.urls.lookupUser"
     assert KEY not in json.dumps(listing)
 
@@ -91,6 +93,36 @@ def test_without_a_key_nothing_is_requested(
     monkeypatch.delenv("FLICKR_API_KEY", raising=False)
     with respx.mock(assert_all_called=False) as mock:
         route = mock.get(galleries.FLICKR_API)
-        assert galleries.main([]) == 2
+        assert galleries.main(["--flickr-user", PROFILE]) == 2
         assert route.call_count == 0
     assert "nothing was requested" in capsys.readouterr().err
+
+
+@respx.mock
+def test_more_albums_than_listed_and_an_odd_page_count_are_reported_not_hidden(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(galleries, "PAUSE_SECONDS", 0.0)
+
+    def odd(request: httpx.Request) -> httpx.Response:
+        method = request.url.params["method"]
+        if method == "flickr.photosets.getList":
+            return reply({"photosets": {"pages": 3, "photoset": [{"id": "111", "title": "x"}]}})
+        if method == "flickr.photosets.getPhotos":
+            return reply({"photoset": {"pages": "many", "photo": [{"license": "4"}]}})
+        return router(request)
+
+    respx.get(galleries.FLICKR_API).mock(side_effect=odd)
+    with httpx.Client() as client:
+        [gallery] = galleries.build_listing(client, KEY, [PROFILE])["galleries"]
+    assert gallery["albums_truncated"] is True
+    assert gallery["albums"][0]["photos_counted"] == 1
+
+
+def test_no_account_is_built_in_and_only_a_public_profile_address_is_taken() -> None:
+    source = (galleries.__file__ and open(galleries.__file__, encoding="utf-8").read()) or ""
+    assert "flickr.com/photos/" in source and "photos/j" not in source
+    with pytest.raises(SystemExit):
+        galleries.main([])
+    with pytest.raises(SystemExit):
+        galleries.main(["--flickr-user", "https://example.test/photos/x/"])

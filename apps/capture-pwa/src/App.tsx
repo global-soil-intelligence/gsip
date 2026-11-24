@@ -2076,6 +2076,8 @@ export function App() {
     setLibraryHeld(false)
     setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
     formRef.current?.reset()
+    // What was stated, and the consent to keep an area, belong to one observation only.
+    setChecklist(EMPTY_CHECKLIST)
     setLatitude('')
     setLongitude('')
     setAccuracy(null)
@@ -2389,6 +2391,8 @@ export function App() {
     setLibraryHeld(false)
     setPublicCell(fuzzLocation(numericLatitude, numericLongitude).h3R8)
     formRef.current?.reset()
+    // What was stated, and the consent to keep an area, belong to one observation only.
+    setChecklist(EMPTY_CHECKLIST)
     setNativePhotos(NO_PHOTOS)
     photoRevisions.current = {}
     await clearDraftPhotos().catch(() => undefined)

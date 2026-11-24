@@ -136,20 +136,20 @@ describe('acquisition block built at capture', () => {
     const without = buildAcquisition({
       ...base,
       checklist: full,
-      latitude: 44.4759,
-      longitude: -73.2121,
+      latitude: 10.1234,
+      longitude: 20.5678,
     })
     expect(without.location).toEqual({ consent: false, h3_r9: null })
     const withArea = buildAcquisition({
       ...base,
       checklist: { ...full, shareArea: true },
-      latitude: 44.4759,
-      longitude: -73.2121,
+      latitude: 10.1234,
+      longitude: 20.5678,
     })
     expect(withArea.location.consent).toBe(true)
-    expect(withArea.location.h3_r9).toMatch(/^89[0-9a-f]{13}$/)
-    expect(JSON.stringify(withArea)).not.toContain('44.47')
-    expect(JSON.stringify(withArea)).not.toContain('73.21')
+    expect(withArea.location.h3_r9).toMatch(/^89[0-9a-f]{8}[37bf]ffff$/)
+    expect(JSON.stringify(withArea)).not.toContain('10.12')
+    expect(JSON.stringify(withArea)).not.toContain('20.56')
     const noFix = buildAcquisition({
       ...base,
       checklist: { ...full, shareArea: true },
@@ -182,6 +182,40 @@ describe('acquisition block built at capture', () => {
     expect(made.replicate_count).toBeNull()
     expect(made.captured_at).toBe('2026-01-01T12:05:00.000Z')
     expect(made.calibration_status).toBe('uncalibrated')
+  })
+
+  it('S2: never throws, whatever it is handed', () => {
+    const hostile: Array<Record<string, unknown>> = [
+      { capturedAt: '+010000-01-01T00:00:00.000Z' },
+      { capturedAt: '0000-01-01T00:00:00.000Z' },
+      { now: Number.NaN, capturedAt: 'never' },
+      { detector: { name: 'null', detect: () => null } },
+      { checklist: { ...full, shareArea: 'yes' } },
+      { checklist: { ...full, distanceCm: undefined } },
+      { checklist: null },
+      { appVersion: undefined },
+      { userAgent: 42 },
+      { photo: undefined },
+    ]
+    for (const override of hostile) {
+      const made = buildAcquisition({
+        ...base,
+        checklist: full,
+        ...override,
+      } as never)
+      expect(CaptureAcquisitionSchema.safeParse(made).success).toBe(true)
+      expect(made.calibration_status).toBe('uncalibrated')
+      expect(made.location.h3_r9).toBeNull()
+    }
+    // A statement that is not exactly "ticked" is never read as consent.
+    expect(
+      buildAcquisition({
+        ...base,
+        checklist: { ...full, shareArea: 'yes' as never },
+        latitude: 10.1234,
+        longitude: 20.5678,
+      }).location,
+    ).toEqual({ consent: false, h3_r9: null })
   })
 
   it('S3: the stub detector looks at nothing, so the app marks every capture uncalibrated', () => {
@@ -217,6 +251,8 @@ describe('acquisition block built at capture', () => {
       { detection: 'multiple' },
       { detection: 'one' },
       { detection: 'none', cardId: 'gsip-node', cardVersion: 'v1' },
+      { detection: 'one', cardId: 'totally-made-up', cardVersion: 'x9' },
+      { detection: 'one', cardId: 'gsip-node', cardVersion: 'v2' },
     ] as const)
       expect(
         buildAcquisition({
@@ -311,7 +347,7 @@ describe('capture checklist', () => {
       distanceCm: '30',
       shareArea: false,
     })
-    expect(screen.getByRole('note').textContent).toMatch(
+    expect(screen.getByText(/Direct sun gives/).textContent).toMatch(
       /hard shadows and glare/,
     )
     expect(screen.getByText(/3 of 10 stated/)).toBeDefined()
@@ -410,7 +446,44 @@ describe('the capture app', () => {
       camera: { white_balance: 'locked', flash: 'off', hdr: 'unknown' },
     })
     expect(block.location.consent).toBe(true)
-    expect(block.location.h3_r9).toMatch(/^89[0-9a-f]{13}$/)
+    expect(block.location.h3_r9).toMatch(/^89[0-9a-f]{8}[37bf]ffff$/)
+  })
+
+  it('S2: statements and area consent do not carry over to the next observation', async () => {
+    const q = await start()
+    await chooseShots(q)
+    fireEvent.click(screen.getByLabelText('Flash is off'))
+    fireEvent.change(screen.getByLabelText('Light'), {
+      target: { value: 'shade' },
+    })
+    fireEvent.click(screen.getByLabelText(/Keep an approximate area/))
+    expect(screen.getByText(/approximate area kept/)).toBeDefined()
+    fillAndSubmit()
+    await waitFor(async () => expect(await q.queued()).toHaveLength(1))
+    await waitFor(() =>
+      expect(
+        (screen.getByLabelText(/Keep an approximate area/) as HTMLInputElement)
+          .checked,
+      ).toBe(false),
+    )
+    expect(
+      (screen.getByLabelText('Flash is off') as HTMLInputElement).checked,
+    ).toBe(false)
+    expect((screen.getByLabelText('Light') as HTMLSelectElement).value).toBe(
+      'unknown',
+    )
+    expect(screen.queryByText(/approximate area kept/)).toBeNull()
+    await chooseShots(q)
+    fillAndSubmit()
+    await waitFor(async () => expect(await q.queued()).toHaveLength(2))
+    const blocks = (await q.queued()).map((record) =>
+      CaptureAcquisitionSchema.parse(record.acquisition),
+    )
+    expect(blocks.filter((block) => block.location.consent)).toHaveLength(1)
+    expect(blocks.filter((block) => block.camera.flash === 'off')).toHaveLength(
+      1,
+    )
+    expect(blocks.filter((block) => block.lighting === 'shade')).toHaveLength(1)
   })
 
   it('S5: nothing sends the block, so the service contract is unchanged', () => {

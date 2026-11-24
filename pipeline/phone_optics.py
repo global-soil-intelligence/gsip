@@ -70,10 +70,14 @@ def extract_phone_record(raw: bytes, template: LibraryRecord) -> LibraryRecord:
         if image is None:
             raise ValueError("invalid image")
         cards = find_cards(image)
+        # The summary above masks only the A6 card. Where it masked none (a node card, for
+        # example), the card's own pixels are in the summary, so the capture is not marked
+        # calibrated however well the card was read.
+        masked = measurement.card_present and cards.reading is not None
         updated["acquisition"] = with_pipeline_findings(
             template.acquisition,
             card_outlines=len(cards.outlines),
-            edition=cards.reading.edition if cards.reading is not None else None,
+            edition=cards.reading.edition if masked and cards.reading is not None else None,
             camera_metadata=metadata,
         )
     return LibraryRecord.model_validate(template.model_dump() | updated)

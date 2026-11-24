@@ -240,6 +240,96 @@
       "name": "consent-as-string",
       "valid": false,
       "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":\"yes\",\"h3_r9\":null}}"
+    },
+    {
+      "name": "integral-float-iso",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100.0,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "exponent-iso",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":1e2,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "integral-float-replicates",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3.0,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "thirtieth-of-february",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-02-30T00:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "february-29-in-a-common-year",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-02-29T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "thirty-first-of-april",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-04-31T00:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "hour-24",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T24:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "year-zero",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"0000-01-01T00:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "minute-60",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:60:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "leap-day-in-a-leap-year",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2028-02-29T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "duplicate-key-last-valid",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"bogus\",\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "duplicate-observation-kind",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"spectrum\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "byte-order-mark",
+      "valid": false,
+      "raw": "\ufeff{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "unknown-card-edition",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"totally-made-up\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "unknown-card-version",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"x9\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
+    },
+    {
+      "name": "cell-with-unused-digits-set",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":true,\"h3_r9\":\"890000000000000\"}}"
+    },
+    {
+      "name": "finer-cell-in-resolution-9-clothing",
+      "valid": false,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-node\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":true,\"h3_r9\":\"89283082803a2c1\"}}"
+    },
+    {
+      "name": "a6-card-calibrated",
+      "valid": true,
+      "raw": "{\"schema_version\":\"gsip-capture-acquisition-v1\",\"standard_version\":\"gsip-capture-standard-v1\",\"observation_kind\":\"rgb_photo\",\"procedure\":\"prepared_sample\",\"device\":{\"make\":\"Example\",\"model\":\"Phone 1\",\"os_name\":\"Android\",\"os_version\":\"16\",\"app_version\":\"0.1.0\"},\"camera\":{\"exposure_time_s\":0.008,\"iso\":100,\"exposure\":\"locked\",\"white_balance\":\"locked\",\"hdr\":\"off\",\"filters\":\"off\",\"flash\":\"off\",\"angle\":\"nadir\",\"distance_cm\":30,\"field_of_view_cm\":25},\"lighting\":\"overcast\",\"reference_card\":{\"detection\":\"one\",\"card_id\":\"gsip-a6\",\"card_version\":\"v1\"},\"calibration_status\":\"calibrated\",\"replicate_count\":3,\"captured_at\":\"2026-01-01T12:00:00Z\",\"location\":{\"consent\":false,\"h3_r9\":null}}"
     }
   ]
 }

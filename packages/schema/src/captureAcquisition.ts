@@ -14,6 +14,7 @@
  * made before it existed still validate.
  */
 import { z } from 'zod'
+import { rejectDuplicateKeys } from './libraryIntake.ts'
 
 export const CAPTURE_ACQUISITION_VERSION = 'gsip-capture-acquisition-v1'
 /** The written procedure this block describes: docs/capture-protocol.md. */
@@ -31,22 +32,25 @@ const version = z
   .min(1)
   .max(64)
   .regex(/^[0-9A-Za-z][0-9A-Za-z.+_-]*$/)
-const cardId = z
-  .string()
-  .min(1)
-  .max(48)
-  .regex(/^[a-z0-9][a-z0-9-]*$/)
-const cardVersion = z
-  .string()
-  .min(1)
-  .max(24)
-  .regex(/^[0-9A-Za-z][0-9A-Za-z.-]*$/)
+// Only the two GSIP editions `pipeline/cards.py` can read. Nothing else can be named.
+export const CARD_EDITIONS = { 'gsip-a6': 'v1', 'gsip-node': 'v1' } as const
+const cardId = z.enum(['gsip-a6', 'gsip-node'])
+const cardVersion = z.literal('v1')
+// A real UTC calendar second from year 0001 on. `Date.parse` alone rolls 30 February over.
 const utcSecond = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/)
-  .refine((value) => Number.isFinite(Date.parse(value)))
+  .refine((value) => {
+    const parsed = Date.parse(value)
+    return (
+      Number.isFinite(parsed) &&
+      !value.startsWith('0000') &&
+      new Date(parsed).toISOString().slice(0, 19) === value.slice(0, 19)
+    )
+  })
 // A resolution-9 H3 cell: the grain GSIP already sends to outside processors (SPEC I7).
-const h3Resolution9 = z.string().regex(/^89[0-9a-f]{13}$/)
+// At resolution 9 the six unused digits are all ones, which fixes the last 18 bits.
+const h3Resolution9 = z.string().regex(/^89[0-9a-f]{8}[37bf]ffff$/)
 
 export const LIGHTING_CONDITIONS = [
   'shade',
@@ -146,6 +150,7 @@ export function parseCaptureAcquisition(raw: string): CaptureAcquisition {
         MAX_CAPTURE_ACQUISITION_BYTES
     )
       throw new Error('too large')
+    rejectDuplicateKeys(raw)
     return CaptureAcquisitionSchema.parse(JSON.parse(raw))
   } catch {
     throw new Error('Invalid capture acquisition')
@@ -162,16 +167,16 @@ export function cardGate(finding: {
   cardId?: string | null
   cardVersion?: string | null
 }): Pick<CaptureAcquisition, 'calibration_status' | 'reference_card'> {
+  const id = cardId.safeParse(finding.cardId)
+  const edition = cardVersion.safeParse(finding.cardVersion)
   const identified =
-    finding.detection === 'one' &&
-    cardId.safeParse(finding.cardId).success &&
-    cardVersion.safeParse(finding.cardVersion).success
+    finding.detection === 'one' && id.success && edition.success
   return {
     calibration_status: identified ? 'calibrated' : 'uncalibrated',
     reference_card: {
       detection: finding.detection,
-      card_id: identified ? (finding.cardId ?? null) : null,
-      card_version: identified ? (finding.cardVersion ?? null) : null,
+      card_id: identified ? id.data : null,
+      card_version: identified ? edition.data : null,
     },
   }
 }
@@ -188,9 +193,10 @@ export function partitionByCalibration<
   const calibrated: Record[] = []
   const uncalibrated: Record[] = []
   for (const record of records) {
-    const status = record.acquisition
-      ? CaptureAcquisitionSchema.parse(record.acquisition).calibration_status
-      : 'uncalibrated'
+    const status =
+      record.acquisition === undefined || record.acquisition === null
+        ? 'uncalibrated'
+        : CaptureAcquisitionSchema.parse(record.acquisition).calibration_status
     ;(status === 'calibrated' ? calibrated : uncalibrated).push(record)
   }
   return { calibrated, uncalibrated }

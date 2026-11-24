@@ -129,10 +129,17 @@ class LibraryRecord(StrictRecord):
 
     @model_validator(mode="after")
     def acquisition_belongs(self) -> Self:
+        # An explicit null is the same as absence, so existing code that rebuilds a version-1
+        # record from its own dump keeps working; it is stored as plain version-1 bytes.
         if self.acquisition is None:
             return self
         if self.schema_version != "gsip-library-v2" or not isinstance(self.measurement, CameraRgb):
             raise ValueError("acquisition needs a v2 camera record")
+        # A capture cannot be card-referenced when its own summary saw no card to mask.
+        if self.acquisition.calibration_status == "calibrated" and not (
+            self.measurement.card_present
+        ):
+            raise ValueError("acquisition and measurement disagree about the card")
         return self
 
     @property
