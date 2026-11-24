@@ -126,3 +126,21 @@ def test_no_account_is_built_in_and_only_a_public_profile_address_is_taken() -> 
         galleries.main([])
     with pytest.raises(SystemExit):
         galleries.main(["--flickr-user", "https://example.test/photos/x/"])
+
+
+@respx.mock
+def test_an_unexpected_answer_shape_is_an_error_entry_not_a_crash() -> None:
+    def odd(request: httpx.Request) -> httpx.Response:
+        if request.url.params["method"] == "flickr.photosets.getList":
+            return reply({"photosets": ["not", "a", "mapping"]})
+        return router(request)
+
+    respx.get(galleries.FLICKR_API).mock(side_effect=odd)
+    with httpx.Client() as client:
+        [gallery] = galleries.build_listing(client, KEY, [PROFILE])["galleries"]
+    assert gallery == {"url": PROFILE, "error": "gallery answer not understood"}
+
+
+def test_too_many_accounts_are_refused_not_silently_dropped() -> None:
+    with pytest.raises(SystemExit):
+        galleries.main([arg for _ in range(11) for arg in ("--flickr-user", PROFILE)])

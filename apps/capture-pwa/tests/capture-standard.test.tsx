@@ -473,6 +473,15 @@ describe('the capture app', () => {
       'unknown',
     )
     expect(screen.queryByText(/approximate area kept/)).toBeNull()
+    // The app is still clearing the first observation's draft photos; wait until it is done,
+    // or the second pair would be dropped with them.
+    await waitFor(async () => {
+      expect(Object.keys(await q.draftPhotos())).toEqual([])
+      expect(
+        (screen.getByLabelText(/A · Context/) as HTMLInputElement).disabled,
+      ).toBe(false)
+      expect(screen.queryByText('Photo B ready on this device')).toBeNull()
+    })
     await chooseShots(q)
     fillAndSubmit()
     await waitFor(async () => expect(await q.queued()).toHaveLength(2))

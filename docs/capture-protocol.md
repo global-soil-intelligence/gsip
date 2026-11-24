@@ -55,13 +55,15 @@ a summary of common practice, not a quotation from one standard.
    No digital zoom.
 4. **Turn off** HDR, night mode, portrait mode, filters, "scene optimiser" or similar, live or
    motion photos, and the flash. Save as JPEG at the highest quality.
-5. **Lock white balance and exposure on the grey card.** Hold the grey card from the kit in the
-   light you will use so that it fills the frame, and lock exposure and white balance on it: in
-   a camera app with manual ("Pro") controls, set them there; in the stock camera app, press and
-   hold until the lock indicator appears. Put the grey card away, then focus on the soil without
-   releasing the lock. Do not meter on the soil itself: dark soil makes the camera brighten the
-   frame and clip the card's white patch. If your phone cannot lock one of them, leave that item
-   unticked; the record will say "not stated".
+5. **Lock white balance and exposure on the grey card.** Hold the grey card from the kit at the
+   soil's distance, in the light you will use, so that it fills the frame, and lock exposure
+   and white balance on it. This needs a camera app with separate exposure, white-balance and
+   focus controls (often called "Pro" or manual mode): set them, put the grey card away, then
+   focus on the soil. Do not meter on the soil itself: dark soil makes the camera brighten the
+   frame and clip the card's white patch. Many stock camera apps lock exposure and focus
+   together, release the lock when you refocus, and do not lock white balance at all. With
+   one of those, lock on the grey card held at the soil's distance and do not refocus, and
+   leave "white balance is locked" unticked; the record will say "not stated".
 6. **Check the light.** Soil and card must be in the same light, with no shadow edge, no sunlit
    patch and no coloured reflection from clothing, a wall or leaves. Your own shadow counts as
    shade only if it covers the soil and the card completely.

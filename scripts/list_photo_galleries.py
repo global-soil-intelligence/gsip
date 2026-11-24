@@ -33,6 +33,7 @@ import httpx
 FLICKR_API = "https://api.flickr.com/services/rest/"
 # Only these fields are ever asked for about a photo.
 PHOTO_EXTRAS = "license"
+MAX_ACCOUNTS = 10
 MAX_ALBUMS = 200
 MAX_PAGES_PER_ALBUM = 20
 PAGE_SIZE = 500
@@ -171,6 +172,9 @@ def build_listing(
             entry["albums"], entry["albums_truncated"] = list_flickr_user(client, api_key, url)
         except GalleryError as error:
             entry["error"] = str(error)
+        except (AttributeError, TypeError, KeyError):
+            # The host answered in a shape this script does not know.
+            entry["error"] = "gallery answer not understood"
         galleries.append(entry)
     return {
         "notice": (
@@ -198,12 +202,14 @@ def main(argv: list[str] | None = None) -> int:
         help="public profile address of an account to list; repeat for more",
     )
     args = parser.parse_args(argv)
+    if len(args.flickr_user) > MAX_ACCOUNTS:
+        parser.error(f"at most {MAX_ACCOUNTS} accounts per run")
     api_key = os.environ.get("FLICKR_API_KEY", "").strip()
     if not api_key:
         print("Set FLICKR_API_KEY to list galleries; nothing was requested.", file=sys.stderr)
         return 2
     with httpx.Client(timeout=20.0, follow_redirects=False) as client:
-        listing = build_listing(client, api_key, args.flickr_user[:10])
+        listing = build_listing(client, api_key, args.flickr_user)
         print(json.dumps(listing, indent=2, sort_keys=True))
     return 0
 
